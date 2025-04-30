@@ -19,12 +19,19 @@ export default function pageLogin() {
       
       <LoginForm />
 
-      <nav className="text-center text-sm pt-5">
+      <nav className="text-center text-sm pt-5 flex justify-between">
         <Link
           href="/auth/registro"
           className="text-gray-800"
         >
-          ¿No tienes una cuenta? <span className="font-bold text-slate-500 hover:text-slate-700">Crea una</span>
+          ¿No tienes una cuenta? <span className="font-bold text-slate-800 hover:text-slate-700">Crea una</span>
+        </Link>
+        <Link
+          href="/auth/forgot-password"
+          className="text-gray-800"
+          
+        >
+          ¿Olvidaste tu contraseña? <span className="font-bold text-slate-800 hover:text-slate-950">Recupera aquí</span>
         </Link>
       </nav>
     
