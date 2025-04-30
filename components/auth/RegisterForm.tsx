@@ -1,4 +1,4 @@
-"use client"
+"use client" // This is a client component
 
 // import { useActionState } from 'react'
 import { useFormState } from 'react-dom'
@@ -7,66 +7,63 @@ import { useEffect, useRef } from 'react'
 
 export default function RegisterForm() {
 
-   
-
-    // for reset form
+    // For reset form after submit
     const ref = useRef<HTMLFormElement>(null)
-
     
     return (
-        < form
+        <form
             ref={ref}
-            className="mt-14 space-y-2 p-10"
+            className="mt-2 space-y-2 text-gray-700"
             noValidate
             // action={}
         >
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1">
                 <label
-                    className="font-bold text-2xl"
+                    className="font-bold "
                     htmlFor="email"
                 >Email</label>
                 <input
                     id="email"
                     type="email"
                     placeholder="Email de Registro"
-                    className="w-full border border-gray-300 p-3 rounded-lg"
+                    className="w-full border border-gray-300 p-3 rounded-2xl"
                     name="email"
                 />
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1">
                 <label
-                    className="font-bold text-2xl "
+                    className="font-bold  "
                 >Nombre</label>
                 <input
                     type="name"
                     placeholder="Nombre de Registro"
-                    className="w-full border border-gray-300 p-3 rounded-lg"
+                    className="w-full border border-gray-300 p-3 rounded-2xl"
                     name="name"
                 />
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1">
                 <label
-                    className="font-bold text-2xl"
+                    className="font-bold "
                 >Password</label>
                 <input
                     type="password"
                     placeholder="Password de Registro"
-                    className="w-full border border-gray-300 p-3 rounded-lg"
+                    className="w-full border border-gray-300 p-3 rounded-2xl"
                     name="password"
                 />
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1">
                 <label
-                    className="font-bold text-2xl"
+                    className="font-bold "
                 >Repetir Password</label>
                 <input
                     id="password_confirmation"
                     type="password"
                     placeholder="Repite Password de Registro"
-                    className="w-full border border-gray-300 p-3 rounded-lg"
+                    className="w-full border border-gray-300 p-3 rounded-2xl"
                     name="password_confirmation"
                 />
             </div>
@@ -74,7 +71,7 @@ export default function RegisterForm() {
             <input
                 type="submit"
                 value='Registrarme'
-                className="bg-purple-950 hover:bg-purple-800 w-full p-3 rounded-lg text-white font-black  text-xl cursor-pointer block"
+                className="bg-slate-950 hover:bg-slate-800 w-full p-3 rounded-2xl text-white font-black text-xl cursor-pointer block "
             />
         </form >
     )
