@@ -1,21 +1,31 @@
 "use client" // This is a client component
 
 // import { useActionState } from 'react'
-import { useFormState } from 'react-dom'
 import { useEffect, useRef } from 'react'
+import { createAccountAction } from '@/actions/create-account-action'
+import { register } from 'module'
+import { useActionState } from 'react'
 
 
 export default function RegisterForm() {
 
+    const [ state, dispatch] = useActionState(createAccountAction, {
+        errors: [],
+        success: ""
+    })
+
+    console.log(state)
+
+
     // For reset form after submit
-    const ref = useRef<HTMLFormElement>(null)
+    // const ref = useRef<HTMLFormElement>(null)
     
     return (
         <form
-            ref={ref}
+            // ref={ref}
             className="mt-2 space-y-2 text-gray-700"
             noValidate
-            // action={}
+            action={dispatch}
         >
             <div className="flex flex-col gap-1">
                 <label
