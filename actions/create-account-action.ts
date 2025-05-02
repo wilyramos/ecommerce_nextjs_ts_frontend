@@ -1,10 +1,15 @@
 "use server"
 
 import { RegisterSchema, SuccessSchemaRegister, ErrorResponseSchema } from '@/src/schemas'
-import { SuiteContext } from 'node:test';
 
 type ActionStateType = {
     errors: string[],
+}
+
+type SuccessResponse = {
+    message: string,
+    userId: string,
+    token: string
 }
 
 export async function createAccountAction(prevState: ActionStateType, formData: FormData) {
@@ -23,7 +28,7 @@ export async function createAccountAction(prevState: ActionStateType, formData: 
         const errors = validationResult.error.errors.map(error => error.message);
         return {
             errors,
-            success: ""
+            success: {} as SuccessResponse
         }
     }
 
@@ -47,19 +52,17 @@ export async function createAccountAction(prevState: ActionStateType, formData: 
 
     if (!req.ok) {
         const errorResponse = await req.json()
-        console.log(errorResponse)
+        console.log("errorrrr", errorResponse)
         return {
             errors: [errorResponse.message],
-            success: ""
+            success: {} as SuccessResponse
         }
     }
 
     const json = await req.json()
 
-    
-
     const success = SuccessSchemaRegister.parse(json)
-    console.log("Success", success)
+    // console.log("Success", success)
 
     return {
         errors: prevState.errors,

@@ -3,22 +3,45 @@
 // import { useActionState } from 'react'
 import { createAccountAction } from '@/actions/create-account-action'
 import { register } from 'module'
-import { useActionState } from 'react'
+import { useActionState, useEffect } from 'react'
 import ErrorMessage from '../ui/ErrorMessage'
+import { toast } from 'react-toastify'
+import { useRouter } from 'next/navigation'
 
+
+interface successResponse {
+    message: string,
+    userId: string,
+    token: string
+}
 
 export default function RegisterForm() {
 
     const [ state, dispatch] = useActionState(createAccountAction, {
         errors: [],
-        success: ""
+        success: {} as successResponse
     })
 
 
+    console.log("stateee", state)
+    // show toast success message and redirect to login page
+    console.log("state.success", state.success)
+    // Extraer la data del succes
 
 
-    
-    
+    const token = state.success?.token
+    // const message = state.success?.message
+    const router = useRouter()
+
+    useEffect(() => {
+        if (token) {
+            toast.success(state.success.message)
+            // Redirigir a la página de login
+            router.push('/auth/login')
+        }
+    }, [token, router])
+
+
     return (
         <form
             // ref={ref}
