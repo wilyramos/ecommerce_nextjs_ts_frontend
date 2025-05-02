@@ -1,10 +1,10 @@
-"use client" // This is a client component
+"use client" 
 
 // import { useActionState } from 'react'
-import { useEffect, useRef } from 'react'
 import { createAccountAction } from '@/actions/create-account-action'
 import { register } from 'module'
 import { useActionState } from 'react'
+import ErrorMessage from '../ui/ErrorMessage'
 
 
 export default function RegisterForm() {
@@ -14,11 +14,10 @@ export default function RegisterForm() {
         success: ""
     })
 
-    console.log(state)
 
 
-    // For reset form after submit
-    // const ref = useRef<HTMLFormElement>(null)
+
+    
     
     return (
         <form
@@ -27,6 +26,8 @@ export default function RegisterForm() {
             noValidate
             action={dispatch}
         >
+
+            {state.errors.map(error => <ErrorMessage key={error}>{error}</ErrorMessage>)}
             <div className="flex flex-col gap-1">
                 <label
                     className="font-bold "
@@ -46,10 +47,10 @@ export default function RegisterForm() {
                     className="font-bold  "
                 >Nombre</label>
                 <input
-                    type="name"
+                    type="nombre"
                     placeholder="Nombre de Registro"
                     className="w-full border border-gray-300 p-3 rounded-2xl"
-                    name="name"
+                    name="nombre"
                 />
             </div>
 

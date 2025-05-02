@@ -1,6 +1,6 @@
 "use server"
 
-import { RegisterSchema, SuccessSchema } from '@/src/schemas'
+import { RegisterSchema, SuccessSchemaRegister, ErrorResponseSchema } from '@/src/schemas'
 import { SuiteContext } from 'node:test';
 
 type ActionStateType = {
@@ -12,7 +12,7 @@ export async function createAccountAction(prevState: ActionStateType, formData: 
     // Creation object with only the data we need
     const registerData = {
         email: formData.get('email'),
-        name: formData.get('name'),
+        nombre: formData.get('nombre'),
         password: formData.get('password'),
         password_confirmation: formData.get('password_confirmation')
     }
@@ -20,12 +20,13 @@ export async function createAccountAction(prevState: ActionStateType, formData: 
     // Validate the data using Zod
     const validationResult = RegisterSchema.safeParse(registerData);
     if (!validationResult.success) {
-        const errors = validationResult.error.errors.map((error) => error.message);
+        const errors = validationResult.error.errors.map(error => error.message);
         return {
             errors,
             success: ""
         }
     }
+
 
     // If validation is successful, you can proceed with the registration logic
 
@@ -37,13 +38,12 @@ export async function createAccountAction(prevState: ActionStateType, formData: 
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            name: registerData.name,
-            email: registerData.email,
-            password: registerData.password,
+            nombre: validationResult.data.nombre,
+            email: validationResult.data.email,
+            password: validationResult.data.password,
         }),
     })
-
-    console.log(req)
+    // console.log(req)
 
     if (!req.ok) {
         const errorResponse = await req.json()
@@ -53,10 +53,16 @@ export async function createAccountAction(prevState: ActionStateType, formData: 
             success: ""
         }
     }
+
+    const json = await req.json()
+
     
 
+    const success = SuccessSchemaRegister.parse(json)
+    console.log("Success", success)
+
     return {
-        errors: [],
-        // success
+        errors: prevState.errors,
+        success
     }
 }

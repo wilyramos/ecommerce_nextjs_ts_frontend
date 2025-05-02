@@ -3,8 +3,8 @@ import { z } from 'zod';
 export const RegisterSchema = z.object({
     email: z.string()
         .email({ message: 'Email no válido' }),
-    name: z.string()
-        .min(3, { message: 'El nombre debe tener al menos 3 caracteres' }),
+    nombre: z.string()
+        .min(1, { message: 'El nombre es obligatorio' }),
     password: z.string()
         .min(6, { message: 'La contraseña debe tener al menos 6 caracteres' }),
     password_confirmation: z.string(),
@@ -16,4 +16,13 @@ export const RegisterSchema = z.object({
 
 // For succes validation
 
-export const SuccessSchema = z.string().min(1, { message: 'Valor inválido' });
+export const SuccessSchemaRegister = z.object({
+    message: z.string(),
+    userId: z.string(),
+    token: z.string(),
+})
+
+export const ErrorResponseSchema = z.object({
+    message: z.string(),
+})
+
