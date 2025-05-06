@@ -41,9 +41,20 @@ export const SuccessSchemaLogin = z.object({
     role: z.enum(['cliente', 'administrador']),
 })
 
+// succes for forgot password
+
+export const SuccessSchemaForgotPassword = z.object({
+    message: z.string(),
+})
+
 
 export const ErrorResponseSchema = z.object({
     message: z.string(),
+})
+
+export const ForgotPasswordSchema = z.object({
+    email: z.string()
+        .email({ message: 'Email no válido' }),
 })
 
 
@@ -59,4 +70,5 @@ export const UserSchema = z.object({
     __v: z.number(),
 })
 
+export type User = z.infer<typeof UserSchema>
 
