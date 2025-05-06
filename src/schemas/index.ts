@@ -46,3 +46,17 @@ export const ErrorResponseSchema = z.object({
     message: z.string(),
 })
 
+
+// Schema para el user - get user
+
+export const UserSchema = z.object({
+    _id: z.string(),
+    nombre: z.string(),
+    email: z.string().email(),
+    rol: z.enum(['cliente', 'administrador']),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+    __v: z.number(),
+})
+
+
