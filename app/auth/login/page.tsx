@@ -13,10 +13,10 @@ export const metadata: Metadata = {
 export default function pageLogin() {
   return (
     <>
-    
+
       <h1 className='text-4xl font-bold text-center text-slate-700 mt-10'>Iniciar Sesión</h1>
       <p className='text-center text-gray-400 pt-5'>Ingresa tus credenciales</p>
-      
+
       <LoginForm />
 
       <nav className="text-center text-sm pt-5 flex justify-between">
@@ -29,12 +29,12 @@ export default function pageLogin() {
         <Link
           href="/auth/forgot-password"
           className="text-gray-800"
-          
+
         >
           ¿Olvidaste tu contraseña? <span className="font-bold text-slate-800 hover:text-slate-950">Recupera aquí</span>
         </Link>
       </nav>
-    
+
     </>
   )
 }

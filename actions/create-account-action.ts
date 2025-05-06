@@ -52,7 +52,6 @@ export async function createAccountAction(prevState: ActionStateType, formData: 
 
     if (!req.ok) {
         const errorResponse = await req.json()
-        console.log("errorrrr", errorResponse)
         return {
             errors: [errorResponse.message],
             success: {} as SuccessResponse

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+// For register validation
 export const RegisterSchema = z.object({
     email: z.string()
         .email({ message: 'Email no válido' }),
@@ -12,6 +13,15 @@ export const RegisterSchema = z.object({
     message: 'Las contraseñas no coinciden',
     path: ['password_confirmation'],
 });
+
+// For login validation
+
+export const LoginSchema = z.object({
+    email: z.string()
+        .email({ message: 'Email no válido' }),
+    password: z.string()
+        .min(6, { message: 'La contraseña debe tener al menos 6 caracteres' }),
+})
 
 
 // For succes validation

@@ -8,7 +8,6 @@ import ErrorMessage from '../ui/ErrorMessage'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
 
-
 interface successResponse {
     message: string,
     userId: string,
@@ -17,30 +16,40 @@ interface successResponse {
 
 export default function RegisterForm() {
 
+
     const [ state, dispatch] = useActionState(createAccountAction, {
         errors: [],
         success: {} as successResponse
     })
 
 
-    console.log("stateee", state)
-    // show toast success message and redirect to login page
-    console.log("state.success", state.success)
-    // Extraer la data del succes
-
-
     const token = state.success?.token
+    console.log(token)
     // const message = state.success?.message
     const router = useRouter()
 
+    // useEffect(() => {
+    //     if (token) {
+    //         toast.success(state.success.message)
+    //         // Redirigir a la página de login
+    //         router.push('/auth/login')
+    //     }
+    // }, [token, router])
+
     useEffect(() => {
-        if (token) {
-            toast.success(state.success.message)
+
+        if(state.errors){
+            state.errors.forEach(error => {
+                toast.error(error)
+            })
+        }
+        if (state.success?.message) {
+            toast.success(state.success?.message)
             // Redirigir a la página de login
             router.push('/auth/login')
-        }
-    }, [token, router])
+        }  
 
+    }, [state, router])
 
     return (
         <form
@@ -50,7 +59,7 @@ export default function RegisterForm() {
             action={dispatch}
         >
 
-            {state.errors.map(error => <ErrorMessage key={error}>{error}</ErrorMessage>)}
+            {/* {state.errors.map(error => <ErrorMessage key={error}>{error}</ErrorMessage>)} */}
             <div className="flex flex-col gap-1">
                 <label
                     className="font-bold "

@@ -1,21 +1,45 @@
 "use client" // This is a client component
 
 // import { useActionState } from 'react'
-import { useFormState } from 'react-dom'
-import { useEffect, useRef } from 'react'
 
+import { useEffect, useRef } from 'react'
+import { authenticateUserAction } from '@/actions/authenticate-user-action'
+import { useActionState } from 'react'
+import { toast } from 'react-toastify'
+ 
 
 export default function LoginForm() {
 
     // For reset form after submit
-    const ref = useRef<HTMLFormElement>(null)
+    // const ref = useRef<HTMLFormElement>(null)
+
+
+    const [ state, dispatch] = useActionState(authenticateUserAction, {
+        errors: [],
+        success: ""
+    })
+
+    console.log("State:", state)
+    console.log("Errors:", state.errors)
+    console.log("Success:", state.success)
+
+    useEffect(() => {
+        if (state.errors) {
+            state.errors.forEach(error => {
+                toast.error(error)
+            })
+        }
+        if (state.success) {
+            toast.success(state.success)
+        }
+    }, [state])
 
     return (
         <form
-            ref={ref}
+            // ref={ref}
             className="mt-2 space-y-2 text-gray-700"
             noValidate
-        // action={}
+            action={dispatch}
         >
             <div className="flex flex-col gap-1">
                 <label

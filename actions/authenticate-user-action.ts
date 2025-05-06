@@ -1,0 +1,69 @@
+"use server"
+
+import { redirect } from "next/navigation"
+import { LoginSchema, ErrorResponseSchema } from "@/src/schemas"
+import { cookies } from "next/headers"
+
+
+type ActionStateType = {
+    errors: string[],
+    success: string
+}
+
+export async function authenticateUserAction(prevState: ActionStateType, formData: FormData) {
+
+    const loginCredentials = {
+        email: formData.get('email'),
+        password: formData.get('password')
+    }
+
+
+    const auth = LoginSchema.safeParse(loginCredentials);
+    if (!auth.success) {
+        const errors = auth.error.errors.map(error => error.message);
+        return {
+            errors,
+            success: ""
+        }
+    }
+
+
+    const url = `${process.env.API_URL}/auth/login`;
+    const req = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            email: auth.data.email,
+            password: auth.data.password,
+        }),
+    })
+
+    const Response = await req.json()
+    if (!req.ok) {
+        const errorResponse = ErrorResponseSchema.parse(Response)
+        return {
+            errors: [errorResponse.message],
+            success: ""
+        }
+    }
+    // Setear la cookie
+    const token = Response.token;
+
+    (await cookies()).set({
+        name: 'ecommerce-token',
+        value: token,    
+        path: '/',
+        httpOnly: true,
+    })
+
+    // redirect('/') // Redirigir a la página de inicio
+
+    return {
+        errors: [],
+        success: Response.message
+    }
+
+
+}
