@@ -1,7 +1,7 @@
 "use server"
 
 import { redirect } from "next/navigation"
-import { LoginSchema, ErrorResponseSchema } from "@/src/schemas"
+import { LoginSchema, ErrorResponseSchema, SuccessSchemaLogin } from "@/src/schemas"
 import { cookies } from "next/headers"
 
 
@@ -48,9 +48,12 @@ export async function authenticateUserAction(prevState: ActionStateType, formDat
             success: ""
         }
     }
+    console.log(Response);
     // Setear la cookie
-    const token = Response.token;
-
+    const successResponse = SuccessSchemaLogin.parse(Response)
+    const { token } = successResponse;
+    const { role } = Response;
+    console.log(successResponse);
     (await cookies()).set({
         name: 'ecommerce-token',
         value: token,    
@@ -58,12 +61,12 @@ export async function authenticateUserAction(prevState: ActionStateType, formDat
         httpOnly: true,
     })
 
-    // redirect('/') // Redirigir a la página de inicio
 
-    return {
-        errors: [],
-        success: Response.message
+    if (role === 'administrador') {
+        redirect('/admin')
     }
+
+    redirect('/')
 
 
 }

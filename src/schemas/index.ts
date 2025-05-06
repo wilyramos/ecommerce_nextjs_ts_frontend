@@ -32,6 +32,16 @@ export const SuccessSchemaRegister = z.object({
     token: z.string(),
 })
 
+
+// Infeteria del succes y añadir el rol
+
+export const SuccessSchemaLogin = z.object({
+    message: z.string(),
+    token: z.string(),
+    role: z.enum(['cliente', 'administrador']),
+})
+
+
 export const ErrorResponseSchema = z.object({
     message: z.string(),
 })
