@@ -1,5 +1,5 @@
 
-import { useFormState } from "react-dom"
+import { useActionState } from "react"
 import { resetPassword } from "@/actions/reset-password-action"
 import { useEffect } from "react"
 import { toast } from "react-toastify"
@@ -11,7 +11,7 @@ export default function ResetPasswordForm({ token }: { token: string }) {
     const router = useRouter()
     // send token to server
     const resetPasswordWithToken = resetPassword.bind(null, token)
-    const [state, dispatch] = useFormState(resetPasswordWithToken, {
+    const [state, dispatch] = useActionState(resetPasswordWithToken, {
         errors: [],
         success: ""
     })

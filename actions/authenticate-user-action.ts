@@ -48,7 +48,6 @@ export async function authenticateUserAction(prevState: ActionStateType, formDat
             success: ""
         }
     }
-    console.log(Response);
     // Setear la cookie
     const successResponse = SuccessSchemaLogin.parse(Response)
     const { token } = successResponse;

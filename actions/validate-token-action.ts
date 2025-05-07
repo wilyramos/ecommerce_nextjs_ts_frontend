@@ -1,5 +1,6 @@
 "use server"
 
+import { ErrorResponseSchema, TokenSchema, SuccessSchemaTokenValidation } from "@/src/schemas"
 
 
 type ActionStateType = {
@@ -8,11 +9,36 @@ type ActionStateType = {
 }
 
 export async function validateToken(token: string, prevState: ActionStateType) {
-    console.log("Validando token")
 
+    const resetPassword = TokenSchema.safeParse(token)
+    if (!resetPassword.success) {
+        return {
+            errors: resetPassword.error.errors.map(error => error.message),
+            success: ""
+        }
+    }
+
+    const url = `${process.env.API_URL}/auth/validate-token/${token}`
+    const res = await fetch(url, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+
+    const json = await res.json()
+    if (!res.ok) {
+        const errorResponse = ErrorResponseSchema.parse(json)
+        return {
+            errors: [errorResponse.message],
+            success: ""
+        }
+    }
+
+    const successResponse = SuccessSchemaTokenValidation.parse(json)
 
     return {
         errors: [],
-        success: "Token valido"
+        success: successResponse.message
     }
 }

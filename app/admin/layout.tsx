@@ -2,18 +2,12 @@ import AdminMenu from "@/components/admin/AdminMenu";
 import Logo from "@/components/ui/Logo"
 import { verifySession } from '@/src/auth/dal'
 
-
-
-
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-
 
     const { user } = await verifySession();
 
     return (
-
         <>
-
             <header>
                 <div className="flex items-center justify-between p-4 bg-gray-50 text-gray-850">
                     <Logo />
@@ -26,7 +20,6 @@ export default async function AdminLayout({ children }: { children: React.ReactN
                     <AdminMenu user={user} />
                 </div>
             </header>
-
 
             <div>
                 {children}
