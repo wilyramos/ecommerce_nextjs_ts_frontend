@@ -1,4 +1,5 @@
 import AddProductButton from "@/components/admin/products/AddProductButton";
+import Link from "next/link";
 
 export default function ProductsPage() {
 
@@ -17,8 +18,11 @@ export default function ProductsPage() {
             
          </div>
          <div className="mt-4">
-            <p>List of products will be displayed here.</p>
+            <Link href="/admin/products/category" className="text-blue-500 hover:underline">
+               Ver Categorias
+            </Link>
          </div>
+         
          
 
       </>
