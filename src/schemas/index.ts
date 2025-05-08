@@ -126,3 +126,15 @@ export const CreateCategorySchema = z.object({
     description: z.string()
         .min(1, { message: 'La descripción es obligatoria' }),
 })
+
+export const CategorySchema = z.object({
+    _id: z.string(),
+    nombre: z.string(),
+    descripcion: z.string(),
+    slug: z.string(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+    __v: z.number(),
+})
+
+export const CategoryAPIResponse = z.array(CategorySchema)
