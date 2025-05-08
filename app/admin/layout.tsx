@@ -1,4 +1,5 @@
 import AdminMenu from "@/components/admin/AdminMenu";
+import AdminSidebar from "@/components/admin/AdminSidebar";
 import Logo from "@/components/ui/Logo"
 import { verifySession } from '@/src/auth/dal'
 
@@ -8,22 +9,20 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
     return (
         <>
-            <header>
-                <div className="flex items-center justify-between p-4 bg-gray-50 text-gray-850">
-                    <Logo />
-                    <nav className="flex space-x-4">
-                        <a href="/admin" className="hover:text-gray-300">Dashboard</a>
-                        <a href="/admin/products" className="hover:text-gray-300">Products</a>
-                        <a href="/admin/orders" className="hover:text-gray-300">Orders</a>
-                        <a href="/admin/users" className="hover:text-gray-300">Users</a>
-                    </nav>
-                    <AdminMenu user={user} />
+            <div className="flex flex-col w-full h-screen bg-gray-50 border-r border-gray-200">
+                
+                <div className="flex flex-row w-full h-full">
+                    <AdminSidebar user={user} />
+                    <main className="flex-grow p-4">
+                        {children}
+                    </main>
                 </div>
-            </header>
-
-            <div>
-                {children}
             </div>
+            {/* <AdminSidebar user={user}/> */}
+            
+
+            
+           
         </>
 
     )
