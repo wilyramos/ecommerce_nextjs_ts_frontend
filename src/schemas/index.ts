@@ -101,3 +101,19 @@ export const UserSchema = z.object({
 
 export type User = z.infer<typeof UserSchema>
 
+
+
+// PRODUCT
+
+export const ProductSchema = z.object({
+    _id: z.string(),
+    name: z.string(),
+    description: z.string(),
+    price: z.number(),
+    stock: z.number(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+    __v: z.number(),
+})
+
+export type Product = z.infer<typeof ProductSchema>
