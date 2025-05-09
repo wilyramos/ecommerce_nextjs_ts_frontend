@@ -14,8 +14,8 @@ type ActionStateType = {
 export async function createCategoryAction(prevState: ActionStateType, formData: FormData) {
 
     const category = CreateCategorySchema.safeParse({
-        name: formData.get("name"),
-        description: formData.get("description"),
+        nombre: formData.get("name"),
+        descripcion: formData.get("description"),
     })
 
     if (!category.success) {

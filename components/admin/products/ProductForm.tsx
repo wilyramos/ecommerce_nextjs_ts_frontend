@@ -1,41 +1,63 @@
 import type { Product } from "@/src/schemas";
+import type { CategoriasList } from "@/src/schemas";
 
-export default function BudgetForm({ product }: { product?: Product }) {
+
+
+export default function ProductForm({ product, categorias }: { product?: Product, categorias: CategoriasList }) {
+
+
+
     return (
         <div className="w-full mx-auto p-6 bg-white shadow-lg rounded-2xl space-y-2">
 
-            <div className="space-y-1">
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nombre del producto</label>
+            <div className="">
+                <label htmlFor="nombre" className="block text-sm font-medium text-gray-700">Nombre del producto</label>
                 <input
                     type="text"
-                    id="name"
-                    name="name"
-                    className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    defaultValue={product?.name}
+                    id="nombre"
+                    name="nombre"
+                    className="w-full border border-gray-300 rounded-lg p-3 "
+                    defaultValue={product?.nombre}
                 />
             </div>
 
-            <div className="space-y-1">
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700">Descripción</label>
+            <div className="">
+                <label htmlFor="descripcion" className="block text-sm font-medium text-gray-700">Descripción</label>
                 <textarea
-                    id="description"
-                    name="description"
+                    id="descripcion"
+                    name="descripcion"
                     rows={4}
-                    className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    defaultValue={product?.description}
+                    className="w-full border border-gray-300 rounded-lg p-3 "
+                    defaultValue={product?.descripcion}
                 />
+            </div>
+
+            <div className="">
+                <label htmlFor="categoria" className="block text-sm font-medium text-gray-700">Categoría</label>
+                <select
+                    id="categoria"
+                    name="categoria"
+                    className="w-full border border-gray-300 rounded-lg p-3 "
+                    defaultValue={product?.categoria}
+                >
+                    <option value="">Selecciona una categoría</option>
+                    {categorias.map((categoria) => (
+                        <option key={categoria._id} value={categoria._id}>
+                            {categoria.nombre}
+                        </option>
+                    ))}
+                </select>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                    <label htmlFor="price" className="block text-sm font-medium text-gray-700">Precio</label>
+                <div className="">
+                    <label htmlFor="precio" className="block text-sm font-medium text-gray-700">Precio</label>
                     <input
                         type="number"
-                        id="price"
-                        name="price"
+                        id="precio"
+                        name="precio"
                         className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        defaultValue={product?.price}
-                        required
+                        defaultValue={product?.precio}
                     />
                 </div>
 
@@ -47,8 +69,8 @@ export default function BudgetForm({ product }: { product?: Product }) {
                         name="stock"
                         className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         defaultValue={product?.stock}
-                        required
                     />
+
                 </div>
             </div>
 
@@ -63,8 +85,6 @@ export default function BudgetForm({ product }: { product?: Product }) {
                     required
                 />
             </div>
-
-           
         </div>
     );
 }

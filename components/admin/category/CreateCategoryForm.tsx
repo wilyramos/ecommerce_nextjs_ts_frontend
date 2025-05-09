@@ -13,19 +13,15 @@ import { toast } from 'react-toastify'
 export default function CreateCategoryForm({ }) {
 
     const router = useRouter()
-    const [state, dispatch] = useActionState(createCategoryAction,
-        {
-            errors: [],
-            success: ""
-        }
-    )
-
-    console.log("state", state)
+    const [state, dispatch] = useActionState(createCategoryAction, {
+        errors: [],
+        success: ""
+    })
 
     useEffect(() => {
         if (state.errors) {
             state.errors.forEach((error) => {
-                console.log("error", error)
+                // console.log("error", error)
                 toast.error(error)
             })
         }

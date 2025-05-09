@@ -107,13 +107,27 @@ export type User = z.infer<typeof UserSchema>
 
 export const ProductSchema = z.object({
     _id: z.string(),
-    name: z.string(),
-    description: z.string(),
-    price: z.number(),
+    nombre: z.string(),
+    descripcion: z.string(),
+    precio: z.number(),
+    imagenes: z.array(z.string()),
+    categoria: z.string(),
     stock: z.number(),
-    createdAt: z.string(),
-    updatedAt: z.string(),
-    __v: z.number(),
+    sku: z.string().optional(),
+})
+
+// Create product schema
+export const CreateProductSchema = z.object({
+    nombre: z.string()
+        .min(1, { message: 'El nombre es obligatorio' }),
+    descripcion: z.string()
+        .min(1, { message: 'La descripción es obligatoria' }),
+    precio: z.number()
+        .min(0, { message: 'El precio es obligatorio' }),
+    categoria: z.string()
+        .min(1, { message: 'La categoría es obligatoria' }),
+    stock: z.number()
+        .min(0, { message: 'El stock es obligatorio' }),
 })
 
 export type Product = z.infer<typeof ProductSchema>
@@ -140,3 +154,4 @@ export const CategorySchema = z.object({
 export const CategoriesAPIResponse = z.array(CategorySchema)
 export const CategoryAPIResponse = CategorySchema
 export type Category = z.infer<typeof CategorySchema>
+export type CategoriasList = z.infer<typeof CategoriesAPIResponse>

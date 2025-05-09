@@ -1,19 +1,20 @@
 import Link from "next/link";
 import { CategoriesAPIResponse } from "@/src/schemas";
+import { getCategories } from "@/src/services/categorys";
 
-async function getCategories() {
-    const url = `${process.env.API_URL}/category/list`;
-    const res = await fetch(url, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    });
+// async function getCategories() {
+//     const url = `${process.env.API_URL}/category/list`;
+//     const res = await fetch(url, {
+//         method: "GET",
+//         headers: {
+//             "Content-Type": "application/json",
+//         },
+//     });
 
-    const json = await res.json();
-    const categories = CategoriesAPIResponse.parse(json);
-    return categories;
-}
+//     const json = await res.json();
+//     const categories = CategoriesAPIResponse.parse(json);
+//     return categories;
+// }
 
 export default async function CreatePageCategory() {
     
