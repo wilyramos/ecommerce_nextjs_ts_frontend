@@ -11,9 +11,7 @@ export default async function NewProductPage() {
 
     return (
         <>
-
             <div className='flex flex-col-reverse md:flex-row md:justify-between items-center'>
-
                 <h1 className='text-2xl font-bold text-gray-800'>Nuevo producto</h1>
                 <div className='flex gap-4'>
                 </div>
@@ -28,8 +26,6 @@ export default async function NewProductPage() {
             <div className='flex flex-col w-full mx-auto mt-10'>
                 <CreateProductForm categorias={categorias} />
             </div>
-
-
         </>
     )
 }

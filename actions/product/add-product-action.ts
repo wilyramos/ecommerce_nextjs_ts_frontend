@@ -1,6 +1,7 @@
 "use server"
 
-import { CreateProductSchema } from "@/src/schemas"
+import { CreateProductSchema, SuccessResponse } from "@/src/schemas"
+import { cookies } from "next/headers"
 
 
 type ActionStateType = {
@@ -20,13 +21,37 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         stock: Number(formData.get('stock')),
     }
 
-    console.log(productDate);
-
     const product = CreateProductSchema.safeParse(productDate)
 
     if (!product.success) {
         return {
             errors: product.error.issues.map((issue) => issue.message),
+            success: ""
+        }
+    }
+
+    const token = (await cookies()).get('ecommerce-token')?.value
+    const url = `${process.env.API_URL}/products`
+    const req = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            nombre: product.data.nombre,
+            descripcion: product.data.descripcion,
+            precio: product.data.precio,
+            categoria: product.data.categoria,
+            stock: product.data.stock
+        })
+    })
+
+    const json = await req.json()
+    const success = SuccessResponse.parse(json)
+    if (!req.ok) {
+        return {
+            errors: [success.message],
             success: ""
         }
     }

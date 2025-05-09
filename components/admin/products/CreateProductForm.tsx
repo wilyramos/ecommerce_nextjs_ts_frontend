@@ -23,6 +23,7 @@ export default function CreateProductForm({ categorias }: { categorias: Categori
     useEffect(() => {
 
         if (state.success) {
+            toast.success(state.success)
             router.push("/admin/products")
         }
         if (state.errors) {

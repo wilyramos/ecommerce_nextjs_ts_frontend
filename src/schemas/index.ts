@@ -131,6 +131,12 @@ export const CreateProductSchema = z.object({
 })
 
 export type Product = z.infer<typeof ProductSchema>
+export const ProductsAPIResponse = z.object({
+    products: z.array(ProductSchema),
+    totalPages: z.number(),
+    currentPage: z.number(),
+    totalProducts: z.number(),
+})
 
 // CATEGORY
 
