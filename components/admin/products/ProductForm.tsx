@@ -12,7 +12,6 @@ export default function BudgetForm({ product }: { product?: Product }) {
                     name="name"
                     className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     defaultValue={product?.name}
-                    required
                 />
             </div>
 
@@ -24,7 +23,6 @@ export default function BudgetForm({ product }: { product?: Product }) {
                     rows={4}
                     className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     defaultValue={product?.description}
-                    required
                 />
             </div>
 

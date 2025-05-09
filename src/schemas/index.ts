@@ -121,9 +121,9 @@ export type Product = z.infer<typeof ProductSchema>
 // CATEGORY
 
 export const CreateCategorySchema = z.object({
-    name: z.string()
+    nombre: z.string()
         .min(1, { message: 'El nombre es obligatorio' }),
-    description: z.string()
+    descripcion: z.string()
         .min(1, { message: 'La descripción es obligatoria' }),
 })
 
@@ -137,4 +137,6 @@ export const CategorySchema = z.object({
     __v: z.number(),
 })
 
-export const CategoryAPIResponse = z.array(CategorySchema)
+export const CategoriesAPIResponse = z.array(CategorySchema)
+export const CategoryAPIResponse = CategorySchema
+export type Category = z.infer<typeof CategorySchema>

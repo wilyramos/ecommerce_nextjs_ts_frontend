@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CategoryAPIResponse } from "@/src/schemas";
+import { CategoriesAPIResponse } from "@/src/schemas";
 
 async function getCategories() {
     const url = `${process.env.API_URL}/category/list`;
@@ -11,11 +11,12 @@ async function getCategories() {
     });
 
     const json = await res.json();
-    const categories = CategoryAPIResponse.parse(json);
+    const categories = CategoriesAPIResponse.parse(json);
     return categories;
 }
 
 export default async function CreatePageCategory() {
+    
     const categories = await getCategories();
 
     return (
@@ -39,21 +40,27 @@ export default async function CreatePageCategory() {
                 </Link>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="flex flex-col gap-1">
                 {categories.map((category) => (
                     <div
                         key={category._id}
-                        className="border rounded-lg shadow hover:shadow-lg transition-shadow p-6 bg-white"
+                        className=""
                     >
-                        <h2 className="text-xl font-semibold mb-2">{category.nombre}</h2>
-                        <p className="text-gray-600 mb-4">
-                            {category.descripcion || "Sin descripción."}
-                        </p>
                         <Link
                             href={`/admin/products/category/${category._id}`}
-                            className="inline-block text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded transition"
+                            className="flex justify-between items-center"
                         >
-                            Ver Productos
+                            <div className="flex items-center gap-2">
+                                <p className=" font-semibold text-gray-600 hover:text-blue-500 transition">
+                                    {category.nombre}
+                                </p>
+                                <p className="text-gray-500 text-sm">
+                                    {category.descripcion}
+                                </p>
+                            </div>
+                            <span className="text-gray-500">
+
+                            </span>
                         </Link>
                     </div>
                 ))}

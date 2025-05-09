@@ -37,8 +37,8 @@ export async function createCategoryAction(prevState: ActionStateType, formData:
             'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-            nombre: category.data.name,
-            descripcion: category.data.description
+            nombre: category.data.nombre,
+            descripcion: category.data.descripcion
         })
     })
 
@@ -46,7 +46,7 @@ export async function createCategoryAction(prevState: ActionStateType, formData:
     const success = SuccessResponse.parse(json)
     if (!req.ok) {
         return {
-            errors: [json.message],
+            errors: [success.message],
             success: ""
         }
     }
