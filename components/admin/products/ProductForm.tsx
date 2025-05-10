@@ -7,8 +7,6 @@ import UploadProductImage from "./UploadProductImage";
 export default function ProductForm({ product, categorias }: { product?: ProductAPIResponseType, categorias: CategoriasList }) {
 
 
-    
-
     return (
         <div className="w-full mx-auto p-6 bg-white shadow-lg rounded-2xl space-y-2">
 

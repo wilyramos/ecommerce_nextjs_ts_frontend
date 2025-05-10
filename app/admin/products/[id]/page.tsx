@@ -1,6 +1,8 @@
 import { getProduct } from "@/src/services/products";
 import EditProductForm from "@/components/admin/products/EditProductForm";
 import { getCategories } from "@/src/services/categorys";
+import Link from "next/link";
+import DeleteProductButton from "@/components/admin/products/DeleteProductButton";
 
 
 type params = Promise<{
@@ -25,14 +27,34 @@ export default async function ProductDetailsPage({ params }: { params: params })
     return (
         <>
 
-            <div className="p-6">
-                <h1 className="text-3xl font-semibold text-gray-700">{product.nombre}</h1>
+            <div className="p-2">
+                <div className="flex justify-between items-center">
 
-                <div>
+                    <h1 className="text-xl font-semibold text-gray-700">{product.nombre}</h1>
+                    <div className="flex gap-2">
+                        <Link
+                            href={"/admin/products"}
+                            className="bg-gray-800 text-white text-sm font-bold px-4 py-1 rounded-xl hover:bg-gray-950 cursor-pointer transition-all duration-200 ease-in-out md:block"
+                        >
+                            Volver
+                        </Link>
+                        <DeleteProductButton productId={product._id} />
+
+                        
+                    </div>
+
+
+                </div>
+
+
+                <div className="">
                     <EditProductForm product={product} categorias={categorias} />
                 </div>
 
             </div>
+
+           
+
 
 
         </>

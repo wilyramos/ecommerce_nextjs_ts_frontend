@@ -50,12 +50,14 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
             success: ""
         }
     }
+    const success = SuccessResponse.parse(json);
+    
 
     //Revalidate
     revalidatePath(`/admin/products/${id}`)
 
     return {
         errors: [],
-        success: "Producto editado correctamente"
+        success: success.message
     }
 }

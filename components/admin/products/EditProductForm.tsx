@@ -30,29 +30,29 @@ export default function EditProductForm({ product, categorias }: { product: Prod
 
     }, [state])
 
-    
+
 
 
     return (
         <>
 
             <form
-                className=""
+                className="flex flex-col gap-4 w-full max-w-2xl mx-auto mt-10"
                 noValidate
                 action={dispatch}
-                >
+            >
                 <ProductForm
                     product={product}
                     categorias={categorias}
                 />
 
-                    <input
-                        type="submit"
-                        value="Actualizar Producto"
-                        className="bg-blue-500 text-white font-bold py-3 rounded-full w-full hover:bg-blue-600 transition duration-200 ease-in-out cursor-pointer mt-4"
-                    />
+                <input
+                    type="submit"
+                    value="Actualizar Producto"
+                    className="bg-blue-500 text-white font-bold py-3 rounded-full w-full hover:bg-blue-600 transition duration-200 ease-in-out cursor-pointer mt-4"
+                />
 
-                </form>
+            </form>
         </>
     )
 }
