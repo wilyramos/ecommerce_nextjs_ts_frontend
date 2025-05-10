@@ -14,7 +14,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
                 
                 <div className="flex flex-row w-full h-full">
                     <AdminSidebar user={user} />
-                    <main className="flex-grow p-4">
+                    <main className="flex-grow p-4 overflow-y-auto">
                         {children}
                     </main>
                 </div>
@@ -23,10 +23,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
 
             <ToastNotification />
-            
 
-            
-           
+
         </>
 
     )

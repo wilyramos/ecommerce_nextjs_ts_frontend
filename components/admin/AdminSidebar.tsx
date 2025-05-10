@@ -14,8 +14,8 @@ export default function AdminSidebar({ user }: { user: User }) {
                     <Image
                         src={'/logo.svg'}
                         alt='Logo'
-                        width={50}
-                        height={50}
+                        width={100}
+                        height={100}
                     />
                 </div>
                 <nav className="flex flex-col p-4 space-y-2">

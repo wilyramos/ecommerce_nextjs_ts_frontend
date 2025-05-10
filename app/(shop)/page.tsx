@@ -26,11 +26,11 @@ export default function HomePage() {
                             Ver productos
                         </a>
                     </div>
-                    <img
+                    {/* <img
                         src="/images/hero-tech.png"
                         alt="Tecnología moderna"
                         className="w-full max-w-md"
-                    />
+                    /> */}
                 </div>
             </section>
 

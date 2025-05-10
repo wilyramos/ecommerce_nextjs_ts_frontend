@@ -1,11 +1,13 @@
-import type { Product } from "@/src/schemas";
+import type { ProductAPIResponseType } from "@/src/schemas";
 import type { CategoriasList } from "@/src/schemas";
+import UploadProductImage from "./UploadProductImage";
 
 
 
-export default function ProductForm({ product, categorias }: { product?: Product, categorias: CategoriasList }) {
+export default function ProductForm({ product, categorias }: { product?: ProductAPIResponseType, categorias: CategoriasList }) {
 
 
+    
 
     return (
         <div className="w-full mx-auto p-6 bg-white shadow-lg rounded-2xl space-y-2">
@@ -38,7 +40,7 @@ export default function ProductForm({ product, categorias }: { product?: Product
                     id="categoria"
                     name="categoria"
                     className="w-full border border-gray-300 rounded-lg p-3 "
-                    defaultValue={product?.categoria}
+                    defaultValue={product?.categoria?._id}
                 >
                     <option value="">Selecciona una categoría</option>
                     {categorias.map((categoria) => (
@@ -74,17 +76,8 @@ export default function ProductForm({ product, categorias }: { product?: Product
                 </div>
             </div>
 
-            <div className="space-y-1">
-                <label htmlFor="image" className="block text-sm font-medium text-gray-700">Imagen</label>
-                <input
-                    type="file"
-                    id="image"
-                    name="image"
-                    accept="image/*"
-                    className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                />
-            </div>
+            
+            <UploadProductImage />
         </div>
     );
 }

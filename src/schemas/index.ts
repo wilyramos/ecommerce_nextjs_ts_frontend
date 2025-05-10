@@ -130,6 +130,8 @@ export const CreateProductSchema = z.object({
         .min(0, { message: 'El stock es obligatorio' }),
 })
 
+
+
 export type Product = z.infer<typeof ProductSchema>
 export const ProductsAPIResponse = z.object({
     products: z.array(ProductSchema),
@@ -137,6 +139,8 @@ export const ProductsAPIResponse = z.object({
     currentPage: z.number(),
     totalProducts: z.number(),
 })
+export type ProductsList = z.infer<typeof ProductsAPIResponse>
+
 
 // CATEGORY
 
@@ -157,6 +161,27 @@ export const CategorySchema = z.object({
     __v: z.number(),
 })
 
+export const CategoryAPIResponseProduct = CategorySchema.pick({
+    _id: true,
+    nombre: true,
+    slug: true,
+})
+
+export const ProductAPIResponse = z.object({
+    _id: z.string(),
+    nombre: z.string(),
+    descripcion: z.string(),
+    precio: z.number(),
+    imagenes: z.array(z.string()),
+    categoria: CategoryAPIResponseProduct,
+    stock: z.number(),
+    sku: z.string().optional(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+    __v: z.number(),
+})
+
+export type ProductAPIResponseType = z.infer<typeof ProductAPIResponse>
 export const CategoriesAPIResponse = z.array(CategorySchema)
 export const CategoryAPIResponse = CategorySchema
 export type Category = z.infer<typeof CategorySchema>
