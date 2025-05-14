@@ -30,12 +30,8 @@ export default function EditProductForm({ product, categorias }: { product: Prod
 
     }, [state])
 
-
-
-
     return (
         <>
-
             <form
                 className="flex flex-col gap-4 w-full max-w-2xl mx-auto mt-10"
                 noValidate
@@ -45,7 +41,6 @@ export default function EditProductForm({ product, categorias }: { product: Prod
                     product={product}
                     categorias={categorias}
                 />
-
                 <input
                     type="submit"
                     value="Actualizar Producto"

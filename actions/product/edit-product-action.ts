@@ -23,7 +23,7 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         stock: Number(formData.get("stock")),
         imagenes: formData.getAll("imagenes[]") as string[],
     }
-    console.log("productData", productData)
+    // console.log("productData", productData)
 
     const product = CreateProductSchema.safeParse(productData);
     if (!product.success) {
@@ -32,6 +32,7 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
             success: ""
         }
     }
+    // console.log("product  ddd", product.data)
 
     const token = await getToken();
     const url = `${process.env.API_URL}/products/${id}`;
@@ -45,6 +46,7 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
     });
 
     const json = await req.json();
+    // console.log("json", json)
     if (!req.ok) {
         return {
             errors: [json.message],
