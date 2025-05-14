@@ -3,14 +3,14 @@ import { getCategory } from "@/src/services/categorys";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-type CategoryPageProps = {
-    params: {
-        id: string;
-    };
-};
+type params = Promise<{
+    id: string;
+}>;
 
-export default async function CategoryPageDetails({ params }: CategoryPageProps) {
-    const category = await getCategory(params?.id);
+export default async function CategoryPageDetails({ params }: { params: params }) {
+
+    const { id } = await params;
+    const category = await getCategory(id);
 
 
     return (

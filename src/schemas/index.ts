@@ -102,7 +102,6 @@ export const UserSchema = z.object({
 export type User = z.infer<typeof UserSchema>
 
 
-
 // PRODUCT
 
 export const ProductSchema = z.object({
@@ -128,6 +127,7 @@ export const CreateProductSchema = z.object({
         .min(1, { message: 'La categoría es obligatoria' }),
     stock: z.number()
         .min(0, { message: 'El stock es obligatorio' }),
+    imagenes: z.array(z.string())
 })
 
 
@@ -141,6 +141,11 @@ export const ProductsAPIResponse = z.object({
 })
 export type ProductsList = z.infer<typeof ProductsAPIResponse>
 
+// image 
+
+export const ImageSchemaResponse = z.object({
+    images: z.array(z.string()),
+})
 
 // CATEGORY
 

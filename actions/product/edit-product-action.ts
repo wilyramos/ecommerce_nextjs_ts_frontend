@@ -21,7 +21,9 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         precio: Number(formData.get("precio")),
         categoria: formData.get("categoria"),
         stock: Number(formData.get("stock")),
+        imagenes: formData.getAll("imagenes[]") as string[],
     }
+    console.log("productData", productData)
 
     const product = CreateProductSchema.safeParse(productData);
     if (!product.success) {
@@ -44,9 +46,8 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
 
     const json = await req.json();
     if (!req.ok) {
-        const error = ErrorResponse.parse(json);
         return {
-            errors: [error.message],
+            errors: [json.message],
             success: ""
         }
     }

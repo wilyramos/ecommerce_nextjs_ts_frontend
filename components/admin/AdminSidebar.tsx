@@ -10,12 +10,14 @@ export default function AdminSidebar({ user }: { user: User }) {
 
         <>
             <div className="flex flex-col w-64 h-screen bg-gray-50 border-r border-gray-200">
-                <div className="flex items-center justify-center h-16 bg-gray-200 text-white">
+                <div className="flex items-center justify-center">
                     <Image
                         src={'/logo.svg'}
                         alt='Logo'
                         width={100}
                         height={100}
+                        className="w-32 h-32"
+                        priority
                     />
                 </div>
                 <nav className="flex flex-col p-4 space-y-2">

@@ -12,7 +12,7 @@ import type { CategoriasList } from '@/src/schemas'
 export default function CreateProductForm({ categorias }: { categorias: CategoriasList }) {
 
 
-    console.log(categorias)
+    // console.log(categorias)
 
     const router = useRouter()
     const [ state, dispatch ] = useActionState( createProduct, {
@@ -36,7 +36,7 @@ export default function CreateProductForm({ categorias }: { categorias: Categori
 
     return (
         <form 
-            className="flex flex-col gap-4 w-full max-w-2xl mx-auto mt-10"
+            className="flex flex-col gap-4 w-full max-w-xl mx-auto mt-10"
             noValidate
             action={dispatch}
         >

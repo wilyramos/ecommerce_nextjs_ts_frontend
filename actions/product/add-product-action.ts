@@ -13,15 +13,18 @@ type ActionStateType = {
 export async function createProduct(prevState: ActionStateType, formData: FormData) {
 
 
-    const productDate = {
+    const productData = {
         nombre: formData.get('nombre'),
         descripcion: formData.get('descripcion'),       
         precio: Number(formData.get('precio')),
         categoria: formData.get('categoria'),
         stock: Number(formData.get('stock')),
+        imagenes: formData.getAll('imagenes') 
     }
+    // console.log("productData", productData)
 
-    const product = CreateProductSchema.safeParse(productDate)
+    const product = CreateProductSchema.safeParse(productData)
+    console.log("productt", product)
 
     if (!product.success) {
         return {
@@ -43,21 +46,23 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
             descripcion: product.data.descripcion,
             precio: product.data.precio,
             categoria: product.data.categoria,
-            stock: product.data.stock
+            stock: product.data.stock,
+            imagenes: product.data.imagenes
         })
     })
 
-    const json = await req.json()
-    const success = SuccessResponse.parse(json)
+    const json = await req.json();
+    // console.log("jsonn", json)
     if (!req.ok) {
         return {
-            errors: [success.message],
+            errors: [json.message],
             success: ""
         }
     }
-
+    const success = SuccessResponse.parse(json)
+    console.log("successss", success)
     return {
         errors: [],
-        success: "Producto creado con exito"
+        success: success.message
     }
 }

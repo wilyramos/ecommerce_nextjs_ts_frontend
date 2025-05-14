@@ -1,96 +1,104 @@
-"use client";
+"use client"
 
-import { useDropzone } from "react-dropzone";
-import { useCallback, useState } from "react";
-import Image from "next/image";
+import { useDropzone } from "react-dropzone"
+import { useCallback, useEffect, useState } from "react"
+import { uploadImage } from "@/actions/product/upload-image-action"
+import Image from "next/image"
+import DeleteImageButton from "./DeleteImageButton"
 
-export default function UploadProductImage() {
-    const [image, setImage] = useState("");
+interface UploadProductImageProps {
+    CurrentImagenes?: string[]
+}
 
+export default function UploadProductImage({ CurrentImagenes = [] }: UploadProductImageProps) {
+    const [imagenes, setImagenes] = useState<string[]>([])
+
+    // Usamos useEffect solo para establecer las imágenes iniciales
+    useEffect(() => {
+        if (imagenes.length === 0 && CurrentImagenes.length > 0) {
+            setImagenes(CurrentImagenes)
+        }
+    }, [CurrentImagenes]) // Solo se ejecuta cuando CurrentImagenes cambia
+
+    // Subir imágenes nuevas
     const onDrop = useCallback(async (files: File[]) => {
-        const formData = new FormData();
-        files.forEach((file) => {
-            formData.append("file", file);
-        });
-        // const image = await uploadImage(formData)
+        const formData = new FormData()
+        files.forEach(file => formData.append('images', file))
 
-        setImage(image);
-    }, []);
+        const result = await uploadImage(formData)
+        setImagenes(prev => [...prev, ...result.images])
+    }, [])
 
-    const {
-        getRootProps,
-        getInputProps,
-        isDragActive,
-        isDragReject,
-        isDragAccept,
-    } = useDropzone({
+    // Configuración Dropzone
+    const { getRootProps, getInputProps, isDragActive, isDragReject, isDragAccept } = useDropzone({
         accept: {
-            "image/jpeg": [".jpg"],
-            "image/png": [".png"],
+            'image/jpeg': ['.jpg'],
+            'image/png': ['.png'],
         },
         onDrop,
-        maxFiles: 1,
-    });
+        maxFiles: 3,
+    })
 
     return (
-        <div className="space-y-4">
-            <label
-                htmlFor="dropzone-file"
-                className="block text-sm font-medium text-gray-700"
-            >
-                Imagen del Producto
-            </label>
-            <div
-                {...getRootProps({
-                    className: `
-            flex justify-center items-center w-full h-48 sm:h-64 border-2 border-dashed rounded-lg
-            ${isDragActive
-                            ? "border-indigo-500 bg-indigo-50"
-                            : isDragReject
-                                ? "border-red-500 bg-red-50"
-                                : "border-gray-300 bg-gray-50"
-                        }
-            ${isDragAccept && "border-green-500 bg-green-50"}
-            cursor-pointer
-            focus:outline-none
-            transition duration-300 ease-in-out
-          `,
-                })}
-            >
-                <div className="flex flex-col justify-center items-center space-y-2">
-
-                    <p className="block text-sm text-gray-500 dark:text-gray-400">
-                        <span className="font-semibold">Haz click para subir</span> o arrastra
-                        y suelta
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                        JPG o PNG
-                    </p>
-                    {isDragAccept && (
-                        <p className="text-green-500 text-sm">¡Suelta la imagen!</p>
-                    )}
-                    {isDragReject && (
-                        <p className="text-red-500 text-sm">¡Archivo no válido!</p>
-                    )}
+        <>
+            <div className="space-y-1">
+                <label className="block text-sm font-medium leading-6 text-gray-900">
+                    Imagen Producto
+                </label>
+                <div
+                    {...getRootProps({
+                        className: `
+                            flex items-center justify-center text-center 
+                            border-2 border-dashed rounded-lg transition-colors
+                            ${isDragActive ? 'border-gray-900 bg-gray-100 text-gray-900' : 'border-gray-300 bg-white text-gray-400'}
+                            ${isDragReject ? 'border-red-500 bg-white' : 'cursor-pointer'}
+                            py-16
+                        `
+                    })}
+                >
+                    <input {...getInputProps()} />
+                    {isDragAccept && (<p>Suelta la imagen aquí</p>)}
+                    {isDragReject && (<p>Archivo no válido</p>)}
+                    {!isDragActive && (<p>Arrastra y suelta una imagen, o haz clic para seleccionar</p>)}
                 </div>
-                <input {...getInputProps()} id="dropzone-file" type="file" className="hidden" />
             </div>
 
-            {image && (
-                <div className="mt-6 space-y-3">
-                    <p className="font-semibold text-gray-700">Imagen Cargada:</p>
-                    <div className="relative w-48 h-48 rounded-md shadow-md overflow-hidden">
-                        <Image
-                            src={image}
-                            alt="Imagen Producto"
-                            className="object-cover"
-                            fill
-                        />
+            {imagenes.length > 0 && (
+                <div className="py-2 space-y-2">
+                    <p className="font-bold">Imágenes:</p>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {imagenes.map((img, index) => (
+                            <div
+                                key={index}
+                                className="relative w-48 h-48 rounded-lg overflow-hidden"
+                            >
+                                <Image
+                                    src={img}
+                                    alt={`Imagen ${index + 1}`}
+                                    fill
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                    className="object-cover"
+                                    quality={10}
+                                    priority
+                                />
+                                <DeleteImageButton
+                                    image={img}
+                                    setImagenes={setImagenes}
+                                />
+                            </div>
+                        ))}
                     </div>
                 </div>
             )}
 
-            <input type="hidden" name="image" value={image} />
-        </div>
-    );
+            {imagenes.map((img, index) => (
+                <input
+                    key={index}
+                    type="hidden"
+                    name="imagenes[]"
+                    value={img}
+                />
+            ))}
+        </>
+    )
 }

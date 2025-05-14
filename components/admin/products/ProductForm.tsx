@@ -6,9 +6,8 @@ import UploadProductImage from "./UploadProductImage";
 
 export default function ProductForm({ product, categorias }: { product?: ProductAPIResponseType, categorias: CategoriasList }) {
 
-
     return (
-        <div className="w-full mx-auto p-6 bg-white shadow-lg rounded-2xl space-y-2">
+        <div className="text-xs font-bold">
 
             <div className="">
                 <label htmlFor="nombre" className="block text-sm font-medium text-gray-700">Nombre del producto</label>
@@ -70,12 +69,13 @@ export default function ProductForm({ product, categorias }: { product?: Product
                         className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         defaultValue={product?.stock}
                     />
-
                 </div>
             </div>
 
             
-            <UploadProductImage />
+            <UploadProductImage 
+                CurrentImagenes={product?.imagenes}
+            />
         </div>
     );
 }
