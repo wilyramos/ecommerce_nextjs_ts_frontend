@@ -186,6 +186,16 @@ export const ProductAPIResponse = z.object({
     __v: z.number(),
 })
 
+export type ProductType = z.infer<typeof ProductAPIResponse>
+
+export const ProductAPIResponseList = z.object({
+    products: z.array(ProductAPIResponse),
+    totalPages: z.number(),
+    currentPage: z.number(),
+    totalProducts: z.number(),
+})
+export type ProductList = z.infer<typeof ProductAPIResponseList>
+
 export type ProductAPIResponseType = z.infer<typeof ProductAPIResponse>
 export const CategoriesAPIResponse = z.array(CategorySchema)
 export const CategoryAPIResponse = CategorySchema
