@@ -8,8 +8,13 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import ButtonShowCart from '../ui/ButtonShowCart';
 
 export default function NavBar() {
+
+    
+
+
     return (
         <header>
             <div className="container mx-auto flex justify-between items-center px-6 py-4">
@@ -95,12 +100,7 @@ export default function NavBar() {
                         <FaUser size={20} />
                     </Link>
 
-                    <Link href="/cart" className="relative">
-                        <FaShoppingCart size={20} className="text-gray-600 hover:text-blue-600" />
-                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                            3
-                        </span>
-                    </Link>
+                   <ButtonShowCart />
                 </div>
             </div>
         </header>

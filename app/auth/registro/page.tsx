@@ -12,9 +12,8 @@ export const metadata: Metadata = {
 export default function pageRegistro() {
     return (
         <div className="flex justify-center flex-col ">
-            <h1 className='text-4xl font-bold text-center text-slate-700 mt-10'>
-                Ecommerce</h1>
-            <p className='text-center text-gray-400 pt-5'>Crea tu cuenta</p>
+
+            <h1 className="text-3xl font-bold text-center text-gray-800">Crea tu cuenta</h1>
             <RegisterForm />
             <nav className="text-center text-sm pt-5">
                 <Link
