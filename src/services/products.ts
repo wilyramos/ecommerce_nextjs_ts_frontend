@@ -1,4 +1,3 @@
-import NotFound from "@/app/productos/not-found";
 import getToken from "../auth/token"
 import { ProductsAPIResponse, ProductAPIResponse } from "@/src/schemas";
 import { ProductAPIResponseList } from "@/src/schemas/index";

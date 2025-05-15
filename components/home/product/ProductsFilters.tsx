@@ -1,11 +1,12 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from "react";
 import type { CategoriasList } from "@/src/schemas";
 import { MdDelete } from "react-icons/md";
 
 export default function ProductsFilters({ categorias }: { categorias: CategoriasList }) {
+    
     const router = useRouter();
     const searchParams = useSearchParams();
 

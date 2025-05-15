@@ -1,8 +1,8 @@
-"use client"
+'use client';
+
 import { useEffect, useState } from 'react'
 import ValidateTokenForm from './ValidateTokenForm'
 import ResetPasswordForm from './ResetPasswordForm'
-
 import { useSearchParams } from 'next/navigation'
 
 

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaUser, FaShoppingCart } from 'react-icons/fa';
+import { FaUser } from 'react-icons/fa';
 import {
     NavigationMenu,
     NavigationMenuContent,

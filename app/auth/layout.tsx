@@ -1,6 +1,4 @@
-import Logo from '@/components/ui/Logo'
 import ToastNotification from '@/components/ui/ToastNotification'
-import Link from 'next/link'
 import React from 'react'
 
 export default function layoutAuth({ children }: { children: React.ReactNode }) {

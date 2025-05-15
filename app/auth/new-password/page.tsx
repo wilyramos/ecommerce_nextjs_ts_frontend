@@ -1,4 +1,5 @@
 import PasswordResetHandler from '@/components/auth/PasswordResetHandler'
+import { Suspense } from 'react'
 
 export default function NewPasswordPage() {
 
@@ -10,7 +11,9 @@ export default function NewPasswordPage() {
             </h1>
             <p className="text-xl text-center">Ingresa el codigo de verificación</p>
 
-            <PasswordResetHandler />
+            <Suspense fallback={<p className="text-center">Cargando...</p>}>
+                <PasswordResetHandler />
+            </Suspense>
         </>
     )
 }

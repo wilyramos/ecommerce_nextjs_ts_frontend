@@ -29,7 +29,7 @@ export default function CreateCategoryForm({ }) {
             toast.success(state.success)
             router.push('/admin/products/category')
         }
-    }, [state])
+    }, [state, router])
 
 
 

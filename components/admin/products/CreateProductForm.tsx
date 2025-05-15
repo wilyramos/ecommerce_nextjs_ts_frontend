@@ -5,7 +5,6 @@ import { useActionState, useEffect } from 'react'
 import ProductForm from './ProductForm'
 import { useRouter } from 'next/navigation'
 import { createProduct } from '@/actions/product/add-product-action'
-import { getCategories } from '@/src/services/categorys'
 import { toast } from 'react-toastify'
 import type { CategoriasList } from '@/src/schemas'
 
@@ -32,7 +31,7 @@ export default function CreateProductForm({ categorias }: { categorias: Categori
             })
         }
 
-    }, [state])
+    }, [state, router])
 
     return (
         <form 

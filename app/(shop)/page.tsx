@@ -1,6 +1,4 @@
-import CategoriasDestacadas from "@/components/home/CategoriasDestacadas"
 import Footer from "@/components/home/Footer"
-import NavBar from "@/components/navigation/NavBar"
 // import ProductList from './components/ProductList'
 // import ProductCard from './components/ProductCard'
 // import CategoryList from './components/CategoryList'

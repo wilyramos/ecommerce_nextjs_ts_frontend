@@ -18,7 +18,7 @@ export default function UploadProductImage({ CurrentImagenes = [] }: UploadProdu
         if (imagenes.length === 0 && CurrentImagenes.length > 0) {
             setImagenes(CurrentImagenes)
         }
-    }, [CurrentImagenes]) // Solo se ejecuta cuando CurrentImagenes cambia
+    }, [CurrentImagenes, imagenes]) 
 
     // Subir imágenes nuevas
     const onDrop = useCallback(async (files: File[]) => {

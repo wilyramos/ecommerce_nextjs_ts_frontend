@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { CategoriesAPIResponse } from "@/src/schemas";
 import { getCategories } from "@/src/services/categorys";
 
 // async function getCategories() {

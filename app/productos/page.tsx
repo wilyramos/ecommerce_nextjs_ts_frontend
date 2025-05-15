@@ -2,17 +2,16 @@ import { getProductsHomePage } from "@/src/services/products";
 import ProductosList from "@/components/home/product/ProductsList";
 import ProductsFilters from "@/components/home/product/ProductsFilters";
 import { getCategories } from "@/src/services/categorys";
-import Link from "next/link";
 import Pagination from "@/components/home/Pagination";
 
 
 
-type SearchParams = {
+type SearchParams = Promise<{
     category?: string;
     priceRange?: string;
     page?: number;
     limit?: number;
-}
+}>;
 
 export default async function PageProducts({ searchParams }: { searchParams: SearchParams }) {
 

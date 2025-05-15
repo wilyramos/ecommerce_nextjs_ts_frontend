@@ -2,7 +2,7 @@
 
 // import { useActionState } from 'react'
 
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { authenticateUserAction } from '@/actions/authenticate-user-action'
 import { useActionState } from 'react'
 import { toast } from 'react-toastify'

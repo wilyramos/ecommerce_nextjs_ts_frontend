@@ -1,7 +1,6 @@
 import EditCategoryForm from "@/components/admin/category/EditCategoryForm";
 import { getCategory } from "@/src/services/categorys";
 import Link from "next/link";
-import { notFound } from "next/navigation";
 
 type params = Promise<{
     id: string;
