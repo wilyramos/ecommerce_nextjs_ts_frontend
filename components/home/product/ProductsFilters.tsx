@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { CategoriasList } from "@/src/schemas";
+import { MdDelete } from "react-icons/md";
 
 export default function ProductsFilters({ categorias }: { categorias: CategoriasList }) {
     const router = useRouter();
@@ -11,14 +12,12 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
     const [filters, setFilters] = useState({
         category: searchParams.get("category") || "",
         priceRange: searchParams.get("priceRange") || "",
-        brand: searchParams.get("brand") || "",
     });
 
     useEffect(() => {
         setFilters({
             category: searchParams.get("category") || "",
             priceRange: searchParams.get("priceRange") || "",
-            brand: searchParams.get("brand") || "",
         });
     }, [searchParams]);
 
@@ -39,37 +38,52 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
     ];
 
     return (
-        <form className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <div>
-                <label className="block mb-1 font-semibold">Categoría</label>
-                <select
-                    value={filters.category}
-                    onChange={(e) => updateFilters({ category: e.target.value })}
-                    className="w-full border-gray-300 rounded p-2"
+        <div className="p-6 space-y-6 ">
+            <div className="flex justify-between items-center">
+                <h2 className="text-xl font-bold">Filtros</h2>
+                <button
+                    onClick={() => updateFilters({ category: "", priceRange: "" })}
+                    className="flex items-center gap-1 text-sm text-gray-500 hover:text-red-500 transition group"
                 >
-                    {categorias.map(({ nombre, _id }) => (
-                        <option key={_id} value={_id}>{nombre}</option>
-                    ))}
-                </select>
+                    <MdDelete size={18} className="group-hover:text-red-500" />
+                    Limpiar
+                </button>
             </div>
 
-            <div>
-                <label className="block mb-1 font-semibold">Precio</label>
-                <select
-                    value={filters.priceRange}
-                    onChange={(e) => updateFilters({ priceRange: e.target.value })}
-                    className="w-full border-gray-300 rounded p-2"
-                >
-                    {priceRanges.map(({ label, value }) => (
-                        <option key={value} value={value}>{label}</option>
-                    ))}
-                </select>
-            </div>
+            <form className="space-y-4">
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
+                    <select
+                        value={filters.category}
+                        onChange={(e) => updateFilters({ category: e.target.value })}
+                        className="p-2 w-full rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm text-sm"
+                    >
+                        {categorias.map(({ nombre, _id }) => (
+                            <option key={_id} value={_id}>{nombre}</option>
+                        ))}
+                    </select>
+                </div>
 
-            <div>
-                <label className="block mb-1 font-semibold">Marca</label>
-                {/* Falta implementar marcas */}
-            </div>
-        </form>
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Precio</label>
+                    <select
+                        value={filters.priceRange}
+                        onChange={(e) => updateFilters({ priceRange: e.target.value })}
+                        className="p-2 w-full rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm text-sm"
+                    >
+                        {priceRanges.map(({ label, value }) => (
+                            <option key={value} value={value}>{label}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-1">Marca</label>
+                    <div className="w-full rounded-lg border border-dashed border-gray-300 p-2 text-center text-gray-400 text-sm">
+                        Próximamente
+                    </div>
+                </div>
+            </form>
+        </div>
     );
 }

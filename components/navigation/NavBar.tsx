@@ -14,10 +14,12 @@ export default function NavBar() {
         <header>
             <div className="container mx-auto flex justify-between items-center px-6 py-4">
                 <Link href="/" className="flex items-center gap-2">
-                    <Image src="/logo.svg" alt="Logo" width={60} height={60} 
-                        className="w-12 h-12" />
-                    
-                    
+                    <Image src="/logo.svg" alt="Logo" width={60} height={60}
+                        className="w-12 h-12"
+                        priority
+                    />
+
+
                 </Link>
 
                 <nav className="hidden md:flex items-center gap-8">

@@ -9,12 +9,6 @@ export default function layoutAuth({ children }: { children: React.ReactNode }) 
 
 
       <div className='flex flex-col items-center justify-center'>
-        <div className='w-96 pt-10 lg:pt-20'>
-          <Link href="/" className='flex justify-center'>
-            <Logo />
-          </Link>
-
-        </div>
         <div className='w-full max-w-md p-4 flex-1'>
 
           {children}

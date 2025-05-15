@@ -1,3 +1,4 @@
+import NotFound from "@/app/productos/not-found";
 import getToken from "../auth/token"
 import { ProductsAPIResponse, ProductAPIResponse } from "@/src/schemas";
 import { ProductAPIResponseList } from "@/src/schemas/index";
@@ -46,25 +47,27 @@ export const getProduct = async (id: string) => {
     return product;
 }
 
-export const getProductsHomePage = async ({ page, limit, category, priceRange, brand }: {
+export const getProductsHomePage = async ({ page, limit, category, priceRange }: {
     page: number;
     limit: number;
     category: string;
     priceRange: string;
-    brand: string;
 }) => {
     // const token = getToken();
-    const url = `${process.env.API_URL}/products/filter?page=${page}&limit=${limit}&category=${category}&priceRange=${priceRange}&brand=${brand}`;
+    const url = `${process.env.API_URL}/products/filter?page=${page}&limit=${limit}&category=${category}&priceRange=${priceRange}`;
 
     const req = await fetch(url, {
         method: 'GET'
     });
+    if (!req.ok) {
+        return null;
+    }
 
     const json = await req.json();
     // console.log("jssson", json);
-    console.log("jsson", json);
+    
 
     const products = ProductAPIResponseList.parse(json);
-    console.log("son los productos", products);
+    // console.log("son los productos", products);
     return products;
 }
