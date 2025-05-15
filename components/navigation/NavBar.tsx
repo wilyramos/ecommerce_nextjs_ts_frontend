@@ -18,8 +18,6 @@ export default function NavBar() {
                         className="w-12 h-12"
                         priority
                     />
-
-
                 </Link>
 
                 <nav className="hidden md:flex items-center gap-8">

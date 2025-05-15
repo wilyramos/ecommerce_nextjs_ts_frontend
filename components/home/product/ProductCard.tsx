@@ -9,7 +9,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
     const imagenUrl = product.imagenes[0] || '/logo.svg';
     return (
         <div className="group relative overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm hover:shadow-lg transition-all duration-300">
-            <Link href={`/product/${product._id}`} className="block">
+            <Link href={`/productos/${product._id}`} className="block">
                 <div className="relative w-full aspect-square bg-gray-50">
                     <Image
                         src={imagenUrl}
