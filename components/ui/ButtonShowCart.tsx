@@ -43,7 +43,7 @@ export default function ButtonShowCart() {
                     <SheetHeader>
                         <SheetTitle>Carrito de compras</SheetTitle>
                         <SheetDescription>
-                            Aquí puedes ver los productos que has agregado a tu carrito.
+                            Lista de productos en tu carrito.
                         </SheetDescription>
                     </SheetHeader>
 
