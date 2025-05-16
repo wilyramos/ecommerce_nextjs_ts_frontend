@@ -12,7 +12,6 @@ type PaginationProps = {
 export default function Pagination({ currentPage, totalPages, limit, category, priceRange }: PaginationProps) {
 
     const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-    
 
     return (
         <div className="flex justify-end mt-8">

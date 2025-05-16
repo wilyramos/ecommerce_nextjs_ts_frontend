@@ -3,7 +3,15 @@ import ProductosList from "@/components/home/product/ProductsList";
 import ProductsFilters from "@/components/home/product/ProductsFilters";
 import { getCategories } from "@/src/services/categorys";
 import Pagination from "@/components/home/Pagination";
+import { Suspense } from "react";
+import { SkeletonCategory, SkeletonProduct } from "@/components/ui/Skeleton";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+    title: "Productos - Gostore",
+    keywords: ["productos", "gostore", "tienda de tecnologia", "comprar productos"],
+    description: "Lista de productos gostore tienda de tecnologia",
+};
 
 
 type SearchParams = Promise<{
@@ -13,65 +21,56 @@ type SearchParams = Promise<{
     limit?: number;
 }>;
 
+
+
+
 export default async function PageProducts({ searchParams }: { searchParams: SearchParams }) {
 
 
-    const { category, priceRange, page, limit } = await searchParams;
-    const limitValue = limit || 5;
+    const { category = "", priceRange = "", page = 1, limit = 5 } = await searchParams;
 
 
-    const products = await getProductsHomePage({
-        page: page || 1,
-        limit: limitValue,
-        category: category || "",
-        priceRange: priceRange || ""
-    });
+    const [products, categorias] = await Promise.all([
+        getProductsHomePage({ category, priceRange, page, limit }),
+        getCategories(),
+    ]);
 
-
-    const categorias = await getCategories();
-
-    if (!products) {
+    if (!products || products.products.length === 0) {
         return (
-            <div className="flex justify-center items-center h-screen bg-gray-50">
-                <h1 className="text-3xl font-semibold text-gray-700">No hay productos</h1>
-            </div>
+            <main className="flex justify-center items-center h-screen bg-gray-50">
+                <h1 className="text-2xl font-semibold text-gray-700">
+                    No se encontraron productos.
+                </h1>
+            </main>
         );
     }
 
-    // Pagination
-
-    const totalPages = Math.ceil(+products.totalProducts / limitValue);
+    // Paginación
+    const totalPages = Math.ceil(+products.totalProducts / limit);
 
     return (
         <main className="p-10">
             <section className="grid grid-cols-1 sm:grid-cols-4 gap-6">
                 <aside className="sm:col-span-1">
-                    <ProductsFilters categorias={categorias} />
+                    <h2 className="text-xl font-bold mb-4">Filtros</h2>
+                    <Suspense fallback={<SkeletonCategory />}>
+                        <ProductsFilters categorias={categorias} />
+                    </Suspense>
                 </aside>
 
-                {/* Lista de productos */}
-
-                {products && products.products.length > 0 ? (
-                    <section className="sm:col-span-3">
-                        <h1 className="text-2xl font-semibold mb-6">Nuestros Productos</h1>
+                <section className="sm:col-span-3">
+                    <h1 className="text-xl font-bold mb-6">Nuestros Productos</h1>
+                    <Suspense fallback={<SkeletonProduct />}>
                         <ProductosList products={products} />
-                        {/* Paginación */}
-                        <Pagination
-                            currentPage={products.currentPage}
-                            totalPages={totalPages}
-                            limit={limitValue}
-                            category={category}
-                            priceRange={priceRange}
-                        />
-                    </section>
-
-                ) : (
-                    <section className="sm:col-span-3">
-                        <p className="text-lg font-semibold text-gray-600">
-                            No se encontraron productos para esta búsqueda.
-                        </p>
-                    </section>
-                )}
+                    </Suspense>
+                    <Pagination
+                        currentPage={products.currentPage}
+                        totalPages={totalPages}
+                        limit={limit}
+                        category={category}
+                        priceRange={priceRange}
+                    />
+                </section>
             </section>
         </main>
     );

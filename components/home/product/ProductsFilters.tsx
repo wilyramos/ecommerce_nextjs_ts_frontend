@@ -41,7 +41,6 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
     return (
         <div className="p-6 space-y-6 ">
             <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold">Filtros</h2>
                 <button
                     onClick={() => updateFilters({ category: "", priceRange: "" })}
                     className="flex items-center gap-1 text-sm text-gray-500 hover:text-red-500 transition group"
