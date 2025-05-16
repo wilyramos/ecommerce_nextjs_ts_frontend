@@ -5,7 +5,6 @@ import { ProductAPIResponseList } from "@/src/schemas/index";
 
 
 
-
 export const getProducts = async ({ page = 1, limit = 5 }) => {
 
     // const token = getToken();

@@ -22,8 +22,6 @@ type SearchParams = Promise<{
 }>;
 
 
-
-
 export default async function PageProducts({ searchParams }: { searchParams: SearchParams }) {
 
 
