@@ -3,6 +3,7 @@
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import type { CategoriasList } from '@/src/schemas'
+import Image from "next/image";
 
 const responsive = {
     superLargeDesktop: {
@@ -23,7 +24,6 @@ const responsive = {
     },
 };
 
-const categorias = ["Categoria 1", "Categoria 2", "Categoria 3", "Categoria 4"];
 
 export default function CategoriasDestacadas({ categorias }: { categorias: CategoriasList }) {
     return (
@@ -45,10 +45,12 @@ export default function CategoriasDestacadas({ categorias }: { categorias: Categ
                         key={index}
                         className="bg-gray-100 rounded-xl shadow-md p-20 text-center text-lg font-semibold hover:bg-gray-200 transition"
                     >
-                        <img
-                            // src={}
+                        <Image
+                            src="/logo.webp" // TODO: Cambiar por la imagen de la categoría
                             alt={categoria.nombre}
-                            className="w-full h-32 object-cover rounded-t-xl mb-4"
+                            width={100}
+                            height={100}
+                            className="w-24 h-24 mx-auto mb-4 rounded-full"
                         />
                         {categoria.nombre}
                     </div>

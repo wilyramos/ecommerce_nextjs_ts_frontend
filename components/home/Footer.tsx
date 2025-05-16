@@ -1,6 +1,7 @@
 "use client";
 
-import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
+import Link from "next/link";
+import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 
 export default function Footer() {
     return (
@@ -19,10 +20,11 @@ export default function Footer() {
                 <div>
                     <h3 className="text-lg font-semibold text-white mb-3">Enlaces rápidos</h3>
                     <ul className="space-y-2 text-sm">
-                        <li><a href="/productos" className="hover:text-white">Productos</a></li>
-                        <li><a href="/ofertas" className="hover:text-white">Ofertas</a></li>
-                        <li><a href="/contacto" className="hover:text-white">Contacto</a></li>
-                        <li><a href="/faq" className="hover:text-white">Preguntas Frecuentes</a></li>
+                        <li><Link href="/" className="hover:text-white">Inicio</Link></li>
+                        <li><Link href="/productos" className="hover:text-white">Productos</Link></li>
+                        <li><Link href="/categorias" className="hover:text-white">Categorías</Link></li>
+                        <li><Link href="/contacto" className="hover:text-white">Contacto</Link></li>
+                        <li><Link href="/nosotros" className="hover:text-white">Nosotros</Link></li>
                     </ul>
                 </div>
 
@@ -30,9 +32,9 @@ export default function Footer() {
                 <div>
                     <h3 className="text-lg font-semibold text-white mb-3">Soporte</h3>
                     <ul className="space-y-2 text-sm">
-                        <li><a href="/politica-de-privacidad" className="hover:text-white">Política de Privacidad</a></li>
-                        <li><a href="/terminos" className="hover:text-white">Términos y Condiciones</a></li>
-                        <li><a href="/envios" className="hover:text-white">Envíos y Devoluciones</a></li>
+                        <li><Link href="/politica-de-privacidad" className="hover:text-white">Política de Privacidad</Link></li>
+                        <li><Link href="/terminos" className="hover:text-white">Términos y Condiciones</Link></li>
+                        <li><Link href="/envios" className="hover:text-white">Envíos y Devoluciones</Link></li>
                     </ul>
                 </div>
 
@@ -40,18 +42,15 @@ export default function Footer() {
                 <div>
                     <h3 className="text-lg font-semibold text-white mb-3">Síguenos</h3>
                     <div className="flex space-x-4">
-                        <a href="#" aria-label="Facebook" className="hover:text-white">
-                            <FaFacebookF />
-                        </a>
-                        <a href="#" aria-label="Instagram" className="hover:text-white">
-                            <FaInstagram />
-                        </a>
-                        <a href="#" aria-label="Twitter" className="hover:text-white">
-                            <FaTwitter />
-                        </a>
-                        <a href="#" aria-label="YouTube" className="hover:text-white">
-                            <FaYoutube />
-                        </a>
+                        <Link href="https://www.facebook.com" target="_blank" className="text-gray-400 hover:text-white">
+                            <FaFacebookF size={20} />
+                        </Link>
+                        <Link href="https://www.instagram.com" target="_blank" className="text-gray-400 hover:text-white">
+                            <FaInstagram size={20} />
+                        </Link>
+                        <Link href="https://www.twitter.com" target="_blank" className="text-gray-400 hover:text-white">
+                            <FaTwitter size={20} />
+                        </Link>
                     </div>
                 </div>
             </div>
