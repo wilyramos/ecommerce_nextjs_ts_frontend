@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { getCategories } from "@/src/services/categorys";
+import Pagination from "@/components/ui/Pagination";
+import CategoriesTable from "@/components/admin/category/CategoriesTable";
 
 // async function getCategories() {
 //     const url = `${process.env.API_URL}/category/list`;
@@ -16,55 +18,44 @@ import { getCategories } from "@/src/services/categorys";
 // }
 
 export default async function CreatePageCategory() {
-    
     const categories = await getCategories();
 
     return (
-        <div className="p-6">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold">Categorías</h1>
+        <div className="max-w-7xl mx-auto p-5">
+            <div className="flex justify-between mb-6">
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800">
+                    Categorías
+                </h1>
                 <Link
                     href="/admin/products/category/new"
-                    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                    className="bg-blue-600 text-white px-4 py-1 rounded-xl hover:bg-blue-700 transition"
                 >
                     + Nueva Categoría
                 </Link>
             </div>
 
-            <div className="mb-6">
-                <Link
-                    href="/admin/products"
-                    className="text-blue-500 hover:underline"
-                >
-                    Ver Todos los Productos
+            <div className="mb-4">
+                <Link href="/admin/products" className="text-blue-600 hover:underline text-sm">
+                    Ver Productos →
                 </Link>
             </div>
 
-            <div className="flex flex-col gap-1">
-                {categories.map((category) => (
-                    <div
-                        key={category._id}
-                        className=""
-                    >
-                        <Link
-                            href={`/admin/products/category/${category._id}`}
-                            className="flex justify-between items-center"
-                        >
-                            <div className="flex items-center gap-2">
-                                <p className=" font-semibold text-gray-600 hover:text-blue-500 transition">
-                                    {category.nombre}
-                                </p>
-                                <p className="text-gray-500 text-sm">
-                                    {category.descripcion}
-                                </p>
-                            </div>
-                            <span className="text-gray-500">
-
-                            </span>
-                        </Link>
-                    </div>
-                ))}
-            </div>
+            {!categories ? (
+                <div className="flex justify-center min-h-[200px]">
+                    <h2 className="text-lg sm:text-xl font-semibold text-gray-600">
+                        No hay categorías disponibles.
+                    </h2>
+                </div>
+            ) : (
+                <>
+                    <CategoriesTable categories={categories} />
+                    <Pagination
+                        currentPage={1}
+                        totalPages={1}
+                        pathname="/admin/products/category"
+                    />
+                </>
+            )}
         </div>
     );
 }

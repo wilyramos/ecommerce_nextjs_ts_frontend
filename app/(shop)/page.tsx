@@ -15,7 +15,6 @@ export default async function HomePage() {
         <>
             {/* Hero principal */}
 
-
             <div className="bg-gray-100">
                 <Image
                     src="/bg.webp"

@@ -32,7 +32,7 @@ export default function DeleteProductForm({ productId }: { productId: string }) 
         <form action={dispatch}>
             <button
                 type="submit"
-                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 border border-red-300 rounded-lg hover:bg-red-100 hover:text-red-700 transition-colors duration-200 cursor-pointer"
+                className="flex items-center gap-2 px-4 py-1 text-sm font-medium text-red-600 border border-red-300 rounded-lg hover:bg-red-100 hover:text-red-700 transition-colors duration-200 cursor-pointer"
             >
                 <FiTrash className="w-4 h-4" />
                 Eliminar

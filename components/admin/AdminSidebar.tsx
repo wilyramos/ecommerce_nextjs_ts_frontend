@@ -7,7 +7,6 @@ import AdminMenu from "@/components/admin/AdminMenu";
 
 export default function AdminSidebar({ user }: { user: User }) {
     return (
-
         <>
             <div className="flex flex-col w-64 h-screen bg-gray-50 border-r border-gray-200">
                 <div className="flex items-center justify-center">
@@ -35,7 +34,6 @@ export default function AdminSidebar({ user }: { user: User }) {
                     <AdminMenu user={user} />
                 </div>
             </div>
-
 
         </>
 

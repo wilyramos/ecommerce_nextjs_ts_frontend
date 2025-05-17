@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 
-type SearchParams = Promise<{
+type Params = Promise<{
     category?: string;
     priceRange?: string;
     page?: number;
@@ -22,11 +22,9 @@ type SearchParams = Promise<{
 }>;
 
 
-export default async function PageProducts({ searchParams }: { searchParams: SearchParams }) {
+export default async function PageProducts({ params }: { params: Params }) {
 
-
-    const { category = "", priceRange = "", page = 1, limit = 5 } = await searchParams;
-
+    const { category = "", priceRange = "", page = 1, limit = 5 } = await params;
 
     const [products, categorias] = await Promise.all([
         getProductsHomePage({ category, priceRange, page, limit }),

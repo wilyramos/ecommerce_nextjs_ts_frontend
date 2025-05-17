@@ -1,74 +1,76 @@
-// components/ui/Pagination.tsx
 import Link from "next/link";
 
 type PaginationProps = {
     currentPage: number;
     totalPages: number;
     limit?: number;
-    pathname: string; // Ruta base, ej. /admin/products
+    pathname: string;
 };
 
-export default function Pagination({ currentPage, totalPages, limit = 5, pathname }: PaginationProps) {
-    
+export default function Pagination({ currentPage, totalPages, limit = 10, pathname }: PaginationProps) {
+    const getPageLink = (page: number) =>
+        `${pathname}?page=${page}${limit ? `&limit=${limit}` : ""}`;
 
-    const visitablePages = () => {
+    const createPages = () => {
         const pages = [];
-        const maxPagesToShow = 5; // Número máximo de páginas a mostrar
+        const sidePages = 1;
 
-        if (totalPages <= maxPagesToShow) {
-            for (let i = 1; i <= totalPages; i++) {
-                pages.push(i);
-            }
+        if (currentPage > sidePages + 2) {
+            pages.push(1, '...');
         } else {
-            const startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
-            const endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
-
-            for (let i = startPage; i <= endPage; i++) {
+            for (let i = 1; i <= Math.min(sidePages + 2, totalPages); i++) {
                 pages.push(i);
             }
         }
 
+        const startPage = Math.max(2, currentPage - 1);
+        const endPage = Math.min(totalPages - 1, currentPage + 1);
+
+        for (let i = startPage; i <= endPage; i++) {
+            if (!pages.includes(i)) {
+                pages.push(i);
+            }
+        }
+
+        if (currentPage < totalPages - (sidePages + 1)) {
+            pages.push('...', totalPages);
+        } else {
+            for (let i = Math.max(totalPages - (sidePages + 1), 2); i <= totalPages; i++) {
+                if (!pages.includes(i)) {
+                    pages.push(i);
+                }
+            }
+        }
+
         return pages;
-    }
+    };
 
-    const getPageLink = (page: number) =>
-        `${pathname}?page=${page}${limit ? `&limit=${limit}` : ""}`;
-
-    const pages = visitablePages();
+    const pages = createPages();
 
     return (
-        <div className="flex justify-center mt-8">
-            <nav className="inline-flex items-center space-x-1">
-                {currentPage > 1 && (
-                    <Link
-                        href={getPageLink(currentPage - 1)}
-                        className="px-3 py-2 text-sm text-gray-500 hover:text-gray-700 border border-gray-300 rounded-lg transition"
-                    >
-                        &lt;
-                    </Link>
-                )}
-
-                {pages.map((page) => (
-                    <Link
-                        key={page}
-                        href={getPageLink(page)}
-                        className={`px-3 py-2 text-sm border border-gray-300 rounded-lg transition ${
-                            page === currentPage
-                                ? "bg-blue-600 text-white"
-                                : "text-gray-500 hover:text-gray-700"
-                        }`}
-                    >
-                        {page}
-                    </Link>
-                ))}
-
-                {currentPage < totalPages && (
-                    <Link   
-                        href={getPageLink(currentPage + 1)}
-                        className="px-3 py-2 text-sm text-gray-500 hover:text-gray-700 border border-gray-300 rounded-lg transition"
-                    >
-                        &gt;
-                    </Link>
+        <div className="flex justify-center items-center mt-2">
+            <nav className="inline-flex items-center space-x-2 p-2 rounded-xl shadow-sm border border-gray-200">
+                {pages.map((page, index) =>
+                    typeof page === 'number' ? (
+                        <Link
+                            key={page}
+                            href={getPageLink(page)}
+                            className={`flex items-center justify-center w-9 h-9 text-sm font-medium rounded-lg transition-colors ${
+                                page === currentPage
+                                    ? "bg-blue-600 text-white shadow"
+                                    : "text-gray-600 hover:bg-gray-100 hover:text-blue-600"
+                            }`}
+                        >
+                            {page}
+                        </Link>
+                    ) : (
+                        <span
+                            key={`ellipsis-${index}`}
+                            className="flex items-center justify-center w-9 h-9 text-sm text-gray-400"
+                        >
+                            ...
+                        </span>
+                    )
                 )}
             </nav>
         </div>

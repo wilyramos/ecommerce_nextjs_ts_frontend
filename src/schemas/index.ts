@@ -113,6 +113,9 @@ export const ProductSchema = z.object({
     categoria: z.string(),
     stock: z.number(),
     sku: z.string().optional(),
+    createdAt: z.string().datetime().optional(),
+    updatedAt: z.string().datetime().optional(),
+    __v: z.number().optional(),
 })
 
 // Create product schema
@@ -131,7 +134,6 @@ export const CreateProductSchema = z.object({
 })
 
 
-
 export type Product = z.infer<typeof ProductSchema>
 export const ProductsAPIResponse = z.object({
     products: z.array(ProductSchema),
@@ -147,7 +149,7 @@ export const ImageSchemaResponse = z.object({
     images: z.array(z.string()),
 })
 
-// CATEGORY
+// CATEGORIA
 
 export const CreateCategorySchema = z.object({
     nombre: z.string()
@@ -159,17 +161,11 @@ export const CreateCategorySchema = z.object({
 export const CategorySchema = z.object({
     _id: z.string(),
     nombre: z.string(),
-    descripcion: z.string(),
+    descripcion: z.string().optional(),
     slug: z.string(),
-    createdAt: z.string(),
-    updatedAt: z.string(),
-    __v: z.number(),
-})
-
-export const CategoryAPIResponseProduct = CategorySchema.pick({
-    _id: true,
-    nombre: true,
-    slug: true,
+    createdAt: z.string().datetime().optional(),
+    updatedAt: z.string().datetime().optional(),
+    __v: z.number().optional(),
 })
 
 export const ProductAPIResponse = z.object({
@@ -178,12 +174,12 @@ export const ProductAPIResponse = z.object({
     descripcion: z.string(),
     precio: z.number(),
     imagenes: z.array(z.string()),
-    categoria: CategoryAPIResponseProduct,
+    categoria: CategorySchema,
     stock: z.number(),
     sku: z.string().optional(),
-    createdAt: z.string(),
-    updatedAt: z.string(),
-    __v: z.number(),
+    createdAt: z.string().datetime().optional(),
+    updatedAt: z.string().datetime().optional(),
+    __v: z.number().optional(),
 })
 
 export type ProductType = z.infer<typeof ProductAPIResponse>
@@ -197,7 +193,9 @@ export const ProductAPIResponseList = z.object({
 export type ProductList = z.infer<typeof ProductAPIResponseList>
 
 export type ProductAPIResponseType = z.infer<typeof ProductAPIResponse>
-export const CategoriesAPIResponse = z.array(CategorySchema)
+
 export const CategoryAPIResponse = CategorySchema
 export type Category = z.infer<typeof CategorySchema>
+
+export const CategoriesAPIResponse = z.array(CategorySchema)
 export type CategoriasList = z.infer<typeof CategoriesAPIResponse>

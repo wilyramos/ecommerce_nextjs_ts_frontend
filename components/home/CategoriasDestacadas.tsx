@@ -46,7 +46,7 @@ export default function CategoriasDestacadas({ categorias }: { categorias: Categ
                         className="bg-gray-100 rounded-xl shadow-md p-20 text-center text-lg font-semibold hover:bg-gray-200 transition"
                     >
                         <Image
-                            src="/logo.webp" // TODO: Cambiar por la imagen de la categoría
+                            src={`/logo.svg`}
                             alt={categoria.nombre}
                             width={100}
                             height={100}

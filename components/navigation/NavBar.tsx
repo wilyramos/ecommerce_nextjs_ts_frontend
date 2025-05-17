@@ -12,9 +12,6 @@ import ButtonShowCart from '../ui/ButtonShowCart';
 
 export default function NavBar() {
 
-    
-
-
     return (
         <header>
             <div className="container mx-auto flex justify-between items-center px-6 py-4">
