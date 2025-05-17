@@ -4,10 +4,9 @@ import { getProducts } from "@/src/services/products";
 import ProductsTable from "@/components/admin/products/ProductsTable";
 import Pagination from "@/components/ui/Pagination";
 
-type SearchParams = {
-    page?: string;
-    limit?: string;
-};
+
+// Promise 
+type SearchParams = Promise<{ page?: string; limit?: string }>;
 
 export default async function ProductsPage({ searchParams }: { searchParams: SearchParams }) {
     const params = await searchParams;
