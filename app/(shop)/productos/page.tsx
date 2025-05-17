@@ -3,8 +3,6 @@ import ProductosList from "@/components/home/product/ProductsList";
 import ProductsFilters from "@/components/home/product/ProductsFilters";
 import { getCategories } from "@/src/services/categorys";
 import Pagination from "@/components/home/Pagination";
-import { Suspense } from "react";
-import { SkeletonCategory, SkeletonProduct } from "@/components/ui/Skeleton";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,7 +10,6 @@ export const metadata: Metadata = {
     keywords: ["productos", "gostore", "tienda de tecnologia", "comprar productos"],
     description: "Lista de productos gostore tienda de tecnologia",
 };
-
 
 type Params = Promise<{
     category?: string;
@@ -49,16 +46,12 @@ export default async function PageProducts({ params }: { params: Params }) {
             <section className="grid grid-cols-1 sm:grid-cols-4 gap-6">
                 <aside className="sm:col-span-1">
                     <h2 className="text-xl font-bold mb-4">Filtros</h2>
-                    <Suspense fallback={<SkeletonCategory />}>
-                        <ProductsFilters categorias={categorias} />
-                    </Suspense>
+                    <ProductsFilters categorias={categorias} />
                 </aside>
 
                 <section className="sm:col-span-3">
                     <h1 className="text-xl font-bold mb-6">Nuestros Productos</h1>
-                    <Suspense fallback={<SkeletonProduct />}>
-                        <ProductosList products={products} />
-                    </Suspense>
+                    <ProductosList products={products} />
                     <Pagination
                         currentPage={products.currentPage}
                         totalPages={totalPages}
