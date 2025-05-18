@@ -10,8 +10,7 @@ export default async function HomePage() {
     return (
         <>
             {/* Hero principal */}
-
-            <div className="bg-gray-100">
+            <div className="">
                 <Image
                     src="/bg.webp"
                     alt="Hero Image"
