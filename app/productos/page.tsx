@@ -1,9 +1,8 @@
-import { getProductsByFilter } from "@/src/services/products";
-import ProductosList from "@/components/home/product/ProductsList";
 import ProductsFilters from "@/components/home/product/ProductsFilters";
 import { getCategories } from "@/src/services/categorys";
-import Pagination from "@/components/home/Pagination";
 import type { Metadata } from "next";
+import { Suspense } from "react";
+import ProductResults from "@/components/home/product/ProductResults";
 
 export const metadata: Metadata = {
     title: "Productos - Gostore",
@@ -24,44 +23,32 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
     const { category, priceRange, page, limit } = await searchParams;
     const limitNumber = limit ? parseInt(limit) : 5;
 
-    // Obtener productos
-    const products = await getProductsByFilter({
-        page: page ? parseInt(page) : 1,
-        limit: limitNumber,
-        category: category || "",
-        priceRange: priceRange || "",
-    });
-
     // Obtener categorías
-    const categorias = await getCategories();
+    const categories = await getCategories();
 
     return (
         <main className="p-10">
             <section className="grid grid-cols-1 sm:grid-cols-4 gap-6">
                 <aside className="sm:col-span-1">
                     <h2 className="text-xl font-bold mb-4">Filtros</h2>
-                    <ProductsFilters categorias={categorias} />
+                    <Suspense fallback={<div className="text-center py-10 text-gray-500">Cargando filtros...</div>}>
+                        <ProductsFilters 
+                            categorias={categories}
+                        />
+                    </Suspense>
                 </aside>
 
                 <section className="sm:col-span-3">
                     <h1 className="text-xl font-bold mb-6">Nuestros Productos</h1>
 
-                    {products && products.products.length > 0 ? (
-                        <>
-                            <ProductosList products={products} />
-                            <Pagination
-                                currentPage={products.currentPage}
-                                totalPages={products.totalPages}
-                                limit={limitNumber}
-                                category={category}
-                                priceRange={priceRange}
-                            />
-                        </>
-                    ) : (
-                        <div className="text-center py-10 text-gray-500">
-                            No se encontraron productos con los filtros seleccionados.
-                        </div>
-                    )}
+                    <Suspense fallback={<div className="text-center py-10 text-gray-500">Cargando productos...</div>}>
+                        <ProductResults 
+                            category={category}
+                            priceRange={priceRange}
+                            page={page}
+                            limit={limitNumber}
+                        />
+                    </Suspense>
                 </section>
             </section>
         </main>
