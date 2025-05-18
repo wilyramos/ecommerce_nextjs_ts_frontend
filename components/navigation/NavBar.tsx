@@ -9,19 +9,26 @@ import {
     NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import ButtonShowCart from '../ui/ButtonShowCart';
+import MobileMenuToggle from '../ui/MobileMenuToggle';
 
 export default function NavBar() {
-
     return (
-        <header>
+        <header className="border-b">
             <div className="container mx-auto flex justify-between items-center px-6 py-4">
+                
+                {/* Logo */}
                 <Link href="/" className="flex items-center gap-2">
-                    <Image src="/logo.svg" alt="Logo" width={60} height={60}
+                    <Image
+                        src="/logo.svg"
+                        alt="Logo"
+                        width={60}
+                        height={60}
                         className="w-12 h-12"
                         priority
                     />
                 </Link>
 
+                {/* Desktop Navigation */}
                 <nav className="hidden md:flex items-center gap-8">
                     <NavigationMenu>
                         <NavigationMenuList>
@@ -65,7 +72,7 @@ export default function NavBar() {
                                     Marcas
                                 </NavigationMenuTrigger>
                                 <NavigationMenuContent>
-                                    <ul className="p-3 w-56">
+                                    <ul className="bg-white p-3 w-56">
                                         <li>
                                             <Link href="/shop/marcas/apple" className="block px-3 py-2 hover:bg-gray-100 rounded">
                                                 Apple
@@ -92,12 +99,20 @@ export default function NavBar() {
                     </Link>
                 </nav>
 
+                {/* Right actions */}
                 <div className="flex items-center gap-4">
-                    <Link href="/auth/registro" className="text-gray-600 hover:text-blue-600">
+                    <Link
+                        href="/auth/registro"
+                        className="text-gray-600 hover:text-blue-600 hidden md:block"
+                    >
                         <FaUser size={20} />
                     </Link>
-
-                   <ButtonShowCart />
+                    <ButtonShowCart />
+                    
+                    {/* Mobile menu toggle (visible solo en móviles) */}
+                    <div className="md:hidden">
+                        <MobileMenuToggle />
+                    </div>
                 </div>
             </div>
         </header>

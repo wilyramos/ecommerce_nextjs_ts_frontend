@@ -1,8 +1,4 @@
 import Footer from "@/components/home/Footer"
-// import ProductList from './components/ProductList'
-// import ProductCard from './components/ProductCard'
-// import CategoryList from './components/CategoryList'
-// import Footer from './components/Footer'
 import CategoriasDestacadas from "@/components/home/CategoriasDestacadas"
 import { getCategories } from "@/src/services/categorys"
 import Image from "next/image"
