@@ -2,9 +2,9 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaShoppingCart } from 'react-icons/fa';
-import type { ProductType } from '@/src/schemas';
+import type { Product } from '@/src/schemas';
 
-export default function ProductCard({ product }: { product: ProductType }) {
+export default function ProductCard({ product }: { product: Product }) {
 
     const imagenUrl = product.imagenes[0] || '/logo.svg';
     return (

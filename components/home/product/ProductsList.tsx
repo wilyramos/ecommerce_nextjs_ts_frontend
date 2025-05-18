@@ -1,7 +1,7 @@
-import type { ProductList } from "@/src/schemas";
+import type { ProductsList } from "@/src/schemas";
 import ProductCard from "@/components/home/product/ProductCard";
 
-export default function ProductosList({ products }: { products: ProductList }) {
+export default function ProductosList({ products }: { products: ProductsList }) {
 
 
     if (!products || products.products.length === 0) {

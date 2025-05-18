@@ -1,4 +1,4 @@
-import { getProductsHomePage } from "@/src/services/products";
+import { getProductsByFilter } from "@/src/services/products";
 import ProductosList from "@/components/home/product/ProductsList";
 import ProductsFilters from "@/components/home/product/ProductsFilters";
 import { getCategories } from "@/src/services/categorys";
@@ -11,35 +11,29 @@ export const metadata: Metadata = {
     description: "Lista de productos gostore tienda de tecnologia",
 };
 
-type Params = Promise<{
+type SearchParams = Promise<{
+
     category?: string;
     priceRange?: string;
-    page?: number;
-    limit?: number;
+    page?: string;
+    limit?: string;
 }>;
 
 
-export default async function PageProducts({ params }: { params: Params }) {
+export default async function PageProducts({ searchParams }: { searchParams: SearchParams }) {
+    const { category, priceRange, page, limit } = await searchParams;
+    const limitNumber = limit ? parseInt(limit) : 5;
 
-    const { category = "", priceRange = "", page = 1, limit = 5 } = await params;
+    // Obtener productos
+    const products = await getProductsByFilter({
+        page: page ? parseInt(page) : 1,
+        limit: limitNumber,
+        category: category || "",
+        priceRange: priceRange || "",
+    });
 
-    const [products, categorias] = await Promise.all([
-        getProductsHomePage({ category, priceRange, page, limit }),
-        getCategories(),
-    ]);
-
-    if (!products || products.products.length === 0) {
-        return (
-            <main className="flex justify-center items-center h-screen bg-gray-50">
-                <h1 className="text-2xl font-semibold text-gray-700">
-                    No se encontraron productos.
-                </h1>
-            </main>
-        );
-    }
-
-    // Paginación
-    const totalPages = Math.ceil(+products.totalProducts / limit);
+    // Obtener categorías
+    const categorias = await getCategories();
 
     return (
         <main className="p-10">
@@ -51,14 +45,23 @@ export default async function PageProducts({ params }: { params: Params }) {
 
                 <section className="sm:col-span-3">
                     <h1 className="text-xl font-bold mb-6">Nuestros Productos</h1>
-                    <ProductosList products={products} />
-                    <Pagination
-                        currentPage={products.currentPage}
-                        totalPages={totalPages}
-                        limit={limit}
-                        category={category}
-                        priceRange={priceRange}
-                    />
+
+                    {products && products.products.length > 0 ? (
+                        <>
+                            <ProductosList products={products} />
+                            <Pagination
+                                currentPage={products.currentPage}
+                                totalPages={products.totalPages}
+                                limit={limitNumber}
+                                category={category}
+                                priceRange={priceRange}
+                            />
+                        </>
+                    ) : (
+                        <div className="text-center py-10 text-gray-500">
+                            No se encontraron productos con los filtros seleccionados.
+                        </div>
+                    )}
                 </section>
             </section>
         </main>
