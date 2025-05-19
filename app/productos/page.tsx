@@ -1,8 +1,9 @@
-import ProductsFilters from "@/components/home/product/ProductsFilters";
-import { getCategories } from "@/src/services/categorys";
+// import ProductsFilters from "@/components/home/product/ProductsFilters";
+// import { getCategories } from "@/src/services/categorys";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import ProductResults from "@/components/home/product/ProductResults";
+import CategoriasFiltros from "@/components/home/product/CategoriasFiltros";
 
 export const metadata: Metadata = {
     title: "Productos - Gostore",
@@ -20,11 +21,12 @@ type SearchParams = Promise<{
 
 
 export default async function PageProducts({ searchParams }: { searchParams: SearchParams }) {
+    
     const { category, priceRange, page, limit } = await searchParams;
     const limitNumber = limit ? parseInt(limit) : 5;
 
     // Obtener categorías
-    const categories = await getCategories();
+    // const categories = await getCategories();
 
     return (
         <main className="p-10">
@@ -32,9 +34,7 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
                 <aside className="sm:col-span-1">
                     <h2 className="text-xl font-bold mb-4">Filtros</h2>
                     <Suspense fallback={<div className="text-center py-10 text-gray-500">Cargando filtros...</div>}>
-                        <ProductsFilters 
-                            categorias={categories}
-                        />
+                       <CategoriasFiltros />
                     </Suspense>
                 </aside>
 
