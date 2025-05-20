@@ -1,14 +1,18 @@
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 import type { CartItem, Product } from '@/src/schemas';
+import { saveCartToDB } from '@/lib/api/cart';
 
-// import { persist } from 'zustand/middleware';
 
 interface Store {
     cart: CartItem[];
     total: number;
     addToCart: (item: Product) => void;
     updateQuantity: (id: string, quantity: number) => void;
+    removeFromCart: (id: string) => void;
+
+    clearCart: () => void;
+    saveCart: () => Promise<void>;
     calculateTotal: () => void;
 }
 
@@ -17,10 +21,13 @@ const initialState = {
     total: 0,
     addToCart: () => { },
     updateQuantity: () => { },
+    removeFromCart: () => { },
+
+
     calculateTotal: () => { },
 };
 
-export const useCartStore = create<Store>()(devtools((set, get) => ({
+export const useCartStore = create<Store>()(devtools(persist((set, get) => ({
 
     ...initialState,
 
@@ -67,10 +74,36 @@ export const useCartStore = create<Store>()(devtools((set, get) => ({
         }
     },
 
-    calculateTotal: () => {
+    removeFromCart: (id) => {
         const cart = get().cart
-        const total = cart.reduce((acc, item) => acc + item.subtotal, 0)
-        set({ total })
-    }
+        const productInCart = cart.find((cartItem) => cartItem._id === id)
 
-})));
+        if (productInCart) {
+            set({
+                cart: cart.filter((cartItem) => cartItem._id !== id),
+            })
+        }
+
+        get().calculateTotal()
+    },
+
+    calculateTotal: () => {
+        const total = get().cart.reduce((acc, item) => acc + item.subtotal, 0);
+        set({ total });
+    },
+
+    clearCart: () => {
+        set({ cart: [], total: 0 });
+    },
+    // TODO: Implementar la función para guardar el carrito en la base de datos
+
+    saveCart: async () => {
+        const cart = get().cart
+        await saveCartToDB(cart)
+    },
+
+}),
+    {
+        name: 'cart-storage-ecomm', // unique store in localStorage
+    }
+)));

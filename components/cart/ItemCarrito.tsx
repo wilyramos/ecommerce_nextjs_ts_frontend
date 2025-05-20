@@ -1,9 +1,13 @@
 import Image from "next/image";
 import type { CartItem } from "@/src/schemas";
 import { useCartStore } from "@/src/store/cartStore";
+import { FiTrash2 } from "react-icons/fi";
+
 
 export default function ItemCarrito({ item }: { item: CartItem }) {
+
     const updateQuantity = useCartStore((state) => state.updateQuantity);
+    const removeFromCart = useCartStore((state) => state.removeFromCart);
 
     return (
         <li className="py-4 border-b border-gray-200 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -44,10 +48,18 @@ export default function ItemCarrito({ item }: { item: CartItem }) {
                     </button>
                 </div>
 
-                {/* Subtotal */}
-                <div className="text-sm font-semibold text-gray-800 text-right min-w-[80px]">
-                    S/. {(item.precio * item.cantidad).toFixed(2)}
+
+                {/* Subtotal + Eliminar */}
+                <div className="flex items-center gap-2 text-sm font-semibold text-gray-800 text-right min-w-[80px]">
+                    <span>S/. {(item.precio * item.cantidad).toFixed(2)}</span>
+                    <button
+                        onClick={() => removeFromCart(item._id)}
+                        className="text-gray-400 hover:text-red-500 transition-colors"
+                    >
+                        <FiTrash2 size={16} />
+                    </button>
                 </div>
+
             </div>
         </li>
     );
