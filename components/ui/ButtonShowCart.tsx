@@ -3,97 +3,72 @@
 import {
     Sheet,
     SheetContent,
-    SheetDescription,
     SheetHeader,
     SheetTitle,
+    SheetDescription,
     SheetTrigger,
 } from "@/components/ui/sheet";
 import { FaShoppingCart } from "react-icons/fa";
-
 import { useCartStore } from "@/src/store/cartStore";
 import ItemCarrito from "../cart/ItemCarrito";
-
-// Simulación de hook de carrito
-
+import { useRouter } from "next/navigation";
 
 export default function ButtonShowCart() {
+    const carrito = useCartStore((state) => state.cart);
+    const router = useRouter();
 
-
-    const carrito = useCartStore(state => state.cart);
-    console.log("Carrito desde el botón:", carrito);
-
+    const total = carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0).toFixed(2);
 
     return (
-        <>
-            <Sheet>
-                <SheetTrigger className="text-gray-800 hover:text-blue-600 transition-all duration-200 ease-in-out cursor-pointer">
-                    <div className="relative">
-                        <FaShoppingCart className="h-5 w-5" />
-                        
-                    </div>
-                </SheetTrigger>
-                <SheetContent className="sm:max-w-[450px]">
-                    <SheetHeader>
-                        <SheetTitle>Carrito de compras</SheetTitle>
-                        <SheetDescription>
-                            Lista de productos en tu carrito.
-                        </SheetDescription>
-                    </SheetHeader>
+        <Sheet>
+            <SheetTrigger className="relative cursor-pointer text-gray-800 hover:text-blue-600 transition">
+                <FaShoppingCart className="h-6 w-6" />
+                {carrito.length > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] font-semibold w-5 h-5 rounded-full flex items-center justify-center shadow-md">
+                        {carrito.reduce((sum, item) => sum + item.cantidad, 0)}
+                    </span>
+                )}
+            </SheetTrigger>
 
-                    <div className="mt-6 space-y-4">
-                        {carrito.length === 0 ? (
-                            <p className="text-center text-gray-500">Tu carrito está vacío.</p>
-                        ) : (
-                            carrito.map((item) => (
-                                <ItemCarrito
-                                    key={item._id}
-                                    item={item}
-                                />
-                            ))
-                        )}
-                    </div>
+            <SheetContent className="sm:max-w-[450px] px-6 py-5 bg-white shadow-xl">
+                <SheetHeader>
+                    <SheetTitle className="text-xl font-semibold text-gray-900">
+                        🛒 Carrito de compras
+                    </SheetTitle>
+                    <SheetDescription className="text-sm text-gray-500">
+                        Aquí puedes revisar los productos seleccionados.
+                    </SheetDescription>
+                </SheetHeader>
 
-                    {/* <div className="mt-6 space-y-4">
-                        {cart.length === 0 ? (
-                            <p className="text-center text-gray-500">Tu carrito está vacío.</p>
-                        ) : (
-                            cart.map((item) => (
-                                <div key={item.id} className="flex items-center gap-4 border-b pb-3">
-                                    <Image src={item.image} alt={item.name} width={60} height={60} className="rounded" />
-                                    <div className="flex-1">
-                                        <h3 className="text-sm font-medium">{item.name}</h3>
-                                        <p className="text-xs text-gray-500">Cantidad: {item.quantity}</p>
-                                    </div>
-                                    <div className="text-sm font-semibold">
-                                        S/. {(item.price * item.quantity).toFixed(2)}
-                                    </div>
-                                </div>
-                            ))
-                        )}
-                    </div>
+                <div className="mt-6 space-y-5 max-h-[65vh] overflow-y-auto pr-2">
+                    {carrito.length === 0 ? (
+                        <p className="text-center text-gray-400 italic">
+                            Tu carrito está vacío.
+                        </p>
+                    ) : (
+                        carrito.map((item) => (
+                            <ItemCarrito key={item._id} item={item} />
+                        ))
+                    )}
+                </div>
 
-                    {cart.length > 0 && (
-                        <div className="mt-6">
-                            <div className="flex justify-between text-lg font-bold">
-                                <span>Total:</span>
-                                <span>S/. {total.toFixed(2)}</span>
-                            </div>
-                            <button
-                                onClick={() => router.push("/checkout")}
-                                className="w-full mt-4 bg-blue-600 text-white py-2 rounded-xl hover:bg-blue-700 transition"
-                            >
-                                Ir a pagar
-                            </button>
-                            <button
-                                onClick={() => addToCart({ id: "3", name: "Producto C", price: 30 })}
-                                className="w-full mt-2 bg-green-600 text-white py-2 rounded-xl hover:bg-green-700 transition"
-                            >
-                                Agregar otro producto
-                            </button>
+                {carrito.length > 0 && (
+                    <div className="my-6 ">
+                        <div className="flex items-center justify-between text-sm text-gray-700 pb-6">
+                            <span className="text-gray-500">Total</span>
+                            <span className="text-base font-semibold">S/. {total}</span>
                         </div>
-                    )} */}
-                </SheetContent>
-            </Sheet>
-        </>
+
+                        <button
+                            onClick={() => router.push("/checkout")}
+                            className=" w-full bg-black text-white text-sm py-2 rounded-md hover:bg-gray-800 transition-colors cursor-pointer"
+                        >
+                            Ir a pagar
+                        </button>
+                    </div>
+                )}
+
+            </SheetContent>
+        </Sheet>
     );
 }
