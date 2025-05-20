@@ -199,3 +199,21 @@ export type Category = z.infer<typeof CategorySchema>
 
 export const CategoriesAPIResponse = z.array(CategorySchema)
 export type CategoriasList = z.infer<typeof CategoriesAPIResponse>
+
+// CART
+const CartItemSchema = ProductSchema.pick({
+    _id: true,
+    nombre: true,
+    precio: true,
+    imagenes: true,
+}).extend({
+    cantidad: z.number().min(1, { message: 'La cantidad debe ser al menos 1' }),
+    subtotal: z.number().min(0, { message: 'El subtotal debe ser al menos 0' }),
+});
+
+export type CartItem = z.infer<typeof CartItemSchema>;
+export const CartSchema = z.object({
+    cart: z.array(CartItemSchema),
+    total: z.number(),
+});
+export type Cart = z.infer<typeof CartSchema>;

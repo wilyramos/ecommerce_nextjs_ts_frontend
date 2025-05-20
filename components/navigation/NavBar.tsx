@@ -76,7 +76,9 @@ export default function NavBar() {
                     <Link href="/auth/registro" className="hidden md:block text-gray-600 hover:text-blue-500">
                         <FaUser size={18} />
                     </Link>
-                    <ButtonShowCart />
+                    <ButtonShowCart 
+                        key={"cart-button"} // TODO: Remove this when the cart is implemented
+                    />
                     <div className="md:hidden">
                         <MobileMenuToggle />
                     </div>

@@ -1,7 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaShoppingCart } from 'react-icons/fa';
 import type { Product } from '@/src/schemas';
 import AddProductButton from './AddProductButton';
 

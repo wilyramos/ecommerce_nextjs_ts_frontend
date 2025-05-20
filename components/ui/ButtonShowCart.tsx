@@ -10,9 +10,9 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet";
 import { FaShoppingCart } from "react-icons/fa";
-import Image from "next/image";
 
 import { useCartStore } from "@/src/store/cartStore";
+import ItemCarrito from "../cart/ItemCarrito";
 
 // Simulación de hook de carrito
 const useCart = () => {
@@ -27,8 +27,6 @@ const useCart = () => {
 export default function ButtonShowCart() {
     const router = useRouter();
     const { cart, total } = useCart();
-
-    const addToCart = useCartStore(state => state.addToCart);
 
     const carrito = useCartStore(state => state.cart);
     console.log("Carrito desde el botón:", carrito);
@@ -60,22 +58,10 @@ export default function ButtonShowCart() {
                             <p className="text-center text-gray-500">Tu carrito está vacío.</p>
                         ) : (
                             carrito.map((item) => (
-                                <div key={item.id} className="flex items-center gap-4 border-b pb-3">
-                                    <Image 
-                                        src={"/logo.svg"}
-                                        alt={item.nombre}
-                                        width={60}
-                                        height={60}
-                                        className="rounded"
-                                    />
-                                    <div className="flex-1">
-                                        <h3 className="text-sm font-medium">{item.nombre}</h3>
-                                        <p className="text-xs text-gray-500">Cantidad: {item.cantidad}</p>
-                                    </div>
-                                    <div className="text-sm font-semibold">
-                                        S/. {(item.precio).toFixed(2)}
-                                    </div>
-                                </div>
+                                <ItemCarrito
+                                    key={item._id}
+                                    item={item}
+                                />
                             ))
                         )}
                     </div>
