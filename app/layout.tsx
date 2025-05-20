@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import NavBar from "@/components/navigation/NavBar";
+import { Toaster } from 'sonner';
+
 
 const inter = Inter({
   subsets: ["latin"],
@@ -20,6 +22,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
+ 
   return (
     <html lang="es">
       <body
@@ -27,6 +32,11 @@ export default function RootLayout({
       >
         <NavBar />
         {children}
+        <Toaster 
+          position="top-right"
+          
+        
+        />
       </body>
     </html>
   );

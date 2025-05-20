@@ -1,18 +1,17 @@
 "use client";
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { CategoriasList } from "@/src/schemas";
-import { MdDelete } from "react-icons/md";
+import { MdClear } from "react-icons/md";
 
 export default function ProductsFilters({ categorias }: { categorias: CategoriasList }) {
-    
     const router = useRouter();
     const searchParams = useSearchParams();
 
     const [filters, setFilters] = useState({
-        category: searchParams.get("category") || "",
-        priceRange: searchParams.get("priceRange") || "",
+        category: "",
+        priceRange: "",
     });
 
     useEffect(() => {
@@ -22,13 +21,13 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
         });
     }, [searchParams]);
 
-    const updateFilters = (newFilters: Partial<typeof filters>) => {
-        const params = new URLSearchParams(searchParams.toString());
-        Object.entries(newFilters).forEach(([key, value]) => {
+    const updateFilters = (newFilters: { category?: string; priceRange?: string }) => {
+        const updatedFilters = { ...filters, ...newFilters };
+        const params = new URLSearchParams();
+        Object.entries(updatedFilters).forEach(([key, value]) => {
             if (value) params.set(key, value);
-            else params.delete(key);
         });
-        router.push(`?${params.toString()}`);
+        router.push(`/productos?${params.toString()}`);
     };
 
     const priceRanges = [
@@ -39,37 +38,40 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
     ];
 
     return (
-        <div className="p-6 space-y-6 ">
-            <div className="flex justify-between items-center">
+        <aside className="py-6 border-gray-100">
+            <div className="flex items-center justify-end">
                 <button
                     onClick={() => updateFilters({ category: "", priceRange: "" })}
-                    className="flex items-center gap-1 text-sm text-gray-500 hover:text-red-500 transition group"
+                    className="flex items-center gap-1 text-gray-500 hover:text-red-500 transition text-xs"
                 >
-                    <MdDelete size={18} className="group-hover:text-red-500" />
-                    Limpiar
+                    <MdClear size={18} className="text-red-500"/>
+                    Limpiar filtros
                 </button>
             </div>
 
-            <form className="space-y-4">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
+            <form className="space-y-5">
+                {/* Categoría */}
+                <div className="space-y-1">
+                    <label className="block text-sm font-medium text-gray-700">Categoría</label>
                     <select
                         value={filters.category}
                         onChange={(e) => updateFilters({ category: e.target.value })}
-                        className="p-2 w-full rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm text-sm"
+                        className="p-2 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm text-sm bg-white"
                     >
+                        <option value="">Todas</option>
                         {categorias.map(({ nombre, _id }) => (
                             <option key={_id} value={_id}>{nombre}</option>
                         ))}
                     </select>
                 </div>
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Precio</label>
+                {/* Precio */}
+                <div className="space-y-1">
+                    <label className="block text-sm font-medium text-gray-700">Precio</label>
                     <select
                         value={filters.priceRange}
                         onChange={(e) => updateFilters({ priceRange: e.target.value })}
-                        className="p-2 w-full rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500 shadow-sm text-sm"
+                        className="p-2 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm text-sm bg-white"
                     >
                         {priceRanges.map(({ label, value }) => (
                             <option key={value} value={value}>{label}</option>
@@ -77,13 +79,14 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
                     </select>
                 </div>
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-400 mb-1">Marca</label>
-                    <div className="w-full rounded-lg border border-dashed border-gray-300 p-2 text-center text-gray-400 text-sm">
+                {/* Marca (placeholder) */}
+                <div className="space-y-1">
+                    <label className="block text-sm font-medium text-gray-400">Marca</label>
+                    <div className="w-full rounded-lg border border-dashed border-gray-300 p-3 text-center text-gray-400 text-sm bg-gray-50">
                         Próximamente
                     </div>
                 </div>
             </form>
-        </div>
+        </aside>
     );
 }
