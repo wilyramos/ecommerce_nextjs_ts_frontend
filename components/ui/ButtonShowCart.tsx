@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import {
     Sheet,
     SheetContent,
@@ -15,18 +14,10 @@ import { useCartStore } from "@/src/store/cartStore";
 import ItemCarrito from "../cart/ItemCarrito";
 
 // Simulación de hook de carrito
-const useCart = () => {
-    const cart = [
-        { id: "1", name: "Producto A", price: 25, quantity: 2, image: "/logo.svg" },
-        { id: "2", name: "Producto B", price: 40, quantity: 1, image: "/logo.svg" },
-    ];
-    const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    return { cart, total };
-};
+
 
 export default function ButtonShowCart() {
-    const router = useRouter();
-    const { cart, total } = useCart();
+
 
     const carrito = useCartStore(state => state.cart);
     console.log("Carrito desde el botón:", carrito);
@@ -38,11 +29,7 @@ export default function ButtonShowCart() {
                 <SheetTrigger className="text-gray-800 hover:text-blue-600 transition-all duration-200 ease-in-out cursor-pointer">
                     <div className="relative">
                         <FaShoppingCart className="h-5 w-5" />
-                        {cart.length > 0 && (
-                            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                                {cart.length}
-                            </span>
-                        )}
+                        
                     </div>
                 </SheetTrigger>
                 <SheetContent className="sm:max-w-[450px]">

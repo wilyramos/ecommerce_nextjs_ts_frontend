@@ -1,8 +1,9 @@
 
 import Image from "next/image"
+import type { CartItem } from "@/src/schemas"
 
 
-export default function ItemCarrito({ item }: { item: any }) {
+export default function ItemCarrito({ item }: { item: CartItem }) {
 
     return (
        <>
