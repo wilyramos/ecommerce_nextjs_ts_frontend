@@ -14,102 +14,69 @@ import MobileMenuToggle from '../ui/MobileMenuToggle';
 export default function NavBar() {
     return (
         <header className="border-b">
-            <div className="container mx-auto flex justify-between items-center px-6 py-4">
-                
+            <div className="container mx-auto flex justify-between items-center px-4 py-3">
+
                 {/* Logo */}
-                <Link href="/" className="flex items-center gap-2">
-                    <Image
-                        src="/logo.svg"
-                        alt="Logo"
-                        width={60}
-                        height={60}
-                        className="w-12 h-12"
-                        priority
-                    />
+                <Link href="/" className="flex items-center">
+                    <Image src="/logo.svg" alt="Logo" width={48} height={48} priority />
                 </Link>
 
                 {/* Desktop Navigation */}
-                <nav className="hidden md:flex items-center gap-8">
+                <nav className="hidden md:flex items-center gap-6 text-sm text-gray-600">
                     <NavigationMenu>
                         <NavigationMenuList>
                             <NavigationMenuItem>
-                                <NavigationMenuTrigger className="text-gray-600 hover:text-blue-500">
-                                    Productos
-                                </NavigationMenuTrigger>
+                                <NavigationMenuTrigger className="hover:text-blue-500">Productos</NavigationMenuTrigger>
                                 <NavigationMenuContent>
-                                    <ul className="bg-white p-3 w-56">
-                                        <li>
-                                            <Link href="/shop/telefonos" className="block px-3 py-2 hover:bg-gray-100 rounded">
-                                                Celulares
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/shop/accesorios" className="block px-3 py-2 hover:bg-gray-100 rounded">
-                                                Accesorios
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/shop/laptops" className="block px-3 py-2 hover:bg-gray-100 rounded">
-                                                Laptops
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/shop/novedades" className="block px-3 py-2 hover:bg-gray-100 rounded">
-                                                Novedades
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/shop/ofertas" className="block px-3 py-2 hover:bg-gray-100 rounded">
-                                                Ofertas Especiales
-                                            </Link>
-                                        </li>
+                                    <ul className="bg-white p-2 w-48">
+                                        {[
+                                            { name: 'Celulares', href: '/shop/telefonos' },
+                                            { name: 'Accesorios', href: '/shop/accesorios' },
+                                            { name: 'Laptops', href: '/shop/laptops' },
+                                            { name: 'Novedades', href: '/shop/novedades' },
+                                            { name: 'Ofertas Especiales', href: '/shop/ofertas' },
+                                        ].map(({ name, href }) => (
+                                            <li key={name}>
+                                                <Link href={href} className="block px-3 py-2 hover:bg-gray-100 rounded">{name}</Link>
+                                            </li>
+                                        ))}
                                     </ul>
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
 
                             <NavigationMenuItem>
-                                <NavigationMenuTrigger className="text-gray-600 hover:text-blue-600">
-                                    Marcas
-                                </NavigationMenuTrigger>
+                                <NavigationMenuTrigger className="hover:text-blue-500">Marcas</NavigationMenuTrigger>
                                 <NavigationMenuContent>
-                                    <ul className="bg-white p-3 w-56">
-                                        <li>
-                                            <Link href="/shop/marcas/apple" className="block px-3 py-2 hover:bg-gray-100 rounded">
-                                                Apple
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/shop/marcas/samsung" className="block px-3 py-2 hover:bg-gray-100 rounded">
-                                                Samsung
-                                            </Link>
-                                        </li>
-                                        <li>
-                                            <Link href="/shop/marcas/xiaomi" className="block px-3 py-2 hover:bg-gray-100 rounded">
-                                                Xiaomi
-                                            </Link>
-                                        </li>
+                                    <ul className="bg-white p-2 w-48">
+                                        {[
+                                            { name: 'Apple', href: '/shop/marcas/apple' },
+                                            { name: 'Samsung', href: '/shop/marcas/samsung' },
+                                            { name: 'Xiaomi', href: '/shop/marcas/xiaomi' },
+                                        ].map(({ name, href }) => (
+                                            <li key={name}>
+                                                <Link href={href} className="block px-3 py-2 hover:bg-gray-100 rounded">{name}</Link>
+                                            </li>
+                                        ))}
                                     </ul>
                                 </NavigationMenuContent>
                             </NavigationMenuItem>
                         </NavigationMenuList>
                     </NavigationMenu>
 
-                    <Link href="/productos" className="text-gray-600 hover:text-blue-600 font-medium">
+                    <Link
+                        href="/productos"
+                        className="px-3 py-1 rounded hover:bg-gray-100 hover:text-black transition"
+                    >
                         Tienda
                     </Link>
                 </nav>
 
                 {/* Right actions */}
-                <div className="flex items-center gap-4">
-                    <Link
-                        href="/auth/registro"
-                        className="text-gray-600 hover:text-blue-600 hidden md:block"
-                    >
-                        <FaUser size={20} />
+                <div className="flex items-center gap-3">
+                    <Link href="/auth/registro" className="hidden md:block text-gray-600 hover:text-blue-500">
+                        <FaUser size={18} />
                     </Link>
                     <ButtonShowCart />
-                    
-                    {/* Mobile menu toggle (visible solo en móviles) */}
                     <div className="md:hidden">
                         <MobileMenuToggle />
                     </div>

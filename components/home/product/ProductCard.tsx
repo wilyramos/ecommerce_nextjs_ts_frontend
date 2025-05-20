@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaShoppingCart } from 'react-icons/fa';
 import type { Product } from '@/src/schemas';
+import AddProductButton from './AddProductButton';
 
 export default function ProductCard({ product }: { product: Product }) {
 
@@ -30,12 +31,7 @@ export default function ProductCard({ product }: { product: Product }) {
             </Link>
 
             {/* Botón "Añadir al carrito" flotante */}
-            <button
-                className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 bg-blue-600 text-white p-2 rounded-full shadow-md hover:bg-blue-700"
-                aria-label="Añadir al carrito"
-            >
-                <FaShoppingCart size={18} />
-            </button>
+            <AddProductButton product={product} />
         </div>
     );
 }
