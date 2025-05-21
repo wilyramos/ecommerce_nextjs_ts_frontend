@@ -35,7 +35,7 @@ export default function ButtonShowCart() {
                     <SheetTitle className="text-xl font-semibold text-gray-900">
                         🛒 Carrito de compras
                     </SheetTitle>
-                    <SheetDescription className="text-sm text-gray-500">
+                    <SheetDescription className="text-xs text-gray-500">
                         Aquí puedes revisar los productos seleccionados.
                     </SheetDescription>
                 </SheetHeader>
@@ -53,7 +53,7 @@ export default function ButtonShowCart() {
                 </div>
 
                 {carrito.length > 0 && (
-                    <div className="my-6 ">
+                    <div className="pt-2 pb-10">
                         <div className="flex items-center justify-between text-sm text-gray-700 pb-6">
                             <span className="text-gray-500">Total</span>
                             <span className="text-base font-semibold">S/. {total}</span>

@@ -120,16 +120,11 @@ export const ProductSchema = z.object({
 
 // Create product schema
 export const CreateProductSchema = z.object({
-    nombre: z.string()
-        .min(1, { message: 'El nombre es obligatorio' }),
-    descripcion: z.string()
-        .min(1, { message: 'La descripción es obligatoria' }),
-    precio: z.number()
-        .min(0, { message: 'El precio es obligatorio' }),
-    categoria: z.string()
-        .min(1, { message: 'La categoría es obligatoria' }),
-    stock: z.number()
-        .min(0, { message: 'El stock es obligatorio' }),
+    nombre: z.string().min(1, { message: 'El nombre es obligatorio' }),
+    descripcion: z.string().min(1, { message: 'La descripción es obligatoria' }),
+    precio: z.number().min(0, { message: 'El precio es obligatorio' }),
+    categoria: z.string().min(1, { message: 'La categoría es obligatoria' }),
+    stock: z.number().min(0, { message: 'El stock es obligatorio' }),
     imagenes: z.array(z.string())
 })
 

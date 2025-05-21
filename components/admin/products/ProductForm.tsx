@@ -1,10 +1,10 @@
-import type { ProductAPIResponseType } from "@/src/schemas";
+import type { Product } from "@/src/schemas";
 import type { CategoriasList } from "@/src/schemas";
 import UploadProductImage from "./UploadProductImage";
 
 
 
-export default function ProductForm({ product, categorias }: { product?: ProductAPIResponseType, categorias: CategoriasList }) {
+export default function ProductForm({ product, categorias }: { product?: Product, categorias: CategoriasList }) {
 
     return (
         <div className="text-xs font-bold">
@@ -37,7 +37,7 @@ export default function ProductForm({ product, categorias }: { product?: Product
                     id="categoria"
                     name="categoria"
                     className="w-full border border-gray-300 rounded-lg p-3 "
-                    defaultValue={product?.categoria?._id}
+                    defaultValue={product?.categoria}
                 >
                     <option value="">Selecciona una categoría</option>
                     {categorias.map((categoria) => (

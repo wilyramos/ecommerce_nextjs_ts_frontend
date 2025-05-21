@@ -17,6 +17,7 @@ export default function ProductCard({ product }: { product: Product }) {
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-110"
                         sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                        quality={20}
                     />
                     {/* OPTION 1: Enhanced Price Display - Modern & Clean */}
                     <p className="absolute top-3 left-3 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full text-lg font-bold text-gray-800 shadow-sm select-none">

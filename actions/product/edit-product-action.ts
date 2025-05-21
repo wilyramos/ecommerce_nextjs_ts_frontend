@@ -2,7 +2,7 @@
 
 import getToken from "@/src/auth/token"
 import { CreateProductSchema, SuccessResponse } from "@/src/schemas"
-import { ErrorResponse } from "@/src/schemas"
+// import { ErrorResponse } from "@/src/schemas" // TODO
 import { revalidatePath } from "next/cache"
 
 

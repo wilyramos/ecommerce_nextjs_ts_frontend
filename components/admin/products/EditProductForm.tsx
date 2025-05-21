@@ -1,7 +1,7 @@
 "use client"
 
 
-import type { ProductAPIResponseType } from "@/src/schemas";
+import type { Product } from "@/src/schemas";
 import { useActionState, useEffect } from "react"
 import ProductForm from "./ProductForm";
 import { EditProduct } from "@/actions/product/edit-product-action";
@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 
 
 
-export default function EditProductForm({ product, categorias }: { product: ProductAPIResponseType, categorias: CategoriasList }) {
+export default function EditProductForm({ product, categorias }: { product: Product, categorias: CategoriasList }) {
 
     const editProductWithId = EditProduct.bind(null, product._id);
     const [state, dispatch] = useActionState(editProductWithId, {

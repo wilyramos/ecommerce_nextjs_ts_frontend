@@ -10,7 +10,7 @@ export default function ItemCarrito({ item }: { item: CartItem }) {
     const removeFromCart = useCartStore((state) => state.removeFromCart);
 
     return (
-        <li className="py-4 border-b border-gray-200 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <li className="py-4 border-b border-gray-200 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
             {/* Imagen + info */}
             <div className="flex items-center gap-4 flex-1">
                 <div className="w-16 h-16 relative overflow-hidden rounded-md bg-gray-100 flex-shrink-0">
@@ -29,7 +29,7 @@ export default function ItemCarrito({ item }: { item: CartItem }) {
             </div>
 
             {/* Controles de cantidad + subtotal */}
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 md:gap-6 w-full md:w-auto">
+            <div className="flex flex-col sm:flex-row items-center justify-between w-full md:w-auto">
                 {/* Controles de cantidad */}
                 <div className="flex items-center gap-2">
                     <button
@@ -50,7 +50,7 @@ export default function ItemCarrito({ item }: { item: CartItem }) {
 
 
                 {/* Subtotal + Eliminar */}
-                <div className="flex items-center gap-2 text-sm font-semibold text-gray-800 text-right min-w-[80px]">
+                <div className="flex items-center gap-2 text-xs font-semibold text-gray-800 text-right min-w-[80px]">
                     <span>S/. {(item.precio * item.cantidad).toFixed(2)}</span>
                     <button
                         onClick={() => removeFromCart(item._id)}
@@ -61,6 +61,8 @@ export default function ItemCarrito({ item }: { item: CartItem }) {
                 </div>
 
             </div>
+
+            
         </li>
     );
 }
