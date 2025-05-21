@@ -3,6 +3,9 @@ import React from 'react';
 import Image from 'next/image';
 import { formatCurrency } from '@/src/utils/formatCurrency';
 import { Metadata } from 'next';
+import { useCartStore } from "@/src/store/cartStore";
+import AddProductToCart from '@/components/home/product/AddProductToCart';
+
 
 
 type Params = Promise<{
@@ -42,8 +45,12 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 }
 
 export default async function pageProduct({ params }: { params: Params }) {
+
     const { id } = await params;
     const producto = await getProduct(id);
+
+    
+    
 
     if (!producto) {
         return (
@@ -113,9 +120,9 @@ export default async function pageProduct({ params }: { params: Params }) {
                         </div>
                     </div>
 
-                    <button className="self-start bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-5 rounded-md">
-                        Añadir al carrito
-                    </button>
+                    <AddProductToCart
+                        product={producto}
+                    />
                 </div>
             </section>
         </main>

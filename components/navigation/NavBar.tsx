@@ -13,18 +13,18 @@ import MobileMenuToggle from '../ui/MobileMenuToggle';
 
 export default function NavBar() {
     return (
-        <header className="border-b">
-            <div className="container mx-auto flex justify-between items-center px-4 py-3">
+        <header className="border-b ">
+            <div className="container mx-auto flex justify-between items-center pl-10 pr-6 py-3">
 
                 {/* Logo */}
                 <Link href="/" className="flex items-center">
                     <Image
                         src="/logo.svg"
                         alt="Logo"
-                        width={150}
-                        height={150}
+                        width={50}
+                        height={50}
                         priority
-                        className="h-10 w-auto"
+                        className="h-15 w-auto"
                     />
                 </Link>
 

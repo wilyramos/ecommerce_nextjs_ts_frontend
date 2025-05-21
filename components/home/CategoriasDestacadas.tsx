@@ -28,7 +28,7 @@ const responsive = {
 export default function CategoriasDestacadas({ categorias }: { categorias: CategoriasList }) {
     return (
         <section className="w-full py-10 flex flex-col items-center">
-            <h2 className="text-3xl font-bold mb-6 text-center">Categorías Destacadas</h2>
+            <h2 className="text-2xl font-semibold mb-6 text-center text-gray-700">Categorías Destacadas</h2>
 
             <Carousel
                 responsive={responsive}

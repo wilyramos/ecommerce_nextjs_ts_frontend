@@ -25,16 +25,16 @@ const responsive = {
 };
 
 const Imagenes = [
-    { src: "/bg.webp", alt: "Imagen principal de la tienda 1", url: "/productos/1" },
+    { src: "/bg3.webp", alt: "Imagen principal de la tienda 1", url: "/productos/1" },
     { src: "/b2.webp", alt: "Imagen principal de la tienda 2", url: "/productos/2" },
-    { src: "/bg3.jpg", alt: "Imagen principal de la tienda 3", url: "/productos/3" },
+    { src: "/bg.webp", alt: "Imagen principal de la tienda 3", url: "/productos/3" },
     { src: "/bg4.webp", alt: "Imagen principal de la tienda 4", url: "/productos/4" },
     { src: "/b2.webp", alt: "Imagen principal de la tienda 5", url: "/productos/5" },
 ];
 
 export default function CarruselPrincipal() {
     return (
-        <div className="w-full relative overflow-hidden shadow-lg max-w-screen-2xl mx-auto">
+        <div className="w-full relative overflow-hidden max-w-screen-2xl mx-auto">
             <Carousel
                 responsive={responsive}
                 autoPlay
@@ -47,18 +47,21 @@ export default function CarruselPrincipal() {
                 {Imagenes.map((imagen, index) => (
                     <Link href={imagen.url} key={index}>
                         <div className="relative w-full h-[25vh] md:h-[40vh] lg:h-[50vh] cursor-pointer">
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent z-10" />
+
+                            {/* <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent z-10" /> */}
 
 
                             <Image
                                 src={imagen.src}
                                 alt={imagen.alt}
                                 fill
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
                                 className="object-cover transition-transform duration-700 ease-in-out scale-100 hover:scale-105"
                                 priority={index === 0}
                                 quality={100}
-
+                                unoptimized 
                             />
+
                         </div>
                     </Link>
                 ))}
