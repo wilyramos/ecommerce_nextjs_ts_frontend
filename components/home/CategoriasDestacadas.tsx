@@ -51,6 +51,7 @@ export default function CategoriasDestacadas({ categorias }: { categorias: Categ
                             width={100}
                             height={100}
                             className="w-24 h-24 mx-auto mb-4 rounded-full"
+                            quality={100}
                         />
                         {categoria.nombre}
                     </div>

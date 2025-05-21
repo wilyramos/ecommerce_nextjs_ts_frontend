@@ -1,7 +1,7 @@
 import Footer from "@/components/home/Footer"
 import CategoriasDestacadas from "@/components/home/CategoriasDestacadas"
 import { getCategories } from "@/src/services/categorys"
-import Image from "next/image"
+import CarruselPrincipal from "@/components/home/CarruselPrincipal"
 
 export default async function HomePage() {
 
@@ -10,14 +10,8 @@ export default async function HomePage() {
     return (
         <>
             {/* Hero principal */}
-            <div className="">
-                <Image
-                    src="/bg.webp"
-                    alt="Hero Image"
-                    width={1920}
-                    height={1080}
-                    className="w-full h-auto object-cover"
-                />
+            <div className="container mx-auto">
+               <CarruselPrincipal />
 
             </div>
 

@@ -18,7 +18,14 @@ export default function NavBar() {
 
                 {/* Logo */}
                 <Link href="/" className="flex items-center">
-                    <Image src="/logo.svg" alt="Logo" width={48} height={48} priority />
+                    <Image
+                        src="/logo.svg"
+                        alt="Logo"
+                        width={150}
+                        height={150}
+                        priority
+                        className="h-10 w-auto"
+                    />
                 </Link>
 
                 {/* Desktop Navigation */}
@@ -76,8 +83,8 @@ export default function NavBar() {
                     <Link href="/auth/registro" className="hidden md:block text-gray-600 hover:text-blue-500">
                         <FaUser size={18} />
                     </Link>
-                    <ButtonShowCart 
-                        key={"cart-button"} // TODO: Remove this when the cart is implemented
+                    <ButtonShowCart
+
                     />
                     <div className="md:hidden">
                         <MobileMenuToggle />
