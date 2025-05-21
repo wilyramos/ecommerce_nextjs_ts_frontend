@@ -22,7 +22,7 @@ export default function RegisterForm() {
 
 
     const token = state.success?.token
-    console.log(token)
+    // console.log(token)
     // const message = state.success?.message
     const router = useRouter()
 

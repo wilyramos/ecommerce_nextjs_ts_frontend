@@ -26,7 +26,6 @@ export async function createCategoryAction(prevState: ActionStateType, formData:
     }
 
     const token = (await cookies()).get('ecommerce-token')?.value
-    console.log("token", token)
     const url = `${process.env.API_URL}/category/create`
     const req = await fetch(url, {
         method: 'POST',

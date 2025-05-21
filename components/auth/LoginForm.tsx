@@ -19,10 +19,6 @@ export default function LoginForm() {
         success: ""
     })
 
-    console.log("State:", state)
-    console.log("Errors:", state.errors)
-    console.log("Success:", state.success)
-
     useEffect(() => {
         if (state.errors) {
             state.errors.forEach(error => {
