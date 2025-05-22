@@ -12,10 +12,9 @@ export default async function HomePage() {
             {/* Hero principal */}
             <div className="container mx-auto">
                <CarruselPrincipal />
-
             </div>
 
-            <section className="container mx-auto px-4 py-8">
+            <section className="container mx-auto ">
                 <CategoriasDestacadas categorias={categories} />
             </section>
 

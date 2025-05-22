@@ -1,40 +1,46 @@
-import LoginForm from '@/components/auth/LoginForm'
 import React from 'react'
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import LoginForm from '@/components/auth/LoginForm'
 
-// SEO metadata for the page
 export const metadata: Metadata = {
-  title: 'Ecommerce - Iniciar Sesión',
-  description: 'Ecommerce - Iniciar Sesión',
-  keywords: 'iniciar sesión, ecommerce, cuenta',
+    title: 'Store Cañete - Iniciar Sesión',
+    description: 'Store Cañete - Iniciar Sesión',
+    keywords: 'iniciar sesión, Store Cañete, cuenta',
 }
 
-export default function pageLogin() {
-  return (
-    <>
+export default function PageLogin() {
+    return (
+        <main className="flex items-center justify-center ">
+            <div className="w-full max-w-md space-y-8 p-8 bg-white">
+                <div className="text-center">
+                    <h1 className="text-3xl font-semibold text-slate-800">Iniciar Sesión</h1>
+                    <p className="text-gray-500 mt-2">Ingresa tus credenciales para continuar</p>
+                </div>
 
-      <h1 className='text-4xl font-bold text-center text-slate-700 mt-10'>Iniciar Sesión</h1>
-      <p className='text-center text-gray-400 pt-5'>Ingresa tus credenciales</p>
+                <LoginForm />
 
-      <LoginForm />
-
-      <nav className="text-center text-sm pt-5 flex justify-between">
-        <Link
-          href="/auth/registro"
-          className="text-gray-800"
-        >
-          ¿No tienes una cuenta? <span className="font-bold text-slate-800 hover:text-slate-700">Crea una</span>
-        </Link>
-        <Link
-          href="/auth/forgot-password"
-          className="text-gray-800"
-
-        >
-          ¿Olvidaste tu contraseña? <span className="font-bold text-slate-800 hover:text-slate-950">Recupera aquí</span>
-        </Link>
-      </nav>
-
-    </>
-  )
+                <div className="text-sm text-gray-600 mt-4 space-y-2">
+                    <p className="text-center">
+                        ¿No tienes una cuenta?{' '}
+                        <Link
+                            href="/auth/registro"
+                            className="font-medium text-slate-800 hover:underline"
+                        >
+                            Regístrate
+                        </Link>
+                    </p>
+                    <p className="text-center">
+                        ¿Olvidaste tu contraseña?{' '}
+                        <Link
+                            href="/auth/forgot-password"
+                            className="font-medium text-slate-800 hover:underline"
+                        >
+                            Recuperar acceso
+                        </Link>
+                    </p>
+                </div>
+            </div>
+        </main>
+    )
 }

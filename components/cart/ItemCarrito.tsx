@@ -30,19 +30,18 @@ export default function ItemCarrito({ item }: { item: CartItem }) {
 
             {/* Controles de cantidad + subtotal */}
             <div className="flex flex-col sm:flex-row items-center justify-between w-full md:w-auto">
-                {/* Controles de cantidad */}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 px-6 py-2">
                     <button
                         onClick={() => updateQuantity(item._id, item.cantidad - 1)}
                         disabled={item.cantidad === 1}
-                        className="w-8 h-8 text-sm text-gray-600 border border-gray-300 rounded hover:bg-gray-100 disabled:opacity-50"
+                        className="w-8 h-8 text-sm text-gray-600 border-2 border-blue-600 rounded hover:bg-gray-100 disabled:opacity-50"
                     >
                         -
                     </button>
                     <span className="text-sm text-gray-700 w-6 text-center">{item.cantidad}</span>
                     <button
                         onClick={() => updateQuantity(item._id, item.cantidad + 1)}
-                        className="w-8 h-8 text-sm text-gray-600 border border-gray-300 rounded hover:bg-gray-100"
+                        className="w-8 h-8 text-sm text-gray-600 border-2 border-blue-600 rounded hover:bg-gray-100"
                     >
                         +
                     </button>

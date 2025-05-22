@@ -41,7 +41,6 @@ export async function EditCategory(id: string, prevState: ActionStateType, formD
     });
 
     const json = await req.json();
-    console.log("json", json)
     
     if (!req.ok) {
         const error = ErrorResponse.parse(json);

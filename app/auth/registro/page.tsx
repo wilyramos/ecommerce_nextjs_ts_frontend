@@ -2,27 +2,35 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import RegisterForm from "@/components/auth/RegisterForm";
 
-// SEO metadata for the page
 export const metadata: Metadata = {
-    title: "Ecommerce - Registro de cuenta",
-    description: "Ecommerce - Registro de cuenta",
-    keywords: "registro, ecommerce, cuenta",
+    title: "Store Cañete - Registro de cuenta",
+    description: "Store Cañete - Registro de cuenta",
+    keywords: "registro, Store Cañete, cuenta",
 };
 
-export default function pageRegistro() {
+export default function PageRegistro() {
     return (
-        <div className="flex justify-center flex-col ">
+        <main className="flex items-center justify-center">
+            <div className="w-full max-w-md space-y-8 p-8">
+                <div className="text-center">
+                    <h1 className="text-3xl font-semibold text-slate-800">Crea tu cuenta</h1>
+                    <p className="text-gray-500 mt-2">Completa el formulario para registrarte</p>
+                </div>
 
-            <h1 className="text-3xl font-bold text-center text-gray-800">Crea tu cuenta</h1>
-            <RegisterForm />
-            <nav className="text-center text-sm pt-5">
-                <Link
-                    href="/auth/login"
-                    className="text-gray-800"
-                >
-                    ¿Ya tienes una cuenta? <span className="font-bold text-slate-500 hover:text-slate-700">Inicia Sesion</span>
-                </Link>
-            </nav>
-        </div>
-    )
+                <RegisterForm />
+
+                <nav className="text-sm text-gray-600 mt-4 text-center">
+                    <p>
+                        ¿Ya tienes una cuenta?{" "}
+                        <Link
+                            href="/auth/login"
+                            className="font-medium text-slate-800 hover:underline"
+                        >
+                            Inicia sesión
+                        </Link>
+                    </p>
+                </nav>
+            </div>
+        </main>
+    );
 }

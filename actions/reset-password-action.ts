@@ -48,8 +48,6 @@ export async function resetPassword(token: string, prevState: ActionStateType, f
     const success = SuccessResponse.parse(Response)
     // console.log(success);
     
-
-
     return {
         errors: [],
         success: success.message

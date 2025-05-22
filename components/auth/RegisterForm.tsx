@@ -1,4 +1,4 @@
-"use client" 
+"use client"
 
 // import { useActionState } from 'react'
 import { createAccountAction } from '@/actions/create-account-action'
@@ -15,13 +15,13 @@ interface successResponse {
 export default function RegisterForm() {
 
 
-    const [ state, dispatch] = useActionState(createAccountAction, {
+    const [state, dispatch] = useActionState(createAccountAction, {
         errors: [],
         success: {} as successResponse
     })
 
 
-    const token = state.success?.token
+    // const token = state.success?.token
     // console.log(token)
     // const message = state.success?.message
     const router = useRouter()
@@ -36,7 +36,7 @@ export default function RegisterForm() {
 
     useEffect(() => {
 
-        if(state.errors){
+        if (state.errors) {
             state.errors.forEach(error => {
                 toast.error(error)
             })
@@ -45,7 +45,7 @@ export default function RegisterForm() {
             toast.success(state.success?.message)
             // Redirigir a la página de login
             router.push('/auth/login')
-        }  
+        }
 
     }, [state, router])
 
@@ -58,61 +58,53 @@ export default function RegisterForm() {
         >
 
             {/* {state.errors.map(error => <ErrorMessage key={error}>{error}</ErrorMessage>)} */}
-            <div className="flex flex-col gap-1">
-                <label
-                    className="font-bold "
-                    htmlFor="email"
-                >Email</label>
-                <input
-                    id="email"
-                    type="email"
-                    placeholder="Email de Registro"
-                    className="w-full border border-gray-300 p-3 rounded-2xl"
-                    name="email"
-                />
-            </div>
+            <label
+                className="block font-medium"
+                htmlFor="email"
+            >Email</label>
+            <input
+                id="email"
+                type="email"
+                placeholder="Email de Registro"
+                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                name="email"
+            />
 
-            <div className="flex flex-col gap-1">
-                <label
-                    className="font-bold  "
-                >Nombre</label>
-                <input
-                    type="nombre"
-                    placeholder="Nombre de Registro"
-                    className="w-full border border-gray-300 p-3 rounded-2xl"
-                    name="nombre"
-                />
-            </div>
+            <label
+                className="block font-medium "
+            >Nombre</label>
+            <input
+                type="nombre"
+                placeholder="Nombre de Registro"
+                className="w-full border border-gray-300 p-3 rounded-2xl"
+                name="nombre"
+            />
 
-            <div className="flex flex-col gap-1">
-                <label
-                    className="font-bold "
-                >Password</label>
-                <input
-                    type="password"
-                    placeholder="Password de Registro"
-                    className="w-full border border-gray-300 p-3 rounded-2xl"
-                    name="password"
-                />
-            </div>
+            <label
+                className="block font-medium "
+            >Password</label>
+            <input
+                type="password"
+                placeholder="Password de Registro"
+                className="w-full border border-gray-300 p-3 rounded-2xl"
+                name="password"
+            />
 
-            <div className="flex flex-col gap-1">
-                <label
-                    className="font-bold "
-                >Repetir Password</label>
-                <input
-                    id="password_confirmation"
-                    type="password"
-                    placeholder="Repite Password de Registro"
-                    className="w-full border border-gray-300 p-3 rounded-2xl"
-                    name="password_confirmation"
-                />
-            </div>
+            <label
+                className="block font-medium "
+            >Repetir Password</label>
+            <input
+                id="password_confirmation"
+                type="password"
+                placeholder="Repite Password de Registro"
+                className="w-full border border-gray-300 p-3 rounded-2xl"
+                name="password_confirmation"
+            />
 
             <input
                 type="submit"
                 value='Registrarme'
-                className="bg-slate-950 hover:bg-slate-800 w-full p-3 rounded-2xl text-white font-black text-xl cursor-pointer block "
+                className="bg-blue-500 text-white font-bold py-3 rounded-full w-full hover:bg-blue-600 transition duration-200 ease-in-out"
             />
         </form >
     )

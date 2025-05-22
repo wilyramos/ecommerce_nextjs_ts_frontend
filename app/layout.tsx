@@ -24,7 +24,6 @@ export default function RootLayout({
 }>) {
 
 
- 
   return (
     <html lang="es">
       <body
@@ -32,10 +31,11 @@ export default function RootLayout({
       >
         <NavBar />
         {children}
-        <Toaster 
-          position="top-right"
-          
-        
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            className: "bg-gray-800 text-white",
+          }}
         />
       </body>
     </html>

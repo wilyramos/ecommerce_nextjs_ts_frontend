@@ -1,72 +1,55 @@
-"use client" // This is a client component
+"use client"
 
-// import { useActionState } from 'react'
-
-import { useEffect } from 'react'
-import { authenticateUserAction } from '@/actions/authenticate-user-action'
-import { useActionState } from 'react'
-import { toast } from 'react-toastify'
- 
+import { useEffect } from "react"
+import { authenticateUserAction } from "@/actions/authenticate-user-action"
+import { useActionState } from "react"
+import { toast } from "react-toastify"
 
 export default function LoginForm() {
-
-    // For reset form after submit
-    // const ref = useRef<HTMLFormElement>(null)
-
-
-    const [ state, dispatch] = useActionState(authenticateUserAction, {
+    const [state, dispatch] = useActionState(authenticateUserAction, {
         errors: [],
-        success: ""
+        success: "",
     })
 
     useEffect(() => {
-        if (state.errors) {
-            state.errors.forEach(error => {
-                toast.error(error)
-            })
-        }
-        if (state.success) {
-            toast.success(state.success)
-        }
+        state.errors.forEach(error => toast.error(error))
+        if (state.success) toast.success(state.success)
     }, [state])
 
     return (
         <form
-            // ref={ref}
-            className="mt-2 space-y-2 text-gray-700"
+            className="mt-4 space-y-4 text-gray-700"
             noValidate
             action={dispatch}
         >
-            <div className="flex flex-col gap-1">
-                <label
-                    className="font-bold "
-                    htmlFor="email"
-                >Email</label>
+            <label className="block font-medium">
+                Email
                 <input
-                    id="email"
                     type="email"
-                    placeholder="Email de Registro"
-                    className="w-full border border-gray-300 p-3 rounded-2xl"
                     name="email"
+                    placeholder="tu@email.com"
+                    className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    required
                 />
-            </div>
+            </label>
 
-            <div className="flex flex-col gap-1">
-                <label
-                    className="font-bold  "
-                >Password</label>
+            <label className="block font-medium">
+                Password
                 <input
                     type="password"
-                    placeholder="Password de Registro"
-                    className="w-full border border-gray-300 p-3 rounded-2xl"
                     name="password"
+                    placeholder="••••••••"
+                    className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    required
                 />
-            </div>
+            </label>
 
             <button
-                type='submit'
-                className='bg-blue-500 text-white font-bold py-3 rounded-full w-full hover:bg-blue-600 transition duration-200 ease-in-out'
-            >Iniciar Sesión</button>
+                type="submit"
+                className="w-full rounded-full bg-blue-600 py-3 text-white font-semibold hover:bg-blue-700 transition"
+            >
+                Iniciar Sesión
+            </button>
         </form>
     )
 }
