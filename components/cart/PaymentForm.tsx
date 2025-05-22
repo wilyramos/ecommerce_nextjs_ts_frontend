@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useCartStore } from "@/src/store/cartStore";
 import { useActionState } from "react";
@@ -7,55 +7,107 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-export default function PaymentForm() {
-    const { cart, total, clearCart } = useCartStore();
-    const router = useRouter();
+interface PaymentFormProps {
+    deliveryInfo: {
+        nombre: string;
+        direccion: string;
+        telefono: string;
+        correo: string;
+    };
+}
+type prevStateType = {
+    errors: string[];
+    success: string;
+};
 
-    const createOrder = createOrderAction.bind(null, total);
-    const [state, dispatch] = useActionState(createOrder, {
-        errors: [],
-        success: ""
-    });
+export default function PaymentForm({ deliveryInfo }: PaymentFormProps) {
+
+    const router = useRouter();
+    const { cart, total, clearCart } = useCartStore();
+
+
+    const [formState, handleFormSubmit] = useActionState(
+        async (prevState: prevStateType, formData: FormData) => {
+            // Obtener los datos de la tarjeta del formulario
+            const cardNumber = formData.get("cardNumber")?.toString() || "";
+            const expiryDate = formData.get("expiryDate")?.toString() || "";
+
+            // Crear el objeto de la orden
+            const newOrder = {
+                deliveryInfo,
+                cart,
+                total,
+                payment: {
+                    cardNumber,
+                    expiryDate,
+                },
+            };
+
+            // Llamar a la acción del servidor
+            return await createOrderAction(newOrder, prevState, formData);
+        },
+        {
+            errors: [],
+            success: "",
+        }
+    );
 
     useEffect(() => {
-        if (state.success) {
+        if (formState.success) {
             clearCart();
-            toast.success(state.success);
+            toast.success(formState.success);
             router.push("/checkout/orden");
         }
-    }, [state.success, router, clearCart]);
+    }, [formState.success, clearCart, router]);
 
-    // Envolver el handler para agregar productos antes de enviar
-    const handleSubmit = async (formData: FormData) => {
-        formData.append("productos", JSON.stringify(cart));
-        dispatch(formData);
-    };
-
+    // Formulario de pago
     return (
         <form
-            action={handleSubmit}
+            action={handleFormSubmit}
             className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         >
+            {/* Campo: Número de tarjeta */}
             <div className="mb-4">
-                <label htmlFor="nombre" className="block text-gray-700 text-sm font-bold mb-2">Nombre</label>
-                <input type="text" name="nombre" id="nombre" required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight" />
+                <label
+                    htmlFor="cardNumber"
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                    Número de tarjeta
+                </label>
+                <input
+                    type="text"
+                    id="cardNumber"
+                    name="cardNumber"
+                    required
+                    placeholder="XXXX-XXXX-XXXX-XXXX"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
             </div>
 
+            {/* Campo: Fecha de expiración */}
             <div className="mb-4">
-                <label htmlFor="direccion" className="block text-gray-700 text-sm font-bold mb-2">Dirección</label>
-                <input type="text" name="direccion" id="direccion" required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight" />
+                <label
+                    htmlFor="expiryDate"
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                    Fecha de expiración
+                </label>
+                <input
+                    type="text"
+                    id="expiryDate"
+                    name="expiryDate"
+                    required
+                    placeholder="MM/AA"
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                />
             </div>
 
-            <div className="mb-4">
-                <label htmlFor="telefono" className="block text-gray-700 text-sm font-bold mb-2">Teléfono</label>
-                <input type="text" name="telefono" id="telefono" required className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight" />
-            </div>
-
+            {/* Botón de confirmación */}
             <button
                 type="submit"
-                className="bg-blue-600 text-white w-full py-3 rounded-full hover:bg-blue-700 transition"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
-                Confirmar y Pagar
+                Confirmar Pago
             </button>
         </form>
     );
