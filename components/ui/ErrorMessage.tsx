@@ -1,11 +1,11 @@
 import type React from "react";
-import { ExclamationCircleIcon } from "@heroicons/react/24/solid"; // Asegúrate de tener instaladas las Hero Icons
+import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
-export default function ErrorMessage({ children }: { children : React.ReactNode }) {
-  return (
-    <div className="flex my-3 bg-red-100 px-2 py-1 rounded-r-xl border-red-600 border-l-4 text-sm gap-1">
-      <ExclamationCircleIcon className="w-6 h-6 text-red-500" />
-      <span>{children}</span>
-    </div>
-  );
+export default function ErrorMessage({ children }: { children: React.ReactNode }) {
+    return (
+        <div className="flex items-start gap-2 px-2 py-1 text-sm text-red-700 bg-red-50 rounded-lg border border-red-200">
+            <ExclamationTriangleIcon className="w-5 h-5 mt-0.5 text-red-500" />
+            <p className="font-semibold leading-snug">{children}</p>
+        </div>
+    );
 }

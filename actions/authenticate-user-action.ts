@@ -17,7 +17,6 @@ export async function authenticateUserAction(prevState: ActionStateType, formDat
         password: formData.get('password')
     }
 
-
     const auth = LoginSchema.safeParse(loginCredentials);
     if (!auth.success) {
         const errors = auth.error.errors.map(error => error.message);

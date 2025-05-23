@@ -28,6 +28,8 @@ export default function DeleteProductForm({ productId }: { productId: string }) 
         }
     }, [state, router]);
 
+    
+
     return (
         <form action={dispatch}>
             <button

@@ -1,29 +1,32 @@
-
-import ResumenCarrito from "@/components/cart/ResumenCarrito"
-import ButtonProceedToPayment from "@/components/ui/ButtonProceedToPayment"
+import ResumenCarrito from "@/components/cart/ResumenCarrito";
+import ShippingForm from "@/components/checkout/ShippingForm";
 
 export default function CheckoutPage() {
     return (
-        <main className="max-w-5xl mx-auto p-6 flex flex-col md:flex-row md:space-x-12">
+        <main className="px-20 py-6">
+            <h1 className="text-xl font-bold mb-4">Finalizar Compra</h1>
 
-            {/* Sección principal: carrito */}
-            <section className="flex-1 mb-8 md:mb-0">
-                <h1 className="text-3xl font-bold mb-3 text-gray-900">Checkout</h1>
-                <p className="text-gray-600 mb-6">
-                    Por favor, revisa tu carrito antes de proceder al pago.
-                </p>
-                <ResumenCarrito />
-            </section>
+            <div className="grid gap-6 lg:grid-cols-3">
+                <section className="lg:col-span-2 space-y-4">
+                    <div className="">
+                        <ResumenCarrito />
+                    </div>
 
-            {/* Resumen de compra */}
-            <aside className="w-full md:w-1/3 bg-white shadow-md rounded-lg p-6">
-                <h2 className="text-xl font-semibold mb-4">Resumen de compra</h2>
-                <p className="text-gray-600 mb-4">
-                    Asegúrate de que todo esté correcto antes de continuar.
-                </p>
-                <ButtonProceedToPayment />
-            </aside>
-            
+                    <div className="">
+                        <h2 className="text-lg font-semibold mb-3">Información Adicional</h2>
+                        <p className="text-sm text-gray-600">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit...
+                        </p>
+                    </div>
+                </section>
+
+                <aside className="lg:col-span-1 space-y-4">
+                    <div className="">
+                        <h2 className="text-lg font-semibold mb-3">Detalles de Envío</h2>
+                        <ShippingForm />
+                    </div>
+                </aside>
+            </div>
         </main>
-    )
+    );
 }

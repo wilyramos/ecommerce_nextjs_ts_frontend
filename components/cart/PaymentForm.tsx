@@ -64,7 +64,7 @@ export default function PaymentForm({ deliveryInfo }: PaymentFormProps) {
     return (
         <form
             action={handleFormSubmit}
-            className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+            className=""
         >
             {/* Campo: Número de tarjeta */}
             <div className="mb-4">
