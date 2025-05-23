@@ -60,8 +60,6 @@ export default function SubmitOrderButton() {
     }, [state, router, clearCart]);
 
 
-
-
     return (
         <form
             action={dispatch}

@@ -29,13 +29,13 @@ export default function NavBar() {
                 </Link>
 
                 {/* Desktop Navigation */}
-                <nav className="hidden md:flex items-center gap-6 text-sm text-gray-600">
+                <nav className="hidden md:flex items-center gap-6 text-gray-600">
                     <NavigationMenu>
                         <NavigationMenuList>
                             <NavigationMenuItem>
-                                <NavigationMenuTrigger className="hover:text-blue-500">Productos</NavigationMenuTrigger>
+                                <NavigationMenuTrigger className="">Productos</NavigationMenuTrigger>
                                 <NavigationMenuContent>
-                                    <ul className="bg-white p-2 w-48">
+                                    <ul className="p-2 w-52">
                                         {[
                                             { name: 'Celulares', href: '/shop/telefonos' },
                                             { name: 'Accesorios', href: '/shop/accesorios' },
@@ -72,7 +72,7 @@ export default function NavBar() {
 
                     <Link
                         href="/productos"
-                        className="px-3 py-1 rounded hover:bg-gray-100 hover:text-black transition"
+                        className="text-gray-600 hover:text-blue-500 font-semibold hover:bg-gray-100 hover:bg-opacity-10 px-3 py-2 rounded"
                     >
                         Tienda
                     </Link>

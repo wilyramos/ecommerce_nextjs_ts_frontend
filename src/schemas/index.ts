@@ -212,3 +212,26 @@ export const CartSchema = z.object({
     total: z.number(),
 });
 export type Cart = z.infer<typeof CartSchema>;
+
+// ORDER
+
+export const shippingAddress = z.object({
+    direccion: z.string().min(1, { message: 'La dirección es obligatoria' }),
+    ciudad: z.string().min(1, { message: 'La ciudad es obligatoria' }),
+    telefono: z.string().min(1, { message: 'El teléfono es obligatorio' }),
+});
+
+const OrderProductSchema = ProductSchema.pick({
+    _id: true
+}).extend({
+    quantity: z.number().min(1, { message: 'La cantidad debe ser al menos 1' }),
+    price: z.number().min(0, { message: 'El precio debe ser al menos 0' }),
+});
+
+export const OrderSchema = z.object({
+    user: z.string().optional(),
+    products: z.array(OrderProductSchema).min(1, { message: 'El pedido no puede estar vacío' }),
+    total: z.number().min(0, { message: 'El total debe ser al menos 0' }),
+    shippingAddress: shippingAddress,
+    status: z.enum(['PENDIENTE', 'ENVIADO', 'ENTREGADO', 'CANCELADO']),
+});

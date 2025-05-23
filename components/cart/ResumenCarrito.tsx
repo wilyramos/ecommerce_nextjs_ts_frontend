@@ -10,14 +10,14 @@ export default function ResumenCarrito() {
 
     return (
         <>
-            <h2 className="text-lg font-semibold">Resumen del Carrito</h2>
-            <ul className="mt-4">
+            <h2 className="text-lg font-light">Resumen del Carrito</h2>
+            <ul className="mt-2">
                 {cart.map(item => (
                     <ItemCarrito key={item._id} item={item} />
                 ))}
             </ul>
-            <div className="mt-4 font-semibold">
-                Total: S/. {total.toFixed(2)}
+            <div className="mt-4 text-gray-800 text-end border-t border-gray-300 pt-2">
+                Total: S/. <span className="text-xl font-bold text-gray-950">{total.toFixed(2)}</span>
             </div>
         </>
     )

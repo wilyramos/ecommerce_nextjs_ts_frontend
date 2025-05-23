@@ -21,18 +21,22 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
     const limitNumber = limit ? parseInt(limit) : 10;
 
     return (
-        <main className="p-6 max-w-7xl mx-auto">
+        <main className="max-w-7xl mx-auto p-5">
             <section className="grid grid-cols-1 sm:grid-cols-4 gap-6">
 
-                <aside className="sm:col-span-1">
-                    <h2 className="text-lg font-semibold text-gray-800 mb-4">Filtros</h2>
+                {/* Filtros */}
+                <div className="sm:col-span-1">
+                    <h2 className="text-xl font-semibold text-gray-900 mb-4 border-b pb-2">Filtrar por</h2>
                     <Suspense fallback={<div className="text-center py-8 text-gray-400 text-sm">Cargando filtros...</div>}>
                         <CategoriasFiltros />
                     </Suspense>
-                </aside>
+                </div>
 
+                {/* Productos */}
                 <section className="sm:col-span-3">
-                    <h1 className="text-lg font-semibold text-gray-800 mb-6">Nuestros Productos</h1>
+
+                    <h2 className="text-xl font-semibold text-gray-900 mb-4 border-b pb-2 text-end">Productos</h2>
+
                     <Suspense fallback={<div className="text-center py-8 text-gray-400 text-sm">Cargando productos...</div>}>
                         <ProductResults
                             category={category}

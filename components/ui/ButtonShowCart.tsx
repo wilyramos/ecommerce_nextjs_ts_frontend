@@ -12,15 +12,30 @@ import { FaShoppingCart } from "react-icons/fa";
 import { useCartStore } from "@/src/store/cartStore";
 import ItemCarrito from "../cart/ItemCarrito";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export default function ButtonShowCart() {
+
+    const [ open, setOpen ] = useState(false);
+
     const carrito = useCartStore((state) => state.cart);
     const router = useRouter();
 
     const total = carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0).toFixed(2);
 
+
+    const handleCheckout = () => {
+        if (carrito.length === 0) {
+            toast.error("Tu carrito está vacío.");
+            return;
+        }
+        setOpen(false);
+        router.push("/checkout");
+    }
+
     return (
-        <Sheet>
+        <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger className="relative cursor-pointer text-gray-800 hover:text-blue-600 transition">
                 <FaShoppingCart className="h-6 w-6" />
                 {carrito.length > 0 && (
@@ -30,10 +45,10 @@ export default function ButtonShowCart() {
                 )}
             </SheetTrigger>
 
-            <SheetContent className="sm:max-w-[450px] px-6 py-5 bg-white shadow-xl">
+            <SheetContent className="sm:max-w-[450px] px-6 py-5 bg-gray-50 border-l border-gray-200 shadow-2xl rounded-lg">
                 <SheetHeader>
                     <SheetTitle className="text-xl font-semibold text-gray-900">
-                        🛒 Carrito de compras
+                        Carrito de Compras
                     </SheetTitle>
                     <SheetDescription className="text-xs text-gray-500">
                         Aquí puedes revisar los productos seleccionados.
@@ -53,14 +68,14 @@ export default function ButtonShowCart() {
                 </div>
 
                 {carrito.length > 0 && (
-                    <div className="pt-2 pb-10">
+                    <div className="pt-2 pb-20">
                         <div className="flex items-center justify-between text-sm text-gray-700 pb-6">
                             <span className="text-gray-500">Total</span>
                             <span className="text-base font-semibold">S/. {total}</span>
                         </div>
 
                         <button
-                            onClick={() => router.push("/checkout")}
+                            onClick={handleCheckout}
                             className=" w-full bg-black text-white text-sm py-2 rounded-md hover:bg-gray-800 transition-colors cursor-pointer"
                         >
                             Ir a pagar
