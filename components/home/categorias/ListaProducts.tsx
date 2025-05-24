@@ -1,5 +1,6 @@
+
 import { getProductsByFilter } from "@/src/services/products";
-import ProductosList from "./ProductsList";
+import ProductosList from "../product/ProductsList";
 import Pagination from "../Pagination";
 
 
@@ -10,7 +11,8 @@ type ProductResultsProps = {
     limit?: number;
 };
 
-export default async function ProductResults({ category, priceRange, page, limit = 10 }: ProductResultsProps) {
+export default async function ListaProducts({ category, priceRange, page, limit = 4 }: ProductResultsProps) {
+
 
     const products = await getProductsByFilter({
         page: page ? parseInt(page) : 1,
@@ -30,13 +32,13 @@ export default async function ProductResults({ category, priceRange, page, limit
     return (
         <>
             <ProductosList products={products} />
+
             <Pagination
                 currentPage={products.currentPage}
                 totalPages={products.totalPages}
                 limit={limit}
-                pathname="/productos"
+                pathname={`/categoria/${category}`}
                 queryParams={{
-                    category,
                     priceRange,
                 }}
             />

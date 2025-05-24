@@ -59,8 +59,8 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
                         className="p-2 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm text-sm bg-white"
                     >
                         <option value="">Todas</option>
-                        {categorias.map(({ nombre, _id }) => (
-                            <option key={_id} value={_id}>{nombre}</option>
+                        {categorias.map(({ nombre, slug }) => (
+                            <option key={slug} value={slug}>{nombre}</option>
                         ))}
                     </select>
                 </div>

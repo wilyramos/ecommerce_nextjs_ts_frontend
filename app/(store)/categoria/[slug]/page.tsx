@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import FiltrosPorCategoria from "@/components/home/categorias/FiltrosPorCategoria ";
-import ProductResults from "@/components/home/product/ProductResults";
+import ListaProducts from "@/components/home/categorias/ListaProducts";
 
 
 type Params = Promise<{
@@ -14,13 +14,23 @@ type SearchParams = Promise<{
     priceRange?: string;
 }>;
 
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const categoryName = decodeURIComponent(params.slug).replace(/-/g, " ");
+
+  return {
+    title: `Productos en ${categoryName} - Gostore`,
+    description: `Explora nuestra colección de productos en la categoría ${categoryName} en Gostore.`,
+    keywords: [`productos`, `gostore`, categoryName, `comprar ${categoryName}`],
+  };
+}
+
 
 
 export default async function pageCategoria({ params, searchParams }: { params: Params, searchParams: SearchParams }) {
 
     const { slug } = await params;
     const { priceRange, page, limit } = await searchParams;
-    const limitNumber = limit ? parseInt(limit) : 12;
+    const limitNumber = limit ? parseInt(limit) : 10;
 
 
     return (
@@ -36,18 +46,16 @@ export default async function pageCategoria({ params, searchParams }: { params: 
                 {/* Productos de la categoría */}
                 <section className="sm:col-span-3">
 
-
                     <Suspense fallback={<div className="text-center py-8 text-gray-400 text-sm">Cargando productos...</div>}>
-                        <ProductResults
+                        <ListaProducts
                             category={slug}
                             priceRange={priceRange}
                             page={page}
                             limit={limitNumber}
                         />
                     </Suspense>
-
-
                 </section>
+
 
             </section>
         </main>
