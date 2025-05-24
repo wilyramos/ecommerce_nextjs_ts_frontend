@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function PageRegistro() {
     return (
         <main className="flex items-center justify-center">
-            <div className="w-full max-w-md space-y-8 p-8">
+            <div className="w-full max-w-md space-y-2 p-8">
                 <div className="text-center">
                     <h1 className="text-3xl font-semibold text-slate-800">Crea tu cuenta</h1>
                     <p className="text-gray-500 mt-2">Completa el formulario para registrarte</p>

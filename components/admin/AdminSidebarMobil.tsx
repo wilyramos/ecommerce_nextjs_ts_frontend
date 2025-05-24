@@ -12,10 +12,11 @@ export default function AdminSidebarMobil({ user }: { user: User }) {
                 <Link href="/admin" className="text-sm">Cerrar sesión</Link>
             </div>
             <nav className="flex flex-col p-4 space-y-2">
-                <Link href="/admin/products" className="text-gray-700 hover:text-gray-900">Productos</Link>
-                <Link href="/admin/products/category" className="text-gray-700 hover:text-gray-900">Categorías</Link>
-                <Link href="/admin/categories" className="text-gray-700 hover:text-gray-900">Categorías</Link>
-                <Link href="/admin/users" className="text-gray-700 hover:text-gray-900">Usuarios</Link>
+                <Link href="/admin" className="text-gray-700 hover:text-gray-900">Dashboard</Link>
+                <Link href="/admin/products" className="text-gray-700 hover:text-gray-900">Products</Link>
+                <Link href="/admin/products/category" className="text-gray-700 hover:text-gray-900">Categories</Link>
+                <Link href="/admin/orders" className="text-gray-700 hover:text-gray-900">Orders</Link>
+                <Link href="/admin/users" className="text-gray-700 hover:text-gray-900">Users</Link>
             </nav>
        </>
     )

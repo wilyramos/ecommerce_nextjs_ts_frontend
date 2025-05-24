@@ -15,14 +15,20 @@ export default async function ProductDetailsPage({ params }: { params: Params })
 
     if (!product) {
         return (
-            <div className="flex justify-center items-center h-screen bg-gray-100">
-                <h1 className="text-2xl text-gray-600">Producto no encontrado</h1>
+            <div className="p-6 flex flex-col items-center gap-4">
+                <h1 className="text-xl text-gray-600">Producto no encontrado</h1>
+                <Link
+                    href="/admin/products"
+                    className="bg-gray-700 hover:bg-gray-900 text-white px-4 py-2 rounded"
+                >
+                    Volver a productos
+                </Link>
             </div>
         );
     }
 
     return (
-        <div className="overflow-y-auto p-6 bg-white">
+        <div className="overflow-y-auto p-6">
             <div className="flex flex-col md:flex-row justify-between items-center border-b pb-4 gap-2">
                 <h1 className="text-xl font-semibold text-gray-800">{product.nombre}</h1>
                 <div className="flex gap-2">

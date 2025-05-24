@@ -43,9 +43,12 @@ export default async function pageProduct({ params }: { params: Params }) {
 
     if (!producto) {
         return (
-            <div className="flex justify-center items-center h-screen bg-gray-50">
-                <h1 className="text-2xl text-gray-500">Producto no encontrado</h1>
-            </div>
+            <main className="py-10 bg-white">
+                <section className="max-w-6xl mx-auto px-4">
+                    <h1 className="text-xl font-semibold text-gray-900">Producto no encontrado</h1>
+                    <p className="text-gray-600">El producto que buscas no existe.</p>
+                </section>
+            </main>
         );
     }
 

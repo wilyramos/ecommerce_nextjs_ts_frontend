@@ -9,7 +9,7 @@ export default function AdminSidebar({ user }: { user: User }) {
             {/* Logo */}
             <div className="flex items-center justify-center py-6 border-b border-gray-700">
                 <Image
-                    src="/logo.svg"
+                    src="/logo-w.svg"
                     alt="Logo"
                     width={50}
                     height={50}

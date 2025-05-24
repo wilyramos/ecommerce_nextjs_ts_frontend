@@ -26,14 +26,10 @@ export default async function CreatePageCategory() {
                 <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800">
                     Categorías
                 </h1>
-                <div className="mb-4">
-                    <Link href="/admin/products" className="text-blue-600 hover:underline text-sm">
-                        Volver a Productos
-                    </Link>
-                </div>
+                
                 <Link
                     href="/admin/products/category/new"
-                    className="bg-blue-600 text-white px-4 py-1 rounded-xl hover:bg-blue-700 transition"
+                    className="bg-blue-600 text-white px-2 py-1 rounded-xl hover:bg-blue-700 transition"
                 >
                     + Nueva Categoría
                 </Link>

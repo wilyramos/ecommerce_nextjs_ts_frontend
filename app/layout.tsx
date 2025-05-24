@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
-import NavBar from "@/components/navigation/NavBar";
 import { Toaster } from 'sonner';
 
 
@@ -29,7 +28,7 @@ export default function RootLayout({
       <body
         className={`${inter.className}`}
       >
-        <NavBar />
+        {/* <NavBar /> */}
         {children}
         <Toaster
           position="top-center"
