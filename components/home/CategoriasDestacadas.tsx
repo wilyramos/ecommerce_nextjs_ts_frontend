@@ -4,6 +4,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import type { CategoriasList } from '@/src/schemas'
 import Image from "next/image";
+import Link from "next/link";
 
 const responsive = {
     superLargeDesktop: {
@@ -41,20 +42,21 @@ export default function CategoriasDestacadas({ categorias }: { categorias: Categ
                 itemClass="px-2"
             >
                 {categorias.map((categoria, index) => (
-                    <div
-                        key={index}
-                        className="bg-gray-100 rounded-xl shadow-md p-20 text-center text-lg font-semibold hover:bg-gray-200 transition"
-                    >
-                        <Image
-                            src={`/logo.svg`}
-                            alt={categoria.nombre}
-                            width={100}
-                            height={100}
-                            className="w-24 h-24 mx-auto mb-4 rounded-full"
-                            quality={100}
-                        />
-                        {categoria.nombre}
-                    </div>
+                    <Link href={`/categoria/${categoria.slug}`} key={index} className="no-underline">
+                        <div
+                            className="bg-gray-100 rounded-xl shadow-md p-20 text-center text-lg font-semibold hover:bg-gray-200 transition"
+                        >
+                            <Image
+                                src={`/logo.svg`}
+                                alt={categoria.nombre}
+                                width={100}
+                                height={100}
+                                className="w-24 h-24 mx-auto mb-4 rounded-full"
+                                quality={100}
+                            />
+                            {categoria.nombre}
+                        </div>
+                    </Link>
                 ))}
             </Carousel>
         </section>

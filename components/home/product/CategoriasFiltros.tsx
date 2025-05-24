@@ -7,7 +7,6 @@ export default async function CategoriasFiltros() {
 
     const categories = await getCategories();
 
-
     return (
         <ProductsFilters categorias={categories} />
     )
