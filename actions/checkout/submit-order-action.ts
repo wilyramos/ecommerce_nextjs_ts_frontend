@@ -1,6 +1,6 @@
 "use server"
 
-import { ErrorResponseSchema } from "@/src/schemas"
+import { ErrorResponseSchema, OrderSchema } from "@/src/schemas"
 
 
 type ActionStateType = {
@@ -14,16 +14,23 @@ export async function submitOrderAction(orderData: unknown, prevState: ActionSta
 
 
 
-    const order = orderData
+    //TODO: - validate orderData with zod schema
+    const dataParsed = OrderSchema.safeParse(orderData)
+    if (!dataParsed.success) {
+        return {
+            errors: dataParsed.error.errors.map((error) => error.message),
+            success: ''
+        }
+    }
 
-    console.log(order)
+    console.log(dataParsed.data)
     const url = `${process.env.API_URL}/orders`
     const req = await fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(order),
+        body: JSON.stringify(dataParsed.data),
     })
 
     const json = await req.json()

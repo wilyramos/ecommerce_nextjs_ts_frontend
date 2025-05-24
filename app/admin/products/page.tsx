@@ -1,5 +1,4 @@
 import AddProductButton from "@/components/admin/products/AddProductButton";
-import Link from "next/link";
 import { getProducts } from "@/src/services/products";
 import ProductsTable from "@/components/admin/products/ProductsTable";
 import Pagination from "@/components/ui/Pagination";
@@ -24,12 +23,6 @@ export default async function ProductsPage({ searchParams }: { searchParams: Sea
                     Listado de Productos
                 </h1>
                 <AddProductButton />
-            </div>
-
-            <div className="mb-4">
-                <Link href="/admin/products/category" className="text-blue-600 hover:underline text-sm">
-                    Ver Categorías →
-                </Link>
             </div>
 
             {!productsData ? (

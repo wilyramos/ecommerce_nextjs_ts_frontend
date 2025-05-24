@@ -18,7 +18,7 @@ type SearchParams = Promise<{
 
 export default async function PageProducts({ searchParams }: { searchParams: SearchParams }) {
     const { category, priceRange, page, limit } = await searchParams;
-    const limitNumber = limit ? parseInt(limit) : 10;
+    const limitNumber = limit ? parseInt(limit) : 12;
 
     return (
         <main className="max-w-7xl mx-auto p-5">

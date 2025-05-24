@@ -22,7 +22,7 @@ export default async function ProductDetailsPage({ params }: { params: Params })
     }
 
     return (
-        <div className="h-screen overflow-y-auto p-6 bg-white">
+        <div className="overflow-y-auto p-6 bg-white">
             <div className="flex flex-col md:flex-row justify-between items-center border-b pb-4 gap-2">
                 <h1 className="text-xl font-semibold text-gray-800">{product.nombre}</h1>
                 <div className="flex gap-2">

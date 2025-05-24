@@ -10,7 +10,7 @@ type ProductResultsProps = {
     limit?: number;
 };
 
-export default async function ProductResults({ category, priceRange, page, limit = 5 }: ProductResultsProps) {
+export default async function ProductResults({ category, priceRange, page, limit = 10 }: ProductResultsProps) {
 
     const products = await getProductsByFilter({
         page: page ? parseInt(page) : 1,

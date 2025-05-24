@@ -57,7 +57,7 @@ export default function ButtonShowCart() {
 
                 <div className="mt-6 space-y-5 max-h-[65vh] overflow-y-auto pr-2">
                     {carrito.length === 0 ? (
-                        <p className="text-center text-gray-400 italic">
+                        <p className="text-center text-gray-400 ">
                             Tu carrito está vacío.
                         </p>
                     ) : (

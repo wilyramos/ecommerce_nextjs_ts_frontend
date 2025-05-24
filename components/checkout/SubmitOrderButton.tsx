@@ -13,14 +13,14 @@ export default function SubmitOrderButton() {
 
     const clearCart = useCartStore((s) => s.clearCart)
     const cart = useCartStore((s) => s.cart)
-    const shippingData = useShippingStore((s) => s.data)!
+    const shippingData = useShippingStore((s) => s.data)
     const total = useCartStore((s) => s.total)
 
     const router = useRouter()
 
     const order = {
         items: cart.map(item => ({
-            product: item._id,
+            productId: item._id,
             quantity: item.cantidad,
             price: item.precio
         })),
@@ -29,11 +29,13 @@ export default function SubmitOrderButton() {
         paymentMethod: "TARJETA", // o lo que seleccione el usuario
         paymentStatus: "PENDIENTE",
         shippingAddress: {
-            direccion: shippingData.direccion,
-            ciudad: shippingData.ciudad,
-            telefono: shippingData.telefono
+            direccion: shippingData?.direccion,
+            ciudad: shippingData?.ciudad,
+            telefono: shippingData?.telefono
         }
     };
+
+    console.log(order)
 
 
     const submitOrderWithData = submitOrderAction.bind(null, order);
@@ -45,11 +47,11 @@ export default function SubmitOrderButton() {
     useEffect(() => {
         console.log(state)
         if (state.errors) {
-            console.log(state.errors)
-            state.errors.forEach(error => {
+            state.errors.forEach((error) => {
+                console.log("error", error)
                 toast.error(error);
+            })
 
-            });
         }
         if (state.success) {
             console.log(state.success)

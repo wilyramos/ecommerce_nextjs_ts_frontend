@@ -10,10 +10,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Store app cañete",
+  title: "Store App Cañete San Vicente",
   description: "Tienda de tecnologias cañete",
   icons: {
-    icon: "/next.svg",
+    icon: "/logo.svg",
   }
 };
 

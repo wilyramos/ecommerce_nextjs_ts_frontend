@@ -221,17 +221,17 @@ export const shippingAddress = z.object({
     telefono: z.string().min(1, { message: 'El teléfono es obligatorio' }),
 });
 
-const OrderProductSchema = ProductSchema.pick({
-    _id: true
-}).extend({
+const OrderProductSchema = z.object({
+    productId: z.string().min(1, { message: 'El ID del producto es obligatorio' }),
     quantity: z.number().min(1, { message: 'La cantidad debe ser al menos 1' }),
     price: z.number().min(0, { message: 'El precio debe ser al menos 0' }),
 });
 
 export const OrderSchema = z.object({
-    user: z.string().optional(),
-    products: z.array(OrderProductSchema).min(1, { message: 'El pedido no puede estar vacío' }),
-    total: z.number().min(0, { message: 'El total debe ser al menos 0' }),
+    user: z.string().optional(), // TODO: implementar el login
+    items: z.array(OrderProductSchema).min(1, { message: 'El pedido no puede estar vacío' }),
+    totalPrice: z.number().min(0, { message: 'El total debe ser al menos 0' }),
     shippingAddress: shippingAddress,
     status: z.enum(['PENDIENTE', 'ENVIADO', 'ENTREGADO', 'CANCELADO']),
+    paymentMethod: z.enum(['EFECTIVO', 'TARJETA', 'TRANSFERENCIA', 'PAYPAL']),
 });

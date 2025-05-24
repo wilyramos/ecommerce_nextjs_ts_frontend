@@ -36,7 +36,7 @@ export default function CreateCategoryForm({ }) {
     return (
 
         <form
-            className="mt-10 space-y-2"
+            className="flex flex-col gap-4 w-full max-w-2xl mx-auto mt-10"
             noValidate
             action={dispatch}
         >

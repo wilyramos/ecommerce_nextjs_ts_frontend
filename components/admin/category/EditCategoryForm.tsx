@@ -23,6 +23,7 @@ export default function EditCategoryForm({ category }: { category: Category }) {
         }
         if (state.success) {
             toast.success(state.success)
+            
         }
 
     }, [state])
@@ -30,7 +31,7 @@ export default function EditCategoryForm({ category }: { category: Category }) {
 
     return (
         <form
-            className=""
+            className="flex flex-col gap-4 w-full max-w-2xl mx-auto mt-10"
             noValidate
             action={dispatch}
         >

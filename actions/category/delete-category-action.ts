@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import getToken from "@/src/auth/token";
 import { ErrorResponse } from "@/src/schemas";
@@ -10,10 +10,11 @@ type ActionStateType = {
     success: string
 };
 
-export async function DeleteProduct(productId: string, prevState: ActionStateType) {
+export async function DeleteCategoryAction(categoryId: string, prevState: ActionStateType) {
+
 
     const token = await getToken();
-    const url = `${process.env.API_URL}/products/${productId}`;
+    const url = `${process.env.API_URL}/category/${categoryId}`;
     const req = await fetch(url, {
         method: 'DELETE',
         headers: {
@@ -32,7 +33,7 @@ export async function DeleteProduct(productId: string, prevState: ActionStateTyp
     }
 
     const success = SuccessResponse.parse(json);
-    // revalidatePath('/admin/products');
+    // revalidatePath('/admin/products/category');
     return {
         errors: [],
         success: success.message

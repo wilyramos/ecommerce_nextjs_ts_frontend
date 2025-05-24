@@ -20,7 +20,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
             {/* Imagen principal con botones */}
             <div className="relative w-full h-80 sm:h-[500px] rounded-xl overflow-hidden shadow-md group">
                 <Image
-                    src={images[selectedIndex]}
+                    src={images[selectedIndex] || "/logo.svg"}
                     alt="Imagen seleccionada"
                     fill
                     sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
