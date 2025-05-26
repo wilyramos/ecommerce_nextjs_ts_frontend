@@ -6,7 +6,6 @@ import { CreateProductSchema, SuccessResponse } from "@/src/schemas"
 import { revalidatePath } from "next/cache"
 
 
-
 type ActionStateType = {
     errors: string[],
     success: string

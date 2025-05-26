@@ -235,3 +235,27 @@ export const OrderSchema = z.object({
     status: z.enum(['PENDIENTE', 'ENVIADO', 'ENTREGADO', 'CANCELADO']),
     paymentMethod: z.enum(['EFECTIVO', 'TARJETA', 'TRANSFERENCIA', 'PAYPAL']),
 });
+
+export const OrderAPIResponse = z.object({
+
+    _id: z.string(),
+    user: UserSchema.nullable(), // User can be null if not logged in
+    items: z.array(OrderProductSchema),
+    totalPrice: z.number(),
+    shippingAddress: shippingAddress,
+    status: z.enum(['PENDIENTE', 'ENVIADO', 'ENTREGADO', 'CANCELADO']),
+    paymentMethod: z.enum(['EFECTIVO', 'TARJETA', 'TRANSFERENCIA', 'PAYPAL']),
+    trackingId: z.string().optional(),
+    createdAt: z.string().datetime().optional(),
+    updatedAt: z.string().datetime().optional(),
+    __v: z.number().optional(),
+})
+
+export const OrdersAPIResponse = z.object({
+    orders: z.array(OrderAPIResponse),
+    totalOrders: z.number(),
+    totalPages: z.number(),
+    currentPage: z.number(),
+});
+export type Order = z.infer<typeof OrderAPIResponse>;
+export type OrdersList = z.infer<typeof OrdersAPIResponse>;

@@ -1,11 +1,13 @@
-import getToken from "../auth/token"
-
+import getToken from "@/src/auth/token"
+import { OrdersAPIResponse } from "@/src/schemas";
 
 
 export const getOrders = async ({ page = 1, limit = 10 }) => {
 
-    const token = getToken();
+    const token = await getToken();
+    console.log("Token:", token);
     const url = `${process.env.API_URL}/orders?page=${page}&limit=${limit}`;
+    console.log("Orders URL:", url);
 
     const req = await fetch(url, {
         method: 'GET',
@@ -14,13 +16,13 @@ export const getOrders = async ({ page = 1, limit = 10 }) => {
         }
     });
 
-    console.log("Orders Request:", req);
     if (!req.ok) {
         return null;
     }
 
     const json = await req.json();
-    console.log("Orders JSON:", json);
-    return json; // Assuming the response is already in the desired format
+    const orders = OrdersAPIResponse.parse(json);
+    console.log("Orders:", orders);
+    return orders;
 
 }
