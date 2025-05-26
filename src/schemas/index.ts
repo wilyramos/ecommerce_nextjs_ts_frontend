@@ -238,7 +238,7 @@ export const OrderSchema = z.object({
 
 export const OrderAPIResponse = z.object({
 
-    _id: z.string(),
+    _id: z.string().nullable(), // Order ID can be null if not created yet
     user: UserSchema.nullable(), // User can be null if not logged in
     items: z.array(OrderProductSchema),
     totalPrice: z.number(),
@@ -246,7 +246,7 @@ export const OrderAPIResponse = z.object({
     status: z.enum(['PENDIENTE', 'ENVIADO', 'ENTREGADO', 'CANCELADO']),
     paymentMethod: z.enum(['EFECTIVO', 'TARJETA', 'TRANSFERENCIA', 'PAYPAL']),
     trackingId: z.string().optional(),
-    createdAt: z.string().datetime().optional(),
+    createdAt: z.string().datetime(),
     updatedAt: z.string().datetime().optional(),
     __v: z.number().optional(),
 })
@@ -257,5 +257,6 @@ export const OrdersAPIResponse = z.object({
     totalPages: z.number(),
     currentPage: z.number(),
 });
+
 export type Order = z.infer<typeof OrderAPIResponse>;
 export type OrdersList = z.infer<typeof OrdersAPIResponse>;

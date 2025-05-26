@@ -15,13 +15,15 @@ type SearchParams = Promise<{
 }>;
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const categoryName = decodeURIComponent(params.slug).replace(/-/g, " ");
 
-  return {
-    title: `Productos en ${categoryName} - Gostore`,
-    description: `Explora nuestra colección de productos en la categoría ${categoryName} en Gostore.`,
-    keywords: [`productos`, `gostore`, categoryName, `comprar ${categoryName}`],
-  };
+    const { slug } = await params;
+    const categoryName = decodeURIComponent(slug).replace(/-/g, " ");
+
+    return {
+        title: `Productos en ${categoryName} - Gostore`,
+        description: `Explora nuestra colección de productos en la categoría ${categoryName} en Gostore.`,
+        keywords: [`productos`, `gostore`, categoryName, `comprar ${categoryName}`],
+    };
 }
 
 
