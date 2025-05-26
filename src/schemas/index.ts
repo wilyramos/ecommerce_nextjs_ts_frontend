@@ -221,15 +221,26 @@ export const shippingAddress = z.object({
     telefono: z.string().min(1, { message: 'El teléfono es obligatorio' }),
 });
 
+
+const ProductObjectSchema = ProductAPIResponse.pick({
+    _id: true,
+    nombre: true,
+    imagenes: true,
+})
+
 const OrderProductSchema = z.object({
-    productId: z.string().min(1, { message: 'El ID del producto es obligatorio' }),
+    product: ProductObjectSchema,
     quantity: z.number().min(1, { message: 'La cantidad debe ser al menos 1' }),
     price: z.number().min(0, { message: 'El precio debe ser al menos 0' }),
 });
 
+const OrderProductSchemaWithId = OrderProductSchema.extend({
+    product: z.string().optional(), // Para mantener compatibilidad con el backend
+});
+
 export const OrderSchema = z.object({
     user: z.string().optional(), // TODO: implementar el login
-    items: z.array(OrderProductSchema).min(1, { message: 'El pedido no puede estar vacío' }),
+    items: z.array(OrderProductSchemaWithId).min(1, { message: 'El pedido no puede estar vacío' }),
     totalPrice: z.number().min(0, { message: 'El total debe ser al menos 0' }),
     shippingAddress: shippingAddress,
     status: z.enum(['PENDIENTE', 'ENVIADO', 'ENTREGADO', 'CANCELADO']),
@@ -238,15 +249,15 @@ export const OrderSchema = z.object({
 
 export const OrderAPIResponse = z.object({
 
-    _id: z.string().nullable(), // Order ID can be null if not created yet
+    _id: z.string(),
     user: UserSchema.nullable(), // User can be null if not logged in
-    items: z.array(OrderProductSchema),
+    items: z.array(OrderProductSchemaWithId),
     totalPrice: z.number(),
     shippingAddress: shippingAddress,
     status: z.enum(['PENDIENTE', 'ENVIADO', 'ENTREGADO', 'CANCELADO']),
     paymentMethod: z.enum(['EFECTIVO', 'TARJETA', 'TRANSFERENCIA', 'PAYPAL']),
     trackingId: z.string().optional(),
-    createdAt: z.string().datetime(),
+    createdAt: z.string().datetime().optional(),
     updatedAt: z.string().datetime().optional(),
     __v: z.number().optional(),
 })
@@ -260,3 +271,19 @@ export const OrdersAPIResponse = z.object({
 
 export type Order = z.infer<typeof OrderAPIResponse>;
 export type OrdersList = z.infer<typeof OrdersAPIResponse>;
+
+
+export const OrderAPIResponseSchema = z.object({
+    _id: z.string(),
+    user: UserSchema.nullable(), // User can be null if not logged in
+    items: z.array(OrderProductSchema),
+    totalPrice: z.number(),
+    shippingAddress: shippingAddress,
+    status: z.enum(['PENDIENTE', 'ENVIADO', 'ENTREGADO', 'CANCELADO']),
+    paymentMethod: z.enum(['EFECTIVO', 'TARJETA', 'TRANSFERENCIA', 'PAYPAL']),
+    trackingId: z.string().optional(),
+    createdAt: z.string().datetime().optional(),
+    updatedAt: z.string().datetime().optional(),
+    __v: z.number().optional(),
+});
+export type OrderAPIResponseType = z.infer<typeof OrderAPIResponseSchema>;

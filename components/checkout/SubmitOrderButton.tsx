@@ -20,7 +20,7 @@ export default function SubmitOrderButton() {
 
     const order = {
         items: cart.map(item => ({
-            productId: item._id,
+            product: item._id,
             quantity: item.cantidad,
             price: item.precio
         })),

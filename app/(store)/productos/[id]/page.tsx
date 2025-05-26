@@ -71,7 +71,7 @@ export default async function pageProduct({ params }: { params: Params }) {
                                 ? 'bg-green-100 text-green-700'
                                 : 'bg-red-100 text-red-600'
                                 }`}>
-                                {producto.stock > 0 ? 'Disponible' : 'Agotado'}
+                                {`${producto.stock > 0 ? `${producto.stock} En stock` : 'Sin stock'}`}
                             </span>
                             {producto.sku && (
                                 <span className="text-gray-400 text-xs">SKU: {producto.sku}</span>

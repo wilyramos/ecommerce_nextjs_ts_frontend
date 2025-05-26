@@ -14,7 +14,7 @@ type SearchParams = Promise<{
     priceRange?: string;
 }>;
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
 
     const { slug } = await params;
     const categoryName = decodeURIComponent(slug).replace(/-/g, " ");

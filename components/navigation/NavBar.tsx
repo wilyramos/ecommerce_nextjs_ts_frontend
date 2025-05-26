@@ -13,8 +13,8 @@ import MobileMenuToggle from '../ui/MobileMenuToggle';
 
 export default function NavBar() {
     return (
-        <header className="border-b ">
-            <div className="container mx-auto flex justify-between items-center pl-10 pr-6 py-3">
+        <header className="">
+            <div className=" mx-auto flex justify-between items-center pl-10 pr-6 bg-gradient-to-l">
 
                 {/* Logo */}
                 <Link href="/" className="flex items-center">
@@ -29,7 +29,7 @@ export default function NavBar() {
                 </Link>
 
                 {/* Desktop Navigation */}
-                <nav className="hidden md:flex items-center gap-6 text-gray-600">
+                <nav className="hidden md:flex items-center gap-6 text-gray-900 font-semibold">
                     <NavigationMenu>
                         <NavigationMenuList>
                             <NavigationMenuItem>
@@ -72,7 +72,7 @@ export default function NavBar() {
 
                     <Link
                         href="/productos"
-                        className="text-gray-600 hover:text-blue-500 font-semibold hover:bg-gray-100 hover:bg-opacity-10 px-3 py-2 rounded"
+                        className="text-gray-900 hover:text-blue-500 font-bold hover:bg-gray-100 hover:bg-opacity-10 px-3 py-2 rounded "
                     >
                         Tienda
                     </Link>
@@ -80,7 +80,7 @@ export default function NavBar() {
 
                 {/* Right actions */}
                 <div className="flex items-center gap-3">
-                    <Link href="/auth/registro" className="hidden md:block text-gray-600 hover:text-blue-500">
+                    <Link href="/auth/registro" className="hidden md:block text-gray-850 hover:text-blue-500">
                         <FaUser size={18} />
                     </Link>
                     <ButtonShowCart

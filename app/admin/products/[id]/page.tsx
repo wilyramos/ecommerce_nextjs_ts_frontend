@@ -9,6 +9,7 @@ type Params = Promise<{
 }>;
 
 export default async function ProductDetailsPage({ params }: { params: Params }) {
+    
     const { id } = await params;
     const categorias = await getCategories();
     const product = await getProduct(id);

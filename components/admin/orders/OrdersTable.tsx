@@ -2,12 +2,12 @@ import type { OrdersList } from '@/src/schemas';
 import { formatDate } from '@/lib/utils';
 import Link from 'next/link';
 
+interface OrdersTableProps {
+    orders: OrdersList;
+}
 
 
-export default function OrdersTable({ orders }: { orders: OrdersList }) {
-
-
-    console.log(orders);
+export default function OrdersTable({ orders }: OrdersTableProps) {
 
     if (!orders || orders.orders.length === 0) {
         return (
@@ -24,15 +24,15 @@ export default function OrdersTable({ orders }: { orders: OrdersList }) {
             <table className="min-w-full divide-y divide-gray-200 text-xs md:text-sm">
                 <thead className="bg-gray-800 text-white">
                     <tr>
-                        <th className="px-4 py-1">Order</th>
-                        <th className="px-4 py-1 hidden md:table-cell">Fecha</th>
-                        <th className="px-4 py-1 hidden md:table-cell">Cliente</th>
-                        <th className="px-4 py-1 hidden md:table-cell">Total</th>
-                        <th className="px-4 py-1">Estado de pago</th>
-                        <th className="px-4 py-1">Estado de envío</th>
-                        <th className="px-4 py-1">Items</th>
-                        <th className="px-4 py-1">Estado de pedido</th>
-                        <th className="px-4 py-1">Tags</th>
+                        <th className="px-4 py-2 font-medium text-left">ID Pedido</th>
+                        <th className="px-4 py-2 hidden md:table-cell">Fecha</th>
+                        <th className="px-4 py-2 hidden md:table-cell">Cliente</th>
+                        <th className="px-4 py-2 hidden md:table-cell">Total</th>
+                        <th className="px-4 py-2">Método de Pago</th>
+                        <th className="px-4 py-2">Dirección de Envío</th>
+                        <th className="px-4 py-2">Items</th>
+                        <th className="px-4 py-2">Estado</th>
+                        <th className="px-4 py-2">Acciones</th>
                     </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200 text-gray-600 text-xs md:text-sm">
@@ -45,13 +45,13 @@ export default function OrdersTable({ orders }: { orders: OrdersList }) {
                                 </Link>
                             </td>
                             <td className="px-4 py-2 hidden md:table-cell">
-                                {formatDate(order.createdAt)}
+                                {order.createdAt ? formatDate(order.createdAt) : 'N/A'}
                             </td>
                             <td className="px-4 py-2 hidden md:table-cell">
                                 {order.user ? order.user.nombre : 'Anónimo'}
                             </td>
                             <td className="px-4 py-2 hidden md:table-cell">
-                                ${order.totalPrice.toFixed(2)}
+                                s/.{order.totalPrice.toFixed(2)}
                             </td>
                             <td className="px-4 py-2">{order.paymentMethod}</td>
                             <td className="px-4 py-2">{order.shippingAddress.direccion}</td>

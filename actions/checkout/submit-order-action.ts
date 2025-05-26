@@ -12,8 +12,6 @@ type ActionStateType = {
 
 export async function submitOrderAction(orderData: unknown, prevState: ActionStateType) {
 
-
-
     //TODO: - validate orderData with zod schema
     const dataParsed = OrderSchema.safeParse(orderData)
     if (!dataParsed.success) {
