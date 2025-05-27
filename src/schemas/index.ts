@@ -38,7 +38,7 @@ export const SuccessSchemaRegister = z.object({
 export const SuccessSchemaLogin = z.object({
     message: z.string(),
     token: z.string(),
-    role: z.enum(['cliente', 'administrador']),
+    role: z.enum(['cliente', 'administrador', 'vendedor']),
 })
 
 // succes for forgot password
@@ -93,7 +93,7 @@ export const UserSchema = z.object({
     _id: z.string(),
     nombre: z.string(),
     email: z.string().email(),
-    rol: z.enum(['cliente', 'administrador']),
+    rol: z.enum(['cliente', 'administrador', 'vendedor']),
     createdAt: z.string(),
     updatedAt: z.string(),
     __v: z.number(),
@@ -287,3 +287,45 @@ export const OrderAPIResponseSchema = z.object({
     __v: z.number().optional(),
 });
 export type OrderAPIResponseType = z.infer<typeof OrderAPIResponseSchema>;
+
+
+// SALES
+
+
+export const saleSchema = z.object({
+    customer: z.string().optional(),
+    employee: z.string().optional(), // asignado por backend o sesión
+    items: z.array(OrderProductSchemaWithId).min(1, { message: 'La venta debe tener al menos un producto' }),
+    totalPrice: z.number().min(0),
+    totalDiscountAmount: z.number().min(0).default(0),
+    source: z.enum(['ONLINE', 'POS']).default('POS'), // fuente de la venta, por defecto POS
+    order: z.string().optional(),
+    status: z.enum(['PENDIENTE', 'COMPLETADA', 'CANCELADA']).default("COMPLETADA"),
+    paymentMethod: z.enum(['EFECTIVO', 'TARJETA', 'TRANSFERENCIA', 'PAYPAL']).default('EFECTIVO'),
+    paymentStatus: z.enum(['PENDIENTE', 'COMPLETADO', 'CANCELADO']).default("COMPLETADO"),
+});
+
+export const SaleAPIResponse = z.object({
+    _id: z.string(),
+    customer: UserSchema.nullable(), // puede ser nulo o no asignado
+    employee: UserSchema.nullable(), // asignado por backend o sesión
+    items: z.array(OrderProductSchemaWithId),
+    totalPrice: z.number(),
+    totalDiscountAmount: z.number().default(0),
+    source: z.enum(['ONLINE', 'POS']).default('POS'),
+    order: z.string().optional(),
+    status: z.enum(['PENDIENTE', 'COMPLETADA', 'CANCELADA']).default("COMPLETADA"),
+    paymentMethod: z.enum(['EFECTIVO', 'TARJETA', 'TRANSFERENCIA', 'PAYPAL']).default('EFECTIVO'),
+    paymentStatus: z.enum(['PENDIENTE', 'COMPLETADO', 'CANCELADO']).default("COMPLETADO"),
+    createdAt: z.string().datetime().optional(),
+    updatedAt: z.string().datetime().optional(),
+    __v: z.number().optional(),
+});
+
+export const SalesAPIResponse = z.object({
+    sales: z.array(SaleAPIResponse),
+    totalSales: z.number(),
+    totalPages: z.number(),
+    currentPage: z.number(),
+});
+

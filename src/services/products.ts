@@ -42,14 +42,15 @@ export const getProduct = async (id: string) => {
     return product;
 }
 
-export const getProductsByFilter = async ({ page, limit, category, priceRange }: {
+export const getProductsByFilter = async ({ page, limit, category, priceRange, query }: {
     page: number;
     limit: number;
     category: string;
     priceRange: string;
+    query: string;
 }) => {
     // const token = getToken();
-    const url = `${process.env.API_URL}/products/filter?page=${page}&limit=${limit}&category=${category}&priceRange=${priceRange}`;
+    const url = `${process.env.API_URL}/products/filter?page=${page}&limit=${limit}&category=${category}&priceRange=${priceRange}&query=${query}`;
     // console.log("urlee", url);
     const req = await fetch(url, {
         method: 'GET'

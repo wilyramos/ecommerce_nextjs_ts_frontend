@@ -63,6 +63,9 @@ export async function authenticateUserAction(prevState: ActionStateType, formDat
     if (role === 'administrador') {
         redirect('/admin')
     }
+    if (role === 'vendedor') {
+        redirect('/pos')
+    }
 
     redirect('/')
 

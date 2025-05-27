@@ -5,7 +5,6 @@ import AdminSidebarMobil from "@/components/admin/AdminSidebarMobil";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
     const { user } = await verifySession();
-
     return (
         <>
             <div className="flex flex-col md:flex-row min-h-screen">

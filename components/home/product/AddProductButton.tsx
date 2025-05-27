@@ -12,7 +12,7 @@ export default function AddProductButton({ product }: { product: Product }) {
     return (
         <button
             type="button"
-            className="absolute top-2 right-2 md:opacity-0 md:group-hover:opacity-100 translate-y-0 md:translate-y-4 md:group-hover:translate-y-0 transition-all duration-300 bg-blue-500 text-white p-2 rounded-full shadow-md hover:bg-blue-700 cursor-pointer flex items-center justify-center text-xs md:text-base"
+            className="flex items-center justify-center gap-1 px-3 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors text-xs md:text-sm"
             onClick={() => {
                 addToCart(product);
                 toast.success("Producto añadido al carrito")
