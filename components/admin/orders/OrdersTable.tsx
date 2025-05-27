@@ -29,7 +29,7 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
                         <th className="px-4 py-2 hidden md:table-cell">Cliente</th>
                         <th className="px-4 py-2 hidden md:table-cell">Total</th>
                         <th className="px-4 py-2">Método de Pago</th>
-                        <th className="px-4 py-2">Dirección de Envío</th>
+                        <th className="hidden md:block px-4 py-2">Dirección de Envío</th>
                         <th className="px-4 py-2">Items</th>
                         <th className="px-4 py-2">Estado</th>
                         <th className="px-4 py-2">Acciones</th>
@@ -54,7 +54,7 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
                                 s/.{order.totalPrice.toFixed(2)}
                             </td>
                             <td className="px-4 py-2">{order.paymentMethod}</td>
-                            <td className="px-4 py-2">{order.shippingAddress.direccion}</td>
+                            <td className=" hidden md:block  px-4 py-2">{order.shippingAddress.direccion}</td>
                             <td className="px-4 py-2">
                                 {order.items.length} item{order.items.length > 1 ? 's' : ''}
                             </td>

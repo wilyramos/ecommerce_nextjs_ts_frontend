@@ -91,7 +91,7 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
                             <tr key={i}>
                                 <td className="px-4 py-3 flex items-center gap-3">
                                     <Image
-                                        src={item.product.imagenes[0]}
+                                        src={item.product.imagenes[0] || '/logo.svg'}
                                         alt={item.product.nombre}
                                         width={40}
                                         height={40}
