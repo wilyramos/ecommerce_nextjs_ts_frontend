@@ -3,7 +3,6 @@ import { useRouter } from "next/navigation"
 import { useActionState, useEffect } from 'react'
 import { toast } from "sonner"
 import { submitSaleAction } from "@/actions/pos/submit-sale-action"
-import { custom } from "zod"
 
 
 export default function SubmitSaleButton() {
@@ -17,8 +16,6 @@ export default function SubmitSaleButton() {
     const router = useRouter()
 
     const sale = {
-        customer: "null", // Aquí puedes agregar el ID del cliente si es necesario
-        employee: "test-employee-id", // Aquí puedes agregar el ID del empleado si es necesario
         items: cart.map(item => ({
             product: item._id,
             quantity: item.cantidad,
@@ -43,15 +40,15 @@ export default function SubmitSaleButton() {
     useEffect(() => {
         if (state.errors) {
             state.errors.forEach((error) => {
-                console.log("error", error)
+                // console.log("error", error)
                 toast.error(error);
             })
         }
         if (state.success) {
-            console.log(state.success)
+            // console.log(state.success)
             toast.success(state.success);
             clearCart();
-            router.push("/pos/success");
+
         }
     }, [state, router, clearCart]);
 
@@ -61,7 +58,7 @@ export default function SubmitSaleButton() {
         >
             <input
                 type="submit"
-                className="mt-4 w-full rounded-md bg-primary py-2 text-white hover:bg-primary-dark"
+                className="w-full bg-blue-500 text-white font-semibold py-2 rounded hover:bg-blue-600 transition-colors disabled:opacity-50 cursor-pointer"
                 value="Confirmar Venta"
             />
         </form>

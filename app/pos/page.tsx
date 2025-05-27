@@ -1,93 +1,61 @@
 import VentaCart from "@/components/POS/VentaCart";
-import { getProductsByFilter } from "@/src/services/products";
+import { searchProducts } from "@/src/services/products";
 import ProductCardPOS from "@/components/POS/ProductCardPOS";
+import ProductSearchForm from "@/components/POS/ProductSearchForm";
+import Link from "next/link";
 
-type POSPageProps = {
-    searchParams?: {
-        page?: string;
-        limit?: string;
-        category?: string;
-        priceRange?: string;
-        query?: string;
-    };
-};
+type SearchParams = Promise<{
+    page?: string;
+    limit?: string;
+    query?: string;
+}>;
 
-export default async function POSpage({ searchParams }: POSPageProps) {
-    
-
+export default async function POSpage({ searchParams }: { searchParams: SearchParams }) {
     const params = await searchParams;
 
     const {
         page = "1",
         limit = "10",
-        category = "",
-        priceRange = "0-1000",
         query = "",
     } = params || {};
 
     const parsedPage = parseInt(page);
     const parsedLimit = parseInt(limit);
 
-    // Obtener productos
-    const productos = await getProductsByFilter({
+    const productos = await searchProducts({
         page: parsedPage,
         limit: parsedLimit,
-        category,
-        priceRange,
-        query,
+        query: query || "",
     });
-
-    // Manejo de error si los productos no se cargan
-    if (!productos) {
-        return (
-            <div className="flex h-screen items-center justify-center p-4 text-red-500">
-                Error al cargar los productos. Por favor, inténtalo de nuevo más tarde.
-            </div>
-        );
-    }
 
     return (
         <div className="flex h-[calc(100vh-32px)] gap-4">
-            {/* Sección de Productos */}
-            <div className="flex flex-1 flex-col overflow-hidden">
-                <h1 className="mb-4 text-2xl font-bold text-gray-800">Punto de Venta</h1>
+            {/* Productos */}
+            <main className="flex flex-1 flex-col">
 
-                {/* Buscador de Productos */}
-                <form className="mb-2 flex" action="/pos">
-                    <input
-                        type="text"
-                        name="query"
-                        placeholder="Buscar producto..."
-                        defaultValue={query}
-                        className=""
-                    />
-                    <button
-                        type="submit"
-                        className=""
-                    >
-                        Buscar
-                    </button>
-                </form>
+                <ProductSearchForm />
 
-                {/* Lista de Productos */}
-                <div className="flex-1 overflow-y-auto pr-2 scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-400">
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                        {productos.products.length > 0 ? (
-                            productos.products.map((product) => (
-                                <ProductCardPOS key={product._id} product={product} />
-                            ))
-                        ) : (
-                            <p className="col-span-full text-center text-gray-500">
-                                No se encontraron productos con los criterios de búsqueda.
-                            </p>
-                        )}
-                    </div>
-                </div>
-            </div>
+                <section className="flex-1 overflow-y-auto pr-2">
+                    {productos && productos.products.length > 0 ? (
+                        <ul className="space-y-4">
+                            {productos.products.map((product) => (
+                                <li key={product._id}>
+                                    <ProductCardPOS product={product} />
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <div className="flex flex-col items-center justify-center py-12 text-center text-gray-500">
+                            <h2 className="text-lg font-semibold">No se encontraron productos</h2>
+                            <Link href="/pos" className="text-blue-600 hover:underline">Restablecer búsqueda</Link>
+                        </div>
+                    )}
+                </section>
+            </main>
 
-            {/* Carrito de Venta */}
-            <aside className="scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-400 w-[380px] overflow-y-auto border-l bg-white p-4 shadow-md">
-                <h2 className="mb-4 text-xl font-semibold text-gray-700">🛒 Carrito</h2>
+            {/* Carrito */}
+            <aside className="w-[360px] border-l bg-white p-4 overflow-y-auto">
+                <h2 className="mb-4 text-lg text-gray-700 border-b">Resumen de venta</h2>
                 <VentaCart />
             </aside>
         </div>

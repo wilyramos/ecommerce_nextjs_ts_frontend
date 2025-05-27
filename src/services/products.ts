@@ -47,7 +47,7 @@ export const getProductsByFilter = async ({ page, limit, category, priceRange, q
     limit: number;
     category: string;
     priceRange: string;
-    query: string;
+    query?: string;
 }) => {
     // const token = getToken();
     const url = `${process.env.API_URL}/products/filter?page=${page}&limit=${limit}&category=${category}&priceRange=${priceRange}&query=${query}`;
@@ -63,5 +63,24 @@ export const getProductsByFilter = async ({ page, limit, category, priceRange, q
 
     const products = ProductsAPIResponse.parse(json);
     // console.log("son los productos", products);
+    return products;
+}
+
+export const searchProducts = async ({ query, page, limit }: {
+    query: string;
+    page?: number;
+    limit?: number;
+}) => {
+    const url = `${process.env.API_URL}/products/search?query=${encodeURIComponent(query)}&page=${page}&limit=${limit}`;
+    const req = await fetch(url, {
+        method: 'GET'
+    });
+
+    if (!req.ok) {
+        return null;
+    }
+
+    const json = await req.json();
+    const products = ProductsAPIResponse.parse(json);
     return products;
 }

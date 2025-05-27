@@ -6,10 +6,7 @@ import { toast } from "sonner"
 import { useShippingStore } from "@/src/store/shippingStore"
 import { useRouter } from "next/navigation"
 
-
-
 export default function SubmitOrderButton() {
-
 
     const clearCart = useCartStore((s) => s.clearCart)
     const cart = useCartStore((s) => s.cart)

@@ -54,10 +54,6 @@ export async function createCategoryAction(prevState: ActionStateType, formData:
 
 
     
-
-
-
-    
     // console.log("category", category.data)
 
     return {

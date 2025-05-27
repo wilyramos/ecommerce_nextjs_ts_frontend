@@ -1,6 +1,7 @@
 "use server"
 
 import { ErrorResponseSchema, saleSchema } from "@/src/schemas"
+import { revalidatePath } from "next/cache"
 
 
 type ActionStateType = {
@@ -31,16 +32,22 @@ export async function submitSaleAction(orderData: unknown, prevState: ActionStat
     })
 
     const json = await req.json()
+    console.log("jsonnnnn", json)
     if (!req.ok) {
-        // const errors = ErrorResponseSchema.safeParse(json)
+        const errors = ErrorResponseSchema.parse(json)
         return {
-            errors: [json.message || "An error occurred while submitting the sale"],
+            errors: [errors.message],
             success: "",
         }
     }
 
+    // Revalidate the sale data
+
+    revalidatePath("/pos")
+    
+
     return {
         errors: [],
-        success: "Order submitted successfully",
+        success: json.message
     }
 }

@@ -1,6 +1,5 @@
 import { verifySession } from '@/src/auth/dal';
 import ToastNotification from "@/components/ui/ToastNotification";
-import { FaUserCircle } from "react-icons/fa";
 import SidebarPOS from "@/components/POS/SidebarPOS";
 
 export default async function POSlayout({ children }: { children: React.ReactNode }) {

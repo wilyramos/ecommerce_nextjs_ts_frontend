@@ -48,8 +48,8 @@ export default async function pageOrders({ searchParams }: PageOrdersProps) {
                 </div>
             ) : (
                 <>
-                    <OrdersTawble orders={orders} />
-                    <Pagination 
+                    <OrdersTable orders={orders} />
+                    <Pagination
                         currentPage={page}
                         totalPages={Math.ceil(orders.totalOrders / limit)}
                         limit={limit}
