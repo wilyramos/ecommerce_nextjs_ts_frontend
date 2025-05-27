@@ -6,7 +6,6 @@ import CarruselPrincipal from "@/components/home/CarruselPrincipal"
 export default async function HomePage() {
 
     const categories = await getCategories()
-
     return (
         <>
             {/* Hero principal */}
