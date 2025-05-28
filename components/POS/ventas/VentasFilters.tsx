@@ -1,48 +1,70 @@
 'use client'
+
 import { Search, Filter } from 'lucide-react'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { format } from 'date-fns'
 
-type Props = {
-    search: string
-    setSearch: (value: string) => void
-    fechaInicio: string
-    setFechaInicio: (value: string) => void
-    fechaFin: string
-    setFechaFin: (value: string) => void
-}
+export default function VentasFilters() {
+    const [search, setSearch] = useState('')
+    const [fechaInicio, setFechaInicio] = useState('')
+    const [fechaFin, setFechaFin] = useState('')
+    const router = useRouter()
 
-export default function VentasFilters({
-    search,
-    setSearch,
-    fechaInicio,
-    setFechaInicio,
-    fechaFin,
-    setFechaFin,
-}: Props) {
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+
+        const params = new URLSearchParams()
+
+        if (search.trim()) params.append('search', search.trim())
+        if (fechaInicio) params.append('fechaInicio', format(new Date(fechaInicio), 'yyyy-MM-dd'))
+        if (fechaFin) params.append('fechaFin', format(new Date(fechaFin), 'yyyy-MM-dd'))
+
+        router.push(`/pos/ventas?${params.toString()}`)
+    }
+
     return (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-gray-50 p-4 rounded-md">
-            <div className="relative">
-                <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
+        <form
+            onSubmit={handleSubmit}
+            className="flex flex-col md:flex-row items-center gap-4 p-4 bg-white rounded-lg shadow-sm"
+        >
+            <div className="flex items-center gap-2 w-full md:w-auto">
+                <Search className="text-gray-500" />
                 <input
                     type="text"
-                    placeholder="Buscar por cliente o ID"
-                    className="pl-10 pr-4 py-2 border border-gray-300 rounded-md w-full"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Buscar por ID o producto"
+                    aria-label="Buscar ventas"
+                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
             </div>
 
-            <input
-                type="date"
-                className="border border-gray-300 rounded-md px-4 py-2 w-full"
-                value={fechaInicio}
-                onChange={(e) => setFechaInicio(e.target.value)}
-            />
-            <input
-                type="date"
-                className="border border-gray-300 rounded-md px-4 py-2 w-full"
-                value={fechaFin}
-                onChange={(e) => setFechaFin(e.target.value)}
-            />
-        </div>
+            <div className="flex items-center gap-2 w-full md:w-auto">
+                <Filter className="text-gray-500" />
+                <input
+                    type="date"
+                    value={fechaInicio}
+                    onChange={(e) => setFechaInicio(e.target.value)}
+                    aria-label="Fecha inicio"
+                    className="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <span>-</span>
+                <input
+                    type="date"
+                    value={fechaFin}
+                    onChange={(e) => setFechaFin(e.target.value)}
+                    aria-label="Fecha fin"
+                    className="px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+            </div>
+
+            <button
+                type="submit"
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            >
+                Filtrar
+            </button>
+        </form>
     )
 }

@@ -1,22 +1,32 @@
 "use server"
 
-import { ErrorResponseSchema, saleSchema } from "@/src/schemas"
+import { ErrorResponseSchema, CreateSaleSchema } from "@/src/schemas"
 import { revalidatePath } from "next/cache"
 import getToken from "@/src/auth/token"
+import { verifySession } from '@/src/auth/dal';
+import type { CreateSaleInput } from "@/src/schemas"
 
 
+// Define the type for the action state
 type ActionStateType = {
     errors: string[],
     success: string
 }
 
 
-export async function submitSaleAction(orderData: unknown, prevState: ActionStateType) {
+export async function submitSaleAction(orderData: CreateSaleInput, prevState: ActionStateType) {
 
     //TODO: - validate orderData with zod schema
     const token = await getToken();
-    
-    const dataParsed = saleSchema.safeParse(orderData)
+    const { user } = await verifySession();
+
+    const saleData = {
+        ...orderData,
+        employee: user._id,
+    }
+
+    const dataParsed = CreateSaleSchema.safeParse(saleData)
+
     if (!dataParsed.success) {
         return {
             errors: dataParsed.error.errors.map((error) => error.message),

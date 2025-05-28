@@ -1,6 +1,5 @@
 import getToken from "../auth/token"
-
-
+import { SalesAPIResponse } from "@/src/schemas"
 
 interface GetSalesParams {
     search?: string;
@@ -12,16 +11,24 @@ interface GetSalesParams {
 
 export const getSales = async (params: GetSalesParams) => {
     try {
-        const token = getToken();
+        const token = await getToken();
         const { search, fechaInicio, fechaFin, page = 1, limit = 10 } = params;
-        const queryParams = new URLSearchParams({
-            ...(search && { search }),
-            ...(fechaInicio && { fechaInicio }),
-            ...(fechaFin && { fechaFin }),
-            page: page.toString(),
-            limit: limit.toString(),
-        });
+
+        const queryParams = new URLSearchParams();
+        if (search) {
+            queryParams.append('search', search);
+        }
+        if (fechaInicio) {
+            queryParams.append('fechaInicio', fechaInicio);
+        }
+        if (fechaFin) {
+            queryParams.append('fechaFin', fechaFin);
+        }
+        queryParams.append('page', page.toString());
+        queryParams.append('limit', limit.toString());
+
         const url = `${process.env.API_URL}/sales?${queryParams.toString()}`;
+
 
         const req = await fetch(url, {
             method: 'GET',
@@ -29,15 +36,17 @@ export const getSales = async (params: GetSalesParams) => {
                 'Authorization': `Bearer ${token}`
             }
         });
-        console.log("reqqq",req)
 
         if (!req.ok) {
+            console.error("Error en la respuesta:", req.statusText);
             return null;
         }
 
         const json = await req.json();
-        console.log("jssssonnn", json)
-        return json;
+        // console.log("JSON response:", json);
+        const salesData = SalesAPIResponse.parse(json);
+        // console.log("Sales data:", salesData);
+        return salesData;
 
     } catch (error) {
         console.error("Error fetching sales:", error);

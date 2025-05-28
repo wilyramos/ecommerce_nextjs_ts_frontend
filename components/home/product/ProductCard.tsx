@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Product } from '@/src/schemas';
-import AddProductButton from './AddProductButton';
+// import AddProductButton from './AddProductButton';
 
 export default function ProductCard({ product }: { product: Product }) {
     const imagenUrl = product.imagenes[0] || '/logo.svg';

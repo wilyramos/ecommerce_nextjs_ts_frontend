@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation"
 import { useActionState, useEffect } from 'react'
 import { toast } from "sonner"
 import { submitSaleAction } from "@/actions/pos/submit-sale-action"
+import type { CreateSaleInput } from "@/src/schemas"
 
 
 export default function SubmitSaleButton() {
@@ -14,7 +15,7 @@ export default function SubmitSaleButton() {
 
     const router = useRouter()
 
-    const sale = {
+    const sale: CreateSaleInput = {
         items: cart.map(item => ({
             product: item._id,
             quantity: item.cantidad,
@@ -25,8 +26,8 @@ export default function SubmitSaleButton() {
         source: "POS",
         status: "COMPLETADA",
         paymentMethod: "EFECTIVO",
-        paymentStatus: "PENDIENTE"
-
+        paymentStatus: "PAGADO",
+        // customer: "68045c2951fecc9b214060b2" //TODO: - get customer from cart or session
     };
 
 
@@ -34,7 +35,7 @@ export default function SubmitSaleButton() {
     const [state, dispatch] = useActionState(submitSaleWithData, {
         errors: [],
         success: ""
-    })
+    });
 
     useEffect(() => {
         if (state.errors) {

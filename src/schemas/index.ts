@@ -91,12 +91,12 @@ export const resetPasswordSchema = z.object({
 
 export const UserSchema = z.object({
     _id: z.string(),
-    nombre: z.string(),
-    email: z.string().email(),
-    rol: z.enum(['cliente', 'administrador', 'vendedor']),
-    createdAt: z.string(),
-    updatedAt: z.string(),
-    __v: z.number(),
+    nombre: z.string().optional(),
+    email: z.string().email().optional(),
+    rol: z.enum(['cliente', 'administrador', 'vendedor']).optional(),
+    createdAt: z.string().optional(),
+    updatedAt: z.string().optional(),
+    __v: z.number().optional(),
 })
 
 export type User = z.infer<typeof UserSchema>
@@ -292,35 +292,49 @@ export type OrderAPIResponseType = z.infer<typeof OrderAPIResponseSchema>;
 // SALES
 
 
-export const saleSchema = z.object({
-    customer: z.string().optional(),
-    employee: z.string().optional(), // asignado por backend o sesión
-    items: z.array(OrderProductSchemaWithId).min(1, { message: 'La venta debe tener al menos un producto' }),
+export const CreateSaleSchema = z.object({
+    items: z.array(z.object({
+        product: z.string().min(1).max(100),
+        quantity: z.number().min(1),
+        price: z.number().min(0)
+    })).min(1),
     totalPrice: z.number().min(0),
     totalDiscountAmount: z.number().min(0).default(0),
-    source: z.enum(['ONLINE', 'POS']).default('POS'), // fuente de la venta, por defecto POS
+    source: z.enum(['ONLINE', 'POS']).default('POS'),
     order: z.string().optional(),
-    status: z.enum(['PENDIENTE', 'COMPLETADA', 'CANCELADA']).default("COMPLETADA"),
-    paymentMethod: z.enum(['EFECTIVO', 'TARJETA', 'TRANSFERENCIA', 'PAYPAL']).default('EFECTIVO'),
-    paymentStatus: z.enum(['PENDIENTE', 'COMPLETADO', 'CANCELADO']).default("COMPLETADO"),
+    status: z.enum(['COMPLETADA', 'REEMBOLSADA', 'ANULADA']).default("COMPLETADA"),
+    paymentMethod: z.enum(['EFECTIVO', 'TARJETA', 'TRANSFERENCIA', 'YAPE', 'PLIN']).default('EFECTIVO'),
+    paymentStatus: z.enum(['PAGADO', 'PENDIENTE', 'CANCELADO']).default("PAGADO"),
+    customer: z.string().optional(), // ID del cliente, puede ser null si no se asigna un cliente
+    employee: z.string().optional(), // ID del empleado, puede ser null si no se asigna un empleado
+});
+
+export type CreateSaleInput = z.infer<typeof CreateSaleSchema>;
+
+const SaleProductSchema = z.object({
+    product: ProductObjectSchema,
+    quantity: z.number().min(1, { message: 'La cantidad debe ser al menos 1' }),
+    price: z.number().min(0, { message: 'El precio debe ser al menos 0' }),
 });
 
 export const SaleAPIResponse = z.object({
     _id: z.string(),
-    customer: UserSchema.nullable(), // puede ser nulo o no asignado
-    employee: UserSchema.nullable(), // asignado por backend o sesión
-    items: z.array(OrderProductSchemaWithId),
-    totalPrice: z.number(),
-    totalDiscountAmount: z.number().default(0),
+    items: z.array(SaleProductSchema),
+    totalDiscountAmount: z.number().min(0).default(0),
     source: z.enum(['ONLINE', 'POS']).default('POS'),
-    order: z.string().optional(),
-    status: z.enum(['PENDIENTE', 'COMPLETADA', 'CANCELADA']).default("COMPLETADA"),
-    paymentMethod: z.enum(['EFECTIVO', 'TARJETA', 'TRANSFERENCIA', 'PAYPAL']).default('EFECTIVO'),
-    paymentStatus: z.enum(['PENDIENTE', 'COMPLETADO', 'CANCELADO']).default("COMPLETADO"),
+    status: z.enum(['COMPLETADA', 'REEMBOLSADA', 'ANULADA']).default("COMPLETADA"),
+    paymentMethod: z.enum(['EFECTIVO', 'TARJETA', 'TRANSFERENCIA', 'YAPE', 'PLIN']).default('EFECTIVO'),
+    paymentStatus: z.enum(['PAGADO', 'PENDIENTE', 'CANCELADO']).default("PAGADO"),
     createdAt: z.string().datetime().optional(),
     updatedAt: z.string().datetime().optional(),
+    totalPrice: z.number().min(0),
+    customer: UserSchema.nullable().optional(), // ID del empleado, si existe
+    employee: UserSchema.nullable().optional(), // ID del empleado, si existe
+    order: z.string().optional(), // ID de la orden asociada, si existe
     __v: z.number().optional(),
 });
+
+export type Sale = z.infer<typeof SaleAPIResponse>;
 
 export const SalesAPIResponse = z.object({
     sales: z.array(SaleAPIResponse),
