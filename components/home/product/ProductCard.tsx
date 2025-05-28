@@ -33,9 +33,9 @@ export default function ProductCard({ product }: { product: Product }) {
                 </div>
             </Link>
 
-            <div className="px-3 pb-3">
+            {/* <div className="px-3 pb-3">
                 <AddProductButton product={product} />
-            </div>
+            </div> */}
         </div>
     );
 }

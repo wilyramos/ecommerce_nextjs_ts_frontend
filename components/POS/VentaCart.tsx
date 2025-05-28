@@ -7,81 +7,87 @@ import { FiTrash2 } from "react-icons/fi";
 import Image from "next/image";
 
 export default function VentaCart() {
-    // Destructure cart, updateQuantity, and removeFromCart directly for cleaner access
     const { cart, updateQuantity, removeFromCart } = useCartStore();
-
-    // Calculate total in a single line, leveraging reduce
     const total = cart.reduce((acc, item) => acc + item.subtotal, 0);
 
+    if (cart.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+                <FaShoppingCart size={56} className="text-gray-400 mb-4" />
+                <p className="text-gray-600 text-sm">Tu carrito está vacío.</p>
+            </div>
+        );
+    }
+
     return (
-        <div className="">
-            {cart.length === 0 ? (
-                // Display empty cart message when no items are present
-                <div className="flex flex-col items-center justify-center py-12">
-                    <FaShoppingCart size={56} className="text-gray-400 mb-4" />
-                    <p className="text-gray-600 text-center text-xs sm:text-md">Tu carrito está vacío.</p>
-                </div>
-            ) : (
-                // Render cart items and total when items are in the cart
-                <>
-                    <ul className="divide-y divide-gray-200 mb-4 max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300">
+        <div className="space-y-4">
+            <div className="overflow-x-auto max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300">
+                <table className="w-full text-sm text-left text-gray-700">
+                    <thead className="bg-gray-50 text-gray-800 border-b text-xs">
+                        <tr>
+                            <th className="py-2">Producto</th>
+                            <th className="py-2 text-center">Cantidad</th>
+                            <th className="py-2 text-right">Subtotal</th>
+                            <th className="py-2 text-center"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         {cart.map((item) => (
-                            <li key={item._id} className="flex items-center justify-between py-3 text-sm">
-                                <div className="flex items-center gap-3">
-                                    <Image
-                                        src={item.imagenes[0] || "/logo.svg"}
-                                        alt={item.nombre}
-                                        width={50}
-                                        height={50}
-                                        className="w-12 h-12 object-cover rounded"
-                                    />
-                                    <div>
-                                        <p className="text-gray-800 ">{item.nombre}</p>
-                                        <p className="text-gray-500">S/. {item.precio.toFixed(2)}</p>
+                            <tr key={item._id} className="border-b last:border-b-0">
+                                <td className="py-2 pr-2">
+                                    <div className="flex items-center gap-2">
+                                        <Image
+                                            src={item.imagenes[0] || "/logo.svg"}
+                                            alt={item.nombre}
+                                            width={36}
+                                            height={36}
+                                            className="w-9 h-9 object-cover rounded"
+                                        />
+                                        <span className="truncate max-w-[120px]">{item.nombre}</span>
                                     </div>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <button
-                                        onClick={() => updateQuantity(item._id, item.cantidad - 1)}
-                                        disabled={item.cantidad <= 1}
-                                        className="px-2 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50"
-                                    >
-                                        -
-                                    </button>
-                                    <span className="text-gray-800">{item.cantidad}</span>
-                                    <button
-                                        onClick={() => updateQuantity(item._id, item.cantidad + 1)}
-                                        className="px-2 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
-                                    >
-                                        +
-                                    </button>
-
-                                </div>
-                                {/* Display item subtotal clearly */}
-                                <span className="text-gray-900 font-semibold">
+                                </td>
+                                <td className="text-center">
+                                    <div className="flex items-center justify-center gap-1">
+                                        <button
+                                            onClick={() => updateQuantity(item._id, item.cantidad - 1)}
+                                            disabled={item.cantidad <= 1}
+                                            className="px-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50"
+                                        >
+                                            -
+                                        </button>
+                                        <span>{item.cantidad}</span>
+                                        <button
+                                            onClick={() => updateQuantity(item._id, item.cantidad + 1)}
+                                            className="px-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                </td>
+                                <td className="text-right pr-2 text-sm text-gray-800">
                                     S/. {(item.precio * item.cantidad).toFixed(2)}
-                                </span>
-                                <button
-                                    onClick={() => removeFromCart(item._id)}
-                                    className="text-red-500 hover:text-red-700"
-                                    aria-label={`Eliminar ${item.nombre}`}
-                                >
-                                    <FiTrash2 size={20} />
-                                </button>
-                            </li>
+                                </td>
+                                <td className="text-center">
+                                    <button
+                                        onClick={() => removeFromCart(item._id)}
+                                        className="text-red-500 hover:text-red-700"
+                                        aria-label={`Eliminar ${item.nombre}`}
+                                    >
+                                        <FiTrash2 size={16} />
+                                    </button>
+                                </td>
+                            </tr>
                         ))}
-                    </ul>
+                    </tbody>
+                </table>
+            </div>
 
-                    <div className="text-end text-gray-800 text-base sm:text-lg">
-                        Total:{" "}
-                        <span className="text-xl font-bold text-gray-950">S/. {total.toFixed(2)}</span>
-                    </div>
+            <div className="text-end">
+                <p className="text-sm text-gray-600">Total:</p>
+                <p className="text-xl font-bold text-gray-900">S/. {total.toFixed(2)}</p>
+            </div>
 
-                    <div className="mt-6">
-                        <SubmitSaleButton />
-                    </div>
-                </>
-            )}
+            <SubmitSaleButton />
         </div>
     );
 }

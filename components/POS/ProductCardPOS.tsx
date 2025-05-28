@@ -7,39 +7,44 @@ export default function ProductCardPOS({ product }: { product: Product }) {
     const { nombre, precio, imagenes, stock } = product;
 
     return (
-        <div className="flex items-center gap-4 rounded border bg-white p-3 shadow-sm">
-            <div className="w-16 h-16 flex-shrink-0 bg-gray-100 rounded overflow-hidden">
+        <div className="group flex items-center gap-2 rounded-md border border-gray-200 bg-white p-2 transition-colors hover:border-primary ">
+            <div className="relative w-12 h-12 overflow-hidden rounded">
                 {imagenes?.[0] ? (
                     <Image
                         src={imagenes[0]}
                         alt={nombre}
-                        width={64}
-                        height={64}
-                        className="object-cover w-full h-full"
+                        width={48}
+                        height={48}
                         loading="lazy"
+                        quality={20}
+                        className="object-cover w-full h-full transition-transform duration-200 group-hover:scale-105"
                     />
                 ) : (
-                    <div className="flex items-center justify-center h-full text-xs text-gray-400">
-                        Sin imagen
+                    <div className="flex items-center justify-center w-full h-full text-gray-400 text-xs">
+                        Sin foto
                     </div>
                 )}
             </div>
 
-            <div className="flex-1">
-                <h3 className="text-sm font-medium text-gray-800 truncate">{nombre}</h3>
-                <div className="flex items-center justify-between text-xs text-gray-500 mt-1">
-                    <span className="text-primary font-semibold text-sm">${precio.toFixed(2)}</span>
-                    <span className="flex items-center gap-1">
-                        <FaBox className="text-gray-400" /> {stock}
-                    </span>
+            <div className="flex-1 min-w-0">
+                <h3 className="text-sm font-semibold text-gray-800 truncate group-hover:text-primary">{nombre}</h3>
+                <div className="mt-0.5 text-xs text-gray-600">
+                    <span className="font-medium">S/. {precio.toFixed(2)}</span>
+                    {stock > 0 && (
+                        <span className="ml-2 flex items-center gap-1 text-gray-500">
+                            <FaBox className="text-gray-400" size={10} /> {stock}
+                        </span>
+                    )}
                 </div>
             </div>
 
-            {stock > 0 ? (
-                <AddProductButton product={product} />
-            ) : (
-                <div className="text-xs text-gray-400">Sin stock</div>
-            )}
+            <div className="flex justify-end">
+                {stock > 0 ? (
+                    <AddProductButton product={product} />
+                ) : (
+                    <span className="text-xs text-gray-400">Agotado</span>
+                )}
+            </div>
         </div>
     );
 }

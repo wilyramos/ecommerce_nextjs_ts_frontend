@@ -2,6 +2,7 @@
 
 import { ErrorResponseSchema, saleSchema } from "@/src/schemas"
 import { revalidatePath } from "next/cache"
+import getToken from "@/src/auth/token"
 
 
 type ActionStateType = {
@@ -13,6 +14,8 @@ type ActionStateType = {
 export async function submitSaleAction(orderData: unknown, prevState: ActionStateType) {
 
     //TODO: - validate orderData with zod schema
+    const token = await getToken();
+    
     const dataParsed = saleSchema.safeParse(orderData)
     if (!dataParsed.success) {
         return {
@@ -26,8 +29,10 @@ export async function submitSaleAction(orderData: unknown, prevState: ActionStat
     const req = await fetch(url, {
         method: 'POST',
         headers: {
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
         },
+
         body: JSON.stringify(dataParsed.data),
     })
 

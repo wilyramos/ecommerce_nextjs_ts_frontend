@@ -8,7 +8,6 @@ import { submitSaleAction } from "@/actions/pos/submit-sale-action"
 export default function SubmitSaleButton() {
 
 
-
     const clearCart = useCartStore((s) => s.clearCart)
     const cart = useCartStore((s) => s.cart)
     const total = useCartStore((s) => s.total)

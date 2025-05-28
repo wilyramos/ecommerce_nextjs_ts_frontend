@@ -24,8 +24,8 @@ type OrderInputType = {
 
 export async function createOrderAction(order: OrderInputType, prevState: ActionStateType, formData: FormData) {
 
-    console.log("order", order)
-    console.log("formData", formData)
+    // console.log("order", order)
+    // console.log("formData", formData)
 
     return {
         errors: [],
