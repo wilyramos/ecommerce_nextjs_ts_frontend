@@ -13,13 +13,13 @@ import MobileMenuToggle from '../ui/MobileMenuToggle';
 
 export default function NavBar() {
     return (
-        <header className="">
+        <header className="bg-gray-950 text-gray-50">
             <div className=" mx-auto flex justify-between items-center pl-10 pr-6 bg-gradient-to-l">
 
                 {/* Logo */}
                 <Link href="/" className="flex items-center">
                     <Image
-                        src="/logo.svg"
+                        src="/logo-w.svg"
                         alt="Logo"
                         width={50}
                         height={50}
@@ -72,7 +72,7 @@ export default function NavBar() {
 
                     <Link
                         href="/productos"
-                        className="text-gray-900 hover:text-blue-500 font-bold hover:bg-gray-100 hover:bg-opacity-10 px-3 py-2 rounded "
+                        className=" bg-gray-50 text-gray-900 hover:text-blue-500 font-bold hover:bg-gray-100 hover:bg-opacity-10 px-3 py-2 rounded "
                     >
                         Tienda
                     </Link>
