@@ -8,6 +8,7 @@ import {
     FaUsers,
     FaSignOutAlt,
 } from 'react-icons/fa';
+import AdminMenu from '@/components/admin/AdminMenu';
 
 export default function SidebarPOS({ user }: { user: User }) {
     return (
@@ -38,10 +39,11 @@ export default function SidebarPOS({ user }: { user: User }) {
             </nav>
 
             {/* Salir */}
-            <div className="p-4 border-t">
-                <button className="flex items-center gap-2 text-sm text-red-500 hover:text-red-600 transition">
-                    <FaSignOutAlt /> Cerrar sesión
-                </button>
+            <div className="flex items-center justify-between px-4 py-3 bg-gray-800">
+                <p className="text-sm text-white">
+                    Hola <span className="font-bold text-gray-50 uppercase">{user.nombre}</span>
+                </p>
+                <AdminMenu user={user} />
             </div>
         </aside>
     );

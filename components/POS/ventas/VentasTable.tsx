@@ -2,18 +2,28 @@ import { Sale } from '@/src/schemas'
 import { formatDate } from '@/lib/utils'
 
 export default function VentasTable({ ventas }: { ventas: Sale[] }) {
+
+
+    // Calcular el total de ventas
+    const totalVentas = ventas.reduce((total, venta) => total + venta.totalPrice, 0);
+
+
+
     return (
         <div className="overflow-x-auto rounded-lg shadow-sm border bg-white">
+            <div className="p-4 bg-gray-50 border-b">
+                <h2 className="text-lg font-semibold text-gray-800">Total Ventas: S/ {totalVentas.toFixed(2)}</h2>
+            </div>
             <table className="min-w-full divide-y divide-gray-200 text-sm text-left">
                 <thead className="bg-gray-100 text-gray-700">
                     <tr>
-                        <th className="px-4 py-3">Fecha</th>
-                        <th className="px-4 py-3">Cliente</th>
-                        <th className="px-4 py-3">Empleado</th>
-                        <th className="px-4 py-3">Total</th>
-                        <th className="px-4 py-3">Pago</th>
-                        <th className="px-4 py-3">Estado</th>
-                        <th className="px-4 py-3">Estado Pago</th>
+                            <th className="px-4 py-3">Fecha</th>
+                            <th className="px-4 py-3">Cliente</th>
+                            <th className="px-4 py-3">Empleado</th>
+                            <th className="px-4 py-3">Total</th>
+                            <th className="px-4 py-3">Pago</th>
+                            <th className="px-4 py-3">Estado</th>
+                            <th className="px-4 py-3">Estado Pago</th>
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 text-gray-900">

@@ -10,7 +10,7 @@ import type { User } from '@/src/schemas'
 export default function AdminMenu({ user }: { user: User }) {
     return (
         <Popover className="relative">
-            <PopoverButton className="inline-flex items-center justify-center p-2 hover:bg-gray-600 transition duration-150">
+            <PopoverButton className="inline-flex items-center justify-center p-2  transition duration-150 rounded-lg">
                 <Bars3Icon className="w-6 h-6 text-white" />
             </PopoverButton>
 

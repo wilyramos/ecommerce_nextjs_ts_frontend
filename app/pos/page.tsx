@@ -47,7 +47,20 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
                     ) : (
                         <div className="flex flex-col items-center justify-center py-12 text-center text-gray-500">
                             <h2 className="text-lg font-semibold">No se encontraron productos</h2>
-                            <Link href="/pos" className="text-blue-600 hover:underline">Restablecer búsqueda</Link>
+                            <Link 
+                                href="/pos" className="text-blue-600 hover:underline"
+                                onClick={() => {
+                                    // Reset search params
+                                    const url = new URL(window.location.href);
+                                    url.searchParams.delete("query");
+                                    url.searchParams.delete("page");
+                                    url.searchParams.delete("limit");
+                                    window.history.pushState({}, "", url.toString());
+                                }}
+                            >
+                                Restablecer búsqueda
+                            </Link>
+
                         </div>
                     )}
                 </section>
