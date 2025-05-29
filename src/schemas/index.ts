@@ -125,6 +125,7 @@ export const CreateProductSchema = z.object({
     precio: z.number().min(0, { message: 'El precio es obligatorio' }),
     categoria: z.string().min(1, { message: 'La categoría es obligatoria' }),
     stock: z.number().min(0, { message: 'El stock es obligatorio' }),
+    sku: z.string().optional(),
     imagenes: z.array(z.string())
 })
 

@@ -19,12 +19,13 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         precio: Number(formData.get('precio')),
         categoria: formData.get('categoria'),
         stock: Number(formData.get('stock')),
-        imagenes: formData.getAll('imagenes') 
+        sku: formData.get('sku') || undefined,
+        imagenes: formData.getAll('imagenes')
     }
     // console.log("productData", productData)
 
     const product = CreateProductSchema.safeParse(productData)
-    console.log("productt", product)
+    // console.log("productt", product)
 
     if (!product.success) {
         return {
@@ -47,6 +48,7 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
             precio: product.data.precio,
             categoria: product.data.categoria,
             stock: product.data.stock,
+            sku: product.data.sku,
             imagenes: product.data.imagenes
         })
     })

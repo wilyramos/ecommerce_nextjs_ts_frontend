@@ -20,6 +20,7 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         precio: Number(formData.get("precio")),
         categoria: formData.get("categoria"),
         stock: Number(formData.get("stock")),
+        sku: formData.get("sku"),
         imagenes: formData.getAll("imagenes[]") as string[],
     }
     // console.log("productData", productData)

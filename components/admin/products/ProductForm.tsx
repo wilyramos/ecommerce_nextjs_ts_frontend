@@ -72,8 +72,18 @@ export default function ProductForm({ product, categorias }: { product?: Product
                 </div>
             </div>
 
-            
-            <UploadProductImage 
+            <div className="mt-4">
+                <label htmlFor="sku" className="block text-sm font-medium text-gray-700">SKU (opcional)</label>
+                <input
+                    type="text"
+                    id="sku"
+                    name="sku"
+                    className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    defaultValue={product?.sku}
+                />
+            </div>
+
+            <UploadProductImage
                 CurrentImagenes={product?.imagenes}
             />
         </div>
