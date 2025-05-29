@@ -43,9 +43,9 @@ export const getSales = async (params: GetSalesParams) => {
         }
 
         const json = await req.json();
-        // console.log("JSON response:", json);
+        console.log("JSON response:", json);
         const salesData = SalesAPIResponse.parse(json);
-        // console.log("Sales data:", salesData);
+        console.log("Sales data:", salesData);
         return salesData;
 
     } catch (error) {

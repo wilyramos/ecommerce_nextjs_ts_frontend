@@ -25,7 +25,7 @@ export default function CustomerDniInput() {
             setDni(dni);
         }
 
-    }, [state])
+    }, [state, setDni])
 
 
     return (
@@ -34,9 +34,6 @@ export default function CustomerDniInput() {
             noValidate
             action={dispatch}
         >
-            <label htmlFor="dni" className="block text-sm font-medium text-gray-700 mb-2">
-                DNI del Cliente
-            </label>
 
             <div className="flex justify-between items-center gap-2">
                 <input
@@ -44,18 +41,12 @@ export default function CustomerDniInput() {
                     id="dni"
                     name="dni"
                     placeholder="Ingrese el DNI del cliente"
-                    className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-2 py-1 border border-gray-300 rounded "
                     required
                     pattern="\d{8,11}" // Validación para DNI peruano (8 a 11 dígitos)
                     title="El DNI debe tener entre 8 y 11 dígitos"
                     maxLength={11}
 
-                />
-
-                <input
-                    type="submit"
-                    className=""
-                    value="Buscar Cliente"
                 />
             </div>
 

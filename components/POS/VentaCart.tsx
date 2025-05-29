@@ -93,7 +93,7 @@ export default function VentaCart() {
             <CustomerDniInput />
             {dni && (
                 <div className="text-sm text-gray-700">
-                    DNI del cliente: <span className="font-medium">{dni}</span>
+                    DNI del cliente: <span className="font-bold">{dni}</span>
                 </div>
             )}
 

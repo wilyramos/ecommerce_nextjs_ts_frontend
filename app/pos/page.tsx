@@ -2,8 +2,6 @@ import VentaCart from "@/components/POS/VentaCart";
 import { searchProducts } from "@/src/services/products";
 import ProductCardPOS from "@/components/POS/ProductCardPOS";
 import ProductSearchForm from "@/components/POS/ProductSearchForm";
-import Link from "next/link";
-import ButtonResetSearch from "@/components/POS/ButtonResetSearch";
 
 type SearchParams = Promise<{
     page?: string;

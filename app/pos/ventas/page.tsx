@@ -17,7 +17,6 @@ type PageVentasProps = {
 
 export default async function PageVentas({ searchParams }: PageVentasProps) {
 
-
     const params = await searchParams;
 
     const page = Number(params.page) || 1;
@@ -43,27 +42,36 @@ export default async function PageVentas({ searchParams }: PageVentasProps) {
     }
 
 
-   return (
-    <section className="p-6 space-y-6">
-      <h2 className="text-2xl font-bold text-gray-800">Ventas</h2>
+    return (
+        <section className="p-6 space-y-6">
+            <h2 className="text-2xl font-bold text-gray-800">Ventas</h2>
 
-      <VentasFilters />
+            <div className='sticky top-0 z-10 '>
+                <VentasFilters />
+            </div>
 
-      <VentasTable
-        ventas={data?.sales || []}
-      />
+            <div className='overflow-y-auto'>
+                <div>
+                    <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                        Suma Total: S/ {data.totalAmount.toFixed(2)}
+                    </h3>
+                </div>
+                <VentasTable
+                    ventas={data?.sales || []}
+                />
 
-      <Pagination
-        currentPage={data.currentPage}
-        totalPages={data.totalPages}
-        limit={limit}
-        pathname="/pos/ventas"
-        queryParams={{
-          search: params.search,
-          fechaInicio: params.fechaInicio,
-          fechaFin: params.fechaFin,
-        }}
-      />
-    </section>
-  );
+                <Pagination
+                    currentPage={data.currentPage}
+                    totalPages={data.totalPages}
+                    limit={limit}
+                    pathname="/pos/ventas"
+                    queryParams={{
+                        search: params.search,
+                        fechaInicio: params.fechaInicio,
+                        fechaFin: params.fechaFin,
+                    }}
+                />
+            </div>
+        </section>
+    );
 }

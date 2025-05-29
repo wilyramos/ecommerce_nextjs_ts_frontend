@@ -7,14 +7,14 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     const { user } = await verifySession();
     return (
         <>
-            <div className="flex flex-col md:flex-row min-h-screen">
+            <div className="flex h-screen bg-gray-100">
                 <div className="hidden md:block border-r border-gray-200">
                     <AdminSidebar user={user} />
                 </div>
                 <div className="block md:hidden w-full border-b border-gray-200">
                     <AdminSidebarMobil user={user} />
                 </div>
-                <main className="flex-grow p-4 bg-gray-50">
+                <main className="flex-grow overflow-y-auto px-6 py-4">
                     {children}
                 </main>
             </div>

@@ -305,7 +305,7 @@ export const CreateSaleSchema = z.object({
     status: z.enum(['COMPLETADA', 'REEMBOLSADA', 'ANULADA']).default("COMPLETADA"),
     paymentMethod: z.enum(['EFECTIVO', 'TARJETA', 'TRANSFERENCIA', 'YAPE', 'PLIN']).default('EFECTIVO'),
     paymentStatus: z.enum(['PAGADO', 'PENDIENTE', 'CANCELADO']).default("PAGADO"),
-    customer: z.string().optional(), // ID del cliente, puede ser null si no se asigna un cliente
+    customerDNI: z.string().optional(), // ID del cliente, puede ser null si no se asigna un cliente
     employee: z.string().optional(), // ID del empleado, puede ser null si no se asigna un empleado
 });
 
@@ -328,7 +328,7 @@ export const SaleAPIResponse = z.object({
     createdAt: z.string().datetime().optional(),
     updatedAt: z.string().datetime().optional(),
     totalPrice: z.number().min(0),
-    customer: UserSchema.nullable().optional(), // ID del empleado, si existe
+    customerDNI: z.string().optional(), // DNI del cliente, si existe
     employee: UserSchema.nullable().optional(), // ID del empleado, si existe
     order: z.string().optional(), // ID de la orden asociada, si existe
     __v: z.number().optional(),
@@ -339,6 +339,7 @@ export type Sale = z.infer<typeof SaleAPIResponse>;
 export const SalesAPIResponse = z.object({
     sales: z.array(SaleAPIResponse),
     totalSales: z.number(),
+    totalAmount: z.number(),
     totalPages: z.number(),
     currentPage: z.number(),
 });

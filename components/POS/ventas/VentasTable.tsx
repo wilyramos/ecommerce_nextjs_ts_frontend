@@ -3,16 +3,10 @@ import { formatDate } from '@/lib/utils'
 
 export default function VentasTable({ ventas }: { ventas: Sale[] }) {
 
-
-    // Calcular el total de ventas
-    const totalVentas = ventas.reduce((total, venta) => total + venta.totalPrice, 0);
-
-
-
     return (
         <div className="overflow-x-auto rounded-lg shadow-sm border bg-white">
             <div className="p-4 bg-gray-50 border-b">
-                <h2 className="text-lg font-semibold text-gray-800">Total Ventas: S/ {totalVentas.toFixed(2)}</h2>
+                {/* <h2 className="text-lg font-semibold text-gray-800">Total Ventas: S/ {ventas.reduce((total, venta) => total + venta.totalPrice, 0).toFixed(2)}</h2> */}
             </div>
             <table className="min-w-full divide-y divide-gray-200 text-sm text-left">
                 <thead className="bg-gray-100 text-gray-700">
@@ -37,7 +31,7 @@ export default function VentasTable({ ventas }: { ventas: Sale[] }) {
                         ventas.map((venta) => (
                             <tr key={venta._id} className="hover:bg-gray-50 transition-colors">
                                 <td className="px-4 py-2">{venta.createdAt ? formatDate(venta.createdAt) : '—'}</td>
-                                <td className="px-4 py-2">{venta.customer?.nombre || '—'}</td>
+                                <td className="px-4 py-2">{venta.customerDNI || '—'}</td>
                                 <td className="px-4 py-2">{venta.employee?.nombre || '—'}</td>
                                 <td className="px-4 py-2">S/ {venta.totalPrice.toFixed(2)}</td>
                                 <td className="px-4 py-2">{venta.paymentMethod}</td>

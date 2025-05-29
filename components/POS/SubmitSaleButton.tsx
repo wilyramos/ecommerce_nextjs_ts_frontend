@@ -13,10 +13,8 @@ export default function SubmitSaleButton() {
     const cart = useCartStore((s) => s.cart)
     const total = useCartStore((s) => s.total)
     const dni = useCartStore((s) => s.dni)
+    const clearDni = useCartStore((s) => s.clearDni)
 
-    console.log("DNIIII", dni)
-
-    console.log("cart", cart)
 
     const router = useRouter()
 
@@ -32,7 +30,7 @@ export default function SubmitSaleButton() {
         status: "COMPLETADA",
         paymentMethod: "EFECTIVO",
         paymentStatus: "PAGADO",
-        customer: dni || undefined,
+        customerDNI: dni || undefined,
     };
 
 
@@ -52,10 +50,10 @@ export default function SubmitSaleButton() {
         if (state.success) {
             // console.log(state.success)
             toast.success(state.success);
+            clearDni();
             clearCart();
-
         }
-    }, [state, router, clearCart]);
+    }, [state, router, clearCart, clearDni]);
 
     return (
         <form

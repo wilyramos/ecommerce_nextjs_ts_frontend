@@ -6,7 +6,6 @@ import {
     FaReceipt,
     FaBoxOpen,
     FaUsers,
-    FaSignOutAlt,
 } from 'react-icons/fa';
 import AdminMenu from '@/components/admin/AdminMenu';
 
