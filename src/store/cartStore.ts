@@ -7,6 +7,8 @@ import { saveCartToDB } from '@/lib/api/cart';
 interface Store {
     cart: CartItem[];
     total: number;
+    dni: string | null;
+
     addToCart: (item: Product) => void;
     updateQuantity: (id: string, quantity: number) => void;
     removeFromCart: (id: string) => void;
@@ -14,17 +16,26 @@ interface Store {
     clearCart: () => void;
     saveCart: () => Promise<void>;
     calculateTotal: () => void;
+
+    setDni: (dni: string) => void;
+    clearDni: () => void;
 }
 
 const initialState = {
     cart: [],
     total: 0,
+    dni: null,
+
     addToCart: () => { },
     updateQuantity: () => { },
     removeFromCart: () => { },
 
-
     calculateTotal: () => { },
+    clearCart: () => { },
+    saveCart: async () => { },
+
+    setDni: () => { },
+    clearDni: () => { },
 };
 
 export const useCartStore = create<Store>()(devtools(persist((set, get) => ({
@@ -100,6 +111,13 @@ export const useCartStore = create<Store>()(devtools(persist((set, get) => ({
     saveCart: async () => {
         const cart = get().cart
         await saveCartToDB(cart)
+    },
+
+    setDni: (dni) => {
+        set({ dni });
+    },
+    clearDni: () => {
+        set({ dni: null });
     },
 
 }),

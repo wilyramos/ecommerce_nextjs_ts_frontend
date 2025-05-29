@@ -3,6 +3,7 @@ import { searchProducts } from "@/src/services/products";
 import ProductCardPOS from "@/components/POS/ProductCardPOS";
 import ProductSearchForm from "@/components/POS/ProductSearchForm";
 import Link from "next/link";
+import ButtonResetSearch from "@/components/POS/ButtonResetSearch";
 
 type SearchParams = Promise<{
     page?: string;
@@ -21,6 +22,8 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
 
     const parsedPage = parseInt(page);
     const parsedLimit = parseInt(limit);
+
+    
 
     const productos = await searchProducts({
         page: parsedPage,
@@ -47,19 +50,7 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
                     ) : (
                         <div className="flex flex-col items-center justify-center py-12 text-center text-gray-500">
                             <h2 className="text-lg font-semibold">No se encontraron productos</h2>
-                            <Link 
-                                href="/pos" className="text-blue-600 hover:underline"
-                                onClick={() => {
-                                    // Reset search params
-                                    const url = new URL(window.location.href);
-                                    url.searchParams.delete("query");
-                                    url.searchParams.delete("page");
-                                    url.searchParams.delete("limit");
-                                    window.history.pushState({}, "", url.toString());
-                                }}
-                            >
-                                Restablecer búsqueda
-                            </Link>
+                            {/* <ButtonResetSearch /> */}
 
                         </div>
                     )}

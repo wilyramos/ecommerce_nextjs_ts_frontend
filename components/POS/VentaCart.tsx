@@ -5,10 +5,12 @@ import SubmitSaleButton from "./SubmitSaleButton";
 import { FaShoppingCart } from "react-icons/fa";
 import { FiTrash2 } from "react-icons/fi";
 import Image from "next/image";
+import CustomerDniInput from "./CustomerDniInput";
 
 export default function VentaCart() {
     const { cart, updateQuantity, removeFromCart } = useCartStore();
     const total = cart.reduce((acc, item) => acc + item.subtotal, 0);
+    const dni = useCartStore((s) => s.dni);
 
     if (cart.length === 0) {
         return (
@@ -87,6 +89,13 @@ export default function VentaCart() {
                     </tbody>
                 </table>
             </div>
+
+            <CustomerDniInput />
+            {dni && (
+                <div className="text-sm text-gray-700">
+                    DNI del cliente: <span className="font-medium">{dni}</span>
+                </div>
+            )}
 
             <div className="text-end">
                 <p className="text-sm text-gray-600">Total:</p>

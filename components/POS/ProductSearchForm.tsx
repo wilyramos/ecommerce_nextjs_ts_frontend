@@ -3,19 +3,20 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-
-
 export default function ProductSearchForm() {
-
-
     const router = useRouter();
     const searchParams = useSearchParams();
     const [query, setQuery] = useState(searchParams.get('query') || '');
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        router.push(`/pos?query=${query}`);
-    }
+        if (query.trim() === '') {
+            router.push('/pos');
+        } else {
+            router.push(`/pos?query=${encodeURIComponent(query)}`);
+        }
+    };
+
     return (
         <form
             onSubmit={handleSubmit}
@@ -26,6 +27,7 @@ export default function ProductSearchForm() {
                 placeholder="Buscar productos..."
                 className="w-full rounded border border-gray-300 p-2"
                 value={query}
+                // defaultValue={searchParams.get('query') || ''}
                 onChange={(e) => setQuery(e.target.value)}
             />
             <button

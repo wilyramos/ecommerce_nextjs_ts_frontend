@@ -12,6 +12,11 @@ export default function SubmitSaleButton() {
     const clearCart = useCartStore((s) => s.clearCart)
     const cart = useCartStore((s) => s.cart)
     const total = useCartStore((s) => s.total)
+    const dni = useCartStore((s) => s.dni)
+
+    console.log("DNIIII", dni)
+
+    console.log("cart", cart)
 
     const router = useRouter()
 
@@ -27,7 +32,7 @@ export default function SubmitSaleButton() {
         status: "COMPLETADA",
         paymentMethod: "EFECTIVO",
         paymentStatus: "PAGADO",
-        // customer: "68045c2951fecc9b214060b2" //TODO: - get customer from cart or session
+        customer: dni || undefined,
     };
 
 

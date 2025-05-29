@@ -343,3 +343,8 @@ export const SalesAPIResponse = z.object({
     currentPage: z.number(),
 });
 
+// DNI
+
+export const DniSchema = z.object({
+    dni: z.string().length(8, { message: 'El DNI debe tener 8 dígitos' }),
+});
