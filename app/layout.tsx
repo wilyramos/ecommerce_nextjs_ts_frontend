@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Inter } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 import { Toaster } from 'sonner';
 
 
-const inter = Inter({
+const inter = DM_Sans({
   subsets: ["latin"],
 });
 
