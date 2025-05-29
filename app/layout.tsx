@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title: "Store App Cañete San Vicente",
   description: "Tienda de tecnologias cañete",
   icons: {
-    icon: "/logo.svg",
+    icon: "/logob.svg",
   }
 };
 

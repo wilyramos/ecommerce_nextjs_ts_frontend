@@ -7,13 +7,13 @@ import { FaHome, FaBoxOpen, FaTags, FaUsers, FaReceipt, FaCashRegister } from "r
 export default function AdminSidebar({ user }: { user: User }) {
     
     const isAdmin = user.rol === 'administrador';
-    const isVendedor = user.rol === 'vendedor';
+    // const isVendedor = user.rol === 'vendedor';
 
     return (
         <aside className="flex flex-col w-20 sm:w-64 h-screen bg-gray-900 text-white">
             <div className="flex items-center justify-center py-6 border-b border-gray-800">
                 <Image
-                    src="/logo-w.svg"
+                    src="/logow.svg"
                     alt="Logo"
                     width={50}
                     height={50}
@@ -43,9 +43,9 @@ export default function AdminSidebar({ user }: { user: User }) {
                     </>
                 )}
 
-                {(isAdmin || isVendedor) && (
+                {(isAdmin) && (
                     <Link
-                        href={isAdmin ? "/admin/pos" : "/vendedor/pos"}
+                        href="/pos"
                         className="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-800"
                     >
                         <FaCashRegister /> Punto de Venta

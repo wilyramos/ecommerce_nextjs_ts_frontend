@@ -21,7 +21,7 @@ export default function ProductCardPOS({ product }: { product: Product }) {
                     />
                 ) : (
                     <div className="flex items-center justify-center w-full h-full text-gray-400 text-xs">
-                        Sin foto
+                        Sin imagen
                     </div>
                 )}
             </div>

@@ -19,14 +19,20 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
         <div className="w-full max-w-2xl mx-auto">
             {/* Imagen principal con botones */}
             <div className="relative w-full h-80 sm:h-[500px] rounded-xl overflow-hidden shadow-md group">
-                <Image
-                    src={images[selectedIndex] || "/logo.svg"}
-                    alt="Imagen seleccionada"
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
-                    quality={100}
-                    className="object-cover transition-transform duration-500 ease-in-out scale-100 group-hover:scale-105"
-                />
+                {images.length > 0 ? (
+                    <Image
+                        src={images[selectedIndex]}
+                        alt="Imagen seleccionada"
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                        quality={100}
+                        className="object-cover transition-transform duration-500 ease-in-out scale-100 group-hover:scale-105"
+                    />
+                ) : (
+                    <div className="flex items-center justify-center w-full h-full text-gray-400 text-xs">
+                        Sin imagen
+                    </div>
+                )}
 
                 {/* Botón anterior */}
                 <button

@@ -36,13 +36,19 @@ export default function VentaCart() {
                             <tr key={item._id} className="border-b last:border-b-0">
                                 <td className="py-2 pr-2">
                                     <div className="flex items-center gap-2">
-                                        <Image
-                                            src={item.imagenes[0] || "/logo.svg"}
-                                            alt={item.nombre}
-                                            width={36}
-                                            height={36}
-                                            className="w-9 h-9 object-cover rounded"
-                                        />
+                                        {item.imagenes?.[0] ? (
+                                            <Image
+                                                src={item.imagenes[0]}
+                                                alt={item.nombre}
+                                                width={40}
+                                                height={40}
+                                                className="w-10 h-10 object-cover rounded border"
+                                            />
+                                        ) : (
+                                            <div className="flex items-center justify-center w-10 h-10 bg-gray-200 rounded text-xs text-gray-500">
+                                                Sin imagen
+                                            </div>
+                                        )}
                                         <span className="truncate max-w-[120px]">{item.nombre}</span>
                                     </div>
                                 </td>

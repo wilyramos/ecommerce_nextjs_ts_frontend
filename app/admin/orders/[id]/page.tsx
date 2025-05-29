@@ -41,10 +41,10 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
                         ${order.status === "PENDIENTE"
                             ? "bg-yellow-100 text-yellow-700"
                             : order.status === "ENVIADO"
-                            ? "bg-blue-100 text-blue-700"
-                            : order.status === "ENTREGADO"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-red-100 text-red-700"
+                                ? "bg-blue-100 text-blue-700"
+                                : order.status === "ENTREGADO"
+                                    ? "bg-green-100 text-green-700"
+                                    : "bg-red-100 text-red-700"
                         }`}
                 >
                     {order.status}
@@ -90,13 +90,19 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
                         {order.items.map((item, i) => (
                             <tr key={i}>
                                 <td className="px-4 py-3 flex items-center gap-3">
-                                    <Image
-                                        src={item.product.imagenes[0] || '/logo.svg'}
-                                        alt={item.product.nombre}
-                                        width={40}
-                                        height={40}
-                                        className="rounded border"
-                                    />
+                                    {item.product.imagenes?.[0] ? (
+                                        <Image
+                                            src={item.product.imagenes[0]}
+                                            alt={item.product.nombre}
+                                            width={40}
+                                            height={40}
+                                            className="rounded border"
+                                        />
+                                    ) : (
+                                        <div className="flex items-center justify-center w-12 h-12 bg-gray-200 rounded">
+                                            Sin imagen
+                                        </div>
+                                    )}
                                     <span>{item.product.nombre}</span>
                                 </td>
                                 <td className="px-4 py-3 text-center">{item.quantity}</td>

@@ -12,13 +12,19 @@ export default function ItemCarrito({ item }: { item: CartItem }) {
             {/* Imagen y nombre */}
             <div className="flex items-center gap-3 min-w-[150px] flex-1">
                 <div className="relative w-12 h-12 flex-shrink-0 overflow-hidden rounded-md">
-                    <Image
-                        src={item.imagenes[0] || "/logo.svg"}
-                        alt={item.nombre}
-                        width={64}
-                        height={64}
-                        className="object-cover w-full h-full"
-                    />
+                    {item.imagenes?.[0] ? (
+                        <Image
+                            src={item.imagenes[0]}
+                            alt={item.nombre}
+                            width={64}
+                            height={64}
+                            className="object-cover w-full h-full"
+                        />
+                    ) : (
+                        <div className="flex items-center justify-center w-12 h-12 bg-gray-200 rounded text-xs text-gray-500">
+                            Sin imagen
+                        </div>
+                    )}
                 </div>
                 <div className="text-sm">
                     <p className="font-medium text-gray-800 line-clamp-2">{item.nombre}</p>

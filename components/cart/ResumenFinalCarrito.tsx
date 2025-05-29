@@ -21,14 +21,20 @@ export default function ResumenFinalCarrito() {
                         className="flex justify-between items-center border-b border-gray-100 pb-2"
                     >
                         <div className="flex gap-4 items-center">
-                            <Image
-                                src={item.imagenes[0] || "/logo.svg"}
-                                alt={item.nombre}
-                                width={40}
-                                height={40}
-                                quality={50}
-                                className="w-12 h-12 object-cover rounded-md border border-gray-100"
-                            />
+                            {item.imagenes?.[0] ? (
+                                <Image
+                                    src={item.imagenes[0]}
+                                    alt={item.nombre}
+                                    width={40}
+                                    height={40}
+                                    quality={50}
+                                    className="w-12 h-12 object-cover rounded-md border border-gray-100"
+                                />
+                            ) : (
+                                <div className="flex items-center justify-center w-12 h-12 bg-gray-200 rounded text-xs text-gray-500">
+                                    Sin imagen
+                                </div>
+                            )}
                             <div className="text-sm text-gray-700">
                                 <p className="font-medium line-clamp-1">{item.nombre}</p>
                                 <p className="text-xs text-gray-500">
