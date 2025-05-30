@@ -113,10 +113,19 @@ export const ProductSchema = z.object({
     categoria: z.string(),
     stock: z.number(),
     sku: z.string().optional(),
+    barcode: z.string().optional(),
+    brand: z.string().optional(),
+    color: z.string().optional(),
     createdAt: z.string().datetime().optional(),
     updatedAt: z.string().datetime().optional(),
     __v: z.number().optional(),
 })
+
+const brand = z.enum([
+    'Iphone',
+    'Samsung',
+    'Ifans',
+]);
 
 // Create product schema
 export const CreateProductSchema = z.object({
@@ -126,8 +135,11 @@ export const CreateProductSchema = z.object({
     categoria: z.string().min(1, { message: 'La categoría es obligatoria' }),
     stock: z.number().min(0, { message: 'El stock es obligatorio' }),
     sku: z.string().optional(),
+    barcode: z.string().optional(),
+    brand: brand.optional(),
+    color: z.string().optional(),
     imagenes: z.array(z.string())
-})
+});
 
 
 export type Product = z.infer<typeof ProductSchema>

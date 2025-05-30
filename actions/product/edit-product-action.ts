@@ -21,9 +21,12 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         categoria: formData.get("categoria"),
         stock: Number(formData.get("stock")),
         sku: formData.get("sku"),
+        barcode: formData.get("barcode"),
+        brand: formData.get("brand"),
+        color: formData.get("color"),
         imagenes: formData.getAll("imagenes[]") as string[],
     }
-    // console.log("productData", productData)
+    console.log("productData", productData)
 
     const product = CreateProductSchema.safeParse(productData);
     if (!product.success) {
@@ -55,7 +58,6 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
     }
     const success = SuccessResponse.parse(json);
     
-
     //Revalidate
     revalidatePath(`/admin/products/${id}`)
 

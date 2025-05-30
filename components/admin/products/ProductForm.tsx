@@ -6,6 +6,14 @@ import UploadProductImage from "./UploadProductImage";
 
 export default function ProductForm({ product, categorias }: { product?: Product, categorias: CategoriasList }) {
 
+    const brand = {
+        options: [
+            "Iphone",
+            "Samsung",
+            "Ifans"
+        ]
+    };
+
     return (
         <div className="text-xs font-bold">
 
@@ -72,15 +80,58 @@ export default function ProductForm({ product, categorias }: { product?: Product
                 </div>
             </div>
 
-            <div className="mt-4">
-                <label htmlFor="sku" className="block text-sm font-medium text-gray-700">SKU (opcional)</label>
-                <input
-                    type="text"
-                    id="sku"
-                    name="sku"
-                    className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    defaultValue={product?.sku}
-                />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="">
+                    <label htmlFor="sku" className="block text-sm font-medium text-gray-700">SKU (opcional)</label>
+                    <input
+                        type="text"
+                        id="sku"
+                        name="sku"
+                        className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        defaultValue={product?.sku}
+                    />
+                </div>
+                <div className="">
+                    <label htmlFor="barcode" className="block text-sm font-medium text-gray-700">Código de barras (opcional)</label>
+                    <input
+                        type="text"
+                        id="barcode"
+                        name="barcode"
+                        className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        defaultValue={product?.barcode}
+                    />
+                </div>
+
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="">
+                    <label htmlFor="brand" className="block text-sm font-medium text-gray-700">Marca</label>
+                    <select
+                        id="brand"
+                        name="brand"
+                        className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        defaultValue={product?.brand || ""}
+                    >
+                        <option value="">Selecciona una marca</option>
+                        {brand.options.map((option) => (
+                            <option key={option} value={option}>
+                                {option}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                <div className="">
+                    <label htmlFor="color" className="block text-sm font-medium text-gray-700">Color (opcional)</label>
+                    <input
+                        type="text"
+                        id="color"
+                        name="color"
+                        className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        defaultValue={product?.color}
+                    />
+                </div>
             </div>
 
             <UploadProductImage

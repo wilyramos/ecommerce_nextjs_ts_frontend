@@ -38,6 +38,7 @@ export default function EditProductForm({ product, categorias }: { product: Prod
                 action={dispatch}
             >
                 <ProductForm
+                    key={product.updatedAt} // Ensure the form re-renders when the product is updated
                     product={product}
                     categorias={categorias}
                 />

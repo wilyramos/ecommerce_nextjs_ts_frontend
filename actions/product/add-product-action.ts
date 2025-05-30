@@ -20,6 +20,9 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         categoria: formData.get('categoria'),
         stock: Number(formData.get('stock')),
         sku: formData.get('sku') || undefined,
+        barcode: formData.get('barcode') || undefined,
+        brand: formData.get('brand') || undefined,
+        color: formData.get('color') || undefined,
         imagenes: formData.getAll('imagenes')
     }
     // console.log("productData", productData)
@@ -49,9 +52,12 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
             categoria: product.data.categoria,
             stock: product.data.stock,
             sku: product.data.sku,
+            barcode: product.data.barcode,
+            brand: product.data.brand,
+            color: product.data.color,
             imagenes: product.data.imagenes
         })
-    })
+    });
 
     const json = await req.json();
     // console.log("jsonn", json)
