@@ -177,13 +177,22 @@ export const CreateCategorySchema = z.object({
         .min(1, { message: 'El nombre es obligatorio' }),
     descripcion: z.string()
         .min(1, { message: 'La descripción es obligatoria' }),
+    parent: z.string().nullable().optional(),
 })
+
+const CategorySchemaParent = z.object({
+    _id: z.string(),
+    nombre: z.string().min(1, { message: 'El nombre es obligatorio' }),
+    slug: z.string().min(1, { message: 'El slug es obligatorio' }),
+    parent: z.string().nullable().optional(), // Puede ser null si no tiene padre
+});
 
 export const CategorySchema = z.object({
     _id: z.string(),
     nombre: z.string(),
-    descripcion: z.string().optional(),
     slug: z.string(),
+    parent: CategorySchemaParent.nullable().optional(), // Puede ser null si no tiene padre
+    descripcion: z.string().optional(),
     createdAt: z.string().datetime().optional(),
     updatedAt: z.string().datetime().optional(),
     __v: z.number().optional(),

@@ -18,6 +18,7 @@ export async function EditCategory(id: string, prevState: ActionStateType, formD
     const categoryData = {
         nombre: formData.get("name"),
         descripcion: formData.get("description"),
+        parent: formData.get("parent") || null
     }
 
     const category = CreateCategorySchema.safeParse(categoryData);

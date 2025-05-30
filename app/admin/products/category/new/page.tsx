@@ -1,7 +1,12 @@
 import CreateCategoryForm from "@/components/admin/category/CreateCategoryForm"
 import Link from "next/link";
+import { getCategories } from "@/src/services/categorys";
 
-export default function NewCategoryPage() {
+export default async function NewCategoryPage() {
+
+
+    const categories = await getCategories();
+
     return (
         <>
             <div className='flex flex-col-reverse md:flex-row md:justify-between items-center'>
@@ -17,7 +22,7 @@ export default function NewCategoryPage() {
             </div>
 
             <div className="flex flex-col w-full mx-auto mt-10">
-                <CreateCategoryForm />
+                <CreateCategoryForm categories={categories} />
             </div>
         </>
     )

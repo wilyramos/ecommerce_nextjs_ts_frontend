@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getCategories } from "@/src/services/categorys";
 import Pagination from "@/components/ui/Pagination";
 import CategoriesTable from "@/components/admin/category/CategoriesTable";
+import { buildCategoryTree } from "@/src/utils/buildCategoryTree";
 
 // async function getCategories() {
 //     const url = `${process.env.API_URL}/category/list`;
@@ -18,7 +19,10 @@ import CategoriesTable from "@/components/admin/category/CategoriesTable";
 // }
 
 export default async function CreatePageCategory() {
+
     const categories = await getCategories();
+    const categoriesTree = buildCategoryTree(categories);
+
 
     return (
         <div className="max-w-7xl mx-auto p-5">
@@ -44,7 +48,7 @@ export default async function CreatePageCategory() {
                 </div>
             ) : (
                 <>
-                    <CategoriesTable categories={categories} />
+                    <CategoriesTable categories={categoriesTree} />
                     <Pagination
                         currentPage={1}
                         totalPages={1}

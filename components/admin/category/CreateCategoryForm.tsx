@@ -5,12 +5,11 @@ import CategoryForm from "./CategoryForm"
 import { createCategoryAction } from "@/actions/category/create-category-action"
 import { useActionState, useEffect } from "react"
 import { toast } from 'react-toastify'
+import type { Category } from "@/src/schemas"
 
 
 
-
-
-export default function CreateCategoryForm({ }) {
+export default function CreateCategoryForm({ categories }: { categories: Category[] }) {
 
     const router = useRouter()
     const [state, dispatch] = useActionState(createCategoryAction, {
@@ -32,7 +31,6 @@ export default function CreateCategoryForm({ }) {
     }, [state, router])
 
 
-
     return (
 
         <form
@@ -40,7 +38,9 @@ export default function CreateCategoryForm({ }) {
             noValidate
             action={dispatch}
         >
-            <CategoryForm />
+            <CategoryForm 
+                categories={categories}
+            />
 
             <input
                 type="submit"

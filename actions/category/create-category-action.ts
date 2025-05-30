@@ -16,7 +16,10 @@ export async function createCategoryAction(prevState: ActionStateType, formData:
     const category = CreateCategorySchema.safeParse({
         nombre: formData.get("name"),
         descripcion: formData.get("description"),
+        parent: formData.get("parent") || undefined
     })
+
+    console.log("category", category)
 
     if (!category.success) {
         return {
@@ -35,7 +38,8 @@ export async function createCategoryAction(prevState: ActionStateType, formData:
         },
         body: JSON.stringify({
             nombre: category.data.nombre,
-            descripcion: category.data.descripcion
+            descripcion: category.data.descripcion,
+            parent: category.data.parent ? category.data.parent : undefined
         })
     })
 

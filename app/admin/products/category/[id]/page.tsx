@@ -2,6 +2,7 @@ import EditCategoryForm from "@/components/admin/category/EditCategoryForm";
 import { getCategory } from "@/src/services/categorys";
 import Link from "next/link";
 import DeleteCategoryButton from "@/components/admin/category/DeleteCategoryButton";
+import { getCategories } from "@/src/services/categorys";
 
 type params = Promise<{
     id: string;
@@ -11,6 +12,7 @@ export default async function CategoryPageDetails({ params }: { params: params }
 
     const { id } = await params;
     const category = await getCategory(id);
+    const categories = await getCategories();
 
 
     return (
@@ -29,7 +31,10 @@ export default async function CategoryPageDetails({ params }: { params: params }
                 </div>
             </div>
 
-            <EditCategoryForm category={category} />
+            <EditCategoryForm 
+                category={category}
+                categories={categories}
+            />
         </div>
 
     );

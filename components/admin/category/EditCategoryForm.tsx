@@ -6,7 +6,7 @@ import { useActionState, useEffect } from "react"
 import { toast } from "react-toastify"
 
 
-export default function EditCategoryForm({ category }: { category: Category }) {
+export default function EditCategoryForm({ category, categories }: { category: Category, categories: Category[] }) {
 
     const editCategoryWithId = EditCategory.bind(null, category._id);
     const [state, dispatch] = useActionState(editCategoryWithId, {
@@ -37,6 +37,7 @@ export default function EditCategoryForm({ category }: { category: Category }) {
         >
             <CategoryForm
                 category={category}
+                categories={categories}
             />
 
             <input
