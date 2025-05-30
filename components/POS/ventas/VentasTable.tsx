@@ -49,7 +49,7 @@ export default function VentasTable({ ventas }: { ventas: Sale[] }) {
                                             {venta.items.map((item, id) => (
                                                 <div key={id} className="text-xs text-gray-700 flex justify-between">
                                                     <span>
-                                                        <span className="font-semibold">{item.quantity}</span> {item.product.nombre}
+                                                        <span className="font-semibold">{item.quantity}</span> {item.product?.nombre}
                                                     </span>
                                                     <span className="text-gray-500">S/ {item.price.toFixed(2)}</span>
                                                 </div>

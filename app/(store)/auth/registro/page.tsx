@@ -3,9 +3,9 @@ import Link from "next/link";
 import RegisterForm from "@/components/auth/RegisterForm";
 
 export const metadata: Metadata = {
-    title: "Store Cañete - Registro de cuenta",
-    description: "Store Cañete - Registro de cuenta",
-    keywords: "registro, Store Cañete, cuenta",
+    title: "GoPhone Cañete - Registro de cuenta",
+    description: "GoPhone Cañete - Registro de cuenta",
+    keywords: "registro, GoPhone Cañete, cuenta",
 };
 
 export default function PageRegistro() {

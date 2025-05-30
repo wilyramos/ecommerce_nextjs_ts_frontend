@@ -32,7 +32,6 @@ export default async function PageVentas({ searchParams }: PageVentasProps) {
     // Get sales data from the backend
 
 
-
     if (!data) {
         return (
             <div className="p-6 text-center">
@@ -40,7 +39,6 @@ export default async function PageVentas({ searchParams }: PageVentasProps) {
             </div>
         );
     }
-
 
     return (
         <section className="p-6 space-y-6">

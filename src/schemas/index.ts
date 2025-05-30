@@ -338,7 +338,7 @@ export const CreateSaleSchema = z.object({
 export type CreateSaleInput = z.infer<typeof CreateSaleSchema>;
 
 const SaleProductSchema = z.object({
-    product: ProductObjectSchema,
+    product: ProductObjectSchema.nullable(),
     quantity: z.number().min(1, { message: 'La cantidad debe ser al menos 1' }),
     price: z.number().min(0, { message: 'El precio debe ser al menos 0' }),
 });
