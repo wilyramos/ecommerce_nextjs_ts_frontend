@@ -20,7 +20,7 @@ const marcas = [
 
 export default function NavBar() {
     return (
-        <header className="sticky top-0 z-50 bg-indigo-600 text-white shadow-lg">
+        <header className="sticky top-0 z-50 bg-black text-white shadow-lg">
             <div className=" max-w-7xl mx-auto flex justify-between items-center px-6 py-1">
 
                 {/* Logo */}
@@ -36,7 +36,7 @@ export default function NavBar() {
                 </Link>
 
                 {/* Desktop Navigation */}
-                <nav className="hidden md:flex items-center gap-8 font-semibold tracking-wide">
+                <nav className="hidden md:flex items-center gap-8  tracking-wide">
                     <div className="group relative">
                         <span className="cursor-pointer hover:text-indigo-600 transition-colors duration-300">
                             Productos
