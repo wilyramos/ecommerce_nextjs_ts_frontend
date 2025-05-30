@@ -8,15 +8,20 @@ type ProductResultsProps = {
     priceRange?: string;
     page?: string;
     limit?: number;
+    brand?: string;
+    color?: string;
 };
 
-export default async function ProductResults({ category, priceRange, page, limit = 10 }: ProductResultsProps) {
+export default async function ProductResults({ category, priceRange, page, limit = 10, brand, color }: ProductResultsProps) {
 
     const products = await getProductsByFilter({
         page: page ? parseInt(page) : 1,
         limit,
         category: category || "",
         priceRange: priceRange || "",
+        query: "",
+        brand: brand || "",
+        color: color || "",
     });
 
     if (!products || products.products.length === 0) {

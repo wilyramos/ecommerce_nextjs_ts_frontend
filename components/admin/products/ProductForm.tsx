@@ -8,9 +8,22 @@ export default function ProductForm({ product, categorias }: { product?: Product
 
     const brand = {
         options: [
-            "Iphone",
+            "Apple",
             "Samsung",
             "Ifans"
+        ]
+    };
+
+    const color = {
+        options: [
+            "Negro",
+            "Blanco",
+            "Azul",
+            "Rojo",
+            "Verde",
+            "Amarillo",
+            "Morado",
+            "Naranja"
         ]
     };
 
@@ -123,14 +136,20 @@ export default function ProductForm({ product, categorias }: { product?: Product
                 </div>
 
                 <div className="">
-                    <label htmlFor="color" className="block text-sm font-medium text-gray-700">Color (opcional)</label>
-                    <input
-                        type="text"
+                    <label htmlFor="color" className="block text-sm font-medium text-gray-700">Color</label>
+                    <select
                         id="color"
                         name="color"
                         className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        defaultValue={product?.color}
-                    />
+                        defaultValue={product?.color || ""}
+                    >
+                        <option value="">Selecciona un color</option>
+                        {color.options.map((option) => (
+                            <option key={option} value={option}>
+                                {option}
+                            </option>
+                        ))}
+                    </select>
                 </div>
             </div>
 

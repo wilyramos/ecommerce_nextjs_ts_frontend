@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
             url: `${process.env.NEXT_PUBLIC_URL}/productos/${producto._id}`,
             images: [
                 {
-                    url: producto.imagenes?.[0] || '/default-image.jpg',
+                    url: producto.imagenes?.[0] || '/logob.jpg',
                     width: 800,
                     height: 600,
                     alt: producto.nombre,

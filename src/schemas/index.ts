@@ -104,6 +104,25 @@ export type User = z.infer<typeof UserSchema>
 
 // PRODUCT
 
+
+
+const brand = z.enum([
+    'Apple',
+    'Samsung',
+    'Ifans',
+]);
+
+const color = z.enum([
+    'Negro',
+    'Blanco',
+    'Azul',
+    'Rojo',
+    'Verde',
+    'Amarillo',
+    'Morado',
+    'Naranja',
+]);
+
 export const ProductSchema = z.object({
     _id: z.string(),
     nombre: z.string(),
@@ -114,18 +133,12 @@ export const ProductSchema = z.object({
     stock: z.number(),
     sku: z.string().optional(),
     barcode: z.string().optional(),
-    brand: z.string().optional(),
-    color: z.string().optional(),
+    brand: brand.optional(),
+    color: color.optional(),
     createdAt: z.string().datetime().optional(),
     updatedAt: z.string().datetime().optional(),
     __v: z.number().optional(),
 })
-
-const brand = z.enum([
-    'Iphone',
-    'Samsung',
-    'Ifans',
-]);
 
 // Create product schema
 export const CreateProductSchema = z.object({
@@ -137,7 +150,7 @@ export const CreateProductSchema = z.object({
     sku: z.string().optional(),
     barcode: z.string().optional(),
     brand: brand.optional(),
-    color: z.string().optional(),
+    color: color.optional(),
     imagenes: z.array(z.string())
 });
 

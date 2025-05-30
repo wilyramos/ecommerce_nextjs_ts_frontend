@@ -12,16 +12,18 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
     const [filters, setFilters] = useState({
         category: "",
         priceRange: "",
+        brand: "",
     });
 
     useEffect(() => {
         setFilters({
             category: searchParams.get("category") || "",
             priceRange: searchParams.get("priceRange") || "",
+            brand: searchParams.get("brand") || "",
         });
     }, [searchParams]);
 
-    const updateFilters = (newFilters: { category?: string; priceRange?: string }) => {
+    const updateFilters = (newFilters: { category?: string; priceRange?: string; brand?: string }) => {
         const updatedFilters = { ...filters, ...newFilters };
         const params = new URLSearchParams();
         Object.entries(updatedFilters).forEach(([key, value]) => {
@@ -37,14 +39,21 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
         { label: "300 - 1000", value: "300-1000" },
     ];
 
+    const brands = [
+        { label: "Todas", value: "" },
+        { label: "Samsung", value: "samsung" },
+        { label: "Apple", value: "apple" },
+        { label: "Ifans", value: "ifans" },
+    ];
+
     return (
         <aside className="py-6 border-gray-100">
             <div className="flex items-center justify-end">
                 <button
-                    onClick={() => updateFilters({ category: "", priceRange: "" })}
+                    onClick={() => updateFilters({ category: "", priceRange: "", brand: "" })}
                     className="flex items-center gap-1 text-gray-500 hover:text-red-500 transition text-xs"
                 >
-                    <MdClear size={18} className="text-red-500"/>
+                    <MdClear size={18} className="text-red-500" />
                     Limpiar filtros
                 </button>
             </div>
@@ -67,24 +76,38 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
 
                 {/* Precio */}
                 <div className="space-y-1">
-                    <label className="block text-sm font-medium text-gray-700">Precio</label>
+                    <div>
+                        <h4 className="text-sm font-semibold text-gray-700 mb-2">Precio</h4>
+                        <ul className="space-y-1">
+                            {priceRanges.map(({ label, value }) => (
+                                <li key={value} className="flex items-center gap-2">
+                                    <input
+                                        type="radio"
+                                        name="priceRange"
+                                        value={value}
+                                        checked={filters.priceRange === value}
+                                        onChange={() => updateFilters({ priceRange: value })}
+                                        className="accent-gray-700"
+                                    />
+                                    <label className="text-sm text-gray-600">{label}</label>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+
+
+                <div className="space-y-1">
+                    <label className="block text-sm font-medium text-gray-700">Marca</label>
                     <select
-                        value={filters.priceRange}
-                        onChange={(e) => updateFilters({ priceRange: e.target.value })}
+                        value={filters.brand}
+                        onChange={(e) => updateFilters({ brand: e.target.value })}
                         className="p-2 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm text-sm bg-white"
                     >
-                        {priceRanges.map(({ label, value }) => (
+                        {brands.map(({ label, value }) => (
                             <option key={value} value={value}>{label}</option>
                         ))}
                     </select>
-                </div>
-
-                {/* Marca (placeholder) */}
-                <div className="space-y-1">
-                    <label className="block text-sm font-medium text-gray-400">Marca</label>
-                    <div className="w-full rounded-lg border border-dashed border-gray-300 p-3 text-center text-gray-400 text-sm bg-gray-50">
-                        Próximamente
-                    </div>
                 </div>
             </form>
         </aside>

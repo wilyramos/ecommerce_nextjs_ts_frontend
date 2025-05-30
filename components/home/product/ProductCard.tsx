@@ -8,7 +8,7 @@ export default function ProductCard({ product }: { product: Product }) {
     const imagenUrl = product.imagenes[0];
 
     return (
-        <div className="group relative flex flex-col rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
+        <div className="group relative flex flex-col rounded-md bg-white shadow-xs hover:shadow-md transition-shadow duration-300">
             <Link href={`/productos/${product._id}`} className="flex flex-col h-full">
                 <div className="relative w-full aspect-square bg-gray-100 overflow-hidden rounded-t-lg">
                     {product.imagenes.length > 0 ? (
@@ -28,14 +28,13 @@ export default function ProductCard({ product }: { product: Product }) {
                 </div>
 
                 <div className="flex flex-col gap-2 p-2">
-                    <h3 className="text-sm font-medium text-gray-800 line-clamp-2 leading-tight">
+                    <h3 className="text-md font-semibold text-gray-800 line-clamp-2 leading-tight">
                         {product.nombre}
                     </h3>
 
-                    <p className="text-red-500 font-semibold text-md md:text-base">
-                        <span className="text-xs align-top mr-0.5">S/</span>
-                        {product.precio}
-                    </p>
+                    <span className="flex justify-end text-lg font-bold text-gray-900">
+                        <span className='font-light'>s/. </span>{product.precio.toFixed(2)}
+                    </span>
                 </div>
             </Link>
 

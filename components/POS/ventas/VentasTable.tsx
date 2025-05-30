@@ -1,29 +1,33 @@
 import { Sale } from '@/src/schemas'
 import { formatDate } from '@/lib/utils'
+import ActionsButtonsVentas from './ActionsButtonsVentas'
 
 export default function VentasTable({ ventas }: { ventas: Sale[] }) {
 
     return (
-        <div className="overflow-x-auto rounded-lg shadow-sm border bg-white">
-            <div className="p-4 bg-gray-50 border-b">
-                {/* <h2 className="text-lg font-semibold text-gray-800">Total Ventas: S/ {ventas.reduce((total, venta) => total + venta.totalPrice, 0).toFixed(2)}</h2> */}
+        <div className="overflow-x-auto rounded-xl shadow border border-gray-200 bg-white">
+            <div className="flex justify-end items-center p-4 bg-gray-50 border-b">
+                <span className="text-sm text-gray-500">{ventas.length} ventas registradas</span>
             </div>
-            <table className="min-w-full divide-y divide-gray-200 text-sm text-left">
+
+            <table className="min-w-full text-sm text-left divide-y divide-gray-200">
                 <thead className="bg-gray-100 text-gray-700">
                     <tr>
-                            <th className="px-4 py-3">Fecha</th>
-                            <th className="px-4 py-3">Cliente</th>
-                            <th className="px-4 py-3">Empleado</th>
-                            <th className="px-4 py-3">Total</th>
-                            <th className="px-4 py-3">Pago</th>
-                            <th className="px-4 py-3">Estado</th>
-                            <th className="px-4 py-3">Estado Pago</th>
+                        <th className="px-4 py-2">Fecha</th>
+                        <th className="px-4 py-2">Empleado</th>
+                        <th className="px-4 py-2">Cliente</th>
+                        <th className="px-4 py-2">Total</th>
+                        <th className="px-4 py-2">Estado</th>
+                        <th className="px-4 py-2">Items</th>
+                        <th className="px-4 py-2">Método</th>
+                        <th className="px-4 py-2">Pago</th>
+                        <th className="px-4 py-2">Acciones</th>
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 text-gray-900">
                     {ventas.length === 0 ? (
                         <tr>
-                            <td colSpan={7} className="text-center py-4 text-gray-500">
+                            <td colSpan={9} className="text-center py-6 text-gray-500">
                                 No se encontraron ventas
                             </td>
                         </tr>
@@ -31,12 +35,39 @@ export default function VentasTable({ ventas }: { ventas: Sale[] }) {
                         ventas.map((venta) => (
                             <tr key={venta._id} className="hover:bg-gray-50 transition-colors">
                                 <td className="px-4 py-2">{venta.createdAt ? formatDate(venta.createdAt) : '—'}</td>
-                                <td className="px-4 py-2">{venta.customerDNI || '—'}</td>
-                                <td className="px-4 py-2">{venta.employee?.nombre || '—'}</td>
-                                <td className="px-4 py-2">S/ {venta.totalPrice.toFixed(2)}</td>
+                                <td className="px-4 py-2">{venta.employee?.nombre || 'N/A'}</td>
+                                <td className="px-4 py-2">{venta.customerDNI || 'N/A'}</td>
+                                <td className="px-4 py-2 text-green-700 font-medium">S/ {venta.totalPrice.toFixed(2)}</td>
+                                <td className="px-4 py-2">
+                                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${venta.status === 'COMPLETADA' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                                        {venta.status}
+                                    </span>
+                                </td>
+                                <td className="px-4 py-2">
+                                    {venta.items.length > 0 ? (
+                                        <div className="space-y-1">
+                                            {venta.items.map((item, id) => (
+                                                <div key={id} className="text-xs text-gray-700 flex justify-between">
+                                                    <span>
+                                                        <span className="font-semibold">{item.quantity}</span> {item.product.nombre}
+                                                    </span>
+                                                    <span className="text-gray-500">S/ {item.price.toFixed(2)}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <span className="text-gray-500 text-xs">Sin Items</span>
+                                    )}
+                                </td>
                                 <td className="px-4 py-2">{venta.paymentMethod}</td>
-                                <td className="px-4 py-2">{venta.status}</td>
-                                <td className="px-4 py-2">{venta.paymentStatus}</td>
+                                <td className="px-4 py-2">
+                                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${venta.paymentStatus === 'PAGADO' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'}`}>
+                                        {venta.paymentStatus}
+                                    </span>
+                                </td>
+                                <td className="px-4 py-2">
+                                    <ActionsButtonsVentas venta={venta} />
+                                </td>
                             </tr>
                         ))
                     )}
