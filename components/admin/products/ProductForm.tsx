@@ -156,6 +156,67 @@ export default function ProductForm({ product, categorias }: { product?: Product
             <UploadProductImage
                 CurrentImagenes={product?.imagenes}
             />
+
+            <div className="mt-6 border-t pt-4">
+                <h3 className="text-sm font-semibold text-gray-700 mb-2">Variantes del producto (opcional)</h3>
+
+                {/* Aquí podrías usar un estado con useState y un botón para añadir múltiples variantes dinámicamente */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                    <div>
+                        <label className="block text-xs font-medium text-gray-600">Color</label>
+                        <input
+                            type="text"
+                            name="variantes[0].color"
+                            className="w-full border border-gray-300 rounded-lg p-2"
+                            placeholder="Ej. Rojo"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-xs font-medium text-gray-600">Modelo compatible</label>
+                        <input
+                            type="text"
+                            name="variantes[0].modeloCompatible"
+                            className="w-full border border-gray-300 rounded-lg p-2"
+                            placeholder="Ej. iPhone 14"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-xs font-medium text-gray-600">Stock</label>
+                        <input
+                            type="number"
+                            name="variantes[0].stock"
+                            className="w-full border border-gray-300 rounded-lg p-2"
+                            placeholder="Ej. 10"
+                        />
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label className="block text-xs font-medium text-gray-600">SKU (opcional)</label>
+                        <input
+                            type="text"
+                            name="variantes[0].sku"
+                            className="w-full border border-gray-300 rounded-lg p-2"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-xs font-medium text-gray-600">Imagen (nombre del archivo)</label>
+                        <input
+                            type="text"
+                            name="variantes[0].imagen"
+                            className="w-full border border-gray-300 rounded-lg p-2"
+                            placeholder="Ej. funda-roja.jpg"
+                        />
+                    </div>
+                </div>
+
+                {/* Repite este bloque para variantes[1], variantes[2], etc. o usa estado dinámico */}
+            </div>
+
         </div>
     );
 }
