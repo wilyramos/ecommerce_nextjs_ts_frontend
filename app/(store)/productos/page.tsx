@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import ProductResults from "@/components/home/product/ProductResults";
 import CategoriasFiltros from "@/components/home/product/CategoriasFiltros";
+import OrdenarPor from "@/components/home/products/OrdenarPor";
 
 export const metadata: Metadata = {
     title: "Productos - GoPhone Cañete | iPhones, Accesorios y Tecnología",
@@ -60,7 +61,7 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
 
                 {/* Filtros */}
                 <div className="sm:col-span-1">
-                    <h2 className="text-xl font-semibold text-gray-900 mb-4 border-b pb-2">Filtrar por</h2>
+                    <h2 className="text-xl font-semibold text-gray-900 mb-4 border-b pb-2">Filtros</h2>
                     <Suspense fallback={<div className="text-center py-8 text-gray-400 text-sm">Cargando filtros...</div>}>
                         <CategoriasFiltros />
                     </Suspense>
@@ -68,9 +69,9 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
 
                 {/* Productos */}
                 <section className="sm:col-span-3">
-
-                    <h2 className="text-xl font-semibold text-gray-900 mb-4 border-b pb-2 text-end">Productos</h2>
-
+                    <OrdenarPor
+                        pathname="/productos"
+                    />
                     <Suspense fallback={<div className="text-center py-8 text-gray-400 text-sm">Cargando productos...</div>}>
                         <ProductResults
                             category={category}

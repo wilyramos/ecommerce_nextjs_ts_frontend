@@ -13,6 +13,7 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
         category: "",
         priceRange: "",
         brand: "",
+        color: "",
     });
 
     useEffect(() => {
@@ -20,10 +21,11 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
             category: searchParams.get("category") || "",
             priceRange: searchParams.get("priceRange") || "",
             brand: searchParams.get("brand") || "",
+            color: searchParams.get("color") || "",
         });
     }, [searchParams]);
 
-    const updateFilters = (newFilters: { category?: string; priceRange?: string; brand?: string }) => {
+    const updateFilters = (newFilters: { category?: string; priceRange?: string; brand?: string; color?: string }) => {
         const updatedFilters = { ...filters, ...newFilters };
         const params = new URLSearchParams();
         Object.entries(updatedFilters).forEach(([key, value]) => {
@@ -46,11 +48,19 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
         { label: "Ifans", value: "ifans" },
     ];
 
+    const colorOptions = [
+        { label: "Todos", value: "" },
+        { label: "Negro", value: "negro" },
+        { label: "Blanco", value: "blanco" },
+        { label: "Rojo", value: "rojo" },
+        { label: "Azul", value: "azul" },
+    ];
+
     return (
         <aside className="py-6 border-gray-100">
             <div className="flex items-center justify-end">
                 <button
-                    onClick={() => updateFilters({ category: "", priceRange: "", brand: "" })}
+                    onClick={() => updateFilters({ category: "", priceRange: "", brand: "", color: "" })}
                     className="flex items-center gap-1 text-gray-500 hover:text-red-500 transition text-xs"
                 >
                     <MdClear size={18} className="text-red-500" />
@@ -105,6 +115,19 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
                         className="p-2 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm text-sm bg-white"
                     >
                         {brands.map(({ label, value }) => (
+                            <option key={value} value={value}>{label}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <div className="space-y-1">
+                    <label className="block text-sm font-medium text-gray-700">Color</label>
+                    <select
+                        value={filters.color}
+                        onChange={(e) => updateFilters({ color: e.target.value })}
+                        className="p-2 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm text-sm bg-white"
+                    >
+                        {colorOptions.map(({ label, value }) => (
                             <option key={value} value={value}>{label}</option>
                         ))}
                     </select>

@@ -25,11 +25,23 @@ const responsive = {
     },
 };
 
+// Images 
+const ImagenesPorCategoria: Record<string, string> = {
+    "celulares": "/celulares.svg",
+    "accesorios": "/accesorios.svg",
+    "laptops": "/laptops.svg",
+    "tablets": "/tablets.svg",
+    "audio": "/audio.svg",
+    "smartwatches": "/smartwatches.svg",
+    "gaming": "/gaming.svg",
+    "hogar": "/hogar.svg",
+};
+
 
 export default function CategoriasDestacadas({ categorias }: { categorias: CategoriasList }) {
     return (
-        <section className="w-full py-10 flex flex-col items-center">
-            <h2 className="text-2xl font-semibold mb-6 text-center text-gray-700">Categorías Destacadas</h2>
+        <section className="w-full py-4 flex flex-col items-center">
+            <h2 className="text-lg font-semibold mb-6 text-center text-gray-600">Categorías Destacadas</h2>
 
             <Carousel
                 responsive={responsive}
@@ -47,11 +59,11 @@ export default function CategoriasDestacadas({ categorias }: { categorias: Categ
                             className="bg-gray-100 rounded-xl shadow-md p-20 text-center text-lg font-semibold hover:bg-gray-200 transition"
                         >
                             <Image
-                                src={`/logo.svg`}
+                                src={ImagenesPorCategoria[categoria.slug] || "/logob.svg"}
                                 alt={categoria.nombre}
                                 width={100}
                                 height={100}
-                                className="w-24 h-24 mx-auto mb-4 rounded-full"
+                                className="w-24 h-24 mx-auto mb-4 object-contain"
                                 quality={100}
                             />
                             {categoria.nombre}

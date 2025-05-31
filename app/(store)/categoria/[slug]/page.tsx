@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import FiltrosPorCategoria from "@/components/home/categorias/FiltrosPorCategoria ";
 import ListaProducts from "@/components/home/categorias/ListaProducts";
+import OrdenarPor from "@/components/home/products/OrdenarPor";
 
 
 type Params = Promise<{
@@ -41,13 +42,16 @@ export default async function pageCategoria({ params, searchParams }: { params: 
 
                 {/* Filtros */}
                 <div className="sm:col-span-1">
-                    <h2 className="text-xl font-semibold text-gray-900 mb-4 border-b pb-2">Filtrar por</h2>
+                    <h2 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">FiltrOS</h2>
                     <FiltrosPorCategoria categorySlug={slug} />
                 </div>
 
                 {/* Productos de la categoría */}
                 <section className="sm:col-span-3">
 
+                    <OrdenarPor
+                        pathname={`/categoria/${slug}`}
+                    />
                     <Suspense fallback={<div className="text-center py-8 text-gray-400 text-sm">Cargando productos...</div>}>
                         <ListaProducts
                             category={slug}
@@ -57,8 +61,6 @@ export default async function pageCategoria({ params, searchParams }: { params: 
                         />
                     </Suspense>
                 </section>
-
-
             </section>
         </main>
     )

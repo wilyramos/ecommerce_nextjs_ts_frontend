@@ -49,8 +49,6 @@ export default function CarruselPrincipal() {
                         <div className="relative w-full h-[25vh] md:h-[40vh] lg:h-[50vh] cursor-pointer">
 
                             {/* <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent z-10" /> */}
-
-
                             <Image
                                 src={imagen.src}
                                 alt={imagen.alt}
