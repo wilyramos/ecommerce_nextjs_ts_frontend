@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { DM_Sans } from "next/font/google";
+import { Noto_Sans } from "next/font/google";
 import { Toaster } from 'sonner';
 
 
-const inter = DM_Sans({
+const noto_sans = Noto_Sans({
   subsets: ["latin"],
 });
 
@@ -63,7 +63,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`${inter.className}`}
+        className={`${noto_sans.className}`}
       >
         {/* <NavBar /> */}
         {children}

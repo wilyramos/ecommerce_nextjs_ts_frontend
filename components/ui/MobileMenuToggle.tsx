@@ -10,7 +10,7 @@ export default function MobileMenuToggle() {
     return (
         <>
             <button
-                className="md:hidden text-gray-600"
+                className="md:hidden"
                 onClick={() => setOpen(!open)}
             >
                 {open ? <FaTimes size={24} /> : <FaBars size={24} />}
@@ -21,8 +21,7 @@ export default function MobileMenuToggle() {
                     <ul className="flex flex-col gap-2">
                         {[
                             
-                            { href: '/productos', label: 'Tienda' },
-                           
+                            { href: '/productos', label: 'Tienda' },                           
                             { href: '/auth/registro', label: 'Iniciar Sesión' },
                         ].map(({ href, label }) => (
                             <li key={href}>

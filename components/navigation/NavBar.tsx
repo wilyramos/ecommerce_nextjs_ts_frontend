@@ -4,29 +4,33 @@ import { FaUser } from 'react-icons/fa';
 import ButtonShowCart from '../ui/ButtonShowCart';
 import MobileMenuToggle from '../ui/MobileMenuToggle';
 
-const productos = [
-    { name: 'Celulares', href: '/shop/telefonos' },
-    { name: 'Accesorios', href: '/shop/accesorios' },
-    { name: 'Laptops', href: '/shop/laptops' },
-    { name: 'Novedades', href: '/shop/novedades' },
-    { name: 'Ofertas Especiales', href: '/shop/ofertas' },
-];
-
-const marcas = [
-    { name: 'Apple', href: '/shop/marcas/apple' },
-    { name: 'Samsung', href: '/shop/marcas/samsung' },
-    { name: 'Xiaomi', href: '/shop/marcas/xiaomi' },
-];
-
 export default function NavBar() {
     return (
-        <header className="sticky top-0 z-50 bg-black text-white shadow-lg">
-            <div className=" max-w-7xl mx-auto flex justify-between items-center px-6 py-1">
+        <header className="sticky top-0 z-50 bg-white text-gray-800">
+            <div className="max-w-6xl mx-auto flex justify-between items-center px-6  font-semibold text-sm md:text-base py-4 md:py-2">
+                {/* Mobile Menu Toggle (Left) */}
+                <div className="md:hidden">
+                    <MobileMenuToggle />
+                </div>
 
-                {/* Logo */}
-                <Link href="/" className="flex items-center">
+                {/* Mobile Logo (Centered) */}
+                <div className="md:hidden absolute top-0 left-0 w-full h-full flex justify-center items-center">
+                    <Link href="/" className="flex items-center">
+                        <Image
+                            src="/logob.svg"
+                            alt="Logo"
+                            width={50}
+                            height={50}
+                            priority
+                            className="w-auto h-10"
+                        />
+                    </Link>
+                </div>
+
+                {/* Logo for Desktop (Left) */}
+                <Link href="/" className="hidden md:flex items-center">
                     <Image
-                        src="/logow.svg"
+                        src="/logob.svg"
                         alt="Logo"
                         width={50}
                         height={50}
@@ -35,65 +39,40 @@ export default function NavBar() {
                     />
                 </Link>
 
-                {/* Desktop Navigation */}
-                <nav className="hidden md:flex items-center gap-8  tracking-wide">
-                    <div className="group relative">
-                        <span className="cursor-pointer hover:text-indigo-600 transition-colors duration-300">
-                            Productos
-                        </span>
-                        <ul className="absolute hidden group-hover:block bg-gray-800 text-white shadow-xl rounded-lg mt-3 p-4 w-56 z-50 ring-1 ring-indigo-600 ring-opacity-50">
-                            {productos.map(({ name, href }) => (
-                                <li key={name}>
-                                    <Link
-                                        href={href}
-                                        className="block px-4 py-2 rounded-md hover:bg-indigo-600 hover:text-white transition duration-300"
-                                    >
-                                        {name}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+                {/* Desktop Navigation (Center) */}
 
-                    <div className="group relative">
-                        <span className="cursor-pointer hover:text-indigo-600 transition-colors duration-300">
-                            Marcas
-                        </span>
-                        <ul className="absolute hidden group-hover:block bg-gray-800 text-white shadow-xl rounded-lg mt-3 p-4 w-52 z-50 ring-1 ring-indigo-600 ring-opacity-50">
-                            {marcas.map(({ name, href }) => (
-                                <li key={name}>
-                                    <Link
-                                        href={href}
-                                        className="block px-4 py-2 rounded-md hover:bg-indigo-600 hover:text-white transition duration-300"
-                                    >
-                                        {name}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
+                <nav className="hidden md:flex items-center justify-center flex-1 space-x-6">
                     <Link
                         href="/productos"
-                        className="px-4 py-2 rounded-md hover:text-indigo-600 transition duration-300"
+                        className="px-4 py-2 rounded-md hover:text-indigo-800 transition duration-300"
                     >
                         Tienda
                     </Link>
                 </nav>
+                
 
-                {/* Right actions */}
-                <div className="flex items-center gap-6">
+                {/* Right actions (Hidden on mobile) */}
+                <div className="hidden md:flex items-center gap-6">
                     <Link
                         href="/auth/registro"
-                        className="hidden md:block hover:text-indigo-600 transition duration-300"
+                        className="block hover:text-indigo-800 transition duration-300"
                         aria-label="Registro / Usuario"
                     >
                         <FaUser size={20} />
                     </Link>
                     <ButtonShowCart />
-                    <div className="md:hidden">
-                        <MobileMenuToggle />
-                    </div>
+                </div>
+
+                {/* Right actions for Mobile (Visible) */}
+                <div className="md:hidden flex items-center gap-6 absolute top-0 right-0 h-full px-6">
+                    <Link
+                        href="/auth/registro"
+                        className="block hover:text-indigo-800 transition duration-300"
+                        aria-label="Registro / Usuario"
+                    >
+                        <FaUser size={20} />
+                    </Link>
+                    <ButtonShowCart />
                 </div>
             </div>
         </header>
