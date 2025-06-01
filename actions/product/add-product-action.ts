@@ -40,7 +40,7 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         barcode: formData.get('barcode') || undefined,
         brand: formData.get('brand') || undefined,
         color: formData.get('color') || undefined,
-        imagenes: formData.getAll('imagenes'),
+        imagenes: formData.getAll('imagenes[]') as string[],
         variantes: variantes
     }
 

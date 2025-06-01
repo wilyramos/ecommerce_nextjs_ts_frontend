@@ -13,6 +13,7 @@ type SearchParams = Promise<{
     page?: string;
     limit?: string;
     priceRange?: string;
+    sort?: string;
 }>;
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
@@ -28,13 +29,11 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 }
 
 
-
 export default async function pageCategoria({ params, searchParams }: { params: Params, searchParams: SearchParams }) {
 
     const { slug } = await params;
-    const { priceRange, page, limit } = await searchParams;
+    const { priceRange, page, limit, sort } = await searchParams;
     const limitNumber = limit ? parseInt(limit) : 10;
-
 
     return (
         <main className="max-w-7xl mx-auto p-5">
@@ -58,6 +57,7 @@ export default async function pageCategoria({ params, searchParams }: { params: 
                             priceRange={priceRange}
                             page={page}
                             limit={limitNumber}
+                            sort={sort}
                         />
                     </Suspense>
                 </section>

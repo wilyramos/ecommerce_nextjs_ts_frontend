@@ -29,7 +29,6 @@ export default function FiltrosClient({ categorySlug }: Props) {
         setSelectedBrands(searchParams.get("brands")?.split(",") || []);
     }, [searchParams]);
 
-
     
     const updateParams = (updates: Record<string, string | string[] | null>) => {
 

@@ -42,7 +42,7 @@ export const getProduct = async (id: string) => {
     return product;
 }
 
-export const getProductsByFilter = async ({ page, limit, category, priceRange, query, brand, color }: {
+export const getProductsByFilter = async ({ page, limit, category, priceRange, query, brand, color, sort }: {
     page: number;
     limit: number;
     category: string;
@@ -50,9 +50,10 @@ export const getProductsByFilter = async ({ page, limit, category, priceRange, q
     query?: string;
     brand?: string;
     color?: string;
+    sort?: string;
 }) => {
     // const token = getToken();
-    const url = `${process.env.API_URL}/products/filter?page=${page}&limit=${limit}&category=${category}&priceRange=${priceRange}&query=${query}&brand=${brand}&color=${color}`;
+    const url = `${process.env.API_URL}/products/filter?page=${page}&limit=${limit}&category=${category}&priceRange=${priceRange}&query=${query}&brand=${brand}&color=${color}&sort=${sort}`;
     // console.log("urlee", url);
     const req = await fetch(url, {
         method: 'GET'
