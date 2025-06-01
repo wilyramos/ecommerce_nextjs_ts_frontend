@@ -123,22 +123,18 @@ const color = z.enum([
     'Naranja',
 ]);
 
-export const ProductSchema = z.object({
-    _id: z.string(),
-    nombre: z.string(),
-    descripcion: z.string(),
-    precio: z.number(),
-    imagenes: z.array(z.string()),
-    categoria: z.string(),
-    stock: z.number(),
-    sku: z.string().optional(),
-    barcode: z.string().optional(),
-    brand: brand.optional(),
-    color: color.optional(),
-    createdAt: z.string().datetime().optional(),
-    updatedAt: z.string().datetime().optional(),
-    __v: z.number().optional(),
-})
+export const VariantOptionSchema = z.object({
+    nombre: z.string().min(1, { message: 'El nombre de la opción es obligatorio' }),
+    valores: z.array(
+        z.string().min(1, { message: 'Cada valor de la opción es obligatorio' })
+    ).min(1, { message: 'Debe haber al menos un valor para la opción' })
+});
+
+export const VariantSchema = z.object({
+    opciones: z.array(VariantOptionSchema).min(1, { message: 'Cada variante debe tener al menos una opción' }),
+    stock: z.number().min(0, { message: 'El stock es obligatorio y debe ser mayor o igual a 0' }),
+    barcode: z.string().optional().or(z.literal('')), // Permite opcional o cadena vacía
+});
 
 // Create product schema
 export const CreateProductSchema = z.object({
@@ -151,11 +147,32 @@ export const CreateProductSchema = z.object({
     barcode: z.string().optional(),
     brand: brand.optional(),
     color: color.optional(),
-    imagenes: z.array(z.string())
+    imagenes: z.array(z.string()),
+    variantes: z.array(VariantSchema).optional()
 });
 
+export const ProductSchema = z.object({
+    _id: z.string(),
+    nombre: z.string(),
+    descripcion: z.string(),
+    precio: z.number(),
+    imagenes: z.array(z.string()),
+    categoria: z.string(),
+    stock: z.number(),
+    sku: z.string().optional(),
+    barcode: z.string().optional(),
+    brand: brand.optional(),
+    color: color.optional(),
+    variantes: z.array(VariantSchema).optional(),
+    createdAt: z.string().datetime().optional(),
+    updatedAt: z.string().datetime().optional(),
+    __v: z.number().optional(),
+})
 
+export type Variant = z.infer<typeof VariantSchema>
+export type VariantOption = z.infer<typeof VariantOptionSchema>
 export type Product = z.infer<typeof ProductSchema>
+
 export const ProductsAPIResponse = z.object({
     products: z.array(ProductSchema),
     totalPages: z.number(),

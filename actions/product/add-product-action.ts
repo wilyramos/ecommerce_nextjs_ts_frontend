@@ -1,6 +1,7 @@
 "use server"
 
 import { CreateProductSchema, SuccessResponse } from "@/src/schemas"
+import type { Variant } from "@/src/schemas"
 import { cookies } from "next/headers"
 
 
@@ -12,6 +13,22 @@ type ActionStateType = {
 
 export async function createProduct(prevState: ActionStateType, formData: FormData) {
 
+    console.log("formData", formData)
+
+    const variantesString = formData.get('variantes') as string;
+    let variantes: Variant[] = [];
+
+    if (variantesString) {
+        try {
+            variantes = JSON.parse(variantesString);
+        } catch (error) {
+            console.error("Error parsing variantes:", error);
+            return {
+                errors: ["Error al procesar las variantes del producto."],
+                success: ""
+            }
+        }
+    }
 
     const productData = {
         nombre: formData.get('nombre'),
@@ -23,12 +40,17 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         barcode: formData.get('barcode') || undefined,
         brand: formData.get('brand') || undefined,
         color: formData.get('color') || undefined,
-        imagenes: formData.getAll('imagenes')
+        imagenes: formData.getAll('imagenes'),
+        variantes: variantes
     }
-    // console.log("productData", productData)
+
+    // format variantes
+
+
+    console.log("productData", productData)
 
     const product = CreateProductSchema.safeParse(productData)
-    // console.log("productt", product)
+    console.log("product", product)
 
     if (!product.success) {
         return {
@@ -55,7 +77,8 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
             barcode: product.data.barcode,
             brand: product.data.brand,
             color: product.data.color,
-            imagenes: product.data.imagenes
+            imagenes: product.data.imagenes,
+            variantes: product.data.variantes
         })
     });
 

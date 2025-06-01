@@ -1,30 +1,21 @@
-import type { Product } from "@/src/schemas";
+import type { Product, Variant } from "@/src/schemas";
 import type { CategoriasList } from "@/src/schemas";
 import UploadProductImage from "./UploadProductImage";
+import ProductVariantsForm from "./ProductVariantsForm";
+import { useState } from "react";
 
+
+const brandOptions = ["Apple", "Samsung", "Ifans"] as const;
+const colorOptions = ["Negro", "Blanco", "Azul", "Rojo", "Verde", "Amarillo", "Morado", "Naranja"] as const;
 
 
 export default function ProductForm({ product, categorias }: { product?: Product, categorias: CategoriasList }) {
 
-    const brand = {
-        options: [
-            "Apple",
-            "Samsung",
-            "Ifans"
-        ]
-    };
+    const [productVariants, setProductVariants] = useState<Variant[]>(product?.variantes || []);
 
-    const color = {
-        options: [
-            "Negro",
-            "Blanco",
-            "Azul",
-            "Rojo",
-            "Verde",
-            "Amarillo",
-            "Morado",
-            "Naranja"
-        ]
+    // Función para manejar los cambios en las variantes recibidos del componente hijo
+    const handleVariantsChange = (updatedVariants: Variant[]) => {
+        setProductVariants(updatedVariants);
     };
 
     return (
@@ -117,7 +108,7 @@ export default function ProductForm({ product, categorias }: { product?: Product
 
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                 <div className="">
                     <label htmlFor="brand" className="block text-sm font-medium text-gray-700">Marca</label>
                     <select
@@ -127,7 +118,7 @@ export default function ProductForm({ product, categorias }: { product?: Product
                         defaultValue={product?.brand || ""}
                     >
                         <option value="">Selecciona una marca</option>
-                        {brand.options.map((option) => (
+                        {brandOptions.map((option) => (
                             <option key={option} value={option}>
                                 {option}
                             </option>
@@ -144,7 +135,7 @@ export default function ProductForm({ product, categorias }: { product?: Product
                         defaultValue={product?.color || ""}
                     >
                         <option value="">Selecciona un color</option>
-                        {color.options.map((option) => (
+                        {colorOptions.map((option) => (
                             <option key={option} value={option}>
                                 {option}
                             </option>
@@ -157,65 +148,25 @@ export default function ProductForm({ product, categorias }: { product?: Product
                 CurrentImagenes={product?.imagenes}
             />
 
-            <div className="mt-6 border-t pt-4">
-                <h3 className="text-sm font-semibold text-gray-700 mb-2">Variantes del producto (opcional)</h3>
+            {/* Variantes dinamicos del producto*/}
 
-                {/* Aquí podrías usar un estado con useState y un botón para añadir múltiples variantes dinámicamente */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-                    <div>
-                        <label className="block text-xs font-medium text-gray-600">Color</label>
-                        <input
-                            type="text"
-                            name="variantes[0].color"
-                            className="w-full border border-gray-300 rounded-lg p-2"
-                            placeholder="Ej. Rojo"
-                        />
-                    </div>
+            <input
+                type="hidden"
+                name="variantes"
+                value={JSON.stringify(productVariants)}
+            />
 
-                    <div>
-                        <label className="block text-xs font-medium text-gray-600">Modelo compatible</label>
-                        <input
-                            type="text"
-                            name="variantes[0].modeloCompatible"
-                            className="w-full border border-gray-300 rounded-lg p-2"
-                            placeholder="Ej. iPhone 14"
-                        />
-                    </div>
+            <ProductVariantsForm
+                initialVariants={product?.variantes}
+                onVariantsChange={handleVariantsChange}
+            />
 
-                    <div>
-                        <label className="block text-xs font-medium text-gray-600">Stock</label>
-                        <input
-                            type="number"
-                            name="variantes[0].stock"
-                            className="w-full border border-gray-300 rounded-lg p-2"
-                            placeholder="Ej. 10"
-                        />
-                    </div>
-                </div>
+            <div className="mt-4">
+                <label className="block text-sm font-medium text-gray-700">Variantes del producto</label>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label className="block text-xs font-medium text-gray-600">SKU (opcional)</label>
-                        <input
-                            type="text"
-                            name="variantes[0].sku"
-                            className="w-full border border-gray-300 rounded-lg p-2"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-xs font-medium text-gray-600">Imagen (nombre del archivo)</label>
-                        <input
-                            type="text"
-                            name="variantes[0].imagen"
-                            className="w-full border border-gray-300 rounded-lg p-2"
-                            placeholder="Ej. funda-roja.jpg"
-                        />
-                    </div>
-                </div>
-
-                {/* Repite este bloque para variantes[1], variantes[2], etc. o usa estado dinámico */}
             </div>
+
+            
 
         </div>
     );
