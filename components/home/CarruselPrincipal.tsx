@@ -27,9 +27,7 @@ const responsive = {
 const Imagenes = [
     { src: "/bg1.webp", alt: "Imagen principal de la tienda 1", url: "/productos/1" },
     { src: "/b2.webp", alt: "Imagen principal de la tienda 2", url: "/productos/2" },
-    { src: "/bg.webp", alt: "Imagen principal de la tienda 3", url: "/productos/3" },
     { src: "/bg4.webp", alt: "Imagen principal de la tienda 4", url: "/productos/4" },
-    { src: "/b2.webp", alt: "Imagen principal de la tienda 5", url: "/productos/5" },
 ];
 
 export default function CarruselPrincipal() {
