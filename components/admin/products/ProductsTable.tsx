@@ -9,7 +9,7 @@ export default function ProductsTable({ products }: { products: ProductsList }) 
                 <thead className="bg-gray-800 text-white">
                     <tr>
                         <th className="px-4 py-2 text-left font-semibold">Nombre</th>
-                        <th className="px-4 py-2 text-left font-semibold hidden md:table-cell">Descripción</th>
+                        <th className="px-4 py-2 text-left font-semibold hidden md:table-cell">sku</th>
                         <th className="px-4 py-2 text-left font-semibold hidden md:table-cell">Precio</th>
                         <th className="px-4 py-2 text-left font-semibold">Stock</th>
                         <th className="px-4 py-2 text-left font-semibold">Acciones</th>
@@ -18,8 +18,11 @@ export default function ProductsTable({ products }: { products: ProductsList }) 
                 <tbody className="divide-y divide-gray-100">
                     {products.products.map((product) => (
                         <tr key={product._id} className="hover:bg-gray-100 transition">
-                            <td className="px-4 py-2 font-medium text-gray-900">{product.nombre}</td>
-                            <td className="px-4 py-2 text-gray-500 hidden md:table-cell">{product.descripcion}</td>
+                            <td className="px-4 py-2 font-sm text-gray-900">{product.nombre}</td>
+                            <td className="px-4 py-2 text-gray-700 hidden md:table-cell">{product.sku}</td>
+                            {/* <td className="px-4 py-2 text-gray-700 hidden md:table-cell">
+                                {product.descripcion.slice(0, 50)}
+                            </td> */}
                             <td className="px-4 py-2 text-gray-700 hidden md:table-cell">${product.precio}</td>
                             <td className="px-4 py-2 text-gray-700">{product.stock}</td>
                             <td className="px-4 py-2 text-gray-700">

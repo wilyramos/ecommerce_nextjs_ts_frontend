@@ -14,6 +14,7 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
         priceRange: "",
         brand: "",
         color: "",
+        compatibilidad: "",
     });
 
     useEffect(() => {
@@ -22,10 +23,11 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
             priceRange: searchParams.get("priceRange") || "",
             brand: searchParams.get("brand") || "",
             color: searchParams.get("color") || "",
+            compatibilidad: searchParams.get("compatibilidad") || "",
         });
     }, [searchParams]);
 
-    const updateFilters = (newFilters: { category?: string; priceRange?: string; brand?: string; color?: string }) => {
+    const updateFilters = (newFilters: { category?: string; priceRange?: string; brand?: string; color?: string; compatibilidad?: string }) => {
         const updatedFilters = { ...filters, ...newFilters };
         const params = new URLSearchParams();
         Object.entries(updatedFilters).forEach(([key, value]) => {
@@ -56,11 +58,21 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
         { label: "Azul", value: "azul" },
     ];
 
+    const compatibilidadOptions = [
+        { label: "Todos", value: "" },
+
+        { label: "iPhone 14", value: "iphone-14" },
+        { label: "iPhone 13 Pro", value: "iphone-13-pro" },
+        { label: "iPhone 13", value: "iphone-13" },
+        { label: "iPhone 12", value: "iphone-12" },
+        { label: "iPhone 11", value: "iphone-11" },
+    ];
+
     return (
         <aside className="py-6 border-gray-100">
             <div className="flex items-center justify-end">
                 <button
-                    onClick={() => updateFilters({ category: "", priceRange: "", brand: "", color: "" })}
+                    onClick={() => updateFilters({ category: "", priceRange: "", brand: "", color: "", compatibilidad: "" })}
                     className="flex items-center gap-1 text-gray-500 hover:text-red-500 transition text-xs"
                 >
                     <MdClear size={18} className="text-red-500" />
@@ -132,6 +144,20 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
                         ))}
                     </select>
                 </div>
+
+                <div className="space-y-1">
+                    <label className="block text-sm font-medium text-gray-700">Compatibilidad</label>
+                    <select
+                        value={filters.compatibilidad}
+                        onChange={(e) => updateFilters({ compatibilidad: e.target.value })}
+                        className="p-2 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm text-sm bg-white"
+                    >
+                        {compatibilidadOptions.map(({ label, value }) => (
+                            <option key={value} value={value}>{label}</option>
+                        ))}
+                    </select>
+                </div>
+                
             </form>
         </aside>
     );

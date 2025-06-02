@@ -24,9 +24,11 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                         src={images[selectedIndex]}
                         alt="Imagen seleccionada"
                         fill
+                        unoptimized
                         sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
                         quality={100}
                         className="object-cover transition-transform duration-500 ease-in-out scale-100 group-hover:scale-105"
+                        
                     />
                 ) : (
                     <div className="flex items-center justify-center w-full h-full text-gray-400 text-xs">

@@ -11,9 +11,10 @@ type ProductResultsProps = {
     brand?: string;
     color?: string;
     sort?: string;
+    compatibilidad?: string;
 };
 
-export default async function ProductResults({ category, priceRange, page, limit = 10, brand, color, sort }: ProductResultsProps) {
+export default async function ProductResults({ category, priceRange, page, limit = 10, brand, color, sort, compatibilidad }: ProductResultsProps) {
 
     const products = await getProductsByFilter({
         page: page ? parseInt(page) : 1,
@@ -24,6 +25,7 @@ export default async function ProductResults({ category, priceRange, page, limit
         brand: brand || "",
         color: color || "",
         sort: sort || "",
+        compatibilidad: compatibilidad || "",
     });
 
     if (!products || products.products.length === 0) {

@@ -28,7 +28,7 @@ export default function ProductCard({ product }: { product: Product }) {
                 </div>
 
                 <div className="flex flex-col gap-2 p-2">
-                    <h3 className="text-md font-semibold text-gray-800 line-clamp-2 leading-tight">
+                    <h3 className="text-sm text-gray-800 line-clamp-3 ">
                         {product.nombre}
                     </h3>
 
