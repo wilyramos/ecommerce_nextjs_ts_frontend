@@ -13,19 +13,18 @@ const responsive = {
     },
     desktop: {
         breakpoint: { max: 3000, min: 1024 },
-        items: 3,
+        items: 4,
     },
     tablet: {
-        breakpoint: { max: 1024, min: 464 },
+        breakpoint: { max: 1024, min: 640 },
         items: 2,
     },
     mobile: {
-        breakpoint: { max: 464, min: 0 },
+        breakpoint: { max: 640, min: 0 },
         items: 1,
     },
 };
 
-// Images 
 const ImagenesPorCategoria: Record<string, string> = {
     "celulares": "/celulares.svg",
     "accesorios": "/accesorios.svg",
@@ -37,36 +36,33 @@ const ImagenesPorCategoria: Record<string, string> = {
     "hogar": "/hogar.svg",
 };
 
-
 export default function CategoriasDestacadas({ categorias }: { categorias: CategoriasList }) {
     return (
-        <section className="w-full py-4 flex flex-col items-center">
-            <h2 className="text-lg font-semibold mb-6 text-center text-gray-600">Categorías Destacadas</h2>
+        <section className="w-full py-10 bg-gray-50 flex flex-col items-center">
+            <h2 className="text-2xl font-bold mb-8 text-gray-700">Categorías Destacadas</h2>
 
             <Carousel
                 responsive={responsive}
                 infinite
                 autoPlay
-                autoPlaySpeed={3000}
+                autoPlaySpeed={3500}
                 keyBoardControl
                 transitionDuration={500}
-                containerClass="w-full px-4"
+                containerClass="w-full px-6"
                 itemClass="px-2"
             >
                 {categorias.map((categoria, index) => (
                     <Link href={`/categoria/${categoria.slug}`} key={index} className="no-underline">
-                        <div
-                            className="bg-gray-100 rounded-xl shadow-md p-20 text-center text-lg font-semibold hover:bg-gray-200 transition"
-                        >
+                        <div className="bg-white rounded-2xl shadow-sm p-6 text-center hover:shadow-md hover:-translate-y-1 transition-all duration-300">
                             <Image
                                 src={ImagenesPorCategoria[categoria.slug] || "/logob.svg"}
                                 alt={categoria.nombre}
                                 width={100}
                                 height={100}
-                                className="w-24 h-24 mx-auto mb-4 object-contain"
+                                className="w-20 h-20 mx-auto mb-4 object-contain"
                                 quality={100}
                             />
-                            {categoria.nombre}
+                            <p className="text-base font-medium text-gray-700">{categoria.nombre}</p>
                         </div>
                     </Link>
                 ))}

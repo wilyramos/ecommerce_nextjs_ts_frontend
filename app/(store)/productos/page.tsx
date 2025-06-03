@@ -39,7 +39,7 @@ export const metadata: Metadata = {
         description:
             "Revisa nuestra selección de productos tecnológicos disponibles en GoPhone Cañete. ¡Envíos rápidos y precios increíbles!",
     },
-    metadataBase: new URL("https://gophone.pe"), 
+    metadataBase: new URL("https://gophone.pe"),
 };
 
 type SearchParams = Promise<{
@@ -62,10 +62,12 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
             <section className="grid grid-cols-1 sm:grid-cols-4 gap-6">
 
                 {/* Filtros */}
-                <div className="sm:col-span-1">
-                    <h2 className="text-xl font-semibold text-gray-900 mb-4 border-b pb-2">Filtros</h2>
+                <div className="sm:col-span-1 sticky top-5 self-start h-fit">
+                    <h2 className="text-xl font-semibold text-gray-600 mb-4 border-b pb-2">Filtros</h2>
                     <Suspense fallback={<div className="text-center py-8 text-gray-400 text-sm">Cargando filtros...</div>}>
-                        <CategoriasFiltros />
+                        <div className="">
+                            <CategoriasFiltros />
+                        </div>
                     </Suspense>
                 </div>
 
