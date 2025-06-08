@@ -73,7 +73,7 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
             <div className="flex items-center justify-end">
                 <button
                     onClick={() => updateFilters({ category: "", priceRange: "", brand: "", color: "", compatibilidad: "" })}
-                    className="flex items-center gap-1 text-gray-500 hover:text-red-500 transition text-xs"
+                    className="flex items-center gap-1 text-gray-400 hover:text-red-500 transition text-xs"
                 >
                     <MdClear size={18} className="text-red-500" />
                     Limpiar filtros

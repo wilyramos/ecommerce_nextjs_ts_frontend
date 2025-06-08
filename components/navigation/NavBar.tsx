@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { FaUser } from 'react-icons/fa';
 import ButtonShowCart from '../ui/ButtonShowCart';
 import MobileMenuToggle from '../ui/MobileMenuToggle';
+import Logo from '../ui/Logo';
 
 export default function NavBar() {
     return (
@@ -29,16 +30,8 @@ export default function NavBar() {
 
                 {/* Logo for Desktop (Left) */}
                 <Link href="/" className="hidden md:flex items-center">
-                    <Image
-                        src="/logob.svg"
-                        alt="Logo"
-                        width={50}
-                        height={50}
-                        priority
-                        className="w-auto h-10"
-                    />
+                    <Logo />
                 </Link>
-
                 {/* Desktop Navigation (Center) */}
 
                 <nav className="hidden md:flex items-center justify-center flex-1 space-x-6">

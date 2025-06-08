@@ -34,3 +34,18 @@ export const getCategories = cache(async () => {
     const categories = CategoriesAPIResponse.parse(json);
     return categories;
 });
+
+
+export const getAllSubcategories = cache(async () => {
+    const url = `${process.env.API_URL}/category/all/subcategories`;
+    const res = await fetch(url, {
+        method: "GET",
+    });
+    if (!res.ok) {
+        notFound();
+    }
+
+    const json = await res.json();
+    const categories = CategoriesAPIResponse.parse(json);
+    return categories;
+});

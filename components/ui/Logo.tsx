@@ -4,11 +4,12 @@ export default function Logo() {
 
     return (
         <Image
-            src="/logo.svg"
+            src="/logob.svg"
             alt="Logo"
-            width={100}
-            height={100}
-            // className="rounded-full bg-amber-400 p-2 mb-5"
+            width={120}
+            height={120}
+            quality={100}
+            
         />
     );
 }
