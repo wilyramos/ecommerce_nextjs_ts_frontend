@@ -22,9 +22,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     const categoryName = decodeURIComponent(slug).replace(/-/g, " ");
 
     return {
-        title: `Productos en ${categoryName} - Gostore`,
-        description: `Explora nuestra colección de productos en la categoría ${categoryName} en Gostore.`,
-        keywords: [`productos`, `gostore`, categoryName, `comprar ${categoryName}`],
+        title: `Productos en ${categoryName} - GoPhone`,
+        description: `Explora nuestra amplia gama de productos en la categoría ${categoryName}. Encuentra lo mejor en tecnología y accesorios.`,
+        keywords: [`productos`, `gophone`, categoryName, `comprar ${categoryName}`],
     };
 }
 

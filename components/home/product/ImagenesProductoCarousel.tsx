@@ -59,9 +59,9 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                     <button
                         key={idx}
                         onClick={() => setSelectedIndex(idx)}
-                        className={`relative w-20 h-20 flex-shrink-0 rounded-lg border-2 transition-all duration-200 focus:outline-none
+                        className={`relative w-20 h-20 flex-shrink-0 rounded-xl border-2 transition-all duration-200 focus:outline-none
                             ${idx === selectedIndex
-                                ? "border-blue-600 ring-2 ring-blue-500"
+                                ? "border-indigo-600 ring-1 ring-indigo-500"
                                 : ""
                             }`}
                     >
