@@ -42,6 +42,9 @@ export const metadata: Metadata = {
             "Compra iPhones, accesorios y más en GoPhone, tu tienda online de confianza en Cañete.",
     },
     metadataBase: new URL("https://gophone.pe"),
+    icons: {
+        icon: "/logoapp.svg",       
+    }
 };
 
 
