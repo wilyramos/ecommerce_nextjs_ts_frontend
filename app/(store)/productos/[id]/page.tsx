@@ -98,7 +98,7 @@ export default async function pageProduct({ params }: { params: Params }) {
                                 'nombre' in producto.categoria && (
                                     <p>
                                         <span className="font-medium">Categoría:</span>{' '}
-                                        {(producto.categoria as any).nombre}
+                                        {producto.categoria}
                                     </p>
                                 )}
                         </div>
