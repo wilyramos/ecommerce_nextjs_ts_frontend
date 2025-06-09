@@ -1,5 +1,5 @@
 import getToken from "../auth/token"
-import { ProductsAPIResponse, ProductSchema } from "@/src/schemas";
+import { ProductsAPIResponse, ProductAPIResponse } from "@/src/schemas";
 
 
 export const getProducts = async ({ page = 1, limit = 5 }) => {
@@ -38,7 +38,7 @@ export const getProduct = async (id: string) => {
         return null;
     }
 
-    const product = ProductSchema.parse(json);
+    const product = ProductAPIResponse.parse(json);
     return product;
 }
 

@@ -9,7 +9,7 @@ export default function Logo() {
             width={120}
             height={120}
             quality={100}
-            
+            className="hover:scale-110 transition-transform duration-300"
         />
     );
 }

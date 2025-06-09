@@ -37,9 +37,9 @@ export default function NavBar() {
                 <nav className="hidden md:flex items-center justify-center flex-1 space-x-6">
                     <Link
                         href="/productos"
-                        className="px-4 py-2 rounded-md hover:text-indigo-800 transition duration-300"
+                        className="px-4 py-2 rounded-md hover:text-indigo-800 transition duration-300 font-sans"
                     >
-                        Tienda
+                        Productos
                     </Link>
                 </nav>
                 

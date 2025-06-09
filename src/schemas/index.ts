@@ -221,12 +221,17 @@ export const ProductAPIResponse = z.object({
     descripcion: z.string(),
     precio: z.number(),
     imagenes: z.array(z.string()),
-    categoria: CategorySchema,
+    categoria: z.string(),
     stock: z.number(),
     sku: z.string().optional(),
     createdAt: z.string().datetime().optional(),
     updatedAt: z.string().datetime().optional(),
     __v: z.number().optional(),
+    brand: brand.optional(),
+    color: color.optional(),
+    barcode: z.string().optional(),
+    variantes: z.array(VariantSchema).optional(),
+    
 })
 
 export type ProductType = z.infer<typeof ProductAPIResponse>
