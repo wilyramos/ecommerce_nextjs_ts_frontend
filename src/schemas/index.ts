@@ -161,12 +161,12 @@ export const ProductSchema = z.object({
     stock: z.number(),
     sku: z.string().optional(),
     barcode: z.string().optional(),
+    isActive: z.boolean().default(true), 
     brand: brand.optional(),
     color: color.optional(),
     variantes: z.array(VariantSchema).optional(),
     createdAt: z.string().datetime().optional(),
     updatedAt: z.string().datetime().optional(),
-    __v: z.number().optional(),
 })
 
 export type Variant = z.infer<typeof VariantSchema>
@@ -230,6 +230,7 @@ export const ProductAPIResponse = z.object({
     brand: brand.optional(),
     color: color.optional(),
     barcode: z.string().optional(),
+    isActive: z.boolean().default(true), // Campo para indicar si el producto está activo
     variantes: z.array(VariantSchema).optional(),
     
 })

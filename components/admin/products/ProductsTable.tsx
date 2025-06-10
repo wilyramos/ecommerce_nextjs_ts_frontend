@@ -12,6 +12,7 @@ export default function ProductsTable({ products }: { products: ProductsList }) 
                         <th className="px-4 py-2 text-left font-semibold hidden md:table-cell">sku</th>
                         <th className="px-4 py-2 text-left font-semibold hidden md:table-cell">Precio</th>
                         <th className="px-4 py-2 text-left font-semibold">Stock</th>
+                        <th className="px-4 py-2 text-left font-semibold hidden md:table-cell">Activo</th>
                         <th className="px-4 py-2 text-left font-semibold">Acciones</th>
                     </tr>
                 </thead>
@@ -25,10 +26,18 @@ export default function ProductsTable({ products }: { products: ProductsList }) 
                             </td> */}
                             <td className="px-4 py-2 text-gray-700 hidden md:table-cell">${product.precio}</td>
                             <td className="px-4 py-2 text-gray-700">{product.stock}</td>
+                            <td className="px-4 py-2 text-gray-700 hidden md:table-cell">
+                                {product.isActive ? (
+                                    <span className="text-green-600">Sí</span>
+                                ) : (
+                                    <span className="text-red-600">No</span>
+                                )}
+                            </td>
                             <td className="px-4 py-2 text-gray-700">
                                 <Link href={`/admin/products/${product._id}`} className="hover:text-blue-600 text-gray-500">
                                     <FaEye className="inline-block mr-1" />
                                 </Link>
+
                             </td>
                         </tr>
                     ))}

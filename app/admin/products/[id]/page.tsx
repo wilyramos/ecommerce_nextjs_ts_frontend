@@ -3,6 +3,7 @@ import { getCategories } from "@/src/services/categorys";
 import EditProductForm from "@/components/admin/products/EditProductForm";
 import DeleteProductButton from "@/components/admin/products/DeleteProductButton";
 import Link from "next/link";
+import EditStatusProductButton from "@/components/admin/products/EditStatusProductButton";
 
 type Params = Promise<{
     id: string;
@@ -40,6 +41,7 @@ export default async function ProductDetailsPage({ params }: { params: Params })
                         Volver
                     </Link>
                     <DeleteProductButton productId={product._id} />
+                    <EditStatusProductButton productId={product._id} isActive={product.isActive} />
                 </div>
             </div>
 
