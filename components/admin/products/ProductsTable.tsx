@@ -1,7 +1,7 @@
 import type { ProductsList } from "@/src/schemas";
 import Link from "next/link";
 import { FaEye } from "react-icons/fa";
-import { FaCheck } from "react-icons/fa";
+// import { FaCheck } from "react-icons/fa";
 
 export default function ProductsTable({ products }: { products: ProductsList }) {
     return (

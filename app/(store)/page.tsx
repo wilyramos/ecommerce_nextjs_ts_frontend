@@ -3,6 +3,7 @@ import CategoriasDestacadas from "@/components/home/CategoriasDestacadas"
 import { getCategories } from "@/src/services/categorys"
 import CarruselPrincipal from "@/components/home/CarruselPrincipal"
 import type { Metadata } from "next";
+import ProductosNuevos from "@/components/home/ProductosNuevos"
 
 
 export const metadata: Metadata = {
@@ -50,7 +51,8 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
 
-    const categories = await getCategories()
+    const categories = await getCategories();
+
     return (
         <>
             {/* Hero principal */}
@@ -60,6 +62,9 @@ export default async function HomePage() {
 
             <section className="container mx-auto ">
                 <CategoriasDestacadas categorias={categories} />
+            </section>
+            <section className="container mx-auto px-4 py-10">
+                <ProductosNuevos />
             </section>
 
             <Footer />

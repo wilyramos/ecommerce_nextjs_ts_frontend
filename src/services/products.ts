@@ -1,5 +1,6 @@
 import getToken from "../auth/token"
 import { ProductsAPIResponse, ProductAPIResponse } from "@/src/schemas";
+import { cache } from 'react';
 
 
 export const getProducts = async ({ page = 1, limit = 5 }) => {
@@ -59,7 +60,7 @@ export const getProductsByFilter = async ({ page, limit, category, priceRange, q
     const req = await fetch(url, {
         method: 'GET'
     });
-    if (!req.ok) {  
+    if (!req.ok) {
         return null;
     }
 
@@ -88,3 +89,21 @@ export const searchProducts = async ({ query, page, limit }: {
     const products = ProductsAPIResponse.parse(json);
     return products;
 }
+
+export const getNewProducts = cache(async () => {
+    const url = `${process.env.API_URL}/products/new`;
+
+    const req = await fetch(url, {
+        method: 'GET'
+    });
+
+    if (!req.ok) {
+        return null;
+    }
+
+    const json = await req.json();
+    const products = ProductsAPIResponse.parse(json);
+
+    console.log("Nuevos productos", products);
+    return products;
+});
