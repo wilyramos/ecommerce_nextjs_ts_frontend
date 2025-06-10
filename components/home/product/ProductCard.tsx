@@ -30,14 +30,18 @@ export default function ProductCard({ product }: { product: Product }) {
 
                 {/* Información del producto */}
                 <div className="flex flex-col justify-between flex-1 p-3 gap-2">
-                    <h3 className="text-sm font-medium text-gray-800 line-clamp-2">
+                    <h3 className="text-sm font-medium text-gray-950 line-clamp-2">
                         {product.nombre}
                     </h3>
 
                     <div className="flex justify-between items-end">
-                        <div className="text-xs text-gray-500">SKU: {product.sku || 'N/A'}</div>
-                        <div className="text-lg font-semibold text-sky-500">
-                            <span className="text-sm font-light">s/. </span>
+                        <div className="text-xs text-gray-600">
+                            {product.color}
+                        </div>
+                        
+                        {/* <div className="text-xs text-gray-500">SKU: {product.sku || 'N/A'}</div> */}
+                        <div className="text-lg font-bold text-gray-900">
+                            <span className="text-md  text-indigo-700">s/. </span>
                             {product.precio.toFixed(2)}
                         </div>
                     </div>
