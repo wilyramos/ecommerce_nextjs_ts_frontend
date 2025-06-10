@@ -18,8 +18,8 @@ export default async function ProductsPage({ searchParams }: { searchParams: Sea
     return (
         <div className="max-w-7xl mx-auto p-5">
             <div className="flex justify-between mb-6">
-                <h1 className="text-xl sm:text-xl lg:text-3xl font-bold text-gray-800">
-                    Listado de Productos
+                <h1 className="text-lg sm:text-xl lg:text-xl font-bold text-gray-800">
+                    Productos
                 </h1>
                 <AddProductButton />
             </div>

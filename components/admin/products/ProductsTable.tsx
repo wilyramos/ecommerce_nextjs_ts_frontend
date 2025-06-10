@@ -1,6 +1,7 @@
 import type { ProductsList } from "@/src/schemas";
 import Link from "next/link";
 import { FaEye } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa";
 
 export default function ProductsTable({ products }: { products: ProductsList }) {
     return (
@@ -13,6 +14,8 @@ export default function ProductsTable({ products }: { products: ProductsList }) 
                         <th className="px-4 py-2 text-left font-semibold hidden md:table-cell">Precio</th>
                         <th className="px-4 py-2 text-left font-semibold">Stock</th>
                         <th className="px-4 py-2 text-left font-semibold hidden md:table-cell">Activo</th>
+                        <th className="px-4 py-2 text-left font-semibold">Es nuevo</th>
+                        <th className="px-4 py-2 text-left font-semibold hidden md:table-cell">Es destacado</th>
                         <th className="px-4 py-2 text-left font-semibold">Acciones</th>
                     </tr>
                 </thead>
@@ -28,6 +31,20 @@ export default function ProductsTable({ products }: { products: ProductsList }) 
                             <td className="px-4 py-2 text-gray-700">{product.stock}</td>
                             <td className="px-4 py-2 text-gray-700 hidden md:table-cell">
                                 {product.isActive ? (
+                                    <span className="text-green-600">Sí</span>
+                                ) : (
+                                    <span className="text-red-600">No</span>
+                                )}
+                            </td>
+                            <td className="px-4 py-2 text-gray-700">
+                                {product.esNuevo ? (
+                                    <span className="text-green-600">Sí</span>
+                                ) : (
+                                    <span className="text-red-600">No</span>
+                                )}
+                            </td>
+                            <td className="px-4 py-2 text-gray-700 hidden md:table-cell">
+                                {product.esDestacado ? (
                                     <span className="text-green-600">Sí</span>
                                 ) : (
                                     <span className="text-red-600">No</span>
