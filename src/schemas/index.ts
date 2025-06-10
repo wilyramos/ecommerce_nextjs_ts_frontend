@@ -110,6 +110,7 @@ const brand = z.enum([
     'Apple',
     'Samsung',
     'Ifans',
+    '1HORA',
 ]);
 
 const color = z.enum([
@@ -148,7 +149,10 @@ export const CreateProductSchema = z.object({
     brand: brand.optional(),
     color: color.optional(),
     imagenes: z.array(z.string()),
-    variantes: z.array(VariantSchema).optional()
+    variantes: z.array(VariantSchema).optional(),
+    esDestacado: z.boolean().default(false).optional(),
+    esNuevo: z.boolean().default(false).optional(),
+    // isActive: z.boolean().default(true), 
 });
 
 export const ProductSchema = z.object({
@@ -164,9 +168,12 @@ export const ProductSchema = z.object({
     isActive: z.boolean().default(true), 
     brand: brand.optional(),
     color: color.optional(),
+    esDestacado: z.boolean().default(false).optional(),
+    esNuevo: z.boolean().default(false).optional(),
     variantes: z.array(VariantSchema).optional(),
     createdAt: z.string().datetime().optional(),
     updatedAt: z.string().datetime().optional(),
+
 })
 
 export type Variant = z.infer<typeof VariantSchema>
@@ -232,7 +239,8 @@ export const ProductAPIResponse = z.object({
     barcode: z.string().optional(),
     isActive: z.boolean().default(true), // Campo para indicar si el producto está activo
     variantes: z.array(VariantSchema).optional(),
-    
+    esDestacado: z.boolean().default(false).optional(),
+    esNuevo: z.boolean().default(false).optional(),
 })
 
 export type ProductType = z.infer<typeof ProductAPIResponse>

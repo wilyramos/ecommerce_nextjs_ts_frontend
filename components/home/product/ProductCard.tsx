@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Product } from '@/src/schemas';
+import { FaStar, FaBolt } from 'react-icons/fa';
 // import AddProductButton from './AddProductButton';
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -12,6 +13,21 @@ export default function ProductCard({ product }: { product: Product }) {
             <Link href={`/productos/${product._id}`} className="flex flex-col h-full">
                 {/* Imagen */}
                 <div className="relative w-full aspect-square bg-gray-100 overflow-hidden rounded-t-xl">
+                    {/*Etiquetas */}
+                    <div>
+                       {product.esDestacado && (
+                            <span className="absolute top-2 left-2 flex items-center gap-1 bg-yellow-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow">
+                                <FaStar className="text-xs" />
+                                Destacado
+                            </span>
+                        )}
+                        {product.esNuevo && (
+                            <span className="absolute top-2 right-2 flex items-center gap-1 bg-indigo   -600 text-white text-xs font-semibold px-2 py-1 rounded-full shadow">
+                                <FaBolt className="text-xs" />
+                                Nuevo
+                            </span>
+                        )}
+                    </div>
                     {product.imagenes.length > 0 ? (
                         <Image
                             src={imagenUrl}

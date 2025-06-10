@@ -14,7 +14,7 @@ export default function CreateProductForm({ categorias }: { categorias: Categori
     // console.log(categorias)
 
     const router = useRouter()
-    const [ state, dispatch ] = useActionState( createProduct, {
+    const [state, dispatch] = useActionState(createProduct, {
         errors: [],
         success: ""
     })
@@ -34,17 +34,17 @@ export default function CreateProductForm({ categorias }: { categorias: Categori
     }, [state, router])
 
     return (
-        <form 
-            className="flex flex-col gap-4 w-full max-w-xl mx-auto mt-10"
+        <form
+            className="flex flex-col gap-2 w-full max-w-2xl mx-auto mt-8"
             noValidate
             action={dispatch}
         >
-            <ProductForm 
-            // product={undefined}
-            categorias={categorias} />
+            <ProductForm
+                // product={undefined}
+                categorias={categorias} />
             <input
                 type='submit'
-                className='bg-gray-800 text-white text-sm font-bold px-4 py-1 rounded-xl hover:bg-gray-950 cursor-pointer transition-all duration-200 ease-in-out'
+                className='bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900 transition-all duration-200 ease-in-out cursor-pointer inline-block'
                 value={"Crear producto"}
             />
 

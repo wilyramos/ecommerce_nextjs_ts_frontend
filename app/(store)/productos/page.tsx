@@ -89,9 +89,7 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
                         />
                     </Suspense>
                 </section>
-
             </section>
         </main>
-
     );
 }

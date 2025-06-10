@@ -26,6 +26,7 @@ export default async function ProductResults({ category, priceRange, page, limit
         color: color || "",
         sort: sort || "",
         compatibilidad: compatibilidad || "",
+        
     });
 
     if (!products || products.products.length === 0) {

@@ -13,7 +13,7 @@ type ActionStateType = {
 
 export async function createProduct(prevState: ActionStateType, formData: FormData) {
 
-    console.log("formData", formData)
+    // console.log("formData", formData)
 
     const variantesString = formData.get('variantes') as string;
     let variantes: Variant[] = [];
@@ -41,13 +41,15 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         brand: formData.get('brand') || undefined,
         color: formData.get('color') || undefined,
         imagenes: formData.getAll('imagenes[]') as string[],
-        variantes: variantes
+        variantes: variantes,
+        esDestacado: formData.get('esDestacado') === 'on',
+        esNuevo: formData.get('esNuevo') === 'on'
     }
 
     // format variantes
 
 
-    console.log("productData", productData)
+    // console.log("productDataaaa", productData)
 
     const product = CreateProductSchema.safeParse(productData)
     console.log("product", product)
@@ -78,7 +80,9 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
             brand: product.data.brand,
             color: product.data.color,
             imagenes: product.data.imagenes,
-            variantes: product.data.variantes
+            variantes: product.data.variantes,
+            esDestacado: product.data.esDestacado,
+            esNuevo: product.data.esNuevo
         })
     });
 

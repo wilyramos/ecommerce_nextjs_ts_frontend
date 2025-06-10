@@ -16,7 +16,7 @@ type ActionStateType = {
 
 export async function EditProduct(id: string, prevState: ActionStateType, formData: FormData) {
 
-    console.log("formData", formData)
+    // console.log("formData", formData)
     const variantesString = formData.get("variantes") as string;
     let variantes: Variant[] = [];
     if (variantesString) {
@@ -41,7 +41,9 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         brand: formData.get("brand") || undefined,
         color: formData.get("color") || undefined,
         imagenes: formData.getAll("imagenes[]") as string[],
-        variantes: variantes
+        variantes: variantes,
+        esDestacado: formData.get("esDestacado") === "on",
+        esNuevo: formData.get("esNuevo") === "on"
     }
     console.log("productData", productData)
 

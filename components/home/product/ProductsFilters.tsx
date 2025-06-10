@@ -48,6 +48,7 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
         { label: "Samsung", value: "samsung" },
         { label: "Apple", value: "apple" },
         { label: "Ifans", value: "ifans" },
+        { label: "1HORA", value: "1hora" },
     ];
 
     const colorOptions = [

@@ -7,8 +7,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     const { user } = await verifySession();
     return (
         <>
-            <div className="flex h-screen bg-gray-100">
-                <div className="hidden md:block border-r border-gray-200">
+            <div className="flex h-screen">
+                <div className="hidden md:block border-r">
                     <AdminSidebar user={user} />
                 </div>
                 <div className="block md:hidden w-full border-b border-gray-200">
