@@ -45,7 +45,7 @@ export default function CategoriasDestacadas({ categorias }: { categorias: Categ
         Object.keys(ImagenesPorCategoria).includes(categoria.slug)
     );
 
-    console.log("CategoriasDestacadas", categorias);
+    // console.log("CategoriasDestacadas", categorias);
     return (
         <section className="w-full py-5 bg-gray-50 flex flex-col items-center">
 
