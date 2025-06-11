@@ -30,7 +30,7 @@ export default async function ListaProducts({ category, priceRange, page, limit 
     if (!products || products.products.length === 0) {
         return (
             <div className="text-center py-10 text-gray-500">
-                No se encontraron productos con los filtros seleccionados.
+                No se encontraron productos.
             </div>
         );
     }
