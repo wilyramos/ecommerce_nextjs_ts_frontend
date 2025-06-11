@@ -17,24 +17,53 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
         };
     }
 
+    const baseUrl = process.env.NEXT_PUBLIC_URL || 'https://gophone.pe'; // Reemplaza si tienes un dominio oficial
+
+    const title = `${producto.nombre} | GoPhone`;
+    const description = producto.descripcion?.slice(0, 160) || 'Encuentra los mejores accesorios y repuestos en GoPhone.';
+    const imageUrl = producto.imagenes?.[0] || `${baseUrl}/logob.svg`;
+    const productName = producto.nombre || 'Producto de GoPhone';
+
     return {
-        title: `${producto.nombre} | GoPhone`,
-        description: producto.descripcion,
+        title,
+        description,
+        keywords: [
+            productName,
+            producto.brand,
+            producto.color,
+            'repuestos', 'accesorios', 'celulares', 'GoPhone'
+        ].filter(Boolean) as string[],
+        authors: [{ name: 'GoPhone' }],
         openGraph: {
-            title: `${producto.nombre} | GoPhone`,
-            description: producto.descripcion,
-            url: `${process.env.NEXT_PUBLIC_URL}/productos/${producto._id}`,
+            title,
+            description,
+            url: `${baseUrl}/productos/${producto._id}`,
+            siteName: 'GoPhone',
+            locale: 'es_PE',
             images: [
                 {
-                    url: producto.imagenes?.[0] || '/logob.svg',
-                    width: 800,
-                    height: 600,
-                    alt: producto.nombre,
+                    url: imageUrl,
+                    width: 1200,
+                    height: 630,
+                    alt: `${productName} - GoPhone`,
                 },
             ],
+            type: 'article'
+
+
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title,
+            description,
+            images: [imageUrl],
+        },
+        alternates: {
+            canonical: `${baseUrl}/productos/${producto._id}`,
         },
     };
 }
+
 
 export default async function pageProduct({ params }: { params: Params }) {
     const { id } = await params;

@@ -70,7 +70,7 @@ export const getProductsByFilter = async ({ page, limit, category, priceRange, q
     const json = await req.json();
 
     const products = ProductsAPIResponse.parse(json);
-    console.log("son los productos", products);
+    // console.log("son los productos", products);
     return products;
 }
 

@@ -6,7 +6,7 @@ import { FaStar, FaBolt } from 'react-icons/fa';
 // import AddProductButton from './AddProductButton';
 
 export default function ProductCard({ product }: { product: Product }) {
-    const imagenUrl = product.imagenes[0];
+    // const imagenUrl = product.imagenes[0];
 
     return (
         <div className="group relative flex flex-col rounded-xl bg-white border border-gray-200 hover:shadow-md transition-shadow duration-300">
