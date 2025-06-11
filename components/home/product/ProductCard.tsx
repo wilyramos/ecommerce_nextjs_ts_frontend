@@ -13,7 +13,7 @@ export default function ProductCard({ product }: { product: Product }) {
             <Link href={`/productos/${product._id}`} className="flex flex-col h-full">
                 {/* Imagen */}
                 <div className="relative w-full aspect-square bg-gray-100 overflow-hidden rounded-t-xl">
-                    
+
                     {product.imagenes.length > 0 ? (
                         <Image
                             src={imagenUrl}
@@ -29,19 +29,20 @@ export default function ProductCard({ product }: { product: Product }) {
                         </div>
                     )}
                     {/*Etiquetas */}
-                    <div>
-                       {product.esDestacado && (
-                            <span className="absolute top-2 left-2 flex items-center gap-1 bg-yellow-500 text-white text-xs font-semibold px-2 py-1 rounded-full shadow">
-                                <FaStar className="text-xs" />
-                                Destacado
-                            </span>
-                        )}
+                    <div className="">
                         {product.esNuevo && (
-                            <span className="absolute top-2 right-2 flex items-center gap-1 bg-indigo-600 text-white text-xs font-semibold px-2 py-1 rounded-full shadow">
+                            <span className="absolute top-2 left-2 flex items-center gap-1 bg-indigo-600 text-white text-xs font-semibold px-2 py-1 rounded-full shadow ">
                                 <FaBolt className="text-xs" />
                                 Nuevo
                             </span>
                         )}
+                        {product.esDestacado && (
+                            <span className="absolute top-2 right-2 flex items-center gap-1 bg-red-600 text-white text-xs font-semibold px-2 py-1 rounded-full shadow">
+                                <FaStar className="text-xs" />
+                                <span className="hidden sm:inline">Destacado</span>
+                            </span>
+                        )}
+
                     </div>
                 </div>
 
@@ -55,7 +56,7 @@ export default function ProductCard({ product }: { product: Product }) {
                         <div className="text-xs text-gray-600">
                             {product.color}
                         </div>
-                        
+
                         {/* <div className="text-xs text-gray-500">SKU: {product.sku || 'N/A'}</div> */}
                         <div className="text-lg font-bold text-gray-900">
                             <span className="text-md  text-indigo-700">s/. </span>
