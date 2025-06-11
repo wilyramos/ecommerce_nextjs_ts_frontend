@@ -58,24 +58,31 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
     const limitNumber = limit ? parseInt(limit) : 12;
 
     return (
-        <main className="max-w-7xl mx-auto p-5">
-            <section className="grid grid-cols-1 sm:grid-cols-5 gap-6">
+        <main className="max-w-7xl mx-auto p-4 sm:p-6">
+            {/* Botón para abrir filtros en móvil */}
+            <div className="sm:hidden mb-4">
+                <details className="bg-gray-100 p-3 rounded shadow">
+                    <summary className="font-semibold cursor-pointer text-gray-700">Mostrar filtros</summary>
+                    <div className="mt-3">
+                        <Suspense fallback={<div className="text-center py-4 text-gray-400 text-sm">Cargando filtros...</div>}>
+                            <CategoriasFiltros />
+                        </Suspense>
+                    </div>
+                </details>
+            </div>
 
-                {/* Filtros */}
-                <div className="sm:col-span-1 sticky top-5 self-start h-fit">
+            <section className="grid grid-cols-1 sm:grid-cols-5 gap-6">
+                {/* Filtros en sidebar para desktop */}
+                <div className="hidden sm:block sm:col-span-1 sticky top-5 self-start h-fit">
                     <h2 className="text-lg font-base text-gray-600 mb-4 border-b pb-2">Filtros</h2>
                     <Suspense fallback={<div className="text-center py-8 text-gray-400 text-sm">Cargando filtros...</div>}>
-                        <div className="">
-                            <CategoriasFiltros />
-                        </div>
+                        <CategoriasFiltros />
                     </Suspense>
                 </div>
 
                 {/* Productos */}
                 <section className="sm:col-span-4">
-                    <OrdenarPor
-                        pathname="/productos"
-                    />
+                    <OrdenarPor pathname="/productos" />
                     <Suspense fallback={<div className="text-center py-8 text-gray-400 text-sm">Cargando productos...</div>}>
                         <ProductResults
                             category={category}

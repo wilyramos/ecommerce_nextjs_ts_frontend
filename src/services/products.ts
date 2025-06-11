@@ -107,6 +107,6 @@ export const getNewProducts = cache(async () => {
     const json = await req.json();
     const products = ProductsAPIResponse.parse(json);
 
-    console.log("Nuevos productos", products);
+    // console.log("Nuevos productos", products);
     return products;
 });
