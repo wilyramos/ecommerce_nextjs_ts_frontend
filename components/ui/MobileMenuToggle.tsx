@@ -1,41 +1,43 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import Hamburger from 'hamburger-react';
 
 export default function MobileMenuToggle() {
     const [open, setOpen] = useState(false);
 
+    const menuItems = [
+        { name: 'Productos', href: '/productos' },
+        { name: 'Registro', href: '/auth/registro' },
+        { name: 'Login', href: '/auth/login' },
+    ];
+
+    useEffect(() => {
+        document.body.style.overflow = open ? 'hidden' : 'auto';
+    }, [open]);
+
     return (
         <>
-            <button
-                className="md:hidden"
-                onClick={() => setOpen(!open)}
-            >
-                {open ? <FaTimes size={24} /> : <FaBars size={24} />}
-            </button>
+            {/* Botón hamburguesa */}
+            <div className="md:hidden z-50 relative">
+                <Hamburger toggled={open} toggle={setOpen} size={20} />
+            </div>
 
+            {/* Menú móvil: altura limitada */}
             {open && (
-                <nav className="md:hidden absolute top-16 left-0 right-0 bg-white shadow-md z-50 p-6">
-                    <ul className="flex flex-col gap-2">
-                        {[
-                            
-                            { href: '/productos', label: 'Tienda' },                           
-                            { href: '/auth/registro', label: 'Iniciar Sesión' },
-                        ].map(({ href, label }) => (
-                            <li key={href}>
-                                <Link
-                                    href={href}
-                                    className="block text-gray-700 hover:text-blue-600"
-                                    onClick={() => setOpen(false)}
-                                >
-                                    {label}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                </nav>
+                <div className="absolute top-full left-0 w-full bg-white shadow-md z-40 py-4 flex flex-col items-center gap-4 border-t">
+                    {menuItems.map((item) => (
+                        <Link
+                            key={item.name}
+                            href={item.href}
+                            className="text-gray-800 text-base font-medium hover:text-indigo-600 transition"
+                            onClick={() => setOpen(false)}
+                        >
+                            {item.name}
+                        </Link>
+                    ))}
+                </div>
             )}
         </>
     );

@@ -16,6 +16,7 @@ export default function Footer() {
                     <h2 className="text-3xl font-extrabold text-white mb-4 tracking-wide">Gophone</h2>
                     <p className="text-sm leading-relaxed text-gray-400">
                         Lo último en tecnología móvil y accesorios. Envíos rápidos, atención garantizada y productos 100% originales.
+                        Tienda fisica en Jr. Ohggins 120, San Vicente de Cañete.
                     </p>
                 </div>
 

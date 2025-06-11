@@ -58,6 +58,8 @@ export default function CategoriasDestacadas({ categorias }: { categorias: Categ
                 transitionDuration={500}
                 containerClass="w-full px-6"
                 itemClass="px-2"
+                arrows={false}
+                
             >
                 {filteredCategorias.map((categoria, index) => (
                     <Link href={`/categoria/${categoria.slug}`} key={index} className="no-underline">

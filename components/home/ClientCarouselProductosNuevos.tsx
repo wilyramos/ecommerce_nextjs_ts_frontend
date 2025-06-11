@@ -29,7 +29,7 @@ export default function ClientCarouselProductosNuevos({ products }: Props) {
                         autoPlay
                         autoPlaySpeed={3000}
                         
-                        arrows
+                        arrows={false}
                         showDots={false}
                     >
                         {products.map((product) => (
