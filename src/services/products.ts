@@ -1,3 +1,6 @@
+import "server-only"
+
+
 import getToken from "../auth/token"
 import { ProductsAPIResponse, ProductAPIResponse } from "@/src/schemas";
 import { cache } from 'react';
@@ -56,7 +59,7 @@ export const getProductsByFilter = async ({ page, limit, category, priceRange, q
 }) => {
     // const token = getToken();
     const url = `${process.env.API_URL}/products/filter?page=${page}&limit=${limit}&category=${category}&priceRange=${priceRange}&query=${query}&brand=${brand}&color=${color}&sort=${sort}&compatibilidad=${compatibilidad}`;
-    // console.log("urlee", url);
+    console.log("urlee", url);
     const req = await fetch(url, {
         method: 'GET'
     });

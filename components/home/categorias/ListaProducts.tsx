@@ -23,7 +23,8 @@ export default async function ListaProducts({ category, priceRange, page, limit 
         query: "",
         brand: brand || "",
         color: "",
-        sort: sort || "",   
+        sort: sort || "",
+        compatibilidad: "",
     });
 
     if (!products || products.products.length === 0) {
