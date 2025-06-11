@@ -4,6 +4,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { CategoriasList } from "@/src/schemas";
 import { MdClear } from "react-icons/md";
+import { Disclosure } from "@headlessui/react";
+import { ChevronUpIcon } from "@heroicons/react/20/solid";
 
 export default function ProductsFilters({ categorias }: { categorias: CategoriasList }) {
     const router = useRouter();
@@ -27,7 +29,7 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
         });
     }, [searchParams]);
 
-    const updateFilters = (newFilters: { category?: string; priceRange?: string; brand?: string; color?: string; compatibilidad?: string }) => {
+    const updateFilters = (newFilters: Partial<typeof filters>) => {
         const updatedFilters = { ...filters, ...newFilters };
         const params = new URLSearchParams();
         Object.entries(updatedFilters).forEach(([key, value]) => {
@@ -36,130 +38,162 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
         router.push(`/productos?${params.toString()}`);
     };
 
-    const priceRanges = [
-        { label: "Todos", value: "" },
-        { label: "0 - 100", value: "0-100" },
-        { label: "100 - 300", value: "100-300" },
-        { label: "300 - 1000", value: "300-1000" },
-    ];
+    const sections = [
+        {
+            title: "Categoría",
+            content: (
+                <ul className="space-y-1">
+                    {categorias.map((categoria) => (
+                        <li key={categoria.slug} className="flex items-center gap-2">
+                            <input
+                                type="radio"
+                                name="category"
+                                value={categoria.slug}
+                                checked={filters.category === categoria.slug}
+                                onChange={() => updateFilters({ category: categoria.slug })}
+                                className="accent-blue-600"
+                            />
+                            <label className="text-sm text-gray-600">{categoria.nombre}</label>
+                        </li>
+                    ))}
+                </ul>
+            ),
+        },
+        {
+            title: "Precio",
+            content: (
+                <ul className="space-y-1">
+                    {[
+                        { label: "Todos", value: "" },
+                        { label: "0 - 100", value: "0-100" },
+                        { label: "100 - 300", value: "100-300" },
+                        { label: "300 - 1000", value: "300-1000" },
+                    ].map(({ label, value }) => (
+                        <li key={value} className="flex items-center gap-2">
+                            <input
+                                type="radio"
+                                name="priceRange"
+                                value={value}
+                                checked={filters.priceRange === value}
+                                onChange={() => updateFilters({ priceRange: value })}
+                                className="accent-blue-600"
+                            />
+                            <label className="text-sm text-gray-600">{label}</label>
+                        </li>
+                    ))}
+                </ul>
+            ),
+        },
+        {
+            title: "Marca",
+            content: (
+                <ul className="space-y-1">
+                    {[
+                        { label: "Todas", value: "" },
+                        { label: "Apple", value: "apple" },
+                        { label: "Samsung", value: "samsung" },
+                        { label: "Xiaomi", value: "xiaomi" },
+                        { label: "Huawei", value: "huawei" },
+                    ].map(({ label, value }) => (
+                        <li key={value} className="flex items-center gap-2">
+                            <input
+                                type="radio"
+                                name="brand"
+                                value={value}
+                                checked={filters.brand === value}
+                                onChange={() => updateFilters({ brand: value })}
+                                className="accent-blue-600"
+                            />
+                            <label className="text-sm text-gray-600">{label}</label>
+                        </li>
+                    ))}
+                </ul>
+            ),
+        },
+        {
+            title: "Color",
+            content: (
+                <ul className="space-y-1">
+                    {[
+                        { label: "Todos", value: "" },
+                        { label: "Negro", value: "negro" },
+                        { label: "Blanco", value: "blanco" },
+                        { label: "Rojo", value: "rojo" },
+                        { label: "Azul", value: "azul" },
+                    ].map(({ label, value }) => (
+                        <li key={value} className="flex items-center gap-2">
+                            <input
+                                type="radio"
+                                name="color"
+                                value={value}
+                                checked={filters.color === value}
+                                onChange={() => updateFilters({ color: value })}
+                                className="accent-blue-600"
+                            />
+                            <label className="text-sm text-gray-600">{label}</label>
+                        </li>
+                    ))}
+                </ul>
 
-    const brands = [
-        { label: "Todas", value: "" },
-        { label: "Samsung", value: "samsung" },
-        { label: "Apple", value: "apple" },
-        { label: "Ifans", value: "ifans" },
-        { label: "1HORA", value: "1hora" },
-    ];
-
-    const colorOptions = [
-        { label: "Todos", value: "" },
-        { label: "Negro", value: "negro" },
-        { label: "Blanco", value: "blanco" },
-        { label: "Rojo", value: "rojo" },
-        { label: "Azul", value: "azul" },
-    ];
-
-    const compatibilidadOptions = [
-        { label: "Todos", value: "" },
-
-        { label: "iPhone 14", value: "iphone-14" },
-        { label: "iPhone 13 Pro", value: "iphone-13-pro" },
-        { label: "iPhone 13", value: "iphone-13" },
-        { label: "iPhone 12", value: "iphone-12" },
-        { label: "iPhone 11", value: "iphone-11" },
+            ),
+        },
+        {
+            title: "Compatibilidad",
+            content: (
+                <ul className="space-y-1">
+                    {[
+                        { label: "Todos", value: "" },
+                        { label: "Android", value: "android" },
+                        { label: "iOS", value: "ios" },
+                        { label: "Windows", value: "windows" },
+                        { label: "MacOS", value: "macos" },
+                    ].map(({ label, value }) => (
+                        <li key={value} className="flex items-center gap-2">
+                            <input
+                                type="radio"
+                                name="compatibilidad"
+                                value={value}
+                                checked={filters.compatibilidad === value}
+                                onChange={() => updateFilters({ compatibilidad: value })}
+                                className="accent-blue-600"
+                            />
+                            <label className="text-sm text-gray-600">{label}</label>
+                        </li>
+                    ))}
+                </ul>
+            ),
+        },
     ];
 
     return (
-        <aside className="py-6 border-gray-100">
-            <div className="flex items-center justify-end">
+        <aside className="py-6 border-gray-200">
+            <div className="flex justify-end mb-4">
                 <button
                     onClick={() => updateFilters({ category: "", priceRange: "", brand: "", color: "", compatibilidad: "" })}
                     className="flex items-center gap-1 text-gray-400 hover:text-red-500 transition text-xs"
                 >
-                    <MdClear size={18} className="text-red-500" />
+                    <MdClear size={18} />
                     Limpiar filtros
                 </button>
             </div>
 
-            <form className="space-y-5">
-                {/* Categoría */}
-                <div className="space-y-1">
-                    <label className="block text-sm font-medium text-gray-700">Categoría</label>
-                    <select
-                        value={filters.category}
-                        onChange={(e) => updateFilters({ category: e.target.value })}
-                        className="p-2 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm text-sm bg-white"
-                    >
-                        <option value="">Todas</option>
-                        {categorias.map(({ nombre, slug }) => (
-                            <option key={slug} value={slug}>{nombre}</option>
-                        ))}
-                    </select>
-                </div>
-
-                {/* Precio */}
-                <div className="space-y-1">
-                    <div>
-                        <h4 className="text-sm font-semibold text-gray-700 mb-2">Precio</h4>
-                        <ul className="space-y-1">
-                            {priceRanges.map(({ label, value }) => (
-                                <li key={value} className="flex items-center gap-2">
-                                    <input
-                                        type="radio"
-                                        name="priceRange"
-                                        value={value}
-                                        checked={filters.priceRange === value}
-                                        onChange={() => updateFilters({ priceRange: value })}
-                                        className="accent-gray-700"
-                                    />
-                                    <label className="text-sm text-gray-600">{label}</label>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-
-
-                <div className="space-y-1">
-                    <label className="block text-sm font-medium text-gray-700">Marca</label>
-                    <select
-                        value={filters.brand}
-                        onChange={(e) => updateFilters({ brand: e.target.value })}
-                        className="p-2 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm text-sm bg-white"
-                    >
-                        {brands.map(({ label, value }) => (
-                            <option key={value} value={value}>{label}</option>
-                        ))}
-                    </select>
-                </div>
-
-                <div className="space-y-1">
-                    <label className="block text-sm font-medium text-gray-700">Color</label>
-                    <select
-                        value={filters.color}
-                        onChange={(e) => updateFilters({ color: e.target.value })}
-                        className="p-2 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm text-sm bg-white"
-                    >
-                        {colorOptions.map(({ label, value }) => (
-                            <option key={value} value={value}>{label}</option>
-                        ))}
-                    </select>
-                </div>
-
-                <div className="space-y-1">
-                    <label className="block text-sm font-medium text-gray-700">Compatibilidad</label>
-                    <select
-                        value={filters.compatibilidad}
-                        onChange={(e) => updateFilters({ compatibilidad: e.target.value })}
-                        className="p-2 w-full rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-sm text-sm bg-white"
-                    >
-                        {compatibilidadOptions.map(({ label, value }) => (
-                            <option key={value} value={value}>{label}</option>
-                        ))}
-                    </select>
-                </div>
-                
-            </form>
+            <div className="space-y-4">
+                {sections.map(({ title, content }) => (
+                    <Disclosure key={title} defaultOpen>
+                        {({ open }) => (
+                            <>
+                                <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-gray-700 border-b py-2">
+                                    <span>{title}</span>
+                                    <ChevronUpIcon className={`w-5 h-5 transform transition-transform ${open ? "rotate-180" : ""}`} />
+                                </Disclosure.Button>
+                                <Disclosure.Panel className="pt-2 pl-1 text-sm text-gray-600">
+                                    {content}
+                                </Disclosure.Panel>
+                            </>
+                        )}
+                    </Disclosure>
+                ))}
+            </div>
         </aside>
     );
 }

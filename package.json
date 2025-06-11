@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@chakra-ui/pin-input": "^2.1.0",
-    "@headlessui/react": "^2.2.2",
+    "@headlessui/react": "^2.2.4",
     "@heroicons/react": "^2.2.0",
     "@radix-ui/react-dialog": "^1.1.13",
     "@radix-ui/react-navigation-menu": "^1.2.12",
