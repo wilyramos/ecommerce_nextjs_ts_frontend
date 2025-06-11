@@ -143,10 +143,22 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
                 <ul className="space-y-1">
                     {[
                         { label: "Todos", value: "" },
-                        { label: "Android", value: "android" },
-                        { label: "iOS", value: "ios" },
-                        { label: "Windows", value: "windows" },
-                        { label: "MacOS", value: "macos" },
+                        { label: "Iphone 16", value: "iphone-16" },
+                        { label: "Iphone 15 pro max", value: "iphone-15-pro-max" },
+                        { label: "Iphone 15 pro", value: "iphone-15-pro" },
+                        { label: "Iphone 15", value: "iphone-15" },
+                        { label: "Iphone 14 pro max", value: "iphone-14-pro-max" },
+                        { label: "Iphone 14 pro", value: "iphone-14-pro" },
+                        { label: "Iphone 14", value: "iphone-14" },
+                        { label: "Iphone 13 pro max", value: "iphone-13-pro-max" },
+                        { label: "Iphone 13 pro", value: "iphone-13-pro" },
+                        { label: "Iphone 13", value: "iphone-13" },
+                        { label: "Iphone 12 pro max", value: "iphone-12-pro-max" },
+                        { label: "Iphone 12 pro", value: "iphone-12-pro" },
+                        { label: "Iphone 12", value: "iphone-12" },
+                        { label: "Iphone 11 pro max", value: "iphone-11-pro-max" },
+                        { label: "Iphone 11 pro", value: "iphone-11-pro" },
+                        { label: "Iphone 11", value: "iphone-11" },
                     ].map(({ label, value }) => (
                         <li key={value} className="flex items-center gap-2">
                             <input
@@ -179,9 +191,9 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
 
             <div className="space-y-4">
                 {sections.map(({ title, content }) => (
-                    <Disclosure key={title} defaultOpen>
+                    <Disclosure key={title}>
                         {({ open }) => (
-                            <>
+                            <div>
                                 <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-gray-700 border-b py-2">
                                     <span>{title}</span>
                                     <ChevronUpIcon className={`w-5 h-5 transform transition-transform ${open ? "rotate-180" : ""}`} />
@@ -189,7 +201,7 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
                                 <Disclosure.Panel className="pt-2 pl-1 text-sm text-gray-600">
                                     {content}
                                 </Disclosure.Panel>
-                            </>
+                            </div>
                         )}
                     </Disclosure>
                 ))}
