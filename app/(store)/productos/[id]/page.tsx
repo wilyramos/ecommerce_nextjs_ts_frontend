@@ -91,27 +91,38 @@ export default async function pageProduct({ params }: { params: Params }) {
                             </div>
                         )}
 
-                        {producto.variantes && producto.variantes?.length > 0 && (
-                            <div className="space-y-3 flex-cols">
-                                <h2 className="text-lg font-medium text-gray-800">Variantes</h2>
+                        {producto.variantes && producto.variantes.length > 0 && (
+                            <div className="space-y-1">
+                                <h2 className="font-semibold text-gray-800">Variantes disponibles</h2>
+
                                 {producto.variantes.map((v, i) => (
-                                    <div key={i} className="bg-gray-50 rounded-lg border p-3 text-sm">
-                                        {v.opciones.map((o, j) => (
-                                            <p key={j}><strong>{o.nombre}:</strong> {o.valores.join(', ')}</p>
-                                        ))}
-                                        <p className="text-gray-600">Stock: {v.stock}</p>
-                                        {v.barcode && <p className="text-gray-500 text-xs">Código: {v.barcode}</p>}
+                                    <div key={i} className="border rounded-xl p-4 bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-700">
+                                            {v.opciones.map((o, j) => (
+                                                <div key={j} className="flex items-center gap-1">
+                                                    <span className="font-semibold">{o.nombre}:</span>
+                                                    <span>{o.valores.join(', ')}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        <div className="mt-2 flex flex-wrap items-center justify-between text-xs text-gray-600">
+                                            <span className={`px-2 py-1 rounded-full font-medium ${v.stock > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'
+                                                }`}>
+                                                {v.stock > 0 ? `${v.stock} disponibles` : 'Sin stock'}
+                                            </span>
+                                            {v.barcode && <span className="text-gray-400">Código: {v.barcode}</span>}
+                                        </div>
                                     </div>
                                 ))}
                             </div>
-
                         )}
                     </div>
 
                     <AddProductToCart
-                        product={producto} 
-                        // className="mt-5 md:mt-0 md:w-auto md:self-start"
-                    
+                        product={producto}
+                    // className="mt-5 md:mt-0 md:w-auto md:self-start"
+
                     />
                 </div>
             </section>

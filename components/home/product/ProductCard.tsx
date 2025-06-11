@@ -15,14 +15,30 @@ export default function ProductCard({ product }: { product: Product }) {
                 <div className="relative w-full aspect-square bg-gray-100 overflow-hidden rounded-t-xl">
 
                     {product.imagenes.length > 0 ? (
-                        <Image
-                            src={imagenUrl}
-                            alt={product.nombre}
-                            fill
-                            className="object-cover transition-transform duration-500 group-hover:scale-105"
-                            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
-                            quality={50}
-                        />
+
+                        <div className="relative w-full h-full group-hover:opacity-90 transition-opacity duration-300">
+                            <Image
+                                src={product.imagenes[0]}
+                                alt={product.nombre}
+                                fill
+                                className={`object-cover transition-opacity duration-300 ${product.imagenes[1] ? 'group-hover:opacity-0' : ''
+                                    }`}
+                                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                                quality={50}
+
+                            />
+
+                            {product.imagenes[1] && (
+                                <Image
+                                    src={product.imagenes[1]}
+                                    alt={`${product.nombre} hover`}
+                                    fill
+                                    className="object-cover transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+                                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                                    quality={80}
+                                />
+                            )}
+                        </div>
                     ) : (
                         <div className="flex items-center justify-center w-full h-full text-gray-400 text-sm">
                             Sin imagen
