@@ -61,7 +61,7 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
         <main className="max-w-7xl mx-auto p-4 sm:p-6">
             {/* Botón para abrir filtros en móvil */}
             <div className="sm:hidden mb-4">
-                <details className="bg-gray-100 p-3 rounded shadow">
+                <details className="">
                     <summary className="font-semibold cursor-pointer text-gray-700">Mostrar filtros</summary>
                     <div className="mt-3">
                         <Suspense fallback={<div className="text-center py-4 text-gray-400 text-sm">Cargando filtros...</div>}>
