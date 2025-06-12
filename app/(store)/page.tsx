@@ -31,7 +31,7 @@ export const metadata: Metadata = {
         title: "GoPhone Cañete - Venta de iPhones y Tecnología",
         description:
             "Descubre GoPhone en Cañete: iPhones, accesorios y productos tecnológicos al mejor precio. Atención rápida y confiable.",
-        url: "https://gophone.pe", 
+        url: "https://gophone.pe",
         siteName: "GoPhone",
         locale: "es_PE",
         type: "website",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     },
     metadataBase: new URL("https://gophone.pe"),
     icons: {
-        icon: "/logoapp.svg",       
+        icon: "/logoapp.svg",
     }
 };
 

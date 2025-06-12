@@ -19,10 +19,10 @@ export default function ClientCarouselProductosNuevos({ products }: Props) {
     
 
     return (
-        <section className="py-8 bg-white">
-            <div className="container mx-auto px-4">
+        <section className="">
+            <div className="container">
 
-                <div className="relative group">
+                <div className="">
                     <Carousel
                         responsive={responsive}
                         infinite
