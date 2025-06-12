@@ -179,6 +179,7 @@ export const ProductSchema = z.object({
 export type Variant = z.infer<typeof VariantSchema>
 export type VariantOption = z.infer<typeof VariantOptionSchema>
 export type Product = z.infer<typeof ProductSchema>
+export const productsSchema = z.array(ProductSchema);
 
 export const ProductsAPIResponse = z.object({
     products: z.array(ProductSchema),

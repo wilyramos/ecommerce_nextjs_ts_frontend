@@ -1,9 +1,10 @@
-import { getProduct } from '@/src/services/products';
+import { getProduct, getProductsRelated } from '@/src/services/products';
 import { formatCurrency } from '@/src/utils/formatCurrency';
 import { Metadata } from 'next';
 import AddProductToCart from '@/components/home/product/AddProductToCart';
 import ImagenesProductoCarousel from '@/components/home/product/ImagenesProductoCarousel';
 import ColorCircle from '@/components/ui/ColorCircle';
+import ProductosRelated from '@/components/home/product/ProductosRelated';
 
 type Params = Promise<{ id: string }>;
 
@@ -69,6 +70,10 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 export default async function pageProduct({ params }: { params: Params }) {
     const { id } = await params;
     const producto = await getProduct(id);
+    const productsRelated = await getProductsRelated(id);
+
+
+
 
     if (!producto) {
         return (
@@ -76,6 +81,16 @@ export default async function pageProduct({ params }: { params: Params }) {
                 <section className="max-w-6xl mx-auto px-4 text-center">
                     <h1 className="text-2xl font-semibold text-gray-800">Producto no encontrado</h1>
                     <p className="text-gray-500">El producto que buscas no existe.</p>
+                </section>
+            </main>
+        );
+    }
+    if (!ProductosRelated) {
+        return (
+            <main className="px-10">
+                <section className="max-w-6xl mx-auto px-4 text-center">
+                    <h1 className="text-2xl font-semibold text-gray-800">No hay productos relacionados</h1>
+                    <p className="text-gray-500">No se encontraron productos relacionados.</p>
                 </section>
             </main>
         );
@@ -164,6 +179,14 @@ export default async function pageProduct({ params }: { params: Params }) {
                     <AddProductToCart product={producto} />
                 </div>
             </section>
+
+            {productsRelated && productsRelated.length > 0 && (
+                <section className="max-w-6xl mx-auto px-4 py-10">
+                    <h2 className="text-2xl font-semibold text-gray-800 mb-6">Productos relacionados</h2>
+                    <ProductosRelated products={productsRelated} />
+                </section>
+            )}
+
         </main>
 
     );

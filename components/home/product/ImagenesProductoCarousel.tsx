@@ -18,7 +18,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
     return (
         <div className="w-full max-w-2xl mx-auto">
             {/* Imagen principal con botones */}
-            <div className="relative w-full h-80 sm:h-[500px] rounded-xl overflow-hidden shadow-md group">
+            <div className="relative w-full h-80 sm:h-[500px] group rounded-xl overflow-hidden shadow-sm">
                 {images.length > 0 ? (
                     <Image
                         src={images[selectedIndex]}

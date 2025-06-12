@@ -2,7 +2,7 @@ import "server-only"
 
 
 import getToken from "../auth/token"
-import { ProductsAPIResponse, ProductAPIResponse } from "@/src/schemas";
+import { ProductsAPIResponse, ProductAPIResponse, productsSchema } from "@/src/schemas";
 import { cache } from 'react';
 
 
@@ -110,3 +110,20 @@ export const getNewProducts = cache(async () => {
     // console.log("Nuevos productos", products);
     return products;
 });
+
+export const getProductsRelated = async (id: string) => {
+    const url = `${process.env.API_URL}/products/${id}/related`;
+
+    const req = await fetch(url, {
+        method: 'GET'
+    });
+
+    if (!req.ok) {
+        return null;
+    }
+
+    const json = await req.json();
+    const products = productsSchema.parse(json);
+    return products;
+
+}
