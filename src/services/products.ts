@@ -26,7 +26,7 @@ export const getProducts = async ({ page = 1, limit = 5 }) => {
     return products;
 }
 
-export const getProduct = async (id: string) => {
+export const getProduct = cache(async (id: string) => {
     const token = getToken();
     const url = `${process.env.API_URL}/products/${id}`;
 
@@ -44,7 +44,7 @@ export const getProduct = async (id: string) => {
 
     const product = ProductAPIResponse.parse(json);
     return product;
-}
+});
 
 export const getProductsByFilter = async ({ page, limit, category, priceRange, query, brand, color, sort, compatibilidad }: {
     page: number;

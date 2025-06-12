@@ -5,6 +5,7 @@ import AddProductToCart from '@/components/home/product/AddProductToCart';
 import ImagenesProductoCarousel from '@/components/home/product/ImagenesProductoCarousel';
 import ColorCircle from '@/components/ui/ColorCircle';
 import ProductosRelated from '@/components/home/product/ProductosRelated';
+import { Suspense } from 'react';
 
 type Params = Promise<{ id: string }>;
 
@@ -152,9 +153,11 @@ export default async function pageProduct({ params }: { params: Params }) {
                     </section>
 
                     {productsRelated && productsRelated.length > 0 && (
-                        <section className="max-w-6xl mx-auto px-4 py-10">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-6">Productos relacionados</h2>
-                            <ProductosRelated products={productsRelated} />
+                        <section className="max-w-6xl mx-auto py-10">
+                            <h2 className="text-xl font-semibold text-gray-900 mb-6">Productos relacionados</h2>
+                            <Suspense fallback={<div className="text-center text-gray-500">Cargando productos relacionados...</div>}>
+                                <ProductosRelated productId={producto._id} />
+                            </Suspense>
                         </section>
                     )}
                 </>
