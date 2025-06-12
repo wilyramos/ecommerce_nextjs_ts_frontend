@@ -12,21 +12,21 @@ type ProductResultsProps = {
     color?: string;
     sort?: string;
     compatibilidad?: string;
+    query?: string;
 };
 
-export default async function ProductResults({ category, priceRange, page, limit = 10, brand, color, sort, compatibilidad }: ProductResultsProps) {
+export default async function ProductResults({ category, priceRange, page, limit = 10, brand, color, sort, compatibilidad, query }: ProductResultsProps) {
 
     const products = await getProductsByFilter({
         page: page ? parseInt(page) : 1,
         limit,
         category: category || "",
         priceRange: priceRange || "",
-        query: "",
+        query: query || "",
         brand: brand || "",
         color: color || "",
         sort: sort || "",
         compatibilidad: compatibilidad || "",
-        
     });
 
     if (!products || products.products.length === 0) {

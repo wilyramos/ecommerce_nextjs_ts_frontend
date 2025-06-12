@@ -51,10 +51,11 @@ type SearchParams = Promise<{
     color?: string;
     sort?: string;
     compatibilidad?: string;
+    query?: string;
 }>;
 
 export default async function PageProducts({ searchParams }: { searchParams: SearchParams }) {
-    const { category, priceRange, page, limit, brand, color, sort, compatibilidad } = await searchParams;
+    const { category, priceRange, page, limit, brand, color, sort, compatibilidad, query } = await searchParams;
     const limitNumber = limit ? parseInt(limit) : 12;
 
     return (
@@ -93,6 +94,7 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
                             color={color}
                             sort={sort}
                             compatibilidad={compatibilidad}
+                            query={query}
                         />
                     </Suspense>
                 </section>
