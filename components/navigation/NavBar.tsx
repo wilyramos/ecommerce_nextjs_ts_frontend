@@ -8,7 +8,7 @@ import Logo from '../ui/Logo';
 export default function NavBar() {
     return (
         <header className="sticky top-0 z-50 bg-white text-gray-800">
-            <div className="max-w-6xl mx-auto flex justify-between items-center px-6  font-semibold text-sm md:text-base py-1 md:py-2">
+            <div className="max-w-6xl mx-auto flex justify-between items-center font-semibold text-sm md:text-base py-1">
                 {/* Mobile Menu Toggle (Left) */}
                 <div className="md:hidden">
                     <MobileMenuToggle />
@@ -23,7 +23,7 @@ export default function NavBar() {
                             width={50}
                             height={50}
                             priority
-                            className="w-auto h-10"
+                            className="w-auto"
                         />
                     </Link>
                 </div>
@@ -37,12 +37,16 @@ export default function NavBar() {
                 <nav className="hidden md:flex items-center justify-center flex-1 space-x-6">
                     <Link
                         href="/productos"
-                        className="px-4 py-2 rounded-md hover:text-indigo-800 transition duration-300 font-sans"
+                        className="relative group text-sm hover:text-indigo-800 transition-colors duration-300 tracking-wide"
                     >
                         Productos
+                        <span
+                            className="absolute left-0 -bottom-1 h-0.5 w-0 bg-indigo-800 transition-all duration-300 group-hover:w-full"
+                        ></span>
                     </Link>
                 </nav>
-                
+
+
 
                 {/* Right actions (Hidden on mobile) */}
                 <div className="hidden md:flex items-center gap-6">

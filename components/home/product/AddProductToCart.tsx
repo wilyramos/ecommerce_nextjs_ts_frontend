@@ -15,7 +15,7 @@ export default function AddProductToCart({ product }: { product: Product }) {
     return (
         <button
             type="button"
-            className="group relative bg-blue-500 text-white p-4 rounded-full shadow-md hover:bg-blue-700 cursor-pointer flex items-center justify-center text-sm md:text-base transition-all duration-300"
+            className="group relative bg-indigo-500 text-white p-4 rounded-full shadow-md hover:bg-indigo-700 cursor-pointer flex items-center justify-center text-sm md:text-base transition-all duration-300 gap-2"
             onClick={handleClick}
         >
             <FaShoppingCart size={18} className="shrink-0" />
