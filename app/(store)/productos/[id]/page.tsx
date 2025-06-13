@@ -67,7 +67,6 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     };
 }
 
-
 export default async function pageProduct({ params }: { params: Params }) {
     const { id } = await params;
     const producto = await getProduct(id);
