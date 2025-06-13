@@ -33,7 +33,7 @@ export default function ButtonSearchFormStore() {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="¿Qué estás buscando?"
-                    className="flex-1 px-4 py-1.5 text-sm text-gray-700 bg-transparent placeholder-gray-400 outline-none"
+                    className="flex-1 px-4 py-1.5 text-sm text-gray-700 bg-transparent placeholder-gray-400 outline-none font-normal"
                 />
                 <button
                     type="submit"

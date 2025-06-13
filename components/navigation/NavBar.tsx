@@ -16,7 +16,7 @@ export default function NavBar() {
                 </div>
 
                 {/* Mobile: Logo centrado (sin capturar eventos) */}
-                <div className="md:hidden absolute top-0 left-0 w-full h-full flex justify-center items-center z-0 pointer-events-none">
+                <div className="md:hidden absolute top-0 left-0 w-full h-full flex justify-center items-center z-0 pointer-events-auto">
                     <Link href="/" className="flex items-center">
                         <Image
                             src="/logob.svg"
@@ -65,9 +65,9 @@ export default function NavBar() {
                 {/* Mobile: Iconos a la derecha */}
                 <div className="md:hidden">
                     <div className="absolute top-0 right-0 h-full px-6 flex items-center gap-4 mt-1">
-                        <Link href="/auth/registro" className="hover:text-indigo-800 transition">
+                        {/* <Link href="/auth/registro" className="hover:text-indigo-800 transition">
                             <FaUser size={20} />
-                        </Link>
+                        </Link> */}
                         <ButtonShowCart />
                     </div>
                 </div>

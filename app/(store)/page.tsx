@@ -67,7 +67,7 @@ export default async function HomePage() {
                 <ProductosNuevos />
             </section>
 
-            <Footer />
+            {/* <Footer /> */}
         </>
     )
 }
