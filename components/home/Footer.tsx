@@ -4,6 +4,27 @@ import Link from "next/link";
 import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 
 export default function Footer() {
+
+    const EnlacesExplora = [
+        { label: "Inicio", href: "/" },
+        { label: "Productos", href: "/productos" },
+        { label: "Categorías", href: "/categorias" },
+        { label: "Nosotros", href: "/nosotros" },
+        { label: "Contacto", href: "/contacto" },
+    ];
+
+    // const EnlacesSoporte = [
+    //     { label: "Envíos y Devoluciones", href: "/" },
+    //     { label: "Términos y Condiciones", href: "/" },
+    //     { label: "Política de Privacidad", href: "/" },
+    // ];
+
+    const RedesSociales = [
+        { icon: <FaFacebookF size={18} />, href: "https://www.facebook.com" },
+        { icon: <FaInstagram size={18} />, href: "https://www.instagram.com" },
+        { icon: <FaTwitter size={18} />, href: "https://www.twitter.com" },
+    ];
+
     return (
         <footer className="relative bg-gray-950 text-gray-300">
             {/* Línea superior con gradiente */}
@@ -24,13 +45,7 @@ export default function Footer() {
                 <div>
                     <h3 className="text-lg font-semibold text-white mb-4">Explora</h3>
                     <ul className="space-y-2 text-sm">
-                        {[
-                            { label: "Inicio", href: "/" },
-                            { label: "Productos", href: "/productos" },
-                            { label: "Categorías", href: "/categorias" },
-                            { label: "Nosotros", href: "/nosotros" },
-                            { label: "Contacto", href: "/contacto" },
-                        ].map(({ label, href }) => (
+                        {EnlacesExplora.map(({ label, href }) => (
                             <li key={href}>
                                 <Link href={href} className="hover:text-white transition duration-200">
                                     {label}
@@ -41,40 +56,22 @@ export default function Footer() {
                 </div>
 
                 {/* Soporte */}
-                <div>
-                    <h3 className="text-lg font-semibold text-white mb-4">Soporte</h3>
-                    <ul className="space-y-2 text-sm">
-                        {[
-                            { label: "Envíos y Devoluciones", href: "/" },
-                            { label: "Términos y Condiciones", href: "/" },
-                            { label: "Política de Privacidad", href: "/" },
-                        ].map(({ label, href }) => (
-                            <li key={href}>
-                                <Link href={href} className="hover:text-white transition duration-200">
-                                    {label}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
 
                 {/* Redes Sociales */}
                 <div>
                     <h3 className="text-lg font-semibold text-white mb-4">Síguenos</h3>
                     <div className="flex space-x-4">
-                        {[
-                            { icon: <FaFacebookF size={18} />, href: "https://www.facebook.com" },
-                            { icon: <FaInstagram size={18} />, href: "https://www.instagram.com" },
-                            { icon: <FaTwitter size={18} />, href: "https://www.twitter.com" },
-                        ].map(({ icon, href }) => (
-                            <Link
-                                key={href}
+                        {RedesSociales.map(({ icon, href }, index) => (
+                            <a
+                                key={index}
                                 href={href}
                                 target="_blank"
-                                className="p-2 rounded-full bg-gray-800 hover:bg-purple-600 transition duration-300 text-gray-300 hover:text-white"
+                                rel="noopener noreferrer"
+                                className="text-gray-400 hover:text-white transition duration-200"
+                                aria-label={`Síguenos en ${href}`}
                             >
                                 {icon}
-                            </Link>
+                            </a>
                         ))}
                     </div>
                 </div>
