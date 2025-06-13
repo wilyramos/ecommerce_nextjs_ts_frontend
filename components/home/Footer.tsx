@@ -45,9 +45,9 @@ export default function Footer() {
                     <h3 className="text-lg font-semibold text-white mb-4">Soporte</h3>
                     <ul className="space-y-2 text-sm">
                         {[
-                            { label: "Envíos y Devoluciones", href: "/envios" },
-                            { label: "Términos y Condiciones", href: "/terminos" },
-                            { label: "Política de Privacidad", href: "/politica-de-privacidad" },
+                            { label: "Envíos y Devoluciones", href: "/" },
+                            { label: "Términos y Condiciones", href: "/" },
+                            { label: "Política de Privacidad", href: "/" },
                         ].map(({ label, href }) => (
                             <li key={href}>
                                 <Link href={href} className="hover:text-white transition duration-200">

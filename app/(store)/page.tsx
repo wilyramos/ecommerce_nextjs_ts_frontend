@@ -1,4 +1,4 @@
-import Footer from "@/components/home/Footer"
+// import Footer from "@/components/home/Footer"
 import CategoriasDestacadas from "@/components/home/CategoriasDestacadas"
 import { getCategories } from "@/src/services/categorys"
 import CarruselPrincipal from "@/components/home/CarruselPrincipal"
