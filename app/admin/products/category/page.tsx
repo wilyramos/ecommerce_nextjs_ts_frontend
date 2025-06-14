@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getCategories } from "@/src/services/categorys";
 import Pagination from "@/components/ui/Pagination";
-import CategoriesTable from "@/components/admin/category/CategoriesTable";
+import VisualCategoryView from "@/components/admin/category/VisualCategoryView";
 import { buildCategoryTree } from "@/src/utils/buildCategoryTree";
 
 // async function getCategories() {
@@ -23,17 +23,16 @@ export default async function CreatePageCategory() {
     const categories = await getCategories();
     const categoriesTree = buildCategoryTree(categories);
 
-
     return (
         <div className="max-w-7xl mx-auto p-5">
-            <div className="flex justify-between mb-6">
-                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800">
+            <div className="flex justify-between mb-6 border-b pb-2">
+                <h1 className="text-xl font-semibold text-gray-800">
                     Categorías
                 </h1>
                 
                 <Link
                     href="/admin/products/category/new"
-                    className="bg-blue-600 text-white px-2 py-1 rounded-xl hover:bg-blue-700 transition"
+                    className="inline-flex items-center px-4 py-2s bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-colors"
                 >
                     + Nueva Categoría
                 </Link>
@@ -48,7 +47,7 @@ export default async function CreatePageCategory() {
                 </div>
             ) : (
                 <>
-                    <CategoriesTable categories={categoriesTree} />
+                    <VisualCategoryView categories={categoriesTree} />
                     <Pagination
                         currentPage={1}
                         totalPages={1}

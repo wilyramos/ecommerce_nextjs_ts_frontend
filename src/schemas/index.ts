@@ -212,12 +212,21 @@ const CategorySchemaParent = z.object({
     parent: z.string().nullable().optional(), // Puede ser null si no tiene padre
 });
 
+export const AttributeSchema = z.object({
+    nombre: z.string().min(1, { message: 'El nombre del atributo es obligatorio' }),
+    tipo: z.enum(['string', 'number', 'boolean', 'select']),
+    opciones: z.array(z.string()).optional(), // Solo para tipo 'select'
+});
+
+export type Attribute = z.infer<typeof AttributeSchema>
+
 export const CategorySchema = z.object({
     _id: z.string(),
     nombre: z.string(),
     slug: z.string(),
     parent: CategorySchemaParent.nullable().optional(), // Puede ser null si no tiene padre
     descripcion: z.string().optional(),
+    atributos: z.array(AttributeSchema).optional(),
     createdAt: z.string().datetime().optional(),
     updatedAt: z.string().datetime().optional(),
     __v: z.number().optional(),
