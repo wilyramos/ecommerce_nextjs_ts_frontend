@@ -30,7 +30,7 @@ export default function CategoryForm({ category, categories }: Props) {
     };
 
     return (
-        <div className="space-y-4">
+        <div className="text-xs text-gray-500 space-y-4">
             <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                     Nombre de la categoría
@@ -40,7 +40,7 @@ export default function CategoryForm({ category, categories }: Props) {
                     id="name"
                     name="name"
                     defaultValue={category?.nombre}
-                    className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
+                    className="w-full border border-gray-300 rounded-lg p-2"
                 />
             </div>
 
@@ -52,7 +52,7 @@ export default function CategoryForm({ category, categories }: Props) {
                     id="description"
                     name="description"
                     defaultValue={category?.descripcion}
-                    className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
+                    className="w-full border border-gray-300 rounded-lg p-2"
                 />
             </div>
 
@@ -64,7 +64,7 @@ export default function CategoryForm({ category, categories }: Props) {
                     id="parent"
                     name="parent"
                     defaultValue={category?.parent?._id || ""}
-                    className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
+                    className="w-full border border-gray-300 rounded-lg p-2"
                 >
                     <option value="">Sin categoría padre</option>
                     {renderCategoryOptions(categories)}
