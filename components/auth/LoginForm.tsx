@@ -1,8 +1,8 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { authenticateUserAction } from "@/actions/authenticate-user-action"
+import { useState, useEffect } from "react"
 import { useActionState } from "react"
+import { authenticateUserAction } from "@/actions/authenticate-user-action"
 import { toast } from "react-toastify"
 import { FiEye, FiEyeOff } from "react-icons/fi"
 
@@ -12,12 +12,14 @@ export default function LoginForm() {
         success: "",
     })
 
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [showPassword, setShowPassword] = useState(false)
+
     useEffect(() => {
         state.errors.forEach(error => toast.error(error))
         if (state.success) toast.success(state.success)
     }, [state])
-
-    const [showPassword, setShowPassword] = useState(false)
 
     return (
         <form
@@ -32,6 +34,8 @@ export default function LoginForm() {
                     name="email"
                     placeholder="tu@email.com"
                     className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                 />
             </label>
@@ -43,6 +47,8 @@ export default function LoginForm() {
                     name="password"
                     placeholder="********"
                     className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     required
                 />
                 <button
