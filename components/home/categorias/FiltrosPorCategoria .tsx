@@ -8,6 +8,8 @@ export default async function FiltrosPorCategoria({ categorySlug }: { categorySl
 
         const category = await getCategoryBySlug(categorySlug);
 
+        console.log(category)
+
         if (!category) {
             return (
                 <main className="max-w-7xl mx-auto p-5">

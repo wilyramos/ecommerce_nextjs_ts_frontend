@@ -6,7 +6,8 @@ import ProductForm from './ProductForm'
 import { useRouter } from 'next/navigation'
 import { createProduct } from '@/actions/product/add-product-action'
 import { toast } from 'react-toastify'
-import type { CategoriasList } from '@/src/schemas'
+import type { CategoriasList, Attributes } from '@/src/schemas'
+
 
 export default function CreateProductForm({ categorias }: { categorias: CategoriasList }) {
 

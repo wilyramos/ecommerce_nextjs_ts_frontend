@@ -3,6 +3,7 @@ import type { CategoriasList } from "@/src/schemas";
 import UploadProductImage from "./UploadProductImage";
 import ProductVariantsForm from "./ProductVariantsForm";
 import { useState } from "react";
+import ClientCategoryAttributes from "./ClientCategoryAttributes"
 
 
 const brandOptions = ["Apple", "Samsung", "Ifans", "1HORA"] as const;
@@ -10,6 +11,8 @@ const colorOptions = ["Negro", "Blanco", "Azul", "Rojo", "Verde", "Amarillo", "M
 
 
 export default function ProductForm({ product, categorias }: { product?: Product, categorias: CategoriasList }) {
+
+    // TODO: implementar para obtener los atributos de las categorias
 
     const [productVariants, setProductVariants] = useState<Variant[]>(product?.variantes || []);
 
@@ -167,6 +170,8 @@ export default function ProductForm({ product, categorias }: { product?: Product
                     defaultChecked={product?.esNuevo}
                 />
             </div>
+
+            <ClientCategoryAttributes categorias={categorias} initialCategoryId={product?.categoria}/>
 
 
             <UploadProductImage
