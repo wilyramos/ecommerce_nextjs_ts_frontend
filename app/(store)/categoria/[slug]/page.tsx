@@ -35,6 +35,8 @@ export default async function pageCategoria({ params, searchParams }: { params: 
     const { priceRange, page, limit, sort } = await searchParams;
     const limitNumber = limit ? parseInt(limit) : 10;
 
+
+
     return (
         <main className="max-w-7xl mx-auto p-5">
             <section className="grid grid-cols-1 sm:grid-cols-4 gap-6">
@@ -46,11 +48,13 @@ export default async function pageCategoria({ params, searchParams }: { params: 
                 </div>
 
                 {/* Productos de la categoría */}
-                <section className="sm:col-span-3">
+                <section className="sm:col-span-3 space-y-4">
+                    {/* Ordenamiento arriba a la derecha */}
+                    <div className="flex justify-end">
+                        <OrdenarPor pathname={`/categoria/${slug}`} />
+                    </div>
 
-                    <OrdenarPor
-                        pathname={`/categoria/${slug}`}
-                    />
+                    {/* Productos */}
                     <Suspense fallback={<div className="text-center py-8 text-gray-400 text-sm">Cargando productos...</div>}>
                         <ListaProducts
                             category={slug}

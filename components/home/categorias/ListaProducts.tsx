@@ -46,6 +46,8 @@ export default async function ListaProducts({ category, priceRange, page, limit 
                 pathname={`/categoria/${category}`}
                 queryParams={{
                     priceRange,
+                    sort,
+                    brand,
                 }}
             />
         </>

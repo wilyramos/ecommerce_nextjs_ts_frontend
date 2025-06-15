@@ -48,6 +48,10 @@ export default async function ProductResults({ category, priceRange, page, limit
                 queryParams={{
                     category,
                     priceRange,
+                    sort,
+                    brand,
+                    color,
+                    compatibilidad,
                 }}
             />
         </>

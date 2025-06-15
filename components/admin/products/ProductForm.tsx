@@ -3,7 +3,6 @@ import type { CategoriasList } from "@/src/schemas";
 import UploadProductImage from "./UploadProductImage";
 import ProductVariantsForm from "./ProductVariantsForm";
 import { useState } from "react";
-import AttributeFields from "../category/AttributeFileds";
 
 
 const brandOptions = ["Apple", "Samsung", "Ifans", "1HORA"] as const;

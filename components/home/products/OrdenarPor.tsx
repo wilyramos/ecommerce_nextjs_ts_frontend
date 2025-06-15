@@ -16,25 +16,25 @@ export default function OrdenarPor({ pathname }: { pathname?: string }) {
 
     const handleSortChange = (value: string) => {
         const params = new URLSearchParams(searchParams.toString());
+
         if (value) {
             params.set("sort", value);
         } else {
             params.delete("sort");
         }
-        router.push(`${pathname || ""}?${params.toString()}`);
+
+        router.push(`${pathname}?${params.toString()}`);
     };
 
     return (
-        <div className="mb-4 flex justify-end">
-            <select
-                defaultValue={searchParams.get("sort") || ""}
-                onChange={(e) => handleSortChange(e.target.value)}
-                className="p-2 rounded border text-sm"
-            >
-                {sortOptions.map(({ label, value }) => (
-                    <option key={value} value={value}>{label}</option>
-                ))}
-            </select>
-        </div>
+        <select
+            defaultValue={searchParams.get("sort") || ""}
+            onChange={(e) => handleSortChange(e.target.value)}
+            className="p-2 rounded border text-sm"
+        >
+            {sortOptions.map(({ label, value }) => (
+                <option key={value} value={value}>{label}</option>
+            ))}
+        </select>
     );
 }

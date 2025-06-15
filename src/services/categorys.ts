@@ -17,10 +17,25 @@ export const getCategory = cache(async (id: string) => {
     }
 
     const category = CategoryAPIResponse.parse(json);
-    console.log("category", category);
+    console.log("categoryy", category);
     return category;
 });
 
+export const getCategoryBySlug = cache(async (slug: string) => {
+    const url = `${process.env.API_URL}/category/slug/${slug}`;
+
+    const req = await fetch(url, {
+        method: 'GET',
+    });
+
+    const json = await req.json();
+    if (!req.ok) {
+        notFound();
+    }
+
+    const category = CategoryAPIResponse.parse(json);
+    return category;
+});
 
 export const getCategories = cache(async () => {
     const url = `${process.env.API_URL}/category`;
