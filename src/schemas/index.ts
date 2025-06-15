@@ -197,28 +197,32 @@ export const ImageSchemaResponse = z.object({
 
 // CATEGORIA
 
+
+
+export const AttributeSchema = z.object({
+    name: z.string().min(1, { message: 'El nombre del atributo es obligatorio' }),
+    values: z.array(z.string().min(1, { message: 'Cada valor del atributo es obligatorio' }))
+        .min(1, { message: 'Debe haber al menos un valor para el atributo' })
+});
+
+export const AttributesSchema = z.array(AttributeSchema).min(1, { message: 'Debe haber al menos un atributo' });
+export type Attribute = z.infer<typeof AttributeSchema>
+export type Attributes = z.infer<typeof AttributesSchema>
+
 export const CreateCategorySchema = z.object({
     nombre: z.string()
         .min(1, { message: 'El nombre es obligatorio' }),
     descripcion: z.string()
         .min(1, { message: 'La descripción es obligatoria' }),
     parent: z.string().nullable().optional(),
+    attributes: AttributesSchema.optional(),
 })
 
 const CategorySchemaParent = z.object({
     _id: z.string(),
     nombre: z.string().min(1, { message: 'El nombre es obligatorio' }),
-    slug: z.string().min(1, { message: 'El slug es obligatorio' }),
     parent: z.string().nullable().optional(), // Puede ser null si no tiene padre
 });
-
-export const AttributeSchema = z.object({
-    nombre: z.string().min(1, { message: 'El nombre del atributo es obligatorio' }),
-    tipo: z.enum(['string', 'number', 'boolean', 'select']),
-    opciones: z.array(z.string()).optional(), // Solo para tipo 'select'
-});
-
-export type Attribute = z.infer<typeof AttributeSchema>
 
 export const CategorySchema = z.object({
     _id: z.string(),
@@ -226,7 +230,7 @@ export const CategorySchema = z.object({
     slug: z.string(),
     parent: CategorySchemaParent.nullable().optional(), // Puede ser null si no tiene padre
     descripcion: z.string().optional(),
-    atributos: z.array(AttributeSchema).optional(),
+    attributes: z.array(AttributeSchema).optional(),
     createdAt: z.string().datetime().optional(),
     updatedAt: z.string().datetime().optional(),
     __v: z.number().optional(),

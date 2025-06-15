@@ -74,7 +74,7 @@ export default function CategoryForm({ category, categories }: Props) {
                 )}
             </div>
 
-            <AttributeFields defaultAttributes={category?.atributos || []} />
+            <AttributeFields defaultAttributes={category?.attributes || []} />
         </div>
     );
 }

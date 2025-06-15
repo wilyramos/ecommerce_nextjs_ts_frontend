@@ -17,6 +17,7 @@ export const getCategory = cache(async (id: string) => {
     }
 
     const category = CategoryAPIResponse.parse(json);
+    console.log("category", category);
     return category;
 });
 

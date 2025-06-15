@@ -1,7 +1,7 @@
 "use server"
 
 import getToken from "@/src/auth/token"
-import { CreateCategorySchema, SuccessResponse } from "@/src/schemas"
+import { CreateCategorySchema, SuccessResponse, AttributesSchema } from "@/src/schemas"
 import { ErrorResponse } from "@/src/schemas"
 import { revalidatePath } from "next/cache"
 
@@ -15,11 +15,43 @@ type ActionStateType = {
 
 export async function EditCategory(id: string, prevState: ActionStateType, formData: FormData) {
 
+    // parsear los atributos del formData
+    const rawAyyributes = formData.get("attributes");
+    let attributesData;
+
+    try{
+        const parsed = JSON.parse(rawAyyributes as string);
+
+        const result = AttributesSchema.safeParse(parsed);
+        if (!result.success) {
+            return {
+                errors: result.error.errors.map(error => error.message),
+                success: ""
+            }
+        }
+        attributesData = result.data;
+
+    } catch (error) {
+        // console.error("Error parsing attributes:", error);
+        return {
+            errors: ["Error al procesar los atributos de la categoría."],
+            success: ""
+        }
+    }
+
+    // console.log("formData", formData)
+    // Formatear los atributos
+
+
     const categoryData = {
         nombre: formData.get("name"),
         descripcion: formData.get("description"),
-        parent: formData.get("parent") || null
+        parent: formData.get("parent") || null,
+        attributes: attributesData
     }
+
+    // console.log("categoryData", categoryData)
+    // console.log("attributesData", attributesData)
 
     const category = CreateCategorySchema.safeParse(categoryData);
     if (!category.success) {
@@ -30,7 +62,7 @@ export async function EditCategory(id: string, prevState: ActionStateType, formD
     }
 
     const token = await getToken();
-    console.log("tokennnn", token)
+    // console.log("tokennnn", token)
     const url = `${process.env.API_URL}/category/update/${id}`;
     const req = await fetch(url, {
         method: 'PUT',

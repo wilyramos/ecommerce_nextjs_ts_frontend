@@ -1,128 +1,114 @@
 "use client";
 
-import { useState } from "react";
-import type { Attribute } from "@/src/schemas";
+import { useEffect, useState } from "react";
+import type { Attributes } from "@/src/schemas";
 
-type Props = {
-    defaultAttributes?: Attribute[];
-};
 
-export default function AttributeFields({ defaultAttributes = [] }: Props) {
-    const [attributes, setAttributes] = useState<Attribute[]>(
-        defaultAttributes.map(attr =>
-            attr.tipo === "select"
-                ? { ...attr, opciones: attr.opciones ?? [""] }
-                : attr
-        )
+export default function AttributeFields({ defaultAttributes }: { defaultAttributes?: Attributes }) {
+    const [attributes, setAttributes] = useState<Attributes>(
+        defaultAttributes || [{ name: "", values: [""] }]
     );
 
-    const updateAttribute = (index: number, field: keyof Attribute, value: string | string[]) => {
-        setAttributes(prev =>
-            prev.map((attr, i) =>
-                i === index ? { ...attr, [field]: value } : attr
-            )
-        );
+    useEffect(() => {
+        // Si no hay atributos, asegurarse de que siempre haya al menos uno
+        if (attributes.length === 0) {
+            setAttributes([{ name: "", values: [""] }]);
+        }
+    }, [attributes]);
+
+    const handleAttrNameChange = (index: number, value: string) => {
+        const updated = [...attributes];
+        updated[index].name = value;
+        setAttributes(updated);
     };
 
-    const updateOption = (attrIndex: number, optIndex: number, value: string) => {
-        const newOptions = [...(attributes[attrIndex].opciones || [])];
-        newOptions[optIndex] = value;
-        updateAttribute(attrIndex, "opciones", newOptions);
-    };
-
-    const addOption = (attrIndex: number) => {
-        const newOptions = [...(attributes[attrIndex].opciones || []), ""];
-        updateAttribute(attrIndex, "opciones", newOptions);
-    };
-
-    const removeOption = (attrIndex: number, optIndex: number) => {
-        const newOptions = (attributes[attrIndex].opciones || []).filter((_, i) => i !== optIndex);
-        updateAttribute(attrIndex, "opciones", newOptions);
+    const handleAttrValueChange = (attrIndex: number, valIndex: number, value: string) => {
+        const updated = [...attributes];
+        updated[attrIndex].values[valIndex] = value;
+        setAttributes(updated);
     };
 
     const addAttribute = () => {
-        setAttributes([...attributes, { nombre: "", tipo: "string" }]);
+        setAttributes([...attributes, { name: "", values: [""] }]);
     };
 
     const removeAttribute = (index: number) => {
-        setAttributes(attributes.filter((_, i) => i !== index));
+        const updated = [...attributes];
+        updated.splice(index, 1);
+        setAttributes(updated);
+    };
+
+    const addValue = (attrIndex: number) => {
+        const updated = [...attributes];
+        updated[attrIndex].values.push("");
+        setAttributes(updated);
+    };
+
+    const removeValue = (attrIndex: number, valIndex: number) => {
+        const updated = [...attributes];
+        updated[attrIndex].values.splice(valIndex, 1);
+        setAttributes(updated);
     };
 
     return (
-        <fieldset className="space-y-2">
-            <legend className="text-sm font-medium text-gray-700">Atributos</legend>
+        <div className="space-y-4 mt-6">
+            <h3 className="text-sm font-semibold text-gray-700">Atributos</h3>
 
-            {attributes.map((attr, index) => (
-                <div key={index} className="space-y-2 border border-gray-300 rounded-lg p-3">
-                    <div className="flex gap-2">
+            {/* Campo oculto que será enviado al servidor */}
+            <input type="hidden" name="attributes" value={JSON.stringify(attributes)} />
+
+            {attributes.map((attr, i) => (
+                <div key={i} className="border border-gray-300 rounded-md p-4 space-y-4 bg-white shadow-sm">
+                    <div>
+                        <label className="block mb-1">Nombre del atributo</label>
                         <input
                             type="text"
-                            name={`atributos[${index}].nombre`}
-                            placeholder="Nombre"
-                            value={attr.nombre}
-                            onChange={(e) => updateAttribute(index, "nombre", e.target.value)}
-                            className="w-full border border-gray-300 rounded-lg p-2"
+                            value={attr.name}
+                            onChange={(e) => handleAttrNameChange(i, e.target.value)}
+                            placeholder="Ej: Color, Talla, Material, etc."
+                            className="w-full border border-gray-300 rounded-2xl px-3 py-2 text-sm"
                         />
-
-                        <select
-                            name={`atributos[${index}].tipo`}
-                            value={attr.tipo}
-                            onChange={(e) =>
-                                updateAttribute(
-                                    index,
-                                    "tipo",
-                                    e.target.value as Attribute["tipo"]
-                                )
-                            }
-                            className="border border-gray-300 rounded-lg p-2"
-                        >
-                            <option value="string">Texto</option>
-                            <option value="number">Número</option>
-                            <option value="boolean">Sí/No</option>
-                            <option value="select">Lista de opciones</option>
-                        </select>
                     </div>
 
-                    {attr.tipo === "select" && (
+                    <div>
+                        <label className="block mb-1">Valores</label>
                         <div className="space-y-2">
-                            <p className="text-sm text-gray-600">Opciones:</p>
-                            {(attr.opciones || []).map((opcion, optIdx) => (
-                                <div key={optIdx} className="flex items-center gap-2">
+                            {attr.values.map((val, j) => (
+                                <div key={j} className="flex items-center gap-2">
                                     <input
                                         type="text"
-                                        name={`atributos[${index}].opciones[${optIdx}]`}
-                                        value={opcion}
-                                        onChange={(e) =>
-                                            updateOption(index, optIdx, e.target.value)
-                                        }
-                                        className="w-full border border-gray-300 rounded p-2"
+                                        value={val}
+                                        onChange={(e) => handleAttrValueChange(i, j, e.target.value)}
+                                        className="flex-1 border border-gray-300 rounded-full px-3 py-1 text-sm"
+                                        placeholder="Ej: Rojo, M, Algodón, etc."
                                     />
-                                    <button
-                                        type="button"
-                                        onClick={() => removeOption(index, optIdx)}
-                                        className="text-red-600 text-sm hover:underline"
-                                    >
-                                        Quitar
-                                    </button>
+                                    {attr.values.length > 1 && (
+                                        <button
+                                            type="button"
+                                            onClick={() => removeValue(i, j)}
+                                            className="text-red-500 text-xs hover:underline"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    )}
                                 </div>
                             ))}
-
                             <button
                                 type="button"
-                                onClick={() => addOption(index)}
-                                className="text-blue-600 text-sm hover:underline"
+                                onClick={() => addValue(i)}
+                                className="text-blue-600 text-xs hover:underline"
                             >
-                                + Añadir opción
+                                + Añadir valor
                             </button>
                         </div>
-                    )}
+                    </div>
 
                     <button
                         type="button"
-                        onClick={() => removeAttribute(index)}
-                        className="text-red-600 hover:underline text-sm"
+                        onClick={() => removeAttribute(i)}
+                        className="text-red-600 text-xs hover:underline"
                     >
-                        Quitar atributo
+                        Eliminar atributo
                     </button>
                 </div>
             ))}
@@ -130,10 +116,10 @@ export default function AttributeFields({ defaultAttributes = [] }: Props) {
             <button
                 type="button"
                 onClick={addAttribute}
-                className="text-blue-600 hover:underline text-sm"
+                className="text-blue-600 text-sm hover:underline"
             >
                 + Añadir atributo
             </button>
-        </fieldset>
+        </div>
     );
 }

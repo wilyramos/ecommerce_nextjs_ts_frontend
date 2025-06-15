@@ -13,6 +13,8 @@ type ActionStateType = {
 
 export async function createCategoryAction(prevState: ActionStateType, formData: FormData) {
 
+    console.log("createCategoryAction", formData)
+
     const category = CreateCategorySchema.safeParse({
         nombre: formData.get("name"),
         descripcion: formData.get("description"),
