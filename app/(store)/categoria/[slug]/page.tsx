@@ -4,7 +4,6 @@ import FiltrosPorCategoria from "@/components/home/categorias/FiltrosPorCategori
 import ListaProducts from "@/components/home/categorias/ListaProducts";
 import OrdenarPor from "@/components/home/products/OrdenarPor";
 
-
 type Params = Promise<{
     slug: string;
 }>;
@@ -35,16 +34,16 @@ export default async function pageCategoria({ params, searchParams }: { params: 
     const { priceRange, page, limit, sort } = await searchParams;
     const limitNumber = limit ? parseInt(limit) : 10;
 
-
-
     return (
         <main className="max-w-7xl mx-auto p-5">
             <section className="grid grid-cols-1 sm:grid-cols-4 gap-6">
 
                 {/* Filtros */}
                 <div className="sm:col-span-1">
-                    <h2 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">FiltrOS</h2>
-                    <FiltrosPorCategoria categorySlug={slug} />
+                    <h2 className="text-lg font-semibold text-gray-500 mb-4 border-b pb-2">Filtros de la categoria</h2>
+                    <Suspense fallback={<div className="text-center text-gray-300 text-xs"> Cargando filtros</div>}>
+                        <FiltrosPorCategoria categorySlug={slug} />
+                    </Suspense>
                 </div>
 
                 {/* Productos de la categoría */}

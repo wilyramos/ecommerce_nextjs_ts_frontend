@@ -8,7 +8,7 @@ export default async function FiltrosPorCategoria({ categorySlug }: { categorySl
 
         const category = await getCategoryBySlug(categorySlug);
 
-        console.log(category)
+        // console.log(category)
 
         if (!category) {
             return (
@@ -20,7 +20,6 @@ export default async function FiltrosPorCategoria({ categorySlug }: { categorySl
             );
         }
         const attributes: Attributes = category.attributes || [];
-    
 
 
     // const brands = await getBrandsByCategory(); //TODO: Implementar servicio para obtener marcas por categoría
