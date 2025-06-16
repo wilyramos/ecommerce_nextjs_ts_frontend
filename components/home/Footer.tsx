@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaTwitter, FaWhatsapp } from "react-icons/fa";
 
 export default function Footer() {
-
     const EnlacesExplora = [
         { label: "Inicio", href: "/" },
         { label: "Productos", href: "/productos" },
@@ -13,16 +12,10 @@ export default function Footer() {
         { label: "Contacto", href: "/contacto" },
     ];
 
-    // const EnlacesSoporte = [
-    //     { label: "Envíos y Devoluciones", href: "/" },
-    //     { label: "Términos y Condiciones", href: "/" },
-    //     { label: "Política de Privacidad", href: "/" },
-    // ];
-
     const RedesSociales = [
-        { icon: <FaFacebookF size={18} />, href: "https://www.facebook.com" },
-        { icon: <FaInstagram size={18} />, href: "https://www.instagram.com" },
-        { icon: <FaTwitter size={18} />, href: "https://www.twitter.com" },
+        { icon: <FaFacebookF size={18} />, href: "https://www.facebook.com/gophone.pe" },
+        { icon: <FaInstagram size={18} />, href: "https://www.instagram.com/gophone.pe" },
+        { icon: <FaWhatsapp size={18} />, href: "https://api.whatsapp.com/send?phone=51907103353&text=Hola%20Gophone,%20tengo%20una%20consulta" },
     ];
 
     return (
@@ -31,13 +24,13 @@ export default function Footer() {
             <div className="h-1 bg-gradient-to-r from-indigo-500 via-indigo-800 to-indigo-500 w-full"></div>
 
             {/* Contenido principal */}
-            <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12">
+            <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 text-center place-items-center">
                 {/* Marca */}
                 <div>
                     <h2 className="text-3xl font-extrabold text-white mb-4 tracking-wide">Gophone</h2>
-                    <p className="text-sm leading-relaxed text-gray-400">
+                    <p className="text-xs leading-relaxed text-gray-400 max-w-xs mx-auto">
                         Lo último en tecnología móvil y accesorios. Envíos rápidos, atención garantizada y productos 100% originales.
-                        Tienda fisica en Jr. Ohggins 120, San Vicente de Cañete.
+                        Tienda física en Jr. Ohiggins 120, San Vicente de Cañete.
                     </p>
                 </div>
 
@@ -55,12 +48,10 @@ export default function Footer() {
                     </ul>
                 </div>
 
-                {/* Soporte */}
-
                 {/* Redes Sociales */}
                 <div>
                     <h3 className="text-lg font-semibold text-white mb-4">Síguenos</h3>
-                    <div className="flex space-x-4">
+                    <div className="flex justify-center space-x-4">
                         {RedesSociales.map(({ icon, href }, index) => (
                             <a
                                 key={index}
