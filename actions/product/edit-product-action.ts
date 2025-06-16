@@ -16,6 +16,22 @@ type ActionStateType = {
 
 export async function EditProduct(id: string, prevState: ActionStateType, formData: FormData) {
 
+
+    // parsear los atributos del formulario
+    const atributosString = formData.get("atributos") as string;
+    let atributos: Record<string, string> = {};
+    if (atributosString) {
+        try {
+            atributos = JSON.parse(atributosString);
+        } catch (error) {
+            console.error("Error parsing atributos:", error);
+            return {
+                errors: ["Error al procesar los atributos del producto."],
+                success: ""
+            }
+        }
+    }
+
     // console.log("formData", formData)
     const variantesString = formData.get("variantes") as string;
     let variantes: Variant[] = [];
@@ -43,7 +59,8 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         imagenes: formData.getAll("imagenes[]") as string[],
         variantes: variantes,
         esDestacado: formData.get("esDestacado") === "on",
-        esNuevo: formData.get("esNuevo") === "on"
+        esNuevo: formData.get("esNuevo") === "on",
+        atributos: atributos
     }
     console.log("productData", productData)
 

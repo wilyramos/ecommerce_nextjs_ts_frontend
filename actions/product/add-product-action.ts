@@ -13,7 +13,7 @@ type ActionStateType = {
 
 export async function createProduct(prevState: ActionStateType, formData: FormData) {
 
-    console.log("formDataaaaA", formData)
+    // console.log("formDataaaaA", formData)
 
 
     // parsear los atributos del formulario
@@ -31,7 +31,7 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         }
     }
 
-    console.log("atributos", atributos)
+    // console.log("atributos", atributos)
 
     
 

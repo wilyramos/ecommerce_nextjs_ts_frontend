@@ -3,15 +3,16 @@
 import { Fragment } from 'react'
 import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react'
 import { Bars3Icon, UserCircleIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline'
+
 import Link from 'next/link'
 import { logout } from '@/actions/logout-user-action'
 import type { User } from '@/src/schemas'
 
 export default function AdminMenu({ user }: { user: User }) {
     return (
-        <Popover className="relative bg-gray-400 rounded-2xl">
+        <Popover className="relative rounded-2xl">
             <PopoverButton className="inline-flex items-center justify-center p-2  transition duration-150 rounded-lg">
-                <Bars3Icon className="w-6 h-6 text-white" />
+                <Bars3Icon className="w-6 h-6 text-gray-400" />
             </PopoverButton>
 
             <Transition

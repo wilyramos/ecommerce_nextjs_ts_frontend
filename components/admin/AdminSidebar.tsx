@@ -10,7 +10,7 @@ export default function AdminSidebar({ user }: { user: User }) {
     // const isVendedor = user.rol === 'vendedor';
 
     return (
-        <aside className="flex flex-col w-20 sm:w-64 h-screen bg-gray-900 text-white">
+        <aside className="fixed top-0 left-0 w-48 h-full bg-gray-900 text-white shadow-lg flex flex-col">
             <div className="flex items-center justify-center py-6 border-b border-gray-800">
                 <Image
                     src="/logow.svg"
