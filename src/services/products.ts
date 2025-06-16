@@ -46,7 +46,8 @@ export const getProduct = cache(async (id: string) => {
     return product;
 });
 
-export const getProductsByFilter = async ({ page, limit, category, priceRange, query, brand, color, sort, compatibilidad }: {
+
+type GetProductsByFilterParams = {
     page: number;
     limit: number;
     category: string;
@@ -56,23 +57,56 @@ export const getProductsByFilter = async ({ page, limit, category, priceRange, q
     color?: string;
     sort?: string;
     compatibilidad?: string;
-}) => {
-    // const token = getToken();
-    const url = `${process.env.API_URL}/products/filter?page=${page}&limit=${limit}&category=${category}&priceRange=${priceRange}&query=${query}&brand=${brand}&color=${color}&sort=${sort}&compatibilidad=${compatibilidad}`;
-    // console.log("urlee", url);
-    const req = await fetch(url, {
-        method: 'GET'
+    atributos?: Record<string, string>; // Nuevos filtros dinámicos
+};
+
+
+export const getProductsByFilter = async ({
+    page,
+    limit,
+    category,
+    priceRange,
+    query = "",
+    brand = "",
+    color = "",
+    sort = "",
+    compatibilidad = "",
+    atributos = {},
+}: GetProductsByFilterParams) => {
+    const params = new URLSearchParams({
+        page: page.toString(),
+        limit: limit.toString(),
+        category,
+        priceRange,
+        query,
+        brand,
+        color,
+        sort,
+        compatibilidad,
     });
+
+    // Agregar los atributos dinámicos al query string
+    for (const [key, value] of Object.entries(atributos)) {
+        if (value) {
+            params.append(`atributos[${key}]`, value);
+        }
+    }
+
+    const url = `${process.env.API_URL}/products/filter?${params.toString()}`;
+
+    const req = await fetch(url, {
+        method: "GET",
+        // headers: { Authorization: `Bearer ${token}` },
+    });
+
     if (!req.ok) {
         return null;
     }
 
     const json = await req.json();
-
     const products = ProductsAPIResponse.parse(json);
-    // console.log("son los productos", products);
     return products;
-}
+};
 
 export const searchProducts = async ({ query, page, limit }: {
     query: string;
