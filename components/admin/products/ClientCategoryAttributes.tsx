@@ -9,16 +9,39 @@ type Props = {
     currentAttributes?: Record<string, string>;
 };
 
-export default function ClientCategoryAttributes({ categorias, initialCategoryId, currentAttributes }: Props) {
+export default function ClientCategoryAttributes({
+    categorias,
+    initialCategoryId,
+    currentAttributes,
+}: Props) {
     const [selectedCategoryId, setSelectedCategoryId] = useState(initialCategoryId || "");
     const [categoryAttributes, setCategoryAttributes] = useState<{ name: string; values: string[] }[]>([]);
     const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
 
-
     useEffect(() => {
         const selected = categorias.find(cat => cat._id === selectedCategoryId);
-        setCategoryAttributes(selected?.attributes || []);
-        setSelectedAttributes(currentAttributes || {}); // reset selected attributes al cambiar categoría
+
+        if (!selected) {
+            setCategoryAttributes([]);
+            setSelectedAttributes({});
+            return;
+        }
+
+        const validAttributes = selected.attributes || [];
+        setCategoryAttributes(validAttributes);
+
+        // Solo conservar los atributos válidos para la categoría seleccionada
+        const filteredAttributes: Record<string, string> = {};
+        if (currentAttributes) {
+            for (const attr of validAttributes) {
+                const value = currentAttributes[attr.name];
+                if (value) {
+                    filteredAttributes[attr.name] = value;
+                }
+            }
+        }
+
+        setSelectedAttributes(filteredAttributes);
     }, [selectedCategoryId, categorias, currentAttributes]);
 
     const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -63,29 +86,24 @@ export default function ClientCategoryAttributes({ categorias, initialCategoryId
                     <h4 className="font-semibold text-gray-700 mb-2">Atributos de la categoría</h4>
 
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-
-
-                    {categoryAttributes.map(attr => (
-                        <div key={attr.name} className="">
-                            <label className="block font-medium text-gray-600 mb-1">{attr.name}</label>
-                            <select
-                                className="w-full border border-gray-300 rounded-lg p-2"
-                                value={selectedAttributes[attr.name] || ""}
-                                onChange={(e) => handleAttributeChange(attr.name, e.target.value)}
-                            >
-                                <option value="">Selecciona un valor</option>
-                                {attr.values.map(value => (
-                                    <option key={value} value={value}>
-                                        {value}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    ))}
-
+                        {categoryAttributes.map(attr => (
+                            <div key={attr.name}>
+                                <label className="block font-medium text-gray-600 mb-1">{attr.name}</label>
+                                <select
+                                    className="w-full border border-gray-300 rounded-lg p-2"
+                                    value={selectedAttributes[attr.name] || ""}
+                                    onChange={(e) => handleAttributeChange(attr.name, e.target.value)}
+                                >
+                                    <option value="">Selecciona un valor</option>
+                                    {attr.values.map(value => (
+                                        <option key={value} value={value}>
+                                            {value}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        ))}
                     </div>
-
-
                 </div>
             )}
         </div>
