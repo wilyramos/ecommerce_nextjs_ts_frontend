@@ -13,8 +13,29 @@ type ActionStateType = {
 
 export async function createProduct(prevState: ActionStateType, formData: FormData) {
 
-    // console.log("formData", formData)
+    console.log("formDataaaaA", formData)
 
+
+    // parsear los atributos del formulario
+    const atributosString = formData.get('atributos') as string;
+    let atributos: Record<string, string> = {};
+    if (atributosString) {
+        try {
+            atributos = JSON.parse(atributosString);
+        } catch (error) {
+            console.error("Error parsing atributos:", error);
+            return {
+                errors: ["Error al procesar los atributos del producto."],
+                success: ""
+            }
+        }
+    }
+
+    console.log("atributos", atributos)
+
+    
+
+    // validar las variantes
     const variantesString = formData.get('variantes') as string;
     let variantes: Variant[] = [];
 
@@ -43,10 +64,13 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         imagenes: formData.getAll('imagenes[]') as string[],
         variantes: variantes,
         esDestacado: formData.get('esDestacado') === 'on',
-        esNuevo: formData.get('esNuevo') === 'on'
+        esNuevo: formData.get('esNuevo') === 'on',
+        atributos: atributos
     }
 
     // format variantes
+
+    console.log("productData", productData)
 
 
     // console.log("productDataaaa", productData)
@@ -60,6 +84,8 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
             success: ""
         }
     }
+
+    console.log("product.data", product.data)
 
     const token = (await cookies()).get('ecommerce-token')?.value
     const url = `${process.env.API_URL}/products`
@@ -82,7 +108,8 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
             imagenes: product.data.imagenes,
             variantes: product.data.variantes,
             esDestacado: product.data.esDestacado,
-            esNuevo: product.data.esNuevo
+            esNuevo: product.data.esNuevo,
+            atributos: product.data.atributos
         })
     });
 

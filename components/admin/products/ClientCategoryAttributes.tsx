@@ -4,73 +4,90 @@ import { useState, useEffect } from "react";
 import type { CategoriasList } from "@/src/schemas";
 
 type Props = {
-  categorias: CategoriasList;
-  initialCategoryId?: string;
+    categorias: CategoriasList;
+    initialCategoryId?: string;
+    currentAttributes?: Record<string, string>;
 };
 
-export default function ClientCategoryAttributes({ categorias, initialCategoryId }: Props) {
-  const [selectedCategoryId, setSelectedCategoryId] = useState(initialCategoryId || "");
-  const [categoryAttributes, setCategoryAttributes] = useState<{ name: string; values: string[] }[]>([]);
+export default function ClientCategoryAttributes({ categorias, initialCategoryId, currentAttributes }: Props) {
+    const [selectedCategoryId, setSelectedCategoryId] = useState(initialCategoryId || "");
+    const [categoryAttributes, setCategoryAttributes] = useState<{ name: string; values: string[] }[]>([]);
+    const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
 
-console.log(initialCategoryId);
-console.log(categorias)
 
-  useEffect(() => {
-    const selected = categorias.find(cat => cat._id === selectedCategoryId);
+    useEffect(() => {
+        const selected = categorias.find(cat => cat._id === selectedCategoryId);
+        setCategoryAttributes(selected?.attributes || []);
+        setSelectedAttributes(currentAttributes || {}); // reset selected attributes al cambiar categoría
+    }, [selectedCategoryId, categorias]);
 
-    // Debug rápido
-    if (!selected) {
-      console.warn("Categoría no encontrada:", selectedCategoryId);
-    } else if (!selected.attributes) {
-      console.warn("Categoría sin atributos:", selected.nombre);
-    }
+    const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedCategoryId(e.target.value);
+    };
 
-    setCategoryAttributes(selected?.attributes || []);
-  }, [selectedCategoryId, categorias]);
+    const handleAttributeChange = (name: string, value: string) => {
+        setSelectedAttributes(prev => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
 
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCategoryId(e.target.value);
-  };
-
-  return (
-    <div className="space-y-4">
-      <div className="py-1">
-        <label htmlFor="categoria" className="block font-semibold text-gray-700">Categoría</label>
-        <select
-          id="categoria"
-          name="categoria"
-          className="w-full border border-gray-300 rounded-lg p-3"
-          value={selectedCategoryId}
-          onChange={handleCategoryChange}
-        >
-          <option value="">Selecciona una categoría</option>
-          {categorias.map((cat) => (
-            <option key={cat._id} value={cat._id}>
-              {cat.nombre}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {categoryAttributes.length > 0 && (
-        <div>
-          <h4 className="font-semibold text-gray-700 mb-2">Atributos de la categoría</h4>
-          {categoryAttributes.map(attr => (
-            <div key={attr.name} className="py-1">
-              <label className="block text-sm text-gray-700">{attr.name}</label>
-              <select
-                name={`attribute_${attr.name}`}
-                className="w-full border border-gray-300 rounded-lg p-2"
-              >
-                <option value="">Selecciona {attr.name.toLowerCase()}</option>
-                {attr.values.map(val => (
-                  <option key={val} value={val}>{val}</option>
-                ))}
-              </select>
+    return (
+        <div className="space-y-4">
+            <div className="py-1">
+                <label htmlFor="categoria" className="block font-semibold text-gray-700">Categoría</label>
+                <select
+                    id="categoria"
+                    name="categoria"
+                    className="w-full border border-gray-300 rounded-lg p-3"
+                    value={selectedCategoryId}
+                    onChange={handleCategoryChange}
+                >
+                    <option value="">Selecciona una categoría</option>
+                    {categorias.map(cat => (
+                        <option key={cat._id} value={cat._id}>
+                            {cat.nombre}
+                        </option>
+                    ))}
+                </select>
             </div>
-          ))}
+
+            {categoryAttributes.length > 0 && (
+                <div>
+                    <input
+                        type="hidden"
+                        name="atributos"
+                        value={JSON.stringify(selectedAttributes)}
+                    />
+
+                    <h4 className="font-semibold text-gray-700 mb-2">Atributos de la categoría</h4>
+
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+
+
+                    {categoryAttributes.map(attr => (
+                        <div key={attr.name} className="">
+                            <label className="block font-medium text-gray-600 mb-1">{attr.name}</label>
+                            <select
+                                className="w-full border border-gray-300 rounded-lg p-2"
+                                value={selectedAttributes[attr.name] || ""}
+                                onChange={(e) => handleAttributeChange(attr.name, e.target.value)}
+                            >
+                                <option value="">Selecciona un valor</option>
+                                {attr.values.map(value => (
+                                    <option key={value} value={value}>
+                                        {value}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    ))}
+
+                    </div>
+
+
+                </div>
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 }

@@ -46,23 +46,6 @@ export default function ProductForm({ product, categorias }: { product?: Product
                 />
             </div>
 
-            <div className="py-1">
-                <label htmlFor="categoria" className="block font-semibold text-gray-700">Categoría</label>
-                <select
-                    id="categoria"
-                    name="categoria"
-                    className="w-full border border-gray-300 rounded-lg p-3 "
-                    defaultValue={product?.categoria}
-                >
-                    <option value="">Selecciona una categoría</option>
-                    {categorias.map((categoria) => (
-                        <option key={categoria._id} value={categoria._id}>
-                            {categoria.nombre}
-                        </option>
-                    ))}
-                </select>
-            </div>
-
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="py-1">
                     <label htmlFor="precio" className="block font-semibold text-gray-700">Precio</label>
@@ -171,7 +154,7 @@ export default function ProductForm({ product, categorias }: { product?: Product
                 />
             </div>
 
-            <ClientCategoryAttributes categorias={categorias} initialCategoryId={product?.categoria}/>
+            <ClientCategoryAttributes categorias={categorias} initialCategoryId={product?.categoria} currentAttributes={product?.atributos} />
 
 
             <UploadProductImage

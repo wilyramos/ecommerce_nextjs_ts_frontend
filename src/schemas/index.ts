@@ -137,6 +137,8 @@ export const VariantSchema = z.object({
     barcode: z.string().optional().or(z.literal('')), // Permite opcional o cadena vacía
 });
 
+const AtributosProductSchema = z.record(z.string(), z.string());
+
 // Create product schema
 export const CreateProductSchema = z.object({
     nombre: z.string().min(1, { message: 'El nombre es obligatorio' }),
@@ -146,13 +148,14 @@ export const CreateProductSchema = z.object({
     stock: z.number().min(0, { message: 'El stock es obligatorio' }),
     sku: z.string().optional(),
     barcode: z.string().optional(),
-    brand: brand.optional(),
+    brand: brand.optional(),    
     color: color.optional(),
     imagenes: z.array(z.string()),
     variantes: z.array(VariantSchema).optional(),
     esDestacado: z.boolean().default(false).optional(),
     esNuevo: z.boolean().default(false).optional(),
-    // isActive: z.boolean().default(true), 
+    isActive: z.boolean().default(true),
+    atributos: AtributosProductSchema.optional(),
 });
 
 export const ProductSchema = z.object({
@@ -171,6 +174,7 @@ export const ProductSchema = z.object({
     esDestacado: z.boolean().default(false).optional(),
     esNuevo: z.boolean().default(false).optional(),
     variantes: z.array(VariantSchema).optional(),
+    atributos: AtributosProductSchema.optional(),
     createdAt: z.string().datetime().optional(),
     updatedAt: z.string().datetime().optional(),
 
@@ -255,6 +259,7 @@ export const ProductAPIResponse = z.object({
     variantes: z.array(VariantSchema).optional(),
     esDestacado: z.boolean().default(false).optional(),
     esNuevo: z.boolean().default(false).optional(),
+    atributos: AtributosProductSchema.optional(),
 })
 
 export type ProductType = z.infer<typeof ProductAPIResponse>
