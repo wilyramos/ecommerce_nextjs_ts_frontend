@@ -19,7 +19,7 @@ export default function ClientCategoryAttributes({ categorias, initialCategoryId
         const selected = categorias.find(cat => cat._id === selectedCategoryId);
         setCategoryAttributes(selected?.attributes || []);
         setSelectedAttributes(currentAttributes || {}); // reset selected attributes al cambiar categoría
-    }, [selectedCategoryId, categorias]);
+    }, [selectedCategoryId, categorias, currentAttributes]);
 
     const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCategoryId(e.target.value);
