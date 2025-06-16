@@ -4,6 +4,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MdClear } from "react-icons/md";
 import type { Attribute } from "@/src/schemas";
+import { Disclosure } from "@headlessui/react";
+import { ChevronUpIcon } from "@heroicons/react/20/solid";
 
 type Props = {
     categorySlug: string;
@@ -16,7 +18,6 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
 
     const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
 
-    // Cargar filtros seleccionados desde la URL
     useEffect(() => {
         const filters: Record<string, string[]> = {};
         attributes.forEach(attr => {
@@ -59,37 +60,48 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
     };
 
     return (
-        <div className="space-y-5">
-            <div className="flex justify-end">
+        <aside className="py-6 border-gray-200">
+            <div className="flex justify-end mb-4">
                 <button
                     onClick={clearFilters}
-                    className="flex items-center gap-1 text-xs text-gray-500 hover:text-red-500"
+                    className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 transition"
                 >
-                    <MdClear size={18} className="text-red-500" />
+                    <MdClear size={18} />
                     Limpiar filtros
                 </button>
             </div>
 
-            <h3 className="text-xl font-bold text-gray-900">Filtros</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Filtros</h3>
 
-            {attributes.map(attr => (
-                <div key={attr.name}>
-                    <h4 className="text-sm font-semibold text-gray-700 mb-2">{attr.name}</h4>
-                    <ul className="space-y-1">
-                        {attr.values.map(value => (
-                            <li key={value} className="flex items-center gap-2">
-                                <input
-                                    type="checkbox"
-                                    checked={selectedFilters[attr.name]?.includes(value) || false}
-                                    onChange={() => toggleValue(attr.name, value)}
-                                    className="accent-gray-700"
-                                />
-                                <label className="text-sm text-gray-600">{value}</label>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            ))}
-        </div>
+            <div className="space-y-4">
+                {attributes.map(attr => (
+                    <Disclosure key={attr.name}>
+                        {({ open }) => (
+                            <div>
+                                <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-gray-700 border-b py-2">
+                                    <span>{attr.name}</span>
+                                    <ChevronUpIcon className={`w-5 h-5 transform transition-transform ${open ? "rotate-180" : ""}`} />
+                                </Disclosure.Button>
+                                <Disclosure.Panel className="pt-2 pl-1 text-sm text-gray-600">
+                                    <ul className="space-y-1">
+                                        {attr.values.map(value => (
+                                            <li key={value} className="flex items-center gap-2">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedFilters[attr.name]?.includes(value) || false}
+                                                    onChange={() => toggleValue(attr.name, value)}
+                                                    className="accent-blue-600"
+                                                />
+                                                <label className="text-sm text-gray-600">{value}</label>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </Disclosure.Panel>
+                            </div>
+                        )}
+                    </Disclosure>
+                ))}
+            </div>
+        </aside>
     );
 }
