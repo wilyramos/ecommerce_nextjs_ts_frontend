@@ -87,19 +87,17 @@ export default async function pageProduct({ params }: { params: Params }) {
                 </div>
             ) : (
                 <>
-                <div className="max-w-7xl mx-auto py-10">
-  <div className="flex flex-col lg:flex-row gap-10">
-    {/* Carrusel de imágenes */}
-    <div className="w-full lg:w-1/2">
-      <ImagenesProductoCarousel images={producto.imagenes || []} />
-    </div>
+                    <div className=" mx-auto py-8">
+                        <div className="flex flex-col lg:flex-row gap-10">
+                            {/* Carrusel de imágenes */}
+                            
 
-    {/* Detalles del producto */}
-    <div className="w-full lg:w-1/2">
-      <ProductDetails producto={producto} />
-    </div>
-  </div>
-</div>
+                            {/* Detalles del producto */}
+                            <div className="w-full">
+                                <ProductDetails producto={producto} />
+                            </div>
+                        </div>
+                    </div>
 
 
                     {productsRelated && productsRelated.length > 0 && (

@@ -9,7 +9,7 @@ import ButtonSearchFormStore from '../ui/ButtonSearchFormStore';
 export default function NavBar() {
     return (
         <header className="sticky top-0 z-50 bg-white text-gray-800">
-            <div className="max-w-6xl mx-auto flex justify-between items-center px-6 font-semibold text-sm md:text-base py-1">
+            <div className="max-w-7xl mx-auto flex justify-between items-center px-6 font-semibold text-sm md:text-base py-1">
                 {/* Mobile: Menú y buscador */}
                 <div className="md:hidden flex items-center gap-2">
                     <MobileMenuToggle />
