@@ -1,6 +1,5 @@
 import { getProduct, getProductsRelated } from '@/src/services/products';
 import { Metadata } from 'next';
-import ImagenesProductoCarousel from '@/components/home/product/ImagenesProductoCarousel';
 import ProductosRelated from '@/components/home/product/ProductosRelated';
 import { Suspense } from 'react';
 import ProductDetails from '@/components/home/product/ProductDetails';
@@ -87,11 +86,8 @@ export default async function pageProduct({ params }: { params: Params }) {
                 </div>
             ) : (
                 <>
-                    <div className=" mx-auto py-8">
-                        <div className="flex flex-col lg:flex-row gap-10">
-                            {/* Carrusel de imágenes */}
-                            
-
+                    <div className=" mx-auto py-5">
+                        <div className="flex flex-col lg:flex-row gap-10">                            
                             {/* Detalles del producto */}
                             <div className="w-full">
                                 <ProductDetails producto={producto} />

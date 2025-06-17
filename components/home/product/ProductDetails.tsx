@@ -41,7 +41,7 @@ export default function ProductDetails({ producto }: Props) {
                     </div>
 
                     {/* Info Básica */}
-                    <div className="grid grid-cols-2 gap-4 text-sm text-gray-700">
+                    <div className="grid grid-cols-2 gap-4 text-xs text-gray-700">
                         {producto.brand && (
                             <div>
                                 <p className="text-gray-400">Marca</p>
@@ -71,13 +71,13 @@ export default function ProductDetails({ producto }: Props) {
                     {/* Características */}
                     {producto.atributos && (
                         <div>
-                            <h2 className="text-lg font-semibold text-gray-800 mb-3">Características</h2>
-                            <div className="border rounded-lg overflow-hidden shadow-sm">
-                                <table className="w-full text-sm">
+                            <h2 className="text-sm font-medium text-gray-400 mb-3">Características</h2>
+                            <div className="">
+                                <table className="w-full text-xs">
                                     <tbody>
                                         {Object.entries(producto.atributos).map(([key, value]) => (
                                             <tr key={key} className="border-b last:border-b-0 even:bg-gray-50">
-                                                <td className="px-4 py-2 font-medium text-gray-700 w-1/3">{key}</td>
+                                                <td className="px-4 py-2 font-medium text-gray-700">{key}</td>
                                                 <td className="px-4 py-2 text-gray-600">{value}</td>
                                             </tr>
                                         ))}
@@ -90,7 +90,7 @@ export default function ProductDetails({ producto }: Props) {
                     {/* Descripción */}
                     {producto.descripcion && (
                         <div>
-                            <h2 className="text-md font-semibold text-gray-800 mb-2">Descripción</h2>
+                            <h2 className="text-md font-semibold text-gray-400 mb-2">Descripción</h2>
                             <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
                                 {producto.descripcion}
                             </p>
