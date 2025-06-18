@@ -8,8 +8,6 @@ type ProductResultsProps = {
   page?: string;
   limit?: number;
   sort?: string;
-  brand?: string;
-  color?: string;
   compatibilidad?: string;
   query?: string;
   atributos?: Record<string, string>; // Nuevos atributos dinámicos
@@ -21,8 +19,6 @@ export default async function ListaProducts({
   page,
   limit = 10,
   sort,
-  brand,
-  color,
   compatibilidad,
   query,
   atributos = {},
@@ -33,8 +29,6 @@ export default async function ListaProducts({
     category: category || "",
     priceRange: priceRange || "",
     query: query || "",
-    brand: brand || "",
-    color: color || "",
     sort: sort || "",
     compatibilidad: compatibilidad || "",
     atributos,
@@ -60,8 +54,6 @@ export default async function ListaProducts({
         queryParams={{
           priceRange,
           sort,
-          brand,
-          color,
           compatibilidad,
           query,
           ...atributos, // Muy importante para mantener filtros en la paginación

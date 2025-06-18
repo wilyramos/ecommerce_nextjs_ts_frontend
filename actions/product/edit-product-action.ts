@@ -54,8 +54,6 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         stock: Number(formData.get("stock")),
         sku: formData.get("sku"),
         barcode: formData.get("barcode"),
-        brand: formData.get("brand") || undefined,
-        color: formData.get("color") || undefined,
         imagenes: formData.getAll("imagenes[]") as string[],
         variantes: variantes,
         esDestacado: formData.get("esDestacado") === "on",

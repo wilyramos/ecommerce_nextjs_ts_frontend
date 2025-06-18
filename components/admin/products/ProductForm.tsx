@@ -6,10 +6,6 @@ import { useState } from "react";
 import ClientCategoryAttributes from "./ClientCategoryAttributes"
 
 
-const brandOptions = ["Apple", "Samsung", "Ifans", "1HORA"] as const;
-const colorOptions = ["Negro", "Blanco", "Azul", "Rojo", "Verde", "Amarillo", "Morado", "Naranja"] as const;
-
-
 export default function ProductForm({ product, categorias }: { product?: Product, categorias: CategoriasList }) {
 
     // TODO: implementar para obtener los atributos de las categorias
@@ -92,42 +88,6 @@ export default function ProductForm({ product, categorias }: { product?: Product
                     />
                 </div>
 
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                <div className="py-1">
-                    <label htmlFor="brand" className="block font-semibold text-gray-700">Marca</label>
-                    <select
-                        id="brand"
-                        name="brand"
-                        className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        defaultValue={product?.brand || ""}
-                    >
-                        <option value="">Selecciona una marca</option>
-                        {brandOptions.map((option) => (
-                            <option key={option} value={option}>
-                                {option}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-
-                <div className="py-1">
-                    <label htmlFor="color" className="block font-semibold text-gray-700">Color</label>
-                    <select
-                        id="color"
-                        name="color"
-                        className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        defaultValue={product?.color || ""}
-                    >
-                        <option value="">Selecciona un color</option>
-                        {colorOptions.map((option) => (
-                            <option key={option} value={option}>
-                                {option}
-                            </option>
-                        ))}
-                    </select>
-                </div>
             </div>
 
             <div className="flex items-center gap-2 mb-4">

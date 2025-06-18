@@ -29,8 +29,6 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
         description,
         keywords: [
             productName,
-            producto.brand,
-            producto.color,
             'repuestos', 'accesorios', 'celulares', 'GoPhone'
         ].filter(Boolean) as string[],
         authors: [{ name: 'GoPhone' }],

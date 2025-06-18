@@ -104,26 +104,6 @@ export type User = z.infer<typeof UserSchema>
 
 // PRODUCT
 
-
-
-const brand = z.enum([
-    'Apple',
-    'Samsung',
-    'Ifans',
-    '1HORA',
-]);
-
-const color = z.enum([
-    'Negro',
-    'Blanco',
-    'Azul',
-    'Rojo',
-    'Verde',
-    'Amarillo',
-    'Morado',
-    'Naranja',
-]);
-
 export const VariantOptionSchema = z.object({
     nombre: z.string().min(1, { message: 'El nombre de la opción es obligatorio' }),
     valores: z.array(
@@ -148,8 +128,6 @@ export const CreateProductSchema = z.object({
     stock: z.number().min(0, { message: 'El stock es obligatorio' }),
     sku: z.string().optional(),
     barcode: z.string().optional(),
-    brand: brand.optional(),    
-    color: color.optional(),
     imagenes: z.array(z.string()),
     variantes: z.array(VariantSchema).optional(),
     esDestacado: z.boolean().default(false).optional(),
@@ -168,9 +146,7 @@ export const ProductSchema = z.object({
     stock: z.number(),
     sku: z.string().optional(),
     barcode: z.string().optional(),
-    isActive: z.boolean().default(true), 
-    brand: brand.optional(),
-    color: color.optional(),
+    isActive: z.boolean().default(true),
     esDestacado: z.boolean().default(false).optional(),
     esNuevo: z.boolean().default(false).optional(),
     variantes: z.array(VariantSchema).optional(),
@@ -252,8 +228,6 @@ export const ProductAPIResponse = z.object({
     createdAt: z.string().datetime().optional(),
     updatedAt: z.string().datetime().optional(),
     __v: z.number().optional(),
-    brand: brand.optional(),
-    color: color.optional(),
     barcode: z.string().optional(),
     isActive: z.boolean().default(true), // Campo para indicar si el producto está activo
     variantes: z.array(VariantSchema).optional(),

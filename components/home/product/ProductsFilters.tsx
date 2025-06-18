@@ -14,8 +14,6 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
     const [filters, setFilters] = useState({
         category: "",
         priceRange: "",
-        brand: "",
-        color: "",
         compatibilidad: "",
     });
 
@@ -23,8 +21,6 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
         setFilters({
             category: searchParams.get("category") || "",
             priceRange: searchParams.get("priceRange") || "",
-            brand: searchParams.get("brand") || "",
-            color: searchParams.get("color") || "",
             compatibilidad: searchParams.get("compatibilidad") || "",
         });
     }, [searchParams]);
@@ -84,59 +80,8 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
                 </ul>
             ),
         },
-        {
-            title: "Marca",
-            content: (
-                <ul className="space-y-1">
-                    {[
-                        { label: "Todas", value: "" },
-                        { label: "Apple", value: "apple" },
-                        { label: "Samsung", value: "samsung" },
-                        { label: "Xiaomi", value: "xiaomi" },
-                        { label: "Huawei", value: "huawei" },
-                    ].map(({ label, value }) => (
-                        <li key={value} className="flex items-center gap-2">
-                            <input
-                                type="radio"
-                                name="brand"
-                                value={value}
-                                checked={filters.brand === value}
-                                onChange={() => updateFilters({ brand: value })}
-                                className="accent-blue-600"
-                            />
-                            <label className="text-sm text-gray-600">{label}</label>
-                        </li>
-                    ))}
-                </ul>
-            ),
-        },
-        {
-            title: "Color",
-            content: (
-                <ul className="space-y-1">
-                    {[
-                        { label: "Todos", value: "" },
-                        { label: "Negro", value: "negro" },
-                        { label: "Blanco", value: "blanco" },
-                        { label: "Rojo", value: "rojo" },
-                        { label: "Azul", value: "azul" },
-                    ].map(({ label, value }) => (
-                        <li key={value} className="flex items-center gap-2">
-                            <input
-                                type="radio"
-                                name="color"
-                                value={value}
-                                checked={filters.color === value}
-                                onChange={() => updateFilters({ color: value })}
-                                className="accent-blue-600"
-                            />
-                            <label className="text-sm text-gray-600">{label}</label>
-                        </li>
-                    ))}
-                </ul>
-
-            ),
-        },
+        
+        
         {
             title: "Compatibilidad",
             content: (
@@ -181,7 +126,7 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
         <aside className="py-6 border-gray-200">
             <div className="flex justify-end mb-4">
                 <button
-                    onClick={() => updateFilters({ category: "", priceRange: "", brand: "", color: "", compatibilidad: "" })}
+                    onClick={() => updateFilters({ category: "", priceRange: "", compatibilidad: "" })}
                     className="flex items-center gap-1 text-gray-400 hover:text-red-500 transition text-xs"
                 >
                     <MdClear size={18} />

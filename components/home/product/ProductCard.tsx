@@ -69,10 +69,7 @@ export default function ProductCard({ product }: { product: Product }) {
                     </h3>
 
                     <div className="flex justify-between items-end">
-                        <div className="text-xs text-gray-600">
-                            {product.color}
-                        </div>
-
+                        
                         {/* <div className="text-xs text-gray-500">SKU: {product.sku || 'N/A'}</div> */}
                         <div className="text-lg font-bold text-gray-900">
                             <span className="text-md  text-indigo-700">s/. </span>

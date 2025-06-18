@@ -36,8 +36,6 @@ export default async function pageCategoria({
     limit,
     priceRange,
     sort,
-    brand,
-    color,
     compatibilidad,
     query,
     ...restAtributos
@@ -79,8 +77,6 @@ export default async function pageCategoria({
               page={page as string}
               limit={limitNumber}
               sort={sort as string}
-              brand={brand as string}
-              color={color as string}
               compatibilidad={compatibilidad as string}
               query={query as string}
               atributos={atributos}

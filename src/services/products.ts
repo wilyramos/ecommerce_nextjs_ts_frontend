@@ -53,8 +53,6 @@ type GetProductsByFilterParams = {
     category: string;
     priceRange: string;
     query?: string;
-    brand?: string;
-    color?: string;
     sort?: string;
     compatibilidad?: string;
     atributos?: Record<string, string>; // Nuevos filtros dinámicos
@@ -67,8 +65,6 @@ export const getProductsByFilter = async ({
     category,
     priceRange,
     query = "",
-    brand = "",
-    color = "",
     sort = "",
     compatibilidad = "",
     atributos = {},
@@ -79,8 +75,6 @@ export const getProductsByFilter = async ({
         category,
         priceRange,
         query,
-        brand,
-        color,
         sort,
         compatibilidad,
     });

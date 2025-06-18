@@ -42,18 +42,7 @@ export default function ProductDetails({ producto }: Props) {
 
                     {/* Info Básica */}
                     <div className="grid grid-cols-2 gap-4 text-xs text-gray-700">
-                        {producto.brand && (
-                            <div>
-                                <p className="text-gray-400">Marca</p>
-                                <p className="font-medium text-gray-700">{producto.brand}</p>
-                            </div>
-                        )}
-                        {producto.color && (
-                            <div>
-                                <p className="text-gray-400">Color</p>
-                                <p className="font-medium text-gray-700">{producto.color}</p>
-                            </div>
-                        )}
+                        
                         {producto.sku && (
                             <div>
                                 <p className="text-gray-400">SKU</p>
