@@ -1,7 +1,6 @@
 "use server"
 
-import { CreateProductSchema, SuccessResponse } from "@/src/schemas"
-import type { Variant } from "@/src/schemas"
+import { CreateProductSchema, SuccessResponse, ErrorResponse } from "@/src/schemas"
 import { cookies } from "next/headers"
 
 
@@ -33,34 +32,18 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
 
     // console.log("atributos", atributos)
 
-    
 
-    // validar las variantes
-    const variantesString = formData.get('variantes') as string;
-    let variantes: Variant[] = [];
-
-    if (variantesString) {
-        try {
-            variantes = JSON.parse(variantesString);
-        } catch (error) {
-            console.error("Error parsing variantes:", error);
-            return {
-                errors: ["Error al procesar las variantes del producto."],
-                success: ""
-            }
-        }
-    }
 
     const productData = {
         nombre: formData.get('nombre'),
         descripcion: formData.get('descripcion'),       
         precio: Number(formData.get('precio')),
+        costo: Number(formData.get('costo')),
         categoria: formData.get('categoria'),
         stock: Number(formData.get('stock')),
         sku: formData.get('sku') || undefined,
         barcode: formData.get('barcode') || undefined,
         imagenes: formData.getAll('imagenes[]') as string[],
-        variantes: variantes,
         esDestacado: formData.get('esDestacado') === 'on',
         esNuevo: formData.get('esNuevo') === 'on',
         atributos: atributos
@@ -68,13 +51,13 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
 
     // format variantes
 
-    console.log("productData", productData)
+    // console.log("productData", productData)
 
 
     // console.log("productDataaaa", productData)
 
     const product = CreateProductSchema.safeParse(productData)
-    console.log("product", product)
+    // console.log("product", product)
 
     if (!product.success) {
         return {
@@ -97,27 +80,27 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
             nombre: product.data.nombre,
             descripcion: product.data.descripcion,
             precio: product.data.precio,
+            costo: product.data.costo,
             categoria: product.data.categoria,
             stock: product.data.stock,
             sku: product.data.sku,
             barcode: product.data.barcode,
             imagenes: product.data.imagenes,
-            variantes: product.data.variantes,
             esDestacado: product.data.esDestacado,
             esNuevo: product.data.esNuevo,
             atributos: product.data.atributos
         })
     });
 
-    const json = await req.json();
+    const Response = await req.json();
     // console.log("jsonn", json)
     if (!req.ok) {
         return {
-            errors: [json.message],
+            errors: [Response.message],
             success: ""
         }
     }
-    const success = SuccessResponse.parse(json)
+    const success = SuccessResponse.parse(Response)
     console.log("successss", success)
     return {
         errors: [],

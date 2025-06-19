@@ -34,7 +34,7 @@ export default function ProductForm({ product, categorias }: { product?: Product
                 />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 <div className="py-1">
                     <label htmlFor="precio" className="block font-semibold text-gray-700">Precio</label>
                     <input
@@ -43,6 +43,17 @@ export default function ProductForm({ product, categorias }: { product?: Product
                         name="precio"
                         className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         defaultValue={product?.precio}
+                    />
+                </div>
+
+                <div className="py-1">
+                    <label htmlFor="costo" className="block font-semibold text-gray-700">Costo</label>
+                    <input
+                        type="number"
+                        id="costo"
+                        name="costo"
+                        className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        defaultValue={product?.costo}
                     />
                 </div>
 

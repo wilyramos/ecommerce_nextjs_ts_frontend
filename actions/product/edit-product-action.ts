@@ -32,30 +32,16 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         }
     }
 
-    // console.log("formData", formData)
-    const variantesString = formData.get("variantes") as string;
-    let variantes: Variant[] = [];
-    if (variantesString) {
-        try {
-            variantes = JSON.parse(variantesString);
-        } catch (error) {
-            console.error("Error parsing variantes:", error);
-            return {
-                errors: ["Error al procesar las variantes del producto."],
-                success: ""
-            }
-        }
-    }
     const productData = {
         nombre: formData.get("nombre"),
         descripcion: formData.get("descripcion"),
         precio: Number(formData.get("precio")),
+        costo: Number(formData.get("costo")),
         categoria: formData.get("categoria"),
         stock: Number(formData.get("stock")),
         sku: formData.get("sku"),
         barcode: formData.get("barcode"),
         imagenes: formData.getAll("imagenes[]") as string[],
-        variantes: variantes,
         esDestacado: formData.get("esDestacado") === "on",
         esNuevo: formData.get("esNuevo") === "on",
         atributos: atributos
