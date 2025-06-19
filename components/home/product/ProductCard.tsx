@@ -9,7 +9,7 @@ export default function ProductCard({ product }: { product: Product }) {
     // const imagenUrl = product.imagenes[0];
 
     return (
-        <div className="group relative flex flex-col rounded-xl bg-white border border-gray-200 hover:shadow-md transition-shadow duration-300">
+        <div className="group relative flex flex-col rounded-xl bg-white border   hover:bg-black hover:text-white">
             <Link href={`/productos/${product._id}`} className="flex flex-col h-full">
                 {/* Imagen */}
                 <div className="relative w-full aspect-square bg-gray-100 overflow-hidden rounded-t-xl">
@@ -64,15 +64,15 @@ export default function ProductCard({ product }: { product: Product }) {
 
                 {/* Información del producto */}
                 <div className="flex flex-col justify-between flex-1 p-3 gap-2">
-                    <h3 className="text-xs md:text-sm font-medium text-gray-950 line-clamp-3 hover:line-clamp-none transition-all duration-300">
+                    <h3 className="text-xs md:text-sm font-medium line-clamp-3 hover:line-clamp-none">
                         {product.nombre}
                     </h3>
 
                     <div className="flex justify-between items-end">
                         
                         {/* <div className="text-xs text-gray-500">SKU: {product.sku || 'N/A'}</div> */}
-                        <div className="text-lg font-bold text-gray-900">
-                            <span className="text-md  text-indigo-700">s/. </span>
+                        <div className="text-lg font-bold">
+                            <span className="text-md">s/. </span>
                             {product.precio.toFixed(2)}
                         </div>
                     </div>
