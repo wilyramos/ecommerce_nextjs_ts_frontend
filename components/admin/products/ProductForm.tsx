@@ -1,22 +1,13 @@
-import type { Product, Variant } from "@/src/schemas";
+import type { Product } from "@/src/schemas";
 import type { CategoriasList } from "@/src/schemas";
 import UploadProductImage from "./UploadProductImage";
-import ProductVariantsForm from "./ProductVariantsForm";
-import { useState } from "react";
 import ClientCategoryAttributes from "./ClientCategoryAttributes"
-import ClientCategoryVariants from "./ClientCategoryVariants";
 
 
 export default function ProductForm({ product, categorias }: { product?: Product, categorias: CategoriasList }) {
 
-    // TODO: implementar para obtener los atributos de las categorias
-
-    const [productVariants, setProductVariants] = useState<Variant[]>(product?.variantes || []);
-
+    // TODO: implementar la lógica para manejar las variantes del producto
     // Función para manejar los cambios en las variantes recibidos del componente hijo
-    const handleVariantsChange = (updatedVariants: Variant[]) => {
-        setProductVariants(updatedVariants);
-    };
 
     return (
         <div className="text-xs text-gray-500 upp">
@@ -117,25 +108,9 @@ export default function ProductForm({ product, categorias }: { product?: Product
 
             <ClientCategoryAttributes categorias={categorias} initialCategoryId={product?.categoria} currentAttributes={product?.atributos} />
 
-            {/* <ClientCategoryVariants categorias={categorias} initialCategoryId={product?.categoria} currentVariants={product?.variantes} /> */}
-
             <UploadProductImage
                 CurrentImagenes={product?.imagenes}
             />
-
-            {/* Variantes dinamicos del producto*/}
-
-            <input
-                type="hidden"
-                name="variantes"
-                value={JSON.stringify(productVariants)}
-            />
-
-            <ProductVariantsForm
-                initialVariants={product?.variantes}
-                onVariantsChange={handleVariantsChange}
-            />
-
         </div>
     );
 }

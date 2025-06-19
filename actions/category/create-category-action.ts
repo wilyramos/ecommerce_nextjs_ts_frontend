@@ -1,6 +1,6 @@
 "use server"
 
-import { CreateCategorySchema, SuccessResponse, AttributesSchema, VariantCategorySchemaList } from "@/src/schemas";
+import { CreateCategorySchema, SuccessResponse, AttributesSchema } from "@/src/schemas";
 import { revalidatePath } from "next/cache"
 import { cookies } from "next/headers"
 
@@ -39,35 +39,11 @@ export async function createCategoryAction(prevState: ActionStateType, formData:
         attributesData = undefined; // 👈 Opcional
     }
 
-    const rawVariants = formData.get("variants");
-    let variantsData;
-    if (rawVariants) {
-        try {
-            const parsed = JSON.parse(rawVariants as string);
-            const result = VariantCategorySchemaList.safeParse(parsed);
-            if (!result.success) {
-                return {
-                    errors: result.error.errors.map(error => error.message),
-                    success: ""
-                }
-            }
-            variantsData = result.data;
-        } catch (error) {
-            return {
-                errors: ["Las variantes tienen un formato inválido."],
-                success: ""
-            }
-        }
-    } else {
-        variantsData = undefined; // 👈 Opcional
-    }
-
     const category = CreateCategorySchema.safeParse({
         nombre: formData.get("name"),
         descripcion: formData.get("description"),
         parent: formData.get("parent") || undefined,
         attributes: attributesData,
-        variants: variantsData
     })
 
     console.log("category", category)
@@ -92,7 +68,6 @@ export async function createCategoryAction(prevState: ActionStateType, formData:
             descripcion: category.data.descripcion,
             parent: category.data.parent ? category.data.parent : undefined,
             attributes: category.data.attributes,
-            variants: category.data.variants
         })
     })
 

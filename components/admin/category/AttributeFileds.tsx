@@ -5,7 +5,7 @@ import type { Attributes } from "@/src/schemas";
 
 export default function AttributeFields({ defaultAttributes }: { defaultAttributes?: Attributes }) {
     const [attributes, setAttributes] = useState<Attributes>(defaultAttributes || []);
-    
+
     const handleAttrNameChange = (index: number, value: string) => {
         const updated = [...attributes];
         updated[index].name = value;
@@ -41,69 +41,73 @@ export default function AttributeFields({ defaultAttributes }: { defaultAttribut
     };
 
     return (
-        <div className="space-y-4 mt-2">
+        <div className="space-y-4 mt-2 ">
             <h3 className="text-sm font-semibold text-gray-700">Atributos</h3>
 
             {/* Campo oculto que será enviado al servidor */}
             <input type="hidden" name="attributes" value={JSON.stringify(attributes)} />
 
             {/* Mostrar formulario solo si hay atributos */}
-            {attributes.length > 0 && attributes.map((attr, i) => (
-                <div key={i} className="border border-gray-300 rounded-md p-4 space-y-4 bg-white shadow-sm">
-                    <div>
-                        <label className="block mb-1">Nombre del atributo</label>
-                        <input
-                            type="text"
-                            value={attr.name}
-                            onChange={(e) => handleAttrNameChange(i, e.target.value)}
-                            placeholder="Ej: Color, Talla, Material, etc."
-                            className="w-full border border-gray-300 rounded-2xl px-3 py-2 text-sm"
-                        />
-                    </div>
 
-                    <div>
-                        <label className="block mb-1">Valores</label>
-                        <div className="space-y-2">
-                            {attr.values.map((val, j) => (
-                                <div key={j} className="flex items-center gap-2">
-                                    <input
-                                        type="text"
-                                        value={val}
-                                        onChange={(e) => handleAttrValueChange(i, j, e.target.value)}
-                                        className="flex-1 border border-gray-300 rounded-full px-3 py-1 text-sm"
-                                        placeholder="Ej: Rojo, M, Algodón, etc."
-                                    />
-                                    {attr.values.length > 1 && (
-                                        <button
-                                            type="button"
-                                            onClick={() => removeValue(i, j)}
-                                            className="text-red-500 text-xs hover:underline"
-                                        >
-                                            Eliminar
-                                        </button>
-                                    )}
-                                </div>
-                            ))}
-                            <button
-                                type="button"
-                                onClick={() => addValue(i)}
-                                className="text-blue-600 text-xs hover:underline"
-                            >
-                                + Añadir valor
-                            </button>
+            <div className="grid grid-cols-2 gap-4">
+
+
+                {attributes.length > 0 && attributes.map((attr, i) => (
+                    <div key={i} className="border border-gray-300 rounded-md p-4 space-y-4 bg-white shadow-sm">
+                        <div>
+                            <label className="block mb-1">Nombre del atributo</label>
+                            <input
+                                type="text"
+                                value={attr.name}
+                                onChange={(e) => handleAttrNameChange(i, e.target.value)}
+                                placeholder="Ej: Color, Talla, Material, etc."
+                                className="w-full border border-gray-300 rounded-2xl px-3 py-2 text-sm"
+                            />
                         </div>
+
+                        <div>
+                            <label className="block mb-1">Valores</label>
+                            <div className="space-y-2">
+                                {attr.values.map((val, j) => (
+                                    <div key={j} className="flex items-center gap-2">
+                                        <input
+                                            type="text"
+                                            value={val}
+                                            onChange={(e) => handleAttrValueChange(i, j, e.target.value)}
+                                            className="flex-1 border border-gray-300 rounded-full px-3 py-1 text-sm"
+                                            placeholder="Ej: Rojo, M, Algodón, etc."
+                                        />
+                                        {attr.values.length > 1 && (
+                                            <button
+                                                type="button"
+                                                onClick={() => removeValue(i, j)}
+                                                className="text-red-500 text-xs hover:underline"
+                                            >
+                                                Eliminar
+                                            </button>
+                                        )}
+                                    </div>
+                                ))}
+                                <button
+                                    type="button"
+                                    onClick={() => addValue(i)}
+                                    className="text-blue-600 text-xs hover:underline"
+                                >
+                                    + Añadir valor
+                                </button>
+                            </div>
+                        </div>
+
+                        <button
+                            type="button"
+                            onClick={() => removeAttribute(i)}
+                            className="text-red-600 text-xs hover:underline"
+                        >
+                            Eliminar atributo
+                        </button>
                     </div>
-
-                    <button
-                        type="button"
-                        onClick={() => removeAttribute(i)}
-                        className="text-red-600 text-xs hover:underline"
-                    >
-                        Eliminar atributo
-                    </button>
-                </div>
-            ))}
-
+                ))}
+            </div>
             <button
                 type="button"
                 onClick={addAttribute}

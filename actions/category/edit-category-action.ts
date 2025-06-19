@@ -1,7 +1,7 @@
 "use server"
 
 import getToken from "@/src/auth/token"
-import { CreateCategorySchema, SuccessResponse, AttributesSchema, VariantCategorySchemaList } from "@/src/schemas"
+import { CreateCategorySchema, SuccessResponse, AttributesSchema } from "@/src/schemas"
 import { ErrorResponse } from "@/src/schemas"
 import { revalidatePath } from "next/cache"
 
@@ -38,27 +38,6 @@ export async function EditCategory(id: string, prevState: ActionStateType, formD
             success: ""
         }
     }
-
-    const rawVariants = formData.get("variants");
-    let variantsData;
-    try {
-        const parsed = JSON.parse(rawVariants as string);
-        const result = VariantCategorySchemaList.safeParse(parsed);
-        if (!result.success) {
-            return {
-                errors: result.error.errors.map(error => error.message),
-                success: ""
-            }
-        }
-        variantsData = result.data;
-    } catch (error) {
-        return {
-            errors: ["Las variantes tienen un formato inválido."],
-            success: ""
-        }
-    }
-
-    console.log("formData", formData)
     // Formatear los atributos
 
 
@@ -67,7 +46,6 @@ export async function EditCategory(id: string, prevState: ActionStateType, formD
         descripcion: formData.get("description"),
         parent: formData.get("parent") || null,
         attributes: attributesData,
-        variants: variantsData
     }
 
     // console.log("categoryData", categoryData)

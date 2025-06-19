@@ -177,26 +177,16 @@ export const ImageSchemaResponse = z.object({
 
 // CATEGORIA
 
-
-
 export const AttributeSchema = z.object({
     name: z.string().min(1, { message: 'El nombre del atributo es obligatorio' }),
     values: z.array(z.string().min(1, { message: 'Cada valor del atributo es obligatorio' }))
         .min(1, { message: 'Debe haber al menos un valor para el atributo' })
 });
 
-export const VariantCategorySchema = z.object({
-    name: z.string().min(1, { message: 'El nombre de la variante es obligatorio' }),
-    values: z.array(z.string().min(1, { message: 'Cada valor de la variante es obligatorio' }))
-        .min(1, { message: 'Debe haber al menos un valor para la variante' }),
-});
 
 export const AttributesSchema = z.array(AttributeSchema)
 export type Attribute = z.infer<typeof AttributeSchema>
 export type Attributes = z.infer<typeof AttributesSchema>
-export const VariantCategorySchemaList = z.array(VariantCategorySchema)
-export type VariantCategory = z.infer<typeof VariantCategorySchema>
-
 
 
 export const CreateCategorySchema = z.object({
@@ -206,7 +196,6 @@ export const CreateCategorySchema = z.object({
         .min(1, { message: 'La descripción es obligatoria' }),
     parent: z.string().nullable().optional(),
     attributes: AttributesSchema.optional(),
-    variants: VariantCategorySchemaList.optional(),
 })
 
 const CategorySchemaParent = z.object({
@@ -222,7 +211,6 @@ export const CategorySchema = z.object({
     parent: CategorySchemaParent.nullable().optional(), // Puede ser null si no tiene padre
     descripcion: z.string().optional(),
     attributes: z.array(AttributeSchema).optional(),
-    variants: z.array(VariantCategorySchema).optional(), // Variantes de la categoría
     createdAt: z.string().datetime().optional(),
     updatedAt: z.string().datetime().optional(),
     __v: z.number().optional(),
