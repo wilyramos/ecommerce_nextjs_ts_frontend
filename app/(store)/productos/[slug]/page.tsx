@@ -1,14 +1,16 @@
-import { getProduct, getProductsRelated } from '@/src/services/products';
+import { GetProductsBySlug, getProductsRelated } from '@/src/services/products';
 import { Metadata } from 'next';
 import ProductosRelated from '@/components/home/product/ProductosRelated';
 import { Suspense } from 'react';
 import ProductDetails from '@/components/home/product/ProductDetails';
 
-type Params = Promise<{ id: string }>;
+type Params = Promise<{
+  slug: string;
+}>;
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-    const { id } = await params;
-    const producto = await getProduct(id);
+    const { slug } = await params;
+    const producto = await GetProductsBySlug(slug);
 
     if (!producto) {
         return {
@@ -17,59 +19,69 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
         };
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_URL || 'https://gophone.pe'; // Reemplaza si tienes un dominio oficial
+    const baseUrl = process.env.NEXT_PUBLIC_URL || 'https://gophone.pe';
 
-    const title = `${producto.nombre} | GoPhone`;
-    const description = producto.descripcion?.slice(0, 160) || 'Encuentra los mejores accesorios y repuestos en GoPhone.';
-    const imageUrl = producto.imagenes?.[0] || `${baseUrl}/logob.svg`;
-    const productName = producto.nombre || 'Producto de GoPhone';
+  const title = `${producto.nombre} | GoPhone`;
+  const description =
+    producto.descripcion?.slice(0, 160) ||
+    'Compra accesorios y repuestos para celulares al mejor precio en GoPhone. Calidad y garantía aseguradas.';
+  const imageUrl = producto.imagenes?.[0] || `${baseUrl}/logob.svg`;
+  const canonicalUrl = `${baseUrl}/productos/${producto.slug}`;
+  const productName = producto.nombre;
 
-    return {
+  return {
+    title,
+    description,
+    applicationName: 'GoPhone',
+    keywords: [
+      productName,
+      'repuestos para celulares',
+      'accesorios para móviles',
+      'fundas',
+      'protectores',
+      'GoPhone Perú',
+    ],
+    authors: [{ name: 'GoPhone', url: baseUrl }],
+    creator: 'GoPhone',
+    publisher: 'GoPhone',
+    metadataBase: new URL(baseUrl),
+    robots: {
+      index: true,
+      follow: true,
+    },
+    openGraph: {
         title,
         description,
-        keywords: [
-            productName,
-            'repuestos', 'accesorios', 'celulares', 'GoPhone'
-        ].filter(Boolean) as string[],
-        authors: [{ name: 'GoPhone' }],
-        openGraph: {
-            title,
-            description,
-            url: `${baseUrl}/productos/${producto._id}`,
-            siteName: 'GoPhone',
-            locale: 'es_PE',
-            images: [
-                {
-                    url: imageUrl,
-                    width: 1200,
-                    height: 630,
-                    alt: `${productName} - GoPhone`,
-                },
-            ],
-            type: 'article'
-
-
-        },
-        twitter: {
-            card: 'summary_large_image',
-            title,
-            description,
-            images: [imageUrl],
-        },
-        alternates: {
-            canonical: `${baseUrl}/productos/${producto._id}`,
-        },
-    };
+        url: canonicalUrl,
+        siteName: 'GoPhone',
+        type: 'article',
+        images: [
+            {
+            url: imageUrl,
+            width: 1200,
+            height: 630,
+            alt: productName,
+            },
+        ],
+    },
+    
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    category: producto.categoria || 'Accesorios',
+  };
 }
 
 export default async function pageProduct({ params }: { params: Params }) {
-    const { id } = await params;
+    const { slug } = await params;
 
+
+    console.log('Cargando producto con slug:', slug);
     // Promise.all para obtener las consultas de manera concurrente
 
     const [producto, productsRelated] = await Promise.all([
-        getProduct(id),
-        getProductsRelated(id),
+        GetProductsBySlug(slug),
+        getProductsRelated(slug),
     ]);
 
     console.log('Producto:', producto);

@@ -140,7 +140,7 @@ export const CreateProductSchema = z.object({
 export const ProductSchema = z.object({
     _id: z.string(),
     nombre: z.string(),
-    slug: z.string(),
+    slug: z.string().optional(),
     descripcion: z.string(),
     precio: z.number(),
     costo: z.number().optional(),
@@ -222,6 +222,7 @@ export const CategorySchema = z.object({
 export const ProductAPIResponse = z.object({
     _id: z.string(),
     nombre: z.string(),
+    slug: z.string().optional(),
     descripcion: z.string(),
     precio: z.number(),
     costo: z.number().optional(),

@@ -10,7 +10,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
     return (
         <div className="group relative flex flex-col rounded-xl bg-white border   hover:bg-black hover:text-white">
-            <Link href={`/productos/${product._id}`} className="flex flex-col h-full">
+            <Link href={`/productos/${product.slug}`} className="flex flex-col h-full">
                 {/* Imagen */}
                 <div className="relative w-full aspect-square bg-gray-100 overflow-hidden rounded-t-xl">
 
@@ -69,7 +69,7 @@ export default function ProductCard({ product }: { product: Product }) {
                     </h3>
 
                     <div className="flex justify-between items-end">
-                        
+
                         {/* <div className="text-xs text-gray-500">SKU: {product.sku || 'N/A'}</div> */}
                         <div className="text-lg font-bold">
                             <span className="text-md">s/. </span>

@@ -46,6 +46,25 @@ export const getProduct = cache(async (id: string) => {
     return product;
 });
 
+export const GetProductsBySlug = cache(async (slug: string) => {
+    const token = getToken();
+    const url = `${process.env.API_URL}/products/slug/${slug}`;
+
+    const req = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    if (!req.ok) {
+        return null;
+    }
+
+    const json = await req.json();
+    const product = ProductAPIResponse.parse(json);
+    return product;
+});
 
 type GetProductsByFilterParams = {
     page: number;
@@ -139,8 +158,8 @@ export const getNewProducts = cache(async () => {
     return products;
 });
 
-export const getProductsRelated = async (id: string) => {
-    const url = `${process.env.API_URL}/products/${id}/related`;
+export const getProductsRelated = async (slug: string) => {
+    const url = `${process.env.API_URL}/products/${slug}/related`;
 
     const req = await fetch(url, {
         method: 'GET'
