@@ -1,6 +1,7 @@
 import type { Category } from "@/src/schemas";
 import React from "react";
 import AttributeFields from "./AttributeFileds";
+import VariantCategoryFields from "./VariantCategoryFields";
 
 type Props = {
     category?: Category;
@@ -8,6 +9,9 @@ type Props = {
 };
 
 export default function CategoryForm({ category, categories }: Props) {
+
+
+    console.log("CategoryForm rendered with category:", category);
     // Función para renderizar jerarquía con sangría visual
     const renderCategoryOptions = (
         cats: Category[],
@@ -74,7 +78,10 @@ export default function CategoryForm({ category, categories }: Props) {
                 )}
             </div>
 
-            <AttributeFields defaultAttributes={category?.attributes || []} />
+            <div className="flex justify-between gap-4">
+                <AttributeFields defaultAttributes={category?.attributes} />
+                <VariantCategoryFields defaultVariants={category?.variants || []} />
+            </div>
         </div>
     );
 }

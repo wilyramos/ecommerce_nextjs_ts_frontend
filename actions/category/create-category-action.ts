@@ -1,6 +1,6 @@
 "use server"
 
-import { CreateCategorySchema, SuccessResponse, AttributesSchema } from "@/src/schemas";
+import { CreateCategorySchema, SuccessResponse, AttributesSchema, VariantCategorySchemaList } from "@/src/schemas";
 import { revalidatePath } from "next/cache"
 import { cookies } from "next/headers"
 
@@ -10,34 +10,64 @@ type ActionStateType = {
     success: string
 }
 
-
 export async function createCategoryAction(prevState: ActionStateType, formData: FormData) {
 
     console.log("createCategoryAction", formData)
     // parsear los atributos del formData
     const rawAttributes = formData.get("attributes");
-    let attributesData;
-    try {
-        const parsed = JSON.parse(rawAttributes as string);
 
-        const result = AttributesSchema.safeParse(parsed);
-        if (!result.success) {
+
+    let attributesData;
+    if (rawAttributes) {
+        try {
+            const parsed = JSON.parse(rawAttributes as string);
+            const result = AttributesSchema.safeParse(parsed);
+            if (!result.success) {
+                return {
+                    errors: result.error.errors.map(error => error.message),
+                    success: ""
+                }
+            }
+            attributesData = result.data;
+        } catch (error) {
             return {
-                errors: result.error.errors.map(error => error.message),
+                errors: ["Los atributos tienen un formato inválido."],
                 success: ""
             }
         }
-        attributesData = result.data;
+    } else {
+        attributesData = undefined; // 👈 Opcional
+    }
 
-    } catch (error) {
-        // console.error("Error parsing attributes:", error);
+    const rawVariants = formData.get("variants");
+    let variantsData;
+    if (rawVariants) {
+        try {
+            const parsed = JSON.parse(rawVariants as string);
+            const result = VariantCategorySchemaList.safeParse(parsed);
+            if (!result.success) {
+                return {
+                    errors: result.error.errors.map(error => error.message),
+                    success: ""
+                }
+            }
+            variantsData = result.data;
+        } catch (error) {
+            return {
+                errors: ["Las variantes tienen un formato inválido."],
+                success: ""
+            }
+        }
+    } else {
+        variantsData = undefined; // 👈 Opcional
     }
 
     const category = CreateCategorySchema.safeParse({
         nombre: formData.get("name"),
         descripcion: formData.get("description"),
         parent: formData.get("parent") || undefined,
-        attributes: attributesData
+        attributes: attributesData,
+        variants: variantsData
     })
 
     console.log("category", category)
@@ -61,7 +91,8 @@ export async function createCategoryAction(prevState: ActionStateType, formData:
             nombre: category.data.nombre,
             descripcion: category.data.descripcion,
             parent: category.data.parent ? category.data.parent : undefined,
-            attributes: category.data.attributes
+            attributes: category.data.attributes,
+            variants: category.data.variants
         })
     })
 
@@ -79,7 +110,7 @@ export async function createCategoryAction(prevState: ActionStateType, formData:
     revalidatePath("/admin/category")
 
 
-    
+
     // console.log("category", category.data)
 
     return {

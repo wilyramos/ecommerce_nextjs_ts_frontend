@@ -5,17 +5,20 @@
 export default function ColorCircle({ color }: { color: string }) {
 
 
+    // Colores en orden alfabético
     const diccionarioColores: { [key: string]: string } = {
-        "rojo": "#FF0000",
-        "verde": "#00FF00",
-        "azul": "#0000FF",
         "amarillo": "#FFFF00",
-        "negro": "#000000",
+        "azul": "#0000FF",
         "blanco": "#FFFFFF",
-        "rosado": "#FFC0CB",
+        "gris": "#808080",
         "morado": "#800080",
         "naranja": "#FFA500",
-        "gris": "#808080",
+        "negro": "#000000",
+        "rojo": "#FF0000",
+        "rosa": "#FFC0CB",
+        "verde": "#00FF00"
+        
+        
 
     }
 

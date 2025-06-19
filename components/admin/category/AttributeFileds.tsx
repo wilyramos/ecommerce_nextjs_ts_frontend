@@ -1,21 +1,11 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { Attributes } from "@/src/schemas";
 
-
 export default function AttributeFields({ defaultAttributes }: { defaultAttributes?: Attributes }) {
-    const [attributes, setAttributes] = useState<Attributes>(
-        defaultAttributes || [{ name: "", values: [""] }]
-    );
-
-    useEffect(() => {
-        // Si no hay atributos, asegurarse de que siempre haya al menos uno
-        if (attributes.length === 0) {
-            setAttributes([{ name: "", values: [""] }]);
-        }
-    }, [attributes]);
-
+    const [attributes, setAttributes] = useState<Attributes>(defaultAttributes || []);
+    
     const handleAttrNameChange = (index: number, value: string) => {
         const updated = [...attributes];
         updated[index].name = value;
@@ -51,13 +41,14 @@ export default function AttributeFields({ defaultAttributes }: { defaultAttribut
     };
 
     return (
-        <div className="space-y-4 mt-6">
+        <div className="space-y-4 mt-2">
             <h3 className="text-sm font-semibold text-gray-700">Atributos</h3>
 
             {/* Campo oculto que será enviado al servidor */}
             <input type="hidden" name="attributes" value={JSON.stringify(attributes)} />
 
-            {attributes.map((attr, i) => (
+            {/* Mostrar formulario solo si hay atributos */}
+            {attributes.length > 0 && attributes.map((attr, i) => (
                 <div key={i} className="border border-gray-300 rounded-md p-4 space-y-4 bg-white shadow-sm">
                     <div>
                         <label className="block mb-1">Nombre del atributo</label>

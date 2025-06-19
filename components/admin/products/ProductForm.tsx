@@ -4,6 +4,7 @@ import UploadProductImage from "./UploadProductImage";
 import ProductVariantsForm from "./ProductVariantsForm";
 import { useState } from "react";
 import ClientCategoryAttributes from "./ClientCategoryAttributes"
+import ClientCategoryVariants from "./ClientCategoryVariants";
 
 
 export default function ProductForm({ product, categorias }: { product?: Product, categorias: CategoriasList }) {
@@ -116,6 +117,7 @@ export default function ProductForm({ product, categorias }: { product?: Product
 
             <ClientCategoryAttributes categorias={categorias} initialCategoryId={product?.categoria} currentAttributes={product?.atributos} />
 
+            {/* <ClientCategoryVariants categorias={categorias} initialCategoryId={product?.categoria} currentVariants={product?.variantes} /> */}
 
             <UploadProductImage
                 CurrentImagenes={product?.imagenes}

@@ -1,6 +1,5 @@
 'use client';
 
-import { formatCurrency } from '@/src/utils/formatCurrency';
 import AddProductToCart from './AddProductToCart';
 import ColorCircle from '@/components/ui/ColorCircle';
 import ImagenesProductoCarousel from './ImagenesProductoCarousel';
@@ -13,49 +12,48 @@ type Props = {
 export default function ProductDetails({ producto }: Props) {
     return (
         <>
-            <div className="mx-auto px-4 py-6 grid lg:grid-cols-[1fr_1fr] gap-12 max-w-7xl">
+            <div className="mx-auto px-4 grid lg:grid-cols-[1fr_1fr] gap-8 max-w-7xl">
                 {/* Imágenes */}
                 <div>
                     <ImagenesProductoCarousel images={producto.imagenes || []} />
                 </div>
 
                 {/* Detalles */}
-                <div className="space-y-6 pb-20 md:pb-0">
+                <div className="flex flex-col justify-between relative">
+
                     {/* Título y Precio */}
                     <div className="space-y-2">
-                        <h1 className="text-3xl md:text-4xl font-semibold text-gray-900 tracking-tight">
+                        <div className=''>
+                            <h1 className="text-3xl md:text-3xl font-semibold text-gray-900 tracking-tight">
                             {producto.nombre}
+
+                            {/* SKU y barcado */}
+                            {producto.sku && (
+                                <span className="text-xs text-gray-400 ml-2">
+                                    SKU: {producto.sku}
+                                </span>
+                            )}
+                            {producto.barcode && (
+                                <span className="text-xs text-gray-400 ml-2">
+                                    Código: {producto.barcode}
+                                </span>
+                            )}
                         </h1>
+                        </div>
 
                         <div className="flex items-center gap-4">
                             <span className="text-2xl font-semibold text-gray-800">
-                                {formatCurrency(producto.precio)}
+                                s./ {producto.precio.toFixed(2)}
                             </span>
                             <span className={`text-xs font-medium px-3 py-1 rounded-full 
-                                ${producto.stock > 0 
-                                    ? 'bg-emerald-50 text-emerald-600' 
+                ${producto.stock > 0
+                                    ? 'bg-emerald-50 text-emerald-600'
                                     : 'bg-rose-50 text-rose-600'}`}>
                                 {producto.stock > 0 ? `${producto.stock} en stock` : 'Sin stock'}
                             </span>
                         </div>
                     </div>
 
-                    {/* Info Básica */}
-                    <div className="grid grid-cols-2 gap-4 text-xs text-gray-700">
-                        
-                        {producto.sku && (
-                            <div>
-                                <p className="text-gray-400">SKU</p>
-                                <p className="font-medium text-gray-700">{producto.sku}</p>
-                            </div>
-                        )}
-                        {producto.barcode && (
-                            <div>
-                                <p className="text-gray-400">Código</p>
-                                <p className="font-medium text-gray-700">{producto.barcode}</p>
-                            </div>
-                        )}
-                    </div>
 
                     {/* Características */}
                     {producto.atributos && (
@@ -114,11 +112,10 @@ export default function ProductDetails({ producto }: Props) {
                                         </div>
                                         <div className="flex justify-between items-center text-xs text-gray-500 mt-4">
                                             <span
-                                                className={`px-2 py-0.5 rounded-full font-medium ${
-                                                    v.stock > 0
-                                                        ? 'bg-emerald-50 text-emerald-600'
-                                                        : 'bg-rose-50 text-rose-600'
-                                                }`}
+                                                className={`px-2 py-0.5 rounded-full font-medium ${v.stock > 0
+                                                    ? 'bg-emerald-50 text-emerald-600'
+                                                    : 'bg-rose-50 text-rose-600'
+                                                    }`}
                                             >
                                                 {v.stock > 0 ? `${v.stock} disponibles` : 'Sin stock'}
                                             </span>
