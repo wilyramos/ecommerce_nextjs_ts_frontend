@@ -80,7 +80,7 @@ export default function CategoryForm({ category, categories }: Props) {
 
             <div className="flex justify-between gap-4">
                 <AttributeFields defaultAttributes={category?.attributes} />
-                <VariantCategoryFields defaultVariants={category?.variants || []} />
+                <VariantCategoryFields defaultVariants={category?.variants} />
             </div>
         </div>
     );

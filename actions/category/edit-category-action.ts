@@ -1,7 +1,7 @@
 "use server"
 
 import getToken from "@/src/auth/token"
-import { CreateCategorySchema, SuccessResponse, AttributesSchema } from "@/src/schemas"
+import { CreateCategorySchema, SuccessResponse, AttributesSchema, VariantCategorySchemaList } from "@/src/schemas"
 import { ErrorResponse } from "@/src/schemas"
 import { revalidatePath } from "next/cache"
 
@@ -16,11 +16,11 @@ type ActionStateType = {
 export async function EditCategory(id: string, prevState: ActionStateType, formData: FormData) {
 
     // parsear los atributos del formData
-    const rawAyyributes = formData.get("attributes");
+    const rawAttributes = formData.get("attributes");
     let attributesData;
 
-    try{
-        const parsed = JSON.parse(rawAyyributes as string);
+    try {
+        const parsed = JSON.parse(rawAttributes as string);
 
         const result = AttributesSchema.safeParse(parsed);
         if (!result.success) {
@@ -39,7 +39,26 @@ export async function EditCategory(id: string, prevState: ActionStateType, formD
         }
     }
 
-    // console.log("formData", formData)
+    const rawVariants = formData.get("variants");
+    let variantsData;
+    try {
+        const parsed = JSON.parse(rawVariants as string);
+        const result = VariantCategorySchemaList.safeParse(parsed);
+        if (!result.success) {
+            return {
+                errors: result.error.errors.map(error => error.message),
+                success: ""
+            }
+        }
+        variantsData = result.data;
+    } catch (error) {
+        return {
+            errors: ["Las variantes tienen un formato inválido."],
+            success: ""
+        }
+    }
+
+    console.log("formData", formData)
     // Formatear los atributos
 
 
@@ -47,7 +66,8 @@ export async function EditCategory(id: string, prevState: ActionStateType, formD
         nombre: formData.get("name"),
         descripcion: formData.get("description"),
         parent: formData.get("parent") || null,
-        attributes: attributesData
+        attributes: attributesData,
+        variants: variantsData
     }
 
     // console.log("categoryData", categoryData)
@@ -74,7 +94,7 @@ export async function EditCategory(id: string, prevState: ActionStateType, formD
     });
 
     const json = await req.json();
-    
+
     if (!req.ok) {
         const error = ErrorResponse.parse(json);
         return {
