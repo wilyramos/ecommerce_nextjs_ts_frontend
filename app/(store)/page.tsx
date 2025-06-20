@@ -4,6 +4,7 @@ import { getCategories } from "@/src/services/categorys"
 import CarruselPrincipal from "@/components/home/CarruselPrincipal"
 import type { Metadata } from "next";
 import ProductosNuevos from "@/components/home/ProductosNuevos"
+import ProductosDestacados from "@/components/home/ProductosDestacados";
 
 
 export const metadata: Metadata = {
@@ -65,6 +66,10 @@ export default async function HomePage() {
             </section>
             <section className="container mx-auto px-4 py-10">
                 <ProductosNuevos />
+            </section>
+
+            <section className="container mx-auto px-4 py-10">
+                <ProductosDestacados />
             </section>
 
             {/* <Footer /> */}

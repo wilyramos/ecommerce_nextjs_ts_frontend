@@ -77,7 +77,6 @@ type GetProductsByFilterParams = {
     atributos?: Record<string, string>; // Nuevos filtros dinámicos
 };
 
-
 export const getProductsByFilter = async ({
     page,
     limit,
@@ -157,6 +156,23 @@ export const getNewProducts = cache(async () => {
     // console.log("Nuevos productos", products);
     return products;
 });
+
+export const getDestacadosProducts =  cache(async () => {
+    const url = `${process.env.API_URL}/products/destacados`;
+
+    const req = await fetch(url, {
+        method: 'GET'
+    });
+
+    if (!req.ok) {
+        return null;
+    }
+
+    const json = await req.json();
+    const products = ProductsAPIResponse.parse(json);
+    return products;
+});
+
 
 export const getProductsRelated = async (slug: string) => {
     const url = `${process.env.API_URL}/products/${slug}/related`;

@@ -33,7 +33,7 @@ export default function ClientCarouselProductosNuevos({ products }: Props) {
                         showDots={false}
                     >
                         {products.map((product) => (
-                            <div key={product._id} className="px-2">
+                            <div key={product._id} className="p-2">
                                 <ProductCard product={product} />
                             </div>
                         ))}
