@@ -64,7 +64,7 @@ export default async function HomePage() {
             <section className="container mx-auto ">
                 <CategoriasDestacadas categorias={categories} />
             </section>
-            <section className="container mx-auto px-4 py-10">
+            <section className="container mx-auto px-4">
                 <ProductosNuevos />
             </section>
 

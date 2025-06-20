@@ -2,14 +2,18 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Product } from '@/src/schemas';
-import { FaStar, FaBolt } from 'react-icons/fa';
+import ColorCircle from '@/components/ui/ColorCircle';
 // import AddProductButton from './AddProductButton';
 
 export default function ProductCard({ product }: { product: Product }) {
     // const imagenUrl = product.imagenes[0];
 
+
+    // Color
+    const color = product.atributos?.Color || null;
+
     return (
-        <div className="group relative flex flex-col rounded-xl bg-white border   hover:bg-black hover:text-white">
+        <div className="group relative flex flex-col rounded-xl bg-white border text-gray-700 ">
             <Link href={`/productos/${product.slug}`} className="flex flex-col h-full">
                 {/* Imagen */}
                 <div className="relative w-full aspect-square bg-gray-100 overflow-hidden rounded-t-xl">
@@ -45,21 +49,22 @@ export default function ProductCard({ product }: { product: Product }) {
                         </div>
                     )}
                     {/*Etiquetas */}
-                    <div className="">
-                        {product.esNuevo && (
-                            <span className="absolute top-2 left-2 flex items-center gap-1 bg-indigo-600 text-white text-xs font-semibold px-2 py-1 rounded-full shadow ">
-                                <FaBolt className="text-xs" />
-                                Nuevo
-                            </span>
-                        )}
-                        {product.esDestacado && (
-                            <span className="absolute top-2 right-2 flex items-center gap-1 bg-red-600 text-white text-xs font-semibold px-2 py-1 rounded-full shadow">
-                                <FaStar className="text-xs" />
-                                <span className="hidden sm:inline">Destacado</span>
-                            </span>
-                        )}
+                    {/* Etiquetas minimalistas */}
+                    {(product.esNuevo || product.esDestacado) && (
+                        <div className="absolute top-2 left-2 right-2 flex justify-between px-2 pointer-events-none text-[10px] text-gray-700">
+                            {product.esNuevo && (
+                                <span className="px-2 py-0.5 border border-blue-500 rounded-full bg-white/90 backdrop-blur-3xl">
+                                    Nuevo
+                                </span>
+                            )}
+                            {product.esDestacado && (
+                                <span className="px-2 py-0.5 border border-orange-400 rounded-full bg-white/90 backdrop-blur-3xl">
+                                    Destacado
+                                </span>
+                            )}
+                        </div>
+                    )}
 
-                    </div>
                 </div>
 
                 {/* Información del producto */}
@@ -67,6 +72,12 @@ export default function ProductCard({ product }: { product: Product }) {
                     <h3 className="text-xs md:text-sm font-medium line-clamp-3 hover:line-clamp-none">
                         {product.nombre}
                     </h3>
+
+                    {color && (
+                        <div className="flex items-center gap-2">
+                            <ColorCircle color={color} />
+                        </div>
+                    )}
 
                     <div className="flex justify-between items-end">
 

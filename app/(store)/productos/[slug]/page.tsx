@@ -76,7 +76,7 @@ export default async function pageProduct({ params }: { params: Params }) {
     const { slug } = await params;
 
 
-    console.log('Cargando producto con slug:', slug);
+    // console.log('Cargando producto con slug:', slug);
     // Promise.all para obtener las consultas de manera concurrente
 
     const [producto, productsRelated] = await Promise.all([

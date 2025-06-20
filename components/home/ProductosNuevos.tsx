@@ -16,7 +16,6 @@ export default async function ProductosNuevos() {
     return (
         <section className="">
             <div className="text-center mb-2">
-                <h2 className="text-2xl font-extrabold tracking-tight mb-2">Productos Nuevos</h2>
                 <p className="text-gray-400 text-sm mt-2">Explora las últimas novedades disponibles</p>
             </div>
 
