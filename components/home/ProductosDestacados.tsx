@@ -21,14 +21,14 @@ export default async function ProductosDestacados() {
 
 
     return (
-        <section className="py-10">
+        <section className="">
             <div className="text-center mb-2">
                 <h2 className="text-2xl font-extrabold tracking-tight mb-2">Productos Destacados</h2>
                 <p className="text-gray-400 text-sm mt-2">Descubre nuestros productos más populares y recomendados</p>
             </div>
 
             <div className="max-w-7xl mx-auto">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className="">
                     <ClientCarouselProductosNuevos products={productsDestacados.products} />
                 </div>
             </div>

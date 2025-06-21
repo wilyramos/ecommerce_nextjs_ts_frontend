@@ -158,7 +158,7 @@ export const getNewProducts = cache(async () => {
 });
 
 export const getDestacadosProducts =  cache(async () => {
-    const url = `${process.env.API_URL}/products/destacados`;
+    const url = `${process.env.API_URL}/products/destacados/all`;
 
     const req = await fetch(url, {
         method: 'GET'
