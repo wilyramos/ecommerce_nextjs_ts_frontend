@@ -6,17 +6,22 @@ import { MdClear } from "react-icons/md";
 import type { Attribute } from "@/src/schemas";
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
+import { Range } from "react-range";
 
 type Props = {
     categorySlug: string;
     attributes: Attribute[];
 };
 
+const MIN = 0;
+const MAX = 5000;
+
 export default function FiltrosClient({ categorySlug, attributes }: Props) {
     const router = useRouter();
     const searchParams = useSearchParams();
 
     const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
+    const [priceValues, setPriceValues] = useState<[number, number]>([MIN, MAX]);
 
     useEffect(() => {
         const filters: Record<string, string[]> = {};
@@ -25,16 +30,25 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
             if (param) filters[attr.name] = param.split(",");
         });
         setSelectedFilters(filters);
+
+        // Leer priceRange como "min-max"
+        const range = searchParams.get("priceRange");
+        const [min, max] = range?.split("-").map(Number) || [MIN, MAX];
+        setPriceValues([min, max]);
     }, [searchParams, attributes]);
 
-    const updateParams = (updates: Record<string, string[] | null>) => {
+    const updateParams = (
+        updates: Record<string, string[] | string | null>
+    ) => {
         const params = new URLSearchParams(searchParams.toString());
 
         for (const [key, val] of Object.entries(updates)) {
-            if (!val || val.length === 0) {
+            if (val === null || (Array.isArray(val) && val.length === 0)) {
                 params.delete(key);
-            } else {
+            } else if (Array.isArray(val)) {
                 params.set(key, val.join(","));
+            } else {
+                params.set(key, val);
             }
         }
 
@@ -56,7 +70,11 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
         const cleared: Record<string, null> = {};
         attributes.forEach(attr => cleared[attr.name] = null);
         setSelectedFilters({});
-        updateParams(cleared);
+        setPriceValues([MIN, MAX]);
+        updateParams({
+            ...cleared,
+            priceRange: null,
+        });
     };
 
     return (
@@ -73,6 +91,43 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
 
             <h3 className="text-lg font-semibold text-gray-800 mb-4">Filtros</h3>
 
+            {/* Filtro por Precio */}
+            <div className="mb-6">
+                <h2 className="text-sm font-medium text-gray-700 mb-1">Precio</h2>
+                <Range
+                    step={10}
+                    min={MIN}
+                    max={MAX}
+                    values={priceValues}
+                    onChange={(values) => setPriceValues([values[0], values[1]])}
+                    onFinalChange={(values) => {
+                        const rangeValue = `${values[0]}-${values[1]}`;
+                        updateParams({ priceRange: rangeValue });
+                    }}
+                    renderTrack={({ props, children }) => (
+                        <div
+                            {...props}
+                            className="w-full h-2 bg-gray-200 rounded-full"
+                            style={{ padding: "0 12px" }}
+                        >
+                            {children}
+                        </div>
+                    )}
+                    renderThumb={({ props }) => {
+                        const { key, ...rest } = props;
+                        return (
+                            <div key={key} {...rest} className="w-4 h-4 bg-indigo-600 rounded-full shadow-md transition-transform duration-150 ease-out" />
+                        );
+                    }}
+
+                />
+                <div className="flex justify-between text-xs text-gray-500 pt-2 px-1">
+                    <span>S/ {priceValues[0]}</span>
+                    <span>S/ {priceValues[1]}</span>
+                </div>
+            </div>
+
+            {/* Filtros por atributos */}
             <div className="space-y-4">
                 {attributes.map(attr => (
                     <Disclosure key={attr.name}>

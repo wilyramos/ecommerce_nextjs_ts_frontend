@@ -6,6 +6,8 @@ import type { CategoriasList } from "@/src/schemas";
 import { MdClear } from "react-icons/md";
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
+import { Range } from "react-range";
+
 
 export default function ProductsFilters({ categorias }: { categorias: CategoriasList }) {
     const router = useRouter();
@@ -17,10 +19,19 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
         compatibilidad: "",
     });
 
+    // Filter price
+
+    const [priceValues, setPriceValues] = useState([0, 5000]);
+
     useEffect(() => {
+
+        const range = searchParams.get("priceRange");
+        const [min, max] = range?.split('-').map(Number) || [0, 5000];
+        setPriceValues([min, max]);
+
         setFilters({
             category: searchParams.get("category") || "",
-            priceRange: searchParams.get("priceRange") || "",
+            priceRange: range || "",
             compatibilidad: searchParams.get("compatibilidad") || "",
         });
     }, [searchParams]);
@@ -58,30 +69,41 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
         {
             title: "Precio",
             content: (
-                <ul className="space-y-1">
-                    {[
-                        { label: "Todos", value: "" },
-                        { label: "0 - 100", value: "0-100" },
-                        { label: "100 - 300", value: "100-300" },
-                        { label: "300 - 1000", value: "300-1000" },
-                    ].map(({ label, value }) => (
-                        <li key={value} className="flex items-center gap-2">
-                            <input
-                                type="radio"
-                                name="priceRange"
-                                value={value}
-                                checked={filters.priceRange === value}
-                                onChange={() => updateFilters({ priceRange: value })}
-                                className="accent-blue-600"
+
+
+                <div className="pt-4">
+                    <Range
+                        step={10}
+                        min={0}
+                        max={5000}
+                        values={priceValues}
+                        onChange={(values) => setPriceValues(values)}
+                        onFinalChange={(values) => {
+                            updateFilters({ priceRange: `${values[0]}-${values[1]}` });
+                        }}
+                        renderTrack={({ props, children }) => (
+                            <div
+                                {...props}
+                                className="w-full h-2 bg-gray-200 rounded-full"
+                                style={{ padding: "0 12px" }}
+                            >
+                                {children}
+                            </div>
+                        )}
+                        renderThumb={({ props }) => (
+                            <div
+                                {...props}
+                                className="w-4 h-4 bg-indigo-600 rounded-full shadow-md transition-transform duration-150 ease-out"
                             />
-                            <label className="text-sm text-gray-600">{label}</label>
-                        </li>
-                    ))}
-                </ul>
+                        )}
+                    />
+                    <div className="flex justify-between text-xs text-gray-500 pt-2 px-1">
+                        <span>S/ {priceValues[0]}</span>
+                        <span>S/ {priceValues[1]}</span>
+                    </div>
+                </div>
             ),
         },
-        
-        
         {
             title: "Compatibilidad",
             content: (
