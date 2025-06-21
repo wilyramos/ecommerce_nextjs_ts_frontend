@@ -49,14 +49,14 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
             </div>
 
             {/* Miniaturas */}
-            <div className="mt-4 flex justify-center gap-2 overflow-x-auto no-scrollbar">
+            <div className="mt-2 flex justify-center gap-2 overflow-x-auto no-scrollbar">
                 {images.map((img, idx) => (
                     <button
                         key={idx}
                         onClick={() => setSelectedIndex(idx)}
-                        className={`relative w-16 h-16 rounded-md overflow-hidden border transition-all duration-300
+                        className={`relative w-12 h-12 rounded-md overflow-hidden border transition-all duration-300
                             ${selectedIndex === idx
-                                ? "border-indigo-500 ring-2 ring-indigo-400"
+                                ? "border-gray-500 hover:border-gray-700"
                                 : "border-gray-200 hover:border-gray-400"
                             }`}
                     >

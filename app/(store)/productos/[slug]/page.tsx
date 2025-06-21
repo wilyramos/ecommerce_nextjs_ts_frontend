@@ -84,8 +84,8 @@ export default async function pageProduct({ params }: { params: Params }) {
         getProductsRelated(slug),
     ]);
 
-    console.log('Producto:', producto);
-    console.log('Productos relacionados:', productsRelated);
+    // console.log('Producto:', producto);
+    // console.log('Productos relacionados:', productsRelated);
 
     return (
         <main className='px-4'>
