@@ -25,7 +25,7 @@ const responsive = {
 };
 
 const Imagenes = [
-    { src: "/bg1.webp", alt: "Imagen principal de la tienda 1", url: "/productos/684a51d9fb47051df4acbc90" },
+    { src: "/bg1.webp", alt: "Imagen principal de la tienda 1", url: "/productos/protector-de-pantalla-blindado-lamiglass" },
     // { src: "/b2.webp", alt: "Imagen principal de la tienda 2", url: "/productos/2" },
     // { src: "/bg4.webp", alt: "Imagen principal de la tienda 4", url: "/productos/4" },
 ];
