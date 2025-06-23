@@ -55,8 +55,8 @@ export default function ClientCarouselMain({ products }: { products: Product[] }
 
                         {/* Overlay de texto centrado */}
                         <div className="absolute inset-2 flex items-end justify-center z-5 py-5">
-                            <div className="bg-white/40 backdrop-blur-xs px-2 rounded-3xl text-center md:px-6 py-4">
-                                <h2 className="text-lg md:text-2xl font-semibold text-neutral-900 uppercase">
+                            <div className="bg-white/50 backdrop-blur-xs px-1 rounded-full text-center md:px-4 py-2">
+                                <h2 className="text-lg md:text-2xl font-semibold text-gray-800 uppercase">
                                     {product.nombre}
                                 </h2>
                                 {/* <p className="text-sm text-neutral-700">S/ {product.precio}</p> */}
