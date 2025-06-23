@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { FaArrowRight } from "react-icons/fa";
 import type { Product } from "@/src/schemas";
 
 const responsive = {
@@ -16,7 +15,7 @@ const responsive = {
 
 export default function ClientCarouselMain({ products }: { products: Product[] }) {
     return (
-        <div className="w-full max-w-screen-xl mx-auto px-4 py-8">
+        <div className="w-full max-w-screen-xl mx-auto">
             <Carousel
                 responsive={responsive}
                 autoPlay
@@ -28,66 +27,47 @@ export default function ClientCarouselMain({ products }: { products: Product[] }
                 {products.map((product) => (
                     <div
                         key={product._id}
-                        className="group flex flex-col md:flex-row items-center gap-4 md:gap-12 p-6"
+                        className="relative w-full h-[400px] md:h-[500px] bg-white rounded-xl overflow-hidden"
                     >
-                        {/* Imagen */}
-                        <div className="relative w-full md:w-1/2 aspect-square overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-800">
-                            {product.imagenes?.[0] ? (
-                                <Image
-                                    src={product.imagenes[0]}
-                                    alt={product.nombre}
-                                    fill
-                                    className="object-contain scale-100 group-hover:scale-105 transition-transform duration-700 ease-in-out"
-                                    priority
-                                />
-                            ) : (
-                                <div className="absolute inset-0 bg-gray-200 dark:bg-neutral-700" />
-                            )}
-                        </div>
-
-                        {/* Información */}
-                        <div className="w-full md:w-1/2 space-y-4 text-center md:text-left">
-                            <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-neutral-900 dark:text-white">
-                                {product.nombre}
-                            </h2>
-
-                            <p className="text-xl font-medium text-neutral-700 dark:text-neutral-300">
-                                S/ {product.precio}
-                            </p>
-
-                            {/* Atributos */}
-                            {product.atributos && Object.keys(product.atributos).length > 0 && (
-                                <div className="flex flex-wrap justify-center md:justify-start gap-2 text-sm text-neutral-500 dark:text-neutral-400">
-                                    {Object.entries(product.atributos).map(([key, value]) => (
-                                        <span
-                                            key={key}
-                                            className="bg-neutral-200 dark:bg-neutral-700 px-3 py-1 rounded-full capitalize"
-                                        >
-                                            {key}: {String(value)}
-                                        </span>
-                                    ))}
-                                </div>
-                            )}
-
-                            {/* Estado (nuevo/destacado) */}
-                            <div className="flex gap-2 justify-center md:justify-start text-xs">
-                                {product.esNuevo && (
-                                    <span className="bg-green-500 text-white px-3 py-1 rounded-full">Nuevo</span>
-                                )}
-                                {product.esDestacado && (
-                                    <span className="bg-blue-500 text-white px-3 py-1 rounded-full">Destacado</span>
+                        {/* Contenedor de las dos imágenes lado a lado */}
+                        <div className="flex w-full h-full">
+                            <div className="w-1/2 h-full relative bg-white">
+                                {product.imagenes?.[0] && (
+                                    <Image
+                                        src={product.imagenes[0]}
+                                        alt={`${product.nombre} imagen 1`}
+                                        fill
+                                        className="object-contain p-4"
+                                    />
                                 )}
                             </div>
+                            <div className="w-1/2 h-full relative bg-white">
+                                {product.imagenes?.[1] && (
+                                    <Image
+                                        src={product.imagenes[1]}
+                                        alt={`${product.nombre} imagen 2`}
+                                        fill
+                                        className="object-contain p-4"
+                                    />
+                                )}
+                            </div>
+                        </div>
 
-                            {/* Botón */}
-                            <div className="pt-4">
-                                <Link
-                                    href={`/productos/${product.slug}`}
-                                    className="inline-flex items-center gap-2 text-sm font-medium bg-neutral-900 text-white px-6 py-3 rounded-full hover:bg-neutral-800 transition-all duration-300"
-                                >
-                                    Ver producto
-                                    <FaArrowRight className="transition-transform group-hover:translate-x-1" />
-                                </Link>
+                        {/* Overlay de texto centrado */}
+                        <div className="absolute inset-2 flex items-end justify-center z-5 py-5">
+                            <div className="bg-white/40 backdrop-blur-xs px-2 rounded-3xl text-center md:px-6 py-4">
+                                <h2 className="text-lg md:text-2xl font-semibold text-neutral-900 uppercase">
+                                    {product.nombre}
+                                </h2>
+                                {/* <p className="text-sm text-neutral-700">S/ {product.precio}</p> */}
+                                <div className="pt-1">
+                                    <Link
+                                        href={`/productos/${product.slug}`}
+                                        className="inline-block px-2 py-1 text-xs md:text-sm rounded-md hover:text-gray-950 transition-colors"
+                                    >
+                                        Ver producto
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -17,7 +17,7 @@ export default async function CarruselPrincipal() {
     
 
     return (
-        <div className="w-full relative overflow-hidden max-w-screen-2xl mx-auto">
+        <div className="">
 
             <ClientCarouselMain
                 products={products.products}
