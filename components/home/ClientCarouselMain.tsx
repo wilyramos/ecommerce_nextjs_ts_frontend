@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import type { Product } from "@/src/schemas";
+import Link from "next/link";
 
 const responsive = {
     superLargeDesktop: { breakpoint: { max: 3000, min: 2000 }, items: 1 },
@@ -15,60 +15,54 @@ const responsive = {
 
 export default function ClientCarouselMain({ products }: { products: Product[] }) {
     return (
-        <div className="w-full max-w-screen-xl mx-auto ">
+        <div className="w-full max-w-screen-xl mx-auto px-4">
             <Carousel
                 responsive={responsive}
                 autoPlay
                 infinite
                 autoPlaySpeed={5000}
                 arrows={false}
-                showDots={true}
+                showDots
             >
                 {products.map((product) => (
                     <div
                         key={product._id}
-                        className="relative w-full h-[400px] md:h-[500px] bg-white rounded-xl overflow-hidden"
+                        className="relative w-full h-[450px] md:h-[550px] rounded-3xl overflow-hidden"
                     >
-                        {/* Contenedor de las dos imágenes lado a lado */}
-                        <div className="flex w-full h-full">
-                            <div className="w-1/2 h-full relative bg-white">
-                                {product.imagenes?.[0] && (
-                                    <Image
-                                        src={product.imagenes[0]}
-                                        alt={`${product.nombre} imagen 1`}
-                                        fill
-                                        className="object-contain p-4"
-                                    />
-                                )}
-                            </div>
-                            <div className="w-1/2 h-full relative bg-white">
-                                {product.imagenes?.[1] && (
-                                    <Image
-                                        src={product.imagenes[1]}
-                                        alt={`${product.nombre} imagen 2`}
-                                        fill
-                                        className="object-contain p-4"
-                                    />
-                                )}
-                            </div>
+                        {/* Dos imágenes lado a lado */}
+                        <div className="flex w-full h-full bg-white">
+                            {[0, 1].map((index) => (
+                                <div key={index} className="relative w-1/2 h-full">
+                                    {product.imagenes?.[index] && (
+                                        <Image
+                                            src={product.imagenes[index]}
+                                            alt={`${product.nombre} imagen ${index + 1}`}
+                                            fill
+                                            className="object-contain p-4"
+                                        />
+                                    )}
+                                </div>
+                            ))}
                         </div>
 
-                        {/* Overlay de texto centrado */}
-                        <div className="absolute inset-2 flex items-end justify-center z-5 py-5">
-                            <div className="bg-white/50 backdrop-blur-xs px-1 rounded-full text-center md:px-4 py-2">
-                                <h2 className="text-lg md:text-2xl font-semibold text-gray-800 uppercase">
-                                    {product.nombre}
-                                </h2>
-                                {/* <p className="text-sm text-neutral-700">S/ {product.precio}</p> */}
-                                <div className="pt-1">
-                                    <Link
-                                        href={`/productos/${product.slug}`}
-                                        className="inline-block px-2 py-1 text-xs md:text-sm rounded-md hover:text-gray-950 transition-colors"
-                                    >
-                                        Ver producto
-                                    </Link>
-                                </div>
-                            </div>
+                        {/* Gradiente inferior más editorial */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/5 to-transparent z-10" />
+
+                        {/* Contenido editorial estilo portada */}
+                        <div className="absolute inset-0 z-20 flex flex-col justify-end items-start px-6 md:px-12 pb-8 text-white">
+                            <span className="uppercase text-xs md:text-sm tracking-widest text-white/80 mb-2">
+                                Producto destacado
+                            </span>
+                            <h2 className="text-2xl md:text-4xl font-bold uppercase tracking-tight drop-shadow-xl leading-tight">
+                                {product.nombre}
+                            </h2>
+                            <p className="hidden md:block mt-2 text-sm text-white/80 max-w-md leading-relaxed">
+                                {product.descripcion?.slice(0, 90) ??
+                                    "Explora lo mejor de nuestra selección, con diseño y funcionalidad incomparables."}
+                            </p>
+                            <Link href={`/productos/${product.slug}`} className="mt-4 inline-block text-gray-50 text-sm py-1 px-2 rounded-full border">
+                                Ver producto
+                            </Link>
                         </div>
                     </div>
                 ))}
