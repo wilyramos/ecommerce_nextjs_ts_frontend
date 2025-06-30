@@ -1,8 +1,14 @@
 'use server'
 
+
 export async function createMPPreference(orderData: any) {
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/checkout/create-preference`, {
+
+
+
+    const url = process.env.API_URL;
+
+    const res = await fetch(`${url}/checkout/create-preference`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderData),
