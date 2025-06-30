@@ -11,8 +11,8 @@ export default function ResumenFinalCarrito() {
     const total = subtotal + envio;
 
     return (
-        <section className="p-5 rounded-2xl shadow-sm border border-gray-200">
-            <h3 className="text-lg font-semibold mb-4">Resumen del carrito</h3>
+        <section className="p-4 rounded-2xl shadow-sm">
+            <h3 className="text-base font-semibold mb-4">Resumen del carrito</h3>
 
             <ul className="space-y-3 max-h-80 overflow-y-auto pr-2 scroll-smooth scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
                 {cart.map((item) => (

@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Noto_Sans } from "next/font/google";
+import { Fustat } from "next/font/google";
 import { Toaster } from 'sonner';
 
 
-const noto_sans = Noto_Sans({
+const fustat = Fustat({
   subsets: ["latin"],
 });
 
@@ -79,7 +79,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`${noto_sans.className}`}
+        className={`${fustat.className}`}
       >
         {/* <NavBar /> */}
         {children}

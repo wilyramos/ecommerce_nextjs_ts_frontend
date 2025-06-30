@@ -3,14 +3,14 @@ import { useCartStore } from "@/src/store/cartStore"
 import { useActionState, useEffect } from 'react'
 import { submitOrderAction } from "@/actions/checkout/submit-order-action"
 import { toast } from "sonner"
-import { useShippingStore } from "@/src/store/shippingStore"
+import { useCheckoutStore } from "@/src/store/shippingStore"
 import { useRouter } from "next/navigation"
 
 export default function SubmitOrderButton() {
 
     const clearCart = useCartStore((s) => s.clearCart)
     const cart = useCartStore((s) => s.cart)
-    const shippingData = useShippingStore((s) => s.data)
+    const shippingData = useCheckoutStore((s) => s.shipping)
     const total = useCartStore((s) => s.total)
 
     const router = useRouter()
@@ -26,9 +26,9 @@ export default function SubmitOrderButton() {
         paymentMethod: "TARJETA", // o lo que seleccione el usuario
         paymentStatus: "PENDIENTE",
         shippingAddress: {
-            direccion: shippingData?.direccion,
-            ciudad: shippingData?.ciudad,
-            telefono: shippingData?.telefono
+            // direccion: shippingData?.direccion,
+            // ciudad: shippingData?.ciudad,
+            // telefono: shippingData?.telefono
         }
     };
 

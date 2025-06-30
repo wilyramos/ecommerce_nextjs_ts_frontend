@@ -58,34 +58,35 @@ export default function NavBar() {
                 {/* Desktop: Navegación + Buscador */}
                 <nav className="hidden md:flex items-center justify-center flex-1 space text-sm font-normal text-gray-700">
                     {categoriaswithsubcategorias.map((categoria) => (
-                        <div
-                            key={categoria.name}
-                            className="relative group transition-colors"
-                        >
-                            <Link
-                                href={`/${categoria.name}`}
-                                className="px-2 py-1 hover:text-black transition-colors"
-                            >
-                                {categoria.name}
-                            </Link>
-
-                            {categoria.subcategorias.length > 0 && (
-                                <div
-                                    className="absolute top-full left-0 mt-3 min-w-[12rem] bg-white border-gray-200 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200 ease-out z-50"
+                        <div key={categoria.name} className="relative">
+                            <div className="group inline-block px-2 py-1">
+                                <Link
+                                    href={`/${categoria.name}`}
+                                    className="hover:text-black transition-colors"
                                 >
-                                    {categoria.subcategorias.map((sub) => (
-                                        <Link
-                                            key={sub.name}
-                                            href={`/categoria/${sub.slug}`}
-                                            className="block px-4 py-2 text-sm text-gray-700 hover:text-black hover:bg-gray-50 transition-colors duration-150"
-                                        >
-                                            {sub.name}
-                                        </Link>
-                                    ))}
-                                </div>
-                            )}
+                                    {categoria.name}
+                                </Link>
+
+                                {categoria.subcategorias.length > 0 && (
+                                    <div
+                                        className="absolute top-full left-0 mt-3 min-w-[12rem] bg-white border border-gray-200 rounded-md shadow-lg opacity-0 scale-95 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto transition-all duration-200 ease-out z-50"
+                                    >
+                                        {categoria.subcategorias.map((sub) => (
+                                            <Link
+                                                key={sub.slug}
+                                                href={`/categoria/${sub.slug}`}
+                                                className="block px-4 py-2 text-sm text-gray-700 hover:text-black hover:bg-gray-50 transition-colors"
+                                            >
+                                                {sub.name}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     ))}
+
+
 
                     {/* Buscador visible solo en escritorio */}
                     <div className="w-full max-w-sm ml-6">
