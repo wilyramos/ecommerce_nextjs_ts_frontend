@@ -10,10 +10,10 @@ export const metadata: Metadata = {
 
 export default function PageRegistro() {
     return (
-        <div className="w-full max-w-md space-y-2">
+        <div className="w-full max-w-md border p-6 rounded-3xl" >
 
             <h1 className="text-3xl font-semibold text-center">Crea tu cuenta</h1>
-            <p className="text-gray-500 text-center">Completa el formulario para registrarte</p>
+            <p className="text-gray-600 text-center">Completa el formulario para registrarte</p>
 
 
             <RegisterForm />

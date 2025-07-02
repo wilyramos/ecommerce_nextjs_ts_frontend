@@ -3,28 +3,32 @@ import Link from "next/link";
 
 export default function pageForgotPassword() {
     return (
-        <>
-        
-            <h1 className='text-4xl font-bold text-center text-slate-700 mt-10'>Recuperar Contraseña</h1>
-            <p className='text-center text-gray-400 pt-5'>Ingresa tu correo electrónico</p>
-            
+        <div className="w-full max-w-md border p-6 rounded-3xl">
+            <h1 className="text-3xl font-semibold text-center">Recuperar Contraseña</h1>
+            <p className="text-gray-600  py-2">Ingresa tu correo electrónico para recibir el enlace</p>
+
             <ForgotPasswordForm />
-        
-            <nav className="text-center text-sm pt-5 flex justify-between">
-                <Link
-                    href="/auth/login"
-                    className="text-gray-800"
-                >
-                    ¿Ya tienes una cuenta? <span className="font-bold text-slate-500 hover:text-slate-700">Inicia sesión</span>
-                </Link> 
-                <Link
-                    href="/auth/registro"
-                    className="text-gray-800"
-                >
-                    ¿No tienes una cuenta? <span className="font-bold text-slate-500 hover:text-slate-700">Regístrate</span>
-                </Link> 
+
+            <nav className="text-sm text-gray-600 mt-4 text-center space-y-2">
+                <p>
+                    ¿Ya tienes una cuenta?{" "}
+                    <Link
+                        href="/auth/login"
+                        className="text-indigo-800 font-black hover:underline"
+                    >
+                        Inicia sesión
+                    </Link>
+                </p>
+                <p>
+                    ¿No tienes una cuenta?{" "}
+                    <Link
+                        href="/auth/registro"
+                        className="text-indigo-800 font-black hover:underline"
+                    >
+                        Regístrate
+                    </Link>
+                </p>
             </nav>
-            
-        </>
-    )
+        </div>
+    );
 }

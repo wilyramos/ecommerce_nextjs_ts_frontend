@@ -44,7 +44,7 @@ export default function ValidateTokenForm( { setIsValidToken, token, setToken }:
     }
 
     return (
-        <form action={dispatch}>
+        <form action={dispatch} className="hidden">
             <div className="flex justify-center gap-5 my-10">
                 <PinInput
                     value={token}

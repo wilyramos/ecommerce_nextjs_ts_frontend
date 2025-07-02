@@ -7,18 +7,17 @@ export default async function layoutAuth({ children }: { children: React.ReactNo
 
     // Verifica si el usuario está autenticado
     const user = await getCurrentUser();
-    console.log("Usuario actual:", user);
+    // console.log("Usuario actual:", user);
 
     if (user) {
         // Si el usuario está autenticado, redirige a la página de inicio
         redirect('/profile')
     }
 
-
     return (
         <>
             <div className='flex flex-col items-center justify-center'>
-                <div className='w-full max-w-md py-20 flex-1 px-10'>
+                <div className='w-full max-w-md py-20 flex-1 '>
 
                     {children}
                 </div>

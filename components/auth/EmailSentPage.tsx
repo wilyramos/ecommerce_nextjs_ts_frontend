@@ -18,15 +18,12 @@ export default function ForgotPasswordForm() {
         }
     }, [state])
 
-    // Mostrar mensaje de éxito si `state.success` existe
     if (state.success && emailRef.current?.value) {
         return (
-            <div className="mt-6 space-y-4 text-center text-gray-700">
-                <h2 className="text-2xl font-bold text-gray-800">¡Correo enviado!</h2>
-                <p>
-                    Te hemos enviado un enlace para restablecer tu contraseña a{" "}
-                    <span className="font-semibold">{emailRef.current.value}</span>. <br />
-                    Revisa tu bandeja de entrada o la carpeta de spam.
+            <div className="my-10">
+                <h2 className="text-2xl font-bold mb-4">Correo enviado</h2>
+                <p className="text-gray-400">
+                    Hemos enviado un enlace para restablecer tu contraseña a {emailRef.current.value}. Por favor, revisa tu bandeja de entrada.
                 </p>
             </div>
         )
@@ -34,12 +31,12 @@ export default function ForgotPasswordForm() {
 
     return (
         <form
-            className="mt-6 space-y-4 text-gray-700"
+            className="mt-10 space-y-6 bg-[#141414] p-6 rounded-2xl shadow-lg text-white"
             noValidate
             action={dispatch}
         >
-            <div className="flex flex-col gap-1">
-                <label htmlFor="email" className="font-bold">
+            <div className="flex flex-col gap-2">
+                <label htmlFor="email" className="font-semibold text-sm uppercase tracking-wider">
                     Correo electrónico
                 </label>
                 <input
@@ -47,7 +44,7 @@ export default function ForgotPasswordForm() {
                     type="email"
                     name="email"
                     placeholder="correo@ejemplo.com"
-                    className="w-full border border-gray-300 p-3 rounded-2xl"
+                    className="w-full bg-[#333] text-white border border-[#555] p-3 rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600"
                     required
                     ref={emailRef}
                 />
@@ -55,7 +52,7 @@ export default function ForgotPasswordForm() {
 
             <button
                 type="submit"
-                className="w-full bg-black hover:bg-gray-700 text-white font-semibold py-2 rounded-full transition-colors cursor-pointer mt-2"
+                className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-md transition duration-200"
             >
                 Recuperar Contraseña
             </button>
