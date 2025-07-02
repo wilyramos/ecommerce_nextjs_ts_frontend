@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import RegisterForm from "@/components/auth/RegisterForm";
 
+
+
 export const metadata: Metadata = {
     title: "GoPhone Cañete - Registro de cuenta",
     description: "GoPhone Cañete - Registro de cuenta",

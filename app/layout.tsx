@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Fustat } from "next/font/google";
 import { Toaster } from 'sonner';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 
 const fustat = Fustat({
@@ -81,6 +82,8 @@ export default function RootLayout({
       <body
         className={`${fustat.className}`}
       >
+        <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
+          {/* Aquí puedes agregar el componente de Google Login si es necesario */}
         {/* <NavBar /> */}
         {children}
         <Toaster
@@ -92,6 +95,7 @@ export default function RootLayout({
           expand
           duration={5000}
         />
+        </GoogleOAuthProvider>
       </body>
     </html>
   );
