@@ -7,12 +7,21 @@ import { createMPPreference } from '@/actions/checkout/create-mp-preference';
 import { toast } from 'sonner';
 
 export default function AutoCheckoutIniciator() {
-    
+
   const { cart } = useCartStore();
-  const { shipping } = useCheckoutStore();
+  const { shipping, profile } = useCheckoutStore();
   const [hasInitiated, setHasInitiated] = useState(false);
 
+
+
   useEffect(() => {
+
+    
+  console.log('Iniciando checkout automático...');
+  console.log('Carrito:', cart);
+  console.log('Datos de envío:', shipping);
+  console.log('Perfil del usuario:', profile);
+  console.log('Iniciando checkout automático...');
     const iniciarCheckout = async () => {
       try {
         const orderData = {

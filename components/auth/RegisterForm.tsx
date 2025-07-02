@@ -53,59 +53,59 @@ export default function RegisterForm() {
     return (
         <form
             // ref={ref}
-            className="mt-2 space-y-2 text-gray-700"
+            className="mt-2 space-y-1 text-gray-700"
             noValidate
             action={dispatch}
         >
 
             {/* {state.errors.map(error => <ErrorMessage key={error}>{error}</ErrorMessage>)} */}
             <label
-                className="block font-medium"
+                className="block text-sm font-semibold text-gray-500"
                 htmlFor="email"
             >Email</label>
             <input
                 id="email"
                 type="email"
-                placeholder="Email de Registro"
-                className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                placeholder=""
+                className="w-full rounded-lg border border-gray-300 px-2 py-1"
                 name="email"
             />
 
             <label
-                className="block font-medium "
+                className="block text-sm font-semibold text-gray-500"
             >Nombre</label>
             <input
                 type="nombre"
-                placeholder="Nombre de Registro"
-                className="w-full border border-gray-300 p-3 rounded-2xl"
+                placeholder=""
+                className="w-full rounded-lg border border-gray-300 px-2 py-1"
                 name="nombre"
             />
 
             <label
-                className="block font-medium "
+                className="block text-sm font-semibold text-gray-500"
             >Password</label>
             <input
                 type="password"
-                placeholder="Password de Registro"
-                className="w-full border border-gray-300 p-3 rounded-2xl"
+                placeholder=""
+                className="w-full rounded-lg border border-gray-300 px-2 py-1"
                 name="password"
             />
 
             <label
-                className="block font-medium "
+                className="block text-sm font-semibold text-gray-500"
             >Repetir Password</label>
             <input
                 id="password_confirmation"
                 type="password"
-                placeholder="Repite Password de Registro"
-                className="w-full border border-gray-300 p-3 rounded-2xl"
+                placeholder=""
+                className="w-full rounded-lg border border-gray-300 px-2 py-1"
                 name="password_confirmation"
             />
 
             <input
                 type="submit"
-                value='Registrarme'
-                className="bg-blue-500 text-white font-bold py-3 rounded-full w-full hover:bg-blue-600 transition duration-200 ease-in-out"
+                value="Crear cuenta"
+                className="w-full bg-black hover:bg-gray-700 text-white font-semibold py-2 rounded-lg transition-colors cursor-pointer mt-2"
             />
         </form >
     )

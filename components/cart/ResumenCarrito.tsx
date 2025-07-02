@@ -32,14 +32,16 @@ export default function ResumenCarrito() {
     return (
         <div className="max-w-6xl mx-auto px-4 py-8">
             <h1 className="text-lg font-semibold text-gray-800 mb-6">Resumen del carrito</h1>
+            <p className="text-sm text-gray-400 mb-4">
+                {cart.length} {cart.length === 1 ? "producto" : "productos"} seleccionados.
+            </p>
+
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {/* Carrito */}
                 <div className="md:col-span-2 bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-                    <h2 className="text-base font-medium text-gray-700 mb-1">Productos en tu carrito</h2>
-                    <p className="text-sm text-gray-400 mb-4">
-                        {cart.length} {cart.length === 1 ? "producto" : "productos"} seleccionados.
-                    </p>
+
+
 
                     <ul className="divide-y divide-gray-200">
                         {cart.map((item) => (

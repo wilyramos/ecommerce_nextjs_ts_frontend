@@ -43,7 +43,7 @@ export default function ShippingForm() {
     return (
         <form className="mt-6 space-y-4" onSubmit={handleSubmit(onSubmit)}>
             <div>
-                <label className="text-xs font-semibold text-gray-700">Dirección de entrega</label>
+                <label className="text-xs font-bold text-gray-700">Dirección de entrega</label>
                 <input
                     type="text"
                     {...register('direccion', { required: 'La dirección es obligatoria' })}
@@ -55,7 +55,7 @@ export default function ShippingForm() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                    <label className="text-xs font-semibold text-gray-700">Distrito</label>
+                    <label className="text-xs font-bold text-gray-700">Distrito</label>
                     <input
                         type="text"
                         {...register('distrito', { required: 'El distrito es obligatorio' })}
@@ -66,7 +66,7 @@ export default function ShippingForm() {
                 </div>
 
                 <div>
-                    <label className="text-xs font-semibold text-gray-700">Número</label>
+                    <label className="text-xs font-bold text-gray-700">Número</label>
                     <input
                         type="text"
                         {...register('numero', { required: 'El número es obligatorio' })}
@@ -77,7 +77,7 @@ export default function ShippingForm() {
                 </div>
 
                 <div>
-                    <label className="text-xs font-semibold text-gray-700">Piso/Dpto</label>
+                    <label className="text-xs font-bold text-gray-700">Piso/Dpto</label>
                     <input
                         type="text"
                         {...register('piso')}
@@ -88,7 +88,7 @@ export default function ShippingForm() {
             </div>
 
             <div>
-                <label className="text-xs font-semibold text-gray-700">Referencia</label>
+                <label className="text-xs font-bold text-gray-700">Referencia</label>
                 <input
                     type="text"
                     {...register('referencia')}
