@@ -14,7 +14,7 @@ export default function CheckoutSteps() {
     const pathname = usePathname();
 
     return (
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex pb-2">
             {steps.map((step, index) => {
                 const isActive = pathname.startsWith(step.path);
                 const currentStepIndex = steps.findIndex(s => s.path === pathname);

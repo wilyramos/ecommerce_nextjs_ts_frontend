@@ -1,54 +1,49 @@
-"use client"
+"use client";
 
+import { useEffect, useState } from "react";
+import { useCartStore } from "@/src/store/cartStore";
+import { useCheckoutStore } from "@/src/store/shippingStore";
+import { createMPPreference } from "@/actions/checkout/create-mp-preference";
 
-import { useActionState, useEffect } from 'react'
-import ProductForm from './ProductForm'
-import { useRouter } from 'next/navigation'
-import { createProduct } from '@/actions/product/add-product-action'
-import { toast } from 'react-toastify'
-import type { CategoriasList } from '@/src/schemas'
-
-
-export default function CreateProductForm({ categorias }: { categorias: CategoriasList }) {
-
-
-    // console.log(categorias)
-
-    const router = useRouter()
-    const [state, dispatch] = useActionState(createProduct, {
-        errors: [],
-        success: ""
-    })
+export default function AutoCheckoutIniciator() {
+    const { cart } = useCartStore();
+    const { shipping } = useCheckoutStore();
+    const [hasInitiated, setHasInitiated] = useState(false);
 
     useEffect(() => {
+        const startCheckout = async () => {
+            try {
+                const orderData = {
+                    items: cart.map((item) => ({
+                        product: item._id,
+                        title: item.nombre,
+                        price: item.precio,
+                        quantity: item.cantidad,
+                    })),
+                    shipping, // puedes incluir más datos aquí si tu backend lo acepta
+                };
 
-        if (state.success) {
-            toast.success(state.success)
-            router.push("/admin/products")
-        }
-        if (state.errors) {
-            state.errors.forEach((error) => {
-                toast.error(error)
-            })
-        }
+                const init_point = await createMPPreference(orderData);
 
-    }, [state, router])
+                if (init_point) {
+                    window.location.href = init_point;
+                } else {
+                    console.error("No se pudo obtener el init_point");
+                }
+            } catch (error) {
+                console.error("Error al iniciar el checkout:", error);
+            }
+        };
+
+        if (!hasInitiated && cart.length > 0 && shipping) {
+            setHasInitiated(true);
+            startCheckout();
+        }
+    }, [cart, shipping, hasInitiated]);
 
     return (
-        <form
-            className="flex flex-col gap-2 w-full max-w-2xl mx-auto mt-8"
-            noValidate
-            action={dispatch}
-        >
-            <ProductForm
-                // product={undefined}
-                categorias={categorias} />
-            <input
-                type='submit'
-                className='bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900 transition-all duration-200 ease-in-out cursor-pointer inline-block'
-                value={"Crear producto"}
-            />
-
-        </form>
-    )
+        <div className="text-center text-sm text-gray-500">
+            Iniciando el checkout...
+        </div>
+    );
 }

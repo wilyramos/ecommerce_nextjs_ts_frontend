@@ -1,3 +1,4 @@
+import { Telemetry } from 'next/dist/telemetry/storage';
 import { z } from 'zod';
 
 // For register validation
@@ -13,6 +14,24 @@ export const RegisterSchema = z.object({
     message: 'Las contraseñas no coinciden',
     path: ['password_confirmation'],
 });
+
+// For register validation with user data
+
+export const CheckoutRegisterSchema = z.object({
+    nombre: z.string()
+        .min(1, { message: 'El nombre es obligatorio' }),
+    apellidos: z.string()
+        .min(1, { message: 'Los apellidos son obligatorios' }),
+    tipoDocumento: z.enum(['DNI', 'RUC', 'CE']),
+    numeroDocumento: z.string()
+        .min(1, { message: 'El número de documento es obligatorio' }),
+    email: z.string()
+        .email({ message: 'Email no válido' }),
+    telefono: z.string()
+        .min(1, { message: 'El teléfono es obligatorio' }),
+})
+
+export type CheckoutRegister = z.infer<typeof CheckoutRegisterSchema>;
 
 // For login validation
 
@@ -92,6 +111,10 @@ export const resetPasswordSchema = z.object({
 export const UserSchema = z.object({
     _id: z.string(),
     nombre: z.string().optional(),
+    apellidos: z.string().optional(),
+    tipoDocumento: z.enum(['DNI', 'RUC', 'CE']).optional(),
+    numeroDocumento: z.string().optional(),
+    telefono: z.string().optional(),
     email: z.string().email().optional(),
     rol: z.enum(['cliente', 'administrador', 'vendedor']).optional(),
     createdAt: z.string().optional(),

@@ -1,19 +1,21 @@
+'use client';
 
-import { useCartStore } from "@/src/store/cartStore"
-import { useActionState, useEffect } from 'react'
-import { submitOrderAction } from "@/actions/checkout/submit-order-action"
-import { toast } from "sonner"
-import { useCheckoutStore } from "@/src/store/shippingStore"
-import { useRouter } from "next/navigation"
+import { useCartStore } from "@/src/store/cartStore";
+import { useCheckoutStore } from "@/src/store/shippingStore";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { useActionState, useEffect } from "react";
+import { submitOrderAction } from "@/actions/checkout/submit-order-action";
+import { createMPPreference } from "@/actions/checkout/create-mp-preference";
 
-export default function SubmitOrderButton() {
+export default function SubmitOrderButton({ paymentMethod }: { paymentMethod: string }) {
 
-    const clearCart = useCartStore((s) => s.clearCart)
-    const cart = useCartStore((s) => s.cart)
-    const shippingData = useCheckoutStore((s) => s.shipping)
-    const total = useCartStore((s) => s.total)
 
-    const router = useRouter()
+    const clearCart = useCartStore((s) => s.clearCart);
+    const cart = useCartStore((s) => s.cart);
+    const shippingData = useCheckoutStore((s) => s.shipping);
+    const total = useCartStore((s) => s.total);
+    const router = useRouter();
 
     const order = {
         items: cart.map(item => ({
@@ -23,54 +25,47 @@ export default function SubmitOrderButton() {
         })),
         totalPrice: total,
         status: "PENDIENTE",
-        paymentMethod: "TARJETA", // o lo que seleccione el usuario
+        paymentMethod: paymentMethod.toUpperCase(),
         paymentStatus: "PENDIENTE",
         shippingAddress: {
-            // direccion: shippingData?.direccion,
-            // ciudad: shippingData?.ciudad,
-            // telefono: shippingData?.telefono
+            direccion: shippingData?.direccion,
+            distrito: shippingData?.distrito,
+            // telefono: shippingData?.
         }
     };
-
-    console.log(order)
-
 
     const submitOrderWithData = submitOrderAction.bind(null, order);
     const [state, dispatch] = useActionState(submitOrderWithData, {
         errors: [],
         success: ""
-    })
+    });
 
     useEffect(() => {
-        console.log(state)
-        if (state.errors) {
-            state.errors.forEach((error) => {
-                console.log("error", error)
-                toast.error(error);
-            })
+        console.log("Order state:", state);
+    }, [state]);
 
+    const handleSubmit = async () => {
+        if (paymentMethod === "mercadopago") {
+            try {
+                const initPoint = await createMPPreference(order);
+                window.location.href = initPoint;
+            } catch (err) {
+                toast.error("Error al redirigir a MercadoPago");
+                console.error(err);
+            }
+        } else {
+            // Para otros métodos como efectivo, Yape, etc.
+            dispatch();
         }
-        if (state.success) {
-            console.log(state.success)
-            toast.success(state.success);
-            clearCart();
-            router.push("/checkout/success");
-        }
-    }, [state, router, clearCart]);
-
+    };
 
     return (
-        <form
-            action={dispatch}
-
+        <button
+            type="button"
+            onClick={handleSubmit}
+            className="mt-5 w-full bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
         >
-            <input
-                type='submit'
-                className="mt-5 2-full bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
-                value="Confirmar Compra"
-            >
-
-            </input>
-        </form>
-    )
+            Pagar y finalizar compra
+        </button>
+    );
 }

@@ -1,39 +1,24 @@
-'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-// import { useShippingStore } from '@/src/store/shippingStore';
-import ResumenFinalCarrito from '@/components/cart/ResumenFinalCarrito';
-import ResumenShipping from '@/components/checkout/ResumenShipping';
-import SubmitOrderButton from '@/components/checkout/SubmitOrderButton';
+import AutoCheckoutIniciator from "@/components/checkout/AutoCheckoutIniciator";
+
 
 export default function PaymentPage() {
-    const router = useRouter();
-    // const shippingData = useShippingStore((s) => s.data);
 
-    
+
 
     return (
-        <div className="max-w-5xl mx-auto p-6 space-y-10">
-            <h1 className="text-2xl font-semibold">Resumen de pago</h1>
+        <div className="text-gray-800 text-sm space-y-6">
+            {/* Título e instrucciones */}
+            <p className="text-xl font-semibold">
+                Estamos procesando tu solicitud de pago y te redirigiremos  en breve.
+            </p>
 
-            <div className="grid gap-6 lg:grid-cols-3">
-                {/* Envío */}
-                <div className="bg-gray-50 border rounded-xl p-5">
-                    {/* <ResumenShipping shippingData={shippingData} /> */}
-                </div>
+            <p className="text-center text-md text-gray-400 ">
+                Por favor, no cierres esta ventana ni navegues a otra página mientras se procesa tu pago.
+            </p>
 
-                {/* Carrito (ocupa 2 columnas) */}
-                <div className="lg:col-span-2">
-                    <ResumenFinalCarrito />
-                </div>
-            </div>
+            <AutoCheckoutIniciator />
 
-            {/* Pago */}
-            <div className="bg-gray-50 border rounded-xl p-5">
-                <h2 className="text-lg font-medium mb-4">Método de pago</h2>
-                <SubmitOrderButton />
-            </div>
         </div>
     );
 }

@@ -3,11 +3,17 @@ import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
 
+type tipoDocumento = 'DNI' | 'RUC' | 'CE';
+
+
 export type ProfileFormData = {
-    name: string;
+    userId?: string; // Optional, will be set when the user is logged in
+    nombre: string;
+    apellidos: string;
+    tipoDocumento: tipoDocumento;
+    numeroDocumento: string;
     email: string;
-    dni: string;
-    phone: string;
+    telefono: string;
 }
 
 export type ShippingFormData = {
