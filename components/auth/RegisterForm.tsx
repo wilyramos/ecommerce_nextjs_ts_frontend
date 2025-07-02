@@ -1,112 +1,81 @@
-"use client"
+'use client'
 
-// import { useActionState } from 'react'
-import { createAccountAction } from '@/actions/create-account-action'
-import { useActionState, useEffect } from 'react'
-import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
+import { useEffect, useRef } from 'react'
+import { useActionState } from 'react'
+import { toast } from 'sonner'
+import { createAccountAction } from '@/actions/create-account-action'
+import ErrorMessage from '../ui/ErrorMessage'
 
-
-interface successResponse {
-    message: string,
-    userId: string,
+interface SuccessResponse {
+    message: string
+    userId: string
     token: string
 }
 
 export default function RegisterForm() {
 
-
     const [state, dispatch] = useActionState(createAccountAction, {
         errors: [],
-        success: {} as successResponse
+        success: {} as SuccessResponse,
     })
 
 
-    // const token = state.success?.token
-    // console.log(token)
-    // const message = state.success?.message
-    const router = useRouter()
-
-    // useEffect(() => {
-    //     if (token) {
-    //         toast.success(state.success.message)
-    //         // Redirigir a la página de login
-    //         router.push('/auth/login')
-    //     }
-    // }, [token, router])
-
     useEffect(() => {
-
-        if (state.errors) {
-            state.errors.forEach(error => {
-                toast.error(error)
-            })
+        if (state.errors.length > 0) {
+            state.errors.forEach((error) => toast.error(error))
         }
         if (state.success?.message) {
-            toast.success(state.success?.message)
-            // Redirigir a la página de login
-            router.push('/auth/login')
+            toast.success(state.success.message)
         }
-
-    }, [state, router])
+    }, [state])
 
     return (
-        <form
-            // ref={ref}
-            className="mt-2 space-y-1 text-gray-700"
-            noValidate
-            action={dispatch}
+        <form 
+            action={dispatch} className="mt-2 space-y-1" noValidate
+            
         >
-
             {/* {state.errors.map(error => <ErrorMessage key={error}>{error}</ErrorMessage>)} */}
-            <label
-                className="block text-sm font-semibold text-gray-500"
-                htmlFor="email"
-            >Email</label>
+
+            <label htmlFor="email" className="block text-sm font-semibold text-gray-800">
+                Email
+            </label>
             <input
-                id="email"
                 type="email"
-                placeholder=""
-                className="w-full rounded-lg border border-gray-300 px-2 py-1"
                 name="email"
+                className="w-full rounded-lg border border-gray-300 px-2 py-1"
+                id='email'
             />
 
-            <label
-                className="block text-sm font-semibold text-gray-500"
-            >Nombre</label>
+            <label className="block text-sm font-semibold text-gray-800">Nombre</label>
             <input
-                type="nombre"
-                placeholder=""
-                className="w-full rounded-lg border border-gray-300 px-2 py-1"
+                type="text"
                 name="nombre"
+                className="w-full rounded-lg border border-gray-300 px-2 py-1"
+                id='nombre'
             />
 
-            <label
-                className="block text-sm font-semibold text-gray-500"
-            >Password</label>
+            <label className="block text-sm font-semibold text-gray-800">Contraseña</label>
             <input
                 type="password"
-                placeholder=""
-                className="w-full rounded-lg border border-gray-300 px-2 py-1"
                 name="password"
+                className="w-full rounded-lg border border-gray-300 px-2 py-1"
             />
 
-            <label
-                className="block text-sm font-semibold text-gray-500"
-            >Repetir Password</label>
+            <label className="block text-sm font-semibold text-gray-800">
+                Repetir Contraseña
+            </label>
             <input
-                id="password_confirmation"
                 type="password"
-                placeholder=""
-                className="w-full rounded-lg border border-gray-300 px-2 py-1"
                 name="password_confirmation"
+                className="w-full rounded-lg border border-gray-300 px-2 py-1"
             />
 
             <input
                 type="submit"
                 value="Crear cuenta"
-                className="w-full bg-black hover:bg-gray-700 text-white font-semibold py-2 rounded-lg transition-colors cursor-pointer mt-2"
+                className="w-full bg-black hover:bg-gray-700 text-white font-semibold py-2 rounded-full transition-colors cursor-pointer mt-2"
             />
-        </form >
+        </form>
     )
 }

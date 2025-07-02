@@ -1,6 +1,9 @@
 "use server"
 
-import { RegisterSchema, SuccessSchemaRegister, ErrorResponseSchema } from '@/src/schemas'
+import { RegisterSchema, SuccessSchemaRegister } from '@/src/schemas'
+import { redirect } from "next/navigation"
+import { cookies } from "next/headers"
+
 
 type ActionStateType = {
     errors: string[],
@@ -36,7 +39,7 @@ export async function createAccountAction(prevState: ActionStateType, formData: 
     // If validation is successful, you can proceed with the registration logic
 
     const url = `${process.env.API_URL}/auth/register`;
-    
+
     const req = await fetch(url, {
         method: 'POST',
         headers: {
@@ -58,13 +61,20 @@ export async function createAccountAction(prevState: ActionStateType, formData: 
         }
     }
 
-    const json = await req.json()
+    console.log("reqqq", req)
 
-    const success = SuccessSchemaRegister.parse(json)
-    // console.log("Success", success)
+    const json = await req.json();
 
-    return {
-        errors: prevState.errors,
-        success
-    }
+    const successResponse = SuccessSchemaRegister.parse(json);
+    const { token } = successResponse;
+
+    // Save the token in cookies
+    (await cookies()).set({
+        name: 'ecommerce-token',
+        value: token,
+        path: '/',
+        httpOnly: true,
+    })
+
+    redirect('/profile')
 }

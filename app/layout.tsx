@@ -84,11 +84,13 @@ export default function RootLayout({
         {/* <NavBar /> */}
         {children}
         <Toaster
-          position="top-center"
+          // position="left-button"
           richColors
           toastOptions={{
             className: "bg-gray-800 text-white",
           }}
+          expand
+          duration={5000}
         />
       </body>
     </html>
