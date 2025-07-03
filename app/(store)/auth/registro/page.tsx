@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function PageRegistro() {
     return (
-        <div className="w-full max-w-sm" >
+        <div className="w-full max-w-xs mx-auto">
 
             <h1 className="text-3xl font-semibold text-center">Crea tu cuenta</h1>
             <p className="text-gray-600 text-center">Completa el formulario para registrarte</p>
@@ -25,7 +25,7 @@ export default function PageRegistro() {
                     ¿Ya tienes una cuenta?{" "}
                     <Link
                         href="/auth/login"
-                        className="text-indigo-800 font-black hover:underline"
+                        className="text-blue-800 font-black hover:underline"
                     >
                         Inicia sesión
                     </Link>
