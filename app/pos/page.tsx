@@ -47,6 +47,7 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
                         <div className="flex flex-col items-center justify-center py-12 text-center text-gray-500">
                             <h2 className="text-lg font-semibold">No se encontraron productos</h2>
                             {/* <ButtonResetSearch /> */}
+                            
                         </div>
                     )}
                 </section>
