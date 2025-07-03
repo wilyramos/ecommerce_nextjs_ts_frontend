@@ -1,76 +1,57 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { useActionState } from 'react';
 import { useCheckoutStore } from '@/src/store/shippingStore';
-import { createUserAction } from '@/actions/user/create-user-action';
 import type { CheckoutRegister, User } from '@/src/schemas';
 import ErrorMessage from '../ui/ErrorMessage';
-// import { toast } from 'sonner';
-
 
 type Props = {
-    user?: User | null;
+    user: User;
 };
 
 export default function IdentificacionForm({ user }: Props) {
+
+
+    // TODO: implementar para que el usuario pueda editar sus datos
+    // Hacer con un actionstate que actualice el perfil del usuario
+    // y luego redirigir a la página de envío
+
     const router = useRouter();
     const { profile, setProfile } = useCheckoutStore();
-
-    const [state, dispatch] = useActionState(createUserAction, {
-        errors: [],
-        success: null,
-    });
 
     const {
         register,
         handleSubmit,
         formState: { errors },
-        getValues,
     } = useForm<CheckoutRegister>({
         defaultValues: {
-            email: user?.email || profile?.email || '',
-            nombre: user?.nombre || profile?.nombre || '',
-            apellidos: user?.apellidos || profile?.apellidos || '',
-            tipoDocumento: user?.tipoDocumento || profile?.tipoDocumento || 'DNI',
-            numeroDocumento: user?.numeroDocumento || profile?.numeroDocumento || '',
-            telefono: user?.telefono || profile?.telefono || '',
+            email: user.email || profile?.email || '',
+            nombre: user.nombre || profile?.nombre || '',
+            apellidos: user.apellidos || profile?.apellidos || '',
+            tipoDocumento: user.tipoDocumento || profile?.tipoDocumento || 'DNI',
+            numeroDocumento: user.numeroDocumento || profile?.numeroDocumento || '',
+            telefono: user.telefono || profile?.telefono || '',
         },
     });
 
-    useEffect(() => {
-        if (state.success) {
-            const formValues = getValues();
-
-            setProfile({
-                userId: state.success.userId,
-                ...formValues,
-            });
-
-            // toast.success(state.success.message);
-            router.push('/checkout/shipping');
-        }
-    }, [state.success, getValues, setProfile, router]);
-
-
     const onSubmit = (data: CheckoutRegister) => {
-        if (user?._id) {
-            setProfile({ ...data, userId: user._id });
-            router.push('/checkout/shipping');
-        }
+        setProfile({
+            ...data,
+            userId: user._id,
+        });
+
+        router.push('/checkout/shipping');
     };
 
     return (
-        <form
-            onSubmit={user?._id ? handleSubmit(onSubmit) : undefined}
-            action={!user?._id ? dispatch : undefined}
-            className="max-w-md mx-auto space-y-1 pt-2 "
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto space-y-1 pt-2">
             {/* Email */}
-            <div className="">
-                <label htmlFor="email" className="text-xs font-medium text-gray-700">Correo electrónico</label>
+            <div>
+                <label htmlFor="email" className="text-xs font-medium text-gray-700">
+                    Correo electrónico
+                </label>
                 <input
                     id="email"
                     type="email"
@@ -81,15 +62,17 @@ export default function IdentificacionForm({ user }: Props) {
                             message: 'Formato de correo no válido',
                         },
                     })}
-                    disabled={!!user?._id}
-                    className={`w-full px-4 py-2 border border-gray-300 rounded-full ${user?._id ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                    disabled
+                    className="w-full px-4 py-2 border border-gray-300 rounded-full bg-gray-200 cursor-not-allowed"
                 />
                 {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
             </div>
 
             {/* Nombre */}
             <div className="space-y-1">
-                <label htmlFor="nombre" className="text-xs font-medium text-gray-700">Nombre</label>
+                <label htmlFor="nombre" className="text-xs font-medium text-gray-700">
+                    Nombre
+                </label>
                 <input
                     id="nombre"
                     type="text"
@@ -101,13 +84,14 @@ export default function IdentificacionForm({ user }: Props) {
 
             {/* Apellidos */}
             <div className="space-y-1">
-                <label htmlFor="apellidos" className="text-xs font-medium text-gray-700">Apellidos</label>
+                <label htmlFor="apellidos" className="text-xs font-medium text-gray-700">
+                    Apellidos
+                </label>
                 <input
                     id="apellidos"
                     type="text"
                     {...register('apellidos', { required: 'Los apellidos son obligatorios' })}
                     className="w-full px-4 py-2 border border-gray-300 rounded-full"
-                    
                 />
                 {errors.apellidos && <ErrorMessage>{errors.apellidos.message}</ErrorMessage>}
             </div>
@@ -115,7 +99,9 @@ export default function IdentificacionForm({ user }: Props) {
             {/* Tipo + Número documento */}
             <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                    <label htmlFor="tipoDocumento" className="text-xs font-medium text-gray-700">Tipo de documento</label>
+                    <label htmlFor="tipoDocumento" className="text-xs font-medium text-gray-700">
+                        Tipo de documento
+                    </label>
                     <select
                         id="tipoDocumento"
                         {...register('tipoDocumento', { required: 'Selecciona el tipo de documento' })}
@@ -129,7 +115,9 @@ export default function IdentificacionForm({ user }: Props) {
                 </div>
 
                 <div className="space-y-1">
-                    <label htmlFor="numeroDocumento" className="text-xs font-medium text-gray-700">N° de documento</label>
+                    <label htmlFor="numeroDocumento" className="text-xs font-medium text-gray-700">
+                        N° de documento
+                    </label>
                     <input
                         id="numeroDocumento"
                         type="text"
@@ -145,7 +133,9 @@ export default function IdentificacionForm({ user }: Props) {
 
             {/* Teléfono */}
             <div className="space-y-1">
-                <label htmlFor="telefono" className="text-xs font-medium text-gray-700">Teléfono / Móvil</label>
+                <label htmlFor="telefono" className="text-xs font-medium text-gray-700">
+                    Teléfono / Móvil
+                </label>
                 <input
                     id="telefono"
                     type="text"
@@ -164,7 +154,7 @@ export default function IdentificacionForm({ user }: Props) {
             {/* Botón */}
             <button
                 type="submit"
-                className="w-full  py-2 px-4 text-white bg-blue-800 rounded-full hover:bg-blue-700 font-medium transition-colors mt-4 hover:cursor-pointer "
+                className="w-full py-2 px-4 text-white bg-blue-800 rounded-full hover:bg-blue-700 font-medium transition-colors mt-4 hover:cursor-pointer" 
             >
                 Continuar
             </button>

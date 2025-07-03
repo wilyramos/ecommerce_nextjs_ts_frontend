@@ -7,6 +7,8 @@ import { googleLoginAction } from "@/actions/auth/google-login-action";
 import { toast } from "react-toastify";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 // Tipar el estado que retorna useActionState
 interface AuthState {
@@ -15,6 +17,11 @@ interface AuthState {
 }
 
 export default function LoginForm() {
+
+    // For shipping the user to the correct page after login
+    const searchParams = useSearchParams();
+    const redirectTo = searchParams.get("redirect") || "/";
+
     const [state, dispatch] = useActionState<AuthState, FormData>(
         authenticateUserAction,
         {
@@ -32,7 +39,10 @@ export default function LoginForm() {
     // Mostrar errores o éxito del login tradicional
     useEffect(() => {
         state.errors.forEach(error => toast.error(error));
-        if (state.success) toast.success(state.success);
+        if (state.success) {
+            toast.success(state.success);
+            // router.push(redirectTo);
+        }
     }, [state]);
 
     // Login con Google
@@ -40,7 +50,7 @@ export default function LoginForm() {
         if (!credential) return toast.error("Token de Google no recibido");
 
         startTransition(async () => {
-            const result = await googleLoginAction({ credential });
+            const result = await googleLoginAction({ credential, redirectTo });
             if (result?.error) {
                 toast.error(result.error);
             }
@@ -86,6 +96,8 @@ export default function LoginForm() {
                     </div>
                 </label>
 
+                {/* Hidden input to handle redirection after login */}
+                <input type="hidden" name="redirect" value={redirectTo} />
 
                 <button
                     type="submit"
@@ -95,6 +107,27 @@ export default function LoginForm() {
                     Iniciar Sesión
                 </button>
             </form>
+
+            <nav className="text-xs text-gray-500 mt-4 text-center space-y-2 ">
+                <p>
+                    ¿No tienes una cuenta?{' '}
+                    <Link
+                        href={`/auth/registro?redirect=${redirectTo}`}
+                        className="text-blue-800 font-black hover:underline"
+                    >
+                        Regístrate
+                    </Link>
+                </p>
+                <p>
+                    ¿Olvidaste tu contraseña?{' '}
+                    <Link
+                        href="/auth/forgot-password?redirect=/auth/login"
+                        className="text-blue-800 font-black hover:underline"
+                    >
+                        Recuperar acceso
+                    </Link>
+                </p>
+            </nav>
 
             <div className="relative text-center text-sm text-gray-500 my-5">
                 <hr className="border-gray-300 mb-2" />

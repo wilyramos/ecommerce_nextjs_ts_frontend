@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import RegisterForm from "@/components/auth/RegisterForm";
 
 
@@ -11,6 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default function PageRegistro() {
+
     return (
         <div className="w-full max-w-xs mx-auto">
 
@@ -18,19 +18,11 @@ export default function PageRegistro() {
             <p className="text-gray-600 text-center">Completa el formulario para registrarte</p>
 
 
-            <RegisterForm />
+            <RegisterForm 
+                // redirectTo={redirectTo} // Pasar el redirectTo al formulario
+            />
 
-            <nav className="text-sm text-gray-600 mt-10 text-center">
-                <p>
-                    ¿Ya tienes una cuenta?{" "}
-                    <Link
-                        href="/auth/login"
-                        className="text-blue-800 font-black hover:underline"
-                    >
-                        Inicia sesión
-                    </Link>
-                </p>
-            </nav>
+            
         </div>
     );
 }

@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import LoginForm from '@/components/auth/LoginForm'
 
 export const metadata: Metadata = {
@@ -16,26 +15,7 @@ export default function PageLogin() {
 
             <LoginForm />
 
-            <nav className="text-sm text-gray-600 mt-4 text-center space-y-2 pt-10">
-                <p>
-                    ¿No tienes una cuenta?{' '}
-                    <Link
-                        href="/auth/registro"
-                        className="text-blue-800 font-black hover:underline"
-                    >
-                        Regístrate
-                    </Link>
-                </p>
-                <p>
-                    ¿Olvidaste tu contraseña?{' '}
-                    <Link
-                        href="/auth/forgot-password"
-                        className="text-blue-800 font-black hover:underline"
-                    >
-                        Recuperar acceso
-                    </Link>
-                </p>
-            </nav>
+            
         </div>
     )
 }

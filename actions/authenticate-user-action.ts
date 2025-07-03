@@ -17,6 +17,9 @@ export async function authenticateUserAction(prevState: ActionStateType, formDat
         password: formData.get('password')
     }
 
+    // For redirection after login
+    const redirectTo = formData.get('redirect')?.toString() || '/';
+
     const auth = LoginSchema.safeParse(loginCredentials);
     if (!auth.success) {
         const errors = auth.error.errors.map(error => error.message);
@@ -67,7 +70,6 @@ export async function authenticateUserAction(prevState: ActionStateType, formDat
         redirect('/pos')
     }
 
-    redirect('/')
-
+    redirect(redirectTo);
 
 }

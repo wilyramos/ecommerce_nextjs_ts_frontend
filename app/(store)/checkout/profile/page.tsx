@@ -1,12 +1,14 @@
 // app/checkout/profile/page.tsx
 import IdentificacionForm from '@/components/checkout/IdentificacionForm';
 import { getCurrentUser } from '@/src/auth/currentUser';
+import { redirect } from 'next/navigation';
 
 export default async function ProfilePageCheckout() {
 
-    // Obtener el usuario actual 
     const user = await getCurrentUser();
-    console.log("Usuario actual:", user);
+    if(!user) {
+        redirect("/auth/login?redirect=/checkout/profile");
+    }
 
     return (
         <div className="text-gray-800">

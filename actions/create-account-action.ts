@@ -17,6 +17,9 @@ type SuccessResponse = {
 
 export async function createAccountAction(prevState: ActionStateType, formData: FormData) {
 
+    // Check if the formdata contains redirect
+    const redirectTo = formData.get('redirect')?.toString() || '/profile';
+
     // Creation object with only the data we need
     const registerData = {
         email: formData.get('email'),
@@ -75,6 +78,5 @@ export async function createAccountAction(prevState: ActionStateType, formData: 
         path: '/',
         httpOnly: true,
     })
-
-    redirect('/profile')
+    redirect(redirectTo);
 }

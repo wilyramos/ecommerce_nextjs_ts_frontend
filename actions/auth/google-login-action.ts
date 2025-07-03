@@ -8,13 +8,12 @@ import { redirect } from "next/navigation"
 // This 
 
 
-export async function googleLoginAction({ credential  }: { credential : string }) {
-    if (!credential ) {
+export async function googleLoginAction({ credential, redirectTo }: { credential: string, redirectTo: string }) {
+    if (!credential) {
         return {
             error: "No se recibió el token de Google"
         }
     }
-
 
     const res = await fetch(`${process.env.API_URL}/auth/google`, {
         method: "POST",
@@ -43,5 +42,5 @@ export async function googleLoginAction({ credential  }: { credential : string }
     // Redirección basada en rol
     if (role === "administrador") return redirect("/admin")
     if (role === "vendedor") return redirect("/pos")
-    redirect("/profile")
+    redirect(redirectTo)
 }
