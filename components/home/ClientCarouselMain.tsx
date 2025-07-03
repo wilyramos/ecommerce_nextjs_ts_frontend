@@ -17,7 +17,7 @@ const responsive = {
 
 export default function ClientCarouselMain({ products }: { products: Product[] }) {
     return (
-        <div className="w-full max-w-screen-2xl mx-auto border-2 rounded-3xl overflow-hidden border-gray-100  ">
+        <div className="w-full max-w-screen-2xl mx-auto rounded-3xl">
             <Carousel
                 responsive={responsive}
                 autoPlay
@@ -31,7 +31,7 @@ export default function ClientCarouselMain({ products }: { products: Product[] }
                 {products.map((product) => (
                     <div
                         key={product._id}
-                        className="relative w-full h-[500px] rounded-3xl overflow-hidden group border"
+                        className="relative w-full h-[500px] rounded-3xl overflow-hidden group  border-gray"
                     >
                         {/* Imágenes en columnas */}
                         <div className="flex w-full h-full flex-col md:flex-row">
@@ -60,13 +60,13 @@ export default function ClientCarouselMain({ products }: { products: Product[] }
                         {/* Contenido destacado */}
                         <div className="absolute bottom-2 left-0 w-auto h-1/3 p-4 sm:p-6 md:p-8 flex flex-col  justify-end text-white">
                         
-                            <h2 className="text-lg sm:text-2xl md:text-3xl font-bold leading-snug drop-shadow-lg bg-black bg-opacity-50 p-2 text-end">
+                            <h2 className="text-lg sm:text-2xl md:text-3xl font-bold leading-snug drop-shadow-lg bg-black bg-opacity-50 p-2 text-end px-10">
                                 {product.nombre}
                             </h2>
                             
                             <Link
                                 href={`/productos/${product.slug}`}
-                                className="mt-5 sm:mt-6 inline-flex items-center gap-2 bg-white text-black text-xs sm:text-sm md:text-base font-semibold px-5 sm:px-6 py-2.5 rounded-full shadow-xl hover:bg-gray-200 transition-colors duration-300 max-w-xs border-2 border-gray-300 hover:border-gray-400"
+                                className="mt-5 sm:mt-6 inline-flex items-center gap-2 bg-white text-black text-xs sm:text-sm md:text-base font-semibold px-5 sm:px-6 py-2.5 rounded-full  transition-colors duration-300 max-w-xs border border-gray-300 hover:text-white hover:bg-black hover:shadow-lg text-end"
                             >
                                 Ver producto <ArrowRight className="w-4 h-4" />
                             </Link>
