@@ -10,18 +10,18 @@ export const metadata: Metadata = {
 
 export default function PageLogin() {
     return (
-        <div className="w-full max-w-md border p-6 rounded-3xl">
+        <div className="w-full max-w-sm">
             <h1 className="text-3xl font-semibold text-center">Iniciar sesión</h1>
             <p className="text-gray-600 text-center">Ingresa tus credenciales para continuar</p>
 
             <LoginForm />
 
-            <nav className="text-sm text-gray-600 mt-4 text-center space-y-2">
+            <nav className="text-sm text-gray-600 mt-4 text-center space-y-2 pt-10">
                 <p>
                     ¿No tienes una cuenta?{' '}
                     <Link
                         href="/auth/registro"
-                        className="text-indigo-800 font-black hover:underline"
+                        className="text-blue-800 font-black hover:underline"
                     >
                         Regístrate
                     </Link>
@@ -30,7 +30,7 @@ export default function PageLogin() {
                     ¿Olvidaste tu contraseña?{' '}
                     <Link
                         href="/auth/forgot-password"
-                        className="text-indigo-800 font-black hover:underline"
+                        className="text-blue-800 font-black hover:underline"
                     >
                         Recuperar acceso
                     </Link>

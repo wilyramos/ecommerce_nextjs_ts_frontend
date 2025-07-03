@@ -50,39 +50,42 @@ export default function LoginForm() {
     return (
         <div className="mt-4 space-y-4 text-gray-700">
             <form noValidate action={dispatch}>
-                <label className="block font-medium">
+                <label className="text-sm font-bold">
                     Email
                     <input
                         type="email"
                         name="email"
                         placeholder="tu@email.com"
-                        className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="mt-1 w-full rounded-full border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-800 font-medium"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
                 </label>
 
-                <label className="block font-medium relative">
+                <label className="text-sm font-bold">
                     Password
-                    <input
-                        type={showPassword ? "text" : "password"}
-                        name="password"
-                        placeholder="********"
-                        className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                    <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-9 text-xl text-gray-600 hover:text-gray-800"
-                        aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
-                    >
-                        {showPassword ? <FiEyeOff /> : <FiEye />}
-                    </button>
+                    <div className="relative">
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            name="password"
+                            placeholder="********"
+                        className="mt-1 w-full rounded-full border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-800 font-medium"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute top-1/2 right-4 -translate-y-1/2 text-xl text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-1.5 rounded-full transition-all"
+                            
+                        >
+                            {showPassword ? <FiEyeOff /> : <FiEye />}
+                        </button>
+                    </div>
                 </label>
+
 
                 <button
                     type="submit"
@@ -93,14 +96,21 @@ export default function LoginForm() {
                 </button>
             </form>
 
-            <div className="flex items-center justify-center gap-2">
-                <span className="text-sm text-gray-500">o inicia sesión con</span>
+            <div className="relative text-center text-sm text-gray-500 my-5">
+                <hr className="border-gray-300 mb-2" />
+
+                <span className="bg-white px-2 absolute -top-3 left-1/2 -translate-x-1/2">o inicia sesión con</span>
+
             </div>
 
-            <div className="flex justify-center">
+            <div className="flex justify-center ">
                 <GoogleLogin
                     onSuccess={handleGoogleLoginSuccess}
                     onError={() => toast.error("Error al iniciar sesión con Google")}
+                    // onFailure={() => toast.error("Error al iniciar sesión con Google")}
+                    size="large"
+                    shape="circle"
+
                 />
             </div>
         </div>

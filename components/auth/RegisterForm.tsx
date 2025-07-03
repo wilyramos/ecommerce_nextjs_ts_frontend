@@ -33,56 +33,57 @@ export default function RegisterForm() {
     }, [state]);
 
     // Ejecutar la funcion en caso de registro exitoso de Google
-      const handleGoogleLoginSuccess = ({ credential }: CredentialResponse) => {
-            if (!credential) return toast.error("Token de Google no recibido");
-    
-            startTransition(async () => {
-                const result = await googleRegisterAction({ credential });
-                if (result?.error) {
-                    toast.error(result.error);
-                }
-            });
-        };
+    const handleGoogleLoginSuccess = ({ credential }: CredentialResponse) => {
+        if (!credential) return toast.error("Token de Google no recibido");
+
+        startTransition(async () => {
+            const result = await googleRegisterAction({ credential });
+            if (result?.error) {
+                toast.error(result.error);
+            }
+        });
+    };
 
 
     return (
-        <div className="mt-2 space-y-4 text-gray-700">
-            <form action={dispatch} className="space-y-2">
-                <label htmlFor="email" className="block text-sm font-semibold text-gray-800">
+        <div className="mt-4 space-y-4 text-gray-700 text-sm">
+            <form action={dispatch}>
+                <label htmlFor="email" className="text-sm font-bold">
                     Email
+                    <input
+                        type="email"
+                        name="email"
+                        className="mt-1 w-full rounded-full border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-800 font-medium"
+                        id="email"
+                        required
+                    />
                 </label>
-                <input
-                    type="email"
-                    name="email"
-                    className="w-full rounded-lg border border-gray-300 px-2 py-1"
-                    id="email"
-                    required
-                />
 
-                <label className="block text-sm font-semibold text-gray-800">Nombre</label>
+                <label className="text-sm font-bold">Nombre</label>
                 <input
                     type="text"
                     name="nombre"
-                    className="w-full rounded-lg border border-gray-300 px-2 py-1"
+                    className="mt-1 w-full rounded-full border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-800 font-medium"
                     id="nombre"
                     required
                 />
 
-                <label className="block text-sm font-semibold text-gray-800">Contraseña</label>
+
+                <label className="text-sm font-bold">Contraseña</label>
                 <input
                     type="password"
                     name="password"
-                    className="w-full rounded-lg border border-gray-300 px-2 py-1"
+                    className="mt-1 w-full rounded-full border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-800 font-medium"
                     required
                 />
 
-                <label className="block text-sm font-semibold text-gray-800">
+                <label className="text-sm font-bold">
                     Repetir Contraseña
                 </label>
                 <input
                     type="password"
                     name="password_confirmation"
-                    className="w-full rounded-lg border border-gray-300 px-2 py-1"
+                    className="mt-1 w-full rounded-full border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-800 font-medium"
                     required
                 />
 
@@ -94,7 +95,7 @@ export default function RegisterForm() {
                 />
             </form>
 
-            <div className="relative text-center text-sm text-gray-500 mt-4">
+            <div className="relative text-center text-sm text-gray-500 my-5">
                 <hr className="border-gray-300 mb-2" />
                 <span className="bg-white px-2 absolute -top-3 left-1/2 -translate-x-1/2">o regístrate con</span>
             </div>
@@ -103,6 +104,8 @@ export default function RegisterForm() {
                 <GoogleLogin
                     onSuccess={handleGoogleLoginSuccess}
                     onError={() => toast.error('Error al registrarte con Google')}
+                    size="large"
+                    shape="circle"
                 />
             </div>
         </div>
