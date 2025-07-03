@@ -60,7 +60,7 @@ export default async function HomePage() {
                 <CarruselPrincipal />
             </div>
 
-            <section className="container mx-auto ">
+            <section className="container mx-auto bg-slate-900 rounded-3xl">
                 <CategoriasDestacadas categorias={categories} />
             </section>
             <section className="container mx-auto px-4">
