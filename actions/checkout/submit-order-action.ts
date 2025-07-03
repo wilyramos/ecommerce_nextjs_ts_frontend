@@ -1,6 +1,6 @@
 "use server"
 
-import { ErrorResponseSchema, OrderSchema } from "@/src/schemas"
+import { ErrorResponseSchema, OrderCreateSchema } from "@/src/schemas"
 
 
 type ActionStateType = {
@@ -13,7 +13,7 @@ type ActionStateType = {
 export async function submitOrderAction(orderData: unknown, prevState: ActionStateType) {
 
     //TODO: - validate orderData with zod schema
-    const dataParsed = OrderSchema.safeParse(orderData)
+    const dataParsed = OrderCreateSchema.safeParse(orderData)
     if (!dataParsed.success) {
         return {
             errors: dataParsed.error.errors.map((error) => error.message),

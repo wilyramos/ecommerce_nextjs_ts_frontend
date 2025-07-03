@@ -1,5 +1,5 @@
 import getToken from "@/src/auth/token"
-import { OrdersAPIResponse, OrderAPIResponseSchema } from "@/src/schemas";
+import { OrderResponseSchema, OrdersListSchema } from "@/src/schemas";
 
 
 export const getOrders = async ({ page = 1, limit = 10 }) => {
@@ -19,7 +19,7 @@ export const getOrders = async ({ page = 1, limit = 10 }) => {
     }
 
     const json = await req.json();
-    const orders = OrdersAPIResponse.parse(json);
+    const orders = OrdersListSchema.parse(json);
     return orders;
 }
 
@@ -39,6 +39,6 @@ export const getOrder = async (id: string) => {
     }
 
     const json = await req.json();
-    const order = OrderAPIResponseSchema.parse(json);
+    const order = OrderResponseSchema.parse(json);
     return order;
 }

@@ -1,10 +1,10 @@
 // src/store/shippingStore.ts
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
+import type { ShippingAddress } from '../schemas';
 
 
 type tipoDocumento = 'DNI' | 'RUC' | 'CE';
-
 
 export type ProfileFormData = {
     userId?: string; // Optional, will be set when the user is logged in
@@ -16,22 +16,14 @@ export type ProfileFormData = {
     telefono: string;
 }
 
-export type ShippingFormData = {
-    direccion: string;
-    distrito: string;
-    numero: string;
-    piso?: string;
-    referencia?: string;
-};
-
 
 interface CheckoutState {
     profile: ProfileFormData | null;
-    shipping: ShippingFormData | null;
+    shipping: ShippingAddress | null;
 
     setProfile: (data: ProfileFormData) => void;
-    setShipping: (data: ShippingFormData) => void;
-    
+    setShipping: (data: ShippingAddress) => void;
+
     clearCheckout: () => void;
 }
 

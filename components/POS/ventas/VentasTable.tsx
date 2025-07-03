@@ -35,7 +35,7 @@ export default function VentasTable({ ventas }: { ventas: Sale[] }) {
                         ventas.map((venta) => (
                             <tr key={venta._id} className="hover:bg-gray-50 transition-colors">
                                 <td className="px-4 py-2">{venta.createdAt ? formatDate(venta.createdAt) : '—'}</td>
-                                <td className="px-4 py-2">{venta.employee?.nombre || 'N/A'}</td>
+                                {/* <td className="px-4 py-2">{venta. || 'N/A'}</td> */}
                                 <td className="px-4 py-2">{venta.customerDNI || 'N/A'}</td>
                                 <td className="px-4 py-2 text-green-700 font-medium">S/ {venta.totalPrice.toFixed(2)}</td>
                                 <td className="px-4 py-2">
@@ -49,7 +49,7 @@ export default function VentasTable({ ventas }: { ventas: Sale[] }) {
                                             {venta.items.map((item, id) => (
                                                 <div key={id} className="text-xs text-gray-700 flex justify-between">
                                                     <span>
-                                                        <span className="font-semibold">{item.quantity}</span> {item.product?.nombre}
+                                                        <span className="font-semibold">{item.quantity}</span>
                                                     </span>
                                                     <span className="text-gray-500">S/ {item.price.toFixed(2)}</span>
                                                 </div>

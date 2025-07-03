@@ -20,7 +20,7 @@ export default function SubmitSaleButton() {
 
     const sale: CreateSaleInput = {
         items: cart.map(item => ({
-            product: item._id,
+            productId: item._id,
             quantity: item.cantidad,
             price: item.precio
         })),

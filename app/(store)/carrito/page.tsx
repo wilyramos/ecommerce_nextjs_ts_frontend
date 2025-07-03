@@ -1,7 +1,3 @@
-import React from "react"
-import { FaShoppingCart } from "react-icons/fa"
-import ItemCarrito from "@/components/cart/ItemCarrito"
-import { useCartStore } from "@/src/store/cartStore"
 import ResumenCarrito from "@/components/cart/ResumenCarrito";
 
 

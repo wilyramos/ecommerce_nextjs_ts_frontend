@@ -87,6 +87,7 @@ export default function LoginForm() {
                 <button
                     type="submit"
                     className="w-full bg-black hover:bg-gray-700 text-white font-semibold py-2 rounded-full transition-colors cursor-pointer mt-2"
+                    disabled={isPending}
                 >
                     Iniciar Sesión
                 </button>

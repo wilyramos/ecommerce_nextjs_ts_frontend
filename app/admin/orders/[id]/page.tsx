@@ -1,7 +1,7 @@
 import { getOrder } from "@/src/services/orders";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils";
-import Image from "next/image";
+
 
 type Params = Promise<{ id: string }>;
 
@@ -56,10 +56,7 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
                 <div>
                     <h2 className="font-medium mb-2 text-gray-700">Cliente</h2>
                     <div className="space-y-1">
-                        <p><strong>Nombre:</strong> {order.user?.nombre || "Anónimo"}</p>
-                        <p><strong>Teléfono:</strong> {order.shippingAddress?.telefono}</p>
-                        <p><strong>Dirección:</strong> {order.shippingAddress?.direccion}</p>
-                        <p><strong>Ciudad:</strong> {order.shippingAddress?.ciudad}</p>
+                        
                     </div>
                 </div>
 
@@ -90,20 +87,8 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
                         {order.items.map((item, i) => (
                             <tr key={i}>
                                 <td className="px-4 py-3 flex items-center gap-3">
-                                    {item.product.imagenes?.[0] ? (
-                                        <Image
-                                            src={item.product.imagenes[0]}
-                                            alt={item.product.nombre}
-                                            width={40}
-                                            height={40}
-                                            className="rounded border"
-                                        />
-                                    ) : (
-                                        <div className="flex items-center justify-center w-12 h-12 bg-gray-200 rounded">
-                                            Sin imagen
-                                        </div>
-                                    )}
-                                    <span>{item.product.nombre}</span>
+                                   
+                                    
                                 </td>
                                 <td className="px-4 py-3 text-center">{item.quantity}</td>
                                 <td className="px-4 py-3 text-right">${item.price.toFixed(2)}</td>

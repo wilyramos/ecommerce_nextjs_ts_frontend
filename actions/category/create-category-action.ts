@@ -36,7 +36,7 @@ export async function createCategoryAction(prevState: ActionStateType, formData:
             }
         }
     } else {
-        attributesData = undefined; // 👈 Opcional
+        attributesData = undefined;
     }
 
     const category = CreateCategorySchema.safeParse({

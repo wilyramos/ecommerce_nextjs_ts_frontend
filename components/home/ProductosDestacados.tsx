@@ -8,9 +8,6 @@ export default async function ProductosDestacados() {
 
     const productsDestacados = await getDestacadosProducts()
 
-    console.log("Productos Destacados:", productsDestacados)
-
-
     if (!productsDestacados || productsDestacados.products.length === 0) {
         return (
             <div className="text-center py-10 text-gray-500">

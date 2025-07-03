@@ -52,7 +52,7 @@ export default function IdentificacionForm({ user }: Props) {
             toast.success(state.success.message);
             router.push('/checkout/shipping');
         }
-    }, [state.success]);
+    }, [state.success, getValues, setProfile, router]);
 
 
     const onSubmit = (data: CheckoutRegister) => {

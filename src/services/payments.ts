@@ -1,8 +1,8 @@
 import "server-only"
+import type { OrderCreateInput } from "../schemas";
 
 
-
-export const createMPPreference = async (orderData: any) => {
+export const createMPPreference = async (orderData: OrderCreateInput) => {
 
     const url = `${process.env.API_URL}/checkout/create-preference`;
 

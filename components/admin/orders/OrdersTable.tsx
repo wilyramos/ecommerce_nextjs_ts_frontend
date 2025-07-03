@@ -48,7 +48,7 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
                                 {order.createdAt ? formatDate(order.createdAt) : 'N/A'}
                             </td>
                             <td className="px-4 py-2 hidden md:table-cell">
-                                {order.user ? order.user.nombre : 'Anónimo'}
+                                {/* {order.user ? order.user.nombre : 'Anónimo'} */}
                             </td>
                             <td className="px-4 py-2 hidden md:table-cell">
                                 s/.{order.totalPrice.toFixed(2)}

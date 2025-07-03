@@ -3,7 +3,6 @@
 import { useCartStore } from "@/src/store/cartStore";
 import { useCheckoutStore } from "@/src/store/shippingStore";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { submitOrderAction } from "@/actions/checkout/submit-order-action";
 import { createMPPreference } from "@/actions/checkout/create-mp-preference";
@@ -11,11 +10,11 @@ import { createMPPreference } from "@/actions/checkout/create-mp-preference";
 export default function SubmitOrderButton({ paymentMethod }: { paymentMethod: string }) {
 
 
-    const clearCart = useCartStore((s) => s.clearCart);
+    // const clearCart = useCartStore((s) => s.clearCart);
     const cart = useCartStore((s) => s.cart);
     const shippingData = useCheckoutStore((s) => s.shipping);
     const total = useCartStore((s) => s.total);
-    const router = useRouter();
+    // const router = useRouter();
 
     const order = {
         items: cart.map(item => ({
