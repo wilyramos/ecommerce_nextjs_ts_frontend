@@ -46,7 +46,7 @@ export default function CategoriasDestacadas({ categorias }: { categorias: Categ
                             key={index}
                             className="group relative flex flex-col items-center justify-center h-48 w-full bg-white transition-shadow duration-300 p-4 overflow-hidden hover:bg-black hover:text-gray-50 rounded-lg cursor-pointer"
                         >
-                             <p className="text-sm font-medium">
+                             <p className="text-base font-semibold">
                                 {categoria.nombre}
                             </p>
                             <Image      

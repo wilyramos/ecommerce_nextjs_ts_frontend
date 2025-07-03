@@ -56,11 +56,11 @@ export default async function HomePage() {
     return (
         <>
             {/* Hero principal */}
-            <div className="container mx-auto">
+            <div className="container mx-auto py-5">
                 <CarruselPrincipal />
             </div>
 
-            <section className="container mx-auto bg-slate-900 rounded-3xl">
+            <section className="container mx-auto bg-gray-300 rounded-3xl ">
                 <CategoriasDestacadas categorias={categories} />
             </section>
             <section className="container mx-auto px-4">

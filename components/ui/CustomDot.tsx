@@ -18,10 +18,10 @@ export function CustomDot({
         >
             <span
                 className={clsx(
-                    "block h-1 w-6 sm:w-8 md:w-10 rounded-full transition-all duration-300",
+                    "block h-1 w-6 sm:w-8 md:w-10 rounded-full transition-all duration-300 my-2",
                     active
-                        ? "bg-white shadow-lg scale-x-110"
-                        : "bg-white/30 hover:bg-white/60"
+                        ? "bg-gray-800 shadow-lg scale-x-110"
+                        : "bg-gray-800/30 hover:bg-gray-800/60"
                 )}
             />
         </li>
