@@ -1,13 +1,12 @@
 'use server'
 
+import type { OrderCreateMPPreferenceInput } from "@/src/schemas/index"
 
 
 
-export async function createMPPreference(orderData: any) {
+export async function createMPPreference(orderData: OrderCreateMPPreferenceInput) {
 
-
-
-
+    console.log('Creando preferencia de Mercado Pago con los siguientes datos:', orderData);
     const url = process.env.API_URL;
 
     const res = await fetch(`${url}/checkout/create-preference`, {

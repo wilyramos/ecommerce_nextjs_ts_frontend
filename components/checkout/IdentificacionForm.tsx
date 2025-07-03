@@ -49,7 +49,7 @@ export default function IdentificacionForm({ user }: Props) {
                 ...formValues,
             });
 
-            toast.success(state.success.message);
+            // toast.success(state.success.message);
             router.push('/checkout/shipping');
         }
     }, [state.success, getValues, setProfile, router]);
@@ -66,10 +66,10 @@ export default function IdentificacionForm({ user }: Props) {
         <form
             onSubmit={user?._id ? handleSubmit(onSubmit) : undefined}
             action={!user?._id ? dispatch : undefined}
-            className="max-w-md mx-auto space-y-5 pt-2"
+            className="max-w-md mx-auto space-y-1 pt-2 "
         >
             {/* Email */}
-            <div className="space-y-1">
+            <div className="">
                 <label htmlFor="email" className="text-xs font-medium text-gray-700">Correo electrónico</label>
                 <input
                     id="email"
@@ -82,7 +82,7 @@ export default function IdentificacionForm({ user }: Props) {
                         },
                     })}
                     disabled={!!user?._id}
-                    className={`w-full px-4 py-2 border border-gray-300 rounded-lg ${user?._id ? 'bg-gray-200 cursor-not-allowed' : ''}`}
+                    className={`w-full px-4 py-2 border border-gray-300 rounded-full ${user?._id ? 'bg-gray-200 cursor-not-allowed' : ''}`}
                 />
                 {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
             </div>
@@ -94,7 +94,7 @@ export default function IdentificacionForm({ user }: Props) {
                     id="nombre"
                     type="text"
                     {...register('nombre', { required: 'El nombre es obligatorio' })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-full"
                 />
                 {errors.nombre && <ErrorMessage>{errors.nombre.message}</ErrorMessage>}
             </div>
@@ -106,7 +106,8 @@ export default function IdentificacionForm({ user }: Props) {
                     id="apellidos"
                     type="text"
                     {...register('apellidos', { required: 'Los apellidos son obligatorios' })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-full"
+                    
                 />
                 {errors.apellidos && <ErrorMessage>{errors.apellidos.message}</ErrorMessage>}
             </div>
@@ -118,7 +119,7 @@ export default function IdentificacionForm({ user }: Props) {
                     <select
                         id="tipoDocumento"
                         {...register('tipoDocumento', { required: 'Selecciona el tipo de documento' })}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-white"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-full bg-white"
                     >
                         <option value="DNI">DNI</option>
                         <option value="CE">Carné de extranjería</option>
@@ -136,7 +137,7 @@ export default function IdentificacionForm({ user }: Props) {
                             required: 'El número de documento es obligatorio',
                             minLength: { value: 8, message: 'Debe tener al menos 8 dígitos' },
                         })}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-full"
                     />
                     {errors.numeroDocumento && <ErrorMessage>{errors.numeroDocumento.message}</ErrorMessage>}
                 </div>
@@ -155,7 +156,7 @@ export default function IdentificacionForm({ user }: Props) {
                             message: 'Debe contener 9 dígitos numéricos',
                         },
                     })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-full"
                 />
                 {errors.telefono && <ErrorMessage>{errors.telefono.message}</ErrorMessage>}
             </div>
@@ -163,9 +164,9 @@ export default function IdentificacionForm({ user }: Props) {
             {/* Botón */}
             <button
                 type="submit"
-                className="w-full py-3 text-white bg-gray-900 rounded-lg hover:bg-gray-800 font-medium transition-colors"
+                className="w-full  py-2 px-4 text-white bg-blue-800 rounded-full hover:bg-blue-700 font-medium transition-colors mt-4 hover:cursor-pointer "
             >
-                Continuar con el envío
+                Continuar
             </button>
         </form>
     );

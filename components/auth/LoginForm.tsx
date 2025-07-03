@@ -20,7 +20,7 @@ export default function LoginForm() {
         {
             errors: [],
             success: "",
-        }
+        } 
     );
 
     const [email, setEmail] = useState("");
@@ -110,7 +110,6 @@ export default function LoginForm() {
                     // onFailure={() => toast.error("Error al iniciar sesión con Google")}
                     size="large"
                     shape="circle"
-
                 />
             </div>
         </div>

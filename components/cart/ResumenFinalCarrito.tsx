@@ -6,7 +6,7 @@ import Image from "next/image";
 export default function ResumenFinalCarrito() {
     const { cart } = useCartStore();
     const subtotal = cart.reduce((acc, item) => acc + item.subtotal, 0);
-    const envio = 9; // Puedes calcular el costo de envío aquí si es necesario
+    const envio = 0; // Puedes calcular el costo de envío aquí si es necesario
     // TODO: calcularenvio();
     const total = subtotal + envio;
 
@@ -56,10 +56,13 @@ export default function ResumenFinalCarrito() {
                     <span>Subtotal</span>
                     <span className="font-semibold">S/. {subtotal.toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between text-xs text-gray-500 mt-1">
                     <span>Envío</span>
                     <span className="font-semibold">S/. {envio.toFixed(2)}</span>
                 </div>
+
+                <hr className="border-gray-400 mb-2" />
+
 
                 <div className="flex justify-between font-bold text-base text-gray-900">
                     <span>Total</span>

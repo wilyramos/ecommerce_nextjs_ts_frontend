@@ -17,23 +17,42 @@ export default function AutoCheckoutIniciator() {
 
 
     useEffect(() => {
-
-
-        console.log('Iniciando checkout automático...');
-        console.log('Carrito:', cart);
-        console.log('Datos de envío:', shipping);
-        console.log('Perfil del usuario:', profile);
-        console.log('Iniciando checkout automático...');
         const iniciarCheckout = async () => {
+
+            if (!cart || cart.length === 0) {
+                console.error('El carrito está vacío');
+                toast.error('El carrito está vacío');
+                return;
+            }
             try {
                 const orderData = {
-                    items: cart.map((item) => ({
-                        product: item._id,
+                    items: cart.map(item => ({
+                        id: item._id,
                         title: item.nombre,
-                        price: item.precio,
+                        // description: item.,
                         quantity: item.cantidad,
+                        unit_price: item.precio,
                     })),
-                    shipping, // puedes incluir más info aquí
+                    shipping: {
+                        address: {
+                            street_name: shipping?.direccion,
+                            street_number: shipping?.numero,
+                            floor: shipping?.piso || '',
+                            apartment: shipping?.referencia || '',
+                            city: shipping?.distrito,
+                            state: shipping?.provincia,
+                            country: shipping?.departamento,
+                        },
+                    },
+                    payer: {
+                        email: profile?.email || '',
+                        first_name: profile?.nombre || '',
+                        last_name: profile?.apellidos || '',
+                        phone: {
+                            area_code: '51',
+                            number: profile?.telefono || '',
+                        },
+                    },
                 };
 
                 const initPoint = await createMPPreference(orderData);

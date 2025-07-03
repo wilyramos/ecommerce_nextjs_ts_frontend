@@ -344,6 +344,40 @@ export const OrderCreateSchema = z.object({
 
 export type OrderCreateInput = z.infer<typeof OrderCreateSchema>;
 
+// Esquema para enviar a mercadopago
+
+export const OrderCreateMPPreferenceSchema = z.object({
+    items: z.array(z.object({
+        id: z.string(),
+        title: z.string(),
+        description: z.string().optional(),
+        quantity: z.number().min(1, { message: 'La cantidad debe ser al menos 1' }),
+        unit_price: z.number().min(0, { message: 'El precio debe ser al menos 0' }),
+    })).min(1, { message: 'Debe haber al menos un producto en la orden' }),
+    payer: z.object({
+        email: z.string().email({ message: 'Email no válido' }),
+        first_name: z.string(),
+        last_name: z.string(),
+        phone: z.object({
+            area_code: z.string().optional(),
+            number: z.string().optional(),
+        }).optional(),
+    }),
+    shipping: z.object({
+        address: z.object({
+            street_name: z.string().optional(),
+            street_number: z.string().optional(),
+            floor: z.string().optional(),
+            apartment: z.string().optional(),
+            city: z.string().optional(),
+            state: z.string().optional(),
+            country: z.string().optional(),
+        }),
+    }),
+});
+
+export type OrderCreateMPPreferenceInput = z.infer<typeof OrderCreateMPPreferenceSchema>;
+
 // Respuesta de la API para una orden
 export const OrderItemResponseSchema = z.object({
     product: ProductAPIResponse.or(z.string()), // Puede ser un objeto Product o un ID de producto

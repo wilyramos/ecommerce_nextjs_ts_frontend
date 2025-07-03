@@ -50,7 +50,7 @@ export default function ShippingForm() {
                         type="text"
                         {...register('departamento', { required: 'El departamento es obligatorio' })}
                         placeholder="Ej. Lima"
-                        className="mt-1 block w-full border border-gray-200 rounded-md px-3 py-2 text-sm shadow-sm"
+                        className="mt-1 block w-full border border-gray-200 rounded-full px-3 py-2 text-sm shadow-sm"
                     />
                     {errors.departamento && <ErrorMessage>{errors.departamento.message}</ErrorMessage>}
                 </div>
@@ -61,7 +61,7 @@ export default function ShippingForm() {
                         type="text"
                         {...register('provincia', { required: 'La provincia es obligatoria' })}
                         placeholder="Ej. Lima"
-                        className="mt-1 block w-full border border-gray-200 rounded-md px-3 py-2 text-sm shadow-sm"
+                        className="mt-1 block w-full border border-gray-200 rounded-full px-3 py-2 text-sm shadow-sm"
                     />
                     {errors.provincia && <ErrorMessage>{errors.provincia.message}</ErrorMessage>}
                 </div>
@@ -73,7 +73,7 @@ export default function ShippingForm() {
                     type="text"
                     {...register('distrito', { required: 'El distrito es obligatorio' })}
                     placeholder="Ej. Miraflores"
-                    className="mt-1 block w-full border border-gray-200 rounded-md px-3 py-2 text-sm shadow-sm"
+                    className="mt-1 block w-full border border-gray-200 rounded-full px-3 py-2 text-sm shadow-sm"
                 />
                 {errors.distrito && <ErrorMessage>{errors.distrito.message}</ErrorMessage>}
             </div>
@@ -84,7 +84,7 @@ export default function ShippingForm() {
                     type="text"
                     {...register('direccion', { required: 'La dirección es obligatoria' })}
                     placeholder="Av. Siempre Viva 123"
-                    className="mt-1 block w-full border border-gray-200 rounded-md px-3 py-2 text-sm shadow-sm"
+                    className="mt-1 block w-full border border-gray-200 rounded-full px-3 py-2 text-sm shadow-sm"
                 />
                 {errors.direccion && <ErrorMessage>{errors.direccion.message}</ErrorMessage>}
             </div>
@@ -96,7 +96,7 @@ export default function ShippingForm() {
                         type="text"
                         {...register('numero', { required: 'El número es obligatorio' })}
                         placeholder="Ej. 202"
-                        className="mt-1 block w-full border border-gray-200 rounded-md px-3 py-2 text-sm shadow-sm"
+                        className="mt-1 block w-full border border-gray-200 rounded-full px-3 py-2 text-sm shadow-sm"
                     />
                     {errors.numero && <ErrorMessage>{errors.numero.message}</ErrorMessage>}
                 </div>
@@ -107,7 +107,7 @@ export default function ShippingForm() {
                         type="text"
                         {...register('piso')}
                         placeholder="Ej. 2do piso / 307"
-                        className="mt-1 block w-full border border-gray-200 rounded-md px-3 py-2 text-sm shadow-sm"
+                        className="mt-1 block w-full border border-gray-200 rounded-full px-3 py-2 text-sm shadow-sm"
                     />
                 </div>
 
@@ -117,16 +117,17 @@ export default function ShippingForm() {
                         type="text"
                         {...register('referencia', { required: 'La referencia es obligatoria' })}
                         placeholder="Ej. Frente a la tienda Tottus"
-                        className="mt-1 block w-full border border-gray-200 rounded-md px-3 py-2 text-sm shadow-sm"
+                        className="mt-1 block w-full border border-gray-200 rounded-full px-3 py-2 text-sm shadow-sm"
                     />
                     {errors.referencia && <ErrorMessage>{errors.referencia.message}</ErrorMessage>}
                 </div>
             </div>
 
             <div className="pt-4">
+
                 <button
                     type="submit"
-                    className="w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-2 px-4 rounded-md transition"
+                className="w-full  py-2 px-4 max-w-md text-white bg-blue-800 rounded-full hover:bg-blue-700 font-medium transition-colors mt-4 hover:cursor-pointer "
                 >
                     Continuar con el pago
                 </button>
