@@ -63,6 +63,7 @@ export default function RegisterForm() {
                         className="mt-1 w-full rounded-full border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-800 font-medium"
                         id="email"
                         required
+                        placeholder='tu@email.com'
                     />
                 </label>
 
@@ -73,6 +74,7 @@ export default function RegisterForm() {
                     className="mt-1 w-full rounded-full border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-800 font-medium"
                     id="nombre"
                     required
+                    placeholder='Tu nombre'
                 />
 
 
@@ -82,9 +84,10 @@ export default function RegisterForm() {
                     name="password"
                     className="mt-1 w-full rounded-full border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-800 font-medium"
                     required
+                    placeholder='********'
                 />
 
-                <label className="text-sm font-bold">
+                {/* <label className="text-sm font-bold">
                     Repetir Contraseña
                 </label>
                 <input
@@ -92,7 +95,7 @@ export default function RegisterForm() {
                     name="password_confirmation"
                     className="mt-1 w-full rounded-full border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-800 font-medium"
                     required
-                />
+                /> */}
 
                 <input
                     type="submit"

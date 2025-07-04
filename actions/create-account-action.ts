@@ -25,7 +25,7 @@ export async function createAccountAction(prevState: ActionStateType, formData: 
         email: formData.get('email'),
         nombre: formData.get('nombre'),
         password: formData.get('password'),
-        password_confirmation: formData.get('password_confirmation')
+        // password_confirmation: formData.get('password_confirmation')
     }
 
     // Validate the data using Zod

@@ -108,7 +108,7 @@ export default function LoginForm() {
                 </button>
             </form>
 
-            <nav className="text-xs text-gray-500 mt-4 text-center space-y-2 ">
+            <nav className=" flex justify-between text-sm text-gray-600 font-base my-4 ">
                 <p>
                     ¿No tienes una cuenta?{' '}
                     <Link
