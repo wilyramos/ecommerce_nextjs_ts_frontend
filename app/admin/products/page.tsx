@@ -4,22 +4,25 @@ import Pagination from "@/components/ui/Pagination";
 import ProductSearchInput from "@/components/admin/products/ProductSearchInput";
 import { getProductsByFilter } from "@/src/services/products";
 
-type SearchParams = {
+type SearchParams = Promise<{
     page?: string;
     limit?: string;
     query?: string;
-};
+}>;
 
 export default async function ProductsPage({ searchParams }: { searchParams: SearchParams }) {
-    const currentPage = searchParams.page ? parseInt(searchParams.page, 10) : 1;
-    const itemsPerPage = searchParams.limit ? parseInt(searchParams.limit, 10) : 10;
+
+    const params = await searchParams;
+
+    const currentPage = params.page ? parseInt(params.page, 10) : 1;
+    const itemsPerPage = params.limit ? parseInt(params.limit, 10) : 10;
 
     const productsData = await getProductsByFilter({
         page: currentPage,
         limit: itemsPerPage,
         category: "",
         priceRange: "",
-        query: searchParams.query || "",
+        query: params.query || "",
     });
 
     return (

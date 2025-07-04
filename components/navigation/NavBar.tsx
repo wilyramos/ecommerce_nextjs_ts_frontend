@@ -10,20 +10,22 @@ export default function NavBar() {
 
     const categoriaswithsubcategorias = [
         {
-            name: 'iPhones', subcategorias: [
-                { slug: 'iphones-14', name: 'iPhone 14' },
-                { slug: 'iphones-15', name: 'iPhone 15' },
-                { slug: 'iphones-16', name: 'iPhone 16' },
+            name: 'Celulares', subcategorias: [
+                { slug: 'iphone', name: 'iPhone' },
+                { slug: 'samsung', name: 'Samsung' },
+                { slug: 'xiaomi', name: 'Xiaomi' },
+                
+                { slug: 'oppo', name: 'Oppo' },
             ]
         },
         {
             name: 'Accesorios', subcategorias: [
-                { slug: 'cargadores', name: 'Cargadores' },
+                { slug: 'cables-y-cargadores', name: 'Cables y Cargadores' },
                 { slug: 'fundas', name: 'Fundas' },
             ]
         },
         { name: 'Audífonos', subcategorias: [] },
-        { name: 'Cargadores', subcategorias: [] },
+        // { name: 'Cargadores', subcategorias: [] },
         { name: 'Fundas', subcategorias: [] },
     ];
 

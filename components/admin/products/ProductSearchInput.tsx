@@ -21,7 +21,7 @@ export default function ProductSearchInput() {
         }, 1000);
 
         return () => clearTimeout(timeout);
-    }, [query]);
+    }, [query, router, searchParams]);
 
     return (
         <input
