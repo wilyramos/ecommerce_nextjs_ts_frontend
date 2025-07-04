@@ -12,6 +12,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { FaBars, FaUser } from "react-icons/fa";
 import ButtonSearchFormStore from "../ui/ButtonSearchFormStore";
+import  Hamburger  from "hamburger-react";
 
 export default function ButtonShowSheetMobile() {
     const [open, setOpen] = useState(false);
@@ -40,7 +41,8 @@ export default function ButtonShowSheetMobile() {
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
                 <button className="p-2 text-gray-700 hover:text-indigo-600 transition">
-                    <FaBars className="h-6 w-6" />
+                    {/* <FaBars className="h-6 w-6" /> */}
+                    <Hamburger toggled={open} toggle={setOpen} size={22}/>
                 </button>
             </SheetTrigger>
 

@@ -34,7 +34,7 @@ export default function NavBar() {
 
     return (
         <header className="sticky top-0 z-50 bg-white text-gray-950">
-            <div className="max-w-7xl mx-auto flex justify-between items-center px-6 font-semibold text-sm md:text-base pt-4 pb-2">
+            <div className="max-w-7xl mx-auto flex justify-between items-center px-6 font-semibold pt-2   pb-2">
                 {/* Mobile: Menú y buscador */}
                 <div className="md:hidden flex items-center gap-2">
                     <ButtonShowSheetMobile />
@@ -60,7 +60,7 @@ export default function NavBar() {
                 </Link>
 
                 {/* Desktop: Navegación + Buscador */}
-                <nav className="hidden md:flex items-center justify-center flex-1 space text-sm font-normal text-gray-700">
+                <nav className="hidden md:flex items-center justify-center flex-1 space text-sm text-gray-700">
                     {categoriaswithsubcategorias.map((categoria) => (
                         <div key={categoria.name} className="relative">
                             <div className="group inline-block px-2 py-1">
