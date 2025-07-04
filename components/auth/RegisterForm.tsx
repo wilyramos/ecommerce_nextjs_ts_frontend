@@ -115,7 +115,11 @@ export default function RegisterForm() {
                 <p>
                     ¿Ya tienes una cuenta?{" "}
                     <Link
-                        href={`/auth/login?redirect=${redirectTo}`}
+                        href={
+                            searchParams.get("redirect")
+                                ? `/auth/login?redirect=${searchParams.get("redirect")}`
+                                : "/auth/login"
+                        }
                         className="text-blue-800 font-black hover:underline"
                     >
                         Inicia sesión

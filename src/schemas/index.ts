@@ -106,7 +106,23 @@ export const resetPasswordSchema = z.object({
 });
 
 
-// Schema para el user - get user
+// Schema para el user edit
+
+export const BaseUserSchema = z.object({
+    nombre: z.string().optional(),
+    apellidos: z.string().optional(),
+    tipoDocumento: z.enum(['DNI', 'RUC', 'CE']).optional(),
+    numeroDocumento: z.string().optional(),
+    telefono: z.string().optional(),
+    email: z.string().email().optional(),
+    rol: z.enum(['cliente', 'administrador', 'vendedor']).optional(),
+    googleId: z.string().optional(),
+})
+
+
+export const UserEditSchema = BaseUserSchema.extend({
+    _id: z.string().optional(),
+})
 
 export const UserSchema = z.object({
     _id: z.string(),
@@ -117,10 +133,12 @@ export const UserSchema = z.object({
     telefono: z.string().optional(),
     email: z.string().email().optional(),
     rol: z.enum(['cliente', 'administrador', 'vendedor']).optional(),
+    googleId: z.string().optional(),
     createdAt: z.string().optional(),
     updatedAt: z.string().optional(),
     __v: z.number().optional(),
 })
+
 
 export type User = z.infer<typeof UserSchema>
 

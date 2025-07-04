@@ -20,7 +20,8 @@ export default function LoginForm() {
 
     // For shipping the user to the correct page after login
     const searchParams = useSearchParams();
-    const redirectTo = searchParams.get("redirect") || "/";
+    const redirectTo = searchParams.get("redirect") || "/profile";
+    
 
     const [state, dispatch] = useActionState<AuthState, FormData>(
         authenticateUserAction,
@@ -112,7 +113,11 @@ export default function LoginForm() {
                 <p>
                     ¿No tienes una cuenta?{' '}
                     <Link
-                        href={`/auth/registro?redirect=${redirectTo}`}
+                        href={
+                            searchParams.get("redirect")
+                                ? `/auth/registro?redirect=${searchParams.get("redirect")}`
+                                : "/auth/registro"
+                        }
                         className="text-blue-800 font-black hover:underline"
                     >
                         Regístrate
@@ -121,7 +126,7 @@ export default function LoginForm() {
                 <p>
                     ¿Olvidaste tu contraseña?{' '}
                     <Link
-                        href="/auth/forgot-password?redirect=/auth/login"
+                        href="/auth/forgot-password"
                         className="text-blue-800 font-black hover:underline"
                     >
                         Recuperar acceso
