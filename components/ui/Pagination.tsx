@@ -49,7 +49,7 @@ export default function Pagination({ currentPage, totalPages, limit = 10, pathna
 
     return (
         <div className="flex justify-center items-center mt-2">
-            <nav className="inline-flex items-center space-x-2 p-2 rounded-xl shadow-sm border border-gray-200">
+            <nav className="inline-flex items-center space-x-2 p-2 ">
                 {pages.map((page, index) =>
                     typeof page === 'number' ? (
                         <Link
@@ -57,8 +57,8 @@ export default function Pagination({ currentPage, totalPages, limit = 10, pathna
                             href={getPageLink(page)}
                             className={`flex items-center justify-center w-9 h-9 text-sm font-medium rounded-lg transition-colors ${
                                 page === currentPage
-                                    ? "bg-blue-600 text-white shadow"
-                                    : "text-gray-600 hover:bg-gray-100 hover:text-blue-600"
+                                    ? "bg-blue-800 text-white shadow"
+                                    : "text-gray-600 hover:bg-gray-100 hover:text-blue-800"
                             }`}
                         >
                             {page}

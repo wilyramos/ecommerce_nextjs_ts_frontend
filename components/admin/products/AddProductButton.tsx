@@ -1,19 +1,18 @@
-"use client"
+'use client';
 
-import { useRouter } from "next/navigation"
-
+import { useRouter } from 'next/navigation';
+import { FiPlus } from 'react-icons/fi'; // Ícono moderno de "agregar"
 
 export default function AddProductButton() {
-
-
-    const router = useRouter()
+    const router = useRouter();
 
     return (
         <button
-            onClick={() => router.push("/admin/products/new")}
-            className="bg-gray-800 text-white text-sm font-bold px-4 py-1 rounded-xl hover:bg-gray-950 cursor-pointer transition-all duration-200 ease-in-out"
+            onClick={() => router.push('/admin/products/new')}
+            className="flex items-center gap-2 bg-blue-800  hover:bg-blue-900 text-white text-sm px-4 py-2 rounded-full shadow-md transition-all duration-200"
         >
-            NUEVO PRODUCTO
+            <FiPlus className="text-base" />
+            Nuevo producto
         </button>
-    )
+    );
 }

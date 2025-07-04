@@ -1,18 +1,21 @@
-"use client"
+'use client';
 
-import { useRouter } from "next/navigation"
+import { useRouter } from 'next/navigation';
+import { FiPlus } from 'react-icons/fi'; // Ícono moderno de "agregar"
+
 
 export default function AddOrderButton() {
 
 
-    const router = useRouter()
+    const router = useRouter();
 
     return (
         <button
             onClick={() => router.push("/admin/orders/new")}
-            className="bg-gray-800 text-white font-semibold px-2 py-1 rounded-lg hover:bg-gray-950 transition-all duration-200 ease-in-out text-md cursor-pointer"
+            className="flex items-center gap-2 bg-blue-800 hover:bg-blue-900 text-white text-sm px-4 py-2 rounded-full shadow-md transition-all duration-200"
         >
-            Nuevo Pedido
+            <FiPlus className="inline-block mr-1" />
+            Crear Pedido
         </button>
     )
 }

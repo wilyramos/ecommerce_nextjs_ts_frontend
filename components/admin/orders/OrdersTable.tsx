@@ -54,7 +54,7 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
                                 s/.{order.totalPrice.toFixed(2)}
                             </td>
                             <td className="px-4 py-2">{order.paymentMethod}</td>
-                            <td className=" hidden md:block  px-4 py-2">{order.shippingAddress.direccion}</td>
+                            {/* <td className=" hidden md:block  px-4 py-2">{order.shippingAddress.direccion}</td> */}
                             <td className="px-4 py-2">
                                 {order.items.length} item{order.items.length > 1 ? 's' : ''}
                             </td>

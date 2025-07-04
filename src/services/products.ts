@@ -69,8 +69,8 @@ export const GetProductsBySlug = cache(async (slug: string) => {
 type GetProductsByFilterParams = {
     page: number;
     limit: number;
-    category: string;
-    priceRange: string;
+    category?: string;
+    priceRange?: string;
     query?: string;
     sort?: string;
     compatibilidad?: string;
@@ -80,8 +80,8 @@ type GetProductsByFilterParams = {
 export const getProductsByFilter = async ({
     page,
     limit,
-    category,
-    priceRange,
+    category = "",
+    priceRange = "",
     query = "",
     sort = "",
     compatibilidad = "",

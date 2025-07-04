@@ -390,7 +390,7 @@ export const OrderResponseSchema = z.object({
     user: UserSchema.or(z.string()), // Puede ser un objeto User o un ID de usuario
     items: z.array(OrderItemResponseSchema),
     totalPrice: z.number(),
-    shippingAddress: ShippingAddressSchema,
+    shippingAddress: ShippingAddressSchema.optional(),
     status: OrderStatusEnum,
     paymentMethod: PaymentMethodEnum,
     paymentStatus: PaymentStatusEnum,
@@ -405,7 +405,7 @@ export type Order = z.infer<typeof OrderResponseSchema>;
 export const OrdersListSchema = z.object({
     orders: z.array(OrderResponseSchema),
     totalOrders: z.number(),
-    totalAmount: z.number(),
+    // totalAmount: z.number(),
     totalPages: z.number(),
     currentPage: z.number(),
 });
