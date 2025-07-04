@@ -19,14 +19,16 @@ export default function NavBar() {
             ]
         },
         {
-            name: 'Accesorios', subcategorias: [
-                { slug: 'cables-y-cargadores', name: 'Cables y Cargadores' },
-                { slug: 'fundas', name: 'Fundas' },
+            name: 'Accesorios', slug: 'accesorios', subcategorias: [
+                { slug: 'cargadores-y-cables', name: 'Cargadores y Cables' },
+                { slug: 'fundas-y-carcasas', name: 'Fundas y Carcasas' },
+                // { slug: 'protectores-de-pantalla', name: 'Protectores de Pantalla' },
+                { slug: 'audifonos-y-auriculares', name: 'Audífonos y Auriculares' },
+                // { slug: 'otros-accesorios', name: 'Otros Accesorios' },
             ]
         },
-        { name: 'Audífonos', subcategorias: [] },
+        // { name: 'Audífonos', subcategorias: [], slug: 'auriculares-y-audifonos' },
         // { name: 'Cargadores', subcategorias: [] },
-        { name: 'Fundas', subcategorias: [] },
     ];
 
 
@@ -62,16 +64,16 @@ export default function NavBar() {
                     {categoriaswithsubcategorias.map((categoria) => (
                         <div key={categoria.name} className="relative">
                             <div className="group inline-block px-2 py-1">
-                                <Link
-                                    href={`/${categoria.name}`}
+                                <button
+                                    // href={`categoria/${categoria.slug || categoria.name.toLowerCase()}`}
                                     className="hover:text-black transition-colors"
                                 >
                                     {categoria.name}
-                                </Link>
+                                </button>
 
                                 {categoria.subcategorias.length > 0 && (
                                     <div
-                                        className="absolute top-full left-0 mt-3 min-w-[12rem] bg-white border border-gray-200 rounded-md shadow-lg opacity-0 scale-95 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto transition-all duration-200 ease-out z-50"
+                                        className="absolute top-full left-0 mt-0 min-w-[12rem] bg-white border border-gray-200 rounded-md shadow-lg opacity-0 scale-95 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto transition-all duration-200 ease-out z-50"
                                     >
                                         {categoria.subcategorias.map((sub) => (
                                             <Link

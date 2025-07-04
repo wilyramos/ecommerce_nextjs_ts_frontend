@@ -97,7 +97,7 @@ export default function ProductDetails({ producto }: Props) {
                     {/* Descripción */}
                     {producto.descripcion && (
                         <div>
-                            <p className="text-sm text-gray-600 leading-relaxed">
+                            <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">
                                 {producto.descripcion}
                             </p>
                         </div>
