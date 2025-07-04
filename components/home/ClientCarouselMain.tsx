@@ -31,12 +31,12 @@ export default function ClientCarouselMain({ products }: { products: Product[] }
                 {products.map((product) => (
                     <div
                         key={product._id}
-                        className="relative w-full h-[500px] rounded-3xl overflow-hidden group  border-gray"
+                        className="relative w-full h-[300px] md:h-[500px] rounded-3xl overflow-hidden group  border-gray"
                     >
                         {/* Imágenes en columnas */}
-                        <div className="flex w-full h-full flex-col md:flex-row">
+                        <div className="flex w-full h-full flex-row md:flex-row ">
                             {[0, 1].map((index) => (
-                                <div key={index} className="relative w-full md:w-1/2 h-1/2 md:h-full">
+                                <div key={index} className="relative w-full 1 md:w-1/2 md:h-full ">
                                     {product.imagenes?.[index] ? (
                                         <Image
                                             src={product.imagenes[index]}
@@ -58,18 +58,20 @@ export default function ClientCarouselMain({ products }: { products: Product[] }
 
                        
                         {/* Contenido destacado */}
-                        <div className="absolute bottom-2 left-0 w-auto h-1/3 p-4 sm:p-6 md:p-8 flex flex-col  justify-end text-white">
+                        <div className="absolute bottom-1 left-0 w-auto p-4 sm:p-6 md:p-8 flex flex-col  justify-end text-white ">
                         
-                            <h2 className="text-lg sm:text-2xl md:text-3xl font-bold leading-snug drop-shadow-lg bg-black bg-opacity-50 p-2 text-end px-10">
+                            <h2 className="text-base md:text-3xl font-bold leading-snug drop-shadow-lg bg-black p-1 text-end px-10">
                                 {product.nombre}
                             </h2>
                             
+                            <div className=" text-xs sm:text-sm md:text-base font-semibold text-end md:text-start">
                             <Link
                                 href={`/productos/${product.slug}`}
-                                className="mt-5 sm:mt-6 inline-flex items-center gap-2 bg-white text-black text-xs sm:text-sm md:text-base font-semibold px-5 sm:px-6 py-2.5 rounded-full  transition-colors duration-300 max-w-xs border border-gray-300 hover:text-white hover:bg-black hover:shadow-lg text-end"
+                                className="mt-5 sm:mt-6 inline-flex items-center gap-2 bg-white text-black text-xs sm:text-sm md:text-base font-semibold px-5 sm:px-6 py-1.5 rounded-full  transition-colors duration-300 max-w-xs border border-gray-700 hover:text-white hover:bg-black hover:shadow-lg text-end"
                             >
                                 Ver producto <ArrowRight className="w-4 h-4" />
                             </Link>
+                            </div>
                         </div>
                     </div>
                 ))}

@@ -2,9 +2,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaUser } from 'react-icons/fa';
 import ButtonShowCart from '../ui/ButtonShowCart';
-import MobileMenuToggle from '../ui/MobileMenuToggle';
 import Logo from '../ui/Logo';
 import ButtonSearchFormStore from '../ui/ButtonSearchFormStore';
+import ButtonShowSheetMobile from './ButtonShowSheetMobile';
 
 export default function NavBar() {
 
@@ -14,7 +14,7 @@ export default function NavBar() {
                 { slug: 'iphone', name: 'iPhone' },
                 { slug: 'samsung', name: 'Samsung' },
                 { slug: 'xiaomi', name: 'Xiaomi' },
-                
+
                 { slug: 'oppo', name: 'Oppo' },
             ]
         },
@@ -33,15 +33,15 @@ export default function NavBar() {
 
 
     return (
-        <header className="sticky top-0 z-50 bg-white text-gray-800">
-            <div className="max-w-7xl mx-auto flex justify-between items-center px-6 font-semibold text-sm md:text-base py-1">
+        <header className="sticky top-0 z-50 bg-white text-gray-950">
+            <div className="max-w-7xl mx-auto flex justify-between items-center px-6 font-semibold text-sm md:text-base pt-4 pb-2">
                 {/* Mobile: Menú y buscador */}
                 <div className="md:hidden flex items-center gap-2">
-                    <MobileMenuToggle />
+                    <ButtonShowSheetMobile />
                 </div>
 
                 {/* Mobile: Logo centrado (sin capturar eventos) */}
-                <div className="md:hidden absolute top-0 left-0 w-full h-full flex justify-center items-center z-0 pointer-events-auto">
+                <div className="md:hidden absolute top-0 left-0 w-full h-full flex justify-center items-center pointer-events-none z-[-1]">
                     <Link href="/" className="flex items-center">
                         <Image
                             src="/logob.svg"
@@ -102,7 +102,7 @@ export default function NavBar() {
                 <div className="hidden md:flex items-center gap-6">
                     <Link
                         href="/auth/registro"
-                        className="block hover:text-indigo-800 transition duration-300"
+                        className="block hover:text-indigo-800 transition"
                         aria-label="Registro / Usuario"
                     >
                         <FaUser size={20} />
@@ -112,12 +112,12 @@ export default function NavBar() {
 
                 {/* Mobile: Iconos a la derecha */}
                 <div className="md:hidden">
-                    <div className="absolute top-0 right-0 h-full px-6 flex items-center gap-4 mt-1">
-                        {/* <Link href="/auth/registro" className="hover:text-indigo-800 transition">
+                    {/* <div className="absolute top-0 right-0 h-full px-6 flex items-center gap-4 mt-1"> */}
+                    {/* <Link href="/auth/registro" className="hover:text-indigo-800 transition">
                             <FaUser size={20} />
                         </Link> */}
-                        <ButtonShowCart />
-                    </div>
+                    <ButtonShowCart />
+                    {/* </div> */}
                 </div>
             </div>
         </header>
