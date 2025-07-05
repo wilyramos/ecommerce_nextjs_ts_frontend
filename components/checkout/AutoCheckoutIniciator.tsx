@@ -1,38 +1,18 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useCartStore } from '@/src/store/cartStore';
 import { useCheckoutStore } from '@/src/store/shippingStore';
 import { createMPPreference } from '@/actions/checkout/create-mp-preference';
 import { toast } from 'sonner';
 import { createOrderAction } from '@/actions/order/create-order-action';
+import { SiMercadopago } from 'react-icons/si';
 
-
-
-export default function AutoCheckoutIniciator() {
-
-
-    // TODO: cambiar luego a botones cuando se tenga otras pasarelas de pago
-
+export default function CheckoutSelector() {
     const { cart } = useCartStore();
     const { shipping, profile } = useCheckoutStore();
-    // const [hasInitiated, setHasInitiated] = useState(false);
 
-
-    // console.log('AutoCheckoutIniciator - Cart:', cart);
-    // console.log('AutoCheckoutIniciator - Shipping:', shipping);
-
-    
-
-   useEffect(() => {
-    const iniciarCheckout = async () => {
-        const checkoutFlag = sessionStorage.getItem('checkout_iniciado');
-        if (checkoutFlag) return;
-
-        sessionStorage.setItem('checkout_iniciado', 'true');
-
+    const iniciarCheckoutMP = async () => {
         if (!cart || cart.length === 0) {
-            console.error('El carrito está vacío');
             toast.error('El carrito está vacío');
             return;
         }
@@ -57,7 +37,7 @@ export default function AutoCheckoutIniciator() {
                     referencia: shipping?.referencia || '',
                 },
                 shippingMethod: "DELIVERY",
-                notes: "Orden generada automáticamente",
+                notes: "Orden generada desde el selector de pasarelas",
             };
 
             const createOrderResponse = await createOrderAction(orderDataCreate);
@@ -110,15 +90,25 @@ export default function AutoCheckoutIniciator() {
         }
     };
 
-    if (cart.length > 0 && shipping) {
-        iniciarCheckout();
-    }
-}, [cart, shipping, profile]);
-
-
     return (
-        <div className="text-center text-sm text-gray-500">
-            Iniciando el checkout...
+        <div className="w-full flex flex-col items-center gap-4 mt-8">
+            <p className="text-sm text-gray-600">Selecciona una pasarela de pago</p>
+
+            <button
+                onClick={iniciarCheckoutMP}
+                className="flex items-center justify-between w-full max-w-xs px-4 py-3 border border-gray-300 rounded-lg bg-white text-sm text-gray-800 hover:border-gray-500 hover:bg-gray-50 transition-colors cursor-pointer"
+            >
+                <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-full bg-gray-100 flex items-center justify-center">
+                        <SiMercadopago size={18} className="text-[#009ee3]" />
+                    </div>
+                    <span>Pagar con Mercado Pago</span>
+                </div>
+                
+            </button>
         </div>
+
+
+
     );
 }
