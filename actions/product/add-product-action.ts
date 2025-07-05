@@ -100,10 +100,6 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
             success: ""
         }
     }
-    const success = SuccessResponse.parse(Response)
-    console.log("successss", success)
-    return {
-        errors: [],
-        success: success.message
-    }
+    
+    
 }

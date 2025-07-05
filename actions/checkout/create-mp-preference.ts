@@ -1,17 +1,27 @@
 'use server'
 
-import type { OrderCreateMPPreferenceInput } from "@/src/schemas/index"
+import type { CreatePreferenceInput } from "@/src/schemas/index"
+import getToken from "@/src/auth/token";
 
 
+export async function createMPPreference(orderData: CreatePreferenceInput) {
 
-export async function createMPPreference(orderData: OrderCreateMPPreferenceInput) {
 
-    console.log('Creando preferencia de Mercado Pago con los siguientes datos:', orderData);
+    const token = await getToken();
+
+
+    // console.log('Creando preferencia de Mercado Pago con los siguientes datos:', orderData);
     const url = process.env.API_URL;
+
+
 
     const res = await fetch(`${url}/checkout/create-preference`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+
         body: JSON.stringify(orderData),
     });
 

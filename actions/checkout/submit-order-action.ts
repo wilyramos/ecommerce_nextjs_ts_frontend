@@ -15,9 +15,10 @@ export async function submitOrderAction(orderData: unknown, prevState: ActionSta
     //TODO: - validate orderData with zod schema
     const dataParsed = OrderCreateSchema.safeParse(orderData)
     if (!dataParsed.success) {
+        const errors = dataParsed.error.errors.map(error => error.message)
         return {
-            errors: dataParsed.error.errors.map((error) => error.message),
-            success: ''
+            errors,
+            success: ""
         }
     }
 

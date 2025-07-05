@@ -329,13 +329,13 @@ const PaymentStatusEnum = z.enum(['PAGADO', 'PENDIENTE', 'CANCELADO']);
 
 // Dirección de envío
 export const ShippingAddressSchema = z.object({
-    departamento: z.string().min(1, { message: 'El departamento es obligatorio' }),
-    provincia: z.string().min(1, { message: 'La provincia es obligatoria' }),
-    distrito: z.string().min(1, { message: 'El distrito es obligatorio' }),
-    direccion: z.string().min(1, { message: 'La dirección es obligatoria' }),
+    departamento: z.string(),
+    provincia: z.string(),
+    distrito: z.string(),
+    direccion: z.string(),
     numero: z.string().optional(),
     piso: z.string().optional(),
-    referencia: z.string().min(1, { message: 'La referencia es obligatoria' }),
+    referencia: z.string().optional(),
 });
 
 export type ShippingAddress = z.infer<typeof ShippingAddressSchema>;
@@ -343,99 +343,105 @@ export type ShippingAddress = z.infer<typeof ShippingAddressSchema>;
 
 // Producto que se está pidiendo (solo se envía el ID)
 export const OrderItemSchema = z.object({
-    productId: z.string(),
+    productId: z.string().min(1, { message: 'El ID del producto es obligatorio' }),
     quantity: z.number().min(1, { message: 'La cantidad debe ser al menos 1' }),
     price: z.number().min(0, { message: 'El precio debe ser al menos 0' }),
 });
 
+export const statusHistorySchema = z.object({
+    status: OrderStatusEnum,
+    changedAt: z.date()
+});
+
 
 // Creación de la orden
-export const OrderCreateSchema = z.object({
-    user: z.string().optional(),
+export const CreateOrderSchema = z.object({
     items: z.array(OrderItemSchema).min(1, { message: 'Debe haber al menos un producto en la orden' }),
-    totalPrice: z.number().min(0, { message: 'El precio total es obligatorio y debe ser mayor o igual a 0' }),
+    subtotal: z.number().nonnegative(),
+    shippingCost: z.number().nonnegative(),
+    totalPrice: z.number().nonnegative(),
     shippingAddress: ShippingAddressSchema,
-    status: OrderStatusEnum.default('PENDIENTE'),
-    paymentMethod: PaymentMethodEnum.default('MERCADOPAGO'),
-    paymentStatus: PaymentStatusEnum.default('PENDIENTE'),
+    status: OrderStatusEnum.default('PENDIENTE').optional(),
+    shippingMethod: z.string(),
+    notes: z.string().optional(),
 });
 
-export type OrderCreateInput = z.infer<typeof OrderCreateSchema>;
-
-// Esquema para enviar a mercadopago
-
-export const OrderCreateMPPreferenceSchema = z.object({
-    items: z.array(z.object({
-        id: z.string(),
-        title: z.string(),
-        description: z.string().optional(),
-        quantity: z.number().min(1, { message: 'La cantidad debe ser al menos 1' }),
-        unit_price: z.number().min(0, { message: 'El precio debe ser al menos 0' }),
-    })).min(1, { message: 'Debe haber al menos un producto en la orden' }),
-    payer: z.object({
-        email: z.string().email({ message: 'Email no válido' }),
-        first_name: z.string(),
-        last_name: z.string(),
-        phone: z.object({
-            area_code: z.string().optional(),
-            number: z.string().optional(),
-        }).optional(),
-    }),
-    shipping: z.object({
-        address: z.object({
-            street_name: z.string().optional(),
-            street_number: z.string().optional(),
-            floor: z.string().optional(),
-            apartment: z.string().optional(),
-            city: z.string().optional(),
-            state: z.string().optional(),
-            country: z.string().optional(),
-        }),
-    }),
-});
-
-export type OrderCreateMPPreferenceInput = z.infer<typeof OrderCreateMPPreferenceSchema>;
-
-// Respuesta de la API para una orden
-export const OrderItemResponseSchema = z.object({
-    product: ProductAPIResponse.or(z.string()), // Puede ser un objeto Product o un ID de producto
-    quantity: z.number(),
-    price: z.number(),
-});
-
+// Respuesta de la orden
 export const OrderResponseSchema = z.object({
     _id: z.string(),
-    user: UserSchema.or(z.string()), // Puede ser un objeto User o un ID de usuario
-    items: z.array(OrderItemResponseSchema),
-    totalPrice: z.number(),
-    shippingAddress: ShippingAddressSchema.optional(),
+    user: UserSchema.or(z.string()).optional().nullable(),
+    items: z.array(OrderItemSchema),
+    subtotal: z.number().nonnegative(),
+    shippingCost: z.number().nonnegative(),
+    totalPrice: z.number().nonnegative(),
+    shippingAddress: ShippingAddressSchema,
     status: OrderStatusEnum,
+    statusHistory: z.array(statusHistorySchema).optional(),
+    shippingMethod: z.string(),
     paymentMethod: PaymentMethodEnum,
     paymentStatus: PaymentStatusEnum,
-    trackingId: z.string().optional(),
-    createdAt: z.string().datetime().optional(),
-    updatedAt: z.string().datetime().optional(),
-    __v: z.number().optional(),
+    isPrinted: z.boolean().default(false).optional(),
+    paymentId: z.string().optional(),
+    notes: z.string().optional(),
+    createdAt: z.string().datetime(),
+    updatedAt: z.string().datetime(),
 });
 
+// inferencias 
 export type Order = z.infer<typeof OrderResponseSchema>;
-
-export const OrdersListSchema = z.object({
+export const OrdersAPIResponse = z.object({
     orders: z.array(OrderResponseSchema),
     totalOrders: z.number(),
-    // totalAmount: z.number(),
     totalPages: z.number(),
     currentPage: z.number(),
 });
 
-export type OrdersList = z.infer<typeof OrdersListSchema>;
 
 
-// SALES
+// Payload para enviar a mercadopago
+
+export const PreferenceItemSchema = z.object({
+    id: z.string(),
+    title: z.string(),
+    description: z.string().optional(),
+    quantity: z.number(),
+    unit_price: z.number().nonnegative(),
+    currency_id: z.string().default('PEN'), 
+    picture_url: z.string().optional(),
+});
+
+export const PreferencePayerSchema = z.object({
+    email: z.string().email({ message: 'Email no válido' }),
+    first_name: z.string().optional(),
+    last_name: z.string().optional(),
+    phone: z.object({
+        area_code: z.string().optional(),
+        number: z.string().optional(),
+    }).optional(),
+});
+
+export const CreatePreferenceSchema = z.object({
+    items: z.array(PreferenceItemSchema),
+    payer: PreferencePayerSchema,
+    orderId: z.string()
+});
+
+// Inferencias
+export type CreateOrderInput = z.infer<typeof CreateOrderSchema>;
+export type CreatePreferenceInput = z.infer<typeof CreatePreferenceSchema>;
+
+// Esquema para enviar a mercadopago
+
+
+
+
+
+
+//** SALES **//
 
 export const SaleSourceEnum = z.enum(['ONLINE', 'POS']);
 export const SaleStatusEnum = z.enum(['COMPLETADA', 'REEMBOLSADA', 'ANULADA']);
-export const SalePaymentMethodEnum = z.enum(['EFECTIVO', 'TARJETA', 'TRANSFERENCIA', 'YAPE', 'PLIN']);
+export const SalePaymentMethodEnum = z.enum(['EFECTIVO', 'TARJETA', 'TRANSFERENCIA', 'YAPE', 'PLIN', 'MERCADOPAGO', 'OTRO']);
 export const SalePaymentStatusEnum = z.enum(['PAGADO', 'PENDIENTE', 'CANCELADO']);
 
 export const SaleItemSchema = z.object({

@@ -10,7 +10,7 @@ type ShippingData = {
     provincia: string;
     distrito: string;
     direccion: string;
-    numero: string;
+    numero?: string;
     piso?: string;
     referencia: string;
 };
@@ -37,7 +37,7 @@ export default function ShippingForm() {
 
     const onSubmit = (data: ShippingData) => {
         setShipping(data);
-        console.log('Dirección guardada:', data);
+        // console.log('Dirección guardada:', data);
         router.push('/checkout/payment');
     };
 
@@ -94,11 +94,10 @@ export default function ShippingForm() {
                     <label className="text-xs font-bold text-gray-700">Número</label>
                     <input
                         type="text"
-                        {...register('numero', { required: 'El número es obligatorio' })}
+                        {...register('numero')}
                         placeholder="Ej. 202"
                         className="mt-1 block w-full border border-gray-200 rounded-full px-3 py-2 text-sm shadow-sm"
                     />
-                    {errors.numero && <ErrorMessage>{errors.numero.message}</ErrorMessage>}
                 </div>
 
                 <div>
