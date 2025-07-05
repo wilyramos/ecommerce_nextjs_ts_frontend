@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useCartStore } from '@/src/store/cartStore';
 import { useCheckoutStore } from '@/src/store/shippingStore';
 import { createMPPreference } from '@/actions/checkout/create-mp-preference';
@@ -11,9 +11,12 @@ import { createOrderAction } from '@/actions/order/create-order-action';
 
 export default function AutoCheckoutIniciator() {
 
+
+    // TODO: cambiar luego a botones cuando se tenga otras pasarelas de pago
+
     const { cart } = useCartStore();
     const { shipping, profile } = useCheckoutStore();
-    const [hasInitiated, setHasInitiated] = useState(false);
+    // const [hasInitiated, setHasInitiated] = useState(false);
 
 
     // console.log('AutoCheckoutIniciator - Cart:', cart);

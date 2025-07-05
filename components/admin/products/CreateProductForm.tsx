@@ -10,10 +10,11 @@ import type { CategoriasList } from '@/src/schemas'
 export default function CreateProductForm({ categorias }: {categorias : CategoriasList}){
 
     const router = useRouter();
-    const [state, dispatch] = useActionState(createProduct, {
+    
+    const [ state, dispatch ] = useActionState(createProduct, {
         errors: [],
         success: ""
-    })
+    });
 
      useEffect(() => {
 

@@ -380,6 +380,7 @@ export const OrderResponseSchema = z.object({
     shippingMethod: z.string(),
     paymentMethod: PaymentMethodEnum,
     paymentStatus: PaymentStatusEnum,
+    trackingId: z.string().optional(),
     isPrinted: z.boolean().default(false).optional(),
     paymentId: z.string().optional(),
     notes: z.string().optional(),
@@ -395,6 +396,7 @@ export const OrdersAPIResponse = z.object({
     totalPages: z.number(),
     currentPage: z.number(),
 });
+export type OrdersList = z.infer<typeof OrdersAPIResponse>;
 
 
 

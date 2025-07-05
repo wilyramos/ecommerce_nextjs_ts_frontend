@@ -10,7 +10,7 @@ import {
 
 import { useState } from "react";
 import Link from "next/link";
-import { FaBars, FaUser } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import ButtonSearchFormStore from "../ui/ButtonSearchFormStore";
 import  Hamburger  from "hamburger-react";
 

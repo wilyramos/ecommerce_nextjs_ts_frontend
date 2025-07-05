@@ -1,5 +1,5 @@
 import getToken from "@/src/auth/token"
-import { OrderResponseSchema, OrdersListSchema } from "@/src/schemas";
+import { OrderResponseSchema, OrdersAPIResponse } from "@/src/schemas";
 
 
 export const getOrders = async ({ page = 1, limit = 10 }) => {
@@ -19,7 +19,7 @@ export const getOrders = async ({ page = 1, limit = 10 }) => {
     }
 
     const json = await req.json();
-    const orders = OrdersListSchema.parse(json);
+    const orders = OrdersAPIResponse.parse(json);
     return orders;
 }
 

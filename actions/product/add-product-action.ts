@@ -1,7 +1,7 @@
 "use server"
 
-import { CreateProductSchema, SuccessResponse, ErrorResponse } from "@/src/schemas"
-import { cookies } from "next/headers"
+import getToken from "@/src/auth/token"
+import { CreateProductSchema, SuccessResponse } from "@/src/schemas"
 
 
 type ActionStateType = {
@@ -10,9 +10,7 @@ type ActionStateType = {
 }
 
 
-export async function createProduct(prevState: ActionStateType, formData: FormData) {
-
-    console.log("formDataaaaA", formData)
+export async function createProduct(prevState: ActionStateType | undefined, formData: FormData) {
 
 
     // parsear los atributos del formulario
@@ -24,7 +22,7 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         } catch (error) {
             console.error("Error parsing atributos:", error);
             return {
-                errors: ["Error al procesar los atributos del producto."],
+                errors: ["Error parsing atributos. Please ensure it is a valid JSON string."],
                 success: ""
             }
         }
@@ -32,11 +30,9 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
 
     // console.log("atributos", atributos)
 
-
-
     const productData = {
         nombre: formData.get('nombre'),
-        descripcion: formData.get('descripcion'),       
+        descripcion: formData.get('descripcion'),
         precio: Number(formData.get('precio')),
         costo: Number(formData.get('costo')),
         categoria: formData.get('categoria'),
@@ -49,57 +45,41 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         atributos: atributos
     }
 
-    // format variantes
 
-    // console.log("productData", productData)
-
-
-    // console.log("productDataaaa", productData)
-
-    const product = CreateProductSchema.safeParse(productData)
-    // console.log("product", product)
-
-    if (!product.success) {
+    // Validar con zod 
+    const result = CreateProductSchema.safeParse(productData)
+    if (!result.success) {
         return {
-            errors: product.error.issues.map((issue) => issue.message),
+            errors: result.error.issues.map((issue) => issue.message),
             success: ""
         }
     }
 
-    console.log("product.data", product.data)
-
-    const token = (await cookies()).get('ecommerce-token')?.value
+    // Hacer la petición al API
+    const token = await getToken()
     const url = `${process.env.API_URL}/products`
-    const req = await fetch(url, {
+    const response = await fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({
-            nombre: product.data.nombre,
-            descripcion: product.data.descripcion,
-            precio: product.data.precio,
-            costo: product.data.costo,
-            categoria: product.data.categoria,
-            stock: product.data.stock,
-            sku: product.data.sku,
-            barcode: product.data.barcode,
-            imagenes: product.data.imagenes,
-            esDestacado: product.data.esDestacado,
-            esNuevo: product.data.esNuevo,
-            atributos: product.data.atributos
-        })
+        body: JSON.stringify(result.data)
     });
 
-    const Response = await req.json();
-    // console.log("jsonn", json)
-    if (!req.ok) {
+    const json = await response.json()
+    const parsed = SuccessResponse.safeParse(json)
+
+    if (!response.ok || !parsed.success) {
         return {
-            errors: [Response.message],
+            errors: [parsed.success ? parsed.data.message : "Error desconocido al crear el producto."],
             success: ""
-        }
+        };
     }
-    
-    
+
+    return {
+        errors: [],
+        success: json.message
+    }
+
 }

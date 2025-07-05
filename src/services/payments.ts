@@ -1,11 +1,11 @@
 import "server-only"
-import type { OrderCreateInput } from "../schemas";
+import type { CreatePreferenceInput } from "@/src/schemas/index"
 import getToken from "@/src/auth/token"
  
 
 //TODO: ESTA POR IMPLEMENTAR
 
-export const createMPPreference = async (orderData: OrderCreateInput) => {
+export const createMPPreference = async (orderData: CreatePreferenceInput) => {
 
 
     const token = await getToken();
