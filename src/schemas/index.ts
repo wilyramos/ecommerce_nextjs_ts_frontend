@@ -350,7 +350,7 @@ export const OrderItemSchema = z.object({
 
 export const statusHistorySchema = z.object({
     status: OrderStatusEnum,
-    changedAt: z.date()
+    changedAt: z.string().datetime().default(() => new Date().toISOString()),
 });
 
 
@@ -397,7 +397,6 @@ export const OrdersAPIResponse = z.object({
     currentPage: z.number(),
 });
 export type OrdersList = z.infer<typeof OrdersAPIResponse>;
-
 
 
 // Payload para enviar a mercadopago

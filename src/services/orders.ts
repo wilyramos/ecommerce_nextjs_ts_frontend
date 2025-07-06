@@ -1,6 +1,8 @@
+import "server-only"
+
+
 import getToken from "@/src/auth/token"
 import { OrderResponseSchema, OrdersAPIResponse } from "@/src/schemas";
-
 
 export const getOrders = async ({ page = 1, limit = 10 }) => {
 
@@ -25,7 +27,12 @@ export const getOrders = async ({ page = 1, limit = 10 }) => {
 
 export const getOrder = async (id: string) => {
     const token = await getToken();
+
+    console.log("Fetching order with ID:", id);
+    console.log("Using token:", token);
     const url = `${process.env.API_URL}/orders/${id}`;
+
+    console.log("Fetching order from URL:", url);
 
     const req = await fetch(url, {
         method: 'GET',
@@ -38,7 +45,10 @@ export const getOrder = async (id: string) => {
         return null;
     }
 
+    console.log("Response status:", req);
     const json = await req.json();
+
+    console.log("Response from order fetch:", json);
     const order = OrderResponseSchema.parse(json);
     return order;
 }

@@ -39,6 +39,8 @@ export async function googleLoginAction({ credential, redirectTo }: { credential
         httpOnly: true
     })
 
+    
+
     // Redirección basada en rol
     if (role === "administrador") return redirect("/admin")
     if (role === "vendedor") return redirect("/pos")
