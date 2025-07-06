@@ -1,7 +1,20 @@
-import React from 'react'
+import ErrorClient from "@/components/checkout/ErrorClient";
 
-export default function ErrorPageCheckout() {
+type SearchParams = Promise<{
+    error?: string;
+    orderId?: string;
+}>;
+
+export default async function ErrorPageCheckout({ searchParams }: { searchParams: SearchParams }) {
+
+    const { error: errorMessage, orderId } = await searchParams;
+
     return (
-        <div>ErrorPageCheckout</div>
+        <>
+            <ErrorClient 
+                errorMessage={errorMessage}
+                orderId={orderId}
+            />
+        </>
     )
 }
