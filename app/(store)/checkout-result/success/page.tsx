@@ -1,11 +1,10 @@
-import React from 'react'
+// File: frontend/app/%28store%29/checkout-result/success/page.tsx
+
 
 export default function SuccessPageCheckout() {
     return (
         <>
             <div>SuccessPageCheckout</div>
-            <p>Thank you for your purchase!</p>
-            <p>Your order has been successfully placed.</p>
         </>
     )
 }

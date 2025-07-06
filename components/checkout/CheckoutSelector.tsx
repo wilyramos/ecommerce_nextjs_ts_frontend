@@ -1,7 +1,7 @@
 'use client';
 
 import { useCartStore } from '@/src/store/cartStore';
-import { useCheckoutStore } from '@/src/store/shippingStore';
+import { useCheckoutStore } from '@/src/store/checkoutStore';
 import { createMPPreference } from '@/actions/checkout/create-mp-preference';
 import { toast } from 'sonner';
 import { createOrderAction } from '@/actions/order/create-order-action';

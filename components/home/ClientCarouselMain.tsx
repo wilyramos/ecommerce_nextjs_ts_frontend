@@ -17,7 +17,7 @@ const responsive = {
 
 export default function ClientCarouselMain({ products }: { products: Product[] }) {
     return (
-        <div className="w-full max-w-screen-2xl mx-auto rounded-3xl">
+        <div className="w-full max-w-screen-2xl mx-auto">
             <Carousel
                 responsive={responsive}
                 autoPlay
@@ -31,7 +31,7 @@ export default function ClientCarouselMain({ products }: { products: Product[] }
                 {products.map((product) => (
                     <div
                         key={product._id}
-                        className="relative w-full h-[300px] md:h-[500px] rounded-3xl overflow-hidden group  border-gray"
+                        className="relative w-full h-[300px] md:h-[500px]  overflow-hidden group  border-gray"
                     >
                         {/* Imágenes en columnas */}
                         <div className="flex w-full h-full flex-row md:flex-row ">

@@ -1,6 +1,6 @@
 'use client';
 
-import { useCheckoutStore } from '@/src/store/shippingStore';
+import { useCheckoutStore } from '@/src/store/checkoutStore';
 import { useForm } from 'react-hook-form';
 import ErrorMessage from '@/components/ui/ErrorMessage';
 import { useRouter } from 'next/navigation';

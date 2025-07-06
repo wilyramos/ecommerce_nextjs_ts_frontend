@@ -1,4 +1,4 @@
-// src/store/shippingStore.ts
+// src/store/checkoutStore.ts
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import type { ShippingAddress } from '../schemas';

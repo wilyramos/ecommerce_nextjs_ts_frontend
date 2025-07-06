@@ -3,7 +3,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { useCheckoutStore } from '@/src/store/shippingStore';
+import { useCheckoutStore } from '@/src/store/checkoutStore';
 import type { CheckoutRegister, User } from '@/src/schemas';
 import ErrorMessage from '../ui/ErrorMessage';
 

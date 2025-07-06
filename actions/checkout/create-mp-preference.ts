@@ -13,8 +13,6 @@ export async function createMPPreference(orderData: CreatePreferenceInput) {
     // console.log('Creando preferencia de Mercado Pago con los siguientes datos:', orderData);
     const url = process.env.API_URL;
 
-
-
     const res = await fetch(`${url}/checkout/create-preference`, {
         method: 'POST',
         headers: {

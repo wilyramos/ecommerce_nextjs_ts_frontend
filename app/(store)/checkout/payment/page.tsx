@@ -1,5 +1,5 @@
 
-import AutoCheckoutIniciator from "@/components/checkout/AutoCheckoutIniciator";
+import CheckoutSelector from "@/components/checkout/CheckoutSelector";
 
 
 export default function PaymentPage() {
@@ -17,7 +17,7 @@ export default function PaymentPage() {
                 Por favor, no cierres esta ventana ni navegues a otra página mientras se procesa tu pago.
             </p>
 
-            <AutoCheckoutIniciator />
+            <CheckoutSelector />
 
         </div>
     );
