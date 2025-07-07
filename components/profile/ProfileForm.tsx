@@ -9,8 +9,6 @@ import { toast } from "sonner";
 export default function ProfileForm({ user }: { user: User }) {
 
 
-
-
     const EditUserWithId = EditUserAction.bind(null, user._id);
 
     const [state, dispatch] = useActionState(EditUserWithId, {

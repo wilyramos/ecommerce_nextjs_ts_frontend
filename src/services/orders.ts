@@ -53,3 +53,23 @@ export const getOrder = async (id: string) => {
     const order = OrderResponseSchemaPopulate.parse(json);
     return order;
 }
+
+export const getOrdersByUser = async ({ page = 1, limit = 5 }) => {
+    const token = await getToken();
+    const url = `${process.env.API_URL}/orders/user/me?page=${page}&limit=${limit}`;
+
+    const req = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    if (!req.ok) {
+        return null;
+    }
+
+    const json = await req.json();
+    const orders = OrdersAPIResponse.parse(json);
+    return orders;
+}

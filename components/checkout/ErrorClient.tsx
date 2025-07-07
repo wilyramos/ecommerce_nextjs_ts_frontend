@@ -15,7 +15,6 @@ export default function ErrorClient({ errorMessage, orderId }: ErrorClientProps)
             <div className="w-full max-w-lg bg-white shadow-xl rounded-3xl p-10 text-center border border-red-200">
                 <FiAlertCircle className="text-red-500 text-7xl mx-auto mb-6 animate-pulse" /> {/* Pulsing animation for attention */}
                 <h1 className="text-3xl font-semibold text-gray-900 mb-2 flex items-center justify-center gap-2">
-                    <FiAlertCircle className="text-red-600" />
                     ¡Algo salió mal!
                 </h1>
                 <p className="text-gray-600 text-sm mb-8 tracking-wide">

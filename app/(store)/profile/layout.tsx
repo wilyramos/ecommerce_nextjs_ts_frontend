@@ -9,9 +9,9 @@ export default async function ProfileLayout({ children }: { children: React.Reac
     if (!user) redirect('/auth/login');
 
     return (
-        <div className="flex h-[calc(100vh-4rem)]">
+        <div className="flex h-auto">
             {/* Sidebar */}
-            <aside className="w-64 bg-white shadow-md p-6 flex flex-col justify-between">
+            <aside className="w-auto bg-white shadow-md p-6 flex flex-col justify-between">
                 <div>
                     {/* Usuario */}
                     <div className="text-center mb-6">

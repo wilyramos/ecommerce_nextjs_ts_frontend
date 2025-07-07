@@ -271,7 +271,7 @@ export const ProductAPIResponse = z.object({
     imagenes: z.array(z.string()),
     categoria: z.string(),
     stock: z.number(),
-    sku: z.string(),
+    sku: z.string().optional(),
     createdAt: z.string().datetime().optional(),
     updatedAt: z.string().datetime().optional(),
     __v: z.number().optional(),
@@ -286,7 +286,6 @@ export const ProductAPIResponse = z.object({
 export const ProductAPIResponseInPopulate = ProductAPIResponse.pick({
     _id: true,
     nombre: true,
-    precio: true,
     imagenes: true,
     sku: true,
     updatedAt: true,
