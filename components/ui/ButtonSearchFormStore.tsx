@@ -27,7 +27,7 @@ export default function ButtonSearchFormStore() {
 
     return (
         <form className="flex w-full" onSubmit={handleSubmit}>
-            <div className="flex items-center w-full border border-gray-500 rounded-full overflow-hidden">
+            <div className="flex items-center w-full border-2 border-gray-300 rounded-full overflow-hidden">
                 <input
                     type="text"
                     value={query}
