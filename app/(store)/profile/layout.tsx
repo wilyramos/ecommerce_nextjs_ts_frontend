@@ -1,8 +1,8 @@
 import { verifySession } from '@/src/auth/dal';
 import { redirect } from 'next/navigation';
-import Link from 'next/link';
-import { FiUser, FiPackage, FiLock, FiLogOut } from 'react-icons/fi';
 import { logout } from '@/actions/logout-user-action';
+import { FiLogOut } from 'react-icons/fi';
+import SidebarProfileNav from '@/components/profile/SidebarProfileNav';
 
 export default async function ProfileLayout({ children }: { children: React.ReactNode }) {
     const { user } = await verifySession();
@@ -22,31 +22,7 @@ export default async function ProfileLayout({ children }: { children: React.Reac
                     </div>
 
                     {/* Navegación */}
-                    <nav className="space-y-2">
-                        <Link
-                            href="/profile"
-                            className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100 hover:text-blue-700 transition-all"
-                        >
-                            <FiUser className="text-lg" />
-                            <span>Datos personales</span>
-                        </Link>
-
-                        <Link
-                            href="/profile/orders"
-                            className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100 hover:text-blue-700 transition-all"
-                        >
-                            <FiPackage className="text-lg" />
-                            <span>Mis pedidos</span>
-                        </Link>
-
-                        <Link
-                            href="/profile/password"
-                            className="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-100 hover:text-blue-700 transition-all"
-                        >
-                            <FiLock className="text-lg" />
-                            <span>Cambiar contraseña</span>
-                        </Link>
-                    </nav>
+                    <SidebarProfileNav />
                 </div>
 
                 {/* Cerrar sesión */}

@@ -1,5 +1,5 @@
 import { getCurrentUser } from "@/src/auth/currentUser"
-import ProfileForm from "@/components/user/ProfileForm";
+import ProfileForm from "@/components/profile/ProfileForm";
 
 
 export default async function ProfilePage() {
@@ -11,7 +11,6 @@ export default async function ProfilePage() {
     if (!user) {
         return (
             <div>
-                <h1 className='text-2xl font-bold mb-4'>Perfil de usuario</h1>
                 <p>No se ha encontrado el usuario.</p>
             </div>
         );
@@ -22,9 +21,8 @@ export default async function ProfilePage() {
     return (
         <>
             <div>
-                <h1 className='text-2xl'>Perfil de usuario</h1>
                 <ProfileForm user={user} />
             </div>
         </>
-    )
+    );
 }

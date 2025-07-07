@@ -178,19 +178,20 @@ export const CreateProductSchema = z.object({
     atributos: AtributosProductSchema.optional(),
 });
 
+// Response API
 export const ProductSchema = z.object({
     _id: z.string(),
     nombre: z.string(),
     slug: z.string().optional(),
-    descripcion: z.string(),
+    descripcion: z.string().optional(),
     precio: z.number(),
     costo: z.number().optional(),
     imagenes: z.array(z.string()),
-    categoria: z.string(),
+    categoria: z.string().optional(),
     stock: z.number(),
     sku: z.string().optional(),
     barcode: z.string().optional(),
-    isActive: z.boolean().default(true),
+    isActive: z.boolean().default(true).optional(),
     esDestacado: z.boolean().default(false).optional(),
     esNuevo: z.boolean().default(false).optional(),
     variantes: z.array(VariantSchema).optional(),
@@ -263,14 +264,14 @@ export const CategorySchema = z.object({
 export const ProductAPIResponse = z.object({
     _id: z.string(),
     nombre: z.string(),
-    slug: z.string().optional(),
-    descripcion: z.string(),
+    slug: z.string(),
+    descripcion: z.string().optional(),
     precio: z.number(),
     costo: z.number().optional(),
     imagenes: z.array(z.string()),
     categoria: z.string(),
     stock: z.number(),
-    sku: z.string().optional(),
+    sku: z.string(),
     createdAt: z.string().datetime().optional(),
     updatedAt: z.string().datetime().optional(),
     __v: z.number().optional(),
@@ -280,6 +281,16 @@ export const ProductAPIResponse = z.object({
     esDestacado: z.boolean().default(false).optional(),
     esNuevo: z.boolean().default(false).optional(),
     atributos: AtributosProductSchema.optional(),
+})
+
+export const ProductAPIResponseInPopulate = ProductAPIResponse.pick({
+    _id: true,
+    nombre: true,
+    precio: true,
+    imagenes: true,
+    sku: true,
+    updatedAt: true,
+    barcode: true,
 })
 
 export type ProductType = z.infer<typeof ProductAPIResponse>
@@ -366,14 +377,45 @@ export const CreateOrderSchema = z.object({
     notes: z.string().optional(),
 });
 
-// Respuesta de la orden
+// Respuesta de la orden populada
+
+// item de la orden
+
+const ProductSchemaOrder = z.object({
+    productId: ProductAPIResponseInPopulate,
+    quantity: z.number(),
+    price: z.number()
+})
+
+export const OrderResponseSchemaPopulate = z.object({
+    _id: z.string(),
+    user: UserSchema,
+    items: z.array(ProductSchemaOrder),
+    subtotal: z.number(),
+    shippingCost: z.number(),
+    totalPrice: z.number(),
+    shippingAddress: ShippingAddressSchema,
+    status: OrderStatusEnum,
+    statusHistory: z.array(statusHistorySchema).optional(),
+    shippingMethod: z.string(),
+    paymentMethod: PaymentMethodEnum,
+    paymentStatus: PaymentStatusEnum,
+    trackingId: z.string().optional(),
+    isPrinted: z.boolean().default(false).optional(),
+    paymentId: z.string().optional(),
+    notes: z.string().optional(),
+    createdAt: z.string().datetime(),
+    updatedAt: z.string().datetime(),
+})
+
+// Respuesta de la orden de la api
 export const OrderResponseSchema = z.object({
     _id: z.string(),
     user: UserSchema.or(z.string()).optional().nullable(),
     items: z.array(OrderItemSchema),
-    subtotal: z.number().nonnegative(),
-    shippingCost: z.number().nonnegative(),
-    totalPrice: z.number().nonnegative(),
+    subtotal: z.number(),
+    shippingCost: z.number(),
+    totalPrice: z.number(),
     shippingAddress: ShippingAddressSchema,
     status: OrderStatusEnum,
     statusHistory: z.array(statusHistorySchema).optional(),
@@ -389,7 +431,7 @@ export const OrderResponseSchema = z.object({
 });
 
 // inferencias 
-export type Order = z.infer<typeof OrderResponseSchema>;
+export type Order = z.infer<typeof OrderResponseSchemaPopulate>;
 export const OrdersAPIResponse = z.object({
     orders: z.array(OrderResponseSchema),
     totalOrders: z.number(),

@@ -1,73 +1,95 @@
+'use client';
+
 import type { OrdersList } from '@/src/schemas';
 import { formatDate } from '@/lib/utils';
 import Link from 'next/link';
+import OrderStatusBadge from "@/components/ui/OrderStatusBadge";
+import PaymentStatusBadge from "@/components/ui/PaymentStatusBadge";
+
+
+import {
+    FaEye
+} from 'react-icons/fa';
 
 interface OrdersTableProps {
     orders: OrdersList;
 }
 
-
 export default function OrdersTable({ orders }: OrdersTableProps) {
-
     if (!orders || orders.orders.length === 0) {
         return (
-            <div className="flex justify-center min-h-[200px]">
-                <h2 className="text-lg sm:text-xl font-semibold text-gray-600">
-                    No hay pedidos disponibles.
-                </h2>
+            <div className="flex justify-center items-center min-h-[200px]">
+                <h2 className="text-lg font-medium text-gray-500">No hay pedidos disponibles.</h2>
             </div>
         );
     }
 
     return (
-        <div className="bg-white rounded-xl shadow border border-gray-200 overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 text-xs md:text-sm">
-                <thead className="bg-gray-800 text-white">
-                    <tr>
-                        <th className="px-4 py-2 font-medium text-left">ID Pedido</th>
-                        <th className="px-4 py-2 hidden md:table-cell">Fecha</th>
-                        <th className="px-4 py-2 hidden md:table-cell">Cliente</th>
-                        <th className="px-4 py-2 hidden md:table-cell">Total</th>
-                        <th className="px-4 py-2">Método de Pago</th>
-                        <th className="hidden md:block px-4 py-2">Dirección de Envío</th>
-                        <th className="px-4 py-2">Items</th>
-                        <th className="px-4 py-2">Estado</th>
-                        <th className="px-4 py-2">Acciones</th>
+        <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
+            <table className="min-w-full divide-y divide-gray-200 text-sm">
+                <thead className="bg-white">
+                    <tr className="text-gray-600 font-semibold">
+                        <th className="px-6 py-4 text-left">Pedido</th>
+                        <th className="px-6 py-4 hidden md:table-cell">Fecha</th>
+                        <th className="px-6 py-4 hidden md:table-cell">Total</th>
+                        <th className="px-6 py-4">Pago</th>
+                        <th className="px-6 py-4 hidden lg:table-cell">Envío</th>
+                        <th className="px-6 py-4">Items</th>
+                        <th className="px-6 py-4">Estado</th>
+                        <th className="px-6 py-4 text-center">Ver</th>
                     </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200 text-gray-600 text-xs md:text-sm">
+                <tbody className="bg-gray-50 divide-y divide-gray-100 text-gray-800">
                     {orders.orders.map((order) => (
-                        <tr key={order._id} className="hover:bg-gray-100 transition text-xs">
-                            
-                            <td className="px-4 py-2 font-medium text-gray-900">
-                                <Link href={`/admin/orders/${order._id}`} className="hover:text-blue-600">
-                                    {order._id}
+                        <tr
+                            key={order._id}
+                            className="hover:bg-white transition-colors"
+                        >
+                            <td className="px-6 py-4 max-w-[160px] truncate">
+                                <Link
+                                    href={`/admin/orders/${order._id}`}
+                                    className="text-blue-600 hover:underline font-medium"
+                                >
+                                    #{order._id.slice(-6).toUpperCase()}
                                 </Link>
                             </td>
-                            <td className="px-4 py-2 hidden md:table-cell">
-                                {order.createdAt ? formatDate(order.createdAt) : 'N/A'}
+
+                            <td className="px-6 py-4 hidden md:table-cell text-gray-500">
+                                {formatDate(order.createdAt)}
                             </td>
-                            <td className="px-4 py-2 hidden md:table-cell">
-                                {/* {order.user ? order.user.nombre : 'Anónimo'} */}
+
+                            <td className="px-6 py-4 hidden md:table-cell font-semibold text-gray-800">
+                                S/. {order.totalPrice.toFixed(2)}
                             </td>
-                            <td className="px-4 py-2 hidden md:table-cell">
-                                s/.{order.totalPrice.toFixed(2)}
+
+                            <td className="px-6 py-4">
+                                <PaymentStatusBadge status={order.paymentStatus} />
                             </td>
-                            <td className="px-4 py-2">{order.paymentMethod}</td>
-                            {/* <td className=" hidden md:block  px-4 py-2">{order.shippingAddress.direccion}</td> */}
-                            <td className="px-4 py-2">
-                                {order.items.length} item{order.items.length > 1 ? 's' : ''}
+
+                            <td className="px-6 py-4 hidden lg:table-cell text-gray-500">
+                                {order.shippingAddress?.direccion}, {order.shippingAddress?.distrito}
                             </td>
-                            <td className={`px-4 py-2 ${order.status === 'PENDIENTE' ? 'text-yellow-600' : order.status === 'ENVIADO' ? 'text-blue-600' : order.status === 'ENTREGADO' ? 'text-green-600' : 'text-red-600'}`}>
-                                {order.status}
+
+                            <td className="px-6 py-4">{order.items.length}</td>
+
+                            <td className="px-6 py-4">
+                               
+                                <OrderStatusBadge status={order.status} />
                             </td>
-                            <td className="px-4 py-2">
-                                {'todo:'}
+
+                            <td className="px-6 py-4 text-center">
+                                <Link
+                                    href={`/admin/orders/${order._id}`}
+                                    title="Ver detalles"
+                                    className="text-gray-500 hover:text-blue-600"
+                                >
+                                    <FaEye className="w-4 h-4" />
+                                </Link>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
         </div>
-    )
+    );
 }

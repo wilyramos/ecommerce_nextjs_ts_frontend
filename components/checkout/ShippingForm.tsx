@@ -42,8 +42,8 @@ export default function ShippingForm() {
     };
 
     return (
-        <form className="mt-6 space-y-4" onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form className="max-w-lg mx-auto space-y-1 pt-2" onSubmit={handleSubmit(onSubmit)}>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <div>
                     <label className="text-xs font-bold text-gray-700">Departamento</label>
                     <input
@@ -65,18 +65,20 @@ export default function ShippingForm() {
                     />
                     {errors.provincia && <ErrorMessage>{errors.provincia.message}</ErrorMessage>}
                 </div>
+
+                <div>
+                    <label className="text-xs font-bold text-gray-700">Distrito</label>
+                    <input
+                        type="text"
+                        {...register('distrito', { required: 'El distrito es obligatorio' })}
+                        placeholder="Ej. Miraflores"
+                        className="mt-1 block w-full border border-gray-200 rounded-full px-3 py-2 text-sm shadow-sm"
+                    />
+                    {errors.distrito && <ErrorMessage>{errors.distrito.message}</ErrorMessage>}
+                </div>
             </div>
 
-            <div>
-                <label className="text-xs font-bold text-gray-700">Distrito</label>
-                <input
-                    type="text"
-                    {...register('distrito', { required: 'El distrito es obligatorio' })}
-                    placeholder="Ej. Miraflores"
-                    className="mt-1 block w-full border border-gray-200 rounded-full px-3 py-2 text-sm shadow-sm"
-                />
-                {errors.distrito && <ErrorMessage>{errors.distrito.message}</ErrorMessage>}
-            </div>
+
 
             <div>
                 <label className="text-xs font-bold text-gray-700">Dirección</label>
@@ -89,7 +91,7 @@ export default function ShippingForm() {
                 {errors.direccion && <ErrorMessage>{errors.direccion.message}</ErrorMessage>}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
                 <div>
                     <label className="text-xs font-bold text-gray-700">Número</label>
                     <input
@@ -110,23 +112,24 @@ export default function ShippingForm() {
                     />
                 </div>
 
-                <div>
-                    <label className="text-xs font-bold text-gray-700">Referencia</label>
-                    <input
-                        type="text"
-                        {...register('referencia', { required: 'La referencia es obligatoria' })}
-                        placeholder="Ej. Frente a la tienda Tottus"
-                        className="mt-1 block w-full border border-gray-200 rounded-full px-3 py-2 text-sm shadow-sm"
-                    />
-                    {errors.referencia && <ErrorMessage>{errors.referencia.message}</ErrorMessage>}
-                </div>
+
+            </div>
+            <div>
+                <label className="text-xs font-bold text-gray-700">Referencia</label>
+                <input
+                    type="text"
+                    {...register('referencia', { required: 'La referencia es obligatoria' })}
+                    placeholder="Ej. Frente a la tienda Tottus"
+                    className="mt-1 block w-full border border-gray-200 rounded-full px-3 py-2 text-sm shadow-sm"
+                />
+                {errors.referencia && <ErrorMessage>{errors.referencia.message}</ErrorMessage>}
             </div>
 
-            <div className="pt-4">
+            <div className="pt-4 text-center">
 
                 <button
                     type="submit"
-                className="w-full  py-2 px-4 max-w-md text-white bg-blue-800 rounded-full hover:bg-blue-700 font-medium transition-colors mt-4 hover:cursor-pointer "
+                    className="w-full  py-2 px-4 max-w-md text-white bg-blue-800 rounded-full hover:bg-blue-700 font-medium transition-colors mt-4 hover:cursor-pointer "
                 >
                     Continuar con el pago
                 </button>

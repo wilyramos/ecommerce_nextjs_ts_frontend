@@ -21,7 +21,9 @@ export default async function pageOrders({ searchParams }: PageOrdersProps) {
 
     // Get orders from the backend
 
-    const orders = await getOrders({ page, limit });
+    const data = await getOrders({ page, limit });
+    const orders = data?.orders;
+    console.log('Orders data:', orders);
 
     return (
         <div className="max-w-7xl mx-auto p-5">
@@ -40,7 +42,7 @@ export default async function pageOrders({ searchParams }: PageOrdersProps) {
                         No hay pedidos disponibles.
                     </h2>
                 </div>
-            ) : orders.orders.length === 0 ? (
+            ) : orders.length === 0 ? (
                 <div className="flex justify-center min-h-[200px]">
                     <h2 className="text-base sm:text-lg text-gray-500">
                         No se encontraron pedidos en esta página.
@@ -48,10 +50,10 @@ export default async function pageOrders({ searchParams }: PageOrdersProps) {
                 </div>
             ) : (
                 <>
-                    <OrdersTable orders={orders} />
+                    <OrdersTable orders={data} />
                     <Pagination
                         currentPage={page}
-                        totalPages={Math.ceil(orders.totalOrders / limit)}
+                        totalPages={Math.ceil(data.totalOrders / limit)}
                         limit={limit}
                         pathname="/admin/orders"
                     />

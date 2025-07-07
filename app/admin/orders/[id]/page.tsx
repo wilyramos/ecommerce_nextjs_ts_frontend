@@ -1,7 +1,10 @@
 import { getOrder } from "@/src/services/orders";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils";
-
+import { FaBoxOpen } from "react-icons/fa";
+import OrderStatusBadge from "@/components/ui/OrderStatusBadge";
+import PaymentStatusBadge from "@/components/ui/PaymentStatusBadge";
+import Image from "next/image";
 
 type Params = Promise<{ id: string }>;
 
@@ -13,10 +16,7 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
         return (
             <div className="p-6 text-center">
                 <h1 className="text-lg text-gray-600">Pedido no encontrado</h1>
-                <Link
-                    href="/admin/orders"
-                    className="mt-3 inline-block text-sm text-blue-600 underline"
-                >
+                <Link href="/admin/orders" className="mt-3 inline-block text-sm text-blue-600 underline">
                     Volver a pedidos
                 </Link>
             </div>
@@ -24,84 +24,139 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
     }
 
     return (
-        <div className="max-w-4xl mx-auto px-4 py-8 space-y-8 text-gray-800">
-            {/* Volver */}
-            <Link
-                href="/admin/orders"
-                className="inline-block text-sm text-white bg-gray-800 px-4 py-2 rounded hover:bg-gray-900 transition"
-            >
-                &larr; Volver a pedidos
-            </Link>
-
-            {/* Encabezado */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                <h1 className="text-lg font-semibold">Pedido #{order._id}</h1>
-                <span
-                    className={`px-3 py-1 text-xs rounded-full font-medium w-fit
-                        ${order.status === "PENDIENTE"
-                            ? "bg-yellow-100 text-yellow-700"
-                            : order.status === "ENVIADO"
-                                ? "bg-blue-100 text-blue-700"
-                                : order.status === "ENTREGADO"
-                                    ? "bg-green-100 text-green-700"
-                                    : "bg-red-100 text-red-700"
-                        }`}
-                >
-                    {order.status}
-                </span>
-            </div>
-
-            {/* Información del pedido */}
-            <div className="grid gap-6 md:grid-cols-2 text-sm">
+        <div className="max-w-6xl mx-auto px-4 py-6 space-y-6 text-gray-800">
+            {/* Header */}
+            <div className="flex items-start justify-between border-b pb-4">
                 <div>
-                    <h2 className="font-medium mb-2 text-gray-700">Cliente</h2>
-                    <div className="space-y-1">
-                        
-                    </div>
+                    <h1 className="text-2xl font-semibold flex items-center gap-2">
+                        <FaBoxOpen className="text-gray-500" />
+                        Pedido #{order._id.slice(-6).toUpperCase()}
+                    </h1>
+                    <p className="text-sm text-gray-500 mt-1">Creado el {formatDate(order.createdAt)}</p>
                 </div>
-
-                <div>
-                    <h2 className="font-medium mb-2 text-gray-700">Pedido</h2>
-                    <div className="space-y-1">
-                        {order.createdAt && (
-                            <p><strong>Fecha:</strong> {formatDate(order.createdAt)}</p>
-                        )}
-                        <p><strong>Pago:</strong> {order.paymentMethod || "—"}</p>
-                        <p><strong>Tracking:</strong> {order.trackingId || "—"}</p>
-                    </div>
+                <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
+                    <OrderStatusBadge status={order.status} />
+                    <PaymentStatusBadge status={order.paymentStatus} />
                 </div>
             </div>
 
-            {/* Productos */}
-            <div className="overflow-x-auto border rounded">
-                <table className="min-w-full text-sm">
-                    <thead className="bg-gray-50 text-gray-500 uppercase text-xs">
+            {/* Acción Rápida */}
+            <div className="flex flex-wrap gap-2">
+                <Link href="/admin/orders" className="text-sm text-white bg-gray-800 px-3 py-1 rounded hover:bg-gray-900">
+                    &larr; Volver
+                </Link>
+                <button className="text-sm px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700">Entregado</button>
+                <button className="text-sm px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">Imprimir</button>
+                <button className="text-sm px-3 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300">Archivar</button>
+            </div>
+
+            {/* Info agrupada */}
+            <div className="grid md:grid-cols-3 gap-4">
+                {/* Cliente */}
+                <div className="bg-white border rounded p-4">
+                    <h2 className="text-sm font-semibold text-gray-700 mb-2">Cliente</h2>
+                    <p className="text-sm"><strong>Nombre:</strong> {order.user?.nombre} {order.user?.apellidos}</p>
+                    <p className="text-sm"><strong>Email:</strong> {order.user?.email}</p>
+                </div>
+
+                {/* Pago */}
+                <div className="bg-white border rounded p-4">
+                    <h2 className="text-sm font-semibold text-gray-700 mb-2">Pago</h2>
+                    <p className="text-sm"><strong>Método:</strong> {order.paymentMethod}</p>
+                    <p className="text-sm"><strong>ID pago:</strong> {order.paymentId || "—"}</p>
+                    <p className="text-sm"><strong>Tracking:</strong> {order.trackingId || "—"}</p>
+                </div>
+
+                {/* Envío */}
+                <div className="bg-white border rounded p-4">
+                    <h2 className="text-sm font-semibold text-gray-700 mb-2">Envío</h2>
+                    <p className="text-sm">{order.shippingAddress?.direccion}, {order.shippingAddress?.numero}</p>
+                    <p className="text-sm">{order.shippingAddress?.distrito}, {order.shippingAddress?.provincia}, {order.shippingAddress?.departamento}</p>
+                    {order.shippingAddress?.referencia && <p className="text-sm"><strong>Ref:</strong> {order.shippingAddress.referencia}</p>}
+                    <p className="text-sm"><strong>Método:</strong> {order.shippingMethod}</p>
+                </div>
+            </div>
+
+            {/* Tabla de productos */}
+            <div className="bg-white border rounded p-4">
+                <h2 className="text-sm font-semibold text-gray-700 mb-2">Productos</h2>
+                <table className="w-full text-sm">
+                    <thead className="bg-gray-50 text-gray-600 text-xs uppercase border-b">
                         <tr>
-                            <th className="px-4 py-3 text-left">Producto</th>
-                            <th className="px-4 py-3 text-center">Cantidad</th>
-                            <th className="px-4 py-3 text-right">Precio</th>
-                            <th className="px-4 py-3 text-right">Subtotal</th>
+                            <th className="text-left py-2 px-3">Producto</th>
+                            <th className="text-center py-2 px-3">Cantidad</th>
+                            <th className="text-right py-2 px-3">Precio</th>
+                            <th className="text-right py-2 px-3">Subtotal</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y">
-                        {order.items.map((item, i) => (
-                            <tr key={i}>
-                                <td className="px-4 py-3 flex items-center gap-3">
-                                   
-                                    
-                                </td>
-                                <td className="px-4 py-3 text-center">{item.quantity}</td>
-                                <td className="px-4 py-3 text-right">${item.price.toFixed(2)}</td>
-                                <td className="px-4 py-3 text-right">${(item.quantity * item.price).toFixed(2)}</td>
-                            </tr>
-                        ))}
+                    <tbody>
+                        {order.items.map((item, i) => {
+                            const product = item.productId;
+                            return (
+                                <tr key={i} className="border-b">
+                                    <td className="py-2 px-3 flex items-center gap-2">
+                                        {product.imagenes?.[0] && (
+                                            <Image
+                                                src={product.imagenes[0]}
+                                                alt={product.nombre}
+                                                width={40}
+                                                height={40}
+                                                className="w-10 h-10 object-cover rounded border"
+                                            />
+                                        )}
+                                        <span>{product.nombre}</span>
+                                    </td>
+                                    <td className="text-center py-2 px-3">{item.quantity}</td>
+                                    <td className="text-right py-2 px-3">S/. {item.price.toFixed(2)}</td>
+                                    <td className="text-right py-2 px-3">S/. {(item.quantity * item.price).toFixed(2)}</td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>
 
-            {/* Total */}
-            <div className="text-right text-base font-medium">
-                Total: ${order.totalPrice.toFixed(2)}
+            {/* Notas + Historial + Totales */}
+            <div className="grid md:grid-cols-2 gap-4">
+                {/* Notas & Historial */}
+                <div className="space-y-3">
+                    {order.notes && (
+                        <div className="bg-white border rounded p-3">
+                            <h3 className="font-medium text-sm text-gray-700 mb-1">Notas</h3>
+                            <p className="text-sm text-gray-700">{order.notes}</p>
+                        </div>
+                    )}
+
+                    <div className="bg-white border rounded p-3">
+                        <h3 className="font-medium text-sm text-gray-700 mb-2">Historial de estado</h3>
+                        <ul className="text-sm text-gray-700 space-y-1">
+                            {order.statusHistory?.map((item, index) => (
+                                <li key={index} className="flex justify-between">
+                                    <span>{item.status}</span>
+                                    <span className="text-xs text-gray-500">{formatDate(item.changedAt)}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+
+                {/* Totales */}
+                <div className="bg-white border rounded p-4 space-y-2 shadow-sm">
+                    <h3 className="font-semibold text-gray-700 text-base">Resumen del pedido</h3>
+                    <div className="flex justify-between text-sm text-gray-700">
+                        <span>Subtotal:</span>
+                        <span>S/. {order.subtotal.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-sm text-gray-700">
+                        <span>Envío:</span>
+                        <span>S/. {order.shippingCost.toFixed(2)}</span>
+                    </div>
+                    <hr />
+                    <div className="flex justify-between text-base font-bold text-black">
+                        <span>Total:</span>
+                        <span>S/. {order.totalPrice.toFixed(2)}</span>
+                    </div>
+                </div>
             </div>
         </div>
     );
