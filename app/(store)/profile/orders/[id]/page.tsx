@@ -6,6 +6,7 @@ import { formatDate } from "@/lib/utils";
 import PaymentStatusBadge from "@/components/ui/PaymentStatusBadge";
 import { BsArrowLeft } from "react-icons/bs";
 import OrderStepper from "@/components/ui/OrderStepper";
+import Image from "next/image";
 
 type Params = Promise<{ id: string }>;
 
@@ -38,9 +39,9 @@ export default async function OrderProfilePage({ params }: { params: Params }) {
             </div>
 
             <section className="bg-white border rounded-xl p-4 shadow-sm">
-  <h2 className="text-base font-semibold text-gray-900 mb-3">Progreso del pedido</h2>
-  <OrderStepper status={order.status} />
-</section>
+                <h2 className="text-base font-semibold text-gray-900 mb-3">Progreso del pedido</h2>
+                <OrderStepper status={order.status} />
+            </section>
 
             {/* Estado y resumen */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -48,7 +49,7 @@ export default async function OrderProfilePage({ params }: { params: Params }) {
                 <div className="bg-white border rounded-xl p-5 shadow-sm space-y-3 col-span-1">
                     <h2 className="text-base font-semibold text-gray-900">Estado</h2>
                     <div className="flex flex-wrap gap-2 text-sm">
-                        Estado del pago: 
+                        Estado del pago:
                         <PaymentStatusBadge status={order.paymentStatus} />
                     </div>
                     <div className="text-sm text-gray-600 pt-2">
@@ -97,12 +98,19 @@ export default async function OrderProfilePage({ params }: { params: Params }) {
                     {order.items.map((item, i) => (
                         <li key={i} className="flex items-center justify-between py-4">
                             <div className="flex items-center gap-4">
-                                <div className="w-16 h-16 rounded-md overflow-hidden bg-gray-100 border">
-                                    <img
-                                        src={item.productId.imagenes?.[0] || "/no-image.png"}
+                                <div className="rounded-md overflow-hidden bg-gray-100 border">
+
+
+                                    <Image
+
+                                        src={item.productId.imagenes?.[0] || "/logob.svg"}
                                         alt={item.productId.nombre}
-                                        className="w-full h-full object-cover"
+                                        width={40}
+                                        height={40}
+                                        className="w-10 h-10 object-cover"
+
                                     />
+
                                 </div>
                                 <div>
                                     <p className="text-sm font-medium text-gray-900">{item.productId.nombre}</p>

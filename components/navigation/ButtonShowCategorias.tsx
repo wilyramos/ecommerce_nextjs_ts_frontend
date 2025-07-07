@@ -7,33 +7,34 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet";
-
+import Hamburger from "hamburger-react";
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
-import { FaUser } from "react-icons/fa";
-import { PiCaretRightBold } from "react-icons/pi";
-import { categoriasEstaticas } from "@/src/data/categorias";
-import ButtonSearchFormStore from "../ui/ButtonSearchFormStore";
-import { ScrollArea } from "../ui/scroll-area";
 import Logo from "../ui/Logo";
+import { categoriasEstaticas } from "@/src/data/categorias";
+import { PiCaretRightBold } from "react-icons/pi";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
-export default function ButtonShowSheetMobile() {
+export default function ButtonShowCategorias() {
     const [open, setOpen] = useState(false);
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-                <button className="p-2 text-gray-700 hover:text-indigo-600 transition">
-                    {open ? <X size={22} /> : <Menu size={22} />}
+                <button className="text-gray-700 hover:text-blue-800 transition flex items-center cursor-pointer">
+                    <Hamburger toggled={open} toggle={setOpen} size={22} />
+                    Categorias
                 </button>
             </SheetTrigger>
 
-            <SheetContent side="left" className="w-[320px] px-4 py-5 bg-white shadow-xl border-r border-gray-200">
-                {/* Encabezado con Logo y subtítulo */}
+            <SheetContent
+                side="left"
+                className="w-[320px] px-4 py-5 bg-white shadow-xl border-r border-gray-200"
+            >
+                {/* Encabezado */}
                 <div className="pb-4 border-b border-gray-200 mb-2">
                     <SheetHeader>
-                        <SheetTitle className="text-xl font-bold text-gray-900 flex flex-col items-center gap-2">
+                        <SheetTitle className="text-xl font-bold text-gray-900 flex  flex-col items-center gap-2 ">
                             <Logo />
                             <span className="text-sm font-normal text-gray-500">
                                 Explora por categoría
@@ -42,27 +43,9 @@ export default function ButtonShowSheetMobile() {
                     </SheetHeader>
                 </div>
 
-                {/* Scrollable Area */}
+                {/* Categorías con scroll */}
                 <ScrollArea className="h-[calc(100vh-120px)] pr-2">
-                    {/* Buscador */}
-                    <div className="py-4 border-b border-gray-200">
-                        <ButtonSearchFormStore />
-                    </div>
-
-                    {/* Login */}
-                    <div className="py-4 border-b border-gray-200">
-                        <Link
-                            href="/auth/registro"
-                            className="flex items-center gap-2 text-sm text-gray-950 hover:text-indigo-600 transition"
-                            onClick={() => setOpen(false)}
-                        >
-                            <FaUser className="h-4 w-4" />
-                            Iniciar sesión
-                        </Link>
-                    </div>
-
-                    {/* Categorías con acordeón */}
-                    <div className="pt-4 space-y-5">
+                    <div className="space-y-5">
                         {categoriasEstaticas.map((cat) => (
                             <div key={cat.slug}>
                                 <details className="group">
