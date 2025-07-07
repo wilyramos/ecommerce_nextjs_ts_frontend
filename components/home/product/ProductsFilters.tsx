@@ -16,7 +16,6 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
     const [filters, setFilters] = useState({
         category: "",
         priceRange: "",
-        compatibilidad: "",
     });
 
     // Filter price
@@ -32,7 +31,6 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
         setFilters({
             category: searchParams.get("category") || "",
             priceRange: range || "",
-            compatibilidad: searchParams.get("compatibilidad") || "",
         });
     }, [searchParams]);
 
@@ -104,51 +102,14 @@ export default function ProductsFilters({ categorias }: { categorias: Categorias
                 </div>
             ),
         },
-        {
-            title: "Compatibilidad",
-            content: (
-                <ul className="space-y-1">
-                    {[
-                        { label: "Todos", value: "" },
-                        { label: "Iphone 16", value: "iphone-16" },
-                        { label: "Iphone 15 pro max", value: "iphone-15-pro-max" },
-                        { label: "Iphone 15 pro", value: "iphone-15-pro" },
-                        { label: "Iphone 15", value: "iphone-15" },
-                        { label: "Iphone 14 pro max", value: "iphone-14-pro-max" },
-                        { label: "Iphone 14 pro", value: "iphone-14-pro" },
-                        { label: "Iphone 14", value: "iphone-14" },
-                        { label: "Iphone 13 pro max", value: "iphone-13-pro-max" },
-                        { label: "Iphone 13 pro", value: "iphone-13-pro" },
-                        { label: "Iphone 13", value: "iphone-13" },
-                        { label: "Iphone 12 pro max", value: "iphone-12-pro-max" },
-                        { label: "Iphone 12 pro", value: "iphone-12-pro" },
-                        { label: "Iphone 12", value: "iphone-12" },
-                        { label: "Iphone 11 pro max", value: "iphone-11-pro-max" },
-                        { label: "Iphone 11 pro", value: "iphone-11-pro" },
-                        { label: "Iphone 11", value: "iphone-11" },
-                    ].map(({ label, value }) => (
-                        <li key={value} className="flex items-center gap-2">
-                            <input
-                                type="radio"
-                                name="compatibilidad"
-                                value={value}
-                                checked={filters.compatibilidad === value}
-                                onChange={() => updateFilters({ compatibilidad: value })}
-                                className="accent-blue-600"
-                            />
-                            <label className="text-sm text-gray-600">{label}</label>
-                        </li>
-                    ))}
-                </ul>
-            ),
-        },
+       
     ];
 
     return (
         <aside className="py-6 border-gray-200">
             <div className="flex justify-end mb-4">
                 <button
-                    onClick={() => updateFilters({ category: "", priceRange: "", compatibilidad: "" })}
+                    onClick={() => updateFilters({ category: "", priceRange: "",})}
                     className="flex items-center gap-1 text-gray-400 hover:text-red-500 transition text-xs"
                 >
                     <MdClear size={18} />

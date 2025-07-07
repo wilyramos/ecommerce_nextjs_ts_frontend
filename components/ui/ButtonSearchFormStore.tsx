@@ -27,13 +27,13 @@ export default function ButtonSearchFormStore() {
 
     return (
         <form className="flex w-full" onSubmit={handleSubmit}>
-            <div className="flex items-center w-full border border-gray-200 rounded-full overflow-hidden">
+            <div className="flex items-center w-full border border-gray-500 rounded-full overflow-hidden">
                 <input
                     type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="¿Qué estás buscando?"
-                    className="flex-1 px-4 py-1.5 text-sm text-gray-700 bg-transparent placeholder-gray-400 outline-none font-normal"
+                    className="flex-1 px-4 py-1.5 text-sm text-gray-700 bg-transparent placeholder-gray-500 outline-none font-normal"
                 />
                 <button
                     type="submit"

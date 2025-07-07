@@ -10,7 +10,6 @@ import {
 import Hamburger from "hamburger-react";
 import { useState } from "react";
 import Link from "next/link";
-import Logo from "../ui/Logo";
 import { categoriasEstaticas } from "@/src/data/categorias";
 import { PiCaretRightBold } from "react-icons/pi";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -19,7 +18,7 @@ export default function ButtonShowCategorias() {
     const [open, setOpen] = useState(false);
 
     return (
-        <Sheet open={open} onOpenChange={setOpen}>
+        <Sheet open={open} onOpenChange={setOpen} >
             <SheetTrigger asChild>
                 <button className="text-gray-700 hover:text-blue-800 transition flex items-center cursor-pointer">
                     <Hamburger toggled={open} toggle={setOpen} size={22} />
@@ -28,17 +27,18 @@ export default function ButtonShowCategorias() {
             </SheetTrigger>
 
             <SheetContent
+
                 side="left"
                 className="w-[320px] px-4 py-5 bg-white shadow-xl border-r border-gray-200"
+                
             >
                 {/* Encabezado */}
                 <div className="pb-4 border-b border-gray-200 mb-2">
                     <SheetHeader>
-                        <SheetTitle className="text-xl font-bold text-gray-900 flex  flex-col items-center gap-2 ">
-                            <Logo />
-                            <span className="text-sm font-normal text-gray-500">
-                                Explora por categoría
-                            </span>
+                        <SheetTitle className="text-xl font-bold text-gray-700 flex  flex-col items-center gap-2 ">
+                            <p className="">
+                                Explora por <span className="text-blue-800">categorías</span>
+                            </p>
                         </SheetTitle>
                     </SheetHeader>
                 </div>
