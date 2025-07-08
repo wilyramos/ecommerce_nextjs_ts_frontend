@@ -1,9 +1,9 @@
-import { Suspense } from "react";
+// import { Suspense } from "react";
 import type { Metadata } from "next";
 import FiltrosPorCategoria from "@/components/home/categorias/FiltrosPorCategoria ";
 import ListaProducts from "@/components/home/categorias/ListaProducts";
 import OrdenarPor from "@/components/home/products/OrdenarPor";
-import SpinnerLoading from "@/components/ui/SpinnerLoading";
+// import SpinnerLoading from "@/components/ui/SpinnerLoading";
 
 type Params = Promise<{
   slug: string;
@@ -52,7 +52,7 @@ export default async function pageCategoria({
   const limitNumber = limit ? parseInt(limit as string, 10) : 10;
 
   return (
-    <Suspense fallback={<SpinnerLoading />}>
+    // <Suspense fallback={<SpinnerLoading />}>
 
       <main className="max-w-7xl mx-auto p-5">
         <section className="grid grid-cols-1 sm:grid-cols-4 gap-6">
@@ -88,7 +88,7 @@ export default async function pageCategoria({
           </section>
         </section>
       </main>
-    </Suspense >
+    // </Suspense >
 
   );
 }

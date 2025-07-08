@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { FaUser } from "react-icons/fa";
 import ButtonShowCart from "../ui/ButtonShowCart";
 import Logo from "../ui/Logo";
@@ -22,14 +21,7 @@ export default function NavBar() {
 
                 <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-10">
                     <Link href="/" className="flex items-center">
-                        <Image
-                            src="/logob.svg"
-                            alt="Logo"
-                            width={40}
-                            height={40}
-                            priority
-                            className="h-10 w-auto"
-                        />
+                        <Logo />
                     </Link>
                 </div>
 

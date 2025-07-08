@@ -8,8 +8,6 @@ export default function Footer() {
         { label: "Inicio", href: "/" },
         { label: "Productos", href: "/productos" },
         { label: "Categorías", href: "/categorias" },
-        { label: "Nosotros", href: "/nosotros" },
-        { label: "Contacto", href: "/contacto" },
     ];
 
     const RedesSociales = [
