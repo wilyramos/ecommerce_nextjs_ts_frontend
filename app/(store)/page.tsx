@@ -1,11 +1,9 @@
-// import Footer from "@/components/home/Footer"
-import CategoriasDestacadas from "@/components/home/CategoriasDestacadas"
-import { getCategories } from "@/src/services/categorys"
-import CarruselPrincipal from "@/components/home/CarruselPrincipal"
-import type { Metadata } from "next";
-import ProductosNuevos from "@/components/home/ProductosNuevos"
-import ProductosDestacados from "@/components/home/ProductosDestacados";
+// File: frontend/app/(store)/page.tsx
 
+import type { Metadata } from "next";
+import { Suspense } from "react";
+import SpinnerLoading from "@/components/ui/SpinnerLoading";
+import HomePageContent from "@/components/home/HomePageContent";
 
 
 export const metadata: Metadata = {
@@ -50,29 +48,14 @@ export const metadata: Metadata = {
     }
 };
 
-export default async function HomePage() {
 
-    const categories = await getCategories();
+export default function HomePage() {
+  return (
+    <Suspense fallback={<SpinnerLoading      
+    />}>      
+      <HomePageContent />
 
-    return (
-        <>
-            {/* Hero principal */}
-            <div className="container mx-auto py-5">
-                <CarruselPrincipal />
-            </div>
-
-            <section className="container mx-auto bg-gray-300 rounded-3xl ">
-                <CategoriasDestacadas categorias={categories} />
-            </section>
-            <section className="container mx-auto px-4">
-                <ProductosNuevos />
-            </section>
-
-            <section className="container mx-auto px-4 ">
-                <ProductosDestacados />
-            </section>
-
-            {/* <Footer /> */}
-        </>
-    )
+      
+    </Suspense>
+  );
 }
