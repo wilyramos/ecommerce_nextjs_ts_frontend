@@ -26,7 +26,7 @@ export const getProducts = async ({ page = 1, limit = 5 }) => {
     return products;
 }
 
-export const getProduct = cache(async (id: string) => {
+export const getProduct = async (id: string) => {
     const token = getToken();
     const url = `${process.env.API_URL}/products/${id}`;
 
@@ -44,9 +44,9 @@ export const getProduct = cache(async (id: string) => {
 
     const product = ProductAPIResponse.parse(json);
     return product;
-});
+};
 
-export const GetProductsBySlug = cache(async (slug: string) => {
+export const GetProductsBySlug = async (slug: string) => {
     const token = getToken();
     const url = `${process.env.API_URL}/products/slug/${slug}`;
 
@@ -64,7 +64,7 @@ export const GetProductsBySlug = cache(async (slug: string) => {
     const json = await req.json();
     const product = ProductAPIResponse.parse(json);
     return product;
-});
+};
 
 type GetProductsByFilterParams = {
     page: number;
@@ -175,8 +175,6 @@ export const getDestacadosProducts =  cache(async () => {
 
 
 export const getProductsRelated = async (slug: string) => {
-
-
 
     const url = `${process.env.API_URL}/products/${slug}/related`;
 
