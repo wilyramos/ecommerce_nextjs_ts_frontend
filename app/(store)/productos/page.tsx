@@ -59,7 +59,6 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
     const limitNumber = limit ? parseInt(limit) : 12;
 
     return (
-        <Suspense fallback={<SpinnerLoading />}>
             <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
                 {/* Filtros móviles colapsables */}
                 <div className="sm:hidden mb-6">
@@ -69,9 +68,9 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
                             <span>Mostrar filtros</span>
                         </summary>
                         <div className="mt-4">
-                            {/* <Suspense fallback={<p className="text-center text-gray-400 text-sm">Cargando filtros...</p>}> */}
+                            <Suspense fallback={<SpinnerLoading />}>
                                 <CategoriasFiltros />
-                            {/* </Suspense> */}
+                            </Suspense>
                         </div>
                     </details>
                 </div>
@@ -81,9 +80,9 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
                     <aside className="hidden sm:block sm:col-span-1">
                         <div className="sticky top-24 bg-white p-4">
                             <h2 className="text-lg font-semibold text-gray-800 mb-4">Filtros</h2>
-                            {/* <Suspense fallback={<p className="text-center text-gray-400 text-sm">Cargando filtros...</p>}> */}
+                            <Suspense fallback={<SpinnerLoading />}>
                                 <CategoriasFiltros />
-                            {/* </Suspense> */}
+                            </Suspense>
                         </div>
                     </aside>
 
@@ -93,7 +92,7 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
                             <OrdenarPor pathname="/productos" />
                         </div>
 
-                        {/* <Suspense fallback={<p className="text-center py-8 text-gray-400 text-sm">Cargando productos...</p>}> */}
+                        <Suspense fallback={<SpinnerLoading />}>
                             <ProductResults
                                 category={category}
                                 priceRange={priceRange}
@@ -103,10 +102,9 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
                                 compatibilidad={compatibilidad}
                                 query={query}
                             />
-                        {/* </Suspense> */}
+                        </Suspense>
                     </section>
                 </div>
             </main>
-        </Suspense >
     );
 }
