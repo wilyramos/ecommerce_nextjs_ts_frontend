@@ -97,7 +97,6 @@ export const getProductsByFilter = async ({
         compatibilidad,
     });
 
-    // Agregar los atributos dinámicos al query string
     for (const [key, value] of Object.entries(atributos)) {
         if (value) {
             params.append(`atributos[${key}]`, value);
@@ -106,19 +105,26 @@ export const getProductsByFilter = async ({
 
     const url = `${process.env.API_URL}/products/filter?${params.toString()}`;
 
-    const req = await fetch(url, {
-        method: "GET",
-        // headers: { Authorization: `Bearer ${token}` },
-    });
+    try {
+        const req = await fetch(url, {
+            method: "GET",
+        });
 
-    if (!req.ok) {
+        if (!req.ok) {
+            const errorText = await req.text();
+            console.error("Error al obtener productos:", req.status, errorText);
+            return null;
+        }
+
+        const json = await req.json();
+        const products = ProductsAPIResponse.parse(json);
+        return products;
+    } catch (error) {
+        console.error("Error en fetch productos:", error);
         return null;
     }
-
-    const json = await req.json();
-    const products = ProductsAPIResponse.parse(json);
-    return products;
 };
+
 
 export const searchProducts = async ({ query, page, limit }: {
     query: string;

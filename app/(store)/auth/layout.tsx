@@ -3,6 +3,7 @@ import React from 'react'
 import { getCurrentUser } from '@/src/auth/currentUser'
 import { redirect } from 'next/navigation'
 
+
 export default async function layoutAuth({ children }: { children: React.ReactNode }) {
 
     // Verifica si el usuario está autenticado
@@ -18,7 +19,6 @@ export default async function layoutAuth({ children }: { children: React.ReactNo
         <>
             <div className='flex flex-col items-center justify-center'>
                 <div className='w-full max-w-md py-20 flex-1 '>
-
                     {children}
                 </div>
             </div>
