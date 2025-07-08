@@ -33,8 +33,6 @@ export default async function ProductResults({ category, priceRange, page, limit
         );
     }
 
-    // console.log("Productos obtenidos:", products);
-
     return (
         <>
             <ProductosList products={products} />

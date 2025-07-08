@@ -111,12 +111,17 @@ export const getProductsByFilter = async ({
         });
 
         if (!req.ok) {
-            const errorText = await req.text();
-            console.error("Error al obtener productos:", req.status, errorText);
+            console.error("Error al obtener productos por filtro:", req.statusText);
             return null;
         }
 
         const json = await req.json();
+
+        if (!json || !json.products) {
+            console.error("Respuesta inesperada del servidor:", json);
+            return null;
+        }
+
         const products = ProductsAPIResponse.parse(json);
         return products;
     } catch (error) {

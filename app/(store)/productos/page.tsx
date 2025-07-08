@@ -101,6 +101,7 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
                                 sort={sort}
                                 compatibilidad={compatibilidad}
                                 query={query}
+                                
                             />
                         </Suspense>
                     </section>
