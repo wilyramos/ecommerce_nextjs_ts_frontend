@@ -10,11 +10,11 @@ export default function PaymentPage() {
         <div className="text-gray-800 text-sm space-y-6">
             {/* Título e instrucciones */}
             <p className="text-xl font-semibold">
-                Estamos procesando tu solicitud de pago y te redirigiremos  en breve.
+                Proceso de pago
             </p>
 
-            <p className="text-center text-md text-gray-400 ">
-                Por favor, no cierres esta ventana ni navegues a otra página mientras se procesa tu pago.
+            <p className="text-center text-lg text-gray-400 ">
+                Por favor, selecciona una de las siguientes opciones para completar tu pago.
             </p>
 
             <CheckoutSelector />

@@ -30,19 +30,16 @@ export default function ResumenCarrito() {
     }
 
     return (
-        <div className="max-w-6xl mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto px-4 py-4">
             <h1 className="text-lg font-semibold text-gray-800 mb-6">Resumen del carrito</h1>
             <p className="text-sm text-gray-400 mb-4">
                 {cart.length} {cart.length === 1 ? "producto" : "productos"} seleccionados.
             </p>
 
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                 {/* Carrito */}
-                <div className="md:col-span-2 bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-
-
-
+                <div className="md:col-span-2 bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
                     <ul className="divide-y divide-gray-200">
                         {cart.map((item) => (
                             <ItemCarrito key={item._id} item={item} />
@@ -51,8 +48,8 @@ export default function ResumenCarrito() {
                 </div>
 
                 {/* Resumen */}
-                <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm space-y-4">
-                    <h2 className="text-base font-medium text-gray-700">Resumen del pedido</h2>
+                <div className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
+                    <h2 className="text-base text-gray-950 font-semibold">Resumen del pedido</h2>
 
                     <ul className="text-sm text-gray-600 space-y-2">
                         <li className="flex justify-between">
