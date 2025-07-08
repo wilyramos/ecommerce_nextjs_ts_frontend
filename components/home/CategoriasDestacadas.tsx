@@ -30,7 +30,7 @@ export default function CategoriasDestacadas({ categorias }: { categorias: Categ
 
     return (
         <section className="w-full py-10">
-            <h2 className="text-2xl text-center mb-6 text-blue-900 font-medium uppercase">Categorías Destacadas</h2>
+            <h2 className="text-2xl text-center mb-6 text-gray-900 font-medium uppercase">Categorías Destacadas</h2>
             <div className="max-w-7xl mx-auto">
                 <Carousel
                     responsive={responsive}
@@ -43,33 +43,22 @@ export default function CategoriasDestacadas({ categorias }: { categorias: Categ
                     arrows={false}
                 >
                     {filteredCategorias.map((categoria, index) => (
-                        <div
+                        <Link
                             key={index}
+                            href={`/categoria/${categoria.slug}`}
                             className="group relative flex flex-col items-center justify-center h-48 w-full bg-white transition-shadow duration-300 p-4 overflow-hidden hover:bg-black hover:text-gray-50 rounded-lg cursor-pointer"
                         >
-                             <p className="text-base font-semibold">
-                                {categoria.nombre}
-                            </p>
-                            <Image      
+                            <p className="text-base font-semibold">{categoria.nombre}</p>
+                            <Image
                                 src={ImagenesPorCategoria[categoria.slug] || "/logob.svg"}
                                 alt={categoria.nombre}
                                 width={100}
                                 height={100}
                                 className="mb-3 object-contain transition-transform duration-600 group-hover:scale-120"
                             />
-                           
-
-                            {/* Botón oculto que aparece al hacer hover */}
-                            <Link
-                                href={`/categoria/${categoria.slug}`}
-                                className="absolute bottom-4 left-1/2 transform -translate-x-1/2 translate-y-full group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out"
-                            >
-                                <span className="text-xs px-4 py-2 bg-white text-black rounded-full shadow-sm hover:bg-gray-100 transition-colors">
-                                    Ver categoría
-                                </span>
-                            </Link>
-                        </div>
+                        </Link>
                     ))}
+
                 </Carousel>
             </div>
         </section>
