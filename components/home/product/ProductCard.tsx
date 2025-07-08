@@ -1,9 +1,9 @@
-import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Product } from '@/src/schemas';
 import ColorCircle from '@/components/ui/ColorCircle';
 // import AddProductButton from './AddProductButton';
+import { FaFireAlt } from 'react-icons/fa';
 
 export default function ProductCard({ product }: { product: Product }) {
     // const imagenUrl = product.imagenes[0];
@@ -51,15 +51,15 @@ export default function ProductCard({ product }: { product: Product }) {
                     {/*Etiquetas */}
                     {/* Etiquetas minimalistas */}
                     {(product.esNuevo || product.esDestacado) && (
-                        <div className="absolute top-2 left-2 right-2 flex justify-between px-2 pointer-events-none text-[14px] text-gray-700 font-bold up">
+                        <div className="absolute top-5 left-1 right-1 flex justify-between px-2 pointer-events-none text-[14px] text-gray-700 font-bold up">
                             {product.esNuevo && (
-                                <span className="px-2 py-0.5 border-2 border-blue-500 rounded-full bg-white/90 backdrop-blur-3xl">
+                                <span className="px-2 py-0.5 border-2 border-blue-500  bg-blue-500 rounded-full rotate-315 backdrop-blur-3xl text-white">
                                     Nuevo
                                 </span>
                             )}
                             {product.esDestacado && (
-                                <span className="px-2 py-0.5 border-2 border-red-400 rounded-full bg-white/90 backdrop-blur-3xl">
-                                    Destacado
+                                <span className="px-1.5 text-orange-500 text-center justify-center items-center">
+                                    <FaFireAlt className="inline-block mr-1" />
                                 </span>
                             )}
                         </div>
