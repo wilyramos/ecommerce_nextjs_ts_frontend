@@ -51,14 +51,14 @@ export default function ProductCard({ product }: { product: Product }) {
                     {/*Etiquetas */}
                     {/* Etiquetas minimalistas */}
                     {(product.esNuevo || product.esDestacado) && (
-                        <div className="absolute top-2 left-2 right-2 flex justify-between px-2 pointer-events-none text-[10px] text-gray-700">
+                        <div className="absolute top-2 left-2 right-2 flex justify-between px-2 pointer-events-none text-[14px] text-gray-700 font-bold up">
                             {product.esNuevo && (
-                                <span className="px-2 py-0.5 border border-blue-500 rounded-full bg-white/90 backdrop-blur-3xl">
+                                <span className="px-2 py-0.5 border-2 border-blue-500 rounded-full bg-white/90 backdrop-blur-3xl">
                                     Nuevo
                                 </span>
                             )}
                             {product.esDestacado && (
-                                <span className="px-2 py-0.5 border border-orange-400 rounded-full bg-white/90 backdrop-blur-3xl">
+                                <span className="px-2 py-0.5 border-2 border-red-400 rounded-full bg-white/90 backdrop-blur-3xl">
                                     Destacado
                                 </span>
                             )}

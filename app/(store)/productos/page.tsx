@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import ProductResults from "@/components/home/product/ProductResults";
 import CategoriasFiltros from "@/components/home/product/CategoriasFiltros";
 import OrdenarPor from "@/components/home/products/OrdenarPor";
+import { CiFilter } from "react-icons/ci";
 
 export const metadata: Metadata = {
     title: "Productos - GoPhone Cañete | iPhones, Accesorios y Tecnología",
@@ -57,32 +58,40 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
     const limitNumber = limit ? parseInt(limit) : 12;
 
     return (
-        <main className="max-w-7xl mx-auto p-4 sm:p-6">
-            {/* Botón para abrir filtros en móvil */}
-            <div className="sm:hidden mb-4">
-                <details className="">
-                    <summary className="font-semibold cursor-pointer text-gray-700">Mostrar filtros</summary>
-                    <div className="mt-3">
-                        <Suspense fallback={<div className="text-center py-4 text-gray-400 text-sm">Cargando filtros...</div>}>
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+            {/* Filtros móviles colapsables */}
+            <div className="sm:hidden mb-6">
+                <details className="bg-white rounded-xl shadow p-4 border border-gray-200">
+                    <summary className="flex items-center gap-2 text-gray-700 font-semibold cursor-pointer">
+                        <CiFilter className="text-xl" />
+                        <span>Mostrar filtros</span>
+                    </summary>
+                    <div className="mt-4">
+                        <Suspense fallback={<p className="text-center text-gray-400 text-sm">Cargando filtros...</p>}>
                             <CategoriasFiltros />
                         </Suspense>
                     </div>
                 </details>
             </div>
 
-            <section className="grid grid-cols-1 sm:grid-cols-5 gap-6">
-                {/* Filtros en sidebar para desktop */}
-                <div className="hidden sm:block sm:col-span-1 sticky top-5 self-start h-fit">
-                    <h2 className="text-lg font-base text-gray-600 mb-4 border-b pb-2">Filtros</h2>
-                    <Suspense fallback={<div className="text-center py-8 text-gray-400 text-sm">Cargando filtros...</div>}>
-                        <CategoriasFiltros />
-                    </Suspense>
-                </div>
+            <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
+                {/* Sidebar filtros desktop */}
+                <aside className="hidden sm:block sm:col-span-1">
+                    <div className="sticky top-24 bg-white rounded-md p-4 border border-gray-100 shadow-sm">
+                        <h2 className="text-lg font-semibold text-gray-800 mb-4">Filtros</h2>
+                        <Suspense fallback={<p className="text-center text-gray-400 text-sm">Cargando filtros...</p>}>
+                            <CategoriasFiltros />
+                        </Suspense>
+                    </div>
+                </aside>
 
-                {/* Productos */}
-                <section className="sm:col-span-4">
-                    <OrdenarPor pathname="/productos" />
-                    <Suspense fallback={<div className="text-center py-8 text-gray-400 text-sm">Cargando productos...</div>}>
+                {/* Productos y orden */}
+                <section className="sm:col-span-4 flex flex-col gap-6">
+                    <div className="flex justify-end">
+                        <OrdenarPor pathname="/productos" />
+                    </div>
+
+                    <Suspense fallback={<p className="text-center py-8 text-gray-400 text-sm">Cargando productos...</p>}>
                         <ProductResults
                             category={category}
                             priceRange={priceRange}
@@ -94,7 +103,7 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
                         />
                     </Suspense>
                 </section>
-            </section>
+            </div>
         </main>
     );
 }

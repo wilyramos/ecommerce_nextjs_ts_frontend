@@ -19,7 +19,7 @@ export default function Footer() {
     ];
 
     return (
-        <footer className="relative bg-gray-800 text-gray-50">
+        <footer className="relative bg-black text-gray-50">
             {/* Línea superior con gradiente */}
             <div className="h-1 bg-gradient-to-r from-indigo-500 via-indigo-800 to-indigo-500 w-full"></div>
 
@@ -27,7 +27,7 @@ export default function Footer() {
             <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 text-center ">
                 {/* Marca */}
                 <div>
-                    <h2 className="text-3xl font-extrabold text-white mb-4 tracking-wide">Gophone</h2>
+                    <h2 className="text-3xl font-extrabold text-white mb-4 tracking-wide">Gophone Cañete</h2>
                     <p className="text-xs leading-relaxed text-gray-400 max-w-xs mx-auto">
                         Lo último en tecnología móvil y accesorios. Envíos rápidos, atención garantizada y productos 100% originales.
                         Tienda física en Jr. Ohiggins 120, San Vicente de Cañete.
