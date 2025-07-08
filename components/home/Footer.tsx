@@ -19,7 +19,7 @@ export default function Footer() {
     ];
 
     return (
-        <footer className="relative bg-blue-800 text-gray-50">
+        <footer className="relative bg-gray-800 text-gray-50">
             {/* Línea superior con gradiente */}
             <div className="h-1 bg-gradient-to-r from-indigo-500 via-indigo-800 to-indigo-500 w-full"></div>
 

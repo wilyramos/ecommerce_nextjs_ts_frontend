@@ -175,6 +175,9 @@ export const getDestacadosProducts =  cache(async () => {
 
 
 export const getProductsRelated = async (slug: string) => {
+
+
+
     const url = `${process.env.API_URL}/products/${slug}/related`;
 
     const req = await fetch(url, {
