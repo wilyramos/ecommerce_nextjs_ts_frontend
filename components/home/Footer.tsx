@@ -19,7 +19,7 @@ export default function Footer() {
     ];
 
     return (
-        <footer className="relative bg-gray-950 text-gray-300">
+        <footer className="relative bg-blue-800 text-gray-50">
             {/* Línea superior con gradiente */}
             <div className="h-1 bg-gradient-to-r from-indigo-500 via-indigo-800 to-indigo-500 w-full"></div>
 
@@ -58,7 +58,7 @@ export default function Footer() {
                                 href={href}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-gray-400 hover:text-white transition duration-200"
+                                className="text-gray-100 hover:text-white transition duration-200"
                                 aria-label={`Síguenos en ${href}`}
                             >
                                 {icon}

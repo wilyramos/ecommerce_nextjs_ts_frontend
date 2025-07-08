@@ -7,6 +7,7 @@ import ProductosNuevos from "@/components/home/ProductosNuevos"
 import ProductosDestacados from "@/components/home/ProductosDestacados";
 
 
+
 export const metadata: Metadata = {
     title: "GoPhone Cañete - Venta de celulares, accesorios y más",
     description: "GoPhone Cañete es tu tienda de confianza para la compra de celulares, accesorios y más. Ofrecemos una amplia variedad de productos a los mejores precios.",
