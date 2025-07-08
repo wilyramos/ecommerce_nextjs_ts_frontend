@@ -1,4 +1,4 @@
-// import { getCategories } from "@/src/services/categorys";
+//FILE: frontend/components/home/product/CategoriasFiltros.tsx
 import ProductsFilters from "./ProductsFilters";
 import { getAllSubcategories } from "@/src/services/categorys";
 

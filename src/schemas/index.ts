@@ -264,7 +264,7 @@ export const CategorySchema = z.object({
 export const ProductAPIResponse = z.object({
     _id: z.string(),
     nombre: z.string(),
-    slug: z.string(),
+    slug: z.string().optional(),
     descripcion: z.string().optional(),
     precio: z.number(),
     costo: z.number().optional(),

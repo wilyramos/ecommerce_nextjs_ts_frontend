@@ -5,7 +5,6 @@ import { Attributes } from "@/src/schemas";
 
 export default async function FiltrosPorCategoria({ categorySlug }: { categorySlug: string }) {
 
-
         const category = await getCategoryBySlug(categorySlug);
 
         // console.log(category)

@@ -4,6 +4,7 @@ import ProductResults from "@/components/home/product/ProductResults";
 import CategoriasFiltros from "@/components/home/product/CategoriasFiltros";
 import OrdenarPor from "@/components/home/products/OrdenarPor";
 import { CiFilter } from "react-icons/ci";
+import SpinnerLoading from "@/components/ui/SpinnerLoading";
 
 export const metadata: Metadata = {
     title: "Productos - GoPhone Cañete | iPhones, Accesorios y Tecnología",
@@ -58,52 +59,54 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
     const limitNumber = limit ? parseInt(limit) : 12;
 
     return (
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-            {/* Filtros móviles colapsables */}
-            <div className="sm:hidden mb-6">
-                <details className="bg-white rounded-xl shadow p-4 border border-gray-200">
-                    <summary className="flex items-center gap-2 text-gray-700 font-semibold cursor-pointer">
-                        <CiFilter className="text-xl" />
-                        <span>Mostrar filtros</span>
-                    </summary>
-                    <div className="mt-4">
-                        <Suspense fallback={<p className="text-center text-gray-400 text-sm">Cargando filtros...</p>}>
-                            <CategoriasFiltros />
-                        </Suspense>
-                    </div>
-                </details>
-            </div>
+        <Suspense fallback={<SpinnerLoading />}>
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+                {/* Filtros móviles colapsables */}
+                <div className="sm:hidden mb-6">
+                    <details className="bg-white rounded-xl shadow p-4 border border-gray-200">
+                        <summary className="flex items-center gap-2 text-gray-700 font-semibold cursor-pointer">
+                            <CiFilter className="text-xl" />
+                            <span>Mostrar filtros</span>
+                        </summary>
+                        <div className="mt-4">
+                            {/* <Suspense fallback={<p className="text-center text-gray-400 text-sm">Cargando filtros...</p>}> */}
+                                <CategoriasFiltros />
+                            {/* </Suspense> */}
+                        </div>
+                    </details>
+                </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
-                {/* Sidebar filtros desktop */}
-                <aside className="hidden sm:block sm:col-span-1">
-                    <div className="sticky top-24 bg-white rounded-md p-4 border border-gray-100 shadow-sm">
-                        <h2 className="text-lg font-semibold text-gray-800 mb-4">Filtros</h2>
-                        <Suspense fallback={<p className="text-center text-gray-400 text-sm">Cargando filtros...</p>}>
-                            <CategoriasFiltros />
-                        </Suspense>
-                    </div>
-                </aside>
+                <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
+                    {/* Sidebar filtros desktop */}
+                    <aside className="hidden sm:block sm:col-span-1">
+                        <div className="sticky top-24 bg-white p-4">
+                            <h2 className="text-lg font-semibold text-gray-800 mb-4">Filtros</h2>
+                            {/* <Suspense fallback={<p className="text-center text-gray-400 text-sm">Cargando filtros...</p>}> */}
+                                <CategoriasFiltros />
+                            {/* </Suspense> */}
+                        </div>
+                    </aside>
 
-                {/* Productos y orden */}
-                <section className="sm:col-span-4 flex flex-col gap-6">
-                    <div className="flex justify-end">
-                        <OrdenarPor pathname="/productos" />
-                    </div>
+                    {/* Productos y orden */}
+                    <section className="sm:col-span-4 flex flex-col gap-6">
+                        <div className="flex justify-end">
+                            <OrdenarPor pathname="/productos" />
+                        </div>
 
-                    <Suspense fallback={<p className="text-center py-8 text-gray-400 text-sm">Cargando productos...</p>}>
-                        <ProductResults
-                            category={category}
-                            priceRange={priceRange}
-                            page={page}
-                            limit={limitNumber}
-                            sort={sort}
-                            compatibilidad={compatibilidad}
-                            query={query}
-                        />
-                    </Suspense>
-                </section>
-            </div>
-        </main>
+                        {/* <Suspense fallback={<p className="text-center py-8 text-gray-400 text-sm">Cargando productos...</p>}> */}
+                            <ProductResults
+                                category={category}
+                                priceRange={priceRange}
+                                page={page}
+                                limit={limitNumber}
+                                sort={sort}
+                                compatibilidad={compatibilidad}
+                                query={query}
+                            />
+                        {/* </Suspense> */}
+                    </section>
+                </div>
+            </main>
+        </Suspense >
     );
 }
