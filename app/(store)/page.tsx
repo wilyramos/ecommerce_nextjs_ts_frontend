@@ -1,9 +1,10 @@
 // File: frontend/app/(store)/page.tsx
 
 import type { Metadata } from "next";
-import { Suspense } from "react";
-import SpinnerLoading from "@/components/ui/SpinnerLoading";
-import HomePageContent from "@/components/home/HomePageContent";
+import CarruselPrincipal from "@/components/home/CarruselPrincipal";
+import ProductosNuevos from "@/components/home/ProductosNuevos";
+import ProductosDestacados from "@/components/home/ProductosDestacados";
+import CategoriasDestacadasWrapper from "@/components/home/CategoriasDestacadasWrapper";
 
 
 export const metadata: Metadata = {
@@ -50,10 +51,23 @@ export const metadata: Metadata = {
 
 
 export default function HomePage() {
-  return (
-    <Suspense fallback={<SpinnerLoading
-    />}>
-      <HomePageContent />
-    </Suspense>
-  );
+   return (
+      <>
+        <div className="container mx-auto py-5">
+          <CarruselPrincipal />
+        </div>
+  
+        <section className="container mx-auto bg-gray-300 rounded-3xl">
+          <CategoriasDestacadasWrapper />
+        </section>
+  
+        <section className="container mx-auto px-4">
+          <ProductosNuevos />
+        </section>
+  
+        <section className="container mx-auto px-4">
+          <ProductosDestacados />
+        </section>
+      </>
+    );
 }
