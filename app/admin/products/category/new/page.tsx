@@ -4,7 +4,6 @@ import { getCategories } from "@/src/services/categorys";
 
 export default async function NewCategoryPage() {
 
-
     const categories = await getCategories();
 
     return (

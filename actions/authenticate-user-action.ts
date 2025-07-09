@@ -20,10 +20,6 @@ export async function authenticateUserAction(prevState: ActionStateType, formDat
     // For redirection after login
     const redirectTo = formData.get('redirect')?.toString() || '/profile';
 
-
-    console.log("Login credentials:", loginCredentials);
-    console.log("redirectTo:", redirectTo);
-
     const auth = LoginSchema.safeParse(loginCredentials);
     if (!auth.success) {
         const errors = auth.error.errors.map(error => error.message);

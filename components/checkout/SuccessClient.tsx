@@ -68,16 +68,14 @@ export default function SuccessClient({ order }: { order: Order }) {
                 {/* Acciones */}
                 <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
                     <Link
-                        href={`/productos}`}
+                        href={`/productos`}
                         className="w-full sm:w-auto border border-gray-300 text-gray-800 py-2 px-6 rounded-full text-sm tracking-wide hover:bg-gray-100 transition flex items-center justify-center gap-2"
-
-
                     >
                         <FiArrowLeftCircle className="text-lg" />
                         Seguir comprando
                     </Link>
                     <Link
-                        href="/profile/mis-pedidos"
+                        href="/profile/orders"
                         className="w-full sm:w-auto border border-gray-300 text-gray-800 py-2 px-6 rounded-full text-sm tracking-wide hover:bg-gray-100 transition flex items-center justify-center gap-2"
                     >
                         <BsClipboardCheck className="text-lg" />
