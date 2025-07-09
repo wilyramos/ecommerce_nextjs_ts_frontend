@@ -117,6 +117,7 @@ export default function ProductDetails({ producto }: Props) {
             <div className="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 px-4 py-3 shadow z-50">
                 <div className="max-w-7xl mx-auto flex items-center justify-center">
                     <AddProductToCart product={producto} />
+                    
                 </div>
             </div>
         </>

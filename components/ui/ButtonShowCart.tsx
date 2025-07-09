@@ -13,16 +13,15 @@ import { FaShoppingCart } from "react-icons/fa";
 import { useCartStore } from "@/src/store/cartStore";
 import ItemCarrito from "../cart/ItemCarrito";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { toast } from "sonner";
 
 export default function ButtonShowCart() {
 
-    const [ open, setOpen ] = useState(false);
-
     const carrito = useCartStore((state) => state.cart);
-    const router = useRouter();
+    const isCartOpen = useCartStore((state) => state.isCartOpen);
+    const setCartOpen = useCartStore((state) => state.setCartOpen);
 
+    const router = useRouter();
     const total = carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0).toFixed(2);
 
 
@@ -31,12 +30,12 @@ export default function ButtonShowCart() {
             toast.error("Tu carrito está vacío.");
             return;
         }
-        setOpen(false);
+        setCartOpen(false);
         router.push("/carrito");
     }
 
     return (
-        <Sheet open={open} onOpenChange={setOpen}>
+        <Sheet open={isCartOpen} onOpenChange={setCartOpen}>
             <SheetTrigger className="relative cursor-pointer hover:text-blue-800 transition">
                 <FaShoppingCart className="h-6 w-6" />
                 {carrito.length > 0 && (

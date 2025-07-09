@@ -14,15 +14,21 @@ export default async function ProductosNuevos() {
 
 
     return (
-        <section className="py-5">
-            <div className="text-start mb-2">
-                <h2 className="text-2xl font-bold text-gray-800">Productos Nuevos</h2>
-                <p className="text-gray-400 text-sm mt-2">Explora las últimas novedades disponibles</p>
-            </div>
+        <section className="py-12 bg-white">
+    <div className="text-center mb-10 animate-fade-in">
+        <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">
+            Productos Nuevos
+        </h2>
+        <p className="text-base md:text-lg text-gray-500 mt-3">
+            Explora las últimas novedades disponibles
+        </p>
+        <div className="w-24 h-1 bg-gradient-to-r from-blue-500 via-pink-500 to-yellow-500 mx-auto mt-4 rounded-full" />
+    </div>
 
-            <div className="max-w-7xl mx-auto">
-                <ClientCarouselProductosNuevos products={newProducts?.products} />
-            </div>
-        </section>
+    <div className="max-w-7xl mx-auto px-4">
+        <ClientCarouselProductosNuevos products={newProducts?.products} />
+    </div>
+</section>
+   
     )
 }

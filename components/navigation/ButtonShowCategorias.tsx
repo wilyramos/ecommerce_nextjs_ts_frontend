@@ -49,7 +49,7 @@ export default function ButtonShowCategorias() {
                         {categoriasEstaticas.map((cat) => (
                             <div key={cat.slug}>
                                 <details className="group">
-                                    <summary className="cursor-pointer list-none flex items-center justify-between text-base font-semibold text-gray-900 hover:text-indigo-600 transition-all px-1 py-2 hover:bg-gray-50 rounded-md">
+                                    <summary className="cursor-pointer list-none flex items-center justify-between text-base font-semibold text-gray-900 hover:text-gray-100 transition-all px-1 py-2 hover:bg-blue-800 rounded-md">
                                         <span>{cat.name}</span>
                                         <PiCaretRightBold
                                             size={16}
@@ -62,7 +62,7 @@ export default function ButtonShowCategorias() {
                                                 <Link
                                                     href={`/categoria/${sub.slug}`}
                                                     onClick={() => setOpen(false)}
-                                                    className="flex items-center gap-2 text-sm text-gray-600 hover:text-indigo-600 transition-all py-1 px-2 hover:bg-indigo-50 rounded-md"
+                                                    className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-100 transition-all py-1 px-2 hover:bg-blue-800 rounded-md"
                                                 >
                                                     <PiCaretRightBold className="text-gray-300" size={14} />
                                                     {sub.name}

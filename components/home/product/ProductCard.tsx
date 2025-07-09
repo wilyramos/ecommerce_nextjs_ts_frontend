@@ -13,7 +13,7 @@ export default function ProductCard({ product }: { product: Product }) {
     const color = product.atributos?.Color || null;
 
     return (
-        <div className="group relative flex flex-col rounded-xl bg-white border text-gray-700 ">
+        <div className="group relative flex flex-col rounded-xl bg-white border text-gray-700 h-72 sm:h-96">
             <Link href={`/productos/${product.slug}`} className="flex flex-col h-full">
                 {/* Imagen */}
                 <div className="relative w-full aspect-square bg-gray-100 overflow-hidden rounded-t-xl">

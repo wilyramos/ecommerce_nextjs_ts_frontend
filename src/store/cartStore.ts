@@ -6,6 +6,9 @@ import { saveCartToDB } from '@/lib/api/cart';
 
 interface Store {
     cart: CartItem[];
+    isCartOpen: boolean;
+    setCartOpen: (isOpen: boolean) => void; 
+
     total: number;
     dni: string | null;
 
@@ -23,6 +26,9 @@ interface Store {
 
 const initialState = {
     cart: [],
+    isCartOpen: false,
+    setCartOpen: () => {}, // Función para abrir/cerrar el carrito
+
     total: 0,
     dni: null,
 
@@ -41,6 +47,9 @@ const initialState = {
 export const useCartStore = create<Store>()(devtools(persist((set, get) => ({
 
     ...initialState,
+    setCartOpen: (isOpen) => {
+        set({ isCartOpen: isOpen });
+    },
 
     addToCart: (item) => {
         const cart = get().cart

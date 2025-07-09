@@ -29,8 +29,10 @@ export default function CategoriasDestacadas({ categorias }: { categorias: Categ
     );
 
     return (
-        <section className="w-full py-10">
-            <h2 className="text-2xl text-center mb-6 text-gray-900 font-medium uppercase">Categorías Destacadas</h2>
+        <section className="w-full py-10 bg-gradient-to-r from-sky-50 via-white to-blue-100">
+            <h2 className="text-2xl text-center mb-6 text-gray-900 font-extrabold uppercase">
+                Categorías Destacadas
+            </h2>
             <div className="max-w-7xl mx-auto">
                 <Carousel
                     responsive={responsive}
@@ -58,9 +60,9 @@ export default function CategoriasDestacadas({ categorias }: { categorias: Categ
                             />
                         </Link>
                     ))}
-
                 </Carousel>
             </div>
+
         </section>
     );
 }
