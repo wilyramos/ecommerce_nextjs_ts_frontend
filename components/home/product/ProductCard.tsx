@@ -13,7 +13,7 @@ export default function ProductCard({ product }: { product: Product }) {
     const color = product.atributos?.Color || null;
 
     return (
-        <div className="group relative flex flex-col rounded-xl bg-white border text-gray-700 h-72 sm:h-96">
+        <div className="group relative flex flex-col rounded-xl bg-white border text-gray-700 h-full">
             <Link href={`/productos/${product.slug}`} className="flex flex-col h-full">
                 {/* Imagen */}
                 <div className="relative w-full aspect-square bg-gray-100 overflow-hidden rounded-t-xl">
@@ -69,24 +69,23 @@ export default function ProductCard({ product }: { product: Product }) {
 
                 {/* Información del producto */}
                 <div className="flex flex-col justify-between flex-1 p-3 gap-2">
-                    <h3 className="text-xs md:text-sm font-medium line-clamp-3 hover:line-clamp-none">
+                    <h3 className="text-xs md:text-sm font-semibold text-gray-800 line-clamp-3 hover:line-clamp-none ">
                         {product.nombre}
                     </h3>
 
-                    {color && (
-                        <div className="flex items-center gap-2">
-                            <ColorCircle color={color} />
+
+
+                    <div className="flex justify-between items-center gap-2">
+                        <div className="w-6 h-6">
+                            {color && <ColorCircle color={color} />}
                         </div>
-                    )}
 
-                    <div className="flex justify-between items-end">
-
-                        {/* <div className="text-xs text-gray-500">SKU: {product.sku || 'N/A'}</div> */}
-                        <div className="text-lg font-bold">
+                        <div className="text-lg font-extrabold text-gray-900">
                             <span className="text-md">s/. </span>
                             {product.precio.toFixed(2)}
                         </div>
                     </div>
+
                 </div>
             </Link>
 

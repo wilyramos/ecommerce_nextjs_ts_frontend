@@ -22,19 +22,24 @@ export const getCategory = cache(async (id: string) => {
 });
 
 export const getCategoryBySlug = cache(async (slug: string) => {
-    const url = `${process.env.API_URL}/category/slug/${slug}`;
+    try {
+        const url = `${process.env.API_URL}/category/slug/${slug}`;
+        const res = await fetch(url, {
+            method: "GET",
+        });
 
-    const req = await fetch(url, {
-        method: 'GET',
-    });
+        if (!res.ok) {
+            notFound();
+        }
 
-    const json = await req.json();
-    if (!req.ok) {
-        notFound();
+        const json = await res.json();
+        const category = CategoryAPIResponse.parse(json);
+        return category;
+        
+    } catch (error) {
+        console.error("Error al obtener la categoría por slug:", error);
+        return null;
     }
-
-    const category = CategoryAPIResponse.parse(json);
-    return category;
 });
 
 export const getCategories = cache(async () => {
