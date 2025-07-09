@@ -9,11 +9,10 @@ type ProductResultsProps = {
     page?: string;
     limit?: number;
     sort?: string;
-    compatibilidad?: string;
     query?: string;
 };
 
-export default async function ProductResults({ category, priceRange, page, limit = 10, sort, compatibilidad, query }: ProductResultsProps) {
+export default async function ProductResults({ category, priceRange, page, limit = 10, sort, query }: ProductResultsProps) {
 
     const products = await getProductsByFilter({
         page: page ? parseInt(page) : 1,
@@ -22,7 +21,6 @@ export default async function ProductResults({ category, priceRange, page, limit
         priceRange: priceRange || "",
         query: query || "",
         sort: sort || "",
-        compatibilidad: compatibilidad || "",
     });
 
     if (!products || products.products.length === 0) {
@@ -45,7 +43,6 @@ export default async function ProductResults({ category, priceRange, page, limit
                     category,
                     priceRange,
                     sort,
-                    compatibilidad,
                 }}
             />
         </>

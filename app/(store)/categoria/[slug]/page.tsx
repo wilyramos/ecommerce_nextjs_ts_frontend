@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import FiltrosPorCategoria from "@/components/home/categorias/FiltrosPorCategoria ";
 import ListaProducts from "@/components/home/categorias/ListaProducts";
 import OrdenarPor from "@/components/home/products/OrdenarPor";
-import SpinnerLoading from "@/components/ui/SpinnerLoading";
+// import SpinnerLoading from "@/components/ui/SpinnerLoading";
 
 type Params = Promise<{
     slug: string;
@@ -60,7 +60,7 @@ export default async function pageCategoria({
                     <h2 className="text-lg font-semibold text-gray-500 mb-4 border-b pb-2">
                         Filtros de la categoría
                     </h2>
-                    <Suspense fallback={<SpinnerLoading />}>
+                    <Suspense fallback={<p className="text-center">Cargando...</p>}>
                         <FiltrosPorCategoria categorySlug={slug} />
                     </Suspense>
                 </div>
@@ -72,7 +72,7 @@ export default async function pageCategoria({
                         <OrdenarPor pathname={`/categoria/${slug}`} />
                     </div>
 
-                    <Suspense fallback={<SpinnerLoading />}>
+                    <Suspense fallback={<p className="text-center">Cargando...</p>}>
                         <ListaProducts
                             category={slug}
                             priceRange={priceRange as string}

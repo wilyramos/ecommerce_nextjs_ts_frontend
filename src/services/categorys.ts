@@ -1,3 +1,6 @@
+import "server-only"
+
+
 import { cache } from 'react';
 import { CategoryAPIResponse, CategoriesAPIResponse } from "@/src/schemas";
 import { notFound } from 'next/navigation';
@@ -22,24 +25,19 @@ export const getCategory = cache(async (id: string) => {
 });
 
 export const getCategoryBySlug = cache(async (slug: string) => {
-    try {
-        const url = `${process.env.API_URL}/category/slug/${slug}`;
-        const res = await fetch(url, {
-            method: "GET",
-        });
+    const url = `${process.env.API_URL}/category/slug/${slug}`;
 
-        if (!res.ok) {
-            notFound();
-        }
+    const req = await fetch(url, {
+        method: 'GET',
+    });
 
-        const json = await res.json();
-        const category = CategoryAPIResponse.parse(json);
-        return category;
-        
-    } catch (error) {
-        console.error("Error al obtener la categoría por slug:", error);
-        return null;
+    const json = await req.json();
+    if (!req.ok) {
+        notFound();
     }
+
+    const category = CategoryAPIResponse.parse(json);
+    return category;
 });
 
 export const getCategories = cache(async () => {

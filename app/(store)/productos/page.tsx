@@ -4,7 +4,7 @@ import ProductResults from "@/components/home/product/ProductResults";
 import CategoriasFiltros from "@/components/home/product/CategoriasFiltros";
 import OrdenarPor from "@/components/home/products/OrdenarPor";
 import { CiFilter } from "react-icons/ci";
-import SpinnerLoading from "@/components/ui/SpinnerLoading";
+// import SpinnerLoading from "@/components/ui/SpinnerLoading";
 
 export const metadata: Metadata = {
     title: "Productos - GoPhone Cañete | iPhones, Accesorios y Tecnología",
@@ -50,12 +50,11 @@ type SearchParams = Promise<{
     page?: string;
     limit?: string;
     sort?: string;
-    compatibilidad?: string;
     query?: string;
 }>;
 
 export default async function PageProducts({ searchParams }: { searchParams: SearchParams }) {
-    const { category, priceRange, page, limit, sort, compatibilidad, query } = await searchParams;
+    const { category, priceRange, page, limit, sort, query } = await searchParams;
     const limitNumber = limit ? parseInt(limit) : 12;
 
     return (
@@ -68,7 +67,7 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
                             <span>Mostrar filtros</span>
                         </summary>
                         <div className="mt-4">
-                            <Suspense fallback={<SpinnerLoading />}>
+            <Suspense fallback={<p className="text-center">Cargando...</p>}>
                                 <CategoriasFiltros />
                             </Suspense>
                         </div>
@@ -80,7 +79,7 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
                     <aside className="hidden sm:block sm:col-span-1">
                         <div className="sticky top-24 bg-white p-4">
                             <h2 className="text-lg font-semibold text-gray-800 mb-4">Filtros</h2>
-                            <Suspense fallback={<SpinnerLoading />}>
+            <Suspense fallback={<p className="text-center">Cargando...</p>}>
                                 <CategoriasFiltros />
                             </Suspense>
                         </div>
@@ -92,14 +91,13 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
                             <OrdenarPor pathname="/productos" />
                         </div>
 
-                        <Suspense fallback={<SpinnerLoading />}>
+            <Suspense fallback={<p className="text-center">Cargando...</p>}>
                             <ProductResults
                                 category={category}
                                 priceRange={priceRange}
                                 page={page}
                                 limit={limitNumber}
                                 sort={sort}
-                                compatibilidad={compatibilidad}
                                 query={query}
                                 
                             />

@@ -6,8 +6,27 @@ import { ProductsAPIResponse, ProductAPIResponse, productsSchema } from "@/src/s
 import { cache } from 'react';
 
 
-export const getProduct = async (id: string) => {
+export const getProducts = async ({ page = 1, limit = 5 }) => {
 
+    // const token = getToken();
+    const url = `${process.env.API_URL}/products?page=${page}&limit=${limit}`;
+
+    const req = await fetch(url, {
+        method: 'GET'
+    });
+
+    const json = await req.json();
+    // console.log("jssson", json);
+    if (!req.ok) {
+        return null;
+    }
+
+    const products = ProductsAPIResponse.parse(json);
+    // console.log("son los productos", products);
+    return products;
+}
+
+export const getProduct = cache(async (id: string) => {
     const token = getToken();
     const url = `${process.env.API_URL}/products/${id}`;
 
@@ -25,10 +44,9 @@ export const getProduct = async (id: string) => {
 
     const product = ProductAPIResponse.parse(json);
     return product;
-};
+});
 
-export const GetProductsBySlug = async (slug: string) => {
-    
+export const GetProductsBySlug = cache(async (slug: string) => {
     const token = getToken();
     const url = `${process.env.API_URL}/products/slug/${slug}`;
 
@@ -46,7 +64,7 @@ export const GetProductsBySlug = async (slug: string) => {
     const json = await req.json();
     const product = ProductAPIResponse.parse(json);
     return product;
-};
+});
 
 type GetProductsByFilterParams = {
     page: number;
@@ -66,7 +84,6 @@ export const getProductsByFilter = async ({
     priceRange = "",
     query = "",
     sort = "",
-    compatibilidad = "",
     atributos = {},
 }: GetProductsByFilterParams) => {
     const params = new URLSearchParams({
@@ -76,9 +93,9 @@ export const getProductsByFilter = async ({
         priceRange,
         query,
         sort,
-        compatibilidad,
     });
 
+    // Agregar los atributos dinámicos al query string
     for (const [key, value] of Object.entries(atributos)) {
         if (value) {
             params.append(`atributos[${key}]`, value);
@@ -87,31 +104,19 @@ export const getProductsByFilter = async ({
 
     const url = `${process.env.API_URL}/products/filter?${params.toString()}`;
 
-    try {
-        const req = await fetch(url, {
-            method: "GET",
-        });
+    const req = await fetch(url, {
+        method: "GET",
+        // headers: { Authorization: `Bearer ${token}` },
+    });
 
-        if (!req.ok) {
-            console.error("Error al obtener productos por filtro:", req.statusText);
-            return null;
-        }
-
-        const json = await req.json();
-
-        if (!json || !json.products) {
-            console.error("Respuesta inesperada del servidor:", json);
-            return null;
-        }
-
-        const products = ProductsAPIResponse.parse(json);
-        return products;
-    } catch (error) {
-        console.error("Error en fetch productos:", error);
+    if (!req.ok) {
         return null;
     }
-};
 
+    const json = await req.json();
+    const products = ProductsAPIResponse.parse(json);
+    return products;
+};
 
 export const searchProducts = async ({ query, page, limit }: {
     query: string;
@@ -150,7 +155,7 @@ export const getNewProducts = cache(async () => {
     return products;
 });
 
-export const getDestacadosProducts =  cache(async () => {
+export const getDestacadosProducts = cache(async () => {
     const url = `${process.env.API_URL}/products/destacados/all`;
 
     const req = await fetch(url, {
@@ -168,7 +173,6 @@ export const getDestacadosProducts =  cache(async () => {
 
 
 export const getProductsRelated = async (slug: string) => {
-
     const url = `${process.env.API_URL}/products/${slug}/related`;
 
     const req = await fetch(url, {

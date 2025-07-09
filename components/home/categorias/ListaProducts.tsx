@@ -19,7 +19,6 @@ export default async function ListaProducts({
   page,
   limit = 10,
   sort,
-  compatibilidad,
   query,
   atributos = {},
 }: ProductResultsProps) {
@@ -30,7 +29,6 @@ export default async function ListaProducts({
     priceRange: priceRange || "",
     query: query || "",
     sort: sort || "",
-    compatibilidad: compatibilidad || "",
     atributos,
   });
 
@@ -54,7 +52,6 @@ export default async function ListaProducts({
         queryParams={{
           priceRange,
           sort,
-          compatibilidad,
           query,
           ...atributos, // Muy importante para mantener filtros en la paginación
         }}
