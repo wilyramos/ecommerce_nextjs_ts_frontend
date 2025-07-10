@@ -3,10 +3,11 @@
 import AddProductToCart from './AddProductToCart';
 import ColorCircle from '@/components/ui/ColorCircle';
 import ImagenesProductoCarousel from './ImagenesProductoCarousel';
-import type { Product } from '@/src/schemas';
+import type { ProductType } from '@/src/schemas';
+import ShopNowButton from './ShopNowButton';
 
 type Props = {
-    producto: Product;
+    producto: ProductType;
 };
 
 export default function ProductDetails({ producto }: Props) {
@@ -18,7 +19,7 @@ export default function ProductDetails({ producto }: Props) {
 
     return (
         <>
-            <div className="mx-auto px-4 grid gap-8 lg:grid-cols-2 max-w-7xl ">
+            <div className="mx-auto px-4 grid gap-6 lg:grid-cols-2 max-w-7xl">
                 {/* Imágenes */}
                 <div>
                     <ImagenesProductoCarousel images={producto.imagenes || []} />
@@ -30,7 +31,7 @@ export default function ProductDetails({ producto }: Props) {
                     {/* Título y Precio */}
                     <div className="space-y-2">
                         <div className=''>
-                            <h1 className="text-3xl md:text-3xl font-semibold text-gray-900 tracking-tight">
+                            <h1 className="text-3xl md:text-3xl font-bold leading-tight">
                                 {producto.nombre}
 
                                 {/* SKU y barcado */}
@@ -48,8 +49,8 @@ export default function ProductDetails({ producto }: Props) {
                         </div>
 
                         <div className="flex items-center gap-4">
-                            <span className="text-2xl font-semibold text-gray-800">
-                                s./ {producto.precio.toFixed(2)}
+                            <span className="text-2xl text-black font-extrabold">
+                                s/ {producto.precio.toFixed(2)}
                             </span>
                             <span className={`text-xs font-medium px-3 py-1 rounded-full 
                 ${producto.stock > 0
@@ -103,10 +104,19 @@ export default function ProductDetails({ producto }: Props) {
                         </div>
                     )}
 
-                    {/* Botón para escritorio */}
-                    <div className="hidden md:block pt-5">
-                        <AddProductToCart product={producto} />
+                    <div className='flex justify-between items-center gap-4'>
+                        {/* Botón para escritorio */}
+                        <div className="hidden md:block ">
+                            <AddProductToCart product={producto} />
+                        </div>
+                        {/* Botón para "comprar ahora" */}
+
+                        <div className=''>
+                            <ShopNowButton product={producto} />
+                        </div>
+
                     </div>
+
                 </div>
             </div>
 
@@ -117,7 +127,7 @@ export default function ProductDetails({ producto }: Props) {
             <div className="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 px-4 py-3 shadow z-50">
                 <div className="max-w-7xl mx-auto flex items-center justify-center">
                     <AddProductToCart product={producto} />
-                    
+
                 </div>
             </div>
         </>

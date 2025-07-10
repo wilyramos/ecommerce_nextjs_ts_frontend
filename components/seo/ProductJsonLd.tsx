@@ -2,9 +2,9 @@
 
 'use client'
 
-import type { Product } from "@/src/schemas"
+import type { ProductType } from "@/src/schemas"
 
-export default function ProductJsonLd({ producto }: { producto: Product }) {
+export default function ProductJsonLd({ producto }: { producto: ProductType }) {
     
     if (!producto) return null
 
@@ -23,6 +23,7 @@ export default function ProductJsonLd({ producto }: { producto: Product }) {
         name: producto.nombre,
         image: firstImage,
         description: producto.descripcion?.replace(/\r?\n|\r/g, ' ').trim() || "No description available",
+        category: producto.categoria?.nombre || 'General',
         sku: producto.sku || undefined,
         gtin13: producto.barcode || undefined,
         brand: {

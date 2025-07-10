@@ -6,8 +6,6 @@ import ColorCircle from '@/components/ui/ColorCircle';
 import { FaFireAlt } from 'react-icons/fa';
 
 export default function ProductCard({ product }: { product: Product }) {
-    // const imagenUrl = product.imagenes[0];
-
 
     // Color
     const color = product.atributos?.Color || null;
@@ -53,7 +51,7 @@ export default function ProductCard({ product }: { product: Product }) {
                     {(product.esNuevo || product.esDestacado) && (
                         <div className="absolute top-5 left-1 right-1 flex justify-between px-2 pointer-events-none text-[14px] text-gray-700 font-bold up">
                             {product.esNuevo && (
-                                <span className="px-2 py-0.5 border-2 border-blue-500  bg-blue-500 rounded-full rotate-315 backdrop-blur-3xl text-white">
+                                <span className="px-2 py-0.3 border-2 border-red-500  bg-red-500 rotate-315 text-white">
                                     Nuevo
                                 </span>
                             )}
@@ -72,8 +70,6 @@ export default function ProductCard({ product }: { product: Product }) {
                     <h3 className="text-xs md:text-sm font-semibold text-gray-800 line-clamp-3 hover:line-clamp-none ">
                         {product.nombre}
                     </h3>
-
-
 
                     <div className="flex justify-between items-center gap-2">
                         <div className="w-6 h-6">

@@ -20,8 +20,8 @@ export default function ButtonShowCategorias() {
     return (
         <Sheet open={open} onOpenChange={setOpen} >
             <SheetTrigger asChild>
-                <button className="text-gray-700 hover:text-blue-800 transition flex items-center cursor-pointer">
-                    <Hamburger toggled={open} toggle={setOpen} size={22} />
+                <button className="text-gray-700 hover:text-blue-800 transition flex items-center cursor-pointer font-extrabold leading-relaxed">
+                    <Hamburger toggled={open} toggle={setOpen} size={28} />
                     Categorias
                 </button>
             </SheetTrigger>
@@ -30,7 +30,7 @@ export default function ButtonShowCategorias() {
 
                 side="left"
                 className="w-[320px] px-4 py-5 bg-white shadow-xl border-r border-gray-200"
-                
+
             >
                 {/* Encabezado */}
                 <div className="pb-4 border-b border-gray-200 mb-2">

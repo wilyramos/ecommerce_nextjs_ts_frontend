@@ -34,7 +34,7 @@ export default function ColorCircle({ color }: { color: string }) {
 
     return (
         <div
-            className="w-4 h-4 rounded-full shadow-sm border border-gray-300 hover:scale-105 transition-transform duration-150"
+            className="w-4 h-4 rounded-full shadow-sm border-2 border-gray-500 hover:scale-105 transition-transform duration-150"
             title={color}
             style={{
                 backgroundColor: colorHex,

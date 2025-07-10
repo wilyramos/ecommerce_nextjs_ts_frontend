@@ -142,6 +142,57 @@ export const UserSchema = z.object({
 
 export type User = z.infer<typeof UserSchema>
 
+//TODO:HACER SCHEMAS ESCALABLES PARA CATEGORY Y PRODUCT
+// ** CATEGORY **//
+
+export const categoryAttributeSchema = z.object({
+    name: z.string().min(1, { message: 'El nombre del atributo es obligatorio' }),
+    values: z.array(z.string().min(1, { message: 'Cada valor del atributo es obligatorio' }))
+        .min(1, { message: 'Debe haber al menos un valor para el atributo' })
+});
+
+//CATEGORY
+
+// CATEGORIA
+
+export const AttributeSchema = z.object({
+    name: z.string().min(1, { message: 'El nombre del atributo es obligatorio' }),
+    values: z.array(z.string().min(1, { message: 'Cada valor del atributo es obligatorio' }))
+        .min(1, { message: 'Debe haber al menos un valor para el atributo' })
+});
+
+
+export const AttributesSchema = z.array(AttributeSchema)
+export type Attribute = z.infer<typeof AttributeSchema>
+export type Attributes = z.infer<typeof AttributesSchema>
+
+
+export const CreateCategorySchema = z.object({
+    nombre: z.string()
+        .min(1, { message: 'El nombre es obligatorio' }),
+    descripcion: z.string()
+        .min(1, { message: 'La descripción es obligatoria' }),
+    parent: z.string().nullable().optional(),
+    attributes: AttributesSchema.optional(),
+})
+
+const CategorySchemaParent = z.object({
+    _id: z.string(),
+    nombre: z.string().min(1, { message: 'El nombre es obligatorio' }),
+    parent: z.string().nullable().optional(), // Puede ser null si no tiene padre
+});
+
+export const CategorySchema = z.object({
+    _id: z.string(),
+    nombre: z.string(),
+    slug: z.string(),
+    parent: CategorySchemaParent.nullable().optional(), // Puede ser null si no tiene padre
+    descripcion: z.string().optional(),
+    attributes: z.array(AttributeSchema).optional(),
+    createdAt: z.string().datetime().optional(),
+    updatedAt: z.string().datetime().optional(),
+    __v: z.number().optional(),
+})
 
 // PRODUCT
 
@@ -187,7 +238,7 @@ export const ProductSchema = z.object({
     precio: z.number(),
     costo: z.number().optional(),
     imagenes: z.array(z.string()),
-    categoria: z.string().optional(),
+    categoria: CategorySchema.optional(),
     stock: z.number(),
     sku: z.string().optional(),
     barcode: z.string().optional(),
@@ -220,46 +271,7 @@ export const ImageSchemaResponse = z.object({
     images: z.array(z.string()),
 })
 
-// CATEGORIA
 
-export const AttributeSchema = z.object({
-    name: z.string().min(1, { message: 'El nombre del atributo es obligatorio' }),
-    values: z.array(z.string().min(1, { message: 'Cada valor del atributo es obligatorio' }))
-        .min(1, { message: 'Debe haber al menos un valor para el atributo' })
-});
-
-
-export const AttributesSchema = z.array(AttributeSchema)
-export type Attribute = z.infer<typeof AttributeSchema>
-export type Attributes = z.infer<typeof AttributesSchema>
-
-
-export const CreateCategorySchema = z.object({
-    nombre: z.string()
-        .min(1, { message: 'El nombre es obligatorio' }),
-    descripcion: z.string()
-        .min(1, { message: 'La descripción es obligatoria' }),
-    parent: z.string().nullable().optional(),
-    attributes: AttributesSchema.optional(),
-})
-
-const CategorySchemaParent = z.object({
-    _id: z.string(),
-    nombre: z.string().min(1, { message: 'El nombre es obligatorio' }),
-    parent: z.string().nullable().optional(), // Puede ser null si no tiene padre
-});
-
-export const CategorySchema = z.object({
-    _id: z.string(),
-    nombre: z.string(),
-    slug: z.string(),
-    parent: CategorySchemaParent.nullable().optional(), // Puede ser null si no tiene padre
-    descripcion: z.string().optional(),
-    attributes: z.array(AttributeSchema).optional(),
-    createdAt: z.string().datetime().optional(),
-    updatedAt: z.string().datetime().optional(),
-    __v: z.number().optional(),
-})
 
 export const ProductAPIResponse = z.object({
     _id: z.string(),
@@ -269,7 +281,7 @@ export const ProductAPIResponse = z.object({
     precio: z.number(),
     costo: z.number().optional(),
     imagenes: z.array(z.string()),
-    categoria: z.string(),
+    categoria: CategorySchema.optional(),
     stock: z.number(),
     sku: z.string().optional(),
     createdAt: z.string().datetime().optional(),

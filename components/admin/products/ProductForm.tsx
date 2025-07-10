@@ -1,10 +1,10 @@
-import type { Product } from "@/src/schemas";
+import type { ProductType } from "@/src/schemas";
 import type { CategoriasList } from "@/src/schemas";
 import UploadProductImage from "./UploadProductImage";
 import ClientCategoryAttributes from "./ClientCategoryAttributes"
 
 
-export default function ProductForm({ product, categorias }: { product?: Product, categorias: CategoriasList }) {
+export default function ProductForm({ product, categorias }: { product?: ProductType, categorias: CategoriasList }) {
 
     // TODO: implementar la lógica para manejar las variantes del producto
     // Función para manejar los cambios en las variantes recibidos del componente hijo
@@ -117,7 +117,7 @@ export default function ProductForm({ product, categorias }: { product?: Product
                 />
             </div>
 
-            <ClientCategoryAttributes categorias={categorias} initialCategoryId={product?.categoria} currentAttributes={product?.atributos} />
+            <ClientCategoryAttributes categorias={categorias} initialCategoryId={product?.categoria?._id} currentAttributes={product?.atributos} />
 
             <UploadProductImage
                 CurrentImagenes={product?.imagenes}

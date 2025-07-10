@@ -71,6 +71,7 @@ export default function ClientCarouselMain({ products }: { products: Product[] }
                             >
                                 Ver producto <ArrowRight className="w-4 h-4" />
                             </Link>
+                            
                             </div>
                         </div>
                     </div>

@@ -25,6 +25,8 @@ export default async function ProductsPage({ searchParams }: { searchParams: Sea
         query: params.query || "",
     });
 
+    console.log("Products Data:", productsData);
+
     return (
         <main className="">
             {/* Header */}
@@ -60,6 +62,6 @@ export default async function ProductsPage({ searchParams }: { searchParams: Sea
                         </div>
                     </>
                 )}
-¿        </main>
+        </main>
     );
 }
