@@ -61,6 +61,7 @@ export default function CheckoutSelector() {
                     unit_price: item.precio,
                     currency_id: 'PEN',
                     picture_url: item.imagenes?.[0] || '',
+                    description: item.nombre,
                 })),
                 shipping: {
                     address: {
@@ -80,6 +81,13 @@ export default function CheckoutSelector() {
                     phone: {
                         area_code: '51',
                         number: profile?.telefono || '',
+                    },
+                    address: {
+                        street_name: shipping?.direccion || '',
+                        street_number: shipping?.numero || '',
+                        floor: shipping?.piso || '',
+                        apartment: shipping?.referencia || '',
+                        city: shipping?.distrito || '',
                     },
                 },
             };
