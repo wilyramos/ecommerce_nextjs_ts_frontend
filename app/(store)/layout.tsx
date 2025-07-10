@@ -8,7 +8,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
     return (
         <>
             <div className="flex flex-col min-h-screen ">
-                <div className="w-full bg-gradient-to-r from-sky-300 via-indigo-200 to-indigo-500 text-indigo-900 text-center font-extrabold text-2xl py-2 px-4 z-50">
+                <div className="w-full bg-gradient-to-r from-sky-300 via-indigo-200 to-indigo-500 text-indigo-900 text-center font-extrabold text-sm md:text-2xl py-2 px-2 z-50">
                     🚚 Envío gratis en pedidos – ¡Solo por tiempo limitado!
                 </div>
 
