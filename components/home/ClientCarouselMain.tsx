@@ -60,7 +60,7 @@ export default function ClientCarouselMain({ products }: { products: Product[] }
                         {/* Contenido destacado */}
                         <div className="absolute bottom-1 left-0 w-auto p-4 sm:p-6 md:p-8 flex flex-col  justify-end text-white ">
                         
-                            <h2 className="text-base md:text-3xl font-bold leading-snug drop-shadow-lg bg-black p-1 text-end px-10">
+                            <h2 className="text-base md:text-3xl font-bold leading-snug drop-shadow-lg bg-gradient-to-r from-indigo-700 via-sky-400 to-blue-200 p-1 text-end px-10">
                                 {product.nombre}
                             </h2>
                             
