@@ -22,7 +22,7 @@ export default async function ProductosNuevos() {
                 <p className="text-base md:text-lg text-gray-500 mt-1">
                     Explora las últimas novedades disponibles
                 </p>
-                <div className="w-24 h-1 bg-gradient-to-r from-blue-500 via-gray-500 to-yellow-500 mx-auto rounded-full" />
+                <div className="w-24 h-1 bg-gradient-to-r from-blue-500 via-gray-500 to-black mx-auto rounded-full" />
             </div>
 
             <div className="max-w-7xl mx-auto px-4">

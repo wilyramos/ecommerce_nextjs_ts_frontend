@@ -28,15 +28,15 @@ export default function OrderStepper({ status }: OrderStepperProps) {
     const currentStepIndex = steps.findIndex((step) => step.value === status);
 
     return (
-        <div className="flex items-center justify-between gap-2 w-full max-w-2xl mx-auto">
+        <div className="flex items-center justify-between">
             {steps.map((step, i) => {
                 const isCompleted = i <= currentStepIndex;
                 return (
                     <div key={step.value} className="flex-1">
-                        <div className="flex items-center gap-2">
+                        <div className="flex flex-col items-center gap-2">
                             <div
                                 className={cn(
-                                    "w-5 h-5 rounded-full border-2 flex items-center justify-center text-xs",
+                                    "w-4 h-4 rounded-full border-2 flex items-center justify-center text-xs",
                                     isCompleted
                                         ? "bg-blue-600 border-blue-600 text-white"
                                         : "border-gray-300 text-gray-400"
@@ -46,7 +46,7 @@ export default function OrderStepper({ status }: OrderStepperProps) {
                             </div>
                             <span
                                 className={cn(
-                                    "text-sm",
+                                    "text-xs",
                                     isCompleted ? "text-blue-700 font-medium" : "text-gray-500"
                                 )}
                             >

@@ -9,9 +9,9 @@ export default async function ProfileLayout({ children }: { children: React.Reac
     if (!user) redirect('/auth/login');
 
     return (
-        <div className="flex h-auto">
+        <div className="flex flex-col md:flex-row ">
             {/* Sidebar */}
-            <aside className="w-auto bg-white shadow-md p-6 flex flex-col justify-between">
+            <aside className="w-full md:w-auto bg-white shadow-md p-6 flex flex-col justify-between">
                 <div>
                     {/* Usuario */}
                     <div className="text-center mb-6">
@@ -29,7 +29,7 @@ export default async function ProfileLayout({ children }: { children: React.Reac
                 <form action={logout}>
                     <button
                         type="submit"
-                        className="flex items-center gap-3 text-red-600 text-sm hover:text-red-800 transition-all"
+                        className="flex items-center gap-3 text-red-600 text-sm hover:text-red-800 transition-all p-6 cursor-pointer"
                     >
                         <FiLogOut className="text-lg" />
                         <span>Cerrar sesión</span>
