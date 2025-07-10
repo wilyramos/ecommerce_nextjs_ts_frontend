@@ -18,7 +18,7 @@ export default function UploadProductImage({ CurrentImagenes = [] }: UploadProdu
         if (imagenes.length === 0 && CurrentImagenes.length > 0) {
             setImagenes(CurrentImagenes)
         }
-    }, [CurrentImagenes, imagenes]) 
+    }, [CurrentImagenes, imagenes])
 
     // Subir imágenes nuevas
     const onDrop = useCallback(async (files: File[]) => {
@@ -32,8 +32,7 @@ export default function UploadProductImage({ CurrentImagenes = [] }: UploadProdu
     // Configuración Dropzone
     const { getRootProps, getInputProps, isDragActive, isDragReject, isDragAccept } = useDropzone({
         accept: {
-            'image/jpeg': ['.jpg'],
-            'image/png': ['.png'],
+            'image/*': ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.svg'],
         },
         onDrop,
         maxFiles: 3,
