@@ -30,6 +30,12 @@ export default function EditProductForm({ product, categorias }: { product: Prod
 
     }, [state])
 
+    // CreateProductForm.tsx
+    const categoriasOrdenadas = [...categorias].sort((a, b) =>
+        a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' })
+    );
+
+
     return (
         <>
             <form
@@ -40,12 +46,12 @@ export default function EditProductForm({ product, categorias }: { product: Prod
                 <ProductForm
                     key={product.updatedAt} // Ensure the form re-renders when the product is updated
                     product={product}
-                    categorias={categorias}
+                    categorias={categoriasOrdenadas}
                 />
                 <input
                     type="submit"
                     value="Actualizar Producto"
-                className='bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900 transition-all duration-200 ease-in-out cursor-pointer inline-block'
+                    className='bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900 transition-all duration-200 ease-in-out cursor-pointer inline-block'
                 />
 
             </form>

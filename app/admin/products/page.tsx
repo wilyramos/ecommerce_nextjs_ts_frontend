@@ -25,8 +25,6 @@ export default async function ProductsPage({ searchParams }: { searchParams: Sea
         query: params.query || "",
     });
 
-    console.log("Products Data:", productsData);
-
     return (
         <main className="">
             {/* Header */}
