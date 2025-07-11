@@ -31,20 +31,21 @@ export default function ProductDetails({ producto }: Props) {
                     {/* Título y Precio */}
                     <div className="space-y-2">
                         <div className=''>
+                            {producto.sku && (
+                                <span className="text-xs text-gray-400">
+                                    SKU: {producto.sku} |
+                                </span>
+                                
+                            )}
+                            {producto.barcode && (
+                                <span className="text-xs text-gray-400">
+                                    Código: {producto.barcode}
+                                </span>
+                            )}
                             <h1 className="text-3xl md:text-3xl font-bold leading-tight">
                                 {producto.nombre}
 
-                                {/* SKU y barcado */}
-                                {producto.sku && (
-                                    <span className="text-xs text-gray-400 ml-2">
-                                        SKU: {producto.sku}
-                                    </span>
-                                )}
-                                {producto.barcode && (
-                                    <span className="text-xs text-gray-400 ml-2">
-                                        Código: {producto.barcode}
-                                    </span>
-                                )}
+
                             </h1>
                         </div>
 
