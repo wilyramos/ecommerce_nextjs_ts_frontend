@@ -56,7 +56,7 @@ export default function HomePage() {
           <CarruselPrincipal />
         </div>
   
-        <section className="container mx-auto">
+        <section className="container mx-auto px-4">
           <CategoriasDestacadasWrapper />
         </section>
   

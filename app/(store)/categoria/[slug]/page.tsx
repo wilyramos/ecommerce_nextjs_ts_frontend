@@ -66,7 +66,7 @@ export default async function pageCategoria({
                 </div>
 
                 {/* Productos */}
-                <section className="sm:col-span-3 space-y-4">
+                <section className="sm:col-span-4 space-y-4">
                     {/* Ordenar por */}
                     <div className="flex justify-end">
                         <OrdenarPor pathname={`/categoria/${slug}`} />

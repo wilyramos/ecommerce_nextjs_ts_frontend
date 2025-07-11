@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: { params: Params }) {
             description,
             url: `https://www.gophone.pe/productos/${slug}`,
             siteName: 'GoPhone Cañete',
-            type: 'product',
+            type: 'website',
             images: [
                 {
                     url: image,
