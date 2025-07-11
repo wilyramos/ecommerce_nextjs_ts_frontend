@@ -32,7 +32,7 @@ export default function CategoriasDestacadas({ categorias }: { categorias: Categ
             <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 tracking-tight text-center">
                 Categorías Destacadas
             </h2>
-            <div className="max-w-7xl mx-auto flex justify-center items-center">
+            <div className="max-w-7xl mx-auto items-center ">
                 <Carousel
                     responsive={responsive}
                     infinite
@@ -42,12 +42,11 @@ export default function CategoriasDestacadas({ categorias }: { categorias: Categ
                     transitionDuration={400}
                     itemClass="px-3"
                     arrows={false}
-                    containerClass="flex justify-center" // <-- centrado del carrusel
                 >
                     {filteredCategorias.map((categoria, index) => (
                         <Link
                             key={index}
-                            href={`/categoria/${categoria.slug}`}
+                            href={`/categorias/${categoria.slug}`}
                             className="group relative flex flex-col items-center justify-center h-48 w-full bg-white transition-shadow duration-300 p-4 overflow-hidden hover:bg-black hover:text-gray-50 rounded-lg cursor-pointer"
                         >
                             <p className="text-base font-semibold">{categoria.nombre}</p>
@@ -62,7 +61,6 @@ export default function CategoriasDestacadas({ categorias }: { categorias: Categ
                     ))}
                 </Carousel>
             </div>
-
         </section>
     );
 }
