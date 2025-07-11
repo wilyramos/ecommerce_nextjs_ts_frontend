@@ -79,7 +79,7 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
                 <aside className="hidden sm:block sm:col-span-1">
                     <div className="sticky top-24 bg-white p-4">
                         <h2 className="text-lg font-semibold text-gray-800 mb-4">Filtros</h2>
-                        <Suspense fallback={<p className="text-center">Cargando...</p>}>
+                        <Suspense fallback={<SpinnerLoading />}>
                             <CategoriasFiltros />
                         </Suspense>
                     </div>
