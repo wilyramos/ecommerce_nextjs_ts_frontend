@@ -103,8 +103,8 @@ export default async function OrderProfilePage({ params }: { params: Params }) {
 
                                     <Image
 
-                                        src={item.productId.imagenes?.[0] || "/logob.svg"}
-                                        alt={item.productId.nombre}
+                                        src={item.productId?.imagenes?.[0] || "/logob.svg"}
+                                        alt={item.productId?.nombre || "Producto sin imagen"}
                                         width={40}
                                         height={40}
                                         className="w-10 h-10 object-cover"
@@ -113,7 +113,7 @@ export default async function OrderProfilePage({ params }: { params: Params }) {
 
                                 </div>
                                 <div>
-                                    <p className="text-sm font-medium text-gray-900">{item.productId.nombre}</p>
+                                    <p className="text-sm font-medium text-gray-900">{item.productId?.nombre || "Producto sin nombre"}</p>
                                     <p className="text-xs text-gray-500">x{item.quantity}</p>
                                 </div>
                             </div>

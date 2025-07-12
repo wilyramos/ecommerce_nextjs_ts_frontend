@@ -95,16 +95,16 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
                             return (
                                 <tr key={i} className="border-b">
                                     <td className="py-2 px-3 flex items-center gap-2">
-                                        {product.imagenes?.[0] && (
+                                        {product?.imagenes?.[0] && (
                                             <Image
-                                                src={product.imagenes[0]}
+                                                src={product.imagenes[0] || "/logob.svg"}
                                                 alt={product.nombre}
                                                 width={40}
                                                 height={40}
                                                 className="w-10 h-10 object-cover rounded border"
                                             />
                                         )}
-                                        <span>{product.nombre}</span>
+                                        <span>{product?.nombre || "Producto sin nombre"}</span>
                                     </td>
                                     <td className="text-center py-2 px-3">{item.quantity}</td>
                                     <td className="text-right py-2 px-3">S/. {item.price.toFixed(2)}</td>

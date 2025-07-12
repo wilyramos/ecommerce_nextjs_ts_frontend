@@ -393,7 +393,7 @@ export const CreateOrderSchema = z.object({
 // item de la orden
 
 const ProductSchemaOrder = z.object({
-    productId: ProductAPIResponseInPopulate,
+    productId: ProductAPIResponseInPopulate.nullable(),
     quantity: z.number(),
     price: z.number()
 })
