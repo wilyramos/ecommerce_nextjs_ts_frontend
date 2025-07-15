@@ -9,10 +9,10 @@ export const RegisterSchema = z.object({
         .min(1, { message: 'El nombre es obligatorio' }),
     password: z.string()
         .min(6, { message: 'La contraseña debe tener al menos 6 caracteres' }),
-//     password_confirmation: z.string(),
-// }).refine((data) => data.password === data.password_confirmation, {
-//     message: 'Las contraseñas no coinciden',
-//     path: ['password_confirmation'],
+    //     password_confirmation: z.string(),
+    // }).refine((data) => data.password === data.password_confirmation, {
+    //     message: 'Las contraseñas no coinciden',
+    //     path: ['password_confirmation'],
 });
 
 // For register validation with user data
@@ -194,7 +194,38 @@ export const CategorySchema = z.object({
     __v: z.number().optional(),
 })
 
-// PRODUCT
+/* PRODUCTS */
+
+const atributosSchema = z.record(z.string(), z.string());
+
+export const productBaseSchema = z.object({
+    nombre: z.string().min(1, 'El nombre es obligatorio'),
+    slug: z.string().optional(),
+    descripcion: z.string().optional(),
+    precio: z.number().min(0, 'El precio no puede ser negativo').optional(),
+    costo: z.number().min(0, 'El costo no puede ser negativo').optional(),
+    imagenes: z.array(z.string().url('Debe ser una URL válida')).optional(),
+    categoria: z.string().min(1, 'La categoría es obligatoria'),
+    stock: z.number().min(0, 'El stock no puede ser negativo').optional(),
+    sku: z.string().optional(),
+    barcode: z.string().optional(),
+    isActive: z.boolean().optional().default(true),
+    esDestacado: z.boolean().optional().default(false),
+    esNuevo: z.boolean().optional().default(false),
+    atributos: atributosSchema.optional(),
+});
+
+// Create product
+
+export const createProductSchema = productBaseSchema.extend({
+    nombre: z.string().min(1, 'El nombre es obligatorio'),
+    categoria: z.string().min(1, 'La categoría es obligatoria'),
+});
+
+// Update product
+export const updateProductSchema = productBaseSchema.partial();
+
+
 
 export const VariantOptionSchema = z.object({
     nombre: z.string().min(1, { message: 'El nombre de la opción es obligatorio' }),
@@ -460,7 +491,7 @@ export const PreferenceItemSchema = z.object({
     description: z.string().optional(),
     quantity: z.number(),
     unit_price: z.number().nonnegative(),
-    currency_id: z.string().default('PEN'), 
+    currency_id: z.string().default('PEN'),
     picture_url: z.string().optional(),
 });
 

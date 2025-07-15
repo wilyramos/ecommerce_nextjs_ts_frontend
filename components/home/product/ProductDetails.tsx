@@ -35,7 +35,7 @@ export default function ProductDetails({ producto }: Props) {
                                 <span className="text-xs text-gray-400">
                                     SKU: {producto.sku} |
                                 </span>
-                                
+
                             )}
                             {producto.barcode && (
                                 <span className="text-xs text-gray-400">
@@ -44,8 +44,6 @@ export default function ProductDetails({ producto }: Props) {
                             )}
                             <h1 className="text-3xl md:text-3xl font-bold leading-tight">
                                 {producto.nombre}
-
-
                             </h1>
                         </div>
 
@@ -97,13 +95,7 @@ export default function ProductDetails({ producto }: Props) {
 
 
                     {/* Descripción */}
-                    {producto.descripcion && (
-                        <div>
-                            <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">
-                                {producto.descripcion}
-                            </p>
-                        </div>
-                    )}
+
 
                     <div className='flex justify-between items-center gap-4'>
                         {/* Botón para escritorio */}
@@ -120,6 +112,22 @@ export default function ProductDetails({ producto }: Props) {
 
                 </div>
             </div>
+
+            {/* Informacion adicional */}
+
+            <div className=''>
+                    <h2 className="text-2xl font-bold text-gray-600 mb-6">Informacion adicional</h2>
+                {producto.descripcion && (
+                    <div>
+                        <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">
+                            {producto.descripcion}
+                        </p>
+                    </div>
+                )}
+
+
+            </div>
+
 
             {/* Espaciador mobile */}
             <div className="block md:hidden h-16" />

@@ -1,10 +1,11 @@
 import type { Product } from "@/src/schemas";
 import ProductCard from "./ProductCard";
+import { getProductsRelated } from "@/src/services/products";
 
 
-export default async function ProductosRelated({ productsRelated  }: { productsRelated : Product[] }) {
+export default async function ProductosRelated({slug}: { slug: string }) {
 
-
+    const productsRelated = await getProductsRelated(slug);
 
     if(!productsRelated){
         return(

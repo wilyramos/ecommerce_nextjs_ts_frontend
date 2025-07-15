@@ -34,7 +34,8 @@ export const GetProductsBySlug = async (slug: string) => {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`
-        }
+        },
+        cache: 'no-store' // Ensure fresh data
     });
 
     if (!req.ok) {

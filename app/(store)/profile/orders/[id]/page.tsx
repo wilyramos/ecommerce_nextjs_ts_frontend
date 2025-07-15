@@ -7,12 +7,17 @@ import PaymentStatusBadge from "@/components/ui/PaymentStatusBadge";
 import { BsArrowLeft } from "react-icons/bs";
 import OrderStepper from "@/components/ui/OrderStepper";
 import Image from "next/image";
+import NotFound from "./not-found";
 
 type Params = Promise<{ id: string }>;
 
 export default async function OrderProfilePage({ params }: { params: Params }) {
     const { id } = await params;
     const order = await getOrder(id);
+
+    if(!order) {
+        NotFound();
+    }
 
     if (!order) {
         return (
