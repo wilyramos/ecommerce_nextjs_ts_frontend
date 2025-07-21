@@ -14,7 +14,7 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
 
     const {
         page = "1",
-        limit = "10",
+        limit = "5",
         query = "",
     } = params || {};
 
@@ -28,15 +28,13 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
     });
 
     return (
-        <div className="flex h-[calc(100vh-32px)] gap-4">
+        <div className="flex flex-col md:flex-row h-screen md:h-[calc(100vh-32px)] bg-white">
             {/* Productos */}
-            <main className="flex flex-1 flex-col ">
-
+            <main className="flex flex-1 flex-col order-1">
                 <ProductSearchForm />
-
-                <section className="flex-1 overflow-y-auto pr-2">
+                <section className="flex-1 overflow-y-auto ">
                     {productos && productos.products.length > 0 ? (
-                        <ul className="space-y-4">
+                        <ul className="border rounded-2xl divide-y divide-gray-200 shadow-lg">
                             {productos.products.map((product) => (
                                 <li key={product._id}>
                                     <ProductCardPOS product={product} />
@@ -46,16 +44,14 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
                     ) : (
                         <div className="flex flex-col items-center justify-center py-12 text-center text-gray-500">
                             <h2 className="text-lg font-semibold">No se encontraron productos</h2>
-                            {/* <ButtonResetSearch /> */}
-                            
                         </div>
                     )}
                 </section>
             </main>
 
             {/* Carrito */}
-            <aside className="w-[360px] border-l bg-white p-4 overflow-y-auto">
-                <h2 className="mb-4 text-lg text-gray-700 border-b">Resumen de venta</h2>
+            <aside className="w-full md:w-[360px] border-t md:border-t-0 md:border-l bg-white p-4 order-2">
+                <h2 className="mb-4 text-lg text-gray-700 border-b font-extrabold">Resumen de venta</h2>
                 <VentaCart />
             </aside>
         </div>

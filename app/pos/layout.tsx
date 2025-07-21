@@ -7,7 +7,9 @@ export default async function POSlayout({ children }: { children: React.ReactNod
 
     return (
         <div className="flex h-screen bg-gray-50">
-            <SidebarPOS user={user} />
+            <div className='hidden md:block'>
+                <SidebarPOS user={user} />
+            </div>
 
             <main className="flex-grow overflow-y-auto px-6 py-4">
                 {children}

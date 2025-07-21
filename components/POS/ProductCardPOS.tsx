@@ -7,9 +7,9 @@ export default function ProductCardPOS({ product }: { product: Product }) {
     const { nombre, precio, imagenes, stock, barcode } = product;
 
     return (
-        <div className="group flex items-center gap-4 rounded-lg border border-gray-200 bg-white p-3 shadow-sm transition hover:border-blue-500 hover:shadow-md">
+        <div className="group flex items-center gap-2 p-2 transition ">
             {/* Imagen del producto */}
-            <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-md bg-gray-100">
+            <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden ">
                 {imagenes?.[0] ? (
                     <Image
                         src={imagenes[0]}
@@ -29,12 +29,12 @@ export default function ProductCardPOS({ product }: { product: Product }) {
 
             {/* Detalles del producto */}
             <div className="flex flex-1 flex-col min-w-0">
-                <h3 className="text-lg font-semibold truncate text-gray-800 group-hover:text-blue-600">
+                <h3 className="text-sm md:text-lg font-semibold truncate text-gray-800 group-hover:text-indigo-600">
                     {nombre}
                 </h3>
 
                 <div className="mt-1 flex flex-wrap items-center text-xs text-gray-600 gap-x-2">
-                    <span className="font-semibold text-green-600">S/. {precio.toFixed(2)}</span>
+                    <span className="font-extrabold text-green-600">S/. {precio.toFixed(2)}</span>
                     <span className="text-gray-500 font-mono">Cód: {barcode}</span>
                     {stock > 0 && (
                         <span className="flex items-center gap-1 text-gray-500">
@@ -50,7 +50,7 @@ export default function ProductCardPOS({ product }: { product: Product }) {
                 {stock > 0 ? (
                     <AddProductButton product={product} />
                 ) : (
-                    <span className="text-xs text-red-400 font-semibold">Agotado</span>
+                    <span className="text-xs text-red-600 font-semibold">Agotado</span>
                 )}
             </div>
         </div>
