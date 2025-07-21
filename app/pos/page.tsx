@@ -30,7 +30,7 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
     return (
         <div className="flex h-[calc(100vh-32px)] gap-4">
             {/* Productos */}
-            <main className="flex flex-1 flex-col">
+            <main className="flex flex-1 flex-col ">
 
                 <ProductSearchForm />
 
