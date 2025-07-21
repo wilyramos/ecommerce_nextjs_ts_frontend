@@ -1,3 +1,5 @@
+"use client";
+
 import { User } from '@/src/schemas';
 import Link from 'next/link';
 import {
@@ -8,39 +10,51 @@ import {
     FaUsers,
 } from 'react-icons/fa';
 import AdminMenu from '@/components/admin/AdminMenu';
+import Logo from '../ui/Logo';
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 export default function SidebarPOS({ user }: { user: User }) {
+
+    const pathname = usePathname();
+
+    const isActive = (path: string) => {
+        return cn(
+            'flex items-center gap-3 px-3 py-2 rounded-2xl',
+            pathname === path ? 'text-indigo-600 font-extrabold' : 'hover:bg-indigo-200 hover:text-indigo-800'
+        );
+    };
+
     return (
-        <aside className="w-64 h-screen bg-white border-r shadow-sm flex flex-col">
+        <aside className="w-64 h-screen bg-white border-r flex flex-col">
             {/* Usuario */}
-            <div className="flex items-center gap-3 p-4 border-b bg-gray-50">
-                <FaUserCircle className="text-2xl text-gray-500" />
-                <div>
-                    <p className="text-sm text-gray-600">Bienvenido</p>
-                    <p className="text-sm font-semibold text-gray-800">{user.nombre}</p>
-                </div>
+            <div className="flex items-center p-4 text-center justify-center">
+                <Logo />
             </div>
 
             {/* Navegación */}
-            <nav className="flex flex-col p-4 space-y-2 text-gray-700 text-sm font-medium flex-1">
-                <Link href="/pos" className="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-100">
+            <nav className="flex flex-col p-4 space-y-2 font-medium flex-1">
+                <Link href="/pos" className={isActive('/pos')}>
                     <FaCashRegister /> Inicio
                 </Link>
-                <Link href="/pos/ventas" className="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-100">
-                    <FaReceipt /> Ventas Realizadas
+                <Link href="/pos/ventas" className={isActive('/pos/ventas')}>
+                    <FaReceipt /> Ventas
                 </Link>
-                <Link href="/pos/productos" className="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-100">
+                <Link href="/pos/compras" className={isActive('/pos/compras')}>
+                    <FaReceipt /> Compras
+                </Link>
+                <Link href="/pos/productos" className={isActive('/pos/productos')}>
                     <FaBoxOpen /> Productos
                 </Link>
-                <Link href="/pos/clientes" className="flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-100">
+                <Link href="/pos/clientes" className={isActive('/pos/clientes')}>
                     <FaUsers /> Clientes
                 </Link>
             </nav>
 
             {/* Salir */}
-            <div className="flex items-center justify-between px-4 py-3 bg-gray-800">
-                <p className="text-sm text-white">
-                    Hola <span className="font-bold text-gray-50 uppercase">{user.nombre}</span>
+            <div className="flex items-center justify-between px-4 py-3">
+                <p className="text-sm text-gray-600">
+                    Hola <span className="font-bold text-gray-800 uppercase">{user.nombre}</span>
                 </p>
                 <AdminMenu user={user} />
             </div>

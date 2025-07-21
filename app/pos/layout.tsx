@@ -6,9 +6,8 @@ export default async function POSlayout({ children }: { children: React.ReactNod
     const { user } = await verifySession();
 
     return (
-        <div className="flex h-screen bg-gray-100">
+        <div className="flex h-screen bg-gray-50">
             <SidebarPOS user={user} />
-
 
             <main className="flex-grow overflow-y-auto px-6 py-4">
                 {children}

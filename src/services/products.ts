@@ -104,6 +104,7 @@ export const searchProducts = async ({ query, page, limit }: {
     page?: number;
     limit?: number;
 }) => {
+    console.log("seeding")
     const url = `${process.env.API_URL}/products/search?query=${encodeURIComponent(query)}&page=${page}&limit=${limit}`;
     const req = await fetch(url, {
         method: 'GET'
