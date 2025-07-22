@@ -6,12 +6,14 @@ export default async function POSlayout({ children }: { children: React.ReactNod
     const { user } = await verifySession();
 
     return (
-        <div className="flex h-screen bg-gray-50">
-            <div className='hidden md:block'>
+        <div className="flex h-screen bg-gray-50 overflow-hidden">
+            {/* Sidebar oculto en móviles */}
+            <aside className="hidden md:block">
                 <SidebarPOS user={user} />
-            </div>
+            </aside>
 
-            <main className="flex-grow overflow-y-auto px-6 py-4">
+            {/* Contenido principal scrollable */}
+            <main className="flex-grow overflow-y-auto px-4 py-4 bg-white">
                 {children}
             </main>
 

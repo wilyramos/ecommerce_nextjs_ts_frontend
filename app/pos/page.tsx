@@ -1,6 +1,8 @@
 import VentaCart from "@/components/POS/VentaCart";
 import { searchProducts } from "@/src/services/products";
 import ProductCardPOS from "@/components/POS/ProductCardPOS";
+import { PiShoppingCartFill } from "react-icons/pi";
+
 import ProductSearchForm from "@/components/POS/ProductSearchForm";
 
 type SearchParams = Promise<{
@@ -11,30 +13,27 @@ type SearchParams = Promise<{
 
 export default async function POSpage({ searchParams }: { searchParams: SearchParams }) {
     const params = await searchParams;
-
     const {
         page = "1",
         limit = "5",
         query = "",
     } = params || {};
 
-    const parsedPage = parseInt(page);
-    const parsedLimit = parseInt(limit);
-
     const productos = await searchProducts({
-        page: parsedPage,
-        limit: parsedLimit,
-        query: query || "",
+        page: parseInt(page),
+        limit: parseInt(limit),
+        query,
     });
 
     return (
-        <div className="flex flex-col md:flex-row h-screen md:h-[calc(100vh-32px)] bg-white">
+        <div className="grid md:grid-cols-2 h-screen bg-white">
             {/* Productos */}
-            <main className="flex flex-1 flex-col order-1">
+            <main className="p-4 overflow-y-auto">
                 <ProductSearchForm />
-                <section className="flex-1 overflow-y-auto ">
+
+                <section className="mt-4">
                     {productos && productos.products.length > 0 ? (
-                        <ul className="border rounded-2xl divide-y divide-gray-200 shadow-lg">
+                        <ul className="rounded-xl border divide-y divide-gray-200 shadow">
                             {productos.products.map((product) => (
                                 <li key={product._id}>
                                     <ProductCardPOS product={product} />
@@ -42,7 +41,7 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
                             ))}
                         </ul>
                     ) : (
-                        <div className="flex flex-col items-center justify-center py-12 text-center text-gray-500">
+                        <div className="flex items-center justify-center py-12 text-gray-500 text-center">
                             <h2 className="text-lg font-semibold">No se encontraron productos</h2>
                         </div>
                     )}
@@ -50,8 +49,9 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
             </main>
 
             {/* Carrito */}
-            <aside className="w-full md:w-[360px] border-t md:border-t-0 md:border-l bg-white p-4 order-2">
-                <h2 className="mb-4 text-lg text-gray-700 border-b font-extrabold">Resumen de venta</h2>
+            <aside className="p-4 border-t md:border-t-0 md:border-l bg-white">
+                <PiShoppingCartFill size={32} className="text-rose-600 mb-4" />
+                
                 <VentaCart />
             </aside>
         </div>

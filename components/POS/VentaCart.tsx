@@ -9,34 +9,35 @@ import CustomerDniInput from "./CustomerDniInput";
 
 export default function VentaCart() {
     const { cart, updateQuantity, removeFromCart } = useCartStore();
-    const total = cart.reduce((acc, item) => acc + item.subtotal, 0);
     const dni = useCartStore((s) => s.dni);
+    const total = cart.reduce((acc, item) => acc + item.subtotal, 0);
 
     if (cart.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center py-12 text-center">
-                <FaShoppingCart size={56} className="text-gray-400 mb-4" />
-                <p className="text-gray-600 text-sm">Tu carrito está vacío.</p>
+            <div className="flex flex-col items-center justify-center py-12 text-center text-gray-500">
+                <FaShoppingCart size={56} className="mb-4" />
+                <p className="text-sm">Tu carrito está vacío.</p>
             </div>
         );
     }
 
     return (
-        <div className="space-y-4">
-            <div className="overflow-x-auto max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300">
-                <table className="w-full text-sm text-left text-gray-700">
-                    <thead className="bg-gray-50 text-gray-800 border-b text-xs">
+        <div className="space-y-5">
+            {/* Lista de productos */}
+            <div className="max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300">
+                <table className="w-full text-sm text-gray-800">
+                    <thead className="bg-gray-100 text-xs sticky top-0 z-10">
                         <tr>
-                            <th className="py-2">Producto</th>
+                            <th className="py-2 px-2 text-left">Producto</th>
                             <th className="py-2 text-center">Cantidad</th>
-                            <th className="py-2 text-right">Subtotal</th>
+                            <th className="py-2 px-2 text-right">Subtotal</th>
                             <th className="py-2 text-center"></th>
                         </tr>
                     </thead>
                     <tbody>
                         {cart.map((item) => (
-                            <tr key={item._id} className="border-b last:border-b-0">
-                                <td className="py-2 pr-2">
+                            <tr key={item._id} className="border-b">
+                                <td className="py-2 px-2">
                                     <div className="flex items-center gap-2">
                                         {item.imagenes?.[0] ? (
                                             <Image
@@ -47,7 +48,7 @@ export default function VentaCart() {
                                                 className="w-10 h-10 object-cover rounded border"
                                             />
                                         ) : (
-                                            <div className="flex items-center justify-center w-10 h-10 bg-gray-200 rounded text-xs text-gray-500">
+                                            <div className="w-10 h-10 flex items-center justify-center bg-gray-200 rounded text-xs text-gray-500">
                                                 Sin imagen
                                             </div>
                                         )}
@@ -59,20 +60,20 @@ export default function VentaCart() {
                                         <button
                                             onClick={() => updateQuantity(item._id, item.cantidad - 1)}
                                             disabled={item.cantidad <= 1}
-                                            className="px-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50"
+                                            className="w-7 h-7 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded disabled:opacity-50"
                                         >
-                                            -
+                                            −
                                         </button>
-                                        <span>{item.cantidad}</span>
+                                        <span className="px-2">{item.cantidad}</span>
                                         <button
                                             onClick={() => updateQuantity(item._id, item.cantidad + 1)}
-                                            className="px-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+                                            className="w-7 h-7 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded"
                                         >
                                             +
                                         </button>
                                     </div>
                                 </td>
-                                <td className="text-right pr-2 text-sm text-gray-800">
+                                <td className="text-right px-2">
                                     S/. {(item.precio * item.cantidad).toFixed(2)}
                                 </td>
                                 <td className="text-center">
@@ -90,19 +91,24 @@ export default function VentaCart() {
                 </table>
             </div>
 
-            <CustomerDniInput />
-            {dni && (
-                <div className="text-sm text-gray-700">
-                    DNI del cliente: <span className="font-bold">{dni}</span>
-                </div>
-            )}
-
-            <div className="text-end">
-                <p className="text-sm text-gray-600">Total:</p>
-                <p className="text-xl font-bold text-gray-900">S/. {total.toFixed(2)}</p>
+            {/* DNI del cliente */}
+            <div className="space-y-1">
+                <CustomerDniInput />
+                {dni && (
+                    <p className="text-sm text-gray-700">
+                        DNI del cliente: <span className="font-semibold">{dni}</span>
+                    </p>
+                )}
             </div>
 
-            <SubmitSaleButton />
+            {/* Total y botón */}
+            <div className="flex flex-col items-end space-y-2">
+                <div>
+                    <p className="text-sm text-gray-500">Total</p>
+                    <p className="text-2xl font-bold text-gray-900">S/. {total.toFixed(2)}</p>
+                </div>
+                <SubmitSaleButton />
+            </div>
         </div>
     );
 }

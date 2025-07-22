@@ -194,7 +194,7 @@ export const CategorySchema = z.object({
     __v: z.number().optional(),
 })
 
-/* PRODUCTS */
+/* PRODUCTS NUEVO */
 
 const atributosSchema = z.record(z.string(), z.string());
 
@@ -224,6 +224,23 @@ export const createProductSchema = productBaseSchema.extend({
 
 // Update product
 export const updateProductSchema = productBaseSchema.partial();
+
+// Product response schema
+
+export const ApiProductSchema = productBaseSchema.extend({
+    _id: z.string(),
+    slug: z.string(),
+    createdAt: z.string().datetime().optional(),
+    updatedAt: z.string().datetime().optional(),
+    __v: z.number().optional(),
+});
+
+
+// Type inference
+
+export type CreateProductInput = z.infer<typeof createProductSchema>;
+export type UpdateProductInput = z.infer<typeof updateProductSchema>;
+export type ProductResponse = z.infer<typeof ApiProductSchema>;
 
 
 

@@ -21,12 +21,12 @@ export default function SidebarPOS({ user }: { user: User }) {
     const isActive = (path: string) => {
         return cn(
             'flex items-center gap-3 px-3 py-2 rounded-2xl',
-            pathname === path ? 'text-indigo-600 font-extrabold' : 'hover:bg-indigo-200 hover:text-indigo-800'
+            pathname === path ? 'text-rose-600 font-extrabold' : 'hover:bg-rose-200 hover:text-rose-800'
         );
     };
 
     return (
-        <aside className="w-64 h-screen bg-white border-r flex flex-col">
+        <aside className=" h-screen bg-white border-r flex flex-col">
             {/* Usuario */}
             <div className="flex items-center p-4 text-center justify-center">
                 <Logo />
