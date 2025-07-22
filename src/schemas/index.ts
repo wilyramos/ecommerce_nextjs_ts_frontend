@@ -262,7 +262,7 @@ const AtributosProductSchema = z.record(z.string(), z.string());
 // Create product schema
 export const CreateProductSchema = z.object({
     nombre: z.string().min(1, { message: 'El nombre es obligatorio' }),
-    descripcion: z.string().min(1, { message: 'La descripción es obligatoria' }),
+    descripcion: z.string().min(1, { message: 'La descripciónn es obligatoria' }),
     precio: z.number().min(0, { message: 'El precio es obligatorio' }),
     costo: z.number().min(0).optional(),
     categoria: z.string().min(1, { message: 'La categoría es obligatoria' }),

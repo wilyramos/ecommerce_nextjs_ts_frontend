@@ -3,6 +3,9 @@
 import getToken from "@/src/auth/token"
 import { CreateProductSchema, SuccessResponse } from "@/src/schemas"
 
+// Nuevo
+import { createProductSchema } from "@/src/schemas"
+
 
 type ActionStateType = {
     errors: string[],
@@ -10,7 +13,7 @@ type ActionStateType = {
 }
 
 
-export async function createProduct(prevState: ActionStateType | undefined, formData: FormData) {
+export async function createProduct(prevState: ActionStateType, formData: FormData) {
 
 
     // parsear los atributos del formulario
@@ -47,7 +50,7 @@ export async function createProduct(prevState: ActionStateType | undefined, form
 
 
     // Validar con zod 
-    const result = CreateProductSchema.safeParse(productData)
+    const result = createProductSchema.safeParse(productData)
     if (!result.success) {
         return {
             errors: result.error.issues.map((issue) => issue.message),
