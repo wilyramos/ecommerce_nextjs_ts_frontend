@@ -33,7 +33,7 @@ export default function ProductSearchInput() {
     return (
         <input
             type="text"
-            className="px-3 py-2 border border-gray-300 rounded-full text-sm w-full sm:w-64"
+            className="px-3 py-2 border-2 border-blue-500 rounded-full text-sm w-full sm:w-64"
             placeholder="Buscar por nombre o SKU..."
             value={query}
             onChange={onChange}

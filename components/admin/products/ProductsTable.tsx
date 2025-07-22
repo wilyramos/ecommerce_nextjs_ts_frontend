@@ -21,8 +21,13 @@ export default function ProductsTable({ products }: { products: ProductsList }) 
                 </thead>
                 <tbody className="divide-y divide-gray-100 text-gray-700">
                     {products.products.map((product) => (
-                        <tr key={product._id} className="hover:bg-gray-50 transition-colors">
-                            <td className="px-4 py-2 font-medium">{product.nombre}</td>
+                        <tr key={product._id} className="hover:bg-gray-200 transition-colors">
+                            <Link
+                                href={`/admin/products/${product._id}`}
+                                className="px-4 py-2 flex items-center gap-2"
+                            >
+                                {product.nombre}
+                            </Link>
                             <td className="px-4 py-2 hidden md:table-cell uppercase">{product.sku}</td>
                             <td className="px-4 py-2 hidden md:table-cell">${product.precio.toFixed(2)}</td>
                             <td className="px-4 py-2">{product.stock}</td>

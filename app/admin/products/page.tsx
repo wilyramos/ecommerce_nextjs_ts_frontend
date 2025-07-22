@@ -34,7 +34,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Sea
             </div>
 
             {/* Product Results */}
-            <div className="p-4">
+            <div className="">
                 <Suspense fallback={<SpinnerLoading />}>
                     <ProductsResultsAdmin
                         currentPage={currentPage}
