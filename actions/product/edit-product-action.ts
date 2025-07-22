@@ -1,10 +1,14 @@
 "use server"
 
 import getToken from "@/src/auth/token"
-import { CreateProductSchema, SuccessResponse } from "@/src/schemas"
+import { SuccessResponse } from "@/src/schemas"
 // import { ErrorResponse } from "@/src/schemas" // TODO
 import { revalidatePath } from "next/cache"
 import type { Variant } from "@/src/schemas"
+
+// New schema
+
+import { updateProductSchema } from "@/src/schemas"
 
 
 
@@ -15,7 +19,6 @@ type ActionStateType = {
 
 
 export async function EditProduct(id: string, prevState: ActionStateType, formData: FormData) {
-
 
     // parsear los atributos del formulario
     const atributosString = formData.get("atributos") as string;
@@ -44,11 +47,12 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         imagenes: formData.getAll("imagenes[]") as string[],
         esDestacado: formData.get("esDestacado") === "on",
         esNuevo: formData.get("esNuevo") === "on",
+        isActive: formData.get("isActive") === "on",
         atributos: atributos
     }
     console.log("productData", productData)
 
-    const product = CreateProductSchema.safeParse(productData);
+    const product = updateProductSchema.safeParse(productData);
     if (!product.success) {
         return {
             errors: product.error.errors.map(error => error.message),
