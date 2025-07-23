@@ -20,7 +20,7 @@ export default function ButtonShowCategorias() {
     return (
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-                <button className="hover:text-indigo-00 transition flex items-center  gap-1 cursor-pointer ">
+                <button className="hover:text-indigo-00 transition flex items-center  gap-1 cursor-pointer text-gray-700 font-semibold ">
                     <HiMiniSquares2X2 size={20} />
                     Categorías
                 </button>

@@ -52,19 +52,19 @@ export const metadata: Metadata = {
 export default function HomePage() {
    return (
       <>
-        <div className="container mx-auto py-5">
+        <div className="container mx-auto">
           <CarruselPrincipal />
         </div>
   
-        <section className="container mx-auto px-4">
+        <section className="">
           <CategoriasDestacadasWrapper />
         </section>
   
-        <section className="container mx-auto px-4">
+        <section className="">
           <ProductosNuevos />
         </section>
   
-        <section className="container mx-auto px-4">
+        <section className="">
           <ProductosDestacados />
         </section>
       </>

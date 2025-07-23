@@ -31,7 +31,7 @@ export default function NavBar() {
                 </Link>
 
                 {/* Desktop: Categorías */}
-                <div className="hidden md:flex items-center font-semibold px-10">
+                <div className="hidden md:flex px-10">
                     <ButtonShowCategorias />
                 </div>
 

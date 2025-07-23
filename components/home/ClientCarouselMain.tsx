@@ -5,7 +5,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import type { Product } from "@/src/schemas";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react"; 
+import { ArrowRight } from "lucide-react";
 import { CustomDot } from "../ui/CustomDot";
 
 const responsive = {
@@ -56,22 +56,23 @@ export default function ClientCarouselMain({ products }: { products: Product[] }
                             ))}
                         </div>
 
-                       
+
                         {/* Contenido destacado */}
                         <div className="absolute bottom-1 left-0 w-auto p-4 sm:p-6 md:p-8 flex flex-col  justify-end text-white ">
-                        
-                            <h2 className="text-base md:text-2xl font-bold leading-snug drop-shadow-lg bg-gradient-to-r from-gray-400 via-gray-400 to-gray-200 p-1 text-end px-10">
+
+                            <h2 className="text-base md:text-2xl font-bold leading-snug text-white 
+    bg-slate-900/70 px-4 py-2 rounded-md shadow-md backdrop-blur-sm">
                                 {product.nombre}
-                            </h2>   
-                            
+                            </h2>
+
                             <div className=" text-xs sm:text-sm md:text-base font-semibold text-end md:text-start">
-                            <Link
-                                href={`/productos/${product.slug}`}
-                                className="mt-5 sm:mt-6 inline-flex items-center gap-2 bg-white text-black text-xs sm:text-sm md:text-base font-semibold px-5 sm:px-6 py-1.5 rounded-full max-w-xs border border-gray-700 hover:text-white hover:bg-black hover:shadow-lg text-end"
-                            >
-                                Ver producto <ArrowRight className="w-4 h-4" />
-                            </Link>
-                            
+                                <Link
+                                    href={`/productos/${product.slug}`}
+                                    className="mt-5 sm:mt-6 inline-flex items-center gap-2 bg-white text-black text-xs sm:text-sm md:text-base font-semibold px-5 sm:px-6 py-1.5 rounded-full max-w-xs border border-gray-700 hover:text-white hover:bg-black hover:shadow-lg text-end"
+                                >
+                                    Ver producto <ArrowRight className="w-4 h-4" />
+                                </Link>
+
                             </div>
                         </div>
                     </div>

@@ -2,6 +2,7 @@ import Footer from "@/components/home/Footer"
 import NavBar from "@/components/navigation/NavBar"
 import Link from "next/link";
 import { FaWhatsapp } from "react-icons/fa" // Ícono oficial de WhatsApp
+import { TbTruckDelivery } from "react-icons/tb";
 
 
 export default function layout({ children }: { children: React.ReactNode }) {
@@ -9,16 +10,14 @@ export default function layout({ children }: { children: React.ReactNode }) {
         <>
             <div className="flex flex-col min-h-screen">
                 {/* Aviso mejorado */}
-                <div className="relative w-full bg-gradient-to-r from-rose-300 via-red-500 to-red-600 text-white text-sm md:text-base font-semibold py-1 px-4 text-center shadow-md z-50">
-                    <span className="inline-flex items-center justify-center gap-2">
-                        <span className="text-lg md:text-xl">🚚</span>
-                        <span className="uppercase tracking-wide">
-                            ¡Envío en Cañete por tiempo limitado!
-                        </span>
-                        <span className="hidden sm:inline text-xs bg-white text-rose-600 rounded-full px-2 py-0.5 font-bold">
+                <div className="w-full bg-gradient-to-r from-slate-800 to-slate-900 text-white text-center text-sm md:text-base font-medium py-2 px-4 shadow z-50">
+                    <div className="inline-flex items-center justify-center gap-2">
+                        <TbTruckDelivery className="text-cyan-400 text-lg" />
+                        <span className="text-white">Envíos en Cañete por tiempo limitado</span>
+                        <span className="hidden sm:inline bg-cyan-400 text-slate-900 text-xs font-bold px-2 py-0.5 rounded-full">
                             GRATIS
                         </span>
-                    </span>
+                    </div>
                 </div>
 
                 <NavBar />
