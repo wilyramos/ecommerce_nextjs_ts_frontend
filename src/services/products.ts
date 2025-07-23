@@ -47,7 +47,7 @@ export const GetProductsBySlug = async (slug: string) => {
     }
 
     const json = await req.json();
-    const product = ProductAPIResponse.parse(json);
+    const product = ApiProductWithCategorySchema.parse(json);
     return product;
 };
 

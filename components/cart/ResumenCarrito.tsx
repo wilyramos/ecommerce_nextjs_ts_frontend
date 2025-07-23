@@ -4,6 +4,8 @@ import { useCartStore } from "@/src/store/cartStore"
 import ItemCarrito from "./ItemCarrito"
 import { useRouter } from "next/navigation"
 import { FaShoppingCart } from "react-icons/fa"
+import { Heading } from "lucide-react"
+import HeadingH1 from "../ui/Heading"
 
 export default function ResumenCarrito() {
     const { cart } = useCartStore()
@@ -30,8 +32,8 @@ export default function ResumenCarrito() {
     }
 
     return (
-        <div className="max-w-7xl mx-auto px-4 py-4">
-            <h1 className="text-lg font-semibold text-gray-800 mb-6">Resumen del carrito</h1>
+        <div className="max-w-7xl mx-auto p-6">
+            <HeadingH1>Resumen del carrito</HeadingH1>
             <p className="text-sm text-gray-400 mb-4">
                 {cart.length} {cart.length === 1 ? "producto" : "productos"} seleccionados.
             </p>
@@ -39,7 +41,7 @@ export default function ResumenCarrito() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                 {/* Carrito */}
-                <div className="md:col-span-2 bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
+                <div className="md:col-span-2 bg-white border-r-2 p-4">
                     <ul className="divide-y divide-gray-200">
                         {cart.map((item) => (
                             <ItemCarrito key={item._id} item={item} />
@@ -48,7 +50,7 @@ export default function ResumenCarrito() {
                 </div>
 
                 {/* Resumen */}
-                <div className="bg-white border border-gray-100 rounded-2xl p-4 shadow-sm">
+                <div className="bg-white border border-gray-50 p-4">
                     <h2 className="text-base text-gray-950 font-semibold">Resumen del pedido</h2>
 
                     <ul className="text-sm text-gray-600 space-y-2">
@@ -89,7 +91,7 @@ export default function ResumenCarrito() {
 
                     <button
                         onClick={handleContinuar}
-                        className="w-full bg-gray-900 text-white px-4 py-2 rounded-md hover:bg-gray-800 transition-colors text-sm font-semibold flex items-center justify-center gap-2 hover:cursor-pointer"
+                        className="w-full bg-indigo-600 text-white px-4 py-3 rounded-full hover:bg-indigo-800 transition-colors  font-semibold flex items-center justify-center gap-2 hover:cursor-pointer "
                     >
                         Continuar con la compra
                     </button>

@@ -5,11 +5,9 @@ export default function CarritoPage() {
 
 
     return (
-        <main className="max-w-7xl mx-auto px-5">
+        <main className="mx-auto py-6">
             <section className="lg:col-span-2 space-y-4">
-                <div className="">
-                    <ResumenCarrito />
-                </div>
+                <ResumenCarrito />
             </section>
 
         </main>
