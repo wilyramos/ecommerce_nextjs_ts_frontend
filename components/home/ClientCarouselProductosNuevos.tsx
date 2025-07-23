@@ -19,7 +19,7 @@ export default function ClientCarouselProductosNuevos({ products }: Props) {
     
 
     return (
-        <section className="">
+        <section className="h">
             <div className="container">
 
                 <div className="">
@@ -28,7 +28,7 @@ export default function ClientCarouselProductosNuevos({ products }: Props) {
                         infinite
                         autoPlay
                         autoPlaySpeed={3000}
-                        
+                        pauseOnHover
                         arrows={false}
                         showDots={false}
                     >

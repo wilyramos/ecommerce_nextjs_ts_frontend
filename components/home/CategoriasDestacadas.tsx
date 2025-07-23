@@ -31,11 +31,11 @@ export default function CategoriasDestacadas({
     );
 
     return (
-        <section className="w-full py-5 bg-gradient-to-r from-sky-50 via-white to-blue-100">
+        <section className="w-full py-5 bg-gradient-to-r from-indigo-50 via-white to-indigo-200">
             <div className="max-w-7xl mx-auto px-5">
-                <h2 className="text-lg font-semibold">
-                    Categorías Destacadas
-                </h2>
+                <h2 className="text-lg  font-semibold text-gray-800">
+                        Categorias Destacadas
+                    </h2>
 
                 <Carousel
                     responsive={responsive}

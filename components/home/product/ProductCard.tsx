@@ -11,7 +11,7 @@ export default function ProductCard({ product }: { product: Product }) {
     const color = product.atributos?.Color || null;
 
     return (
-        <div className="group relative flex flex-col rounded-xl bg-white border border-gray-100 text-gray-700">
+        <div className="group relative flex flex-col h-[350px] rounded-xl bg-white border border-gray-100 text-gray-700">
             <Link href={`/productos/${product.slug}`} className="flex flex-col h-full">
                 {/* Imagen */}
                 <div className="relative w-full aspect-square bg-gray-100 overflow-hidden rounded-t-xl">
@@ -25,7 +25,7 @@ export default function ProductCard({ product }: { product: Product }) {
                                 fill
                                 className={`object-cover transition-opacity duration-300 ${product.imagenes[1] ? 'group-hover:opacity-0' : ''
                                     }`}
-                                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                                sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vwzz"
                                 quality={50}
 
                             />
