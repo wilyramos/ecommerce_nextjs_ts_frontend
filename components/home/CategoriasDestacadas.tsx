@@ -19,20 +19,24 @@ const ImagenesPorCategoria: Record<string, string> = {
     "cargadores-y-cables": "/categorias/cable.svg",
     iphone: "/categorias/iphone.svg",
     "fundas-y-carcasas": "/categorias/cases.svg",
-
 };
 
-export default function CategoriasDestacadas({ categorias }: { categorias: CategoryListResponse }) {
+export default function CategoriasDestacadas({
+    categorias,
+}: {
+    categorias: CategoryListResponse;
+}) {
     const filteredCategorias = categorias.filter((c) =>
         Object.keys(ImagenesPorCategoria).includes(c.slug || "")
     );
 
     return (
-        <section className="w-full py-10 bg-gradient-to-r from-sky-50 via-white to-blue-100 justify-center items-center ">
-            <h2 className="text-xl md:text-2xl font-extrabold text-gray-900 tracking-tight text-center">
-                Categorías Destacadas
-            </h2>
-            <div className="max-w-7xl mx-auto items-center ">
+        <section className="w-full py-5 bg-gradient-to-r from-sky-50 via-white to-blue-100">
+            <div className="max-w-7xl mx-auto px-5">
+                <h2 className="text-lg font-semibold">
+                    Categorías Destacadas
+                </h2>
+
                 <Carousel
                     responsive={responsive}
                     infinite
@@ -43,20 +47,24 @@ export default function CategoriasDestacadas({ categorias }: { categorias: Categ
                     itemClass="px-3"
                     arrows={false}
                 >
-                    {filteredCategorias.map((categoria, index) => (
+                    {filteredCategorias.map((categoria) => (
                         <Link
-                            key={index}
+                            key={categoria._id}
                             href={`/categoria/${categoria.slug}`}
-                            className="group relative flex flex-col items-center justify-center h-48 w-full bg-white transition-shadow duration-300 p-4 overflow-hidden hover:bg-black hover:text-gray-50 rounded-lg cursor-pointer"
+                            className="bg-white rounded-xl shadow hover:shadow-md transition p-4 flex flex-col items-center text-center group"
                         >
-                            <p className="text-base font-semibold">{categoria.nombre}</p>
                             <Image
-                                src={ImagenesPorCategoria[categoria.slug || ""] || "/logob.svg"}
+                                src={
+                                    ImagenesPorCategoria[categoria.slug || ""] || "/logob.svg"
+                                }
                                 alt={categoria.nombre}
-                                width={100}
-                                height={100}
-                                className="mb-3 object-contain transition-transform duration-600 group-hover:scale-120"
+                                width={90}
+                                height={90}
+                                className="mb-2 object-contain transition-transform duration-300 group-hover:scale-120"
                             />
+                            <p className="text-sm font-medium text-gray-700 group-hover:text-indigo-600">
+                                {categoria.nombre}
+                            </p>
                         </Link>
                     ))}
                 </Carousel>
