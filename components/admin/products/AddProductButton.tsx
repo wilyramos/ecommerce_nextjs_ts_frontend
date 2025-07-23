@@ -9,7 +9,7 @@ export default function AddProductButton() {
     return (
         <button
             onClick={() => router.push('/admin/products/new')}
-            className="flex items-center gap-2 bg-blue-800  hover:bg-blue-900 text-white text-sm px-4 py-2 rounded-full shadow-md transition-all duration-200"
+            className="flex items-center gap-2 bg-rose-600  hover:bg-rose-700 text-white text-sm px-4 py-2 rounded-full shadow-md transition-all duration-200 cursor-pointer"
         >
             <FiPlus className="text-base" />
             Nuevo producto

@@ -4,7 +4,6 @@ import getToken from "@/src/auth/token"
 import { SuccessResponse } from "@/src/schemas"
 // import { ErrorResponse } from "@/src/schemas" // TODO
 import { revalidatePath } from "next/cache"
-import type { Variant } from "@/src/schemas"
 
 // New schema
 

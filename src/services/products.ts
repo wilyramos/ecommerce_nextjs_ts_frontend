@@ -5,6 +5,10 @@ import getToken from "../auth/token"
 import { ProductsAPIResponse, ProductAPIResponse, productsSchema } from "@/src/schemas";
 import { cache } from 'react';
 
+// new
+
+import { ApiProductWithCategorySchema, productsAPIResponse } from "@/src/schemas";
+
 
 export const getProduct = async (id: string) => {
     const token = getToken();
@@ -22,7 +26,7 @@ export const getProduct = async (id: string) => {
         return null;
     }
 
-    const product = ProductAPIResponse.parse(json);
+    const product = ApiProductWithCategorySchema.parse(json);
     return product;
 };
 
@@ -190,7 +194,7 @@ export const getProductsByAdmin = async (
     }
 
     const json = await req.json();
-    const products = ProductsAPIResponse.parse(json);
+    const products = productsAPIResponse.parse(json);
     console.log("Products by admin:", products);
     return products;
 }

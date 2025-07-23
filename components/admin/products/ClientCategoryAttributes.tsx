@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { CategoriasList } from "@/src/schemas";
+import type { CategoryListResponse } from "@/src/schemas";
 
 type Props = {
-    categorias: CategoriasList;
+    categorias: CategoryListResponse;
     initialCategoryId?: string;
     currentAttributes?: Record<string, string>;
 };

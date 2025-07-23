@@ -148,6 +148,9 @@ export type User = z.infer<typeof UserSchema>
 
 
 // ************* NEW CATEGORY **************//
+// ***********************************
+// //////////////////////////////****
+// ********************************* */
 
 
 export const categoryAttributeSchema = z.object({
@@ -197,47 +200,6 @@ export type CategoryListResponse = z.infer<typeof apiCategoryListSchema>;
 // *****************************************//
 
 
-// CATEGORIA
-
-export const AttributeSchema = z.object({
-    name: z.string().min(1, { message: 'El nombre del atributo es obligatorio' }),
-    values: z.array(z.string().min(1, { message: 'Cada valor del atributo es obligatorio' }))
-        .min(1, { message: 'Debe haber al menos un valor para el atributo' })
-});
-
-
-export const AttributesSchema = z.array(AttributeSchema)
-export type Attribute = z.infer<typeof AttributeSchema>
-export type Attributes = z.infer<typeof AttributesSchema>
-
-
-export const CreateCategorySchema = z.object({
-    nombre: z.string()
-        .min(1, { message: 'El nombre es obligatorio' }),
-    descripcion: z.string()
-        .min(1, { message: 'La descripción es obligatoria' }),
-    parent: z.string().nullable().optional(),
-    attributes: AttributesSchema.optional(),
-})
-
-const CategorySchemaParent = z.object({
-    _id: z.string(),
-    nombre: z.string().min(1, { message: 'El nombre es obligatorio' }),
-    parent: z.string().nullable().optional(), // Puede ser null si no tiene padre
-});
-
-export const CategorySchema = z.object({
-    _id: z.string(),
-    nombre: z.string(),
-    slug: z.string(),
-    parent: CategorySchemaParent.nullable().optional(), // Puede ser null si no tiene padre
-    descripcion: z.string().optional(),
-    attributes: z.array(AttributeSchema).optional(),
-    createdAt: z.string().datetime().optional(),
-    updatedAt: z.string().datetime().optional(),
-    __v: z.number().optional(),
-})
-
 /* PRODUCTS NUEVO */
 
 const atributosSchema = z.record(z.string(), z.string());
@@ -269,8 +231,11 @@ export const createProductSchema = productBaseSchema.extend({
 // Update product
 export const updateProductSchema = productBaseSchema.partial();
 
-// Product response schema
 
+
+
+
+// Product response schema
 export const ApiProductSchema = productBaseSchema.extend({
     _id: z.string(),
     slug: z.string(),
@@ -279,13 +244,69 @@ export const ApiProductSchema = productBaseSchema.extend({
     __v: z.number().optional(),
 });
 
+export const productsAPIResponse = z.object({
+    products: z.array(ApiProductSchema),
+    totalPages: z.number(),
+    currentPage: z.number(),
+    totalProducts: z.number(),
+})
 
 // Type inference
 
 export type CreateProductInput = z.infer<typeof createProductSchema>;
 export type UpdateProductInput = z.infer<typeof updateProductSchema>;
 export type ProductResponse = z.infer<typeof ApiProductSchema>;
+export type ProductsAPIResponse = z.infer<typeof productsAPIResponse>;
 
+
+// Producto con la categoría poblada (en vez de solo un string)
+export const ApiProductWithCategorySchema = ApiProductSchema.extend({
+  categoria: apiCategorySchema, // Reemplazo del string por el esquema de categoría
+});
+
+export type ProductWithCategoryResponse = z.infer<typeof ApiProductWithCategorySchema>;
+
+/* **********************************************
+*************************************************
+
+
+END END END 
+
+
+
+*************************************************
+*/
+
+
+export const AttributeSchema = z.object({
+    name: z.string().min(1, { message: 'El nombre del atributo es obligatorio' }),
+    values: z.array(z.string().min(1, { message: 'Cada valor del atributo es obligatorio' }))
+        .min(1, { message: 'Debe haber al menos un valor para el atributo' })
+});
+
+
+export const AttributesSchema = z.array(AttributeSchema)
+export type Attribute = z.infer<typeof AttributeSchema>
+export type Attributes = z.infer<typeof AttributesSchema>
+
+
+const CategorySchemaParent = z.object({
+    _id: z.string(),
+    nombre: z.string().min(1, { message: 'El nombre es obligatorio' }),
+    parent: z.string().nullable().optional(), // Puede ser null si no tiene padre
+});
+
+export const CategorySchema = z.object({
+    _id: z.string(),
+    nombre: z.string(),
+    slug: z.string(),
+    parent: CategorySchemaParent.nullable().optional(), // Puede ser null si no tiene padre
+    descripcion: z.string().optional(),
+    attributes: z.array(AttributeSchema).optional(),
+    createdAt: z.string().datetime().optional(),
+    updatedAt: z.string().datetime().optional(),
+    __v: z.number().optional(),
+})
 
 
 export const VariantOptionSchema = z.object({

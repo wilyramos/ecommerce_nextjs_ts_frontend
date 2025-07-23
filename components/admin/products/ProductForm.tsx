@@ -1,13 +1,10 @@
-import type { ProductType } from "@/src/schemas";
-import type { CategoriasList } from "@/src/schemas";
+import type { ProductWithCategoryResponse } from "@/src/schemas";
+import type { CategoryListResponse } from "@/src/schemas";
 import UploadProductImage from "./UploadProductImage";
 import ClientCategoryAttributes from "./ClientCategoryAttributes"
 
 
-export default function ProductForm({ product, categorias }: { product?: ProductType, categorias: CategoriasList }) {
-
-    // TODO: implementar la lógica para manejar las variantes del producto
-    // Función para manejar los cambios en las variantes recibidos del componente hijo
+export default function ProductForm({ product, categorias }: { product?: ProductWithCategoryResponse, categorias: CategoryListResponse }) {
 
     return (
         <div className="text-xs text-gray-500 upp">

@@ -1,16 +1,16 @@
 "use client"
 
 
-import type { ProductType } from "@/src/schemas";
+import type { ProductWithCategoryResponse } from "@/src/schemas";
 import { useActionState, useEffect } from "react"
 import ProductForm from "./ProductForm";
 import { EditProduct } from "@/actions/product/edit-product-action";
-import type { CategoriasList } from '@/src/schemas'
+import type { CategoryListResponse } from '@/src/schemas'
 import { toast } from "react-toastify";
 
 
 
-export default function EditProductForm({ product, categorias }: { product: ProductType, categorias: CategoriasList }) {
+export default function EditProductForm({ product, categorias }: { product: ProductWithCategoryResponse, categorias: CategoryListResponse }) {
 
     const editProductWithId = EditProduct.bind(null, product._id);
     const [state, dispatch] = useActionState(editProductWithId, {

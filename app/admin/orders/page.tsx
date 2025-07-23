@@ -23,7 +23,6 @@ export default async function pageOrders({ searchParams }: PageOrdersProps) {
 
     const data = await getOrders({ page, limit });
     const orders = data?.orders;
-    console.log('Orders data:', orders);
 
     return (
         <div className="max-w-7xl mx-auto p-5">

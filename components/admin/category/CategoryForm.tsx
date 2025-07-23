@@ -1,5 +1,4 @@
 import type { CategoryResponse } from "@/src/schemas";
-import React from "react";
 import AttributeFields from "./AttributeFileds";
 
 type Props = {
@@ -8,13 +7,6 @@ type Props = {
 };
 
 export default function CategoryForm({ category, categories }: Props) {
-
-
-    console.log("category", category);
-    console.log("categories", categories);
-
-    // validar si tiene padre
-
 
 
     return (
@@ -67,7 +59,6 @@ export default function CategoryForm({ category, categories }: Props) {
             </div>
 
             <AttributeFields defaultAttributes={category?.attributes} />
-
 
         </div>
     );
