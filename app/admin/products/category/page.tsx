@@ -2,27 +2,12 @@ import Link from "next/link";
 import { getCategories } from "@/src/services/categorys";
 import Pagination from "@/components/ui/Pagination";
 import VisualCategoryView from "@/components/admin/category/VisualCategoryView";
-import { buildCategoryTree } from "@/src/utils/buildCategoryTree";
 
-// async function getCategories() {
-//     const url = `${process.env.API_URL}/category/list`;
-//     const res = await fetch(url, {
-//         method: "GET",
-//         headers: {
-//             "Content-Type": "application/json",
-//         },
-//     });
-
-//     const json = await res.json();
-//     const categories = CategoriesAPIResponse.parse(json);
-//     return categories;
-// }
 
 export default async function CreatePageCategory() {
 
-    const categories = await getCategories();
-    const categoriesTree = buildCategoryTree(categories);
 
+    const categories = await getCategories();
     return (
         <div className="max-w-7xl mx-auto p-5">
             <div className="flex justify-between mb-6 border-b pb-2">
@@ -47,7 +32,7 @@ export default async function CreatePageCategory() {
                 </div>
             ) : (
                 <>
-                    <VisualCategoryView categories={categoriesTree} />
+                    <VisualCategoryView categories={categories} />
                     <Pagination
                         currentPage={1}
                         totalPages={1}

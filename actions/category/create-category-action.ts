@@ -1,6 +1,6 @@
 "use server"
 
-import { CreateCategorySchema, SuccessResponse, AttributesSchema } from "@/src/schemas";
+import { createCategorySchema, SuccessResponse, categoryAttributesArraySchema } from "@/src/schemas";
 import { revalidatePath } from "next/cache"
 import { cookies } from "next/headers"
 
@@ -12,16 +12,14 @@ type ActionStateType = {
 
 export async function createCategoryAction(prevState: ActionStateType, formData: FormData) {
 
-    console.log("createCategoryAction", formData)
     // parsear los atributos del formData
     const rawAttributes = formData.get("attributes");
-
 
     let attributesData;
     if (rawAttributes) {
         try {
             const parsed = JSON.parse(rawAttributes as string);
-            const result = AttributesSchema.safeParse(parsed);
+            const result = categoryAttributesArraySchema.safeParse(parsed);
             if (!result.success) {
                 return {
                     errors: result.error.errors.map(error => error.message),
@@ -39,14 +37,12 @@ export async function createCategoryAction(prevState: ActionStateType, formData:
         attributesData = undefined;
     }
 
-    const category = CreateCategorySchema.safeParse({
+    const category = createCategorySchema.safeParse({
         nombre: formData.get("name"),
         descripcion: formData.get("description"),
         parent: formData.get("parent") || undefined,
         attributes: attributesData,
     })
-
-    console.log("category", category)
 
     if (!category.success) {
         return {

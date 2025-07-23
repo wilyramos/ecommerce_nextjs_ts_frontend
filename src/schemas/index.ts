@@ -1,4 +1,3 @@
-import { User } from 'lucide-react';
 import { z } from 'zod';
 
 // For register validation
@@ -143,15 +142,60 @@ export const UserSchema = z.object({
 export type User = z.infer<typeof UserSchema>
 
 //TODO:HACER SCHEMAS ESCALABLES PARA CATEGORY Y PRODUCT
-// ** CATEGORY **//
+
+
+
+
+
+// ************* NEW CATEGORY **************//
+
 
 export const categoryAttributeSchema = z.object({
-    name: z.string().min(1, { message: 'El nombre del atributo es obligatorio' }),
-    values: z.array(z.string().min(1, { message: 'Cada valor del atributo es obligatorio' }))
-        .min(1, { message: 'Debe haber al menos un valor para el atributo' })
+    name: z.string().min(1, 'El nombre del atributo es obligatorio'),
+    values: z.array(z.string().min(1, 'El valor no puede estar vacío')),
 });
 
-//CATEGORY
+export const categoryAttributesArraySchema = z.array(categoryAttributeSchema);
+
+
+export const categoryBaseSchema = z.object({
+    nombre: z.string().min(1, 'El nombre es obligatorio'),
+    descripcion: z.string().optional(),
+    slug: z.string().optional(),
+    parent: z.string().nullable().optional(),
+    attributes: categoryAttributesArraySchema.optional(),
+});
+
+// Create category
+export const createCategorySchema = categoryBaseSchema;
+// Update category
+export const updateCategorySchema = categoryBaseSchema.partial();
+
+export const categoryParentSchema = z.object({
+    _id: z.string(),
+    nombre: z.string(),
+    slug: z.string().optional(),
+});
+
+
+// Response category
+export const apiCategorySchema = categoryBaseSchema.extend({
+    _id: z.string(),
+    slug: z.string().optional(),
+    createdAt: z.string().datetime().optional(),
+    updatedAt: z.string().datetime().optional(),
+    __v: z.number().optional(),
+    parent: z.union([z.string(), categoryParentSchema]).nullable().optional(),
+});
+
+export type categoryParentSchemaType = z.infer<typeof categoryParentSchema>;
+export const apiCategoryListSchema = z.array(apiCategorySchema);
+export type CategoryResponse = z.infer<typeof apiCategorySchema>;
+export type CategoryListResponse = z.infer<typeof apiCategoryListSchema>;
+
+
+// *****************************************//
+
 
 // CATEGORIA
 

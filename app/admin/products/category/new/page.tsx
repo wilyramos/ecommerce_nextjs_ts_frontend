@@ -21,7 +21,7 @@ export default async function NewCategoryPage() {
             </div>
 
             <div className="flex flex-col w-full mx-auto mt-10">
-                <CreateCategoryForm categories={categories} />
+                {/* <CreateCategoryForm categories={categories} /> */}
             </div>
         </>
     )

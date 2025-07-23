@@ -1,54 +1,84 @@
-import type { CategoriasList } from "@/src/schemas";
-import { FaEdit } from "react-icons/fa";
-import Link from "next/link";
+"use client";
 
-type CategoryWithChildren = CategoriasList[number] & {
-    subcategories?: CategoriasList;
+import type { CategoryListResponse } from "@/src/schemas";
+import Link from "next/link";
+import { FaEdit } from "react-icons/fa";
+
+type Props = {
+    categories: CategoryListResponse;
 };
 
-export default function VisualCategoryView({ categories }: { categories: CategoryWithChildren[] }) {
-    return (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((category) => (
-                <div key={category._id} className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
-                    <div className="flex justify-between items-start mb-2">
-                        <div>
-                            <h3 className="text-lg font-semibold text-gray-800">{category.nombre}</h3>
-                            {category.descripcion && (
-                                <p className="text-sm text-gray-500">{category.descripcion}</p>
-                            )}
-                        </div>
-                        <Link
-                            href={`/admin/products/category/${category._id}`}
-                            className="text-blue-600 hover:text-blue-800 text-sm flex items-center gap-1"
-                        >
-                            <FaEdit className="text-sm" />
-                            Editar
-                        </Link>
-                    </div>
+export default function VisualCategoryView({ categories }: Props) {
+    // Agrupar por parentId
+    const grouped = categories.reduce((acc, category) => {
+        const parentId =
+            category.parent && typeof category.parent !== "string"
+                ? category.parent._id
+                : null;
 
-                    {category.subcategories?.length ? (
-                        <div className="mt-2 flex flex-col gap-2">
-                            {category.subcategories.map((sub) => (
-                                <div
-                                    key={sub._id}
-                                    className="px-3 py-1 text-sm bg-gray-100 text-gray-700 rounded-full flex items-center justify-between gap-1 hover:bg-indigo-800 hover:text-white transition-colors "
-                                >
-                                    {sub.nombre}
-                                    <Link
-                                        href={`/admin/products/category/${sub._id}`}
-                                        className=""
-                                    >
-                                        <FaEdit className="text-xs" />
-                                    </Link>
-                                </div>
-                            ))}
+        if (!acc[parentId ?? "root"]) {
+            acc[parentId ?? "root"] = [];
+        }
+
+        acc[parentId ?? "root"].push(category);
+        return acc;
+    }, {} as Record<string, CategoryListResponse>);
+
+    // Extraer categorías raíz
+    const rootCategories = grouped["root"] || [];
+
+    return (
+        <div className="space-y-8">
+            {rootCategories.map((parent) => {
+                const subcategories = grouped[parent._id] || [];
+
+                return (
+                    <div key={parent._id}>
+                        {/* Título principal */}
+                        <div className="flex justify-between items-center mb-2">
+                            <h2 className="text-xl font-semibold text-gray-800">{parent.nombre}</h2>
+                            <Link
+                                href={`/admin/products/category/${parent._id}`}
+                                className="text-sm text-indigo-600 hover:underline flex items-center gap-1"
+                            >
+                                <FaEdit className="text-sm" />
+                                Editar
+                            </Link>
                         </div>
-                    ) : (
-                        <p className="text-sm text-gray-400 italic mt-2">Sin subcategorías</p>
-                    )}
-                </div>
-            ))}
+
+                        {/* Subcategorías */}
+                        <ul className="space-y-2 pl-4 border-l border-gray-200">
+                            {subcategories.length === 0 ? (
+                                <li className="text-sm text-gray-500">Sin subcategorías.</li>
+                            ) : (
+                                subcategories.map((subcat) => (
+                                    <li
+                                        key={subcat._id}
+                                        className="flex justify-between items-center p-2 bg-gray-50 rounded hover:bg-gray-100"
+                                    >
+                                        <div>
+                                            <p className="text-sm font-medium text-gray-700">
+                                                {subcat.nombre}
+                                            </p>
+                                            <p className="text-xs text-gray-500">
+                                                {subcat.descripcion}
+                                            </p>
+
+                                        </div>
+                                        <Link
+                                            href={`/admin/products/category/${subcat._id}`}
+                                            className="text-sm text-indigo-600 hover:underline flex items-center gap-1"
+                                        >
+                                            <FaEdit className="text-xs" />
+                                            Editar
+                                        </Link>
+                                    </li>
+                                ))
+                            )}
+                        </ul>
+                    </div>
+                );
+            })}
         </div>
     );
 }

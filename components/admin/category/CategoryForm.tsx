@@ -1,34 +1,21 @@
-import type { Category } from "@/src/schemas";
+import type { CategoryResponse } from "@/src/schemas";
 import React from "react";
 import AttributeFields from "./AttributeFileds";
 
 type Props = {
-    category?: Category;
-    categories: Category[];
+    category?: CategoryResponse;
+    categories: CategoryResponse[];
 };
 
 export default function CategoryForm({ category, categories }: Props) {
 
-    // Función para renderizar jerarquía con sangría visual
-    const renderCategoryOptions = (
-        cats: Category[],
-        parentId: string | null = null,
-        depth = 0
-    ) => {
-        return cats
-            .filter((cat) => (cat.parent?._id || null) === parentId)
-            .map((cat) => (
-                <React.Fragment key={cat._id}>
-                    <option
-                        value={cat._id}
-                        disabled={cat._id === category?._id}
-                    >
-                        {`${"— ".repeat(depth)}${cat.nombre}`}
-                    </option>
-                    {renderCategoryOptions(cats, cat._id, depth + 1)}
-                </React.Fragment>
-            ));
-    };
+
+    console.log("category", category);
+    console.log("categories", categories);
+
+    // validar si tiene padre
+
+
 
     return (
         <div className="text-xs text-gray-500 space-y-4">
@@ -64,11 +51,15 @@ export default function CategoryForm({ category, categories }: Props) {
                 <select
                     id="parent"
                     name="parent"
-                    defaultValue={category?.parent?._id || ""}
+                    defaultValue={typeof category?.parent === "object" ? category.parent?._id : ""}
                     className="w-full border border-gray-300 rounded-lg p-2"
                 >
                     <option value="">Sin categoría padre</option>
-                    {renderCategoryOptions(categories)}
+                    {categories.map(cat => (
+                        <option key={cat._id} value={cat._id}>
+                            {cat.nombre}
+                        </option>
+                    ))}
                 </select>
                 {category?._id && (
                     <p className="text-xs text-gray-500 mt-1">No puedes seleccionar la misma categoría como padre.</p>

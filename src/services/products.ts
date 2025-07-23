@@ -175,9 +175,7 @@ export const getProductsByAdmin = async (
     { page = 1, limit = 10, query = "" }: { page?: number; limit?: number; query?: string } = {}
 ) => {
     const token = await getToken();
-    console.log("Token for fetching products:", token);
     const url = `${process.env.API_URL}/products?page=${page}&limit=${limit}&query=${query}`;
-    console.log("Fetching products from:", url);
 
     const req = await fetch(url, {
         method: 'GET',
@@ -187,12 +185,12 @@ export const getProductsByAdmin = async (
         }
     });
 
-    console.log("Request to fetch products:", req);
     if (!req.ok) {
         return null;
     }
 
     const json = await req.json();
     const products = ProductsAPIResponse.parse(json);
+    console.log("Products by admin:", products);
     return products;
 }

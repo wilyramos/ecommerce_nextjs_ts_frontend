@@ -1,5 +1,5 @@
 import EditCategoryForm from "@/components/admin/category/EditCategoryForm";
-import { getCategory } from "@/src/services/categorys";
+import { getAllSubcategories, getCategory, getPatternCategories } from "@/src/services/categorys";
 import Link from "next/link";
 import DeleteCategoryButton from "@/components/admin/category/DeleteCategoryButton";
 import { getCategories } from "@/src/services/categorys";
@@ -13,7 +13,12 @@ export default async function CategoryPageDetails({ params }: { params: params }
     const { id } = await params;
     const category = await getCategory(id);
     const categories = await getCategories();
+    const patternCategories = await getPatternCategories();
 
+    console.log("Category:", category);
+    console.log("Pattern Categories:", patternCategories);
+
+    // Quitar subcategorías de la lista de categorías
 
     return (
 
@@ -33,7 +38,7 @@ export default async function CategoryPageDetails({ params }: { params: params }
 
             <EditCategoryForm 
                 category={category}
-                categories={categories}
+                categories={patternCategories}
             />
         </div>
 

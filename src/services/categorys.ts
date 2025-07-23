@@ -1,9 +1,9 @@
-import "server-only"
+import "server-only";
 
 
 import { cache } from 'react';
-import { CategoryAPIResponse, CategoriesAPIResponse } from "@/src/schemas";
 import { notFound } from 'next/navigation';
+import { apiCategorySchema, apiCategoryListSchema } from "@/src/schemas";
 
 
 export const getCategory = cache(async (id: string) => {
@@ -19,8 +19,7 @@ export const getCategory = cache(async (id: string) => {
         notFound();
     }
 
-    const category = CategoryAPIResponse.parse(json);
-    console.log("categoryy", category);
+    const category = apiCategorySchema.parse(json);
     return category;
 });
 
@@ -36,7 +35,7 @@ export const getCategoryBySlug = cache(async (slug: string) => {
         notFound();
     }
 
-    const category = CategoryAPIResponse.parse(json);
+    const category = apiCategorySchema.parse(json);
     return category;
 });
 
@@ -50,10 +49,23 @@ export const getCategories = cache(async () => {
     }
 
     const json = await res.json();
-    const categories = CategoriesAPIResponse.parse(json);
+    const categories = apiCategoryListSchema.parse(json);
     return categories;
 });
 
+export const getPatternCategories = cache(async () => {
+    const url = `${process.env.API_URL}/category/patterns/all`;
+    const res = await fetch(url, {
+        method: "GET",
+    });
+    if (!res.ok) {
+        notFound();
+    }
+
+    const json = await res.json();
+    const categories = apiCategoryListSchema.parse(json);
+    return categories;
+});
 
 export const getAllSubcategories = cache(async () => {
     const url = `${process.env.API_URL}/category/all/subcategories`;
@@ -65,6 +77,6 @@ export const getAllSubcategories = cache(async () => {
     }
 
     const json = await res.json();
-    const categories = CategoriesAPIResponse.parse(json);
+    const categories = apiCategoryListSchema.parse(json);
     return categories;
 });

@@ -16,7 +16,6 @@ type SearchParams = Promise<{
 export default async function ProductsPage({ searchParams }: { searchParams: SearchParams }) {
 
     const params = await searchParams;
-
     const currentPage = params.page ? parseInt(params.page, 10) : 1;
     const itemsPerPage = params.limit ? parseInt(params.limit, 10) : 10;    
 

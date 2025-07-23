@@ -1,10 +1,9 @@
 "use server"
 
 import getToken from "@/src/auth/token"
-import { CreateCategorySchema, SuccessResponse, AttributesSchema } from "@/src/schemas"
+import { updateCategorySchema, categoryAttributesArraySchema } from "@/src/schemas"
 import { ErrorResponse } from "@/src/schemas"
 import { revalidatePath } from "next/cache"
-
 
 
 type ActionStateType = {
@@ -22,7 +21,7 @@ export async function EditCategory(id: string, prevState: ActionStateType, formD
     try {
         const parsed = JSON.parse(rawAttributes as string);
 
-        const result = AttributesSchema.safeParse(parsed);
+        const result = categoryAttributesArraySchema.safeParse(parsed);
         if (!result.success) {
             return {
                 errors: result.error.errors.map(error => error.message),
@@ -40,7 +39,6 @@ export async function EditCategory(id: string, prevState: ActionStateType, formD
     }
     // Formatear los atributos
 
-
     const categoryData = {
         nombre: formData.get("name"),
         descripcion: formData.get("description"),
@@ -51,7 +49,7 @@ export async function EditCategory(id: string, prevState: ActionStateType, formD
     // console.log("categoryData", categoryData)
     // console.log("attributesData", attributesData)
 
-    const category = CreateCategorySchema.safeParse(categoryData);
+    const category = updateCategorySchema.safeParse(categoryData);
     if (!category.success) {
         return {
             errors: category.error.errors.map(error => error.message),

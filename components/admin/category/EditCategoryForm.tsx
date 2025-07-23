@@ -1,12 +1,12 @@
 "use client"
-import type { Category } from "@/src/schemas"
+import type { CategoryResponse } from "@/src/schemas"
 import CategoryForm from "./CategoryForm"
 import { EditCategory } from "@/actions/category/edit-category-action"
 import { useActionState, useEffect } from "react"
 import { toast } from "react-toastify"
 
 
-export default function EditCategoryForm({ category, categories }: { category: Category, categories: Category[] }) {
+export default function EditCategoryForm({ category, categories }: { category: CategoryResponse, categories: CategoryResponse[] }) {
 
     const editCategoryWithId = EditCategory.bind(null, category._id);
     const [state, dispatch] = useActionState(editCategoryWithId, {
