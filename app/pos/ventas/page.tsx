@@ -41,7 +41,7 @@ export default async function PageVentas({ searchParams }: PageVentasProps) {
     }
 
     return (
-        <section className="p-6 space-y-6">
+        <section className=" space-y-4">
             <h2 className="text-2xl font-bold text-gray-800">Ventas</h2>
 
             <div className='sticky top-0 z-10 '>

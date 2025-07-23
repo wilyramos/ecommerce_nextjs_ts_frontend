@@ -16,8 +16,8 @@ export default function VentasTable({ ventas }: { ventas: Sale[] }) {
     };
 
     return (
-        <div className="overflow-x-auto rounded-xl shadow border border-gray-200 bg-white">
-            <div className="flex justify-end items-center p-4 bg-gray-50 border-b">
+        <div className="overflow-x-auto  border-gray-200 bg-white">
+            <div className="flex justify-end items-center p-2 bg-gray-50 border-b">
                 <span className="text-sm text-gray-500">{ventas.length} ventas registradas</span>
             </div>
 

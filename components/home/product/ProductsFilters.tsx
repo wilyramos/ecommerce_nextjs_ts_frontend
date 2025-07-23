@@ -2,14 +2,14 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import type { CategoriasList } from "@/src/schemas";
+import type { CategoryListResponse } from "@/src/schemas";
 import { MdClear } from "react-icons/md";
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
 import { Range } from "react-range";
 
 
-export default function ProductsFilters({ categorias }: { categorias: CategoriasList }) {
+export default function ProductsFilters({ categorias }: { categorias: CategoryListResponse }) {
     const router = useRouter();
     const searchParams = useSearchParams();
 

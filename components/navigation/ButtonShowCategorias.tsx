@@ -7,38 +7,34 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet";
-import Hamburger from "hamburger-react";
 import { useState } from "react";
 import Link from "next/link";
 import { categoriasEstaticas } from "@/src/data/categorias";
 import { PiCaretRightBold } from "react-icons/pi";
+import { HiMiniSquares2X2 } from "react-icons/hi2";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function ButtonShowCategorias() {
     const [open, setOpen] = useState(false);
 
     return (
-        <Sheet open={open} onOpenChange={setOpen} >
+        <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-                <button className="text-gray-700 hover:text-blue-800 transition flex items-center cursor-pointer font-extrabold leading-relaxed">
-                    <Hamburger toggled={open} toggle={setOpen} size={28} />
-                    Categorias
+                <button className="hover:text-indigo-00 transition flex items-center  gap-1 cursor-pointer ">
+                    <HiMiniSquares2X2 size={20} />
+                    Categorías
                 </button>
             </SheetTrigger>
 
             <SheetContent
-
                 side="left"
                 className="w-[320px] px-4 py-5 bg-white shadow-xl border-r border-gray-200"
-
             >
                 {/* Encabezado */}
                 <div className="pb-4 border-b border-gray-200 mb-2">
                     <SheetHeader>
-                        <SheetTitle className="text-xl font-bold text-gray-700 flex  flex-col items-center gap-2 ">
-                            <p className="">
-                                Explora por <span className="text-blue-800">categorías</span>
-                            </p>
+                        <SheetTitle className="text-lg font-bold text-center">
+                            Explora por <span className=" text-indigo-600 uppercase">categorías</span>
                         </SheetTitle>
                     </SheetHeader>
                 </div>
@@ -49,7 +45,7 @@ export default function ButtonShowCategorias() {
                         {categoriasEstaticas.map((cat) => (
                             <div key={cat.slug}>
                                 <details className="group">
-                                    <summary className="cursor-pointer list-none flex items-center justify-between text-base font-semibold text-gray-900 hover:text-gray-100 transition-all px-1 py-2 hover:bg-blue-800 rounded-md">
+                                    <summary className="cursor-pointer list-none flex items-center justify-between text-base font-semibold hover:text-gray-100 transition-all px-2 py-2 hover:bg-blue-800 rounded-xl">
                                         <span>{cat.name}</span>
                                         <PiCaretRightBold
                                             size={16}

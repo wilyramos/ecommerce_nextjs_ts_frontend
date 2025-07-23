@@ -5,11 +5,10 @@ import CategoryForm from "./CategoryForm"
 import { createCategoryAction } from "@/actions/category/create-category-action"
 import { useActionState, useEffect } from "react"
 import { toast } from 'react-toastify'
-import type { Category } from "@/src/schemas"
+import type { CategoryResponse } from "@/src/schemas"
 
 
-
-export default function CreateCategoryForm({ categories }: { categories: Category[] }) {
+export default function CreateCategoryForm({ categories }: { categories: CategoryResponse[] }) {
 
     const router = useRouter()
     const [state, dispatch] = useActionState(createCategoryAction, {

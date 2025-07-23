@@ -3,15 +3,14 @@
 import { Fragment } from 'react'
 import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react'
 import {
-    Bars3Icon,
     PencilSquareIcon,
     TrashIcon,
     StarIcon,
     SquaresPlusIcon,
-    XCircleIcon,
+    XCircleIcon
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
-import { SlOptions } from "react-icons/sl";
+import { SlOptions } from "react-icons/sl"
 
 
 interface Props {

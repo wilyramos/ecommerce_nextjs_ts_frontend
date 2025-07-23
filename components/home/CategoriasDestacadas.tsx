@@ -2,7 +2,7 @@
 
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import type { CategoriasList } from "@/src/schemas";
+import type { CategoryListResponse } from "@/src/schemas";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -22,9 +22,9 @@ const ImagenesPorCategoria: Record<string, string> = {
 
 };
 
-export default function CategoriasDestacadas({ categorias }: { categorias: CategoriasList }) {
+export default function CategoriasDestacadas({ categorias }: { categorias: CategoryListResponse }) {
     const filteredCategorias = categorias.filter((c) =>
-        Object.keys(ImagenesPorCategoria).includes(c.slug)
+        Object.keys(ImagenesPorCategoria).includes(c.slug || "")
     );
 
     return (
@@ -51,7 +51,7 @@ export default function CategoriasDestacadas({ categorias }: { categorias: Categ
                         >
                             <p className="text-base font-semibold">{categoria.nombre}</p>
                             <Image
-                                src={ImagenesPorCategoria[categoria.slug] || "/logob.svg"}
+                                src={ImagenesPorCategoria[categoria.slug || ""] || "/logob.svg"}
                                 alt={categoria.nombre}
                                 width={100}
                                 height={100}

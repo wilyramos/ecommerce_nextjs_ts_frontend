@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FaUser } from "react-icons/fa";
+import { AiOutlineUser } from "react-icons/ai";
 import ButtonShowCart from "../ui/ButtonShowCart";
 import Logo from "../ui/Logo";
 import ButtonSearchFormStore from "../ui/ButtonSearchFormStore";
@@ -46,10 +46,10 @@ export default function NavBar() {
                 <div className="hidden md:flex items-center gap-5">
                     <Link
                         href="/auth/registro"
-                        className="text-gray-600 hover:text-indigo-600 transition"
+                        className=" hover:text-indigo-600 transition"
                         aria-label="Cuenta"
                     >
-                        <FaUser size={20} />
+                        <AiOutlineUser className="h-6 w-6" />
                     </Link>
                     <ButtonShowCart />
                 </div>

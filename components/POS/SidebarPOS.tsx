@@ -3,11 +3,10 @@
 import { User } from '@/src/schemas';
 import Link from 'next/link';
 import {
-    FaUserCircle,
     FaCashRegister,
     FaReceipt,
     FaBoxOpen,
-    FaUsers,
+    FaUsers
 } from 'react-icons/fa';
 import AdminMenu from '@/components/admin/AdminMenu';
 import Logo from '../ui/Logo';
