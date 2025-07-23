@@ -61,8 +61,8 @@ export default function SubmitSaleButton() {
         >
             <input
                 type="submit"
-                className="w-full bg-blue-500 text-white font-semibold py-2 rounded hover:bg-blue-600 transition-colors disabled:opacity-50 cursor-pointer"
-                value="Confirmar Venta"
+                className="w-full bg-rose-600 text-white font-semibold py-2  hover:bg-rose-700 transition-colors disabled:opacity-50 cursor-pointer px-4 rounded-full"
+                value="Guardar Venta"
             />
         </form>
     )

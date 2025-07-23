@@ -72,6 +72,7 @@ export const useCartStore = create<Store>()(devtools(persist((set, get) => ({
                     cantidad: 1,
                     subtotal: item.precio,
                     imagenes: item.imagenes,
+                    stock: item.stock
                 }],
             })
         }

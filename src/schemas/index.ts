@@ -232,9 +232,6 @@ export const createProductSchema = productBaseSchema.extend({
 export const updateProductSchema = productBaseSchema.partial();
 
 
-
-
-
 // Product response schema
 export const ApiProductSchema = productBaseSchema.extend({
     _id: z.string(),
@@ -441,6 +438,7 @@ const CartItemSchema = ProductSchema.pick({
     nombre: true,
     precio: true,
     imagenes: true,
+    stock: true,
 }).extend({
     cantidad: z.number().min(1, { message: 'La cantidad debe ser al menos 1' }),
     subtotal: z.number().min(0, { message: 'El subtotal debe ser al menos 0' }),
@@ -639,7 +637,7 @@ export type CreateSaleInput = z.infer<typeof CreateSaleSchema>;
 
 
 export const SaleItemResponseSchema = z.object({
-    product: ProductAPIResponse.or(z.string()), // puede venir populado o como id
+    product: ProductAPIResponseInPopulate.or(z.string()), // puede venir populado o como id
     quantity: z.number(),
     price: z.number(),
 });

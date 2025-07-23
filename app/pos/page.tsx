@@ -33,7 +33,7 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
 
                 <section className="mt-4">
                     {productos && productos.products.length > 0 ? (
-                        <ul className="rounded-xl border divide-y divide-gray-200 shadow">
+                        <ul className="rounded-xl divide-y divide-gray-200 ">
                             {productos.products.map((product) => (
                                 <li key={product._id}>
                                     <ProductCardPOS product={product} />
@@ -49,9 +49,11 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
             </main>
 
             {/* Carrito */}
-            <aside className="p-4 border-t md:border-t-0 md:border-l bg-white">
-                <PiShoppingCartFill size={32} className="text-rose-600 mb-4" />
-                
+            <aside className="p-4 border-t md:border-t-0 md:border-l bg-white ">
+                <h2 className="text-xl font-semibold mb-4 flex gap-2">
+                    <PiShoppingCartFill size={24} />
+                    Carrito de Compras
+                </h2>
                 <VentaCart />
             </aside>
         </div>

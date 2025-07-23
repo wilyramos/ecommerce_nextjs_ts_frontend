@@ -5,6 +5,7 @@ import { useEffect } from "react"
 import { fetchDniAction } from "@/actions/pos/fetch-dni-action"
 import { toast } from "sonner"
 import { useCartStore } from "@/src/store/cartStore"
+import { BsSearch } from "react-icons/bs"
 
 export default function CustomerDniInput() {
 
@@ -41,13 +42,14 @@ export default function CustomerDniInput() {
                     id="dni"
                     name="dni"
                     placeholder="Ingrese el DNI del cliente"
-                    className="w-full px-2 py-1 border border-gray-300 rounded "
+                    className="w-full px-2 py-1.5 border bg-gray-200 border-gray-300 rounded-full "
                     required
                     pattern="\d{8,11}" // Validación para DNI peruano (8 a 11 dígitos)
                     title="El DNI debe tener entre 8 y 11 dígitos"
                     maxLength={11}
 
                 />
+                <BsSearch size={20} className="text-gray-500 cursor-pointer" />
             </div>
 
         </form>

@@ -22,7 +22,7 @@ export default function VentaCart() {
     }
 
     return (
-        <div className="space-y-5">
+        <div className="space-y-4">
             {/* Lista de productos */}
             <div className="max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300">
                 <table className="w-full text-sm text-gray-800">
@@ -55,22 +55,24 @@ export default function VentaCart() {
                                         <span className="truncate max-w-[120px]">{item.nombre}</span>
                                     </div>
                                 </td>
-                                <td className="text-center">
+                                <td className="text-center text-rose-600 font-extrabold">
                                     <div className="flex items-center justify-center gap-1">
                                         <button
                                             onClick={() => updateQuantity(item._id, item.cantidad - 1)}
                                             disabled={item.cantidad <= 1}
-                                            className="w-7 h-7 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded disabled:opacity-50"
+                                            className="w-7 h-7 flex items-center justify-center border-2 border-gray-400 hover:border-gray-800 rounded disabled:opacity-50 cursor-pointer"
                                         >
                                             −
                                         </button>
                                         <span className="px-2">{item.cantidad}</span>
                                         <button
                                             onClick={() => updateQuantity(item._id, item.cantidad + 1)}
-                                            className="w-7 h-7 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded"
+                                            disabled={item.cantidad >= item.stock}
+                                            className="w-7 h-7 flex items-center justify-center hover:border-gray-800 rounded border-2 border-gray-400 disabled:opacity-50 cursor-pointer"
                                         >
                                             +
                                         </button>
+
                                     </div>
                                 </td>
                                 <td className="text-right px-2">
@@ -91,13 +93,11 @@ export default function VentaCart() {
                 </table>
             </div>
 
-            {/* DNI del cliente */}
-            <div className="space-y-1">
+            {/* DNI del cliente :TODO:: implementar lógica para manejar el DNI */}
+            <div className="space-y-1 rounded-full">
                 <CustomerDniInput />
                 {dni && (
-                    <p className="text-sm text-gray-700">
-                        DNI del cliente: <span className="font-semibold">{dni}</span>
-                    </p>
+                    <p className="text-xs text-gray-500">DNI del cliente: <span className="font-semibold">{dni}</span></p>
                 )}
             </div>
 

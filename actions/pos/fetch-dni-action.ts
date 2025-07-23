@@ -30,7 +30,6 @@ export async function fetchDniAction(prevState: ActionStateType, formData: FormD
 
     await new Promise((resolve) => setTimeout(resolve, 500))
 
-
     return {
         errors: [],
         success: `DNI registrado correctamente: ${dni}`,

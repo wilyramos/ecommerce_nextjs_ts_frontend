@@ -4,6 +4,17 @@ import ActionsButtonsVentas from './ActionsButtonsVentas'
 
 export default function VentasTable({ ventas }: { ventas: Sale[] }) {
 
+
+    const employeeName = (venta: Sale) => {
+
+        // Verificar si la venta tiene es un objeto de empleado
+        if (!venta.employee || typeof venta.employee !== 'object') {
+            return 'No asignado';
+        }
+        // Si es un objeto, retornar el nombre
+        return venta.employee.nombre || 'No asignado';
+    };
+
     return (
         <div className="overflow-x-auto rounded-xl shadow border border-gray-200 bg-white">
             <div className="flex justify-end items-center p-4 bg-gray-50 border-b">
@@ -35,7 +46,11 @@ export default function VentasTable({ ventas }: { ventas: Sale[] }) {
                         ventas.map((venta) => (
                             <tr key={venta._id} className="hover:bg-gray-50 transition-colors">
                                 <td className="px-4 py-2">{venta.createdAt ? formatDate(venta.createdAt) : '—'}</td>
-                                {/* <td className="px-4 py-2">{venta. || 'N/A'}</td> */}
+                                <td className="px-4 py-2">
+                                    <span className="text-gray-800">
+                                        {employeeName(venta)}
+                                    </span>
+                                </td>
                                 <td className="px-4 py-2">{venta.customerDNI || 'N/A'}</td>
                                 <td className="px-4 py-2 text-green-700 font-medium">S/ {venta.totalPrice.toFixed(2)}</td>
                                 <td className="px-4 py-2">
