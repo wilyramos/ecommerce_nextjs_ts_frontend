@@ -1,9 +1,8 @@
-import { Product } from "@/src/schemas";
+import { ProductWithCategoryResponse } from "@/src/schemas";
 import Image from "next/image";
-import { FaBox } from "react-icons/fa";
 import AddProductButton from "../home/product/AddProductButton";
 
-export default function ProductCardPOS({ product }: { product: Product }) {
+export default function ProductCardPOS({ product }: { product: ProductWithCategoryResponse }) {
     const { nombre, precio, imagenes, stock, barcode } = product;
 
     return (
@@ -34,12 +33,12 @@ export default function ProductCardPOS({ product }: { product: Product }) {
                 </h3>
 
                 <div className="mt-1 flex flex-wrap items-center text-xs text-gray-600 gap-x-2">
-                    <span className="font-extrabold text-green-600">S/. {precio.toFixed(2)}</span>
+                    <span className="font-extrabold text-green-600">S/. {precio?.toFixed(2) }</span>
                     <span className="text-gray-500 font-mono">Cód: {barcode}</span>
-                    {stock > 0 && (
-                        <span className="flex items-center gap-1 text-gray-500">
-                            <FaBox className="text-gray-400" size={12} />
-                            {stock}
+                    {stock !== undefined && (
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium 
+                            ${stock > 0 ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
+                            {stock > 0 ? `${stock} en stock` : 'Agotado'}
                         </span>
                     )}
                 </div>
@@ -47,7 +46,7 @@ export default function ProductCardPOS({ product }: { product: Product }) {
 
             {/* Botón o estado */}
             <div className="ml-2">
-                {stock > 0 ? (
+                {stock ?? 0 > 0 ? (
                     <AddProductButton product={product} />
                 ) : (
                     <span className="text-xs text-red-600 font-semibold">Agotado</span>

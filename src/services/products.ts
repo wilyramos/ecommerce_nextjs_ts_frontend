@@ -1,13 +1,13 @@
-import "server-only"
+import "server-only";
 
 
-import getToken from "../auth/token"
-import { ProductsAPIResponse, ProductAPIResponse, productsSchema } from "@/src/schemas";
+import getToken from "../auth/token";
+import { ProductsAPIResponse, productsSchema } from "@/src/schemas";
 import { cache } from 'react';
 
 // new
 
-import { ApiProductWithCategorySchema, productsAPIResponse } from "@/src/schemas";
+import { ApiProductWithCategorySchema, productsAPIResponse, productsWithCategoryAPIResponse } from "@/src/schemas";
 
 
 export const getProduct = async (id: string) => {
@@ -119,7 +119,7 @@ export const searchProducts = async ({ query, page, limit }: {
     }
 
     const json = await req.json();
-    const products = ProductsAPIResponse.parse(json);
+    const products = productsWithCategoryAPIResponse.parse(json);
     return products;
 }
 

@@ -4,7 +4,6 @@ import { useCartStore } from "@/src/store/cartStore"
 import ItemCarrito from "./ItemCarrito"
 import { useRouter } from "next/navigation"
 import { FaShoppingCart } from "react-icons/fa"
-import { Heading } from "lucide-react"
 import HeadingH1 from "../ui/Heading"
 
 export default function ResumenCarrito() {

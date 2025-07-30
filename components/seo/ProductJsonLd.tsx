@@ -2,10 +2,10 @@
 
 'use client'
 
-import type { ProductType } from "@/src/schemas"
+import type { ProductWithCategoryResponse } from "@/src/schemas"
 
-export default function ProductJsonLd({ producto }: { producto: ProductType }) {
-    
+export default function ProductJsonLd({ producto }: { producto: ProductWithCategoryResponse }) {
+
     if (!producto) return null
 
     const firstImage = producto.imagenes?.[0] || 'https://www.gophone.pe/default-product.jpg'

@@ -1,12 +1,12 @@
 "use client";
 
-import { ProductType } from "@/src/schemas";
+import { ProductWithCategoryResponse } from "@/src/schemas";
 import { useCartStore } from "@/src/store/cartStore";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-export default function ShopNowButton({ product }: { product: ProductType }) {
+export default function ShopNowButton({ product }: { product: ProductWithCategoryResponse }) {
     const { addToCart } = useCartStore();
     const router = useRouter();
 

@@ -1,15 +1,15 @@
 "use client";
-import { ProductType } from "@/src/schemas";
+import { ProductWithCategoryResponse } from "@/src/schemas";
 import { useCartStore } from "@/src/store/cartStore";
 import { FaPlus, FaShoppingCart } from "react-icons/fa";
 import { toast } from 'sonner';
 
-export default function AddProductToCart({ product }: { product: ProductType }) {
+export default function AddProductToCart({ product }: { product: ProductWithCategoryResponse }) {
     const addToCart = useCartStore(state => state.addToCart);
     const setCartOpen = useCartStore(state => state.setCartOpen);
 
     const handleClick = () => {
-        addToCart(product);
+        addToCart(product); 
         toast.success("Producto añadido al carrito");
         setCartOpen(true); // Abrir el carrito al añadir un producto
     };

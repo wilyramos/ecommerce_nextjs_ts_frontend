@@ -233,12 +233,16 @@ export const updateProductSchema = productBaseSchema.partial();
 
 
 // Product response schema
-export const ApiProductSchema = productBaseSchema.extend({
-    _id: z.string(),
-    slug: z.string(),
-    createdAt: z.string().datetime().optional(),
-    updatedAt: z.string().datetime().optional(),
-    __v: z.number().optional(),
+export const ApiProductSchema = productBaseSchema
+    .omit({
+        slug: true,
+    })
+    .extend({
+        _id: z.string(),
+        slug: z.string(),
+        createdAt: z.string().datetime().optional(),
+        updatedAt: z.string().datetime().optional(),
+        __v: z.number().optional(),
 });
 
 export const productsAPIResponse = z.object({
@@ -253,12 +257,21 @@ export const productsAPIResponse = z.object({
 export type CreateProductInput = z.infer<typeof createProductSchema>;
 export type UpdateProductInput = z.infer<typeof updateProductSchema>;
 export type ProductResponse = z.infer<typeof ApiProductSchema>;
+
 export type ProductsAPIResponse = z.infer<typeof productsAPIResponse>;
 
 
 // Producto con la categoría poblada (en vez de solo un string)
 export const ApiProductWithCategorySchema = ApiProductSchema.extend({
   categoria: apiCategorySchema, // Reemplazo del string por el esquema de categoría
+});
+
+
+export const productsWithCategoryAPIResponse = z.object({
+    products: z.array(ApiProductWithCategorySchema),
+    totalPages: z.number(),
+    currentPage: z.number(),
+    totalProducts: z.number(),
 });
 
 export type ProductWithCategoryResponse = z.infer<typeof ApiProductWithCategorySchema>;

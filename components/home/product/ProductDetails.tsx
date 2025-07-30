@@ -3,15 +3,14 @@
 import AddProductToCart from './AddProductToCart';
 import ColorCircle from '@/components/ui/ColorCircle';
 import ImagenesProductoCarousel from './ImagenesProductoCarousel';
-import type { ProductType } from '@/src/schemas';
+import type { ProductWithCategoryResponse } from '@/src/schemas';
 import ShopNowButton from './ShopNowButton';
 
 type Props = {
-    producto: ProductType;
+    producto: ProductWithCategoryResponse;
 };
 
 export default function ProductDetails({ producto }: Props) {
-
 
     // Color 
 
@@ -49,17 +48,16 @@ export default function ProductDetails({ producto }: Props) {
 
                         <div className="flex items-center gap-4">
                             <span className="text-2xl text-black font-extrabold">
-                                s/ {producto.precio.toFixed(2)}
+                                s/ {producto.precio?.toFixed(2)}
                             </span>
-                            <span className={`text-xs font-medium px-3 py-1 rounded-full 
-                ${producto.stock > 0
-                                    ? 'bg-emerald-50 text-emerald-600'
-                                    : 'bg-rose-50 text-rose-600'}`}>
-                                {producto.stock > 0 ? `${producto.stock} en stock` : 'Sin stock'}
-                            </span>
+                            {producto.stock && (
+                                <span className={`text-xs font-medium ${producto.stock > 0 ? 'text-green-800 rounded-2xl bg-green-300'  : 'text-red-600 rounded-full bg-red-100'} px-2 py-1 font-semibold`}>
+                                    {producto.stock > 0 ? `${producto.stock} en stock` : 'Agotado'}
+                                </span>
+                            )}
+                            
                         </div>
                     </div>
-
 
                     {/* Características */}
                     {producto.atributos && (
@@ -116,10 +114,10 @@ export default function ProductDetails({ producto }: Props) {
             {/* Informacion adicional */}
 
             <div className=''>
-                    <h2 className="text-2xl font-bold text-gray-600 mb-6">Informacion adicional</h2>
+                    <h2 className="text-2xl font-bold text-gray-500 m-2">Informacion adicional</h2>
                 {producto.descripcion && (
                     <div>
-                        <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">
+                        <p className="text-sm whitespace-pre-wrap">
                             {producto.descripcion}
                         </p>
                     </div>

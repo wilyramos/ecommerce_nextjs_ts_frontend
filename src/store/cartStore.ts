@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import type { CartItem, Product } from '@/src/schemas';
+import type { CartItem, ProductWithCategoryResponse } from '@/src/schemas';
 import { saveCartToDB } from '@/lib/api/cart';
 
 
@@ -12,7 +12,7 @@ interface Store {
     total: number;
     dni: string | null;
 
-    addToCart: (item: Product) => void;
+    addToCart: (item: ProductWithCategoryResponse) => void;
     updateQuantity: (id: string, quantity: number) => void;
     removeFromCart: (id: string) => void;
 
@@ -68,11 +68,11 @@ export const useCartStore = create<Store>()(devtools(persist((set, get) => ({
                 cart: [...cart, {
                     _id: item._id,
                     nombre: item.nombre,
-                    precio: item.precio,
+                    precio: item.precio ? item.precio : 0,
                     cantidad: 1,
-                    subtotal: item.precio,
-                    imagenes: item.imagenes,
-                    stock: item.stock
+                    subtotal: item.precio ? item.precio : 0,
+                    imagenes: item.imagenes || [],
+                    stock: item.stock ? item.stock : 0
                 }],
             })
         }
