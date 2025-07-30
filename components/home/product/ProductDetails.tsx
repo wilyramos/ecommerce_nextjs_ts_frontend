@@ -51,11 +51,11 @@ export default function ProductDetails({ producto }: Props) {
                                 s/ {producto.precio?.toFixed(2)}
                             </span>
                             {producto.stock && (
-                                <span className={`text-xs font-medium ${producto.stock > 0 ? 'text-green-800 rounded-2xl bg-green-300'  : 'text-red-600 rounded-full bg-red-100'} px-2 py-1 font-semibold`}>
+                                <span className={`text-xs font-medium ${producto.stock > 0 ? 'text-green-800 rounded-2xl bg-green-300' : 'text-red-600 rounded-full bg-red-100'} px-2 py-1 font-semibold`}>
                                     {producto.stock > 0 ? `${producto.stock} en stock` : 'Agotado'}
                                 </span>
                             )}
-                            
+
                         </div>
                     </div>
 
@@ -113,18 +113,15 @@ export default function ProductDetails({ producto }: Props) {
 
             {/* Informacion adicional */}
 
-            <div className=''>
-                    <h2 className="text-2xl font-bold text-gray-500 m-2">Informacion adicional</h2>
-                {producto.descripcion && (
-                    <div>
-                        <p className="text-sm whitespace-pre-wrap">
-                            {producto.descripcion}
-                        </p>
-                    </div>
-                )}
+            {producto.descripcion && (
 
-
-            </div>
+                <div className=''>
+                    <h2 className="text-2xl text-gray-500 m-2">Informacion adicional</h2>
+                    <p className="text-sm whitespace-pre-wrap">
+                        {producto.descripcion}
+                    </p>
+                </div>
+            )}
 
 
             {/* Espaciador mobile */}
