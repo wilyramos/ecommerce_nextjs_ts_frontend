@@ -4,7 +4,6 @@ import { Kumbh_Sans } from "next/font/google";
 import { Toaster } from 'sonner';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
-
 const kumbh_sans = Kumbh_Sans({
     subsets: ["latin"],
 });
@@ -83,11 +82,8 @@ export default function RootLayout({
                 className={`${kumbh_sans.className}`}
             >
                 <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
-                    {/* Aquí puedes agregar el componente de Google Login si es necesario */}
-                    {/* <NavBar /> */}
                     {children}
                     <Toaster
-                        // position="left-button"
                         richColors
                         toastOptions={{
                             className: "bg-gray-800 text-white",
@@ -95,7 +91,7 @@ export default function RootLayout({
                         expand
                         duration={5000}
                     />
-                </GoogleOAuthProvider>
+                </GoogleOAuthProvider> 
             </body>
         </html>
     );

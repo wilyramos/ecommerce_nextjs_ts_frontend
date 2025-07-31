@@ -7,7 +7,6 @@ import getToken from "@/src/auth/token"
 
 export const createMPPreference = async (orderData: CreatePreferenceInput) => {
 
-
     const token = await getToken();
     console.log("Tokennn:", token);
     const url = `${process.env.API_URL}/checkout/create-preference`;
@@ -31,6 +30,5 @@ export const createMPPreference = async (orderData: CreatePreferenceInput) => {
     console.log("Response JSON:", json);
 
     return json.init_point;
-
 }
 

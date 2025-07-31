@@ -28,7 +28,7 @@ export default function OrderStepper({ status }: OrderStepperProps) {
     const currentStepIndex = steps.findIndex((step) => step.value === status);
 
     return (
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between ">
             {steps.map((step, i) => {
                 const isCompleted = i <= currentStepIndex;
                 return (

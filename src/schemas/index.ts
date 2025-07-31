@@ -608,8 +608,12 @@ export const CreatePreferenceSchema = z.object({
 export type CreateOrderInput = z.infer<typeof CreateOrderSchema>;
 export type CreatePreferenceInput = z.infer<typeof CreatePreferenceSchema>;
 
-// Esquema para enviar a mercadopago
+// Esquemas para izipay
 
+
+export const IzipayTokenSchema = z.object({
+    token: z.string(),
+});
 
 
 
@@ -688,3 +692,30 @@ export const SalesAPIResponse = z.object({
 export const DniSchema = z.object({
     dni: z.string().length(8, { message: 'El DNI debe tener 8 dígitos' }),
 });
+
+
+// Izipay
+
+export type IzipayOptions = {
+     public_key: string;
+  amount: number;
+  currency: 'PEN' | 'USD';
+  order_id: string;
+  customer: {
+    name: string;
+    email: string;
+  };
+  metadata?: Record<string, string>;
+  callback_url?: string;
+}; 
+
+export type IzipayInstance = {
+  open: () => void;
+    close: () => void; 
+}
+
+export interface Window {
+    Izipay?: {
+        new (options: IzipayOptions): IzipayInstance;
+    };
+}
