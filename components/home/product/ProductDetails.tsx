@@ -115,9 +115,9 @@ export default function ProductDetails({ producto }: Props) {
 
             {producto.descripcion && (
 
-                <div className=''>
-                    <h2 className="text-2xl text-gray-500 m-2">Informacion adicional</h2>
-                    <p className="text-sm whitespace-pre-wrap">
+                <div className='p-5 border-1 rounded-2xl border-gray-100 mt-4 max-w-7xl mx-auto'>
+                    <h2 className="text-2xl text-gray-600 font-semibold">Informacion adicional</h2>
+                    <p className="text-sm whitespace-pre-wrap leading-normal text-gray-500 ">
                         {producto.descripcion}
                     </p>
                 </div>
@@ -125,13 +125,12 @@ export default function ProductDetails({ producto }: Props) {
 
 
             {/* Espaciador mobile */}
-            <div className="block md:hidden h-16" />
+            <div className="block md:hidden" />
 
             {/* Botón fijo para móviles */}
             <div className="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 px-4 py-3 shadow z-50">
                 <div className="max-w-7xl mx-auto flex items-center justify-center">
                     <AddProductToCart product={producto} />
-
                 </div>
             </div>
         </>

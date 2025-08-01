@@ -41,7 +41,6 @@ export default async function ProductPageServer({ slug }: Props) {
             </div>
 
             <section className="max-w-7xl mx-auto py-10">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-6 border-t-2">Productos relacionados</h2>
                     <ProductosRelated slug={slug} />
             </section>
             
