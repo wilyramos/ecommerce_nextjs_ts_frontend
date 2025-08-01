@@ -16,7 +16,7 @@ export default async function ProductosNuevos() {
         <section className="py-4 bg-gradient-to-r from-white via-slate-50 to-white">
             <div className="max-w-7xl mx-auto px-4">
                 <div className=" mb-2">
-                    <h2 className="text-lg  font-semibold text-gray-800">
+                    <h2 className="text-xl font-bold text-black">
                         Productos Nuevos
                     </h2>
                     <div className="w-20 h-1 bg-indigo-600/70 mx-auto rounded-full" />

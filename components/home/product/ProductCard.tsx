@@ -67,7 +67,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
                 {/* Información del producto */}
                 <div className="flex flex-col justify-between flex-1 p-3 gap-2">
-                    <h3 className="text-xs md:text-sm font-semibold text-gray-800 line-clamp-3 hover:line-clamp-none ">
+                    <h3 className="text-xs md:text-sm font-medium text-gray-600 line-clamp-3 hover:line-clamp-none leading-tight tracking-tight">
                         {product.nombre}
                     </h3>
 

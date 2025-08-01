@@ -5,7 +5,6 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import type { Product } from "@/src/schemas";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 import { CustomDot } from "../ui/CustomDot";
 
 const responsive = {
@@ -57,24 +56,30 @@ export default function ClientCarouselMain({ products }: { products: Product[] }
                         </div>
 
 
-                        {/* Contenido destacado */}
-                        <div className="absolute bottom-1 left-0 w-auto p-4 sm:p-6 md:p-8 flex flex-col  justify-end text-white ">
 
-                            <h2 className="text-base md:text-2xl font-bold leading-snug text-white 
-    bg-slate-900/70 px-4 py-2 rounded-md shadow-md backdrop-blur-sm">
-                                {product.nombre}
-                            </h2>
 
-                            <div className=" text-xs sm:text-sm md:text-base font-semibold text-end md:text-start">
-                                <Link
-                                    href={`/productos/${product.slug}`}
-                                    className="mt-5 sm:mt-6 inline-flex items-center gap-2 bg-white text-black text-xs sm:text-sm md:text-base font-semibold px-5 sm:px-6 py-1.5 rounded-full max-w-xs border border-gray-700 hover:text-white hover:bg-black hover:shadow-lg text-end"
-                                >
-                                    Ver producto <ArrowRight className="w-4 h-4" />
-                                </Link>
+                        <div className="absolute bottom-6 left-6 right-6 z-10 flex flex-col sm:flex-row gap-4 sm:items-start sm:justify-between">
 
+                            {/* Nombre del producto con fondo indigo */}
+                            <Link href={`/productos/${product.slug}`}>
+                                <h2 className="w-full sm:w-auto text-base sm:text-lg md:text-3xl font-semibold text-white tracking-tight leading-snug bg-gradient-to-r from-indigo-500 to-indigo-600 backdrop-blur-sm rounded px-3 py-1 border border-indigo-400/30">
+                                    {product.nombre}
+                                </h2>
+                            </Link>
+
+                            {/* Precio + botón */}
+                            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 items-start sm:items-center">
+                                <div className="relative w-fit">
+                                    <span className="absolute -top-4 -right-2 bg-yellow-400 text-black text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full shadow-md uppercase">
+                                        Oferta
+                                    </span>
+                                    <p className="text-base sm:text-xl md:text-3xl font-extrabold text-white bg-red-500 px-3 py-1 sm:px-5 sm:py-2 rounded-sm">
+                                        {product.precio ? `S/. ${product.precio.toFixed(2)}` : "Precio no disponible"}
+                                    </p>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                 ))}
             </Carousel>

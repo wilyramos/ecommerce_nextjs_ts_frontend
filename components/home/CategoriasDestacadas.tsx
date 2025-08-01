@@ -31,12 +31,8 @@ export default function CategoriasDestacadas({
     );
 
     return (
-        <section className="w-full py-5 bg-gradient-to-r from-indigo-50 via-white to-indigo-200">
+        <section className="w-full py-10 bg-gradient-to-r from-indigo-50 via-white to-indigo-200">
             <div className="max-w-7xl mx-auto px-5">
-                <h2 className="text-lg  font-semibold text-gray-800">
-                        Categorias Destacadas
-                    </h2>
-
                 <Carousel
                     responsive={responsive}
                     infinite
@@ -62,7 +58,7 @@ export default function CategoriasDestacadas({
                                 height={90}
                                 className="mb-2 object-contain transition-transform duration-300 group-hover:scale-120"
                             />
-                            <p className="text-sm font-medium text-gray-700 group-hover:text-indigo-600">
+                            <p className="text-sm font-medium group-hover:text-indigo-600">
                                 {categoria.nombre}
                             </p>
                         </Link>
