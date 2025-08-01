@@ -1,19 +1,20 @@
-
-import CheckoutSelector from "@/components/checkout/CheckoutSelector";
+import CheckoutSelector from '@/components/checkout/CheckoutSelector';
+// import ClientCheckoutWrapper from "@/components/checkout/mercadopago/ClientCheckoutWrapper";
+// import LoadScriptMercadoPago from "@/components/checkout/mercadopago/LoadScriptMercadoPago";
 
 export default function PaymentPage() {
 
     return (
+        <>
 
-            <div className="text-gray-800 text-sm space-y-6">
-                {/* Título e instrucciones */}
-                <p className="font-semibold">
-                    SELECCIONA TU MEDIO DE PAGO
-                </p>
+            {/* <LoadScriptMercadoPago /> */}
+            <h1 className="text-2xl font-bold mb-4">Selecciona tu método de pago</h1>
+            {/* <ClientCheckoutWrapper /> */}
+            {/* Selección de pasarela de pago */}
+            <CheckoutSelector />
 
-            
-                <CheckoutSelector />
-            </div>
+            {/* <ClientCheckoutWrapper /> */}
 
+        </>
     );
 }

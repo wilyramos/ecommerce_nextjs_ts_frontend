@@ -12,6 +12,8 @@
     "@chakra-ui/pin-input": "^2.1.0",
     "@headlessui/react": "^2.2.4",
     "@heroicons/react": "^2.2.0",
+    "@mercadopago/sdk-js": "^0.0.3",
+    "@mercadopago/sdk-react": "^1.0.3",
     "@radix-ui/react-dialog": "^1.1.13",
     "@radix-ui/react-navigation-menu": "^1.2.12",
     "@radix-ui/react-scroll-area": "^1.2.9",

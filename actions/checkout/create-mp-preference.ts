@@ -23,6 +23,8 @@ export async function createMPPreference(orderData: CreatePreferenceInput) {
         body: JSON.stringify(orderData),
     });
 
+    console.log(res)
+
     if (!res.ok) throw new Error('No se pudo crear la preferencia');
 
     const data = await res.json();
