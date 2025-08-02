@@ -99,7 +99,6 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
                             limit={limitNumber}
                             sort={sort}
                             query={query}
-
                         />
                     </Suspense>
                 </section>

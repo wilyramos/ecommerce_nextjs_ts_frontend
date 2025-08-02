@@ -20,12 +20,12 @@ export default function ProductsFilters({ categorias }: { categorias: CategoryLi
 
     // Filter price
 
-    const [priceValues, setPriceValues] = useState([0, 5000]);
+    const [priceValues, setPriceValues] = useState([0, 3000]);
 
     useEffect(() => {
 
         const range = searchParams.get("priceRange");
-        const [min, max] = range?.split('-').map(Number) || [0, 5000];
+        const [min, max] = range?.split('-').map(Number) || [0, 3000];
         setPriceValues([min, max]);
 
         setFilters({
@@ -92,7 +92,7 @@ export default function ProductsFilters({ categorias }: { categorias: CategoryLi
                         <Range
                             step={10}
                             min={0}
-                            max={5000}
+                            max={3000}
                             values={priceValues}
                             onChange={(values) => setPriceValues(values)}
                             onFinalChange={(values) => {

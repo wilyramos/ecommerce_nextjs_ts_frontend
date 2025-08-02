@@ -42,10 +42,10 @@ export default async function pageCategoria({
         ...restAtributos
     } = allParams;
 
-    const atributos: Record<string, string> = {};
+    const atributos: Record<string, string[]> = {};
     Object.entries(restAtributos).forEach(([key, value]) => {
         if (typeof value === "string") {
-            atributos[key] = value;
+            atributos[key] = value.split(",").map(item => item.trim());
         }
     });
 

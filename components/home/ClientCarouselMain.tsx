@@ -55,31 +55,27 @@ export default function ClientCarouselMain({ products }: { products: Product[] }
                             ))}
                         </div>
 
+                        <div className="absolute top-10 right-20 z-20">
+                            <div className="relative w-fit">
+                                <span className="absolute -top-3 -right-2 bg-yellow-400 text-black text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full shadow-md uppercase">
+                                    Oferta
+                                </span>
+                                <p className="text-sm sm:text-lg md:text-2xl font-extrabold text-white bg-red-500 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full">
+                                    {product.precio ? `S/. ${product.precio.toFixed(2)}` : "-"}
+                                </p>
+                            </div>
+                        </div>
 
-
-
-                        <div className="absolute bottom-6 left-6 right-6 z-10 flex flex-col sm:flex-row gap-4 sm:items-start sm:justify-between">
+                        <div className="absolute bottom-20 right-6 z-10 flex flex-col sm:flex-row gap-4 sm:items-start sm:justify-between">
 
                             {/* Nombre del producto con fondo indigo */}
                             <Link href={`/productos/${product.slug}`}>
-                                <h2 className="w-full sm:w-auto text-base sm:text-lg md:text-3xl font-semibold text-white tracking-tight leading-snug bg-gradient-to-r from-indigo-500 to-indigo-600 backdrop-blur-sm rounded px-3 py-1 border border-indigo-400/30">
+                                <h2 className="w-full sm:w-auto text-base sm:text-lg md:text-xl font-semibold text-white tracking-tight leading-snug bg-gradient-to-r from-indigo-500 to-indigo-600 backdrop-blur-sm rounded px-3 py-1 border border-indigo-400/30">
                                     {product.nombre}
                                 </h2>
                             </Link>
 
-                            {/* Precio + botón */}
-                            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 items-start sm:items-center">
-                                <div className="relative w-fit">
-                                    <span className="absolute -top-4 -right-2 bg-yellow-400 text-black text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full shadow-md uppercase">
-                                        Oferta
-                                    </span>
-                                    <p className="text-base sm:text-xl md:text-3xl font-extrabold text-white bg-red-500 px-3 py-1 sm:px-5 sm:py-2 rounded-sm">
-                                        {product.precio ? `S/. ${product.precio.toFixed(2)}` : "Precio no disponible"}
-                                    </p>
-                                </div>
-                            </div>
                         </div>
-
                     </div>
                 ))}
             </Carousel>

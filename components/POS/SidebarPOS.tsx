@@ -3,58 +3,64 @@
 import { User } from '@/src/schemas';
 import Link from 'next/link';
 import {
-    FaCashRegister,
-    FaReceipt,
-    FaBoxOpen,
-    FaUsers
-} from 'react-icons/fa';
+    HiOutlineShoppingCart,
+    HiOutlineDocumentReport,
+    HiOutlineCube,
+    HiOutlineUsers,
+    HiOutlineHome
+} from 'react-icons/hi';
 import AdminMenu from '@/components/admin/AdminMenu';
 import Logo from '../ui/Logo';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
 export default function SidebarPOS({ user }: { user: User }) {
-
     const pathname = usePathname();
 
-    const isActive = (path: string) => {
-        return cn(
-            'flex items-center gap-3 px-3 py-2 rounded-2xl',
-            pathname === path ? 'text-rose-600 font-extrabold' : 'hover:bg-rose-200 hover:text-rose-800'
+    const isActive = (path: string) =>
+        cn(
+            'flex items-center gap-3 px-4 py-2 rounded-xl transition-all',
+            pathname === path
+                ? 'bg-rose-100 text-rose-600 font-semibold'
+                : 'text-gray-700 hover:bg-gray-100 hover:text-rose-500'
         );
-    };
 
     return (
-        <aside className=" h-screen bg-white border-r flex flex-col">
-            {/* Usuario */}
-            <div className="flex items-center p-4 text-center justify-center">
+        <aside className="h-screen bg-white border-r w-56 flex flex-col ">
+            {/* Logo */}
+            <div className="flex items-center justify-center py-6">
                 <Logo />
             </div>
 
             {/* Navegación */}
-            <nav className="flex flex-col p-4 space-y-2 font-medium flex-1">
+            <nav className="flex flex-col px-4 space-y-2 text-sm font-medium py-10">
                 <Link href="/pos" className={isActive('/pos')}>
-                    <FaCashRegister /> Inicio
+                    <HiOutlineHome className="h-5 w-5" />
+                    Inicio
                 </Link>
                 <Link href="/pos/ventas" className={isActive('/pos/ventas')}>
-                    <FaReceipt /> Ventas
+                    <HiOutlineDocumentReport className="h-5 w-5" />
+                    Ventas
                 </Link>
                 <Link href="/pos/compras" className={isActive('/pos/compras')}>
-                    <FaReceipt /> Compras
+                    <HiOutlineShoppingCart className="h-5 w-5" />
+                    Compras
                 </Link>
                 <Link href="/pos/productos" className={isActive('/pos/productos')}>
-                    <FaBoxOpen /> Productos
+                    <HiOutlineCube className="h-5 w-5" />
+                    Productos
                 </Link>
                 <Link href="/pos/clientes" className={isActive('/pos/clientes')}>
-                    <FaUsers /> Clientes
+                    <HiOutlineUsers className="h-5 w-5" />
+                    Clientes
                 </Link>
             </nav>
 
-            {/* Salir */}
-            <div className="flex items-center justify-between px-4 py-3">
-                <p className="text-sm text-gray-600">
-                    Hola <span className="font-bold text-gray-800 uppercase">{user.nombre}</span>
-                </p>
+            {/* Usuario */}
+            <div className="px-4 py-4 border-t flex items-center justify-between text-xs text-gray-600">
+                <span>
+                    Hola <span className="font-semibold text-gray-800 uppercase">{user.nombre}</span>
+                </span>
                 <AdminMenu user={user} />
             </div>
         </aside>

@@ -19,11 +19,12 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
         query = "",
     } = params || {};
 
-    const productos = await searchProducts({
+    const productos = query ? await searchProducts({
         page: parseInt(page),
         limit: parseInt(limit),
         query,
-    });
+    }) : { products: [] };
+
 
     return (
         <div className="grid md:grid-cols-2 h-screen bg-white">
@@ -52,7 +53,7 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
             <aside className="p-4 border-t md:border-t-0 md:border-l bg-white ">
                 <h2 className="text-xl font-semibold mb-4 flex gap-2">
                     <PiShoppingCartFill size={24} />
-                    Carrito de Compras
+                    Carrito de venta
                 </h2>
                 <VentaCart />
             </aside>

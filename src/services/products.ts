@@ -59,7 +59,7 @@ type GetProductsByFilterParams = {
     query?: string;
     sort?: string;
     compatibilidad?: string;
-    atributos?: Record<string, string>; // Nuevos filtros dinámicos
+    atributos?: Record<string, string[]>; // Nuevos filtros dinámicos
 };
 
 export const getProductsByFilter = async ({
@@ -69,7 +69,7 @@ export const getProductsByFilter = async ({
     priceRange = "",
     query = "",
     sort = "",
-    atributos = {},
+    atributos = {}
 }: GetProductsByFilterParams) => {
     const params = new URLSearchParams({
         page: page.toString(),
@@ -82,10 +82,13 @@ export const getProductsByFilter = async ({
 
     // Agregar los atributos dinámicos al query string
     for (const [key, value] of Object.entries(atributos)) {
-        if (value) {
-            params.append(`atributos[${key}]`, value);
-        }
+    if (value) {
+        // Asegura que sea string[]
+        const valuesArray = Array.isArray(value) ? value : [value];
+        params.append(`atributos[${key}]`, valuesArray.join(","));
     }
+}
+
 
     const url = `${process.env.API_URL}/products/filter?${params.toString()}`;
 

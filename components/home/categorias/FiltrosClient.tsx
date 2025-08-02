@@ -14,21 +14,25 @@ type Props = {
 };
 
 const MIN = 0;
-const MAX = 5000;
+const MAX = 3000;
 
 export default function FiltrosClient({ categorySlug, attributes }: Props) {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const [selectedFilters, setSelectedFilters] = useState<Record<string, string>>({});
+    const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
     const [priceValues, setPriceValues] = useState<[number, number]>([MIN, MAX]);
 
     useEffect(() => {
-        const filters: Record<string, string> = {};
+        const filters: Record<string, string[]> = {};
+
         attributes.forEach(attr => {
             const param = searchParams.get(attr.name);
-            if (param) filters[attr.name] = param;
+            if (param) {
+                filters[attr.name] = param.split(","); // soporte múltiple
+            }
         });
+
         setSelectedFilters(filters);
 
         const range = searchParams.get("priceRange");
@@ -36,25 +40,40 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
         setPriceValues([min, max]);
     }, [searchParams, attributes]);
 
-    const updateParams = (updates: Record<string, string | null>) => {
+    const updateParams = (updates: Record<string, string[] | null>) => {
         const params = new URLSearchParams(searchParams.toString());
 
         for (const [key, val] of Object.entries(updates)) {
-            if (val === null) {
+            if (val === null || val.length === 0) {
                 params.delete(key);
             } else {
-                params.set(key, val);
+                params.set(key, val.join(",")); // múltiples valores separados por coma
             }
         }
 
         router.push(`/categoria/${categorySlug}?${params.toString()}`);
     };
 
-    const toggleValue = (attrName: string, value: string) => {
-        const newFilters = { ...selectedFilters, [attrName]: value };
+    const toggleCheckboxValue = (attrName: string, value: string) => {
+        const prevValues = selectedFilters[attrName] || [];
+        let updatedValues: string[];
+
+        if (prevValues.includes(value)) {
+            updatedValues = prevValues.filter(v => v !== value);
+        } else {
+            updatedValues = [...prevValues, value];
+        }
+
+        const newFilters = {
+            ...selectedFilters,
+            [attrName]: updatedValues,
+        };
+
         setSelectedFilters(newFilters);
-        updateParams({ [attrName]: value });
+        updateParams({ [attrName]: updatedValues });
     };
+
+
 
     const clearFilters = () => {
         const cleared: Record<string, null> = {};
@@ -66,6 +85,7 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
             priceRange: null,
         });
     };
+
 
 
     return (
@@ -93,7 +113,7 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
                     onChange={(values) => setPriceValues([values[0], values[1]])}
                     onFinalChange={(values) => {
                         const rangeValue = `${values[0]}-${values[1]}`;
-                        updateParams({ priceRange: rangeValue });
+                        updateParams({ priceRange: [rangeValue] });
                     }}
                     renderTrack={({ props, children }) => (
                         <div
@@ -133,13 +153,14 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
                                         {attr.values.map(value => (
                                             <li key={value} className="flex items-center gap-2">
                                                 <input
-                                                    type="radio"
-                                                    name={attr.name}
+                                                    type="checkbox"
+                                                    name={`${attr.name}-${value}`}
                                                     value={value}
-                                                    checked={selectedFilters[attr.name] === value}
-                                                    onChange={() => toggleValue(attr.name, value)}
+                                                    checked={!!selectedFilters[attr.name]?.includes(value)}
+                                                    onChange={() => toggleCheckboxValue(attr.name, value)}
                                                     className="accent-blue-600"
                                                 />
+
                                                 <label className="text-sm text-gray-600">{value}</label>
                                             </li>
                                         ))}

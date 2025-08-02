@@ -37,8 +37,9 @@ export async function generateMetadata({ params }: { params: Params }) {
             "san vicente de cañete",
             "imperial",
             "lunahuaná",
-
             categoryName,
+            "productos",
+            product.nombre,
         ],
         openGraph: {
             title,

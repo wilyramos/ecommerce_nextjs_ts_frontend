@@ -4,41 +4,44 @@ import Link from "next/link";
 import { FaFacebookF, FaInstagram, FaWhatsapp } from "react-icons/fa";
 
 export default function Footer() {
-    const EnlacesExplora = [
+    const links = [
         { label: "Inicio", href: "/" },
         { label: "Productos", href: "/productos" },
         { label: "Categorías", href: "/categorias" },
     ];
 
-    const RedesSociales = [
-        { icon: <FaFacebookF size={18} />, href: "https://www.facebook.com/gophone.pe" },
-        { icon: <FaInstagram size={18} />, href: "https://www.instagram.com/gophone.pe" },
-        { icon: <FaWhatsapp size={18} />, href: "https://api.whatsapp.com/send?phone=51907103353&text=Hola%20Gophone,%20tengo%20una%20consulta" },
+    const social = [
+        { icon: <FaFacebookF />, href: "https://www.facebook.com/gophone.pe", name: "Facebook" },
+        { icon: <FaInstagram />, href: "https://www.instagram.com/gophone.pe", name: "Instagram" },
+        {
+            icon: <FaWhatsapp />,
+            href: "https://api.whatsapp.com/send?phone=51907103353&text=Hola%20Gophone,%20tengo%20una%20consulta",
+            name: "WhatsApp",
+        },
     ];
 
     return (
-        <footer className="relative bg-black text-gray-50 ">
-            {/* Línea superior con gradiente */}
-            <div className="h-1 bg-gradient-to-r from-indigo-500 via-indigo-800 to-indigo-500 w-full"></div>
+        <footer className="bg-neutral-950 text-neutral-300 text-sm">
+            {/* Top line */}
+            <div className="h-1 w-full bg-gradient-to-r from-indigo-500 via-purple-700 to-indigo-500" />
 
-            {/* Contenido principal */}
-            <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12 text-center ">
-                {/* Marca */}
-                <div>
-                    <h2 className="text-3xl font-extrabold text-white mb-4 tracking-wide">Gophone Cañete</h2>
-                    <p className="text-xs leading-relaxed text-gray-400 max-w-xs mx-auto">
-                        Lo último en tecnología móvil y accesorios. Envíos rápidos, atención garantizada y productos 100% originales.
-                        Tienda física en Jr. Ohiggins 120, San Vicente de Cañete.
+            {/* Main Content */}
+            <div className="max-w-7xl mx-auto px-6 py-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+                {/* Branding */}
+                <div className="col-span-1">
+                    <h2 className="text-white text-xl font-semibold mb-4">Gophone Cañete</h2>
+                    <p className="text-neutral-400 leading-relaxed">
+                        Tecnología móvil, accesorios originales y atención personalizada. Jr. O Higgins 120, San Vicente de Cañete.
                     </p>
                 </div>
 
-                {/* Enlaces rápidos */}
+                {/* Navegación */}
                 <div>
-                    <h3 className="text-lg font-semibold text-white mb-4">Explora</h3>
-                    <ul className="space-y-2 text-sm">
-                        {EnlacesExplora.map(({ label, href }) => (
+                    <h3 className="text-white text-sm font-semibold mb-3">Explora</h3>
+                    <ul className="space-y-2">
+                        {links.map(({ label, href }) => (
                             <li key={href}>
-                                <Link href={href} className="hover:text-white transition duration-200">
+                                <Link href={href} className="hover:text-white transition">
                                     {label}
                                 </Link>
                             </li>
@@ -46,18 +49,28 @@ export default function Footer() {
                     </ul>
                 </div>
 
-                {/* Redes Sociales */}
+                {/* Contacto */}
                 <div>
-                    <h3 className="text-lg font-semibold text-white mb-4">Síguenos</h3>
-                    <div className="flex justify-center space-x-4">
-                        {RedesSociales.map(({ icon, href }, index) => (
+                    <h3 className="text-white text-sm font-semibold mb-3">Contacto</h3>
+                    <ul className="space-y-2">
+                        <li>Tel: <a href="tel:+51907103353" className="hover:text-white">+51 907 103 353</a></li>
+                        <li>Email: <a href="mailto:ventas@gophone.pe" className="hover:text-white">ventas@gophone.pe</a></li>
+                        <li>Horario: Lun-Sáb 10am - 7pm</li>
+                    </ul>
+                </div>
+
+                {/* Redes sociales */}
+                <div>
+                    <h3 className="text-white text-sm font-semibold mb-3">Síguenos</h3>
+                    <div className="flex gap-3">
+                        {social.map(({ icon, href, name }) => (
                             <a
-                                key={index}
+                                key={name}
                                 href={href}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-gray-100 hover:text-white transition duration-200"
-                                aria-label={`Síguenos en ${href}`}
+                                aria-label={name}
+                                className="w-9 h-9 rounded-full bg-neutral-800 flex items-center justify-center hover:bg-indigo-600 transition text-white"
                             >
                                 {icon}
                             </a>
@@ -66,8 +79,8 @@ export default function Footer() {
                 </div>
             </div>
 
-            {/* Copyright */}
-            <div className="border-t border-gray-800 py-6 text-center text-sm text-gray-500">
+            {/* Footer bottom */}
+            <div className="border-t border-neutral-800 text-center py-5 text-xs text-neutral-500">
                 © {new Date().getFullYear()} Gophone. Todos los derechos reservados.
             </div>
         </footer>

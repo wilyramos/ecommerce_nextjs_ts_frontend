@@ -1,7 +1,7 @@
 "use client";
 import { ProductWithCategoryResponse } from "@/src/schemas";
 import { useCartStore } from "@/src/store/cartStore";
-import { FaPlus, FaShoppingCart } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 import { toast } from 'sonner';
 
 export default function AddProductButton({ product }: { product: ProductWithCategoryResponse }) {
@@ -16,9 +16,9 @@ export default function AddProductButton({ product }: { product: ProductWithCate
                 toast.success("Producto añadido al carrito");
             }}
         >
-            <FaPlus className="w-3 h-3 md:w-4 md:h-4" />
+            <FaPlus className="w-3 h-3 md:w-6 md:h-6" />
 
-            <FaShoppingCart className="w-4 h-4 md:w-5 md:h-5" />
+            {/* <FaShoppingCart className="w-4 h-4 md:w-5 md:h-5" /> */}
         </button>
     );
 }
