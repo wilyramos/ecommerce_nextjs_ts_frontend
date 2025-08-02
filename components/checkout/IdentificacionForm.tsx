@@ -46,10 +46,10 @@ export default function IdentificacionForm({ user }: Props) {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto space-y-1 pt-2">
+        <form onSubmit={handleSubmit(onSubmit)} className="max-w-lg mx-auto space-y-1 pt-2">
             {/* Email */}
             <div>
-                <label htmlFor="email" className="text-xs font-medium text-gray-700">
+                <label htmlFor="email" className="text-xs font-bold text-gray-700">
                     Correo electrónico
                 </label>
                 <input
@@ -70,7 +70,7 @@ export default function IdentificacionForm({ user }: Props) {
 
             {/* Nombre */}
             <div className="space-y-1">
-                <label htmlFor="nombre" className="text-xs font-medium text-gray-700">
+                <label htmlFor="nombre" className="text-xs font-bold text-gray-700">
                     Nombre
                 </label>
                 <input
@@ -84,7 +84,7 @@ export default function IdentificacionForm({ user }: Props) {
 
             {/* Apellidos */}
             <div className="space-y-1">
-                <label htmlFor="apellidos" className="text-xs font-medium text-gray-700">
+                <label htmlFor="apellidos" className="text-xs font-bold text-gray-700">
                     Apellidos
                 </label>
                 <input
@@ -99,7 +99,7 @@ export default function IdentificacionForm({ user }: Props) {
             {/* Tipo + Número documento */}
             <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                    <label htmlFor="tipoDocumento" className="text-xs font-medium text-gray-700">
+                    <label htmlFor="tipoDocumento" className="text-xs font-bold text-gray-700">
                         Tipo de documento
                     </label>
                     <select
@@ -115,7 +115,7 @@ export default function IdentificacionForm({ user }: Props) {
                 </div>
 
                 <div className="space-y-1">
-                    <label htmlFor="numeroDocumento" className="text-xs font-medium text-gray-700">
+                    <label htmlFor="numeroDocumento" className="text-xs font-bold text-gray-700">
                         N° de documento
                     </label>
                     <input
@@ -133,7 +133,7 @@ export default function IdentificacionForm({ user }: Props) {
 
             {/* Teléfono */}
             <div className="space-y-1">
-                <label htmlFor="telefono" className="text-xs font-medium text-gray-700">
+                <label htmlFor="telefono" className="text-xs font-bold text-gray-700">
                     Teléfono / Móvil
                 </label>
                 <input
@@ -154,9 +154,9 @@ export default function IdentificacionForm({ user }: Props) {
             {/* Botón */}
             <button
                 type="submit"
-                className="w-full py-2 px-4 text-white bg-blue-800 rounded-full hover:bg-blue-700 font-medium transition-colors mt-4 hover:cursor-pointer" 
+                className="w-full py-2 px-4 text-white bg-indigo-600 rounded-full hover:bg-indigo-700 font-bold transition-colors mt-4 hover:cursor-pointer"
             >
-                Continuar
+                Continuar 
             </button>
         </form>
     );

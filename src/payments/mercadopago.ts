@@ -32,7 +32,7 @@ export async function iniciarCheckoutMP(cart: CartItem[], shipping: Shipping, pr
                 referencia: shipping?.referencia || '',
             },
             shippingMethod: 'DELIVERY',
-            notes: 'Orden generada desde el selector de pasarelas',
+            notes: 'Orden generada desde el selector de pasarelas mp',
         };
 
         const response = await createOrderAction(orderData);

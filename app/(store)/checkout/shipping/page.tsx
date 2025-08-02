@@ -1,16 +1,15 @@
-import React from 'react'
-import ShippingForm from '@/components/checkout/ShippingForm'
+import React from 'react';
+import { FiMapPin } from 'react-icons/fi';
+import ShippingForm from '@/components/checkout/ShippingForm';
 
 export default function ShippingPage() {
     return (
-        <div className='text-gray-800 text-sm'>
-            <h1 className='text-xl font-semibold'>Entrega</h1>
-            <span className='text-md text-gray-400'>
-                Completa la direccion donde quieres recibir o recoger tu pedido.
-            </span>
-            {/* Aquí puedes agregar el formulario de envío */}
-
+        <div className="px-4 py-6 max-w-xl mx-auto">
+            <p className="flex items-center gap-2 text-gray-700 text-sm mb-4">
+                <FiMapPin className="text-base" />
+                Completa la dirección donde quieres recibir o recoger tu pedido.
+            </p>
             <ShippingForm />
         </div>
-    )
+    );
 }

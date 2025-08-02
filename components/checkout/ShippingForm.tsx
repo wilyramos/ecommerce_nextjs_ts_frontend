@@ -129,7 +129,7 @@ export default function ShippingForm() {
 
                 <button
                     type="submit"
-                    className="w-full  py-2 px-4 max-w-md text-white bg-blue-800 rounded-full hover:bg-blue-700 font-medium transition-colors mt-4 hover:cursor-pointer "
+                    className="w-full  py-2 px-4 max-w-md text-white bg-indigo-600 rounded-full hover:bg-indigo-700 font-medium transition-colors mt-4 hover:cursor-pointer "
                 >
                     Continuar con el pago
                 </button>

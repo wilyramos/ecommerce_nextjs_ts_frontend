@@ -26,7 +26,7 @@ export default function CheckoutSteps() {
                             className={cn(
                                 "w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-colors",
                                 isCompleted ? "bg-gray-900 text-white" :
-                                    isActive ? "bg-gray-400 text-white" :
+                                    isActive ? "bg-indigo-600 text-white" :
                                         "bg-gray-300 text-gray-600"
                             )}
                         >
@@ -35,7 +35,7 @@ export default function CheckoutSteps() {
                         <span
                             className={cn(
                                 "text-sm md:text-lg transition-colors",
-                                isActive ? "text-gray-400 font-medium" :
+                                isActive ? "text-indigo-600 font-medium" :
                                     isCompleted ? "text-gray-900 cursor-pointer hover:text-gray-700" :
                                         "text-gray-400"
                             )}
