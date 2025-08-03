@@ -115,8 +115,9 @@ export default function ProductDetails({ producto }: Props) {
 
             {producto.descripcion && (
 
-                <div className='p-5 border-1 rounded-2xl border-gray-100 mt-4 max-w-7xl mx-auto'>
-                    <h2 className="text-2xl text-gray-600 font-semibold">Informacion adicional</h2>
+                <div className='p-5 border-1 rounded-2xl border-gray-100 mt-4 max-w-3xl mx-auto'>
+                    <h2 className="text-xl text-gray-500 ">Informacion adicional</h2>
+                    <div className="border-b border-gray-200 my-2" />
                     <p className="text-sm whitespace-pre-wrap leading-normal text-gray-500 ">
                         {producto.descripcion}
                     </p>

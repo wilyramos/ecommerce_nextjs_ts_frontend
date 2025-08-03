@@ -23,7 +23,7 @@ export default async function ProductosRelated({ slug }: { slug: string }) {
         <>
 
             {productsRelated.length > 0 ? (
-                <>
+                <section className="bg-gray-100 px-4 py-8 rounded-2xl shadow-lg">
 
                 <h2 className="text-gray-600 font-bold text-lg py-4">
                     Productos relacionados
@@ -35,7 +35,8 @@ export default async function ProductosRelated({ slug }: { slug: string }) {
 
                 </div>
 
-                </>
+
+                </section>
 
             ) : (
                 <h1 className="text-gray-200 text-sm text-center justify-center items-center">
