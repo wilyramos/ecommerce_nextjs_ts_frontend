@@ -26,6 +26,10 @@ export default async function ProductPageServer({ slug }: Props) {
         <>
             <ProductJsonLd producto={producto} />
 
+            <h1 className="text-3xl font-bold text-center my-6 hidden">
+                {producto.nombre}
+            </h1>
+
             <div className="max-w-7xl mx-auto py-2">
                 <Breadcrumb
                     categoryName={producto.categoria?.nombre || 'General'}

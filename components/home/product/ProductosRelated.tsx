@@ -23,17 +23,17 @@ export default async function ProductosRelated({ slug }: { slug: string }) {
         <>
 
             {productsRelated.length > 0 ? (
-                <section className="bg-gray-50 px-4 py-8 rounded-2xl shadow-md">
+                <section className="bg-gray-50 p-10 rounded-2xl shadow-md">
 
-                <h2 className="text-gray-600 font-bold text-lg py-4">
-                    Productos relacionados
-                </h2>
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {productsRelated.map((product: Product) => (
-                        <ProductCard key={product._id} product={product} />
-                    ))}
+                    <h2 className="text-gray-600 font-bold text-lg py-4">
+                        Productos relacionados
+                    </h2>
+                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {productsRelated.map((product: Product) => (
+                            <ProductCard key={product._id} product={product} />
+                        ))}
 
-                </div>
+                    </div>
                 </section>
 
             ) : (

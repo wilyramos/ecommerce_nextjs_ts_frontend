@@ -22,7 +22,12 @@ export default function OrdenarPor({ pathname }: { pathname?: string }) {
 
     const handleChange = (value: string) => {
         const params = new URLSearchParams(searchParams.toString());
-        value ? params.set("sort", value) : params.delete("sort");
+
+        if(value){
+            params.set("sort", value);
+        } else {
+            params.delete("sort");
+        }
         router.push(`${pathname}?${params.toString()}`);
     };
 
@@ -42,9 +47,9 @@ export default function OrdenarPor({ pathname }: { pathname?: string }) {
                             <Listbox.Option
                                 key={option.value}
                                 value={option.value}
-                                className={({ active, selected }) =>
+                                className={({ active }) =>
                                     `cursor-pointer select-none px-4 py-2 ${active ? "bg-indigo-100 text-indigo-700" : "text-gray-800"
-                                    } ${selected ? "font-medium" : ""}`
+                                    }`
                                 }
                             >
                                 {({ selected }) => (

@@ -12,6 +12,8 @@ export async function generateMetadata({ params }: { params: Params }) {
     const { slug } = await params;
     const product = await GetProductsBySlug(slug);
 
+    console.log('product in metadata', product);
+
     if (!product) {
         return {
             title: 'Producto no encontrado - GoPhone',
@@ -22,24 +24,26 @@ export async function generateMetadata({ params }: { params: Params }) {
     const title = `${product.nombre} - GoPhone Cañete`;
     const description = product.descripcion?.replace(/\r?\n|\r/g, ' ').trim() || 'No description available';
     const categoryName = product.categoria?.nombre || 'General';
-    const image = product.imagenes?.[0] || 'https://www.gophone.pe/default-product.jpg';
+    const image = product.imagenes?.[0] || 'https://www.gophone.pe/logob.svg';
 
     return {
         title,
         description,
         keywords: [
+            title,
+            product.nombre,
+            categoryName,
             'GoPhone',
             'Cañete',
-            'iPhone',
-            'accesorios',
-            'tecnología',
-            "iphone Cañete",
-            "san vicente de cañete",
-            "imperial",
-            "lunahuaná",
-            categoryName,
-            "productos",
-            product.nombre,
+            'Productos',
+            'Tienda Online',
+            'San vicente de Cañete',
+            'Perú',
+            'iphone',
+            'Celulares',
+            'Accesorios',
+            'Tecnología',
+            'Smartphones',  
         ],
         openGraph: {
             title,
@@ -53,6 +57,10 @@ export async function generateMetadata({ params }: { params: Params }) {
                     alt: product.nombre,
                 },
             ],
+            price: product.precio,
+            currency: 'PEN',
+            category: categoryName,
+
         },
         twitter: {
             card: 'summary_large_image',
