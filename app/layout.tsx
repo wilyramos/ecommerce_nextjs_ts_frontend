@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Kumbh_Sans } from "next/font/google";
+import { Manrope } from "next/font/google";
 import { Toaster } from 'sonner';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
-const kumbh_sans = Kumbh_Sans({
+const manrope = Manrope({
     subsets: ["latin"],
 });
 
@@ -79,7 +79,7 @@ export default function RootLayout({
     return (
         <html lang="es">
             <body
-                className={`${kumbh_sans.className}`}
+                className={`${manrope.className}`}
             >
                 <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
                     {children}

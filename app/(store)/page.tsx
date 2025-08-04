@@ -5,6 +5,7 @@ import CarruselPrincipal from "@/components/home/CarruselPrincipal";
 import ProductosNuevos from "@/components/home/ProductosNuevos";
 import ProductosDestacados from "@/components/home/ProductosDestacados";
 import CategoriasDestacadasWrapper from "@/components/home/CategoriasDestacadasWrapper";
+import ComprasGarantizadas from "@/components/home/ComprasGarantizadas";
 
 
 export const metadata: Metadata = {
@@ -66,6 +67,10 @@ export default function HomePage() {
   
         <section className="">
           <ProductosDestacados />
+        </section>
+
+        <section className="">
+          <ComprasGarantizadas />
         </section>
       </>
     );

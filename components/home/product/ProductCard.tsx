@@ -11,7 +11,7 @@ export default function ProductCard({ product }: { product: Product }) {
     const color = product.atributos?.Color || null;
 
     return (
-        <div className="group relative flex flex-col h-[280px] md:h-[350px] rounded-xl bg-white border border-gray-100 text-gray-700">
+        <div className="group relative flex flex-col h-[280px] md:h-[350px] rounded-2xl bg-white border border-gray-100 text-gray-700 max-w-xs shadow-sm">
             <Link href={`/productos/${product.slug}`} className="flex flex-col h-full">
                 {/* Imagen */}
                 <div className="relative w-full aspect-square bg-gray-100 overflow-hidden rounded-t-xl">
@@ -67,16 +67,16 @@ export default function ProductCard({ product }: { product: Product }) {
 
                 {/* Información del producto */}
                 <div className="flex flex-col justify-between flex-1 p-3 gap-2">
-                    <h3 className="text-xs md:text-sm font-medium text-gray-600 line-clamp-3 hover:line-clamp-none leading-tight tracking-tight">
+                    <h3 className="text-xs md:text-sm font-medium text-gray-600 line-clamp-3 leading-tight ">
                         {product.nombre}
                     </h3>
 
                     <div className="flex justify-between items-center gap-2">
-                        <div className="w-6 h-6">
+                        <div className="">
                             {color && <ColorCircle color={color} />}
                         </div>
 
-                        <div className="text-lg font-extrabold text-gray-900">
+                        <div className="font-semibold text-gray-900">
                             <span className="text-md">s/. </span>
                             {product.precio.toFixed(2)}
                         </div>
