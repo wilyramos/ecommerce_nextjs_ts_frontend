@@ -39,7 +39,7 @@ export default function EditProductForm({ product, categorias }: { product: Prod
     return (
         <>
             <form
-                className="flex flex-col gap-2 w-full max-w-2xl mx-auto mt-8"
+                className="flex flex-col gap-2 w-full max-w-5xl mx-auto mt-8"
                 noValidate
                 action={dispatch}
             >
@@ -51,7 +51,7 @@ export default function EditProductForm({ product, categorias }: { product: Prod
                 <input
                     type="submit"
                     value="Actualizar Producto"
-                    className='bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900 transition-all duration-200 ease-in-out cursor-pointer inline-block'
+                    className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer inline-block' 
                 />
 
             </form>

@@ -44,9 +44,9 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         sku: formData.get("sku"),
         barcode: formData.get("barcode"),
         imagenes: formData.getAll("imagenes[]") as string[],
-        esDestacado: formData.get("esDestacado") === "on",
-        esNuevo: formData.get("esNuevo") === "on",
-        isActive: formData.get("isActive") === "on",
+        esDestacado: formData.get("esDestacado") === "true",
+        esNuevo: formData.get("esNuevo") === "true",
+        isActive: formData.get("isActive") === "true",
         atributos: atributos
     }
     console.log("productData", productData)

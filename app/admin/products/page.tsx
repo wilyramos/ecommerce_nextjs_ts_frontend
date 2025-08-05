@@ -14,30 +14,28 @@ export default async function ProductsPage({ searchParams }: { searchParams: Sea
 
     const params = await searchParams;
     const currentPage = params.page ? parseInt(params.page, 10) : 1;
-    const itemsPerPage = params.limit ? parseInt(params.limit, 10) : 10;    
+    const itemsPerPage = params.limit ? parseInt(params.limit, 10) : 10;
 
     return (
-        <main className="">
+        <main className="p-4">
             {/* Header */}
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-                <h1 className="text-2xl font-bold text-gray-800">Productos</h1>
+            <div className="flex flex-col md:flex-row gap-4 py-2">
 
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
+
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto pt-10 md:pt-0">
                     <ProductSearchInput />
                     <AddProductButton />
                 </div>
             </div>
 
             {/* Product Results */}
-            <div className="">
-                <Suspense fallback={<SpinnerLoading />}>
-                    <ProductsResultsAdmin
-                        currentPage={currentPage}
-                        itemsPerPage={itemsPerPage}
-                        params={params}
-                    />
-                </Suspense>
-            </div>
+            <Suspense fallback={<SpinnerLoading />}>
+                <ProductsResultsAdmin
+                    currentPage={currentPage}
+                    itemsPerPage={itemsPerPage}
+                    params={params}
+                />
+            </Suspense>
         </main>
     );
 }

@@ -39,7 +39,7 @@ export default async function ProductsResultsAdmin({
         <>
             <ProductsTable products={productsData} />
 
-            <div className="pt-4">
+            <div className="pt-2">
                 <Pagination
                     currentPage={currentPage}
                     totalPages={Math.ceil(productsData.totalProducts / itemsPerPage)}

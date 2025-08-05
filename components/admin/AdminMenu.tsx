@@ -28,7 +28,6 @@ export default function AdminMenu({ user }: { user: User }) {
                     className="absolute bottom-full mb-3 left-1/2 z-20 w-56 -translate-x-1/2 lg:left-0 lg:translate-x-0 bg-white rounded-xl shadow-md ring-1 ring-black/10 p-4"
                 >
                     <div className="text-sm text-gray-800">
-                        <p className="text-center mb-3">Hola, <span className="font-bold text-gray-900">{user.nombre}</span></p>
                         <ul className="space-y-2">
                             <li>
                                 <Link

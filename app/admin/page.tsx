@@ -1,13 +1,16 @@
 import { DashboardCard } from "@/components/admin/dashboard/DashboardCard";
 import { ShoppingCart, Users, PackageCheck, BarChart } from 'lucide-react';
+import { redirect } from "next/navigation";
 
 export default async function AdminPage() {
     // Aquí podrías hacer fetch a tus endpoints (por ejemplo, desde Express API)
     // const sales = await fetchSalesData();
 
+    // redirect to the sales
+
     return (
         <div className="p-6 space-y-8">
-            <h1 className="text-3xl font-bold text-gray-800">Panel de Administración</h1>
+            <h1 className="text-3xl font-bold text-gray-800">Accesos rapidos</h1>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <DashboardCard

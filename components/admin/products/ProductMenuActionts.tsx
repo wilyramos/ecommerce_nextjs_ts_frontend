@@ -38,8 +38,8 @@ export default function ProductMenuAction({ productId, isFeatured }: Props) {
     }
 
     return (
-        <Popover className="relative">
-            <PopoverButton className="p-1.5 rounded-md hover:bg-gray-100 transition">
+        <Popover className="relative" >
+            <PopoverButton className="p-1.5 rounded-md text-gray-500 hover:text-gray-950  transition">
                 <SlOptions className="w-4 h-4" />
             </PopoverButton>
 
