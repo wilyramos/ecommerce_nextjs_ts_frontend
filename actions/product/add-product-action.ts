@@ -5,6 +5,7 @@ import { CreateProductSchema, SuccessResponse } from "@/src/schemas"
 
 // Nuevo
 import { createProductSchema } from "@/src/schemas"
+import { isAborted } from "zod"
 
 
 type ActionStateType = {
@@ -43,8 +44,9 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         sku: formData.get('sku') || undefined,
         barcode: formData.get('barcode') || undefined,
         imagenes: formData.getAll('imagenes[]') as string[],
-        esDestacado: formData.get('esDestacado') === 'on',
-        esNuevo: formData.get('esNuevo') === 'on',
+        esDestacado: formData.get('esDestacado') === 'true',
+        esNuevo: formData.get('esNuevo') === 'true',
+        isActive: formData.get('isActive') === 'true',
         atributos: atributos
     }
 

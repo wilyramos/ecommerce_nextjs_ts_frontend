@@ -38,7 +38,7 @@ export default function CreateProductForm({ categorias }: { categorias: Category
 
     return (
         <form
-            className="flex flex-col gap-2 w-full max-w-2xl mx-auto mt-8"
+            className="flex flex-col gap-2 w-full max-w-4xl mx-auto mt-8"
             noValidate
             action={dispatch}
         >
@@ -46,7 +46,7 @@ export default function CreateProductForm({ categorias }: { categorias: Category
                 categorias={categoriasOrdenadas} />
             <input
                 type='submit'
-                className='bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900 transition-all duration-200 ease-in-out cursor-pointer inline-block'
+                className='bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800 cursor-pointer inline-block'
                 value={"Crear producto"}
             />
 

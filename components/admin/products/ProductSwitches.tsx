@@ -4,7 +4,7 @@ import Switch from "react-switch"
 import { useState } from "react"
 
 export default function ProductSwitches({ product }: { product: any }) {
-    const [isActive, setIsActive] = useState(product?.isActive ?? false)
+    const [isActive, setIsActive] = useState(product?.isActive ?? true)
     const [esDestacado, setEsDestacado] = useState(product?.esDestacado ?? false)
     const [esNuevo, setEsNuevo] = useState(product?.esNuevo ?? false)
 
