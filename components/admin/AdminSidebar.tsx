@@ -13,6 +13,7 @@ import {
     FaCashRegister,
 } from 'react-icons/fa';
 import { usePathname } from 'next/navigation';
+import { BiSolidUserRectangle } from "react-icons/bi";
 import clsx from 'clsx';
 
 export default function AdminSidebar({ user }: { user: User }) {
@@ -25,6 +26,7 @@ export default function AdminSidebar({ user }: { user: User }) {
     const links = [
         { href: '/admin', icon: <FaHome />, label: 'Dashboard' },
         { href: '/admin/products', icon: <FaBoxOpen />, label: 'Productos' },
+        { href: '/admin/clients', icon: <BiSolidUserRectangle />, label: 'Clientes' },
         { href: '/admin/products/category', icon: <FaTags />, label: 'Categorías' },
         { href: '/admin/orders', icon: <FaReceipt />, label: 'Órdenes' },
         { href: '/admin/users', icon: <FaUsers />, label: 'Usuarios' },

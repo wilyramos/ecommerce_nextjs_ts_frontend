@@ -27,6 +27,7 @@ export async function createUserAction(prevState: ActionStateType, formData: For
 
     // Validate the data using Zod
     const validationResult = CheckoutRegisterSchema.safeParse(registerData);
+    
     if (!validationResult.success) {
         const errors = validationResult.error.errors.map(error => error.message);
         return {

@@ -1,4 +1,3 @@
-import React from 'react'
 import CreateProductForm from '@/components/admin/products/CreateProductForm'
 import Link from 'next/link'
 import { getAllSubcategories } from '@/src/services/categorys'
