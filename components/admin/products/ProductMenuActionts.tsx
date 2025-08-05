@@ -4,13 +4,11 @@ import { Fragment } from 'react'
 import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react'
 import {
     PencilSquareIcon,
-    TrashIcon,
-    StarIcon,
-    SquaresPlusIcon,
-    XCircleIcon
+    TrashIcon
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { SlOptions } from "react-icons/sl"
+import DeleteProductForm from './DeleteProductButton'
 
 
 interface Props {
@@ -29,6 +27,7 @@ export default function ProductMenuAction({ productId, isFeatured }: Props) {
         }
     }
 
+    //TODO: Implementar lógica para ajustar stock y desactivar producto
     const handleAdjustStock = () => {
         console.log(`Ajustar stock para producto: ${productId}`)
     }
@@ -62,7 +61,7 @@ export default function ProductMenuAction({ productId, isFeatured }: Props) {
                             Editar
                         </Link>
 
-                        <button
+                        {/* <button
                             onClick={toggleFeatured}
                             className="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-50"
                         >
@@ -76,25 +75,18 @@ export default function ProductMenuAction({ productId, isFeatured }: Props) {
                         >
                             <SquaresPlusIcon className="w-4 h-4 text-gray-500" />
                             Ajustar stock
-                        </button>
+                        </button> */}
 
-                        <button
+                        {/* <button
                             onClick={handleDisableProduct}
                             className="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-50"
                         >
                             <XCircleIcon className="w-4 h-4 text-gray-500" />
                             Desactivar producto
-                        </button>
+                        </button> */}
 
                         <div className="border-t border-gray-100 my-1" />
-
-                        <button
-                            onClick={handleDelete}
-                            className="flex items-center gap-2 w-full text-left px-4 py-2 text-red-600 hover:bg-red-50"
-                        >
-                            <TrashIcon className="w-4 h-4" />
-                            Eliminar
-                        </button>
+                        <DeleteProductForm productId={productId} />
                     </div>
                 </PopoverPanel>
             </Transition>

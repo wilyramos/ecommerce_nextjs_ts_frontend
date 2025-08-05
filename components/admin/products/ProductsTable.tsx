@@ -5,7 +5,7 @@ import ProductMenuAction from "./ProductMenuActionts";
 
 export default function ProductsTable({ products }: { products: ProductsAPIResponse }) {
     return (
-        <div className="overflow-x-auto rounded-lg border shadow-xs text-sm">
+        <div className="overflow-x-auto rounded-lg border shadow-xs text-sm text-gray-700 ">
             <table className="min-w-full divide-y divide-gray-100">
                 <thead className="bg-gray-50">
                     <tr>
