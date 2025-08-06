@@ -104,8 +104,9 @@ export const resetPasswordSchema = z.object({
     path: ['password_confirmation'],
 });
 
-
-// Schema para el user edit
+// *************************
+// Schema para el user edit 
+// **************************
 
 export const BaseUserSchema = z.object({
     nombre: z.string().optional(),
@@ -140,6 +141,15 @@ export const UserSchema = z.object({
 
 
 export type User = z.infer<typeof UserSchema>
+
+export const UsersAPIResponse = z.object({
+    users: z.array(UserSchema),
+    totalUsers: z.number(),
+    totalPages: z.number(),
+    currentPage: z.number(),
+});
+
+export type UsersAPIResponse = z.infer<typeof UsersAPIResponse>;
 
 //TODO:HACER SCHEMAS ESCALABLES PARA CATEGORY Y PRODUCT
 

@@ -73,8 +73,8 @@ export default function Pagination({
                         <Link
                             key={page}
                             href={getPageLink(page)}
-                            className={`flex items-center justify-center w-9 h-9 text-sm font-medium rounded-lg transition-colors ${page === currentPage
-                                    ? "bg-blue-800 text-white shadow"
+                            className={`flex items-center justify-center w-9 h-9 text-sm font-medium rounded-full transition-colors ${page === currentPage
+                                    ? "bg-black text-white shadow"
                                     : "text-gray-600 hover:bg-gray-100 hover:text-blue-800"
                                 }`}
                         >
