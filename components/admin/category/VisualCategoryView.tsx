@@ -24,19 +24,18 @@ export default function VisualCategoryView({ categories }: Props) {
         return acc;
     }, {} as Record<string, CategoryListResponse>);
 
-    // Extraer categorías raíz
     const rootCategories = grouped["root"] || [];
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-8 bg-white rounded-md shadow-sm p-4 border border-gray-200">
             {rootCategories.map((parent) => {
                 const subcategories = grouped[parent._id] || [];
 
                 return (
-                    <div key={parent._id}>
+                    <div key={parent._id} className="space-y-2">
                         {/* Título principal */}
-                        <div className="flex justify-between items-center mb-2">
-                            <h2 className="text-xl font-semibold text-gray-800">{parent.nombre}</h2>
+                        <div className="flex justify-between items-center">
+                            <h2 className="text-lg font-semibold text-gray-800">{parent.nombre}</h2>
                             <Link
                                 href={`/admin/products/category/${parent._id}`}
                                 className="text-sm text-indigo-600 hover:underline flex items-center gap-1"
@@ -46,36 +45,47 @@ export default function VisualCategoryView({ categories }: Props) {
                             </Link>
                         </div>
 
-                        {/* Subcategorías */}
-                        <ul className="space-y-2 pl-4 border-l border-gray-200">
-                            {subcategories.length === 0 ? (
-                                <li className="text-sm text-gray-500">Sin subcategorías.</li>
-                            ) : (
-                                subcategories.map((subcat) => (
-                                    <li
-                                        key={subcat._id}
-                                        className="flex justify-between items-center p-2 bg-gray-50 rounded hover:bg-gray-100"
-                                    >
-                                        <div>
-                                            <p className="text-sm font-medium text-gray-700">
-                                                {subcat.nombre}
-                                            </p>
-                                            <p className="text-xs text-gray-500">
-                                                {subcat.descripcion}
-                                            </p>
+                        {/* Tabla de subcategorías */}
+                        <div className="overflow-x-auto rounded border border-gray-100">
+                            <table className="min-w-full table-fixed text-sm text-left">
+                                <thead className="bg-gray-50 text-gray-600 uppercase text-xs font-medium">
+                                    <tr>
+                                        <th className="w-1/3 px-4 py-2">Nombre</th>
+                                        <th className="w-1/3 px-4 py-2">Descripción</th>
+                                        <th className="w-1/3 px-4 py-2 text-right">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {subcategories.length === 0 ? (
+                                        <tr>
+                                            <td colSpan={3} className="px-4 py-3 text-center text-gray-500">
+                                                Sin subcategorías.
+                                            </td>
+                                        </tr>
+                                    ) : (
+                                        subcategories.map((subcat) => (
+                                            <tr
+                                                key={subcat._id}
+                                                className="border-t border-gray-100 hover:bg-gray-50"
+                                            >
+                                                <td className="px-4 py-2 truncate">{subcat.nombre}</td>
+                                                <td className="pc-4 py-2">{subcat.descripcion}</td>
+                                                <td className="px-4 py-2 text-right">
+                                                    <Link
+                                                        href={`/admin/products/category/${subcat._id}`}
+                                                        className="text-indigo-600 hover:underline flex items-center justify-end gap-1"
+                                                    >
+                                                        <FaEdit className="text-xs" />
+                                                        
+                                                    </Link>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
 
-                                        </div>
-                                        <Link
-                                            href={`/admin/products/category/${subcat._id}`}
-                                            className="text-sm text-indigo-600 hover:underline flex items-center gap-1"
-                                        >
-                                            <FaEdit className="text-xs" />
-                                            Editar
-                                        </Link>
-                                    </li>
-                                ))
-                            )}
-                        </ul>
                     </div>
                 );
             })}

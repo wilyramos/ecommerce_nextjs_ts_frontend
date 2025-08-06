@@ -2,19 +2,20 @@ import Link from "next/link";
 import { getCategories } from "@/src/services/categorys";
 import Pagination from "@/components/ui/Pagination";
 import VisualCategoryView from "@/components/admin/category/VisualCategoryView";
+import { Heading1 } from "lucide-react";
+import { HeadingH1 } from "@/components/ui/Heading";
 
 
 export default async function CreatePageCategory() {
 
 
     const categories = await getCategories();
+
     return (
         <div className="max-w-7xl mx-auto p-5">
             <div className="flex justify-between mb-6 border-b pb-2">
-                <h1 className="text-xl font-semibold text-gray-800">
-                    Categorías
-                </h1>
-                
+                <HeadingH1>Categorías</HeadingH1>
+
                 <Link
                     href="/admin/products/category/new"
                     className="inline-flex items-center px-4 py-2s bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-colors"

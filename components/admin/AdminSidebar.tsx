@@ -7,10 +7,8 @@ import AdminMenu from '@/components/admin/AdminMenu';
 import {
     FaHome,
     FaBoxOpen,
-    FaTags,
-    FaUsers,
-    FaReceipt,
-    FaCashRegister,
+    FaTags, FaReceipt,
+    FaCashRegister
 } from 'react-icons/fa';
 import { usePathname } from 'next/navigation';
 import { BiSolidUserRectangle } from "react-icons/bi";
@@ -29,7 +27,6 @@ export default function AdminSidebar({ user }: { user: User }) {
         { href: '/admin/clients', icon: <BiSolidUserRectangle />, label: 'Clientes' },
         { href: '/admin/products/category', icon: <FaTags />, label: 'Categorías' },
         { href: '/admin/orders', icon: <FaReceipt />, label: 'Órdenes' },
-        { href: '/admin/users', icon: <FaUsers />, label: 'Usuarios' },
         { href: '/pos', icon: <FaCashRegister />, label: 'Punto de Venta' },
     ];
 
