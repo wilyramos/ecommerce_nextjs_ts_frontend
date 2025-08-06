@@ -2,8 +2,9 @@
 
 import Switch from "react-switch"
 import { useState } from "react"
+import type { ProductWithCategoryResponse } from "@/src/schemas"
 
-export default function ProductSwitches({ product }: { product: any }) {
+export default function ProductSwitches({ product }: { product?: ProductWithCategoryResponse }) {
     const [isActive, setIsActive] = useState(product?.isActive ?? true)
     const [esDestacado, setEsDestacado] = useState(product?.esDestacado ?? false)
     const [esNuevo, setEsNuevo] = useState(product?.esNuevo ?? false)

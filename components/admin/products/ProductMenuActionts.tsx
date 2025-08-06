@@ -3,8 +3,7 @@
 import { Fragment } from 'react'
 import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react'
 import {
-    PencilSquareIcon,
-    TrashIcon
+    PencilSquareIcon
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { SlOptions } from "react-icons/sl"
@@ -17,24 +16,9 @@ interface Props {
 }
 
 export default function ProductMenuAction({ productId, isFeatured }: Props) {
-    const toggleFeatured = () => {
-        console.log(`Cambiar destacado: ${productId}`)
-    }
 
-    const handleDelete = () => {
-        if (confirm('¿Estás seguro de que deseas eliminar este producto?')) {
-            console.log(`Eliminar producto: ${productId}`)
-        }
-    }
 
-    //TODO: Implementar lógica para ajustar stock y desactivar producto
-    const handleAdjustStock = () => {
-        console.log(`Ajustar stock para producto: ${productId}`)
-    }
-
-    const handleDisableProduct = () => {
-        console.log(`Desactivar producto: ${productId}`)
-    }
+    console.log({ productId, isFeatured })
 
     return (
         <Popover className="relative" >

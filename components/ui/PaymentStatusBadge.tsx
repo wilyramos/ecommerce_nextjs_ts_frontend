@@ -13,7 +13,7 @@ export default function PaymentStatusBadge({ status }: Props) {
             bg: "bg-green-100",
         },
         PENDIENTE: {
-            icon: <FaClock className="text-yellow-500" />,
+            icon: <FaClock className="text-yellow-600" />,
             color: "text-yellow-700",
             bg: "bg-yellow-100",
         },
@@ -36,9 +36,8 @@ export default function PaymentStatusBadge({ status }: Props) {
     };
 
     return (
-        <span className={clsx("inline-flex items-center gap-1 px-3 py-1 text-xs font-medium rounded-full", color, bg)}>
+        <span className={clsx("inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-full", color, bg)}>
             {icon}
-            {status}
         </span>
     );
 }

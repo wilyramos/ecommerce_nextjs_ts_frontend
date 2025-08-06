@@ -4,10 +4,32 @@ import "server-only"
 import getToken from "@/src/auth/token"
 import { OrderResponseSchemaPopulate, OrdersAPIResponse } from "@/src/schemas";
 
-export const getOrders = async ({ page = 1, limit = 10 }) => {
+
+type GetOrdersParams = {
+    page?: number;
+    limit?: number;
+    pedido?: string;
+    fecha?: string;
+    estadoPago?: string;
+    estadoEnvio?: string;
+}
+
+export const getOrders = async ({ page = 1, limit = 25, ...filters }: GetOrdersParams) => {
 
     const token = await getToken();
-    const url = `${process.env.API_URL}/orders?page=${page}&limit=${limit}`;
+    
+    const params = new URLSearchParams();
+
+   for (const [key, value] of Object.entries(filters)) {
+       if (value) {
+           params.append(key, value);
+       }
+   }
+
+   params.set('page', page.toString());
+   params.set('limit', limit.toString());
+
+    const url = `${process.env.API_URL}/orders?${params.toString()}`;
 
     const req = await fetch(url, {
         method: 'GET',

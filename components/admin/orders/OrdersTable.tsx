@@ -18,39 +18,39 @@ interface OrdersTableProps {
 export default function OrdersTable({ orders }: OrdersTableProps) {
     if (!orders || orders.orders.length === 0) {
         return (
-            <div className="flex justify-center items-center min-h-[200px]">
+            <div className="flex justify-center items-center">
                 <h2 className="text-lg font-medium text-gray-500">No hay pedidos disponibles.</h2>
             </div>
         );
     }
 
+    console.log(orders);
+
     return (
-        <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
+        <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200 text-sm">
                 <thead className="bg-white">
-                    <tr className="text-gray-600 font-semibold">
-                        <th className="px-6 py-4 text-left">Pedido</th>
-                        <th className="px-6 py-4 hidden md:table-cell">Fecha</th>
-                        <th className="px-6 py-4 hidden md:table-cell">Total</th>
-                        <th className="px-6 py-4">Pago</th>
-                        <th className="px-6 py-4 hidden lg:table-cell">Envío</th>
-                        <th className="px-6 py-4">Items</th>
-                        <th className="px-6 py-4">Estado</th>
-                        <th className="px-6 py-4 text-center">Ver</th>
+                    <tr className="text-gray-50 bg-blue-800">
+                        <th className="px-6 py-1 text-left font-light">Pedido</th>
+                        <th className="px-6 py-1 hidden md:table-cell font-light">Fecha</th>
+                        <th className="px-6 py-1 hidden md:table-cell font-light">Pago</th>
+                        <th className="px-6 py-1 hidden lg:table-cell font-light">Envío</th>
+                        <th className="px-6 py-1 font-light">Estado</th>
+                        <th className="px-6 py-1 text-center font-light">Opciones</th>
                     </tr>
                 </thead>
-                <tbody className="bg-gray-50 divide-y divide-gray-100 text-gray-800">
+                <tbody className="divide-y divide-gray-100 text-gray-800">
                     {orders.orders.map((order) => (
                         <tr
                             key={order._id}
-                            className="hover:bg-white transition-colors"
+                            className="hover:bg-gray-200 transition-colors border-b border-gray-200"
                         >
                             <td className="px-6 py-4 max-w-[160px] truncate">
                                 <Link
                                     href={`/admin/orders/${order._id}`}
-                                    className="text-blue-600 hover:underline font-medium"
+                                    className="text-black hover:underline font-semibold"
                                 >
-                                    #{order._id.slice(-6).toUpperCase()}
+                                    {order.orderNumber || order._id.slice(0, 8)}
                                 </Link>
                             </td>
 
@@ -58,22 +58,24 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
                                 {formatDate(order.createdAt)}
                             </td>
 
-                            <td className="px-6 py-4 hidden md:table-cell font-semibold text-gray-800">
-                                S/. {order.totalPrice.toFixed(2)}
+                            <td className=" text-xs  md:table-cell text-gray-800 ">
+                                <div className='flex justify-between items-center gap-2'>
+                                    <div>
+                                        S/. {order.totalPrice.toFixed(2)}
+                                    </div>
+
+                                    <PaymentStatusBadge status={order.paymentStatus} />
+                                </div>
                             </td>
 
-                            <td className="px-6 py-4">
-                                <PaymentStatusBadge status={order.paymentStatus} />
-                            </td>
+
 
                             <td className="px-6 py-4 hidden lg:table-cell text-gray-500">
                                 {order.shippingAddress?.direccion}, {order.shippingAddress?.distrito}
                             </td>
 
-                            <td className="px-6 py-4">{order.items.length}</td>
-
                             <td className="px-6 py-4">
-                               
+
                                 <OrderStatusBadge status={order.status} />
                             </td>
 

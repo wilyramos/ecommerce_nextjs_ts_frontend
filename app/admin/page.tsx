@@ -1,6 +1,5 @@
 import { DashboardCard } from "@/components/admin/dashboard/DashboardCard";
 import { ShoppingCart, Users, PackageCheck, BarChart } from 'lucide-react';
-import { redirect } from "next/navigation";
 
 export default async function AdminPage() {
     // Aquí podrías hacer fetch a tus endpoints (por ejemplo, desde Express API)

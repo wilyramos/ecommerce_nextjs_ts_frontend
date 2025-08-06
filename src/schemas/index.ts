@@ -556,6 +556,7 @@ export const OrderResponseSchemaPopulate = z.object({
 // Respuesta de la orden de la api
 export const OrderResponseSchema = z.object({
     _id: z.string(),
+    orderNumber: z.string().optional(),
     user: UserSchema.or(z.string()).optional().nullable(),
     items: z.array(OrderItemSchema),
     subtotal: z.number(),

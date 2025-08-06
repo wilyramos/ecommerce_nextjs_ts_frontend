@@ -2,7 +2,6 @@ import Link from "next/link";
 import { getCategories } from "@/src/services/categorys";
 import Pagination from "@/components/ui/Pagination";
 import VisualCategoryView from "@/components/admin/category/VisualCategoryView";
-import { Heading1 } from "lucide-react";
 import { HeadingH1 } from "@/components/ui/Heading";
 
 

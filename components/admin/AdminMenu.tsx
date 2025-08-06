@@ -9,11 +9,14 @@ import { logout } from '@/actions/logout-user-action'
 import type { User } from '@/src/schemas'
 
 export default function AdminMenu({ user }: { user: User }) {
+
+
     return (
         <Popover className="relative rounded-2xl">
             <PopoverButton className="inline-flex items-center justify-center p-2  transition duration-150 rounded-lg">
                 <Bars3Icon className="w-6 h-6 text-gray-400" />
             </PopoverButton>
+
 
             <Transition
                 as={Fragment}
@@ -29,13 +32,14 @@ export default function AdminMenu({ user }: { user: User }) {
                 >
                     <div className="text-sm text-gray-800">
                         <ul className="space-y-2">
+                            <p>{user.email}</p>
                             <li>
                                 <Link
                                     href="/admin/profile/settings"
                                     className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition"
                                 >
                                     <UserCircleIcon className="w-5 h-5 text-gray-500" />
-                                    Mi Perfil
+                                    Mi Perfil 
                                 </Link>
                             </li>
                             <li>

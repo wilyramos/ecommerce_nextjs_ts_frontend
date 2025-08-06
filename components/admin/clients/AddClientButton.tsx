@@ -8,9 +8,7 @@ import {
     SheetContent,
     SheetHeader,
     SheetTitle,
-    SheetTrigger,
-    SheetClose,
-    SheetFooter,
+    SheetTrigger
 } from "@/components/ui/sheet";
 import { toast } from "sonner";
 import ErrorMessage from "@/components/ui/ErrorMessage";
