@@ -14,7 +14,7 @@ type ActionStateType = {
 }
 
 
-export async function EditUserAction(id: string, prevState: ActionStateType, formData: FormData) {
+export async function EditUserAction(prevState: ActionStateType, formData: FormData) {
 
 
     const userData = {

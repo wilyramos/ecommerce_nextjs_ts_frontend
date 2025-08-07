@@ -125,7 +125,7 @@ export const UserEditSchema = BaseUserSchema.extend({
 })
 
 export const UserSchema = z.object({
-    _id: z.string(),
+    _id: z.string().optional(),
     nombre: z.string().optional(),
     apellidos: z.string().optional(),
     tipoDocumento: z.enum(['DNI', 'RUC', 'CE']).optional(),

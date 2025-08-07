@@ -8,9 +8,15 @@ import { toast } from "sonner";
 
 export default function ProfileForm({ user }: { user: User }) {
 
+    if (!user) {
+        return (
+            <div className="bg-white p-8 rounded-2xl shadow-lg max-w-3xl mx-auto">
+                <p className="text-red-500">No se ha encontrado el usuario.</p>
+            </div>
+        );
+    }
 
-    const EditUserWithId = EditUserAction.bind(null, user._id);
-
+    const EditUserWithId = EditUserAction.bind(null, );
     const [state, dispatch] = useActionState(EditUserWithId, {
         errors: [],
         success: "",
@@ -29,7 +35,7 @@ export default function ProfileForm({ user }: { user: User }) {
     }, [state]);
 
     return (
-        <div className="bg-white p-8 rounded-2xl shadow-lg max-w-3xl border border-gray-200 mx-auto">
+        <div className="bg-white p-8 max-w-3xl mx-auto">
 
             <form 
                 className="grid grid-cols-1 md:grid-cols-2 gap-6"
@@ -38,35 +44,35 @@ export default function ProfileForm({ user }: { user: User }) {
             >
                 {/* Nombre */}
                 <div className="flex flex-col gap-1">
-                    <label htmlFor="nombre" className="text-sm text-gray-600 font-medium">Nombre</label>
+                    <label htmlFor="nombre" className="text-sm text-gray-600 font-old">Nombre</label>
                     <input
                         type="text"
                         id="nombre"
                         name="nombre"
-                        className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="rounded-lg bg-gray-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         defaultValue={user?.nombre}
                     />
                 </div>
 
                 {/* Apellidos */}
                 <div className="flex flex-col gap-1">
-                    <label htmlFor="apellidos" className="text-sm text-gray-600 font-medium">Apellidos</label>
+                    <label htmlFor="apellidos" className="text-sm text-gray-600 font-extrabold">Apellidos</label>
                     <input
                         type="text"
                         id="apellidos"
                         name="apellidos"
-                        className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="rounded-lg bg-gray-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         defaultValue={user?.apellidos || ''}
                     />
                 </div>
 
                 {/* Tipo de documento */}
                 <div className="flex flex-col gap-1">
-                    <label htmlFor="tipoDocumento" className="text-sm text-gray-600 font-medium">Tipo de documento</label>
+                    <label htmlFor="tipoDocumento" className="text-sm text-gray-600 font-extrabold">Tipo de documento</label>
                     <select
                         id="tipoDocumento"
                         name="tipoDocumento"
-                        className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="rounded-lg bg-gray-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         defaultValue={user?.tipoDocumento || 'DNI'}
                     >
                         <option value="">Seleccionar</option>
@@ -78,49 +84,49 @@ export default function ProfileForm({ user }: { user: User }) {
 
                 {/* Número de documento */}
                 <div className="flex flex-col gap-1">
-                    <label htmlFor="numeroDocumento" className="text-sm text-gray-600 font-medium">Número de documento</label>
+                    <label htmlFor="numeroDocumento" className="text-sm text-gray-600 font-">Número de documento</label>
                     <input
                         type="text"
                         id="numeroDocumento"
                         name="numeroDocumento"
-                        className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="rounded-lg bg-gray-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         defaultValue={user?.numeroDocumento || ''}
                     />
                 </div>
 
                 {/* Teléfono */}
                 <div className="flex flex-col gap-1">
-                    <label htmlFor="telefono" className="text-sm text-gray-600 font-medium">Teléfono</label>
+                    <label htmlFor="telefono" className="text-sm text-gray-600 font-">Teléfono</label>
                     <input
                         type="text"
                         id="telefono"
                         name="telefono"
-                        className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="rounded-lg bg-gray-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         defaultValue={user?.telefono || ''}
                     />
                 </div>
 
                 {/* Email */}
                 <div className="flex flex-col gap-1">
-                    <label htmlFor="email" className="text-sm text-gray-600 font-medium">Email</label>
+                    <label htmlFor="email" className="text-sm text-gray-600 font-">Email</label>
                     <input
                         type="email"
                         id="email"
                         name="email"
-                        className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="rounded-lg bg-gray-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         defaultValue={user?.email}
                     />
                 </div>
 
                 {/* Rol (solo lectura) */}
                 {/* <div className="flex flex-col gap-1">
-                    <label htmlFor="rol" className="text-sm text-gray-600 font-medium">Rol</label>
+                    <label htmlFor="rol" className="text-sm text-gray-600 font-">Rol</label>
                     <input
                         type="text"
                         id="rol"
                         name="rol"
                         readOnly
-                        className="rounded-lg border border-gray-100 bg-gray-100 px-4 py-2 text-gray-500"
+                        className="rounded-lg border border-gray-100 bg-gray-2000 px-4 py-2 text-gray-500"
                         defaultValue={user?.rol}
                     />
                 </div> */}

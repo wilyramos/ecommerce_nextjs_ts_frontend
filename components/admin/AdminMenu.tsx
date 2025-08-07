@@ -11,6 +11,7 @@ import type { User } from '@/src/schemas'
 export default function AdminMenu({ user }: { user: User }) {
 
 
+    console.log('AdminMenu user:', user);
     return (
         <Popover className="relative rounded-2xl">
             <PopoverButton className="inline-flex items-center justify-center p-2  transition duration-150 rounded-lg">
@@ -35,7 +36,7 @@ export default function AdminMenu({ user }: { user: User }) {
                             <p>{user.email}</p>
                             <li>
                                 <Link
-                                    href="/admin/profile/settings"
+                                    href="/admin/profile"
                                     className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition"
                                 >
                                     <UserCircleIcon className="w-5 h-5 text-gray-500" />
