@@ -5,11 +5,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import AdminMenu from '@/components/admin/AdminMenu';
 import {
-    FaHome,
-    FaBoxOpen,
-    FaTags, FaReceipt,
-    FaCashRegister
-} from 'react-icons/fa';
+    LuPackage, LuTag,
+    LuReceipt
+} from "react-icons/lu";
+import { FaHome } from 'react-icons/fa';
+import { VscGraph } from "react-icons/vsc";
+import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import { usePathname } from 'next/navigation';
 import { BiSolidUserRectangle } from "react-icons/bi";
 import clsx from 'clsx';
@@ -23,11 +24,11 @@ export default function AdminSidebar({ user }: { user: User }) {
 
     const links = [
         { href: '/admin', icon: <FaHome />, label: 'Dashboard' },
-        { href: '/admin/products', icon: <FaBoxOpen />, label: 'Productos' },
+        { href: '/admin/products', icon: <LuPackage />, label: 'Productos' },
         { href: '/admin/clients', icon: <BiSolidUserRectangle />, label: 'Clientes' },
-        { href: '/admin/products/category', icon: <FaTags />, label: 'Categorías' },
-        { href: '/admin/orders', icon: <FaReceipt />, label: 'Órdenes' },
-        { href: '/pos', icon: <FaCashRegister />, label: 'Punto de Venta' },
+        { href: '/admin/products/category', icon: <LuTag />, label: 'Categorías' },
+        { href: '/admin/orders', icon: <LuReceipt />, label: 'Órdenes' },
+        { href: '/admin/reports', icon: <VscGraph />, label: 'Reportes' },
     ];
 
     return (
@@ -45,6 +46,7 @@ export default function AdminSidebar({ user }: { user: User }) {
                             <Link
                                 key={link.href}
                                 href={link.href}
+
                                 className={clsx(
                                     'flex items-center gap-2 px-3 py-2 rounded-md hover:bg-indigo-500 hover:text-white transition-colors',
                                     pathname === link.href ? 'bg-indigo-500 text-white font-medium' : 'text-gray-700'
@@ -58,10 +60,23 @@ export default function AdminSidebar({ user }: { user: User }) {
             </nav>
 
             {/* Espaciador */}
+
+            <Link href="/pos"
+                target='_blank'
+                rel="noopener noreferrer"
+                className={clsx(
+                    'flex items-center gap-2 px-6 mx-auto py-3 rounded-md text-sm hover:bg-indigo-500 hover:text-white transition-colors',
+                    pathname === '/pos' ? 'bg-indigo-500 text-white font-medium' : 'text-gray-700'
+                )}
+            >
+                Punto de Venta
+                <FaArrowUpRightFromSquare className="h-4 w-4" />
+            </Link>
             <div className="flex-grow" />
 
             {/* Usuario */}
             <div className=" flex flex-col px-4 py-4 border-t border-gray-100 text-xs">
+
                 <p className="mb-1 text-gray-500">Hola, <span className="font-medium text-blue-500">{user.nombre}</span></p>
                 <AdminMenu user={user} />
             </div>

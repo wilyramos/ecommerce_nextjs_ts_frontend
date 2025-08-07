@@ -5,8 +5,6 @@ import AddOrderButton from "@/components/admin/orders/AddOrderButton";
 import { HeadingH1 } from "@/components/ui/Heading";
 import OrdersTableFilters from "@/components/admin/orders/OrdersTableFilters";
 
-
-
 type PageOrdersProps = {
     searchParams: Promise<{
         page?: string;
@@ -51,8 +49,6 @@ export default async function pageOrders({ searchParams }: PageOrdersProps) {
 
             {!orders ? (
                 <div className="flex flex-col ">
-
-
                     <h2 className="text-lg sm:text-xl text-gray-600 py-10">
                         No hay pedidos disponibles.
                     </h2>
