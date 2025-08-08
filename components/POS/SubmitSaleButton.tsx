@@ -15,7 +15,6 @@ export default function SubmitSaleButton() {
     const dni = useCartStore((s) => s.dni)
     const clearDni = useCartStore((s) => s.clearDni)
 
-
     const router = useRouter()
 
     const sale: CreateSaleInput = {

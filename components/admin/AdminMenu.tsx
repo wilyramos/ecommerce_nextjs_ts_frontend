@@ -9,9 +9,6 @@ import { logout } from '@/actions/logout-user-action'
 import type { User } from '@/src/schemas'
 
 export default function AdminMenu({ user }: { user: User }) {
-
-
-    console.log('AdminMenu user:', user);
     return (
         <Popover className="relative rounded-2xl">
             <PopoverButton className="inline-flex items-center justify-center p-2  transition duration-150 rounded-lg">

@@ -13,63 +13,92 @@ import {
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 
-type Props = {
-    data: { name: string; ventas: number }[];
-    dateRange?: {
-        from: Date;
-        to: Date;
-    };
+type DataPoint = {
+    label: string;
+    ventas: number;
+    cantidadVentas: number;
+    unidadesVendidas: number;
 };
 
-export default function ChartsSales({ data, dateRange }: Props) {
-    const formattedFrom = dateRange
-        ? format(dateRange.from, "dd MMM yyyy", { locale: es })
-        : null;
+type Props = {
+    data: DataPoint[];
+};
 
-    const formattedTo = dateRange
-        ? format(dateRange.to, "dd MMM yyyy", { locale: es })
-        : null;
+export default function ChartsSales({ data }: Props) {
+    const formattedData = data.map((item) => ({
+        ...item,
+        label: format(new Date(item.label), "dd MMM", { locale: es }),
+    }));
 
     return (
-        <div className="w-full bg-white space-y-4">
-            <div className="flex justify-between items-center">
-                {formattedFrom && formattedTo && (
-                    <span className="text-sm text-gray-500">
-                        {formattedFrom} — {formattedTo}
-                    </span>
-                )}
-            </div>
+        <div className="w-full rounded-xl bg-white p-6 shadow-sm border">
+            <h2 className="text-lg font-semibold text-gray-800 mb-2">Resumen de ventas</h2>
 
-            <div className="w-full h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                    <LineChart data={data}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                        <XAxis
-                            dataKey="name"
-                            tick={{ fontSize: 12 }}
-                            padding={{ left: 30, right: 30 }} // ← este espacio hace la diferencia
-                        />
-                        <YAxis
-                            tickFormatter={(value) => `S/. ${value}`}
-                            tick={{ fontSize: 12 }}
-                        />
-                        <Tooltip
-                            formatter={(value: number) => [`S/. ${value}`, "Ventas"]}
-                            labelClassName="text-sm"
-                        />
-                        <Legend />
-                        <Line
-                            type="monotone"
-                            dataKey="ventas"
-                            stroke="#3b82f6"
-                            strokeWidth={3}
-                            dot={{ r: 4 }}
-                            activeDot={{ r: 6 }}
-                            name="Ventas"
-                        />
-                    </LineChart>
-                </ResponsiveContainer>
-            </div>
+            <ResponsiveContainer width="100%" height={360}>
+                <LineChart data={formattedData}>
+                    <CartesianGrid stroke="#f0f0f0" vertical={false} />
+                    <XAxis
+                        dataKey="label"
+                        tick={{ fontSize: 12, fill: "#6b7280" }}
+                        padding={{ left: 20, right: 20 }}
+                        axisLine={false}
+                        tickLine={false}
+                    />
+                    <YAxis
+                        tick={{ fontSize: 12, fill: "#6b7280" }}
+                        axisLine={false}
+                        tickLine={false}
+                    />
+                    <Tooltip
+                        contentStyle={{
+                            backgroundColor: "#ffffff",
+                            border: "1px solid #e5e7eb",
+                            borderRadius: "8px",
+                            boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+                        }}
+                        labelStyle={{ color: "#6b7280", fontSize: 12 }}
+                        formatter={(value: number, name: string) => {
+                            if (name === "ventas") return [`S/. ${value.toFixed(2)}`, "Ventas"];
+                            if (name === "cantidadVentas") return [value, "Cantidad de Ventas"];
+                            if (name === "unidadesVendidas") return [value, "Unidades Vendidas"];
+                            return [value, name];
+                        }}
+                    />
+                    <Legend
+                        verticalAlign="top"
+                        height={36}
+                        iconType="circle"
+                        wrapperStyle={{ fontSize: 12 }}
+                    />
+                    <Line
+                        type="monotone"
+                        dataKey="ventas"
+                        stroke="#3b82f6"
+                        strokeWidth={2}
+                        dot={{ r: 3 }}
+                        activeDot={{ r: 5 }}
+                        name="Ventas"
+                    />
+                    <Line
+                        type="monotone"
+                        dataKey="cantidadVentas"
+                        stroke="#10b981"
+                        strokeWidth={2}
+                        dot={{ r: 3 }}
+                        activeDot={{ r: 5 }}
+                        name="Cantidad de Ventas"
+                    />
+                    <Line
+                        type="monotone"
+                        dataKey="unidadesVendidas"
+                        stroke="#f59e0b"
+                        strokeWidth={2}
+                        dot={{ r: 3 }}
+                        activeDot={{ r: 5 }}
+                        name="Unidades Vendidas"
+                    />
+                </LineChart>
+            </ResponsiveContainer>
         </div>
     );
 }
