@@ -31,7 +31,6 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
             {/* Productos */}
             <main className="p-4 overflow-y-auto">
                 <ProductSearchForm />
-
                 <section className="mt-4">
                     {productos && productos.products.length > 0 ? (
                         <ul className="rounded-xl divide-y divide-gray-200 ">
