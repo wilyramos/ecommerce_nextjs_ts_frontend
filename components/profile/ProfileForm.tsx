@@ -8,14 +8,6 @@ import { toast } from "sonner";
 
 export default function ProfileForm({ user }: { user: User }) {
 
-    if (!user) {
-        return (
-            <div className="bg-white p-8 rounded-2xl shadow-lg max-w-3xl mx-auto">
-                <p className="text-red-500">No se ha encontrado el usuario.</p>
-            </div>
-        );
-    }
-
     const EditUserWithId = EditUserAction.bind(null, );
     const [state, dispatch] = useActionState(EditUserWithId, {
         errors: [],
@@ -33,6 +25,15 @@ export default function ProfileForm({ user }: { user: User }) {
             toast.success(state.success);
         }
     }, [state]);
+
+    if (!user) {
+        return (
+            <div className="bg-white p-8 rounded-2xl shadow-lg max-w-3xl mx-auto">
+                <p className="text-red-500">No se ha encontrado el usuario.</p>
+            </div>
+        );
+    }
+
 
     return (
         <div className="bg-white p-8 max-w-3xl mx-auto">

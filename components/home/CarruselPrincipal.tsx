@@ -1,5 +1,6 @@
-import ClientCarouselMain from "./ClientCarouselMain";
+// import ClientCarouselMain from "./ClientCarouselMain";
 import { getDestacadosProducts } from "@/src/services/products";
+import MainCarousel from "./MainCarousel";
 
 
 export default async function CarruselPrincipal() {
@@ -19,7 +20,11 @@ export default async function CarruselPrincipal() {
     return (
         <div className="">
 
-            <ClientCarouselMain
+            {/* <ClientCarouselMain
+                products={products.products}
+            /> */}
+
+            <MainCarousel
                 products={products.products}
             />
             

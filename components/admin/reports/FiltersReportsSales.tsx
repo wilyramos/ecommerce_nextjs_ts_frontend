@@ -16,7 +16,7 @@ export default function FiltersReportsSales() {
         if (startDate) params.set('startDate', startDate);
         if (endDate) params.set('endDate', endDate);
         router.push(`/admin/reports/sales?${params.toString()}`);
-    }, [startDate, endDate]);
+    }, [startDate, endDate, router]);
 
     return (
         <div className="flex flex-col md:flex-row gap-4 mb-4 text-xs">

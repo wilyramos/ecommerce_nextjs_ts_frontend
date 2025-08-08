@@ -31,7 +31,7 @@ export default function CategoriasDestacadas({
     );
 
     return (
-        <section className="w-full py-10 bg-gradient-to-r from-indigo-50 via-white to-indigo-200">
+        <section className="w-full py-10 bg-gradient-to-r from-gray-50 via-slate-50 to-gray-50">
             <div className="max-w-7xl mx-auto px-5">
                 <Carousel
                     responsive={responsive}
