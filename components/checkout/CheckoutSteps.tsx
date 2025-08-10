@@ -14,7 +14,7 @@ export default function CheckoutSteps() {
     const pathname = usePathname();
 
     return (
-        <div className="flex md:items-center md:justify-between md:pl-20 pl-6 py-4" >
+        <div className="flex md:items-center md:justify-between md:pl-20 pl-6 py-4 " >
             {steps.map((step, index) => {
                 const isActive = pathname.startsWith(step.path);
                 const currentStepIndex = steps.findIndex(s => s.path === pathname);
@@ -24,7 +24,7 @@ export default function CheckoutSteps() {
                     <div className="flex-1 flex items-center gap-2 pb-10">
                         <div
                             className={cn(
-                                "w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-colors",
+                                "w-5 h-5 rounded-full flex items-center justify-center text-sm font-bold transition-colors",
                                 isCompleted ? "bg-gray-900 text-white" :
                                     isActive ? "bg-indigo-600 text-white" :
                                         "bg-gray-300 text-gray-600"
@@ -34,17 +34,16 @@ export default function CheckoutSteps() {
                         </div>
                         <span
                             className={cn(
-                                "text-sm md:text-lg transition-colors",
-                                isActive ? "text-indigo-600 font-medium" :
+                                "text-xs md:text-sm  transition-colors ",
+                                isActive ? "text-indigo-600 font-bold" :
                                     isCompleted ? "text-gray-900 cursor-pointer hover:text-gray-700" :
                                         "text-gray-400"
-                            )}
-                        >
+                            )}>
                             {step.label}
                         </span>
 
                         {index < steps.length - 1 && (
-                            <div className="hidden md:block flex-1 h-px bg-gray-900 mx-2" />
+                            <div className="hidden md:block flex-1 h-px bg-gray-900 mx-2 text-xs" />
                         )}
                     </div>
                 );

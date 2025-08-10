@@ -50,14 +50,14 @@ export default function ResumenCarrito() {
 
                 {/* Resumen */}
                 <div className="bg-white border border-gray-50 p-4 space-y-2">
-                    <h2 className="text-base text-gray-950 font-semibold">Resumen del pedido</h2>
+                    <h2 className="text-base text-gray-950 font-bold">Resumen del pedido</h2>
 
                     <ul className="text-xs text-gray-600 space-y-2">
                         <li className="flex justify-between">
                             <span>Subtotal</span>
                             <span className="font-semibold text-gray-800">S/ {total.toFixed(2)}</span>
                         </li>
-                        <li className="flex justify-between border-t pt-2 font-bold text-sm">
+                        <li className="flex justify-between border-t pt-2 font-extrabold text-lg">
                             <span>Total</span>
                             <span className="font-semibold text-gray-800">S/ {total.toFixed(2)}</span>
                         </li>

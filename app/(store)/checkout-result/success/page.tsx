@@ -8,7 +8,7 @@ type SearchParams = Promise<{
     orderId?: string;
 }>;
 
-export default async function SuccessPageCheckout(    { searchParams }: { searchParams: SearchParams }) {
+export default async function SuccessPageCheckout({ searchParams }: { searchParams: SearchParams }) {
 
     const { orderId } = await searchParams;
     if (!orderId) {
@@ -20,7 +20,6 @@ export default async function SuccessPageCheckout(    { searchParams }: { search
     if (!order) {
         return <p>Order not found</p>;
     }
-
 
     return (
         <>

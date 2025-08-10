@@ -50,9 +50,12 @@ export default function ProductDetails({ producto }: Props) {
                             <span className="text-2xl text-black font-extrabold">
                                 s/ {producto.precio?.toFixed(2)}
                             </span>
-                            {producto.stock && (
-                                <span className={`text-xs font-medium ${producto.stock > 0 ? 'text-green-800 rounded-2xl bg-green-300' : 'text-red-600 rounded-full bg-red-100'} px-2 py-1 font-semibold`}>
-                                    {producto.stock > 0 ? `${producto.stock} en stock` : 'Agotado'}
+                            {producto.stock !== undefined && (
+                                <span
+                                    className={`text-sm font-medium ${producto.stock > 0 ? 'text-green-900 bg-green-600' : 'text-rose-600 bg-red-200 rounded-2xl px-2'
+                                        }`}
+                                >
+                                    {producto.stock > 0 ? 'En stock' : 'Agotado'}
                                 </span>
                             )}
 

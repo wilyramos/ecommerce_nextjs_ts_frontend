@@ -19,26 +19,24 @@ export default async function ProfileLayout({ children }: { children: React.Reac
                             {user.nombre} {user.apellidos}
                         </p>
                         <p className="text-sm text-gray-500">{user.email}</p>
-                    </div>
 
+                        <form action={logout}>
+                            <button
+                                type="submit"
+                                className="flex items-center gap-3 text-red-600 text-sm hover:text-red-800 transition-all p-6 cursor-pointer"
+                            >
+                                <FiLogOut className="text-lg" />
+                                <span>Cerrar sesión</span>
+                            </button>
+                        </form>
+                    </div>
                     {/* Navegación */}
                     <SidebarProfileNav />
                 </div>
-
                 {/* Cerrar sesión */}
-                <form action={logout}>
-                    <button
-                        type="submit"
-                        className="flex items-center gap-3 text-red-600 text-sm hover:text-red-800 transition-all p-6 cursor-pointer"
-                    >
-                        <FiLogOut className="text-lg" />
-                        <span>Cerrar sesión</span>
-                    </button>
-                </form>
             </aside>
-
             {/* Contenido principal */}
-            <main className="flex-1 p-8">
+            <main className="flex-1 p-8 min-h-screen">
                 {children}
             </main>
         </div>

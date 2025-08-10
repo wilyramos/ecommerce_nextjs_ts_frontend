@@ -7,8 +7,6 @@ import type { CreateSaleInput } from "@/src/schemas"
 
 
 export default function SubmitSaleButton() {
-
-
     const clearCart = useCartStore((s) => s.clearCart)
     const cart = useCartStore((s) => s.cart)
     const total = useCartStore((s) => s.total)

@@ -479,9 +479,10 @@ export type Cart = z.infer<typeof CartSchema>;
 
 //Enums 
 
-const OrderStatusEnum = z.enum(['PENDIENTE', 'PROCESANDO', 'ENVIADO', 'ENTREGADO', 'CANCELADO']);
-const PaymentMethodEnum = z.enum(['MERCADOPAGO', 'TARJETA', 'TRANSFERENCIA', 'YAPE', 'PLIN']);
-const PaymentStatusEnum = z.enum(['PAGADO', 'PENDIENTE', 'CANCELADO']);
+export const OrderStatusEnum = z.enum(['PENDIENTE', 'PROCESANDO', 'ENVIADO', 'ENTREGADO', 'CANCELADO']);
+export type OrderStatusEnum = z.infer<typeof OrderStatusEnum>;
+const PaymentMethodEnum = z.enum(['MERCADOPAGO', 'TARJETA', 'TRANSFERENCIA', 'YAPE', 'PLIN', 'master', 'visa', 'amex', 'diners']);
+const PaymentStatusEnum = z.enum(['PAGADO', 'PENDIENTE', 'CANCELADO', 'approved', 'rejected', 'pending']);
 
 // Dirección de envío
 export const ShippingAddressSchema = z.object({
@@ -520,6 +521,8 @@ export const CreateOrderSchema = z.object({
     status: OrderStatusEnum.default('PENDIENTE').optional(),
     shippingMethod: z.string(),
     notes: z.string().optional(),
+paymentMethod: PaymentMethodEnum.or(z.string()).default('MERCADOPAGO').optional(),
+    paymentStatus: PaymentStatusEnum.or(z.string()).default('PENDIENTE').optional(),
 });
 
 // Respuesta de la orden populada
@@ -730,3 +733,6 @@ export interface Window {
         new (options: IzipayOptions): IzipayInstance;
     };
 }
+
+
+// Global

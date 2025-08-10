@@ -5,7 +5,8 @@ import { formatDate } from "@/lib/utils";
 import Link from "next/link";
 import OrderStatusBadge from "@/components/ui/OrderStatusBadge";
 import PaymentStatusBadge from "@/components/ui/PaymentStatusBadge";
-import Pagination from "@/components/home/Pagination";
+// import Pagination from "@/components/home/Pagination";
+import Pagination from "@/components/ui/Pagination";
 
 type PageOrdersProps = {
     searchParams: Promise<{ page?: string; limit?: string }>;
@@ -53,7 +54,7 @@ export default async function OrdersProfilePage({ searchParams }: PageOrdersProp
                 totalPages={data.totalPages}
                 limit={+limit}
                 pathname="/profile/orders"
-                queryParams={{}}
+                
             />
         </>
     );

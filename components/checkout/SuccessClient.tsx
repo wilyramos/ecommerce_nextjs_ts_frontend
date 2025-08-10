@@ -24,7 +24,7 @@ export default function SuccessClient({ order }: { order: Order }) {
 
     return (
         <div className="flex items-center justify-center px-4 p-20">
-            <div className="w-full max-w-lg bg-white shadow-xl rounded-3xl p-10 text-center">
+            <div className="w-full max-w-lg p-10 text-center">
                 <BsCheckCircle className="text-green-500 text-7xl mx-auto mb-6" />
                 <h1 className="text-3xl font-semibold text-gray-900 mb-2 flex items-center justify-center gap-2">
                     <BsBagCheck className="text-blue-600" />

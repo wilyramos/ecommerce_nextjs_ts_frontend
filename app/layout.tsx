@@ -3,6 +3,7 @@ import "./globals.css";
 import { Manrope } from "next/font/google";
 import { Toaster } from 'sonner';
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import MercadoPagoProvider from "@/components/provider/MercadoPagoProvider";
 
 const manrope = Manrope({
     subsets: ["latin"],
@@ -82,6 +83,7 @@ export default function RootLayout({
                 className={`${manrope.className}`}
             >
                 <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
+                    <MercadoPagoProvider />
                     {children}
                     <Toaster
                         richColors

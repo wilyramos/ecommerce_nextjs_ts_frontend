@@ -21,7 +21,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
                 </div>
 
                 <NavBar />
-                <main className="text-gray-700">{children}</main>
+                <main className="min-h-screen">{children}</main>
                 <Footer />
             </div>
 
