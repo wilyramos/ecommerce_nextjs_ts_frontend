@@ -16,11 +16,40 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     const categoryName = decodeURIComponent(slug).replace(/-/g, " ");
 
     return {
-        title: `Productos en ${categoryName} - GoPhone`,
-        description: `Explora nuestra amplia gama de productos en la categoría ${categoryName}. Encuentra lo mejor en tecnología y accesorios.`,
-        keywords: [`productos`, `gophone`, categoryName, `comprar ${categoryName}`],
+        title: `${categoryName} | en GoPhone`,
+        description: `Descubre la mejor selección de ${categoryName} en GoPhone. Ofertas exclusivas, precios competitivos y envío rápido.`,
+        keywords: [
+            categoryName,
+            `comprar ${categoryName}`,
+            `${categoryName} cañete`,
+            `${categoryName} precio`,
+            "gophone",
+            "accesorios",
+            "tienda de tecnología",
+            "ofertas en tecnología",
+            "cañete",
+            "san vicente",
+            
+        ],
+        openGraph: {
+            title: `${categoryName} | GoPhone`,
+            description: `Explora nuestra colección de ${categoryName}. Encuentra productos de calidad, con garantía y envío rápido en GoPhone.`,
+            type: "website",
+            url: `https://gophone.pe/categoria/${slug}`,
+            siteName: "GoPhone"
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: `${categoryName} | GoPhone`,
+            description: `Compra ${categoryName} en GoPhone. Calidad garantizada y envío rápido.`,
+        },
+        icons: {
+            icon: "/logomini.svg",
+            apple: "/logomini.svg",
+        }
     };
 }
+
 
 export default async function pageCategoria({
     params,

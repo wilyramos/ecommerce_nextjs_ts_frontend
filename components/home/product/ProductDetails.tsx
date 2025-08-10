@@ -47,25 +47,28 @@ export default function ProductDetails({ producto }: Props) {
                         </div>
 
                         <div className="flex items-center gap-4">
-                            <span className="text-2xl text-black font-extrabold">
-                                s/ {producto.precio?.toFixed(2)}
+                            <span className="text-2xl font-bold">
+                                S/ {producto.precio?.toFixed(2)}
                             </span>
+
                             {producto.stock !== undefined && (
                                 <span
-                                    className={`text-sm font-medium ${producto.stock > 0 ? 'text-green-900 bg-green-600' : 'text-rose-600 bg-red-200 rounded-2xl px-2'
+                                    className={`text-xs px-2 rounded-2xl font-medium ${producto.stock > 0 ? "text-green-600 bg-green-200" : "text-red-600 bg-red-200"
                                         }`}
                                 >
-                                    {producto.stock > 0 ? 'En stock' : 'Agotado'}
+                                    {producto.stock > 0 ? `${producto.stock} en stock` :
+                                    "Agotado"}
                                 </span>
                             )}
-
                         </div>
                     </div>
 
                     {/* Características */}
                     {producto.atributos && (
                         <div>
-                            <h2 className="text-sm font-medium text-gray-400 mb-3">Características</h2>
+                            {Object.keys(producto.atributos).length > 0 && (
+                                <h2 className="text-sm font-medium text-gray-400 mb-3">Características</h2>
+                            )}
                             <div className="">
 
                                 <table className="w-full text-xs">
@@ -118,7 +121,7 @@ export default function ProductDetails({ producto }: Props) {
 
             {producto.descripcion && (
 
-                <div className='p-5 border-1 rounded-2xl border-gray-100 mt-4 max-w-3xl mx-auto'>
+                <div className='mx-auto py-2'>
                     <h2 className="text-xl text-gray-500 ">Informacion adicional</h2>
                     <div className="border-b border-gray-200 my-2" />
                     <p className="text-sm whitespace-pre-wrap leading-normal text-gray-500 ">

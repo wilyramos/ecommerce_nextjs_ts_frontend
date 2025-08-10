@@ -8,7 +8,7 @@ export default function ItemCarrito({ item }: { item: CartItem }) {
     const removeFromCart = useCartStore((state) => state.removeFromCart);
 
     return (
-        <li className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-3 py-3 border-b last:border-b-0">
+        <li className="flex flex-wrap sm:flex-nowrap items-center justify-between py-3 border-b last:border-b-0">
             {/* Imagen y nombre */}
             <div className="flex items-center gap-3 min-w-[150px] flex-1">
                 <div className="relative w-12 h-12 flex-shrink-0 overflow-hidden rounded-md">
@@ -46,7 +46,8 @@ export default function ItemCarrito({ item }: { item: CartItem }) {
                     <span className="w-8 text-center text-sm font-medium text-gray-800">{item.cantidad}</span>
                     <button
                         onClick={() => updateQuantity(item._id, item.cantidad + 1)}
-                        className="w-7 h-7 text-sm border border-gray-300 text-gray-600 rounded hover:bg-gray-50"
+                        disabled={item.cantidad >= item.stock}
+                        className="w-7 h-7 text-sm border border-gray-300 text-gray-600 rounded hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
                     >
                         +
                     </button>

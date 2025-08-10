@@ -11,9 +11,16 @@ export default function ShopNowButton({ product }: { product: ProductWithCategor
     const router = useRouter();
 
     const handleClick = () => {
+        if (product.stock === 0) {
+            toast.error("Este producto está agotado.");
+            return;
+        }
+
         addToCart(product);
-        toast.success("Producto añadido al carrito");
-        router.push("/carrito");
+        toast.success("Producto agregado al carrito.");
+        
+        // Redirigir al carrito después de agregar el producto
+        router.push("/cart");
     };
 
     return (

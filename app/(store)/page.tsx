@@ -8,8 +8,8 @@ import CategoriasDestacadasWrapper from "@/components/home/CategoriasDestacadasW
 
 
 export const metadata: Metadata = {
-  title: "GoPhone Cañete - Venta de celulares, accesorios y más",
-  description: "GoPhone Cañete es tu tienda de confianza para la compra de celulares, accesorios y más. Ofrecemos una amplia variedad de productos a los mejores precios.",
+  title: "GoPhone - Venta de celulares, accesorios y más en cañete",
+  description: "GoPhone es tu tienda de confianza para la compra de celulares, accesorios y más. Ofrecemos una amplia variedad de productos a los mejores precios.",
   keywords: [
     "GoPhone Cañete",
     "tienda iPhone Cañete",
@@ -25,13 +25,15 @@ export const metadata: Metadata = {
     "auriculares y audífonos Cañete",
     "repuestos y reparación de celulares",
     "ofertas de tecnología Cañete",
+    "smartphones en Cañete",
+    "tienda de tecnología en Cañete"
   ],
   authors: [{ name: "GoPhone Cañete", url: "https://gophone.pe" }],
   creator: "GoPhone",
   openGraph: {
-    title: "GoPhone Cañete - Venta de iPhones y Tecnología",
+    title: "GoPhone - Venta accesorios y tecnología en Cañete",
     description:
-      "Descubre GoPhone en Cañete: iPhones, accesorios y productos tecnológicos al mejor precio. Atención rápida y confiable.",
+      "En GoPhone encontrarás una amplia variedad de accesorios y productos tecnológicos en Cañete. ¡Visítanos y descubre nuestras ofertas!",
     url: "https://gophone.pe",
     siteName: "GoPhone",
     locale: "es_PE",
@@ -39,13 +41,14 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "GoPhone Cañete - Venta de iPhones y Tecnología",
+    title: "GoPhone - Venta de accesorios y Tecnología en Cañete",
     description:
       "Compra iPhones, accesorios y más en GoPhone, tu tienda online de confianza en Cañete.",
   },
   metadataBase: new URL("https://gophone.pe"),
   icons: {
-    icon: "/logoapp.svg",
+    icon: "/logomini.svg",
+    apple: "/logomini.svg",
   }
 };
 

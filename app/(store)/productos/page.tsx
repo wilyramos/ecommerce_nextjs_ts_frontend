@@ -7,7 +7,7 @@ import { CiFilter } from "react-icons/ci";
 import SpinnerLoading from "@/components/ui/SpinnerLoading";
 
 export const metadata: Metadata = {
-    title: "Productos - GoPhone Cañete | iPhones, Accesorios y Tecnología",
+    title: "Productos - GoPhone | Accesorios y Tecnología",
     description:
         "Explora nuestra amplia selección de productos en GoPhone Cañete. Encuentra iPhones, accesorios para celulares, audífonos, cargadores y más tecnología de calidad.",
     keywords: [
@@ -23,6 +23,8 @@ export const metadata: Metadata = {
         "cargadores y cables Cañete",
         "fundas y cases iPhone Cañete",
         "repuestos celulares Cañete",
+        "smartphones en Cañete",
+        "tienda de tecnología en Cañete"
     ],
     authors: [{ name: "GoPhone" }],
     creator: "GoPhone",
@@ -42,6 +44,10 @@ export const metadata: Metadata = {
             "Revisa nuestra selección de productos tecnológicos disponibles en GoPhone Cañete. ¡Envíos rápidos y precios increíbles!",
     },
     metadataBase: new URL("https://gophone.pe"),
+    icons: {
+        icon: "/logomini.svg",
+        apple: "/logomini.svg",
+    }
 };
 
 type SearchParams = Promise<{

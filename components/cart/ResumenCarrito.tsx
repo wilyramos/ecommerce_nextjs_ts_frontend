@@ -1,46 +1,45 @@
-"use client"
+"use client";
 
-import { useCartStore } from "@/src/store/cartStore"
-import ItemCarrito from "./ItemCarrito"
-import { useRouter } from "next/navigation"
-import { FaShoppingCart } from "react-icons/fa"
-import { HeadingH1 } from "../ui/Heading"
+import { useCartStore } from "@/src/store/cartStore";
+import ItemCarrito from "./ItemCarrito";
+import { useRouter } from "next/navigation";
+import { FaShoppingCart } from "react-icons/fa";
+import { HeadingH1 } from "../ui/Heading";
 
 export default function ResumenCarrito() {
-    const { cart } = useCartStore()
-    const total = cart.reduce((acc, item) => acc + item.subtotal, 0)
-    const router = useRouter()
+    const { cart } = useCartStore();
+    const total = cart.reduce((acc, item) => acc + item.subtotal, 0);
+    const router = useRouter();
 
     const handleContinuar = () => {
-        router.push("/checkout/profile")
-    }
+        router.push("/checkout/profile");
+    };
 
     if (cart.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center py-12 text-center text-gray-600">
-                <FaShoppingCart size={48} className="text-gray-300 mb-4" />
-                <p className="mb-3">Tu carrito está vacío.</p>
+            <div className="flex flex-col items-center justify-center py-16 text-center">
+                <FaShoppingCart size={50} className="text-gray-300 mb-4" />
+                <p className="text-gray-500 mb-4 text-sm">Tu carrito está vacío.</p>
                 <button
                     onClick={() => router.push("/productos")}
-                    className="bg-gray-900 text-white px-4 py-2 rounded-md hover:bg-gray-800 transition"
+                    className="bg-indigo-600 text-white px-5 py-2.5 rounded-full hover:bg-indigo-700 transition-colors text-sm font-medium"
                 >
                     Seguir comprando
                 </button>
             </div>
-        )
+        );
     }
 
     return (
         <div className="max-w-7xl mx-auto p-6">
             <HeadingH1>Resumen del carrito</HeadingH1>
-            <p className="text-sm text-gray-400 mb-4">
-                {cart.length} {cart.length === 1 ? "producto" : "productos"} seleccionados.
+            <p className="text-sm text-gray-500 mb-6">
+                {cart.length} {cart.length === 1 ? "producto" : "productos"} en tu carrito.
             </p>
 
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                {/* Carrito */}
-                <div className="md:col-span-2 bg-white border-r-2 p-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Lista de productos */}
+                <div className="md:col-span-2 bg-white rounded-2xl shadow-xs p-4">
                     <ul className="divide-y divide-gray-200">
                         {cart.map((item) => (
                             <ItemCarrito key={item._id} item={item} />
@@ -49,53 +48,50 @@ export default function ResumenCarrito() {
                 </div>
 
                 {/* Resumen */}
-                <div className="bg-white border border-gray-50 p-4 space-y-2">
-                    <h2 className="text-base text-gray-950 font-bold">Resumen del pedido</h2>
+                <div className="bg-white rounded-2xl shadow-sm p-6 flex flex-col gap-4">
+                    <h2 className="font-bold text-lg text-gray-800">Resumen</h2>
 
-                    <ul className="text-xs text-gray-600 space-y-2">
+                    <ul className="text-sm text-gray-600 space-y-3">
                         <li className="flex justify-between">
                             <span>Subtotal</span>
-                            <span className="font-semibold text-gray-800">S/ {total.toFixed(2)}</span>
+                            <span className="font-medium text-gray-800">S/ {total.toFixed(2)}</span>
                         </li>
-                        <li className="flex justify-between border-t pt-2 font-extrabold text-lg">
+                        <li className="flex justify-between border-t pt-3 text-lg font-semibold">
                             <span>Total</span>
-                            <span className="font-semibold text-gray-800">S/ {total.toFixed(2)}</span>
+                            <span className="text-indigo-600">S/ {total.toFixed(2)}</span>
                         </li>
                     </ul>
 
-                    <div className="pt-3 opacity-60 ">
-                        <label className="text-sm text-gray-400 mb-1 block">
-                            ¿Tienes un cupón?
-                        </label>
+                    {/* Cupón */}
+                    <div className="pt-3">
+                        <label className="text-sm text-gray-500 mb-1 block">¿Tienes un cupón?</label>
                         <div className="flex items-center gap-2">
                             <input
                                 type="text"
                                 placeholder="Ingresa tu cupón"
                                 disabled
-                                className="flex-1 border border-gray-300 bg-gray-100 rounded-2xl px-3 py-2 text-xs text-gray-500"
+                                className="flex-1 border border-gray-200 bg-gray-100 rounded-xl px-3 py-2 text-xs text-gray-500 focus:outline-none"
                             />
                             <button
-                                // disabled
-                                className="text-xs text-gray-400 border border-gray-300 px-3 py-1 rounded-xl bg-gray-100"
+                                className="text-xs text-gray-500 border border-gray-200 px-3 py-2 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
                             >
-                                Aplicar cupón
+                                Aplicar
                             </button>
                         </div>
                     </div>
 
-
-                    <p className="text-xs text-gray-400 my-6">
+                    <p className="text-xs text-gray-400">
                         Verifica tus productos antes de continuar al siguiente paso.
                     </p>
 
                     <button
                         onClick={handleContinuar}
-                        className="w-full bg-indigo-600 text-white px-4 py-3 rounded-full hover:bg-indigo-800 transition-colors  font-semibold flex items-center justify-center gap-2 hover:cursor-pointer "
+                        className="w-full bg-indigo-600 text-white px-4 py-3 rounded-full hover:bg-indigo-700 transition-colors font-medium flex items-center justify-center gap-2"
                     >
-                        Continuar con la compra
+                        Realizar pedido
                     </button>
                 </div>
             </div>
         </div>
-    )
+    );
 }

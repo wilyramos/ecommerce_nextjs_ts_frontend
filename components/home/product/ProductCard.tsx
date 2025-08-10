@@ -11,7 +11,7 @@ export default function ProductCard({ product }: { product: Product }) {
     const color = product.atributos?.Color || null;
 
     return (
-        <div className="group relative flex flex-col h-[280px] md:h-[350px] rounded-2xl bg-white border border-gray-100 text-gray-700 max-w-xs shadow-sm">
+        <div className="group relative flex flex-col h-[280px] md:h-[350px] rounded-2xl bg-white border border-gray-50 text-gray-700 max-w-xs shadow-xs">
             <Link href={`/productos/${product.slug}`} className="flex flex-col h-full">
                 {/* Imagen */}
                 <div className="relative w-full aspect-square bg-gray-100 overflow-hidden rounded-t-xl">

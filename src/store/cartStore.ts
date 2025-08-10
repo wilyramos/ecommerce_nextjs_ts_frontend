@@ -56,6 +56,13 @@ export const useCartStore = create<Store>()(devtools(persist((set, get) => ({
         const productInCart = cart.find((cartItem) => cartItem._id === item._id)
 
         if (productInCart) {
+
+            // Evitar sobrepasar el stock
+
+            if (productInCart.cantidad >= (productInCart.stock || 0)) {
+                return;
+            }
+
             set({
                 cart: cart.map((cartItem) =>
                     cartItem._id === item._id
@@ -85,6 +92,10 @@ export const useCartStore = create<Store>()(devtools(persist((set, get) => ({
         const productInCart = cart.find((cartItem) => cartItem._id === id)
 
         if (productInCart) {
+            // Evitar sobrepasar el stock
+            if (quantity > (productInCart.stock || 0)) {
+                return;
+            }
             set({
                 cart: cart.map((cartItem) =>
                     cartItem._id === id

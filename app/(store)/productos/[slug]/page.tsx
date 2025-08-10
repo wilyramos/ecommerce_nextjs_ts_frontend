@@ -12,8 +12,6 @@ export async function generateMetadata({ params }: { params: Params }) {
     const { slug } = await params;
     const product = await GetProductsBySlug(slug);
 
-    console.log('product in metadata', product);
-
     if (!product) {
         return {
             title: 'Producto no encontrado - GoPhone',
@@ -21,7 +19,7 @@ export async function generateMetadata({ params }: { params: Params }) {
         };
     }
 
-    const title = `${product.nombre} - GoPhone Cañete`;
+    const title = `${product.nombre} - GoPhone`;
     const description = product.descripcion?.replace(/\r?\n|\r/g, ' ').trim() || 'No description available';
     const categoryName = product.categoria?.nombre || 'General';
     const image = product.imagenes?.[0] || 'https://www.gophone.pe/logob.svg';
@@ -60,6 +58,10 @@ export async function generateMetadata({ params }: { params: Params }) {
             price: product.precio,
             currency: 'PEN',
             category: categoryName,
+            image: {
+                url: image,
+                alt: product.nombre,
+            }
 
         },
         twitter: {
@@ -67,6 +69,10 @@ export async function generateMetadata({ params }: { params: Params }) {
             title,
             description,
         },
+        icons: {
+            icon: "/logomini.svg",
+            apple: "/logomini.svg",
+        }
     }
 }
 
@@ -75,7 +81,7 @@ export default async function pageProduct({ params }: { params: Params }) {
 
 
     return (
-        <main className="px-4">
+        <main className="px-4">            
             <Suspense fallback={<SpinnerLoading />}>
                 <ProductPageServer
                     slug={slug}
