@@ -49,7 +49,7 @@ export default function IdentificacionForm({ user }: Props) {
         <form onSubmit={handleSubmit(onSubmit)} className="max-w-lg mx-auto space-y-1 pt-2">
             {/* Email */}
             <div>
-                <label htmlFor="email" className="text-xs font-bold text-gray-700">
+                <label htmlFor="email" className="text-xs font-bold text-black">
                     Correo electrónico
                 </label>
                 <input
@@ -63,14 +63,14 @@ export default function IdentificacionForm({ user }: Props) {
                         },
                     })}
                     disabled
-                    className="w-full px-4 py-2 border border-gray-300 rounded-full bg-gray-200 cursor-not-allowed"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-full bg-gray-200 cursor-not-allowed text-gray-700"
                 />
                 {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
             </div>
 
             {/* Nombre */}
             <div className="space-y-1">
-                <label htmlFor="nombre" className="text-xs font-bold text-gray-700">
+                <label htmlFor="nombre" className="text-xs font-bold text-black">
                     Nombre
                 </label>
                 <input
@@ -84,14 +84,14 @@ export default function IdentificacionForm({ user }: Props) {
 
             {/* Apellidos */}
             <div className="space-y-1">
-                <label htmlFor="apellidos" className="text-xs font-bold text-gray-700">
+                <label htmlFor="apellidos" className="text-xs font-bold text-black">
                     Apellidos
                 </label>
                 <input
                     id="apellidos"
                     type="text"
                     {...register('apellidos', { required: 'Los apellidos son obligatorios' })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-full"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-full text-gray-700"
                 />
                 {errors.apellidos && <ErrorMessage>{errors.apellidos.message}</ErrorMessage>}
             </div>
@@ -99,7 +99,7 @@ export default function IdentificacionForm({ user }: Props) {
             {/* Tipo + Número documento */}
             <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                    <label htmlFor="tipoDocumento" className="text-xs font-bold text-gray-700">
+                    <label htmlFor="tipoDocumento" className="text-xs font-bold text-black">
                         Tipo de documento
                     </label>
                     <select
@@ -115,7 +115,7 @@ export default function IdentificacionForm({ user }: Props) {
                 </div>
 
                 <div className="space-y-1">
-                    <label htmlFor="numeroDocumento" className="text-xs font-bold text-gray-700">
+                    <label htmlFor="numeroDocumento" className="text-xs font-bold text-black">
                         N° de documento
                     </label>
                     <input
@@ -133,7 +133,7 @@ export default function IdentificacionForm({ user }: Props) {
 
             {/* Teléfono */}
             <div className="space-y-1">
-                <label htmlFor="telefono" className="text-xs font-bold text-gray-700">
+                <label htmlFor="telefono" className="text-xs font-bold text-black">
                     Teléfono / Móvil
                 </label>
                 <input

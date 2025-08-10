@@ -12,7 +12,7 @@ export default async function ProfilePageCheckout() {
 
     return (
         <div className="px-4 py-6 max-w-xl mx-auto">
-            <p className="flex items-center gap-2 text-gray-700 text-sm mb-4">
+            <p className="flex items-center gap-2 text-gray-500 text-sm mb-4">
                 <FiUser className="text-base" />
                 Completa tus datos personales:
             </p>

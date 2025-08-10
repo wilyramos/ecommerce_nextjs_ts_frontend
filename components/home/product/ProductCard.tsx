@@ -49,9 +49,9 @@ export default function ProductCard({ product }: { product: Product }) {
                     {/*Etiquetas */}
                     {/* Etiquetas minimalistas */}
                     {(product.esNuevo || product.esDestacado) && (
-                        <div className="absolute top-5 left-1 right-1 flex justify-between px-2 pointer-events-none text-[14px] text-gray-700 font-bold up">
+                        <div className="absolute top-5 left-1 right-1 flex justify-between px-2 pointer-events-none text-[14px] text-gray-700 font-bold up" >
                             {product.esNuevo && (
-                                <span className="px-2 py-0.3 border-2 border-red-500  bg-red-500 rotate-315 text-white">
+                                <span className="px-1.5 border-2 border-red-500  bg-red-500 rotate-315 text-white text-xs">
                                     Nuevo
                                 </span>
                             )}
