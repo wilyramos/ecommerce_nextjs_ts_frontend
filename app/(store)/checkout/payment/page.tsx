@@ -6,7 +6,6 @@ import CheckoutMercadoPagoBricks from "@/components/checkout/mercadopago/Checkou
 
 export default function PaymentPage() {
 
-
     return (
         <div className="px-4 py-6 max-w-xl mx-auto">
             <div className="flex items-center gap-2 text-gray-700 text-sm mb-4">
