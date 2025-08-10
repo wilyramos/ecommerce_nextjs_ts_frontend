@@ -481,7 +481,7 @@ export type Cart = z.infer<typeof CartSchema>;
 
 export const OrderStatusEnum = z.enum(['PENDIENTE', 'PROCESANDO', 'ENVIADO', 'ENTREGADO', 'CANCELADO']);
 export type OrderStatusEnum = z.infer<typeof OrderStatusEnum>;
-const PaymentMethodEnum = z.enum(['MERCADOPAGO', 'TARJETA', 'TRANSFERENCIA', 'YAPE', 'PLIN', 'master', 'visa', 'amex', 'diners']);
+const PaymentMethodEnum = z.enum(['MERCADOPAGO', 'TARJETA', 'TRANSFERENCIA', 'YAPE', 'PLIN', 'master', 'visa', 'amex', 'diners', 'debvisa']);
 const PaymentStatusEnum = z.enum(['PAGADO', 'PENDIENTE', 'CANCELADO', 'approved', 'rejected', 'pending']);
 
 // Dirección de envío
