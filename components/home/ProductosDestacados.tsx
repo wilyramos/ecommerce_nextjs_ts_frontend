@@ -13,13 +13,13 @@ export default async function ProductosDestacados() {
     }
 
     return (
-        <section className="py-12 bg-gradient-to-r from-blue-50 via-white to-cyan-50">
+        <section className="py-12 bg-gradient-to-r">
             <div className="max-w-7xl mx-auto px-4">
                 <div className="mb-2">
-                    <h2 className="text-xl font-bold text-black">
+                    <h2 className="text-lg font-bold text-black md:text-xl">
                         Lo mejor de GoPhone
                     </h2>
-                    <p className="text-gray-500 text-base">
+                    <p className="text-gray-500 text-sm md:text-base">
                         Descubre nuestros productos más populares y recomendados
                     </p>
                     <div className="w-20 h-1 bg-indigo-600/70 mt-4 mx-auto rounded-full" />

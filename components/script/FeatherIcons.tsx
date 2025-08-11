@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import ScriptService from "@/src/utils/script";
+import ScriptService from "@/src/utils/ScriptService";
 
 
 

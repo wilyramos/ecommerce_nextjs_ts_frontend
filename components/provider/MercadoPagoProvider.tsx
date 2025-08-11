@@ -11,13 +11,13 @@ export default function MercadoPagoProvider() {
     useEffect(() => {
         if (initialized.current) return;
 
-        console.log("Inicializando Mercado Pago SDK...");
-        console.log("Public Key:", process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY);
+        // console.log("Inicializando Mercado Pago SDK...");
+        // console.log("Public Key:", process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY);
         initMercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY ?? "", {
             locale: "es-PE",
         });
         initialized.current = true;
-        console.log("Mercado Pago SDK inicializado.");
+        // console.log("Mercado Pago SDK inicializado.");
     }, []);
 
     return null;

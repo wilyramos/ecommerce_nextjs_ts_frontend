@@ -7,46 +7,11 @@ import { iniciarCheckoutMP } from '@/src/payments/mercadopago';
 import { SiMercadopago } from 'react-icons/si';
 import { FaCcVisa, FaCcMastercard } from 'react-icons/fa';
 import Image from 'next/image';
-import { useCulqi } from "@/hooks/useCulqi";
-
-type CulqiToken = {
-  id: string;
-  email?: string;
-  [key: string]: unknown; // si quieres permitir campos adicionales
-};
-
 
 export default function CheckoutSelector() {
     const { cart } = useCartStore();
     const { shipping, profile } = useCheckoutStore();
 
-    const culqiReady = useCulqi();
-    const handleOpenCulqi = () => {
-        if (!window.Culqi) {
-            alert("Culqi aún no está listo");
-            return;
-        }
-
-        window.Culqi.settings({
-            title: "Mi Tienda",
-            currency: "PEN",
-            amount: 5000, // S/ 50.00 en céntimos
-            // order: "order-test-001"
-        });
-
-        window.Culqi.open();
-
-        // Evento de respuesta
-        window.Culqi.on("token", (token: CulqiToken) => {
-            console.log("Token recibido:", token);
-            alert(`Token: ${token.id}`);
-        });
-
-        // window.Culqi.on("error", (error: any) => {
-        //     console.error("Error Culqi:", error);
-        //     alert(`Error: ${error.user_message}`);
-        // });
-    };
 
     if (!cart || cart.length === 0) {
         return (
@@ -91,17 +56,6 @@ export default function CheckoutSelector() {
                         </div>
                     </div>
                 </button>
-
-                {/* CULQI */}
-                <button
-                    onClick={handleOpenCulqi}
-                    disabled={!culqiReady}
-                    className="group w-full p-5 border border-gray-200 rounded-2xl bg-white hover:bg-gray-50 hover:ring-2 hover:ring-green-100 transition-all duration-200 shadow-sm cursor-pointer"
-                >
-                    {culqiReady ? "Pagar con Culqi" : "Cargando..."}
-                </button>
-                <div>
-                </div>
             </div>
         </div>
     );

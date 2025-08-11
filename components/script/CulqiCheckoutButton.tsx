@@ -1,5 +1,5 @@
 // src/utils/loadCulqi.ts
-import ScriptService from "@/src/utils/script";
+import ScriptService from "@/src/utils/ScriptService";
 
 export async function loadCulqiScript() {
     const scriptService = new ScriptService(
