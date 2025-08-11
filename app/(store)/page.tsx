@@ -8,7 +8,7 @@ import CategoriasDestacadasWrapper from "@/components/home/CategoriasDestacadasW
 
 
 export const metadata: Metadata = {
-  title: "GoPhone - Venta de celulares, accesorios y más en cañete",
+  title: "GoPhone | Tecnologia y productos a tu alcance",
   description: "GoPhone es tu tienda de confianza para la compra de celulares, accesorios y más. Ofrecemos una amplia variedad de productos a los mejores precios.",
   keywords: [
     "GoPhone Cañete",
@@ -26,7 +26,10 @@ export const metadata: Metadata = {
     "repuestos y reparación de celulares",
     "ofertas de tecnología Cañete",
     "smartphones en Cañete",
-    "tienda de tecnología en Cañete"
+    "tienda de tecnología en Cañete",
+    "iphone",
+    "audifonos",
+    "case"
   ],
   authors: [{ name: "GoPhone Cañete", url: "https://gophone.pe" }],
   creator: "GoPhone",
