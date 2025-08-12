@@ -11,35 +11,29 @@ interface Props {
 
 export default function ClientCarouselProductosNuevos({ products }: Props) {
     const responsive = {
-        desktop: { breakpoint: { max: 3000, min: 1024 }, items: 4 },
-        tablet: { breakpoint: { max: 1024, min: 768 }, items: 3 },
-        mobile: { breakpoint: { max: 768, min: 0 }, items: 2 }
+        desktop: { breakpoint: { max: 3000, min: 1280 }, items: 4 },
+        laptop: { breakpoint: { max: 1280, min: 1024 }, items: 3 },
+        tablet: { breakpoint: { max: 1024, min: 640 }, items: 3 },
+        mobile: { breakpoint: { max: 640, min: 0 }, items: 2 }
     }
 
-    
-
     return (
-        <section className="h">
-            <div className="container">
-
-                <div className="">
-                    <Carousel
-                        responsive={responsive}
-                        infinite
-                        autoPlay
-                        autoPlaySpeed={3000}
-                        pauseOnHover
-                        arrows={false}
-                        showDots={false}
-                    >
-                        {products.map((product) => (
-                            <div key={product._id} className="p-2">
-                                <ProductCard product={product} />
-                            </div>
-                        ))}
-                    </Carousel>
-                </div>
-            </div>
-        </section>
+        <div className="w-full">
+            <Carousel
+                responsive={responsive}
+                infinite
+                autoPlay
+                autoPlaySpeed={3000}
+                pauseOnHover
+                arrows={false}
+                showDots={false}
+                containerClass="gap-4"
+                itemClass="px-2"
+            >
+                {products.map((product) => (
+                    <ProductCard key={product._id} product={product} />
+                ))}
+            </Carousel>
+        </div>
     )
 }

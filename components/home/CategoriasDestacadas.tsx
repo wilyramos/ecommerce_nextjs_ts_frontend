@@ -31,8 +31,8 @@ export default function CategoriasDestacadas({
     );
 
     return (
-        <section className="w-full py-10 bg-gradient-to-r from-gray-50 via-slate-50 to-gray-50">
-            <div className="max-w-7xl mx-auto px-5">
+        <section className="w-full py-10">
+            <div className="max-w-7xl mx-auto px-2">
                 <Carousel
                     responsive={responsive}
                     infinite
@@ -47,7 +47,7 @@ export default function CategoriasDestacadas({
                         <Link
                             key={categoria._id}
                             href={`/categoria/${categoria.slug}`}
-                            className="bg-white rounded-xl shadow hover:shadow-md transition p-4 flex flex-col items-center text-center group"
+                            className="bg-white border-2 rounded-lg hover:shadow-md transition p-4 flex flex-col items-center text-center group"
                         >
                             <Image
                                 src={

@@ -9,7 +9,7 @@ export default function MaintenanceNotice({
     showHomeButton = true,
 }) {
     return (
-        <div className="flex flex-col items-center justify-center text-center min-h-[60vh] px-6 py-12 bg-white rounded-xl shadow-md border border-gray-200">
+        <div className="flex flex-col items-center justify-center text-center min-h-[60vh] px-6 py-12">
             <div className="bg-yellow-100 text-yellow-600 p-4 rounded-full mb-6">
                 <MdBuild className="text-5xl animate-pulse" />
             </div>

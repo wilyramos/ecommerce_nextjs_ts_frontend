@@ -1,4 +1,7 @@
-// src/data/categoriasEstaticas.ts
+import { IconType } from "react-icons";
+import { MdSmartphone } from "react-icons/md";
+import { PiHeadphonesBold } from "react-icons/pi";
+import { HiOutlineDevicePhoneMobile } from "react-icons/hi2";
 
 export interface Subcategoria {
     slug: string;
@@ -8,6 +11,7 @@ export interface Subcategoria {
 export interface CategoriaConSubcategorias {
     slug: string;
     name: string;
+    icon: IconType; // Icono para la categoría
     subcategorias: Subcategoria[];
 }
 
@@ -15,6 +19,7 @@ export const categoriasEstaticas: CategoriaConSubcategorias[] = [
     {
         name: "Smartphones",
         slug: "smartphones",
+        icon: MdSmartphone,
         subcategorias: [
             { name: "iPhone", slug: "iphone" },
             { name: "Android", slug: "android" },
@@ -23,6 +28,7 @@ export const categoriasEstaticas: CategoriaConSubcategorias[] = [
     {
         name: "Accesorios para Celulares",
         slug: "accesorios-para-celulares",
+        icon: HiOutlineDevicePhoneMobile,
         subcategorias: [
             { name: "Fundas y Carcasas", slug: "fundas-y-carcasas" },
             { name: "Protectores de Pantalla", slug: "protectores-de-pantalla" },
@@ -31,52 +37,12 @@ export const categoriasEstaticas: CategoriaConSubcategorias[] = [
             { name: "Auriculares y audífonos", slug: "auriculares-y-audifonos" },
         ],
     },
-    // {
-    //     name: "Computadoras y Laptops",
-    //     slug: "computadoras-y-laptops",
-    //     subcategorias: [
-    //         { name: "Laptops", slug: "laptops" },
-    //         { name: "PCs de escritorio", slug: "pcs-de-escritorio" },
-    //         { name: "Monitores", slug: "monitores" },
-    //         { name: "Teclados y Mouse", slug: "teclados-y-mouse" },
-    //     ],
-    // },
     {
         name: "Audio y Video",
         slug: "audio-y-video",
+        icon: PiHeadphonesBold,
         subcategorias: [
-            // { name: "Smart TVs", slug: "smart-tvs" },
             { name: "Auriculares y audífonos", slug: "auriculares-y-audifonos" },
-            // { name: "Parlantes", slug: "parlante" },
-            // { name: "Micrófonos", slug: "microfonos" },
         ],
     },
-    // {
-    //     name: "Gaming",
-    //     slug: "gaming",
-    //     subcategorias: [
-    //         { name: "Consolas", slug: "consolas-playstation-xbox-nintendo" },
-    //         { name: "Juegos", slug: "juegos" },
-    //         { name: "Controles y Mandos", slug: "controles-y-mandos" },
-    //         { name: "Accesorios Gamer", slug: "accesorios-gamer" },
-    //     ],
-    // },
-    // {
-    //     name: "Redes y Almacenamiento",
-    //     slug: "redes-y-almacenamiento",
-    //     subcategorias: [
-    //         { name: "Routers y Repetidores", slug: "routers-y-repetidores" },
-    //         { name: "Discos Duros Externos", slug: "discos-duros-externos" },
-    //         { name: "Memorias USB", slug: "memorias-usb-pendrives" },
-    //         { name: "Tarjetas de Memoria", slug: "tarjetas-de-memoria" },
-    //     ],
-    // },
-    // {
-    //     name: "Especiales",
-    //     slug: "especiales",
-    //     subcategorias: [
-    //         { name: "Novedades", slug: "novedades" },
-    //         { name: "Ofertas", slug: "ofertas" },
-    //     ],
-    // },
 ];

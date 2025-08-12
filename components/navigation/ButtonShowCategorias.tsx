@@ -45,30 +45,36 @@ export default function ButtonShowCategorias() {
                         {categoriasEstaticas.map((cat) => (
                             <div key={cat.slug}>
                                 <details className="group">
-                                    <summary className="cursor-pointer list-none flex items-center justify-between text-base font-semibold hover:text-gray-100 transition-all px-2 py-2 hover:bg-blue-800 rounded-xl">
-                                        <span>{cat.name}</span>
+                                    <summary className="cursor-pointer list-none flex items-center justify-between text-base font-semibold px-2 py-2 rounded-lg transition-colors duration-200 hover:text-indigo-600 hover:bg-indigo-50">
+                                        <span className="flex items-center gap-2">
+                                            <cat.icon size={18} className="text-indigo-600 group-hover:text-indigo-700 transition-colors" />
+                                            {cat.name}
+                                        </span>
                                         <PiCaretRightBold
                                             size={16}
-                                            className="text-gray-400 transition-transform group-open:rotate-90"
+                                            className="text-gray-400 transition-transform group-open:rotate-90 group-hover:text-indigo-600"
                                         />
                                     </summary>
+
                                     <ul className="pl-4 mt-2 space-y-1">
                                         {cat.subcategorias.map((sub) => (
                                             <li key={sub.slug}>
                                                 <Link
                                                     href={`/categoria/${sub.slug}`}
                                                     onClick={() => setOpen(false)}
-                                                    className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-100 transition-all py-1 px-2 hover:bg-blue-800 rounded-md"
+                                                    className="flex items-center gap-2 text-sm text-gray-600 transition-colors duration-200 hover:text-indigo-600"
                                                 >
-                                                    <PiCaretRightBold className="text-gray-300" size={14} />
+                                                    <PiCaretRightBold className="text-gray-300 group-hover:text-indigo-500 transition-colors" size={14} />
                                                     {sub.name}
                                                 </Link>
+
                                             </li>
                                         ))}
                                     </ul>
                                 </details>
                             </div>
                         ))}
+
                     </div>
                 </ScrollArea>
             </SheetContent>

@@ -5,6 +5,7 @@ import CarruselPrincipal from "@/components/home/CarruselPrincipal";
 import ProductosNuevos from "@/components/home/ProductosNuevos";
 import ProductosDestacados from "@/components/home/ProductosDestacados";
 import CategoriasDestacadasWrapper from "@/components/home/CategoriasDestacadasWrapper";
+import FeaturesList from "@/components/home/FeaturesList";
 
 
 export const metadata: Metadata = {
@@ -68,6 +69,10 @@ export default function HomePage() {
   
         <section className="">
           <ProductosNuevos />
+        </section>
+
+        <section>
+          <FeaturesList />
         </section>
   
         <section className="">

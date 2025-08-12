@@ -13,7 +13,7 @@ export default async function ProductosNuevos() {
     }
 
     return (
-        <section className="py-4 bg-gradient-to-r from-white via-slate-50 to-white">
+        <section className="py-4 bg-gradient-to-r from-slate-100 via-slate-100 to-gray-100">
             <div className="max-w-7xl mx-auto px-4">
                 <div className=" mb-2">
                     <h2 className="text-xl font-bold text-black">
