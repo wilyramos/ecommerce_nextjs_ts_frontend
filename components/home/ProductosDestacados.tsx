@@ -14,18 +14,18 @@ export default async function ProductosDestacados() {
     }
 
     return (
-        <section className="py-10">
-            <div className="max-w-7xl mx-auto px-4 grid gap-8 grid-cols-1 md:grid-cols-4 bg-slate-200 p-3 rounded-2xl">
+        <section className="py-4">
+            <div className="max-w-7xl mx-auto px-4 grid gap-8 grid-cols-1 md:grid-cols-4 bg-black p-3 rounded-2xl">
                 
                 {/* Texto introductorio */}
                 <header className="md:col-span-1 flex flex-col justify-center">
                     <div className="flex items-center gap-2 text-indigo-600">
                         <FiStar className="w-6 h-6 flex-shrink-0" />
-                        <h2 className="text-xl font-bold text-gray-900">
+                        <h2 className="text-xl font-bold text-gray-100">
                             Lo mejor de GoPhone
                         </h2>
                     </div>
-                    <p className="mt-2 text-gray-600">
+                    <p className="mt-2 text-gray-100">
                         Descubre nuestros productos más populares y recomendados a precios únicos.
                     </p>
                 </header>

@@ -1,0 +1,45 @@
+"use server";
+
+export type IzipayPaymentPayload = {
+  amount: number;
+  currency: string;
+  orderId: string;
+  customer: {
+    email: string;
+    reference: string;
+  };
+};
+
+export async function createPaymentIzipay(
+  paymentData: IzipayPaymentPayload
+): Promise<{ formToken: string }> {
+  const response = await fetch(
+    "http://localhost:4000/api/checkout/izipay/create-payment",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(paymentData),
+      // Next.js fetch: no-cache para siempre pedir fresh (opcional)
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Error creando pago Izipay: ${errorText}`);
+  }
+
+  const data = await response.json();
+
+  console.log("Respuesta de Izipay:", data);
+
+  const formToken = data?.paymentData?.answer?.formToken;
+
+  if (!formToken) {
+    throw new Error("No se recibió el token de formulario en la respuesta");
+  }
+
+  return { formToken };
+}

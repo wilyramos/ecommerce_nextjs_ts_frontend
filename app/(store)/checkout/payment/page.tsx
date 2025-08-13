@@ -1,6 +1,7 @@
 // frontend/src/app/payment/page.tsx
 import { FiCreditCard } from "react-icons/fi";
 import CheckoutMercadoPagoBricks from "@/components/checkout/mercadopago/CheckoutMercadoPagoBricks";
+import CheckoutIzipay from "@/components/checkout/izipay/CheckoutIzipay";
 // import CheckoutCulqi from "@/components/checkout/culqi/CheckoutCulqi";
 // import CheckoutSelector from "@/components/checkout/CheckoutSelector";
 
@@ -16,12 +17,13 @@ export default function PaymentPage() {
             </div>
             <div>
                 {/* <h2>Pagar con mercado pago</h2> */}
-                <CheckoutMercadoPagoBricks />
+                {/* <CheckoutMercadoPagoBricks /> */}
             </div>
 
             <div>
                 {/* <CheckoutSelector /> */}
                 {/* <CheckoutCulqi /> */}
+                <CheckoutIzipay />
             </div>
         </div>
     );

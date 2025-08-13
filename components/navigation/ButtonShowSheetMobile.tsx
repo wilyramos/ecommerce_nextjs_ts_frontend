@@ -33,11 +33,11 @@ export default function ButtonShowSheetMobile() {
                 {/* Encabezado con Logo y subtítulo */}
                 <div className="pb-4 border-b border-gray-200 mb-2">
                     <SheetHeader>
-                        <SheetTitle className="text-xl font-bold text-gray-900 flex flex-col items-center gap-2">
+                        <SheetTitle className="text-xl font-bold text-gray-900 flex flex-col gap-2">
                             <Logo />
-                            <span className="text-sm font-normal text-gray-500">
-                                Explora por categoría
-                            </span>
+                            <p className="text-start text-sm font-normal text-gray-500">
+                                Explora por <span className="text-black uppercase font-bold">categorías</span>
+                            </p>
                         </SheetTitle>
                     </SheetHeader>
                 </div>
@@ -66,8 +66,10 @@ export default function ButtonShowSheetMobile() {
                         {categoriasEstaticas.map((cat) => (
                             <div key={cat.slug}>
                                 <details className="group">
-                                    <summary className="cursor-pointer list-none flex items-center justify-between text-base font-semibold text-gray-900 hover:text-indigo-600 transition-all px-1 py-2 hover:bg-gray-50 rounded-md">
-                                        <span>{cat.name}</span>
+                                    <summary className="cursor-pointer list-none flex items-center text-base font-semibold text-gray-900 hover:text-indigo-600 transition-all px-1 py-2 hover:bg-gray-50 rounded-md gap-2">
+                                        <cat.icon size={18} className="" />
+
+                                        <span className="text-black">{cat.name}</span>
                                         <PiCaretRightBold
                                             size={16}
                                             className="text-gray-400 transition-transform group-open:rotate-90"
@@ -79,9 +81,9 @@ export default function ButtonShowSheetMobile() {
                                                 <Link
                                                     href={`/categoria/${sub.slug}`}
                                                     onClick={() => setOpen(false)}
-                                                    className="flex items-center gap-2 text-sm text-gray-600 hover:text-indigo-600 transition-all py-1 px-2 hover:bg-indigo-50 rounded-md"
+                                                    className="flex items-center gap-2 text-sm text-gray-800 hover:text-indigo-600 transition-all py-1 px-2 hover:bg-indigo-50 rounded-md"
                                                 >
-                                                    <PiCaretRightBold className="text-gray-300" size={14} />
+                                                    <PiCaretRightBold className="text-gray-500" size={14} />
                                                     {sub.name}
                                                 </Link>
                                             </li>
