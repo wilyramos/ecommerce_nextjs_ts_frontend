@@ -75,6 +75,7 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
 
 
 
+
     const clearFilters = () => {
         const cleared: Record<string, null> = {};
         attributes.forEach(attr => cleared[attr.name] = null);
@@ -83,7 +84,10 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
         updateParams({
             ...cleared,
             priceRange: null,
+            sort: null,
         });
+
+
     };
 
 
@@ -104,7 +108,7 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
 
             {/* Filtro por Precio */}
             <div className="mb-6">
-                <h2 className="text-sm font-medium text-gray-700 mb-1">Precio</h2>
+                <h2 className="text-sm font-medium text-black mb-1">Precio</h2>
                 <Range
                     step={10}
                     min={MIN}
@@ -132,7 +136,7 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
                     }}
 
                 />
-                <div className="flex justify-between text-xs text-gray-500 pt-2 px-1">
+                <div className="flex justify-between text-xs text-black pt-2 px-1">
                     <span>S/ {priceValues[0]}</span>
                     <span>S/ {priceValues[1]}</span>
                 </div>
@@ -144,21 +148,21 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
                     <Disclosure key={attr.name}>
                         {({ open }) => (
                             <div>
-                                <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-gray-700 border-b py-2">
+                                <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-black border-b py-2 hover:bg-gray-100">
                                     <span>{attr.name}</span>
                                     <ChevronUpIcon className={`w-5 h-5 transform transition-transform ${open ? "rotate-180" : ""}`} />
                                 </Disclosure.Button>
                                 <Disclosure.Panel className="pt-2 pl-1 text-sm text-gray-600">
                                     <ul className="space-y-1">
                                         {attr.values.map(value => (
-                                            <li key={value} className="flex items-center gap-2">
+                                            <li key={value} className="flex items-center gap-2 hover:bg-gray-100 cursor-pointer py-1">
                                                 <input
                                                     type="checkbox"
                                                     name={`${attr.name}-${value}`}
                                                     value={value}
                                                     checked={!!selectedFilters[attr.name]?.includes(value)}
                                                     onChange={() => toggleCheckboxValue(attr.name, value)}
-                                                    className="accent-blue-600"
+                                                    className="accent-blue-600 "
                                                 />
 
                                                 <label className="text-sm text-gray-600">{value}</label>

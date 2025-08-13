@@ -6,8 +6,8 @@ import {
 
 export default function PaymentMethods() {
     const icons = [
-        { icon: <FaCcVisa />, label: "Visa", className: "text-blue-500" },
-        { icon: <FaCcMastercard />, label: "Mastercard", className: "text-gray-600" },
+        { icon: <FaCcVisa />, label: "Visa", className: "text-blue-700" },
+        { icon: <FaCcMastercard />, label: "Mastercard", className: "text-gray-500" },
     ];
 
     return (
@@ -24,11 +24,9 @@ export default function PaymentMethods() {
                 ))}
 
                 {/* Yape como imagen */}
-                <div title="Yape" className="cursor-default opacity-80 hover:opacity-100 transition w-10 h-10 relative">
+                <div title="Yape" className="cursor-default opacity-80 hover:opacity-100 transition w-11 h-11 relative">
                     <Image src="/yape.png" alt="Yape" fill style={{ objectFit: "contain" }} />
                 </div>
-
-                {/* Aquí podrías poner Plin con SVG o imagen similar */}
             </div>
         </section>
     );

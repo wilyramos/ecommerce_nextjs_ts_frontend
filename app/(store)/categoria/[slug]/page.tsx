@@ -86,9 +86,6 @@ export default async function pageCategoria({
             <section className="grid grid-cols-1 sm:grid-cols-5 gap-6">
                 {/* Filtros */}
                 <div className="sm:col-span-1">
-                    <h2 className="text-lg font-semibold text-gray-500 pb-2">
-                        Filtros
-                    </h2>
                     <Suspense fallback={<SpinnerLoading />}>
                         <FiltrosPorCategoria categorySlug={slug} />
                     </Suspense>

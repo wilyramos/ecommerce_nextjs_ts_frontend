@@ -33,12 +33,12 @@ export default function MainCarousel({ products }: { products: Product[] }) {
                         className="relative w-full flex flex-col md:flex-row bg-white overflow-hidden group h-auto md:h-[440px]"
                     >
                         {/* Fondo decorativo */}
-                        <div className="hidden md:block absolute -bottom-1 -left-20 w-[300px] h-[300px] bg-sky-200 rounded-full z-0 blur-3xl opacity-30"></div>
+                        <div className="hidden md:block absolute -bottom-1 -left-20 w-[700px] h-[800px] bg-indigo-300 rounded-full blur-2xl opacity-10"></div>
 
                         {/* Texto */}
                         <div className="z-10 w-full md:w-1/2 flex flex-col justify-center items-start px-6 sm:px-10 md:px-16 py-8 sm:py-10 md:py-16 gap-4 sm:gap-5 md:gap-6">
-                            <div className="flex items-center gap-2 text-indigo-600 font-semibold text-xs sm:text-sm uppercase tracking-wide">
-                                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5" />
+                            <div className="flex items-center gap-2 text-indigo-800 font-bold text-xs sm:text-sm uppercase tracking-wide">
+                                <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 " />
                                 Nuevo lanzamiento
                             </div>
 

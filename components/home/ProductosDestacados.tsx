@@ -32,7 +32,6 @@ export default async function ProductosDestacados() {
 
                 {/* Carrusel */}
                 <div className="flex flex-col md:col-span-3">
-                    <div className="w-16 h-1 bg-indigo-600 rounded-full mb-4 md:mb-6" />
                     <ClientCarouselProductosNuevos products={productsDestacados.products} />
                 </div>
             </div>
