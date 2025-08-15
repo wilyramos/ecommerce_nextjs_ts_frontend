@@ -8,7 +8,7 @@ export default function ProductCard({ product }: { product: Product }) {
     const color = product.atributos?.Color || null;
 
     return (
-        <div className="group relative flex flex-col bg-white text-gray-700 rounded-2xl border border-gray-100 shadow-lg transform transition-transform duration-500 hover:scale-[1.03] overflow-visible my-2">
+        <div className="group relative flex flex-col bg-white text-gray-700 rounded-xl shadow-mds transform transition-transform duration-500 hover:scale-[1.03] overflow-visible my-2">
             <Link href={`/productos/${product.slug}`} className="flex flex-col h-full">
                 {/* Imagen */}
                 <div className="relative w-full aspect-square bg-gray-100 overflow-hidden rounded-t-xl">
@@ -59,13 +59,13 @@ export default function ProductCard({ product }: { product: Product }) {
 
                 {/* Info */}
                 <div className="flex flex-col justify-between flex-1 p-3 gap-2">
-                    <h3 className="text-xs md:text-sm font-medium text-black line-clamp-3 leading-tight">
+                    <h3 className="text-xs md:text-sm line-clamp-3 leading-tight text-gray-800">
                         {product.nombre}
                     </h3>
-                    <div className="flex items-center gap-2 text-md font-base text-gray-600">
+                    <div className="flex items-center gap-2 text-md font-base text-gray-700">
                         {color && <ColorCircle color={color} />}
-                        <div className="ml-auto">
-                            <span className="text-xs font-bold">s/ </span>
+                        <div className="ml-auto font-bold">
+                            <span className="text-xs">s/ </span>
                             {product.precio.toFixed(2)}
                         </div>
                     </div>
