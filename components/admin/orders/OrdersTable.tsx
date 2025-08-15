@@ -12,7 +12,7 @@ import {
 } from 'react-icons/fa';
 
 interface OrdersTableProps {
-    orders: TOrder[];
+    orders: TOrder[];   
 }
 
 export default function OrdersTable({ orders }: OrdersTableProps) {
@@ -63,7 +63,9 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
                                     <div>
                                         S/. {order.totalPrice.toFixed(2)}
                                     </div>
-
+                                    <span>
+                                        {order.payment.status}
+                                    </span>
                                    
                                 </div>
                             </td>

@@ -99,9 +99,10 @@ export default function OrdersTableFilters() {
                                     className="w-full pl-8 pr-2 py-1 border-b-2 bg-white focus:outline-none focus:border-gray-800"
                                 >
                                     <option value="">Estado de Pago</option>
-                                    <option value="PAGADO">Pagado</option>
-                                    <option value="PENDIENTE">Pendiente</option>
-                                    <option value="CANCELADO">Cancelado</option>
+                                    <option value="pending">Pendiente</option>
+                                    <option value="approved">Aprobado</option>
+                                    <option value="rejected">Rechazado</option>
+                                    <option value="refunded">Reembolsado</option>
                                 </select>
                             </div>
                         </th>

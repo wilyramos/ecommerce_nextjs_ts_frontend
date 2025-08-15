@@ -35,7 +35,7 @@ export default function ClientsTableFilters() {
     };        
 
     return (
-        <tr className="bg-gray-200 text-black font-bold">
+        <tr className="bg-gray-50 py-4 font-bold ">
             <td className="px-2 py-1">
                 <div className="relative">
                     <input
@@ -44,7 +44,7 @@ export default function ClientsTableFilters() {
                         placeholder="Nombre"
                         value={filters.nombre}
                         onChange={handleChange}
-                        className="pl-8 py-2 border-b w-full text-sm focus:outline-none focus:border-black focus:border-b-3"
+                        className="pl-8 py-2 w-full text-sm focus:outline-none focus:border-black focus:border-b-3"
                      />
                     <FiSearch className="absolute left-1.5 top-1/2 -translate-y-1/2 text-gray-400" />
                 </div>
@@ -57,7 +57,7 @@ export default function ClientsTableFilters() {
                         placeholder="Email"
                         value={filters.email}
                         onChange={handleChange}
-                        className="pl-8 py-2 border-b w-full text-sm focus:outline-none focus:border-gray-800 focus:border-b-2"
+                        className="pl-8 py-2 border-b w-full text-sm focus:outline-none focus:border-gray-800 focus:border-b-3"
                      />
                     <FiSearch className="absolute left-1.5 top-1/2 -translate-y-1/2 text-gray-400" />
                 </div>
@@ -70,7 +70,7 @@ export default function ClientsTableFilters() {
                         placeholder="Teléfono"
                         value={filters.telefono}
                         onChange={handleChange}
-                        className="pl-8 py-2 border-b w-full text-sm focus:outline-none focus:border-gray-800 focus:border-b-2"
+                        className="pl-8 py-2 border-b w-full text-sm focus:outline-none focus:border-gray-800 focus:border-b-3"
                      />
                     <FiSearch className="absolute left-1.5 top-1/2 -translate-y-1/2 text-gray-400" />
                 </div>
@@ -83,7 +83,7 @@ export default function ClientsTableFilters() {
                         placeholder="Documento"
                         value={filters.numeroDocumento}
                         onChange={handleChange}
-                        className="pl-8 py-2 border-b w-full text-sm focus:outline-none focus:border-gray-800 focus:border-b-2"
+                        className="pl-8 py-2 border-b w-full text-sm focus:outline-none focus:border-gray-800 focus:border-b-3"
                      />
                     <FiSearch className="absolute left-1.5 top-1/2 -translate-y-1/2 text-gray-400" />
                 </div>

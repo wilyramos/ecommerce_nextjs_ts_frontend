@@ -1,5 +1,3 @@
-// FILE:
-
 import { getOrder } from "@/src/services/orders";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils";
@@ -24,20 +22,22 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
         );
     }
 
+    const currency = order.currency || "PEN";
+
     return (
         <div className="max-w-6xl mx-auto px-4 py-6 space-y-6 text-gray-800">
             {/* Header */}
-            <div className="flex items-start justify-between border-b pb-4">
+            <div className="flex items-start justify-between border-b pb-4 flex-wrap gap-3">
                 <div>
                     <h1 className="text-2xl font-semibold flex items-center gap-2">
                         <FaBoxOpen className="text-gray-500" />
-                        Pedido #{order._id.slice(-6).toUpperCase()}
+                        {order.orderNumber}
                     </h1>
-                    <p className="text-sm text-gray-500 mt-1">Creado el {formatDate(order.createdAt)}</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                        Creado el {formatDate(order.createdAt)}
+                    </p>
                 </div>
-                <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
-                    <OrderStatusBadge status={order.status} />
-                </div>
+                <OrderStatusBadge status={order.status} />
             </div>
 
             {/* Acción Rápida */}
@@ -45,9 +45,15 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
                 <Link href="/admin/orders" className="text-sm text-white bg-gray-800 px-3 py-1 rounded hover:bg-gray-900">
                     &larr; Volver
                 </Link>
-                <button className="text-sm px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700">Entregado</button>
-                <button className="text-sm px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">Imprimir</button>
-                <button className="text-sm px-3 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300">Archivar</button>
+                <button className="text-sm px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700">
+                    Marcar como entregado
+                </button>
+                <button className="text-sm px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700">
+                    Imprimir
+                </button>
+                <button className="text-sm px-3 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300">
+                    Archivar
+                </button>
             </div>
 
             {/* Info agrupada */}
@@ -55,7 +61,8 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
                 {/* Cliente */}
                 <div className="bg-white border rounded p-4">
                     <h2 className="text-sm font-semibold text-gray-700 mb-2">Cliente</h2>
-                    <p className="text-sm"><strong>Nombre:</strong> {order.user.nombre} </p>
+                    <p className="text-sm"><strong>Nombre:</strong> {order.user.nombre} {order.user.apellidos}</p>
+                    <p className="text-sm"><strong>Email:</strong> {order.user.email}</p>
                 </div>
 
                 {/* Pago */}
@@ -69,17 +76,20 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
                 {/* Envío */}
                 <div className="bg-white border rounded p-4">
                     <h2 className="text-sm font-semibold text-gray-700 mb-2">Envío</h2>
-                    <p className="text-sm">{order.shippingAddress?.direccion}, {order.shippingAddress?.numero}</p>
-                    <p className="text-sm">{order.shippingAddress?.distrito}, {order.shippingAddress?.provincia}, {order.shippingAddress?.departamento}</p>
-                    {order.shippingAddress?.referencia && <p className="text-sm"><strong>Ref:</strong> {order.shippingAddress.referencia}</p>}
-
+                    <p className="text-sm">{order.shippingAddress?.direccion}</p>
+                    <p className="text-sm">
+                        {order.shippingAddress?.distrito}, {order.shippingAddress?.provincia}, {order.shippingAddress?.departamento}
+                    </p>
+                    {order.shippingAddress?.referencia && (
+                        <p className="text-sm"><strong>Ref:</strong> {order.shippingAddress.referencia}</p>
+                    )}
                 </div>
             </div>
 
             {/* Tabla de productos */}
-            <div className="bg-white border rounded p-4">
+            <div className="bg-white border rounded p-4 overflow-x-auto">
                 <h2 className="text-sm font-semibold text-gray-700 mb-2">Productos</h2>
-                <table className="w-full text-sm">
+                <table className="w-full text-sm min-w-[500px]">
                     <thead className="bg-gray-50 text-gray-600 text-xs uppercase border-b">
                         <tr>
                             <th className="text-left py-2 px-3">Producto</th>
@@ -98,13 +108,18 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
                                             src={product.imagenes?.[0] || "/logomini.svg"}
                                             alt={product.nombre || "Producto sin imagen"}
                                             className="w-10 h-10 object-cover rounded"
+                                            width={40}
+                                            height={40}
                                         />
                                         <span>{product.nombre}</span>
-                                        
                                     </td>
                                     <td className="text-center py-2 px-3">{item.quantity}</td>
-                                    <td className="text-right py-2 px-3">S/. {item.price.toFixed(2)}</td>
-                                    <td className="text-right py-2 px-3">S/. {(item.quantity * item.price).toFixed(2)}</td>
+                                    <td className="text-right py-2 px-3">
+                                        {currency} {item.price.toFixed(2)}
+                                    </td>
+                                    <td className="text-right py-2 px-3">
+                                        {currency} {(item.quantity * item.price).toFixed(2)}
+                                    </td>
                                 </tr>
                             );
                         })}
@@ -114,16 +129,21 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
 
             {/* Notas + Historial + Totales */}
             <div className="grid md:grid-cols-2 gap-4">
-                {/* Notas & Historial */}
-                <div className="space-y-3">
-                   
-
-                    <div className="bg-white border rounded p-3">
-                        <h3 className="font-medium text-sm text-gray-700 mb-2">Historial de estado</h3>
+                {/* Historial */}
+                <div className="bg-white border rounded p-3">
+                    <h3 className="font-medium text-sm text-gray-700 mb-2">Historial de estado</h3>
+                    {order.statusHistory?.length ? (
                         <ul className="text-sm text-gray-700 space-y-1">
-                            {/* {order.} */}
+                            {order.statusHistory.map((h, idx) => (
+                                <li key={idx} className="flex justify-between">
+                                    <span>{h.status}</span>
+                                    <span className="text-gray-500">{formatDate(String(h.changedAt))}</span>
+                                </li>
+                            ))}
                         </ul>
-                    </div>
+                    ) : (
+                        <p className="text-sm text-gray-500">Sin cambios de estado registrados</p>
+                    )}
                 </div>
 
                 {/* Totales */}
@@ -131,16 +151,16 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
                     <h3 className="font-semibold text-gray-700 text-base">Resumen del pedido</h3>
                     <div className="flex justify-between text-sm text-gray-700">
                         <span>Subtotal:</span>
-                        <span>S/. {order.subtotal.toFixed(2)}</span>
+                        <span>{currency} {order.subtotal.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-sm text-gray-700">
                         <span>Envío:</span>
-                        <span>S/. {order.shippingCost.toFixed(2)}</span>
+                        <span>{currency} {order.shippingCost.toFixed(2)}</span>
                     </div>
                     <hr />
                     <div className="flex justify-between text-base font-bold text-black">
                         <span>Total:</span>
-                        <span>S/. {order.totalPrice.toFixed(2)}</span>
+                        <span>{currency} {order.totalPrice.toFixed(2)}</span>
                     </div>
                 </div>
             </div>

@@ -6,10 +6,11 @@ import { BsCheckCircleFill } from "react-icons/bs";
 import type { TOrderStatus } from "@/src/schemas/index"
 
 const steps = [
-    { label: "Pendiente", value: "PENDIENTE" },
-    { label: "Procesando", value: "PROCESANDO" },
-    { label: "Enviado", value: "ENVIADO" },
-    { label: "Entregado", value: "ENTREGADO" },
+    { label: "Esperando pago", value: "awaiting_payment" },
+    { label: "Procesando", value: "processing" },
+    { label: "Enviado", value: "shipped" },
+    { label: "Entregado", value: "delivered" },
+    { label: "Cancelado", value: "canceled" },
 ];
 
 

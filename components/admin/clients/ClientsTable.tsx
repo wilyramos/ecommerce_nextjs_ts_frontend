@@ -28,7 +28,7 @@ export default function ClientsTable({ clients }: Props) {
 
           {/* Datos */}
           {clientes.map((client) => (
-            <tr key={client._id} className="hover:bg-gray-100 text-black text-sm md:text-md border-b-1">
+            <tr key={client._id} className="hover:bg-gray-100 text-sm md:text-md ">
               <td className="px-4 py-2">{client.nombre}</td>
               <td className="px-4 py-2">{client.email}</td>
               <td className="px-4 py-2">{client.telefono}</td>
