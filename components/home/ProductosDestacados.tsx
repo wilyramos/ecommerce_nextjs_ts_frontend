@@ -15,7 +15,7 @@ export default async function ProductosDestacados() {
 
     return (
         <section className="py-4">
-            <div className="max-w-7xl mx-auto px-4 grid gap-8 grid-cols-1 md:grid-cols-4 bg-black p-3 rounded-2xl">
+            <div className="max-w-7xl mx-auto px-4 grid gap-8 grid-cols-1 md:grid-cols-4 bg-black p-3">
                 
                 {/* Texto introductorio */}
                 <header className="md:col-span-1 flex flex-col justify-center">
