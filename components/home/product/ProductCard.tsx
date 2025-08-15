@@ -62,13 +62,14 @@ export default function ProductCard({ product }: { product: Product }) {
                     <h3 className="text-xs md:text-sm font-medium text-black line-clamp-3 leading-tight">
                         {product.nombre}
                     </h3>
-                    <div className="flex justify-between items-center gap-2 text-md font-base text-gray-600 ">
+                    <div className="flex items-center gap-2 text-md font-base text-gray-600">
                         {color && <ColorCircle color={color} />}
-                        <div>
+                        <div className="ml-auto">
                             <span className="text-xs font-bold">s/ </span>
                             {product.precio.toFixed(2)}
                         </div>
                     </div>
+
                 </div>
             </Link>
         </div>
