@@ -13,8 +13,10 @@ export type IzipayPaymentPayload = {
 export async function createPaymentIzipay(
   paymentData: IzipayPaymentPayload
 ): Promise<{ formToken: string }> {
+
+  const url = process.env.API_URL;
   const response = await fetch(
-    "http://localhost:4000/api/checkout/izipay/create-payment",
+    `${url}/checkout/izipay/create-payment`,
     {
       method: "POST",
       headers: {
