@@ -11,21 +11,22 @@ export default function PaymentMethods() {
     ];
 
     return (
-        <section className="max-w-7xl mx-auto py-2 px-4">
+        <section className="max-w-7xl mx-auto">
             <div className="flex justify-center gap-8 items-center text-gray-700 text-6xl">
                 {icons.map(({ icon, label, className }) => (
                     <div
                         key={label}
                         title={label}
-                        className={`cursor-default opacity-80 hover:opacity-100 transition ${className}`}
+                        className={`cursor-default  opacity-80 hover:opacity-100 transition ${className}`}
                     >
                         {icon}
                     </div>
                 ))}
 
                 {/* Yape como imagen */}
-                <div title="Yape" className="cursor-default opacity-80 hover:opacity-100 transition w-11 h-11 relative">
-                    <Image src="/yape.png" alt="Yape" fill style={{ objectFit: "contain" }} />
+                <div title="Yape" className="cursor-default opacity-80 hover:opacity-100 transition w-8 h-8 relative">
+                    <Image src="/yape.png" alt="Yape" fill 
+                     />
                 </div>
             </div>
         </section>

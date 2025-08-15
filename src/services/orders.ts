@@ -2,7 +2,10 @@ import "server-only"
 
 
 import getToken from "@/src/auth/token"
-import { OrderResponseSchemaPopulate, OrdersAPIResponse } from "@/src/schemas";
+import { OrdersListResponseSchema } from "@/src/schemas";
+
+// === new 
+import { OrderPopulatedSchema } from "@/src/schemas";
 
 
 type GetOrdersParams = {
@@ -43,7 +46,7 @@ export const getOrders = async ({ page = 1, limit = 25, ...filters }: GetOrdersP
     }
 
     const json = await req.json();
-    const orders = OrdersAPIResponse.parse(json);
+    const orders = OrdersListResponseSchema.parse(json);
     console.log("Orders fetched:", orders);
     return orders;
 }
@@ -72,7 +75,9 @@ export const getOrder = async (id: string) => {
     const json = await req.json();
 
     console.log("Response from order fetch:", json);
-    const order = OrderResponseSchemaPopulate.parse(json);
+    const order = OrderPopulatedSchema.parse(json);
+    console.log("Parsed order:", order);
+    
     return order;
 }
 
@@ -92,6 +97,6 @@ export const getOrdersByUser = async ({ page = 1, limit = 5 }) => {
     }
 
     const json = await req.json();
-    const orders = OrdersAPIResponse.parse(json);
+    const orders = OrdersListResponseSchema.parse(json);
     return orders;
 }

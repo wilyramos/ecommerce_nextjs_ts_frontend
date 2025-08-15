@@ -2,8 +2,8 @@
 import { createMPPreference } from '@/actions/checkout/create-mp-preference';
 import { createOrderAction } from '@/actions/order/create-order-action';
 import { toast } from 'sonner';
-import type { CartItem } from '../schemas';
-import type { ShippingAddress as Shipping } from '../schemas';
+import type { CartItem, TCreateOrder } from '../schemas';
+import type { TShippingAddress as Shipping } from '../schemas';
 import type { ProfileFormData as Profile } from '../store/checkoutStore';
 
 export async function iniciarCheckoutMP(cart: CartItem[], shipping: Shipping, profile: Profile) {
@@ -13,7 +13,7 @@ export async function iniciarCheckoutMP(cart: CartItem[], shipping: Shipping, pr
     }
 
     try {
-        const orderData = {
+        const orderData: TCreateOrder = {
             items: cart.map(item => ({
                 productId: item._id,
                 quantity: item.cantidad,
@@ -28,11 +28,14 @@ export async function iniciarCheckoutMP(cart: CartItem[], shipping: Shipping, pr
                 distrito: shipping?.distrito || '',
                 direccion: shipping?.direccion || '',
                 numero: shipping?.numero || '',
-                piso: shipping?.piso || '',
+                pisoDpto: shipping?.pisoDpto || '',
                 referencia: shipping?.referencia || '',
             },
-            shippingMethod: 'DELIVERY',
-            notes: 'Orden generada desde el selector de pasarelas mp',
+            currency: "PEN",
+            payment: {
+                status: "pending",
+                provider: "mercadopago"
+            }
         };
 
         const response = await createOrderAction(orderData);
@@ -56,7 +59,7 @@ export async function iniciarCheckoutMP(cart: CartItem[], shipping: Shipping, pr
                 address: {
                     street_name: shipping?.direccion,
                     street_number: shipping?.numero,
-                    floor: shipping?.piso || '',
+                    floor: shipping?.pisoDpto || '',
                     apartment: shipping?.referencia || '',
                     city: shipping?.distrito,
                     state: shipping?.provincia,
@@ -74,7 +77,7 @@ export async function iniciarCheckoutMP(cart: CartItem[], shipping: Shipping, pr
                 address: {
                     street_name: shipping?.direccion || '',
                     street_number: shipping?.numero || '',
-                    floor: shipping?.piso || '',
+                    floor: shipping?.pisoDpto || '',
                     apartment: shipping?.referencia || '',
                     city: shipping?.distrito || '',
                 },

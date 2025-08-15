@@ -12,12 +12,6 @@ type Props = {
 };
 
 export default function IdentificacionForm({ user }: Props) {
-
-
-    // TODO: implementar para que el usuario pueda editar sus datos
-    // Hacer con un actionstate que actualice el perfil del usuario
-    // y luego redirigir a la página de envío
-
     const router = useRouter();
     const { profile, setProfile } = useCheckoutStore();
 
@@ -41,15 +35,17 @@ export default function IdentificacionForm({ user }: Props) {
             ...data,
             userId: user._id,
         });
-
         router.push('/checkout/shipping');
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="max-w-lg mx-auto space-y-1 pt-2">
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="max-w-md mx-auto space-y-4 pt-4"
+        >
             {/* Email */}
-            <div>
-                <label htmlFor="email" className="text-xs font-bold text-black">
+            <div className="space-y-1">
+                <label htmlFor="email" className="text-sm font-medium text-gray-700">
                     Correo electrónico
                 </label>
                 <input
@@ -63,35 +59,35 @@ export default function IdentificacionForm({ user }: Props) {
                         },
                     })}
                     disabled
-                    className="w-full px-4 py-2 border border-gray-300 rounded-full bg-gray-200 cursor-not-allowed text-gray-700"
+                    className="w-full px-4 py-2 bg-gray-100 text-gray-500 border border-gray-200 rounded-xl cursor-not-allowed focus:outline-none"
                 />
                 {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
             </div>
 
             {/* Nombre */}
             <div className="space-y-1">
-                <label htmlFor="nombre" className="text-xs font-bold text-black">
+                <label htmlFor="nombre" className="text-sm font-medium text-gray-700">
                     Nombre
                 </label>
                 <input
                     id="nombre"
                     type="text"
                     {...register('nombre', { required: 'El nombre es obligatorio' })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-full"
+                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                 />
                 {errors.nombre && <ErrorMessage>{errors.nombre.message}</ErrorMessage>}
             </div>
 
             {/* Apellidos */}
             <div className="space-y-1">
-                <label htmlFor="apellidos" className="text-xs font-bold text-black">
+                <label htmlFor="apellidos" className="text-sm font-medium text-gray-700">
                     Apellidos
                 </label>
                 <input
                     id="apellidos"
                     type="text"
                     {...register('apellidos', { required: 'Los apellidos son obligatorios' })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-full text-gray-700"
+                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                 />
                 {errors.apellidos && <ErrorMessage>{errors.apellidos.message}</ErrorMessage>}
             </div>
@@ -99,13 +95,13 @@ export default function IdentificacionForm({ user }: Props) {
             {/* Tipo + Número documento */}
             <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                    <label htmlFor="tipoDocumento" className="text-xs font-bold text-black">
+                    <label htmlFor="tipoDocumento" className="text-sm font-medium text-gray-700">
                         Tipo de documento
                     </label>
                     <select
                         id="tipoDocumento"
                         {...register('tipoDocumento', { required: 'Selecciona el tipo de documento' })}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-full bg-white"
+                        className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white"
                     >
                         <option value="DNI">DNI</option>
                         <option value="CE">Carné de extranjería</option>
@@ -115,7 +111,7 @@ export default function IdentificacionForm({ user }: Props) {
                 </div>
 
                 <div className="space-y-1">
-                    <label htmlFor="numeroDocumento" className="text-xs font-bold text-black">
+                    <label htmlFor="numeroDocumento" className="text-sm font-medium text-gray-700">
                         N° de documento
                     </label>
                     <input
@@ -125,7 +121,7 @@ export default function IdentificacionForm({ user }: Props) {
                             required: 'El número de documento es obligatorio',
                             minLength: { value: 8, message: 'Debe tener al menos 8 dígitos' },
                         })}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-full"
+                        className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                     />
                     {errors.numeroDocumento && <ErrorMessage>{errors.numeroDocumento.message}</ErrorMessage>}
                 </div>
@@ -133,7 +129,7 @@ export default function IdentificacionForm({ user }: Props) {
 
             {/* Teléfono */}
             <div className="space-y-1">
-                <label htmlFor="telefono" className="text-xs font-bold text-black">
+                <label htmlFor="telefono" className="text-sm font-medium text-gray-700">
                     Teléfono / Móvil
                 </label>
                 <input
@@ -146,7 +142,7 @@ export default function IdentificacionForm({ user }: Props) {
                             message: 'Debe contener 9 dígitos numéricos',
                         },
                     })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-full"
+                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                 />
                 {errors.telefono && <ErrorMessage>{errors.telefono.message}</ErrorMessage>}
             </div>
@@ -154,9 +150,9 @@ export default function IdentificacionForm({ user }: Props) {
             {/* Botón */}
             <button
                 type="submit"
-                className="w-full py-2 px-4 text-white bg-indigo-600 rounded-full hover:bg-indigo-700 font-bold transition-colors mt-4 hover:cursor-pointer"
+                className="w-full py-3 text-white bg-indigo-600 rounded-xl hover:bg-indigo-700 transition-colors font-medium shadow-sm cursor-pointer"
             >
-                Continuar 
+                Continuar
             </button>
         </form>
     );

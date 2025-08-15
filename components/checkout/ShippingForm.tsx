@@ -5,6 +5,9 @@ import { useForm } from 'react-hook-form';
 import ErrorMessage from '@/components/ui/ErrorMessage';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import type { TCreateOrder } from '@/src/schemas';
+import { useCartStore } from '@/src/store/cartStore';
+import { createOrderAction } from '@/actions/order/create-order-action';
 
 type ShippingData = {
     departamento: string;
@@ -12,13 +15,14 @@ type ShippingData = {
     distrito: string;
     direccion: string;
     numero?: string;
-    piso?: string;
+    pisoDpto?: string;
     referencia: string;
 };
 
 export default function ShippingForm() {
     const router = useRouter();
     const { shipping, setShipping } = useCheckoutStore((state) => state);
+    const { cart } = useCartStore((state) => state);
 
     const {
         register,
@@ -32,7 +36,7 @@ export default function ShippingForm() {
             distrito: shipping?.distrito || '',
             direccion: shipping?.direccion || '',
             numero: shipping?.numero || '',
-            piso: shipping?.piso || '',
+            pisoDpto: shipping?.pisoDpto || '',
             referencia: shipping?.referencia || '',
         },
     });
@@ -45,111 +49,154 @@ export default function ShippingForm() {
                 distrito: shipping.distrito || '',
                 direccion: shipping.direccion || '',
                 numero: shipping.numero || '',
-                piso: shipping.piso || '',
+                pisoDpto: shipping.pisoDpto || '',
                 referencia: shipping.referencia || '',
             });
         }
     }, [shipping, reset]);
 
-    const onSubmit = (data: ShippingData) => {
+    const onSubmit = async (data: ShippingData) => {
         setShipping(data);
-        router.push('/checkout/payment');
+        // Crear la orden
+        const orderPayload: TCreateOrder = {
+            items: cart.map(item => ({
+                productId: item._id,
+                quantity: item.cantidad,
+                price: item.precio,
+            })),
+            subtotal: cart.reduce((t, i) => t + i.precio * i.cantidad, 0),
+            shippingCost: 0,
+            totalPrice: cart.reduce((t, i) => t + i.precio * i.cantidad, 0) + 0,
+            shippingAddress: {
+                departamento: data?.departamento,
+                provincia: data?.provincia,
+                distrito: data?.distrito,
+                direccion: data?.direccion,
+                pisoDpto: data?.pisoDpto,
+                referencia: data?.referencia,
+            },
+            currency: "PEN",
+            payment: {
+                provider: "IZIPAY",
+                status: "pending"
+            }
+        };
+
+        const order = await createOrderAction(orderPayload);
+        console.log("Orden creada:", order);
+
+        localStorage.setItem("currentOrderId", order.order._id || "");
+
+        router.push(`/checkout/payment?orderId=${order.order._id}`);
     };
 
-    return (
-        <form className="max-w-lg mx-auto space-y-1 pt-2" onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div>
-                    <label className="text-xs font-bold">Departamento<span className="text-red-500">*</span></label>
 
+
+    return (
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="max-w-md mx-auto space-y-5 pt-4"
+        >
+            {/* Departamento / Provincia / Distrito */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="space-y-1">
+                    <label className="text-sm font-medium text-gray-700">
+                        Departamento <span className="text-red-500">*</span>
+                    </label>
                     <input
                         type="text"
                         {...register('departamento', { required: 'El departamento es obligatorio' })}
                         placeholder="Ej. Lima"
-                        className="mt-1 block w-full border border-gray-200 rounded-full px-3 py-2 text-sm shadow-xs"
+                        className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                     />
                     {errors.departamento && <ErrorMessage>{errors.departamento.message}</ErrorMessage>}
                 </div>
 
-                <div>
-                    <label className="text-xs font-bold">Provincia<span className="text-red-500">*</span></label>
+                <div className="space-y-1">
+                    <label className="text-sm font-medium text-gray-700">
+                        Provincia <span className="text-red-500">*</span>
+                    </label>
                     <input
                         type="text"
                         {...register('provincia', { required: 'La provincia es obligatoria' })}
                         placeholder="Ej. Lima"
-                        className="mt-1 block w-full border border-gray-200 rounded-full px-3 py-2 text-sm shadow-xs"
+                        className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                     />
                     {errors.provincia && <ErrorMessage>{errors.provincia.message}</ErrorMessage>}
                 </div>
 
-                <div>
-                    <label className="text-xs font-bold">Distrito<span className="text-red-500">*</span></label>
+                <div className="space-y-1">
+                    <label className="text-sm font-medium text-gray-700">
+                        Distrito <span className="text-red-500">*</span>
+                    </label>
                     <input
                         type="text"
                         {...register('distrito', { required: 'El distrito es obligatorio' })}
                         placeholder="Ej. Miraflores"
-                        className="mt-1 block w-full border border-gray-200 rounded-full px-3 py-2 text-sm shadow-xs"
+                        className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                     />
                     {errors.distrito && <ErrorMessage>{errors.distrito.message}</ErrorMessage>}
                 </div>
             </div>
 
-
-
-            <div>
-                <label className="text-xs font-bold">Dirección<span className="text-red-500">*</span></label>
+            {/* Dirección */}
+            <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-700">
+                    Dirección <span className="text-red-500">*</span>
+                </label>
                 <input
                     type="text"
                     {...register('direccion', { required: 'La dirección es obligatoria' })}
                     placeholder="Av. Siempre Viva 123"
-                    className="mt-1 block w-full border border-gray-200 rounded-full px-3 py-2 text-sm shadow-xs"
+                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                 />
                 {errors.direccion && <ErrorMessage>{errors.direccion.message}</ErrorMessage>}
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
-                <div>
-                    <label className="text-xs font-bold">Número</label>
+            {/* Número y Piso/Dpto */}
+            <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                    <label className="text-sm font-medium text-gray-700">Número</label>
                     <input
                         type="text"
                         {...register('numero')}
                         placeholder="Ej. 202"
-                        className="mt-1 block w-full border border-gray-200 rounded-full px-3 py-2 text-sm shadow-xs"
+                        className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                     />
                 </div>
 
-                <div>
-                    <label className="text-xs font-bold">Piso/Dpto</label>
+                <div className="space-y-1">
+                    <label className="text-sm font-medium text-gray-700">Piso / Dpto</label>
                     <input
                         type="text"
-                        {...register('piso')}
+                        {...register('pisoDpto')}
                         placeholder="Ej. 2do piso / 307"
-                        className="mt-1 block w-full border border-gray-200 rounded-full px-3 py-2 text-sm shadow-xs"
+                        className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                     />
                 </div>
-
-
             </div>
-            <div>
-                <label className="text-xs font-bold">Referencia<span className="text-red-500">*</span></label>
+
+            {/* Referencia */}
+            <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-700">
+                    Referencia <span className="text-red-500">*</span>
+                </label>
                 <input
                     type="text"
                     {...register('referencia', { required: 'La referencia es obligatoria' })}
                     placeholder="Ej. Frente a la tienda Tottus"
-                    className="mt-1 block w-full border border-gray-200 rounded-full px-3 py-2 text-sm shadow-xs"
+                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
                 />
                 {errors.referencia && <ErrorMessage>{errors.referencia.message}</ErrorMessage>}
             </div>
 
-            <div className="pt-4 text-center">
-
-                <button
-                    type="submit"
-                    className="w-full  py-2 px-4 text-white bg-indigo-600 rounded-full hover font-medium transition-colors mt-4 hover:cursor-pointer "
-                >
-                    Continuar con el pago
-                </button>
-            </div>
+            {/* Botón */}
+            <button
+                type="submit"
+                className="w-full py-3 text-white bg-indigo-600 rounded-xl hover:bg-indigo-700 transition-colors font-medium shadow-sm cursor-pointer"
+            >
+                Continuar con el pago
+            </button>
         </form>
     );
 }

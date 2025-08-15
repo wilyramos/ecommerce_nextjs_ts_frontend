@@ -74,7 +74,7 @@ export default function VentasTable({ ventas }: { ventas: Sale[] }) {
                                         <span className="text-gray-500 text-xs">Sin Items</span>
                                     )}
                                 </td>
-                                <td className="px-4 py-2">{venta.paymentMethod}</td>
+                                <td className="px-4 py-2">{venta.paymentStatus}</td>
                                 <td className="px-4 py-2">
                                     <span className={`px-2 py-1 rounded-full text-xs font-semibold ${venta.paymentStatus === 'PAGADO' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'}`}>
                                         {venta.paymentStatus}

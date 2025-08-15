@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useCartStore } from '@/src/store/cartStore';
 import { useCheckoutStore } from '@/src/store/checkoutStore';
-import type { Order } from '@/src/schemas';
+import type { TOrderPopulated } from '@/src/schemas';
 import { toast } from 'sonner';
 import Link from 'next/link';
 
@@ -16,14 +16,14 @@ import {
 } from 'react-icons/bs';
 import { FiArrowLeftCircle } from 'react-icons/fi';
 
-export default function PendingClient({ order }: { order: Order }) {
+export default function PendingClient({ order }: { order: TOrderPopulated }) {
     
     const clearCart = useCartStore((state) => state.clearCart);
     const clearCheckout = useCheckoutStore((state) => state.clearCheckout);
 
 
     useEffect(() => {
-        if (order?.paymentStatus === 'PENDIENTE') {
+        if (order?.payment.status === 'pending') {
             clearCart();
             clearCheckout();
             toast.info('Tu pago está pendiente. Te avisaremos cuando se confirme.');
@@ -53,7 +53,7 @@ export default function PendingClient({ order }: { order: Order }) {
                         <BsCreditCard className="text-gray-400" />
                         <span className="text-gray-500">Estado del pago:</span>
                         <span className="text-yellow-500 font-medium">
-                            {order.paymentStatus}
+                            {order.status}
                         </span>
                     </p>
                     <p className="flex items-center gap-2">
@@ -64,7 +64,6 @@ export default function PendingClient({ order }: { order: Order }) {
                     <p className="flex items-center gap-2">
                         <BsTruck className="text-gray-400" />
                         <span className="text-gray-500">Envío:</span>
-                        <span className="font-medium">{order.shippingMethod}</span>
                     </p>
                 </div>
 

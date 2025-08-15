@@ -1,9 +1,9 @@
 import { createOrderAction } from "@/actions/order/create-order-action";
 import { useCartStore } from "@/src/store/cartStore";
-import type { CreateOrderInput } from "../schemas";
+import type { TCreateOrder } from "../schemas";
 // import { OrderStatusEnum } from "../schemas";
 
-import type { ShippingAddress } from '../schemas';
+import type { TShippingAddress } from '../schemas';
 
 
 
@@ -15,7 +15,7 @@ export interface PaymentResponse extends Record<string, unknown> {
 }
  
 
-export async function handlePaymentSuccess(paymentResponse: PaymentResponse, shipping?: ShippingAddress) {
+export async function handlePaymentSuccess(paymentResponse: PaymentResponse, shipping?: TShippingAddress) {
 
 
     console.log("Respuesta de PAYMEET:", paymentResponse);
@@ -24,7 +24,7 @@ export async function handlePaymentSuccess(paymentResponse: PaymentResponse, shi
         const { cart, clearCart } = useCartStore.getState();
 
         // 2. Preparar datos para la orden
-        const orderData : CreateOrderInput = {
+        const orderData : TCreateOrder = {
             items: cart.map(item => ({
                 productId: item._id,
                 quantity: item.cantidad,
@@ -33,19 +33,22 @@ export async function handlePaymentSuccess(paymentResponse: PaymentResponse, shi
             subtotal: paymentResponse.transaction_amount,
             shippingCost: 0,
             totalPrice: paymentResponse.transaction_amount,
-            status: "PENDIENTE",
-            paymentMethod: paymentResponse.payment_method_id,
-            paymentStatus: paymentResponse.status,
-            shippingMethod: paymentResponse.shippingMethod as string,
+            payment: {
+                method: paymentResponse.payment_method_id,
+                status: "pending",
+                provider: "mercadopago"
+            },
             shippingAddress: {
                 departamento: shipping?.departamento || '',
                 provincia: shipping?.provincia || '',
                 distrito: shipping?.distrito || '',
                 direccion: shipping?.direccion || '',
                 numero: shipping?.numero || '',
-                piso: shipping?.piso || '',
+                pisoDpto: shipping?.pisoDpto || '',
                 referencia: shipping?.referencia || '',
             },
+            currency: "PEN"
+
         };
 
         console.log("Datos de la orden:", orderData);

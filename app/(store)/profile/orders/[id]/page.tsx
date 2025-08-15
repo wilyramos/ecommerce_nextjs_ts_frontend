@@ -55,11 +55,10 @@ export default async function OrderProfilePage({ params }: { params: Params }) {
                     <h2 className="text-base font-semibold text-gray-900">Estado</h2>
                     <div className="flex flex-wrap gap-2 text-sm">
                         Estado del pago:
-                        <PaymentStatusBadge status={order.paymentStatus} />
+                        <PaymentStatusBadge status={order.payment.status} />
                     </div>
                     <div className="text-sm text-gray-600 pt-2">
-                        Método de pago: <strong>{order.paymentMethod}</strong><br />
-                        Envío: <strong>{order.shippingMethod}</strong>
+                        Método de pago: <strong>{order.payment.method}</strong><br />
                     </div>
                 </div>
 

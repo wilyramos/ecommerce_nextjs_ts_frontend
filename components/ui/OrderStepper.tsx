@@ -3,6 +3,7 @@
 
 import { cn } from "@/lib/utils";
 import { BsCheckCircleFill } from "react-icons/bs";
+import type { TOrderStatus } from "@/src/schemas/index"
 
 const steps = [
     { label: "Pendiente", value: "PENDIENTE" },
@@ -11,12 +12,9 @@ const steps = [
     { label: "Entregado", value: "ENTREGADO" },
 ];
 
-type OrderStepperProps = {
-    status: "PENDIENTE" | "PROCESANDO" | "ENVIADO" | "ENTREGADO" | "CANCELADO";
-};
 
-export default function OrderStepper({ status }: OrderStepperProps) {
-    if (status === "CANCELADO") {
+export default function OrderStepper({ status }: { status: TOrderStatus }) {
+    if (status === "canceled") {
         return (
             <div className="flex items-center gap-2 text-red-600 text-sm font-semibold">
                 <BsCheckCircleFill className="text-red-500" />

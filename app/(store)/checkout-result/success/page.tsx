@@ -17,6 +17,8 @@ export default async function SuccessPageCheckout({ searchParams }: { searchPara
 
     const order = await getOrder(orderId);
 
+    console.log("orderrr", order)
+
     if (!order) {
         return <p>Order not found</p>;
     }

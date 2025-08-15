@@ -33,6 +33,8 @@ export default async function pageOrders({ searchParams }: PageOrdersProps) {
         estadoPago: params.estadoPago,
         estadoEnvio: params.estadoEnvio,
     });
+
+    console.log(data)
     const orders = data?.orders;
 
     return (
@@ -63,7 +65,7 @@ export default async function pageOrders({ searchParams }: PageOrdersProps) {
                 <>
 
                     {/* <OrdersTableFilters /> */}
-                    <OrdersTable orders={data} />
+                    <OrdersTable orders={orders} />
                     <Pagination
                         currentPage={page}
                         totalPages={Math.ceil(data.totalOrders / limit)}

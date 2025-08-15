@@ -64,7 +64,7 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
     const limitNumber = limit ? parseInt(limit) : 12;
 
     return (
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 bg-gray-50">
             {/* Filtros móviles colapsables */}
             <div className="sm:hidden mb-6">
                 <details className="bg-white rounded-xl shadow p-4 border border-gray-200">

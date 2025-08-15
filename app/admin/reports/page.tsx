@@ -1,5 +1,4 @@
 import { HeadingH2 } from '@/components/ui/Heading'
-import Link from 'next/link'
 import SalesReportsCards from '@/components/admin/reports/SalesReportsCards'
 
 export default function ReportsAdminPage() {

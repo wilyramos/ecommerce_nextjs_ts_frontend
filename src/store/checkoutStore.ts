@@ -1,7 +1,7 @@
 // src/store/checkoutStore.ts
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import type { ShippingAddress } from '../schemas';
+import type { TShippingAddress } from '../schemas';
 
 
 type tipoDocumento = 'DNI' | 'RUC' | 'CE';
@@ -19,10 +19,10 @@ export type ProfileFormData = {
 
 interface CheckoutState {
     profile: ProfileFormData | null;
-    shipping: ShippingAddress | null;
+    shipping: TShippingAddress | null;
 
     setProfile: (data: ProfileFormData) => void;
-    setShipping: (data: ShippingAddress) => void;
+    setShipping: (data: TShippingAddress) => void;
 
     clearCheckout: () => void;
 }

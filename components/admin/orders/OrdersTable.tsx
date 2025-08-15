@@ -1,10 +1,10 @@
 'use client';
 
-import type { OrdersList } from '@/src/schemas';
+import type { TOrder } from '@/src/schemas';
 import { formatDate } from '@/lib/utils';
 import Link from 'next/link';
 import OrderStatusBadge from "@/components/ui/OrderStatusBadge";
-import PaymentStatusBadge from "@/components/ui/PaymentStatusBadge";
+// import PaymentStatusBadge from "@/components/ui/PaymentStatusBadge";
 
 
 import {
@@ -12,11 +12,11 @@ import {
 } from 'react-icons/fa';
 
 interface OrdersTableProps {
-    orders: OrdersList;
+    orders: TOrder[];
 }
 
 export default function OrdersTable({ orders }: OrdersTableProps) {
-    if (!orders || orders.orders.length === 0) {
+    if (!orders || orders.length === 0) {
         return (
             <div className="flex justify-center items-center">
                 <h2 className="text-lg font-medium text-gray-500">No hay pedidos disponibles.</h2>
@@ -40,7 +40,7 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 text-gray-800">
-                    {orders.orders.map((order) => (
+                    {orders.map((order) => (
                         <tr
                             key={order._id}
                             className="hover:bg-gray-200 transition-colors border-b border-gray-200"
@@ -64,7 +64,7 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
                                         S/. {order.totalPrice.toFixed(2)}
                                     </div>
 
-                                    <PaymentStatusBadge status={order.paymentStatus} />
+                                   
                                 </div>
                             </td>
 

@@ -1,9 +1,10 @@
+// FILE:
+
 import { getOrder } from "@/src/services/orders";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils";
 import { FaBoxOpen } from "react-icons/fa";
 import OrderStatusBadge from "@/components/ui/OrderStatusBadge";
-import PaymentStatusBadge from "@/components/ui/PaymentStatusBadge";
 import Image from "next/image";
 
 type Params = Promise<{ id: string }>;
@@ -36,7 +37,6 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
                 </div>
                 <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
                     <OrderStatusBadge status={order.status} />
-                    <PaymentStatusBadge status={order.paymentStatus} />
                 </div>
             </div>
 
@@ -55,16 +55,15 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
                 {/* Cliente */}
                 <div className="bg-white border rounded p-4">
                     <h2 className="text-sm font-semibold text-gray-700 mb-2">Cliente</h2>
-                    <p className="text-sm"><strong>Nombre:</strong> {order.user?.nombre} {order.user?.apellidos}</p>
-                    <p className="text-sm"><strong>Email:</strong> {order.user?.email}</p>
+                    <p className="text-sm"><strong>Nombre:</strong> {order.user.nombre} </p>
                 </div>
 
                 {/* Pago */}
                 <div className="bg-white border rounded p-4">
                     <h2 className="text-sm font-semibold text-gray-700 mb-2">Pago</h2>
-                    <p className="text-sm"><strong>Método:</strong> {order.paymentMethod}</p>
-                    <p className="text-sm"><strong>ID pago:</strong> {order.paymentId || "—"}</p>
-                    <p className="text-sm"><strong>Tracking:</strong> {order.trackingId || "—"}</p>
+                    <p className="text-sm"><strong>Método:</strong> {order.payment.provider}</p>
+                    <p className="text-sm"><strong>ID pago:</strong> {order.payment.transactionId || "—"}</p>
+                    <p className="text-sm"><strong>Estado:</strong> {order.payment.status || "—"}</p>
                 </div>
 
                 {/* Envío */}
@@ -73,7 +72,7 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
                     <p className="text-sm">{order.shippingAddress?.direccion}, {order.shippingAddress?.numero}</p>
                     <p className="text-sm">{order.shippingAddress?.distrito}, {order.shippingAddress?.provincia}, {order.shippingAddress?.departamento}</p>
                     {order.shippingAddress?.referencia && <p className="text-sm"><strong>Ref:</strong> {order.shippingAddress.referencia}</p>}
-                    <p className="text-sm"><strong>Método:</strong> {order.shippingMethod}</p>
+
                 </div>
             </div>
 
@@ -95,16 +94,13 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
                             return (
                                 <tr key={i} className="border-b">
                                     <td className="py-2 px-3 flex items-center gap-2">
-                                        {product?.imagenes?.[0] && (
-                                            <Image
-                                                src={product.imagenes[0] || "/logob.svg"}
-                                                alt={product.nombre}
-                                                width={40}
-                                                height={40}
-                                                className="w-10 h-10 object-cover rounded border"
-                                            />
-                                        )}
-                                        <span>{product?.nombre || "Producto sin nombre"}</span>
+                                        <Image
+                                            src={product.imagenes?.[0] || "/logomini.svg"}
+                                            alt={product.nombre || "Producto sin imagen"}
+                                            className="w-10 h-10 object-cover rounded"
+                                        />
+                                        <span>{product.nombre}</span>
+                                        
                                     </td>
                                     <td className="text-center py-2 px-3">{item.quantity}</td>
                                     <td className="text-right py-2 px-3">S/. {item.price.toFixed(2)}</td>
@@ -120,22 +116,12 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
             <div className="grid md:grid-cols-2 gap-4">
                 {/* Notas & Historial */}
                 <div className="space-y-3">
-                    {order.notes && (
-                        <div className="bg-white border rounded p-3">
-                            <h3 className="font-medium text-sm text-gray-700 mb-1">Notas</h3>
-                            <p className="text-sm text-gray-700">{order.notes}</p>
-                        </div>
-                    )}
+                   
 
                     <div className="bg-white border rounded p-3">
                         <h3 className="font-medium text-sm text-gray-700 mb-2">Historial de estado</h3>
                         <ul className="text-sm text-gray-700 space-y-1">
-                            {order.statusHistory?.map((item, index) => (
-                                <li key={index} className="flex justify-between">
-                                    <span>{item.status}</span>
-                                    <span className="text-xs text-gray-500">{formatDate(item.changedAt)}</span>
-                                </li>
-                            ))}
+                            {/* {order.} */}
                         </ul>
                     </div>
                 </div>

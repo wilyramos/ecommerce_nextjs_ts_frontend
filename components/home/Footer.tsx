@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { FaFacebookF, FaInstagram, FaWhatsapp } from "react-icons/fa";
 import Logo from "../ui/Logo";
-import PaymentMethods from "./PaymentMethods";
 
 export default function Footer() {
     const links = [
@@ -23,27 +22,34 @@ export default function Footer() {
     ];
 
     return (
-        <footer className="bg-slate-50 border-t border-gray-300 text-neutral-700 text-sm">
-            <div className="max-w-7xl mx-auto px-6 py-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <footer className="bg-gray-950 text-gray-300 text-sm">
+            {/* Contenido principal */}
+            <div className="max-w-7xl mx-auto px-6 py-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
                 {/* Branding */}
                 <div>
                     <div className="flex items-center gap-2 mb-4">
                         <Logo />
-                        <h3 className="font-bold text-2xl text-gray-700">Cañete</h3>
+                        <h3 className="font-bold text-2xl text-white">Cañete</h3>
                     </div>
-                    <p className="text-gray-600 leading-relaxed text-sm">
-                        Tecnología móvil, accesorios originales y atención personalizada.<br />
+                    <p className="text-gray-400 leading-relaxed text-sm">
+                        Tecnología móvil, accesorios originales y atención personalizada.
+                        <br />
                         Jr. O Higgins 120, San Vicente de Cañete.
                     </p>
                 </div>
 
                 {/* Navegación */}
                 <nav>
-                    <h3 className="mb-3 font-semibold text-gray-900">Explora</h3>
+                    <h3 className="mb-4 font-semibold text-white text-lg relative after:block after:w-8 after:h-1 after:bg-indigo-500 after:mt-1">
+                        Explora
+                    </h3>
                     <ul className="space-y-2">
                         {links.map(({ label, href }) => (
                             <li key={href}>
-                                <Link href={href} className="hover:underline">
+                                <Link
+                                    href={href}
+                                    className="hover:text-indigo-400 transition-colors duration-200"
+                                >
                                     {label}
                                 </Link>
                             </li>
@@ -53,13 +59,27 @@ export default function Footer() {
 
                 {/* Contacto */}
                 <div>
-                    <h3 className="mb-3 font-semibold text-gray-900">Contacto</h3>
-                    <ul className="space-y-2 text-sm text-gray-700">
+                    <h3 className="mb-4 font-semibold text-white text-lg relative after:block after:w-8 after:h-1 after:bg-indigo-500 after:mt-1">
+                        Contacto
+                    </h3>
+                    <ul className="space-y-2 text-gray-400">
                         <li>
-                            Tel: <a href="tel:+51907103353" className="hover:underline">+51 907 103 353</a>
+                            Tel:{" "}
+                            <a
+                                href="tel:+51907103353"
+                                className="hover:text-indigo-400 transition-colors duration-200"
+                            >
+                                +51 907 103 353
+                            </a>
                         </li>
                         <li>
-                            Email: <a href="mailto:ventas@gophone.pe" className="hover:underline">ventas@gophone.pe</a>
+                            Email:{" "}
+                            <a
+                                href="mailto:ventas@gophone.pe"
+                                className="hover:text-indigo-400 transition-colors duration-200"
+                            >
+                                ventas@gophone.pe
+                            </a>
                         </li>
                         <li>Horario: Lun-Sáb 10am - 7pm</li>
                     </ul>
@@ -67,7 +87,9 @@ export default function Footer() {
 
                 {/* Redes sociales */}
                 <div>
-                    <h3 className="mb-3 font-semibold text-gray-900">Síguenos</h3>
+                    <h3 className="mb-4 font-semibold text-white text-lg relative after:block after:w-8 after:h-1 after:bg-indigo-500 after:mt-1">
+                        Síguenos
+                    </h3>
                     <div className="flex gap-4">
                         {social.map(({ icon, href, name }) => (
                             <a
@@ -76,7 +98,7 @@ export default function Footer() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label={name}
-                                className="w-9 h-9 flex items-center justify-center rounded-full bg-gray-800 text-white hover:bg-indigo-600 transition"
+                                className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 hover:bg-indigo-500 text-white transition-colors duration-300 shadow-lg hover:shadow-indigo-500/30"
                             >
                                 {icon}
                             </a>
@@ -85,10 +107,8 @@ export default function Footer() {
                 </div>
             </div>
 
-            <PaymentMethods />
-
             {/* Footer bottom */}
-            <div className="border-t border-gray-300 text-center py-4 text-xs text-gray-500">
+            <div className="border-t border-gray-700 text-center py-5 text-xs text-gray-500">
                 © {new Date().getFullYear()} Gophone. Todos los derechos reservados.
             </div>
         </footer>

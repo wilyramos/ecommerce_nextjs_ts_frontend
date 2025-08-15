@@ -253,7 +253,7 @@ export const ApiProductSchema = productBaseSchema
         createdAt: z.string().datetime().optional(),
         updatedAt: z.string().datetime().optional(),
         __v: z.number().optional(),
-});
+    });
 
 export const productsAPIResponse = z.object({
     products: z.array(ApiProductSchema),
@@ -273,7 +273,7 @@ export type ProductsAPIResponse = z.infer<typeof productsAPIResponse>;
 
 // Producto con la categoría poblada (en vez de solo un string)
 export const ApiProductWithCategorySchema = ApiProductSchema.extend({
-  categoria: apiCategorySchema, // Reemplazo del string por el esquema de categoría
+    categoria: apiCategorySchema, // Reemplazo del string por el esquema de categoría
 });
 
 
@@ -479,51 +479,49 @@ export type Cart = z.infer<typeof CartSchema>;
 
 //Enums 
 
-export const OrderStatusEnum = z.enum(['PENDIENTE', 'PROCESANDO', 'ENVIADO', 'ENTREGADO', 'CANCELADO']);
+export const OrderStatusEnum = z.enum(['PENDIENTE', 'PROCESANDO', 'ENVIADO', 'ENTREGADO', 'CANCELADO', 'pending', 'approved', 'rejected', 'refunded', 'canceled', 'awaiting_payment']);
 export type OrderStatusEnum = z.infer<typeof OrderStatusEnum>;
-const PaymentMethodEnum = z.enum(['MERCADOPAGO', 'TARJETA', 'TRANSFERENCIA', 'YAPE', 'PLIN', 'master', 'visa', 'amex', 'diners', 'debvisa']);
-const PaymentStatusEnum = z.enum(['PAGADO', 'PENDIENTE', 'CANCELADO', 'approved', 'rejected', 'pending']);
 
 // Dirección de envío
-export const ShippingAddressSchema = z.object({
-    departamento: z.string(),
-    provincia: z.string(),
-    distrito: z.string(),
-    direccion: z.string(),
-    numero: z.string().optional(),
-    piso: z.string().optional(),
-    referencia: z.string().optional(),
-});
+// export const ShippingAddressSchema = z.object({
+//     departamento: z.string(),
+//     provincia: z.string(),
+//     distrito: z.string(),
+//     direccion: z.string(),
+//     numero: z.string().optional(),
+//     piso: z.string().optional(),
+//     referencia: z.string().optional(),
+// });
 
-export type ShippingAddress = z.infer<typeof ShippingAddressSchema>;
+// export type ShippingAddress = z.infer<typeof ShippingAddressSchema>;
 
 
 // Producto que se está pidiendo (solo se envía el ID)
-export const OrderItemSchema = z.object({
-    productId: z.string().min(1, { message: 'El ID del producto es obligatorio' }),
-    quantity: z.number().min(1, { message: 'La cantidad debe ser al menos 1' }),
-    price: z.number().min(0, { message: 'El precio debe ser al menos 0' }),
-});
+// export const OrderItemSchema = z.object({
+//     productId: z.string().min(1, { message: 'El ID del producto es obligatorio' }),
+//     quantity: z.number().min(1, { message: 'La cantidad debe ser al menos 1' }),
+//     price: z.number().min(0, { message: 'El precio debe ser al menos 0' }),
+// });
 
-export const statusHistorySchema = z.object({
-    status: OrderStatusEnum,
-    changedAt: z.string().datetime().default(() => new Date().toISOString()),
-});
+// export const statusHistorySchema = z.object({
+//     status: OrderStatusEnum,
+//     changedAt: z.string().datetime().default(() => new Date().toISOString()),
+// });
 
 
-// Creación de la orden
-export const CreateOrderSchema = z.object({
-    items: z.array(OrderItemSchema).min(1, { message: 'Debe haber al menos un producto en la orden' }),
-    subtotal: z.number().nonnegative(),
-    shippingCost: z.number().nonnegative(),
-    totalPrice: z.number().nonnegative(),
-    shippingAddress: ShippingAddressSchema,
-    status: OrderStatusEnum.default('PENDIENTE').optional(),
-    shippingMethod: z.string(),
-    notes: z.string().optional(),
-paymentMethod: PaymentMethodEnum.or(z.string()).default('MERCADOPAGO').optional(),
-    paymentStatus: PaymentStatusEnum.or(z.string()).default('PENDIENTE').optional(),
-});
+// // Creación de la orden
+// export const CreateOrderSchema = z.object({
+//     // items: z.array(OrderItemSchema).min(1, { message: 'Debe haber al menos un producto en la orden' }),
+//     subtotal: z.number().nonnegative(),
+//     shippingCost: z.number().nonnegative(),
+//     totalPrice: z.number().nonnegative(),
+//     shippingAddress: ShippingAddressSchema,
+//     status: OrderStatusEnum.default('PENDIENTE').optional(),
+//     shippingMethod: z.string().optional(),
+//     notes: z.string().optional(),
+//     paymentMethod: PaymentMethodEnum.or(z.string()).default('MERCADOPAGO').optional(),
+//     paymentStatus: PaymentStatusEnum.or(z.string()).default('PENDIENTE').optional(),
+// });
 
 // Respuesta de la orden populada
 
@@ -542,12 +540,9 @@ export const OrderResponseSchemaPopulate = z.object({
     subtotal: z.number(),
     shippingCost: z.number(),
     totalPrice: z.number(),
-    shippingAddress: ShippingAddressSchema,
+    // shippingAddress: ShippingAddressSchema,
     status: OrderStatusEnum,
-    statusHistory: z.array(statusHistorySchema).optional(),
-    shippingMethod: z.string(),
-    paymentMethod: PaymentMethodEnum,
-    paymentStatus: PaymentStatusEnum,
+    // statusHistory: z.array(statusHistorySchema).optional(),
     trackingId: z.string().optional(),
     isPrinted: z.boolean().default(false).optional(),
     paymentId: z.string().optional(),
@@ -557,37 +552,34 @@ export const OrderResponseSchemaPopulate = z.object({
 })
 
 // Respuesta de la orden de la api
-export const OrderResponseSchema = z.object({
-    _id: z.string(),
-    orderNumber: z.string().optional(),
-    user: UserSchema.or(z.string()).optional().nullable(),
-    items: z.array(OrderItemSchema),
-    subtotal: z.number(),
-    shippingCost: z.number(),
-    totalPrice: z.number(),
-    shippingAddress: ShippingAddressSchema,
-    status: OrderStatusEnum,
-    statusHistory: z.array(statusHistorySchema).optional(),
-    shippingMethod: z.string(),
-    paymentMethod: PaymentMethodEnum,
-    paymentStatus: PaymentStatusEnum,
-    trackingId: z.string().optional(),
-    isPrinted: z.boolean().default(false).optional(),
-    paymentId: z.string().optional(),
-    notes: z.string().optional(),
-    createdAt: z.string().datetime(),
-    updatedAt: z.string().datetime(),
-});
+// export const OrderResponseSchema = z.object({
+//     _id: z.string(),
+//     orderNumber: z.string().optional(),
+//     user: UserSchema.or(z.string()).optional().nullable(),
+//     // items: z.array(OrderItemSchema),
+//     subtotal: z.number(),
+//     shippingCost: z.number(),
+//     totalPrice: z.number(),
+//     shippingAddress: ShippingAddressSchema,
+//     status: OrderStatusEnum,
+//     // statusHistory: z.array(statusHistorySchema).optional(),
+//     trackingId: z.string().optional(),
+//     isPrinted: z.boolean().default(false).optional(),
+//     paymentId: z.string().optional(),
+//     notes: z.string().optional(),
+//     createdAt: z.string().datetime(),
+//     updatedAt: z.string().datetime(),
+// });
 
 // inferencias 
-export type Order = z.infer<typeof OrderResponseSchemaPopulate>;
-export const OrdersAPIResponse = z.object({
-    orders: z.array(OrderResponseSchema),
-    totalOrders: z.number(),
-    totalPages: z.number(),
-    currentPage: z.number(),
-});
-export type OrdersList = z.infer<typeof OrdersAPIResponse>;
+// export type Order = z.infer<typeof OrderResponseSchemaPopulate>;
+// export const OrdersAPIResponse = z.object({
+//     orders: z.array(OrderResponseSchema),
+//     totalOrders: z.number(),
+//     totalPages: z.number(),
+//     currentPage: z.number(),
+// });
+// export type OrdersList = z.infer<typeof OrdersAPIResponse>;
 
 
 // Payload para enviar a mercadopago
@@ -619,7 +611,7 @@ export const CreatePreferenceSchema = z.object({
 });
 
 // Inferencias
-export type CreateOrderInput = z.infer<typeof CreateOrderSchema>;
+// export type CreateOrderInput = z.infer<typeof CreateOrderSchema>;
 export type CreatePreferenceInput = z.infer<typeof CreatePreferenceSchema>;
 
 // Esquemas para izipay
@@ -684,7 +676,6 @@ export const SaleResponseSchema = z.object({
     source: SaleSourceEnum,
     order: z.string().optional().nullable(),
     status: SaleStatusEnum,
-    paymentMethod: SalePaymentMethodEnum,
     paymentStatus: SalePaymentStatusEnum,
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime(),
@@ -711,28 +702,197 @@ export const DniSchema = z.object({
 // Izipay
 
 export type IzipayOptions = {
-     public_key: string;
-  amount: number;
-  currency: 'PEN' | 'USD';
-  order_id: string;
-  customer: {
-    name: string;
-    email: string;
-  };
-  metadata?: Record<string, string>;
-  callback_url?: string;
-}; 
+    public_key: string;
+    amount: number;
+    currency: 'PEN' | 'USD';
+    order_id: string;
+    customer: {
+        name: string;
+        email: string;
+    };
+    metadata?: Record<string, string>;
+    callback_url?: string;
+};
 
 export type IzipayInstance = {
-  open: () => void;
-    close: () => void; 
+    open: () => void;
+    close: () => void;
 }
 
 export interface Window {
     Izipay?: {
-        new (options: IzipayOptions): IzipayInstance;
+        new(options: IzipayOptions): IzipayInstance;
     };
 }
 
 
-// Global
+// ======= ORDER ======= //
+
+/* ============================
+   ENUMS (igual que backend)
+============================ */
+export const OrderStatus = z.enum([
+    "awaiting_payment",
+    "processing",
+    "shipped",
+    "delivered",
+    "canceled",
+    "paid_but_out_of_stock"
+]);
+
+export const PaymentStatus = z.enum([
+    "pending",
+    "approved",
+    "rejected",
+    "refunded",
+]);
+
+/* ============================
+   SUBSCHEMAS
+============================ */
+
+// Dirección de envío
+export const ShippingAddressSchema = z.object({
+    departamento: z.string().min(1, "El departamento es requerido"),
+    provincia: z.string().min(1, "La provincia es requerida"),
+    distrito: z.string().min(1, "El distrito es requerido"),
+    direccion: z.string().min(1, "La dirección es requerida"),
+    numero: z.string().optional(),
+    pisoDpto: z.string().optional(),
+    referencia: z.string().optional(),
+});
+
+// Item de la orden
+export const OrderItemSchema = z.object({
+    productId: z.string().min(1, "El producto es requerido"), // ID en string
+    quantity: z.number().positive("La cantidad debe ser mayor a 0"),
+    price: z.number().nonnegative("El precio no puede ser negativo"),
+});
+
+// item de la orden populada 
+
+export const ProductForOrderSchema = z.object({
+    _id: z.string(),
+    nombre: z.string().optional(),
+    sku: z.string().optional(),
+    barcode: z.string().optional(),
+    imagenes: z.array(z.string().url()).optional(),
+});
+
+
+export const OrderItemPopulatedSchema = z.object({
+    productId: ProductForOrderSchema,
+    quantity: z.number().positive("La cantidad debe ser mayor a 0"),
+    price: z.number().nonnegative("El precio no puede ser negativo"),
+});
+
+// Información de pago
+export const PaymentInfoSchema = z.object({
+    provider: z.string().min(1, "El proveedor es requerido"), // Ej: 'IZIPAY'
+    method: z.string().optional(), // Ej: 'visa', 'yape'
+    transactionId: z.string().optional(),
+    status: PaymentStatus.default("pending"),
+    rawResponse: z.any().optional(), // respuesta completa del gateway
+});
+
+// Historial de estados
+export const StatusHistorySchema = z.object({
+    status: OrderStatus,
+    changedAt: z.string().or(z.date()), // fecha como string o Date
+});
+
+/* ============================
+   ORDEN PRINCIPAL
+============================ */
+
+
+export const OrderSchema = z.object({
+    _id: z.string(),
+    orderNumber: z.string(),
+    user: z.string(), // ID del usuario
+    items: z.array(OrderItemSchema),
+    subtotal: z.number().nonnegative(),
+    shippingCost: z.number().nonnegative(),
+    totalPrice: z.number().nonnegative(),
+    currency: z.string().default("PEN"),
+    status: OrderStatus.default("awaiting_payment"),
+    statusHistory: z.array(StatusHistorySchema).default([]),
+    shippingAddress: ShippingAddressSchema,
+    payment: PaymentInfoSchema,
+    createdAt: z.string(),
+    updatedAt: z.string(),
+});
+
+// Order populate
+
+export const OrderPopulatedSchema = z.object({
+    _id: z.string(),
+    orderNumber: z.string(),
+    user: UserSchema, // ID del usuario
+    items: z.array(OrderItemPopulatedSchema),
+    subtotal: z.number().nonnegative(),
+    shippingCost: z.number().nonnegative(),
+    totalPrice: z.number().nonnegative(),
+    currency: z.string().default("PEN"),
+    status: OrderStatus.default("awaiting_payment"),
+    statusHistory: z.array(StatusHistorySchema).default([]),
+    shippingAddress: ShippingAddressSchema,
+    payment: PaymentInfoSchema,
+    createdAt: z.string(),
+    updatedAt: z.string(),
+});
+
+/* ============================
+   REQUEST SCHEMAS
+============================ */
+
+// Crear orden
+export const CreateOrderSchema = z.object({
+    items: z.array(OrderItemSchema).min(1, "Debe haber al menos un producto"),
+    subtotal: z.number().nonnegative(),
+    shippingCost: z.number().nonnegative().default(0),
+    totalPrice: z.number().nonnegative(),
+    currency: z.string().default("PEN"),
+    shippingAddress: ShippingAddressSchema,
+    payment: PaymentInfoSchema,
+});
+
+// Actualizar estado de la orden
+export const UpdateOrderStatusSchema = z.object({
+    status: OrderStatus,
+});
+
+/* ============================
+   RESPONSES DEL BACKEND
+============================ */
+
+
+// Respuesta de lista de órdenes (con paginación)
+export const OrdersListResponseSchema = z.object({
+    orders: z.array(OrderSchema),
+    totalOrders: z.number(),
+    currentPage: z.number(),
+    totalPages: z.number(),
+});
+
+export const OrdersListResponseSchemaPopulate = z.object({
+    orders: z.array(OrderPopulatedSchema),
+    totalOrders: z.number(),
+    currentPage: z.number(),
+    totalPages: z.number(),
+});
+
+/* ============================
+   TYPESCRIPT TYPES
+============================ */
+export type TOrderStatus = z.infer<typeof OrderStatus>;
+export type TPaymentStatus = z.infer<typeof PaymentStatus>;
+export type TShippingAddress = z.infer<typeof ShippingAddressSchema>;
+export type TOrderItem = z.infer<typeof OrderItemSchema>;
+export type TPaymentInfo = z.infer<typeof PaymentInfoSchema>;
+export type TStatusHistory = z.infer<typeof StatusHistorySchema>;
+export type TOrder = z.infer<typeof OrderSchema>;
+export type TCreateOrder = z.infer<typeof CreateOrderSchema>;
+export type TOrdersListResponse = z.infer<typeof OrdersListResponseSchema>;
+export type TOrderPopulated = z.infer<typeof OrderPopulatedSchema>;
+export type TOrdersListResponsePopulate = z.infer<typeof OrdersListResponseSchemaPopulate>;

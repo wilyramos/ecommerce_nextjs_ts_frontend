@@ -13,7 +13,6 @@ type ActionStateType = {
     success: string
 }
 
-
 export async function createProduct(prevState: ActionStateType, formData: FormData) {
 
 

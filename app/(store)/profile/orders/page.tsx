@@ -35,8 +35,8 @@ export default async function OrdersProfilePage({ searchParams }: PageOrdersProp
 
                         <div className="flex flex-wrap gap-4 text-sm">
                             <span>Total: <strong>S/ {o.totalPrice.toFixed(2)}</strong></span>
-                            <span>Envío: {o.shippingMethod}</span>
-                            <PaymentStatusBadge status={o.paymentStatus} />
+                            <span>Envío: {o.status}</span>
+                            <PaymentStatusBadge status={o.payment.status} />
                             <OrderStatusBadge status={o.status} />
                             <Link
                                 href={`/profile/orders/${o._id}`}

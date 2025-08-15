@@ -3,19 +3,19 @@
 import { useEffect } from 'react';
 import { useCartStore } from '@/src/store/cartStore';
 import { useCheckoutStore } from '@/src/store/checkoutStore';
-import type { Order } from '@/src/schemas';
+import type { TOrderPopulated } from '@/src/schemas';
 import { toast } from 'sonner';
 import Link from 'next/link';
 
 import { BsCheckCircle, BsTruck, BsFileEarmarkText, BsCreditCard, BsClipboardCheck, BsBagCheck } from 'react-icons/bs';
-import { FiArrowLeftCircle, FiPackage } from 'react-icons/fi';
+import { FiArrowLeftCircle } from 'react-icons/fi';
 
-export default function SuccessClient({ order }: { order: Order }) {
+export default function SuccessClient({ order }: { order: TOrderPopulated }) {
     const clearCart = useCartStore((state) => state.clearCart);
     const clearCheckout = useCheckoutStore((state) => state.clearCheckout);
 
     useEffect(() => {
-        if (order?.paymentStatus === 'PAGADO') {
+        if (order?.payment?.status === 'approved') {
             clearCart();
             clearCheckout();
             toast.success('¡Pago exitoso! Tu orden ha sido procesada correctamente.');
@@ -44,7 +44,7 @@ export default function SuccessClient({ order }: { order: Order }) {
                     <p className="flex items-center gap-2">
                         <BsCreditCard className="text-gray-400" />
                         <span className="text-gray-500">Estado del pago:</span>
-                        <span className="text-green-600 font-medium">{order.paymentStatus}</span>
+                        <span className="text-green-600 font-medium">{order.payment?.status || "Desconocido"}</span>
                     </p>
                     <p className="flex items-center gap-2">
                         <BsFileEarmarkText className="text-gray-400" />
@@ -54,15 +54,9 @@ export default function SuccessClient({ order }: { order: Order }) {
                     <p className="flex items-center gap-2">
                         <BsTruck className="text-gray-400" />
                         <span className="text-gray-500">Envío:</span>
-                        <span className="font-medium">{order.shippingMethod}</span>
+                        <span className="font-medium">{order.status}</span>
                     </p>
-                    {order.notes && (
-                        <p className="flex items-center gap-2">
-                            <FiPackage className="text-gray-400" />
-                            <span className="text-gray-500">Notas:</span>
-                            <span className="font-medium">{order.notes}</span>
-                        </p>
-                    )}
+                    
                 </div>
 
                 {/* Acciones */}

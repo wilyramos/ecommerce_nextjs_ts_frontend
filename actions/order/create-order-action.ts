@@ -1,15 +1,15 @@
 "use server";
 
-import type { CreateOrderInput } from "@/src/schemas";
-import type { Order } from "@/src/schemas";
+import type { TCreateOrder } from "@/src/schemas";
+import type { TOrder } from "@/src/schemas";
 import getToken from "@/src/auth/token";
 
 type CreateOrderResponse = {
     message: string;
-    order: Order;
+    order: TOrder;
 };
 
-export async function createOrderAction(order: CreateOrderInput): Promise<CreateOrderResponse> {
+export async function createOrderAction(order: TCreateOrder): Promise<CreateOrderResponse> {
     
     console.log("Creating order with data:", order);
     const token = await getToken();
@@ -32,6 +32,6 @@ export async function createOrderAction(order: CreateOrderInput): Promise<Create
 
     return {
         message: json.message,
-        order: json.order as Order,
+        order: json.order as TOrder,
     };
 }

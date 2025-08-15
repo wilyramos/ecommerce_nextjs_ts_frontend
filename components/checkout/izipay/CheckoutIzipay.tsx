@@ -1,28 +1,82 @@
 "use client";
 
-import { useCartStore } from "@/src/store/cartStore";
-import { useCheckoutStore } from "@/src/store/checkoutStore";
-// import { useCulqi } from "@/hooks/useCulqi";
-import ScriptIzipay from "./ScriptIzipay";
+import { useEffect, useRef, useState } from "react";
+import KRGlue from "@lyracom/embedded-form-glue";
+import { createPaymentIzipay, type IzipayPaymentPayload } from "@/actions/checkout/create-payment-izipay";
+import { toast } from "sonner";
+import type { TOrderPopulated } from "@/src/schemas";
 
-export default function CheckoutIzipay() {
-    const { cart } = useCartStore();
-    const { shipping, profile } = useCheckoutStore();
-    
-    if (!cart?.length) {
-        return <p className="text-gray-400 text-sm text-center mt-6">Tu carrito está vacío.</p>;
-    }
+export default function CheckoutIzipay({ order }: { order: TOrderPopulated }) {
+    const [message, setMessage] = useState("");
+    const initialized = useRef(false); // bandera para evitar múltiples cargas
 
-    if (!shipping || !profile) {
-        return <p className="text-gray-400 text-sm text-center mt-6">Completa tu información de envío y perfil antes de continuar.</p>;
-    }
+    useEffect(() => {
+        async function setupPaymentForm() {
+            if (initialized.current) return; // evita doble inicialización
+            initialized.current = true;
+
+            const endpoint = "https://api.micuentaweb.pe";
+            const publicKey = process.env.NEXT_PUBLIC_IZIPAY_PUBLIC_KEY!;
+
+            try {
+                // Cargar CSS si no existe
+                if (!document.querySelector(`link[href*="neon-reset.min.css"]`)) {
+                    await new Promise<void>((resolve) => {
+                        const link = document.createElement("link");
+                        link.rel = "stylesheet";
+                        link.href = "https://static.payzen.eu/static/js/krypton-client/V4.0/ext/neon-reset.min.css";
+                        link.onload = () => resolve();
+                        document.head.appendChild(link);
+                    });
+                }
+
+                const payload: IzipayPaymentPayload = {
+                    amount: order.totalPrice,
+                    currency: order.currency || "PEN",
+                    orderId: order._id,
+                    customer: {
+                        email: order.user.email || "",
+                        reference: order.user._id || "",
+                    },
+                };
+
+                const { formToken } = await createPaymentIzipay(payload);
+
+                const { KR } = await KRGlue.loadLibrary(endpoint, publicKey, formToken);
+
+                await KR.setFormConfig({
+                    formToken,
+                    "kr-language": "es-ES",
+                });
+
+                await KR.removeForms(); // limpiar cualquier form previo
+                await KR.renderElements("#myPaymentForm");
+
+                await KR.onSubmit(async (paymentData) => {
+                    console.log("Datos del pago:", paymentData);
+                    setMessage("Pago procesado correctamente");
+                    toast.success("Pago procesado correctamente");
+                    window.location.href = `/checkout-result/success?orderId=${order._id}`;
+                    return false;
+                });
+
+            } catch (error) {
+                console.error("Error al configurar Izipay:", error);
+                toast.error("Error al iniciar pago Izipay");
+                setMessage("Error al iniciar pago");
+            }
+        }
+
+        setupPaymentForm();
+    }, [order]);
 
     return (
-        <div className="flex flex-col items-center gap-6 mt-8 w-full">
-            <h3 className="text-sm text-gray-500">Elige tu método de pago con izipay</h3>
-            <div>
-                <ScriptIzipay />
+        <div className="p-6">
+            <h2 className="text-lg font-semibold">Pagar con Izipay</h2>
+            <div id="myPaymentForm">
+                <div className="kr-smart-form" kr-card-form-expanded="true" />
             </div>
+            {message && <p className="mt-4 text-green-600">{message}</p>}
         </div>
     );
 }
