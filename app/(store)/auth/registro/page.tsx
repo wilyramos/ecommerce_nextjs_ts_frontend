@@ -15,7 +15,6 @@ export default function PageRegistro() {
         <div className="w-full max-w-xs mx-auto">
 
             <h1 className="text-3xl font-semibold text-center">Crea tu cuenta</h1>
-            <p className="text-gray-600 text-center">Completa el formulario para registrarte</p>
 
 
             <RegisterForm 

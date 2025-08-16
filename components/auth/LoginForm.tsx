@@ -10,34 +10,25 @@ import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-// Tipar el estado que retorna useActionState
 interface AuthState {
     errors: string[];
     success: string;
 }
 
 export default function LoginForm() {
-
-    // For shipping the user to the correct page after login
     const searchParams = useSearchParams();
     const redirectTo = searchParams.get("redirect") || "/profile";
-    
 
     const [state, dispatch] = useActionState<AuthState, FormData>(
         authenticateUserAction,
-        {
-            errors: [],
-            success: "",
-        } 
+        { errors: [], success: "" }
     );
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-
     const [isPending, startTransition] = useTransition();
 
-    // Mostrar errores o éxito del login tradicional
     useEffect(() => {
         state.errors.forEach(error => toast.error(error));
         if (state.success) {
@@ -46,20 +37,37 @@ export default function LoginForm() {
         }
     }, [state]);
 
-    // Login con Google
     const handleGoogleLoginSuccess = ({ credential }: CredentialResponse) => {
         if (!credential) return toast.error("Token de Google no recibido");
 
         startTransition(async () => {
             const result = await googleLoginAction({ credential, redirectTo });
-            if (result?.error) {
-                toast.error(result.error);
-            }
+            if (result?.error) toast.error(result.error);
         });
     };
 
     return (
-        <div className="mt-4 space-y-4 text-gray-700">
+        <div className="mt-4 space-y-5 text-gray-700">
+
+            {/* Google Login primero */}
+            <div className="flex justify-center">
+                <GoogleLogin
+                    onSuccess={handleGoogleLoginSuccess}
+                    onError={() => toast.error("Error al iniciar sesión con Google")}
+                    size="large"
+                    shape="circle"
+                    width={300}
+                />
+            </div>
+
+            <div className="relative text-center text-sm text-gray-500 my-6">
+                <hr className="border-gray-300 mb-2" />
+                <span className="bg-white px-2 absolute -top-3 left-1/2 -translate-x-1/2 font-bold">
+                    O bien
+                </span>
+            </div>
+
+            {/* Formulario clásico */}
             <form noValidate action={dispatch}>
                 <label className="text-sm font-bold">
                     Email
@@ -75,13 +83,13 @@ export default function LoginForm() {
                 </label>
 
                 <label className="text-sm font-bold">
-                    Password
+                    Contraseña
                     <div className="relative">
                         <input
                             type={showPassword ? "text" : "password"}
                             name="password"
                             placeholder="********"
-                        className="mt-1 w-full rounded-full border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-800 font-medium"
+                            className="mt-1 w-full rounded-full border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-800 font-medium"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
@@ -90,66 +98,48 @@ export default function LoginForm() {
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
                             className="absolute top-1/2 right-4 -translate-y-1/2 text-xl text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-1.5 rounded-full transition-all"
-                            
                         >
                             {showPassword ? <FiEyeOff /> : <FiEye />}
                         </button>
                     </div>
                 </label>
 
-                {/* Hidden input to handle redirection after login */}
                 <input type="hidden" name="redirect" value={redirectTo} />
 
                 <button
                     type="submit"
-                    className="w-full bg-black hover:bg-gray-700 text-white font-semibold py-2 rounded-full transition-colors cursor-pointer mt-2"
+                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-full transition-colors cursor-pointer mt-2"
                     disabled={isPending}
                 >
                     Iniciar Sesión
                 </button>
             </form>
 
-            <nav className=" flex justify-between text-sm text-gray-600 font-base my-4 ">
+            {/* Links */}
+            <nav className="flex justify-between text-sm text-gray-600 font-base my-4">
                 <p>
-                    ¿No tienes una cuenta?{' '}
+                    ¿No tienes una cuenta?{" "}
                     <Link
                         href={
                             searchParams.get("redirect")
                                 ? `/auth/registro?redirect=${searchParams.get("redirect")}`
                                 : "/auth/registro"
                         }
-                        className="text-blue-800 font-black hover:underline"
+                        className="text-black font-black hover:underline"
                     >
                         Regístrate
                     </Link>
                 </p>
                 <p>
-                    ¿Olvidaste tu contraseña?{' '}
+                    ¿Olvidaste tu contraseña?{" "}
                     <Link
                         href="/auth/forgot-password"
-                        className="text-blue-800 font-black hover:underline"
+                        className="text-black font-black hover:underline"
                     >
                         Recuperar acceso
                     </Link>
                 </p>
             </nav>
-
-            <div className="relative text-center text-sm text-gray-500 my-5">
-                <hr className="border-gray-300 mb-2" />
-
-                <span className="bg-white px-2 absolute -top-3 left-1/2 -translate-x-1/2">o inicia sesión con</span>
-
-            </div>
-
-            <div className="flex justify-center ">
-                <GoogleLogin
-                    onSuccess={handleGoogleLoginSuccess}
-                    onError={() => toast.error("Error al iniciar sesión con Google")}
-                    // onFailure={() => toast.error("Error al iniciar sesión con Google")}
-                    size="large"
-                    shape="circle"
-                />
-            </div>
         </div>
     );
 }
