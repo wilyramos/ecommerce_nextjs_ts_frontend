@@ -41,13 +41,13 @@ export default function ProductDetails({ producto }: Props) {
                                     Código: {producto.barcode}
                                 </span>
                             )}
-                            <h1 className="text-3xl md:text-3xl font-bold leading-tight">
+                            <h1 className="text-2xl md:text-2xl font-semibold leading-tight">
                                 {producto.nombre}
                             </h1>
                         </div>
 
                         <div className="flex items-center gap-4">
-                            <span className="text-2xl font-bold">
+                            <span className="text-2xl text-indigo-600">
                                 S/ {producto.precio?.toFixed(2)}
                             </span>
 
@@ -57,7 +57,7 @@ export default function ProductDetails({ producto }: Props) {
                                         }`}
                                 >
                                     {producto.stock > 0 ? `${producto.stock} en stock` :
-                                    "Agotado"}
+                                        "Agotado"}
                                 </span>
                             )}
                         </div>
@@ -115,21 +115,18 @@ export default function ProductDetails({ producto }: Props) {
                     </div>
 
                 </div>
+
+                {producto.descripcion && (
+
+                    <div className='mx-auto py-2'>
+                        <h2 className="text-xl text-gray-700 ">Informacion adicional</h2>
+                        <div className="border-b border-gray-200 my-2" />
+                        <p className="text-xs whitespace-pre-wrap leading-normal text-gray-700 ">
+                            {producto.descripcion}
+                        </p>
+                    </div>
+                )}
             </div>
-
-            {/* Informacion adicional */}
-
-            {producto.descripcion && (
-
-                <div className='mx-auto py-2'>
-                    <h2 className="text-xl text-gray-500 ">Informacion adicional</h2>
-                    <div className="border-b border-gray-200 my-2" />
-                    <p className="text-sm whitespace-pre-wrap leading-normal text-gray-500 ">
-                        {producto.descripcion}
-                    </p>
-                </div>
-            )}
-
 
             {/* Espaciador mobile */}
             <div className="block md:hidden" />

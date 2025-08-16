@@ -6,14 +6,28 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 export default function ImagenesProductoCarousel({ images }: { images: string[] }) {
     const [selectedIndex, setSelectedIndex] = useState(0);
+    const [zoom, setZoom] = useState(false);
+    const [position, setPosition] = useState({ x: 0, y: 0 });
 
     const nextImage = () => setSelectedIndex((prev) => (prev + 1) % images.length);
     const prevImage = () => setSelectedIndex((prev) => (prev - 1 + images.length) % images.length);
 
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+        const x = ((e.pageX - left) / width) * 100;
+        const y = ((e.pageY - top) / height) * 100;
+        setPosition({ x, y });
+    };
+
     return (
-        <div className="w-full max-w-4xl mx-auto">
-            {/* Imagen principal */}
-            <div className="relative aspect-square">
+        <div className="w-full max-w-xl mx-auto">
+            {/* Imagen principal con zoom */}
+            <div
+                className="relative aspect-square overflow-hidden cursor-zoom-in"
+                onMouseEnter={() => setZoom(true)}
+                onMouseLeave={() => setZoom(false)}
+                onMouseMove={handleMouseMove}
+            >
                 {images.length > 0 ? (
                     <Image
                         key={selectedIndex}
@@ -21,7 +35,11 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                         alt={`Imagen ${selectedIndex + 1}`}
                         fill
                         sizes="(max-width: 768px) 100vw, 50vw"
-                        className="object-contain transition-opacity duration-500 ease-in-out opacity-100"
+                        className={`object-contain transition duration-300 
+              ${zoom ? "scale-150" : "scale-100"}`}
+                        style={{
+                            transformOrigin: `${position.x}% ${position.y}%`,
+                        }}
                         quality={100}
                         unoptimized
                     />
@@ -34,7 +52,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                 {/* Botón Izquierda */}
                 <button
                     onClick={prevImage}
-                    className="absolute top-1/2 left-4 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-700 p-2 rounded-full shadow-md transition"
+                    className="absolute top-1/2 left-4 -translate-y-1/2 bg-white/50 hover:bg-gray-200 text-gray-700 p-2 rounded-full shadow-md transitions"
                 >
                     <FaChevronLeft size={18} />
                 </button>
@@ -42,7 +60,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                 {/* Botón Derecha */}
                 <button
                     onClick={nextImage}
-                    className="absolute top-1/2 right-4 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-700 p-2 rounded-full shadow-md transition"
+                    className="absolute top-1/2 right-4 -translate-y-1/2 bg-white/50 hover:bg-gray-200 text-gray-700 p-2 rounded-full shadow-md transition"
                 >
                     <FaChevronRight size={18} />
                 </button>
@@ -54,8 +72,8 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                     <button
                         key={idx}
                         onClick={() => setSelectedIndex(idx)}
-                        className={`relative w-12 h-12 rounded-md overflow-hidden border transition-all duration-300
-                            ${selectedIndex === idx
+                        className={`relative h-12 w-12 md:w-16 md:h-16 rounded-md overflow-hidden border-2 transition-all duration-300
+              ${selectedIndex === idx
                                 ? "border-gray-500 hover:border-gray-700"
                                 : "border-gray-200 hover:border-gray-400"
                             }`}
