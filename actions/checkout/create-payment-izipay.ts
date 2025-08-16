@@ -7,6 +7,24 @@ export type IzipayPaymentPayload = {
   customer: {
     email: string;
     reference: string;
+    billingDetails: {
+      address: string;
+      city: string;
+      country: string;
+      district: string;
+      phoneNumber: string;
+    };
+    shippingDetails: {
+      address: string;
+      city: string;
+      country: string;
+      district: string;
+      phoneNumber: string;
+    };
+    shoppingCart: {
+      productId: string;
+      quantity: number;
+    }[];
   };
 };
 

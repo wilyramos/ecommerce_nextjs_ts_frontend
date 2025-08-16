@@ -37,6 +37,24 @@ export default function CheckoutIzipay({ order }: { order: TOrderPopulated }) {
                     customer: {
                         email: order.user.email || "",
                         reference: order.user._id || "",
+                        billingDetails: {
+                            address: order.shippingAddress.direccion || "",
+                            city: order.shippingAddress.distrito || "",
+                            country: order.shippingAddress.departamento || "",
+                            district: order.shippingAddress.distrito || "",
+                            phoneNumber: order.user.telefono || "",
+                        },
+                        shippingDetails: {
+                            address: order.shippingAddress.direccion || "",
+                            city: order.shippingAddress.distrito || "",
+                            country: order.shippingAddress.departamento || "",
+                            district: order.shippingAddress.distrito || "",
+                            phoneNumber: order.user.telefono || "",
+                        },
+                        shoppingCart: order.items.map(item => ({
+                            productId: item.productId._id,
+                            quantity: item.quantity
+                        })),
                     },
                 };
 
