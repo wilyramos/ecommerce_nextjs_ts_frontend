@@ -11,7 +11,7 @@ export default async function ProfileLayout({ children }: { children: React.Reac
     return (
         <div className="flex flex-col md:flex-row ">
             {/* Sidebar */}
-            <aside className="w-full md:w-auto bg-white shadow-md p-6 flex flex-col justify-between">
+            <aside className="w-full md:w-auto bg-white p-6 flex flex-col justify-between">
                 <div>
                     {/* Usuario */}
                     <div className="text-center mb-6">
