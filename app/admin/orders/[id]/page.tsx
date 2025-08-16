@@ -4,6 +4,7 @@ import { formatDate } from "@/lib/utils";
 import { FaBoxOpen } from "react-icons/fa";
 import OrderStatusBadge from "@/components/ui/OrderStatusBadge";
 import Image from "next/image";
+import PaymentStatusBadge from "@/components/ui/PaymentStatusBadge";
 
 type Params = Promise<{ id: string }>;
 
@@ -70,7 +71,7 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
                     <h2 className="text-sm font-semibold text-gray-700 mb-2">Pago</h2>
                     <p className="text-sm"><strong>Método:</strong> {order.payment.provider}</p>
                     <p className="text-sm"><strong>ID pago:</strong> {order.payment.transactionId || "—"}</p>
-                    <p className="text-sm"><strong>Estado:</strong> {order.payment.status || "—"}</p>
+                    <p className="text-sm"><strong>Estado:</strong> <PaymentStatusBadge status={order.payment.status} /></p>
                 </div>
 
                 {/* Envío */}
@@ -87,7 +88,7 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
             </div>
 
             {/* Tabla de productos */}
-            <div className="bg-white border rounded p-4 overflow-x-auto">
+            <div className="bg-white rounded p-4 overflow-x-auto">
                 <h2 className="text-sm font-semibold text-gray-700 mb-2">Productos</h2>
                 <table className="w-full text-sm min-w-[500px]">
                     <thead className="bg-gray-50 text-gray-600 text-xs uppercase border-b">
@@ -105,13 +106,13 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
                                 <tr key={i} className="border-b">
                                     <td className="py-2 px-3 flex items-center gap-2">
                                         <Image
-                                            src={product.imagenes?.[0] || "/logomini.svg"}
-                                            alt={product.nombre || "Producto sin imagen"}
+                                            src={product?.imagenes?.[0] || "/logomini.svg"}
+                                            alt={product?.nombre || "Producto sin imagen"}
                                             className="w-10 h-10 object-cover rounded"
                                             width={40}
                                             height={40}
                                         />
-                                        <span>{product.nombre}</span>
+                                        <span>{product?.nombre || "Producto no disponible"}</span>
                                     </td>
                                     <td className="text-center py-2 px-3">{item.quantity}</td>
                                     <td className="text-right py-2 px-3">

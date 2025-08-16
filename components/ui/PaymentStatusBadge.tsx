@@ -7,60 +7,40 @@ interface Props {
 
 export default function PaymentStatusBadge({ status }: Props) {
     const config = {
-        PAGADO: {
-            icon: <HiMiniCheckCircle className="text-green-600" />,
-            color: "text-green-700",
-            bg: "bg-green-50",
-        },
-        PENDIENTE: {
-            icon: <HiMiniClock className="text-amber-500" />,
-            color: "text-amber-700",
-            bg: "bg-amber-50",
-        },
-        RECHAZADO: {
-            icon: <HiMiniXCircle className="text-red-500" />,
-            color: "text-red-700",
-            bg: "bg-red-50",
-        },
-        FALLIDO: {
-            icon: <HiMiniXCircle className="text-red-500" />,
-            color: "text-red-700",
-            bg: "bg-red-50",
-        },
         approved: {
-            icon: <HiMiniCheckCircle className="text-green-600" />,
-            color: "text-green-700",
-            bg: "bg-green-50",
+            icon: <HiMiniCheckCircle className="text-green-500" />,
+            color: "text-green-600",
+            border: "border-green-200",
         },
         pending: {
             icon: <HiMiniClock className="text-amber-500" />,
-            color: "text-amber-700",
-            bg: "bg-amber-50",
+            color: "text-amber-600",
+            border: "border-amber-200",
         },
         rejected: {
             icon: <HiMiniXCircle className="text-red-500" />,
-            color: "text-red-700",
-            bg: "bg-red-50",
+            color: "text-red-600",
+            border: "border-red-200",
         },
         failed: {
             icon: <HiMiniXCircle className="text-red-500" />,
-            color: "text-red-700",
-            bg: "bg-red-50",
+            color: "text-red-600",
+            border: "border-red-200",
         },
     };
 
-    const { icon, color, bg } = config[status as keyof typeof config] ?? {
+    const { icon, color, border } = config[status as keyof typeof config] ?? {
         icon: <HiMiniClock className="text-gray-400" />,
-        color: "text-gray-700",
-        bg: "bg-gray-50",
+        color: "text-gray-600",
+        border: "border-gray-200",
     };
 
     return (
         <span
             className={clsx(
-                "inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-md",
+                "inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-medium rounded-full border",
                 color,
-                bg
+                border
             )}
         >
             {icon}

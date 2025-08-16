@@ -1,34 +1,40 @@
+// ProductosDestacados.tsx
 import { getDestacadosProducts } from '@/src/services/products';
 import ClientCarouselProductosNuevos from '@/components/home/ClientCarouselProductosNuevos';
 
 export default async function ProductosDestacados() {
-  const destacados = await getDestacadosProducts();
-  const productos = destacados?.products ?? [];
+    const destacados = await getDestacadosProducts();
+    const productos = destacados?.products ?? [];
 
-  if (!productos.length) {
+    if (!productos.length) {
+        return (
+            <p className="text-center py-6 text-gray-500 text-sm">
+                No hay productos destacados por ahora.
+            </p>
+        );
+    }
+
     return (
-      <p className="text-center py-6 text-gray-500 text-sm">
-        No hay productos destacados por ahora.
-      </p>
+        <section className="max-w-7xl mx-auto py-8 px-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                {/* Texto arriba en mobile, derecha en desktop */}
+                <header className="order-1 md:order-2 space-y-3 text-center md:text-left">
+                    <h2 className="text-2xl md:text-3xl font-semibold text-black">
+                        Lo mejor de{" "}
+                        <span className="text-white bg-gray-950 px-2 rounded">
+                            GoPhone
+                        </span>
+                    </h2>
+                    <p className="text-sm md:text-base text-gray-700">
+                        Nuestros productos más populares y recomendados.
+                    </p>
+                </header>
+
+                {/* Carrusel ocupa más espacio en desktop */}
+                <div className="order-2 md:order-1 md:col-span-2">
+                    <ClientCarouselProductosNuevos products={productos} />
+                </div>
+            </div>
+        </section>
     );
-  }
-
-  return (
-    <section className="py-6">
-      <div className="max-w-7xl mx-auto px-4 grid gap-6 md:grid-cols-4 bg-black/90 p-4">
-        <header className="md:col-span-1 space-y-2 ">
-          <h2 className="text-lg font-semibold text-white">
-            Lo mejor de GoPhone
-          </h2>
-          <p className="text-sm text-gray-300">
-            Nuestros productos más populares y recomendados.
-          </p>
-        </header>
-
-        <div className="md:col-span-3">
-          <ClientCarouselProductosNuevos products={productos} />
-        </div>
-      </div>
-    </section>
-  );
 }

@@ -47,18 +47,13 @@ export const getOrders = async ({ page = 1, limit = 25, ...filters }: GetOrdersP
 
     const json = await req.json();
     const orders = OrdersListResponseSchema.parse(json);
-    console.log("Orders fetched:", orders);
     return orders;
 }
 
 export const getOrder = async (id: string) => {
     const token = await getToken();
 
-    console.log("Fetching order with ID:", id);
-    console.log("Using token:", token);
     const url = `${process.env.API_URL}/orders/${id}`;
-
-    console.log("Fetching order from URL:", url);
 
     const req = await fetch(url, {
         method: 'GET',
@@ -71,13 +66,9 @@ export const getOrder = async (id: string) => {
         return null;
     }
 
-    console.log("Response status:", req);
     const json = await req.json();
 
-    console.log("Response from order fetch:", json);
-    const order = OrderPopulatedSchema.parse(json);
-    console.log("Parsed order:", order);
-    
+    const order = OrderPopulatedSchema.parse(json);    
     return order;
 }
 

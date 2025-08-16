@@ -7,11 +7,12 @@ import type { Product } from "@/src/schemas"
 
 interface Props {
     products: Product[]
+    items?: number
 }
 
-export default function ClientCarouselProductosNuevos({ products }: Props) {
+export default function ClientCarouselProductosNuevos({ products, items }: Props) {
     const responsive = {
-        desktop: { breakpoint: { max: 3000, min: 1280 }, items: 4 },
+        desktop: { breakpoint: { max: 3000, min: 1280 }, items: items || 4 },
         laptop: { breakpoint: { max: 1280, min: 1024 }, items: 3 },
         tablet: { breakpoint: { max: 1024, min: 640 }, items: 3 },
         mobile: { breakpoint: { max: 640, min: 0 }, items: 2 }

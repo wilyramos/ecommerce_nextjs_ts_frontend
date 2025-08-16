@@ -34,7 +34,6 @@ export default async function pageOrders({ searchParams }: PageOrdersProps) {
         estadoEnvio: params.estadoEnvio,
     });
 
-    console.log(data)
     const orders = data?.orders;
 
     return (

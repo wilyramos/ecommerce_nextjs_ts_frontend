@@ -10,9 +10,10 @@ import OrderStatusBadge from "@/components/ui/OrderStatusBadge";
 import {
     FaEye
 } from 'react-icons/fa';
+import PaymentStatusBadge from '@/components/ui/PaymentStatusBadge';
 
 interface OrdersTableProps {
-    orders: TOrder[];   
+    orders: TOrder[];
 }
 
 export default function OrdersTable({ orders }: OrdersTableProps) {
@@ -23,8 +24,6 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
             </div>
         );
     }
-
-    console.log(orders);
 
     return (
         <div className="overflow-x-auto">
@@ -64,9 +63,9 @@ export default function OrdersTable({ orders }: OrdersTableProps) {
                                         S/. {order.totalPrice.toFixed(2)}
                                     </div>
                                     <span>
-                                        {order.payment.status}
+                                        <PaymentStatusBadge status={order.payment.status} />
                                     </span>
-                                   
+
                                 </div>
                             </td>
 

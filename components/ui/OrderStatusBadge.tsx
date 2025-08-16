@@ -1,4 +1,4 @@
-import { FaClock, FaCheckCircle, FaTimesCircle, FaTruck } from "react-icons/fa";
+import { FaClock, FaCheck, FaTimes, FaTruck } from "react-icons/fa";
 import { MdLocalShipping } from "react-icons/md";
 import clsx from "clsx";
 
@@ -9,51 +9,70 @@ interface Props {
 export default function OrderStatusBadge({ status }: Props) {
     const getStatusStyle = () => {
         switch (status) {
-            case "PENDIENTE":
+            case "awaiting_payment":
                 return {
-                    color: "text-yellow-700",
-                    bg: "bg-yellow-100",
-                    icon: <FaClock className="text-yellow-500" />,
+                    color: "text-yellow-600",
+                    bg: "bg-yellow-50",
+                    icon: <FaClock className="w-3 h-3" />,
+                    label: "Pendiente de pago",
                 };
-            case "PROCESANDO":
+            case "processing":
                 return {
-                    color: "text-blue-700",
-                    bg: "bg-blue-100",
-                    icon: <FaTruck className="text-blue-500" />,
+                    color: "text-blue-600",
+                    bg: "bg-blue-50",
+                    icon: <FaTruck className="w-3 h-3" />,
+                    label: "Procesando",
                 };
-            case "ENVIADO":
+            case "shipped":
                 return {
-                    color: "text-indigo-700",
-                    bg: "bg-indigo-100",
-                    icon: <MdLocalShipping className="text-indigo-500" />,
+                    color: "text-indigo-600",
+                    bg: "bg-indigo-50",
+                    icon: <MdLocalShipping className="w-3 h-3" />,
+                    label: "Enviado",
                 };
-            case "ENTREGADO":
+            case "delivered":
                 return {
-                    color: "text-green-700",
-                    bg: "bg-green-100",
-                    icon: <FaCheckCircle className="text-green-500" />,
+                    color: "text-green-600",
+                    bg: "bg-green-50",
+                    icon: <FaCheck className="w-3 h-3" />,
+                    label: "Entregado",
                 };
-            case "CANCELADO":
+            case "canceled":
                 return {
-                    color: "text-red-700",
-                    bg: "bg-red-100",
-                    icon: <FaTimesCircle className="text-red-500" />,
+                    color: "text-red-600",
+                    bg: "bg-red-50",
+                    icon: <FaTimes className="w-3 h-3" />,
+                    label: "Cancelado",
+                };
+            case "paid_but_out_of_stock":
+                return {
+                    color: "text-orange-600",
+                    bg: "bg-orange-50",
+                    icon: <FaClock className="w-3 h-3" />,
+                    label: "Sin stock",
                 };
             default:
                 return {
-                    color: "text-gray-700",
-                    bg: "bg-gray-100",
-                    icon: <FaClock className="text-gray-500" />,
+                    color: "text-gray-600",
+                    bg: "bg-gray-50",
+                    icon: <FaClock className="w-3 h-3" />,
+                    label: "Desconocido",
                 };
         }
     };
 
-    const { color, bg, icon } = getStatusStyle();
+    const { color, bg, icon, label } = getStatusStyle();
 
     return (
-        <span className={clsx("inline-flex items-center gap-1 px-3 py-1 text-xs font-medium rounded-full", color, bg)}>
+        <span
+            className={clsx(
+                "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium",
+                color,
+                bg
+            )}
+        >
             {icon}
-            {status}
+            {label}
         </span>
     );
 }

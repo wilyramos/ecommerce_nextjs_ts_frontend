@@ -781,7 +781,7 @@ export const ProductForOrderSchema = z.object({
 
 
 export const OrderItemPopulatedSchema = z.object({
-    productId: ProductForOrderSchema,
+    productId: ProductForOrderSchema.optional(),
     quantity: z.number().positive("La cantidad debe ser mayor a 0"),
     price: z.number().nonnegative("El precio no puede ser negativo"),
 });

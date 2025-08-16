@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { FaFacebookF, FaInstagram, FaWhatsapp } from "react-icons/fa";
-import Logo from "../ui/Logo";
 
 export default function Footer() {
     const links = [
@@ -28,8 +27,8 @@ export default function Footer() {
                 {/* Branding */}
                 <div>
                     <div className="flex items-center gap-2 mb-4">
-                        <Logo />
-                        <h3 className="font-bold text-2xl text-white">Cañete</h3>
+                        
+                        <h3 className="font-bold text-2xl text-white"> GOPHONE Cañete</h3>
                     </div>
                     <p className="text-gray-400 leading-relaxed text-sm">
                         Tecnología móvil, accesorios originales y atención personalizada.

@@ -10,7 +10,6 @@ const steps = [
     { label: "Procesando", value: "processing" },
     { label: "Enviado", value: "shipped" },
     { label: "Entregado", value: "delivered" },
-    { label: "Cancelado", value: "canceled" },
 ];
 
 
