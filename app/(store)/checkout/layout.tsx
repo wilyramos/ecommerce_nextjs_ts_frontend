@@ -1,9 +1,17 @@
-import React from 'react';
 import CheckoutSteps from '@/components/checkout/CheckoutSteps';
 import ResumenFinalCarrito from '@/components/cart/ResumenFinalCarrito';
+import { verifySession } from '@/src/auth/dal';
+import { redirect } from 'next/navigation';
 
 
-export default function CheckoutLayout({ children }: { children: React.ReactNode }) {
+export default async function CheckoutLayout({ children }: { children: React.ReactNode }) {
+
+    const { user } = await verifySession();
+    if (!user) {
+        // Si no hay usuario, redirigir a la página de inicio de sesión
+        redirect('/login');
+    }
+
     return (
         <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 

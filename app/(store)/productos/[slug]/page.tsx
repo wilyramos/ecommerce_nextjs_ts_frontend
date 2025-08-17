@@ -79,7 +79,6 @@ export async function generateMetadata({ params }: { params: Params }) {
 export default async function pageProduct({ params }: { params: Params }) {
     const { slug } = await params;
 
-
     return (
         <main className="px-4">            
             <Suspense fallback={<SpinnerLoading />}>
