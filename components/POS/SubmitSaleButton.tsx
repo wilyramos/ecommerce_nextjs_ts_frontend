@@ -23,11 +23,11 @@ export default function SubmitSaleButton() {
         })),
         totalPrice: total,
         totalDiscountAmount: 0,
-        source: "POS",
-        status: "COMPLETADA",
-        paymentMethod: "EFECTIVO",
-        paymentStatus: "PAGADO",
+        status: "COMPLETED",
+        paymentMethod: "CASH",
+        paymentStatus: "approved",
         customerDNI: dni || undefined,
+        source: "POS",
     };
 
 

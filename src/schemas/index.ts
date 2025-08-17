@@ -628,9 +628,9 @@ export const IzipayTokenSchema = z.object({
 //** SALES **//
 
 export const SaleSourceEnum = z.enum(['ONLINE', 'POS']);
-export const SaleStatusEnum = z.enum(['COMPLETADA', 'REEMBOLSADA', 'ANULADA']);
-export const SalePaymentMethodEnum = z.enum(['EFECTIVO', 'TARJETA', 'TRANSFERENCIA', 'YAPE', 'PLIN', 'MERCADOPAGO', 'OTRO']);
-export const SalePaymentStatusEnum = z.enum(['PAGADO', 'PENDIENTE', 'CANCELADO']);
+export const SaleStatusEnum = z.enum(['PENDING', 'COMPLETED', 'PARTIALLY_REFUNDED', 'REFUNDED', 'CANCELED']);
+export const SalePaymentMethodEnum = z.enum(['CASH', 'CARD', 'TRANSFER', 'YAPE', 'PLIN', 'MERCADOPAGO', 'OTHER']);
+export const SalePaymentStatusEnum = z.enum(['pending', 'approved', 'rejected', 'refunded']);
 
 export const SaleItemSchema = z.object({
     productId: z.string(), // para envío solo se usa el id
@@ -644,13 +644,12 @@ export const CreateSaleSchema = z.object({
     totalPrice: z.number().min(0),
     employee: z.string().optional(),
     customerDNI: z.string().optional(),
-
     totalDiscountAmount: z.number().min(0).optional(),
     source: SaleSourceEnum,
     order: z.string().optional(),
-    status: SaleStatusEnum,
-    paymentMethod: SalePaymentMethodEnum,
-    paymentStatus: SalePaymentStatusEnum
+    status: SaleStatusEnum.optional(),
+    paymentMethod: SalePaymentMethodEnum.optional(),
+    paymentStatus: SalePaymentStatusEnum.optional()
 });
 
 export type CreateSaleInput = z.infer<typeof CreateSaleSchema>;
@@ -896,3 +895,25 @@ export type TCreateOrder = z.infer<typeof CreateOrderSchema>;
 export type TOrdersListResponse = z.infer<typeof OrdersListResponseSchema>;
 export type TOrderPopulated = z.infer<typeof OrderPopulatedSchema>;
 export type TOrdersListResponsePopulate = z.infer<typeof OrdersListResponseSchemaPopulate>;
+
+// ======= SALES ======= //
+
+export const SaleSourceSchema = z.enum(["ONLINE", "POS"])
+
+// Estado de la venta
+export const SaleStatusSchema = z.enum([
+  "PENDING",
+  "COMPLETED",
+  "PARTIALLY_REFUNDED",
+  "REFUNDED",
+  "CANCELED",
+])
+
+// Métodos de pago en POS
+export const PaymentMethodSchema = z.enum([
+  "CASH",
+  "CARD",
+  "YAPE",
+  "PLIN",
+  "TRANSFER",
+])

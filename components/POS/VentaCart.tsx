@@ -25,13 +25,13 @@ export default function VentaCart() {
         <div className="space-y-4">
             {/* Lista de productos */}
             <div className="max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300">
-                <table className="w-full text-sm text-gray-800">
-                    <thead className="bg-gray-100 text-xs sticky top-0 z-10">
+                <table className="w-full text-sm">
+                    <thead className="bg-slate-100 text-xs sticky top-0 z-10 uppercase"> 
                         <tr>
-                            <th className="py-2 px-2 text-left">Producto</th>
-                            <th className="py-2 text-center">Cantidad</th>
-                            <th className="py-2 px-2 text-right">Subtotal</th>
-                            <th className="py-2 text-center"></th>
+                            <th className="p-4">Producto</th>
+                            <th className="">Cantidad</th>
+                            <th className="">Subtotal</th>
+                            <th className=""></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,6 +45,7 @@ export default function VentaCart() {
                                                 alt={item.nombre}
                                                 width={40}
                                                 height={40}
+                                                quality={5}
                                                 className="w-10 h-10 object-cover rounded border"
                                             />
                                         ) : (
@@ -75,13 +76,13 @@ export default function VentaCart() {
 
                                     </div>
                                 </td>
-                                <td className="text-right px-2">
+                                <td className="text-right px-2 font-bold">
                                     S/. {(item.precio * item.cantidad).toFixed(2)}
                                 </td>
                                 <td className="text-center">
                                     <button
                                         onClick={() => removeFromCart(item._id)}
-                                        className="text-red-500 hover:text-red-700"
+                                        className="text-red-500 hover:text-red-700 cursor-pointer"
                                         aria-label={`Eliminar ${item.nombre}`}
                                     >
                                         <FiTrash2 size={16} />
@@ -104,7 +105,7 @@ export default function VentaCart() {
             {/* Total y botón */}
             <div className="flex flex-col items-end space-y-2">
                 <div>
-                    <p className="text-sm text-gray-500">Total</p>
+                    <p className="text-sm text-gray-500">Total:</p>
                     <p className="text-2xl font-bold text-gray-900">S/. {total.toFixed(2)}</p>
                 </div>
                 <SubmitSaleButton />

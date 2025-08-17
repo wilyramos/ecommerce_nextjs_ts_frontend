@@ -27,7 +27,7 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
 
 
     return (
-        <div className="grid md:grid-cols-2 h-screen bg-white">
+        <div className="grid md:grid-cols-2">
             {/* Productos */}
             <main className="p-4 overflow-y-auto">
                 <ProductSearchForm />
@@ -42,7 +42,7 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
                         </ul>
                     ) : (
                         <div className="flex items-center justify-center py-12 text-gray-500 text-center">
-                            <h2 className="text-lg font-semibold">No se encontraron productos</h2>
+                            <h2 className="text-lg">No se encontraron productos</h2>
                         </div>
                     )}
                 </section>
@@ -50,7 +50,7 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
 
             {/* Carrito */}
             <aside className="p-4 border-t md:border-t-0 md:border-l bg-white ">
-                <h2 className="text-xl font-semibold mb-4 flex gap-2">
+                <h2 className="text-xl font-bold mb-4 flex gap-2">
                     <PiShoppingCartFill size={24} />
                     Carrito de venta
                 </h2>
