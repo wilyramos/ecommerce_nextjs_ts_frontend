@@ -4,6 +4,7 @@ import renderSummaryItem from "./renderSummaryItem";
 import { FiDollarSign, FiTrendingUp, FiPackage, FiShoppingCart } from "react-icons/fi";
 
 
+
 interface SalesReportsResultsAdminProps {
     startDate?: string;
     endDate?: string;
@@ -21,9 +22,8 @@ export default async function SalesReportsResultsAdmin({ startDate, endDate }: S
         fechaFin: endDate,
     });
 
-    console.log("Sales data:", data);
 
-  
+    // 
 
     return (
         <>

@@ -1,46 +1,52 @@
 'use client';
 
+import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { DateRangePicker, Range, RangeKeyDict } from 'react-date-range';
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
+import { es } from 'date-fns/locale';
 
-export default function FiltersReportsSales() {
+
+export default function DateRangeDropdown() {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const [startDate, setStartDate] = useState(searchParams.get('startDate') || '');
-    const [endDate, setEndDate] = useState(searchParams.get('endDate') || '');
+    // Inicializa rango con fechas de URL o fecha actual
+    const start = searchParams.get('startDate');
+    const end = searchParams.get('endDate');
 
-    // Actualiza la URL automáticamente cuando cambian las fechas
-    useEffect(() => {
+    const [range, setRange] = useState<Range[]>([
+        {
+            startDate: start ? new Date(start) : new Date(),
+            endDate: end ? new Date(end) : new Date(),
+            key: 'selection',
+        },
+    ]);
+
+    // Actualiza URL cuando cambia el rango
+    const handleRangeChange = (ranges: RangeKeyDict) => {
+        const { startDate, endDate } = ranges.selection;
+        if (!startDate || !endDate) return;
+
+        setRange([{ startDate, endDate, key: 'selection' }]);
+
         const params = new URLSearchParams();
-        if (startDate) params.set('startDate', startDate);
-        if (endDate) params.set('endDate', endDate);
+        params.set('startDate', startDate.toISOString().split('T')[0]);
+        params.set('endDate', endDate.toISOString().split('T')[0]);
         router.push(`/admin/reports/sales?${params.toString()}`);
-    }, [startDate, endDate, router]);
+    };
 
     return (
-        <div className="flex flex-col md:flex-row gap-4 mb-4 text-xs">
-            <div className="flex items-center gap-2">
-                <label htmlFor="startDate" className="text-sm">Fecha Inicio:</label>
-                <input
-                    type="date"
-                    id="startDate"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                    className="border px-2 py-1"
-                />
-            </div>
-            <div className="flex items-center gap-2">
-                <label htmlFor="endDate" className="text-sm">Fecha Fin:</label>
-                <input
-                    type="date"
-                    id="endDate"
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    className="border px-2 py-1"
-                    
-                />
-            </div>
+        <div className="w-72">
+            <DateRangePicker
+                ranges={range}
+                onChange={handleRangeChange}
+                moveRangeOnFirstSelection={false}
+                months={2}
+                direction="horizontal"
+        locale={es} // <-- Aquí pasas el locale español
+            />
         </div>
     );
 }

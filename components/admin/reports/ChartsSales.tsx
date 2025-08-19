@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
     LineChart,
@@ -25,22 +25,26 @@ type Props = {
 };
 
 export default function ChartsSales({ data }: Props) {
-    const formattedData = data.map((item) => ({
-        ...item,
-        label: format(new Date(item.label), "dd MMM", { locale: es }),
-    }));
+    const formattedData = data.map((item) => {
+        const [year, month, day] = item.label.split('-').map(Number);
+        const localDate = new Date(year, month - 1, day); // Mes 0-indexado
+        return {
+            ...item,
+            label: format(localDate, "dd MMM", { locale: es }),
+        };
+    });
 
     return (
-        <div className="w-full rounded-xl bg-white p-6 shadow-sm border">
-            <h2 className="text-lg font-semibold text-gray-800 mb-2">Resumen de ventas</h2>
+        <div className="w-full rounded-xl bg-white p-6 border">
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">Resumen de ventas</h2>
 
             <ResponsiveContainer width="100%" height={360}>
-                <LineChart data={formattedData}>
+                <LineChart data={formattedData} margin={{ top: 10, right: 20, left: 0, bottom: 10 }}>
                     <CartesianGrid stroke="#f0f0f0" vertical={false} />
                     <XAxis
                         dataKey="label"
                         tick={{ fontSize: 12, fill: "#6b7280" }}
-                        padding={{ left: 20, right: 20 }}
+                        padding={{ left: 10, right: 10 }}
                         axisLine={false}
                         tickLine={false}
                     />
@@ -48,6 +52,7 @@ export default function ChartsSales({ data }: Props) {
                         tick={{ fontSize: 12, fill: "#6b7280" }}
                         axisLine={false}
                         tickLine={false}
+                        width={50}
                     />
                     <Tooltip
                         contentStyle={{
@@ -55,6 +60,7 @@ export default function ChartsSales({ data }: Props) {
                             border: "1px solid #e5e7eb",
                             borderRadius: "8px",
                             boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+                            padding: "8px 12px",
                         }}
                         labelStyle={{ color: "#6b7280", fontSize: 12 }}
                         formatter={(value: number, name: string) => {

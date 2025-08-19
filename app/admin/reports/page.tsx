@@ -1,30 +1,24 @@
 import { HeadingH2 } from '@/components/ui/Heading'
 import SalesReportsCards from '@/components/admin/reports/SalesReportsCards'
+import GeneralView from '@/components/admin/reports/GeneralView'
 
 export default function ReportsAdminPage() {
-    
+
 
     return (
         <>
             <HeadingH2>Resumen</HeadingH2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                
-                <div>
-                    <SalesReportsCards />
-                </div>
 
-                <div>
-                    hola
-                </div>
-
-                <div>
-                    hola
-                </div>
-
-                <div>
-                    hola
-                </div>
+                <SalesReportsCards />        Resumen de ventas 
+                <GeneralView />              KPIs generales 
+                {/*<BestSellingProducts />      Productos más vendidos 
+                <LowStockProducts />         Stock crítico 
+                <SalesByChannel />           POS vs Online 
+                <CustomerReports />          Clientes frecuentes y nuevos 
+                <RevenueByPaymentMethod />   Pagos por tipo 
+                <ReturnsAndCancellations />  Devoluciones y fallos */}
             </div>
         </>
     )

@@ -20,7 +20,7 @@ export default function ShopNowButton({ product }: { product: ProductWithCategor
         toast.success("Producto agregado al carrito.");
         
         // Redirigir al carrito después de agregar el producto
-        router.push("/cart");
+        router.push("/carrito");
     };
 
     return (

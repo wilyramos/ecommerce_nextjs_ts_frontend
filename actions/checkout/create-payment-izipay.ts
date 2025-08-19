@@ -53,8 +53,6 @@ export async function createPaymentIzipay(
 
   const data = await response.json();
 
-  console.log("Respuesta de Izipay:", data);
-
   const formToken = data?.paymentData?.answer?.formToken;
 
   if (!formToken) {

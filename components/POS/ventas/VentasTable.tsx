@@ -54,7 +54,7 @@ export default function VentasTable({ ventas }: { ventas: Sale[] }) {
                                 <td className="px-4 py-2">{venta.customerDNI || 'N/A'}</td>
                                 <td className="px-4 py-2 text-green-700 font-medium">S/ {venta.totalPrice.toFixed(2)}</td>
                                 <td className="px-4 py-2">
-                                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${venta.status === 'COMPLETADA' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${venta.status === 'COMPLETED' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
                                         {venta.status}
                                     </span>
                                 </td>
@@ -76,7 +76,7 @@ export default function VentasTable({ ventas }: { ventas: Sale[] }) {
                                 </td>
                                 <td className="px-4 py-2">{venta.paymentStatus}</td>
                                 <td className="px-4 py-2">
-                                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${venta.paymentStatus === 'PAGADO' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'}`}>
+                                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${venta.paymentStatus === 'approved' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'}`}>
                                         {venta.paymentStatus}
                                     </span>
                                 </td>

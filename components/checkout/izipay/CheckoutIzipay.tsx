@@ -71,7 +71,8 @@ export default function CheckoutIzipay({ order }: { order: TOrderPopulated }) {
                 await KR.renderElements("#myPaymentForm");
 
                 await KR.onSubmit(async (paymentData) => {
-                    console.log("Datos del pago:", paymentData);
+                    // TODO:revisar el paymentdata
+                    console.log("Datos de pago:", paymentData._type);
                     setMessage("Pago procesado correctamente");
                     toast.success("Pago procesado correctamente");
                     window.location.href = `/checkout-result/success?orderId=${order._id}`;
@@ -80,7 +81,7 @@ export default function CheckoutIzipay({ order }: { order: TOrderPopulated }) {
 
             } catch (error) {
                 console.error("Error al configurar Izipay:", error);
-                toast.error("Error al iniciar pago Izipay");
+                toast.error(`Error al iniciar pago Izipay`);
                 setMessage("Error al iniciar pago");
             }
         }

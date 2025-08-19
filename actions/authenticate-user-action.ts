@@ -60,6 +60,9 @@ export async function authenticateUserAction(prevState: ActionStateType, formDat
         value: token,    
         path: '/',
         httpOnly: true,
+        sameSite: 'lax', // Protect against CSRF basic
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 60*60*24*30 // 30 días
     })
 
 
