@@ -26,7 +26,7 @@ export default function AdminMenu({ user }: { user: User }) {
                 leaveTo="opacity-0 scale-95"
             >
                 <PopoverPanel
-                    className="absolute bottom-full mb-3 left-1/2 z-20 w-56 -translate-x-1/2 lg:left-0 lg:translate-x-0 bg-white rounded-xl shadow-md ring-1 ring-black/10 p-4"
+                    className="absolute bottom-full mb-3 left-1/2 z-20 w-48 -translate-x-1/2 lg:left-0 lg:translate-x-0 bg-white rounded-xl shadow-md ring-1 ring-black/10 p-4"
                 >
                     <div className="text-sm text-gray-800">
                         <ul className="space-y-2">

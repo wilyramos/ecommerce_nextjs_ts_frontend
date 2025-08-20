@@ -1,85 +1,130 @@
 "use client";
 
-import { User } from '@/src/schemas';
-import Image from 'next/image';
-import Link from 'next/link';
-import AdminMenu from '@/components/admin/AdminMenu';
+import { User } from "@/src/schemas";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import clsx from "clsx";
+import { cn } from "@/lib/utils";
+import AdminMenu from "./AdminMenu";
+
 import {
-    LuPackage, LuTag,
-    LuReceipt
-} from "react-icons/lu";
-import { FaHome } from 'react-icons/fa';
-import { VscGraph } from "react-icons/vsc";
-import { FaArrowUpRightFromSquare } from "react-icons/fa6";
-import { usePathname } from 'next/navigation';
-import { BiSolidUserRectangle } from "react-icons/bi";
-import clsx from 'clsx';
+    Home,
+    Package,
+    Users,
+    Tag,
+    Receipt,
+    BarChart3,
+    ChevronLeft,
+    ChevronRight,
+    ShoppingCart
+} from "lucide-react";
 
-export default function AdminSidebar({ user }: { user: User }) {
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
+import Logo from "../ui/Logo";
 
+type Props = {
+    user: User;
+};
 
+const links = [
+    { href: "/admin", icon: Home, label: "Dashboard" },
+    { href: "/admin/products", icon: Package, label: "Productos" },
+    { href: "/admin/clients", icon: Users, label: "Clientes" },
+    { href: "/admin/products/category", icon: Tag, label: "Categorías" },
+    { href: "/admin/orders", icon: Receipt, label: "Órdenes" },
+    { href: "/admin/reports", icon: BarChart3, label: "Reportes" },
+    { href: "/admin/users", icon: Users, label: "Usuarios" },
+    { href: "/pos", icon: ShoppingCart, label: "Punto de Venta" }
+];
+
+export default function AdminSidebar({ user }: Props) {
     const pathname = usePathname();
-
-    const isAdmin = user.rol === 'administrador';
-
-    const links = [
-        { href: '/admin', icon: <FaHome />, label: 'Dashboard' },
-        { href: '/admin/products', icon: <LuPackage />, label: 'Productos' },
-        { href: '/admin/clients', icon: <BiSolidUserRectangle />, label: 'Clientes' },
-        { href: '/admin/products/category', icon: <LuTag />, label: 'Categorías' },
-        { href: '/admin/orders', icon: <LuReceipt />, label: 'Órdenes' },
-        { href: '/admin/reports', icon: <VscGraph />, label: 'Reportes' },
-    ];
+    const [expanded, setExpanded] = useState(true);
 
     return (
-        <aside className="h-full w-auto bg-white border-r border-gray-200 flex flex-col">
-            {/* Logo */}
-            <div className="py-6 flex justify-center border-b border-gray-100">
-                <Image src="/logob.svg" alt="Logo" width={90} height={90} />
+        <motion.aside
+            animate={{ width: expanded ? 240 : 72 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+            className={cn(
+                "h-screen flex flex-col bg-white dark:bg-gray-950 shadow-md border-r overflow-hidden"
+            )}
+        >
+            {/* Header con toggle */}
+            <div className="flex items-center justify-between px-4 h-14 border-b bg-gradient-to-r from-gray-50 to-white dark:from-gray-900 dark:to-gray-950">
+                {expanded && (
+                    <span className="font-semibold text-gray-900 dark:text-white">
+                        <Logo />
+                    </span>
+                )}
+                <button
+                    onClick={() => setExpanded(!expanded)}
+                    className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                >
+                    {expanded ? <ChevronLeft /> : <ChevronRight />}
+                </button>
             </div>
 
-            {/* Navegación */}
-            <nav className="flex flex-col p-3 text-sm space-y-2">
-                {links.map(
-                    (link) =>
-                        (isAdmin || link.href === '/pos') && (
-                            <Link
-                                key={link.href}
-                                href={link.href}
-
-                                className={clsx(
-                                    'flex items-center gap-2 px-3 py-2 rounded-md hover:bg-indigo-500 hover:text-white transition-colors',
-                                    pathname === link.href ? 'bg-indigo-500 text-white font-medium' : 'text-gray-700'
-                                )}
-                            >
-                                {link.icon}
-                                {link.label}
-                            </Link>
-                        )
-                )}
+            {/* Menú */}
+            <nav className="flex-1 mt-2 px-2 space-y-1">
+                {links.map(({ href, icon: Icon, label }) => {
+                    const active = pathname === href;
+                    return (
+                        <Tooltip key={label} delayDuration={200}>
+                            <TooltipTrigger asChild>
+                                <Link
+                                    href={href}
+                                    className={clsx(
+                                        "relative flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-all group",
+                                        active
+                                            ? "bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300"
+                                            : "hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                                    )}
+                                >
+                                    {active && (
+                                        <motion.span
+                                            layoutId="active-indicator"
+                                            className="absolute left-0 top-0 h-full w-[3px] bg-blue-500 rounded-r"
+                                        />
+                                    )}
+                                    <Icon className="h-5 w-5 shrink-0" />
+                                    {expanded && <span>{label}</span>}
+                                </Link>
+                            </TooltipTrigger>
+                            {!expanded && (
+                                <TooltipContent side="right">
+                                    {label}
+                                </TooltipContent>
+                            )}
+                        </Tooltip>
+                    );
+                })}
             </nav>
 
-            {/* Espaciador */}
-
-            <Link href="/pos"
-                target='_blank'
-                rel="noopener noreferrer"
-                className={clsx(
-                    'flex items-center gap-2 px-6 mx-auto py-3 rounded-md text-sm hover:bg-indigo-500 hover:text-white transition-colors',
-                    pathname === '/pos' ? 'bg-indigo-500 text-white font-medium' : 'text-gray-700'
-                )}
-            >
-                Punto de Venta
-                <FaArrowUpRightFromSquare className="h-4 w-4" />
-            </Link>
-            <div className="flex-grow" />
-
-            {/* Usuario */}
-            <div className=" flex flex-col px-4 py-4 border-t border-gray-100 text-xs">
-
-                <p className="mb-1 text-gray-500">Hola, <span className="font-medium text-blue-500">{user.nombre}</span></p>
+            {/* Footer con user + menú */}
+            <div className="border-t p-3 flex items-center gap-3">
+                <div className="flex items-center gap-2 flex-1 overflow-hidden">
+                    <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center text-sm font-semibold">
+                        {user?.nombre?.[0] ?? "U"}
+                    </div>
+                    {expanded && (
+                        <div className="truncate">
+                            <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                {user?.nombre}
+                            </p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                                {user?.email}
+                            </p>
+                        </div>
+                    )}
+                </div>
                 <AdminMenu user={user} />
             </div>
-        </aside>
+        </motion.aside>
     );
 }

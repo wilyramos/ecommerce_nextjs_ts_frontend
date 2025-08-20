@@ -8,7 +8,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     return (
         <>
             <div className="flex flex-col md:flex-row h-screen">
-                <aside className="hidden md:block w-48">
+                <aside className="hidden md:block">
                     <AdminSidebar user={user} />
                 </aside>
                 {/* Header móvil */}
