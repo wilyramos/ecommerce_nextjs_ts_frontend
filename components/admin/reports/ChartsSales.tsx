@@ -26,20 +26,39 @@ type Props = {
 
 export default function ChartsSales({ data }: Props) {
     const formattedData = data.map((item) => {
-        const [year, month, day] = item.label.split('-').map(Number);
-        const localDate = new Date(year, month - 1, day); // Mes 0-indexado
+        let newLabel = item.label;
+
+        // Caso YYYY-MM
+        if (/^\d{4}-\d{2}$/.test(item.label)) {
+            const [year, month] = item.label.split("-").map(Number);
+            const localDate = new Date(year, month - 1); // solo año y mes
+            newLabel = format(localDate, "MMM yyyy", { locale: es });
+        }
+
+        // Caso YYYY-MM-DD
+        else if (/^\d{4}-\d{2}-\d{2}$/.test(item.label)) {
+            const [year, month, day] = item.label.split("-").map(Number);
+            const localDate = new Date(year, month - 1, day);
+            newLabel = format(localDate, "dd MMM", { locale: es });
+        }
+
         return {
             ...item,
-            label: format(localDate, "dd MMM", { locale: es }),
+            label: newLabel,
         };
     });
 
     return (
         <div className="w-full rounded-xl bg-white p-6 border">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">Resumen de ventas</h2>
+            <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                Resumen de ventas
+            </h2>
 
             <ResponsiveContainer width="100%" height={360}>
-                <LineChart data={formattedData} margin={{ top: 10, right: 20, left: 0, bottom: 10 }}>
+                <LineChart
+                    data={formattedData}
+                    margin={{ top: 10, right: 20, left: 0, bottom: 10 }}
+                >
                     <CartesianGrid stroke="#f0f0f0" vertical={false} />
                     <XAxis
                         dataKey="label"

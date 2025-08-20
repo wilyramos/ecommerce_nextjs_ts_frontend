@@ -1,18 +1,17 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { DateRangePicker, Range, RangeKeyDict } from 'react-date-range';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { es } from 'date-fns/locale';
 
-
 export default function DateRangeDropdown() {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const pathname = usePathname();
 
-    // Inicializa rango con fechas de URL o fecha actual
     const start = searchParams.get('startDate');
     const end = searchParams.get('endDate');
 
@@ -24,7 +23,16 @@ export default function DateRangeDropdown() {
         },
     ]);
 
-    // Actualiza URL cuando cambia el rango
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Detect screen size
+    useEffect(() => {
+        const checkScreen = () => setIsMobile(window.innerWidth < 768); // md breakpoint
+        checkScreen();
+        window.addEventListener('resize', checkScreen);
+        return () => window.removeEventListener('resize', checkScreen);
+    }, []);
+
     const handleRangeChange = (ranges: RangeKeyDict) => {
         const { startDate, endDate } = ranges.selection;
         if (!startDate || !endDate) return;
@@ -34,18 +42,18 @@ export default function DateRangeDropdown() {
         const params = new URLSearchParams();
         params.set('startDate', startDate.toISOString().split('T')[0]);
         params.set('endDate', endDate.toISOString().split('T')[0]);
-        router.push(`/admin/reports/sales?${params.toString()}`);
+        router.push(`${pathname}?${params.toString()}`);
     };
 
     return (
-        <div className="w-72">
+        <div className="w-full max-w-full overflow-x-auto">
             <DateRangePicker
                 ranges={range}
                 onChange={handleRangeChange}
                 moveRangeOnFirstSelection={false}
-                months={2}
-                direction="horizontal"
-        locale={es} // <-- Aquí pasas el locale español
+                months={isMobile ? 1 : 2}
+                direction={isMobile ? 'vertical' : 'horizontal'}
+                locale={es}
             />
         </div>
     );

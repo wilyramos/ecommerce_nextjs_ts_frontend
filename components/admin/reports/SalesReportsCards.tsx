@@ -16,12 +16,14 @@ export default async function SalesReportsCards() {
     });
 
     return (
-        <section className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <section className="bg-white p-4 ">
             {/* Header */}
-            <header className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-semibold text-gray-800">Resumen de Ventas</h2>
+            <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-2">
+                <h2 className="text-lg font-semibold text-gray-800">
+                    Resumen de Ventas
+                </h2>
 
-                <div className="relative group">
+                <div className="relative group self-start sm:self-auto">
                     <Link
                         href="/admin/reports/sales"
                         className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -36,9 +38,8 @@ export default async function SalesReportsCards() {
                 </div>
             </header>
 
-
             {/* Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
                 {renderSummaryItem("Ingresos totales", salesSummary?.totalSales || 0, <FiDollarSign />)}
                 {renderSummaryItem("Ventas realizadas", salesSummary?.numberSales || 0, <FiPackage />)}
                 {renderSummaryItem("Margen de ganancia", salesSummary?.margin || 0, <FiTrendingUp />)}

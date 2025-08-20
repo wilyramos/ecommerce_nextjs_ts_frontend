@@ -11,8 +11,8 @@ export default function ReportsAdminPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
 
-                <SalesReportsCards />        Resumen de ventas 
-                <GeneralView />              KPIs generales 
+                <SalesReportsCards /> 
+                <GeneralView />              
                 {/*<BestSellingProducts />      Productos más vendidos 
                 <LowStockProducts />         Stock crítico 
                 <SalesByChannel />           POS vs Online 

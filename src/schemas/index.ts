@@ -633,7 +633,7 @@ export const SalePaymentMethodEnum = z.enum(['CASH', 'CARD', 'TRANSFER', 'YAPE',
 export const SalePaymentStatusEnum = z.enum(['pending', 'approved', 'rejected', 'refunded']);
 
 export const SaleItemSchema = z.object({
-    productId: z.string(), // para envío solo se usa el id
+    product: z.string(), // para envío solo se usa el id
     quantity: z.number().min(1, { message: 'La cantidad debe ser al menos 1' }),
     price: z.number().min(0, { message: 'El precio debe ser al menos 0' }),
 });
