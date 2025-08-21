@@ -64,7 +64,7 @@ export default function DateRangeDropdown() {
     const endDate = range[0].endDate ? format(range[0].endDate, "dd MMM yyyy", { locale: es }) : "";
 
     return (
-        <div className="" ref={dropdownRef}>
+        <div className="relative inline-block" ref={dropdownRef}>
             {/* Botón con fechas */}
             <span className="text-xs font-semibold">Filtros:</span>
             <button
@@ -74,9 +74,16 @@ export default function DateRangeDropdown() {
                 {startDate} - {endDate}
             </button>
 
-            {/* Calendario flotante */}
+            {/* Calendario flotante adaptable */}
             {open && (
-                <div className="absolute z-50 mt-2 bg-white shadow-lg rounded-lg p-2 border">
+                <div
+                    className="absolute mt-2 bg-white shadow-lg rounded-lg p-2 border"
+                    style={{
+                        right: 0, // 👈 se alinea a la derecha del botón
+                        minWidth: isMobile ? "320px" : "600px",
+                        maxWidth: "90vw" // evita overflow
+                    }}
+                >
                     <DateRangePicker
                         ranges={range}
                         onChange={handleRangeChange}
