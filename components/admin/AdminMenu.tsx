@@ -1,18 +1,20 @@
 'use client'
 
-import { Fragment } from 'react'
-import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react'
-import { Bars3Icon, UserCircleIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline'
+import { Fragment } from 'react';
+import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react';
+import { UserCircleIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline';
+import { SlOptionsVertical } from "react-icons/sl";
 
-import Link from 'next/link'
-import { logout } from '@/actions/logout-user-action'
-import type { User } from '@/src/schemas'
+
+import Link from 'next/link';
+import { logout } from '@/actions/logout-user-action';
+import type { User } from '@/src/schemas';
 
 export default function AdminMenu({ user }: { user: User }) {
     return (
         <Popover className="relative rounded-2xl">
             <PopoverButton className="inline-flex items-center justify-center p-2  transition duration-150 rounded-lg">
-                <Bars3Icon className="w-6 h-6 text-gray-400" />
+                <SlOptionsVertical className="w-4 h-4 text-gray-400" />
             </PopoverButton>
 
 
@@ -26,7 +28,7 @@ export default function AdminMenu({ user }: { user: User }) {
                 leaveTo="opacity-0 scale-95"
             >
                 <PopoverPanel
-                    className="absolute bottom-full mb-3 left-1/2 z-20 w-48 -translate-x-1/2 lg:left-0 lg:translate-x-0 bg-white rounded-xl shadow-md ring-1 ring-black/10 p-4"
+                    className="fixed bottom-15 left-5 mb-3  bg-white rounded-2xl ring-1 ring-black/10 p-4"
                 >
                     <div className="text-sm text-gray-800">
                         <ul className="space-y-2">
