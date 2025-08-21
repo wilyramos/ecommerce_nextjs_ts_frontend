@@ -4,6 +4,7 @@ import { getSummarySales } from '@/src/services/sales';
 import { FiDollarSign, FiPackage, FiShoppingCart, FiTrendingUp } from 'react-icons/fi';
 import { GoLinkExternal } from "react-icons/go";
 import Link from 'next/link';
+import { HeadingH3 } from '@/components/ui/Heading';
 
 export default async function SalesReportsCards() {
     // Fechas: último mes
@@ -19,9 +20,7 @@ export default async function SalesReportsCards() {
         <section className="bg-white p-4 ">
             {/* Header */}
             <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-2">
-                <h2 className="text-lg font-semibold text-gray-800">
-                    Resumen de Ventas
-                </h2>
+                <HeadingH3>Resumen de Ventas</HeadingH3>
 
                 <div className="relative group self-start sm:self-auto">
                     <Link

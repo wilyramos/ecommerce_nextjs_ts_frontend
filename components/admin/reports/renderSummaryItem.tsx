@@ -2,7 +2,7 @@ import React from 'react';
 
 
 
-export default function renderSummaryItem(title: string, value: string | number, icon: React.ReactNode) {
+export default function renderSummaryItem(title: string, value: string | number, icon?: React.ReactNode) {
     return (
         <div className="border p-4 rounded-2xl flex items-center gap-3">
             {icon}
