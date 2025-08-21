@@ -3,7 +3,7 @@
 import { HeadingH2 } from "@/components/ui/Heading";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import FiltersReportsSales from "@/components/admin/reports/FiltersReportsSales";
+import DateRangeDropdown from "@/components/admin/reports/FiltersReportsSales";
 
 const tabs = [
     { href: "/admin/reports/sales", label: "Vista general" },
@@ -19,20 +19,20 @@ export default function SalesReportLayout({ children }: { children: React.ReactN
             <aside>
                 {/* Header */}
                 <div className="py-4">
-                    <HeadingH2>Vista general de ventas</HeadingH2>
+                    <HeadingH2>Reporte de Ventas</HeadingH2>
                 </div>
 
                 {/* Tabs */}
-                <div className="flex flex-wrap mb-8 border-b border-gray-200">
+                <div className="flex flex-wrap mb-8 border-b border-gray-200 ">
                     {tabs.map((tab) => {
                         const isActive = pathname === tab.href;
                         return (
                             <Link
                                 key={tab.href}
                                 href={tab.href}
-                                className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 ${isActive
-                                        ? "border-blue-600 text-blue-600"
-                                        : "border-transparent text-gray-600 hover:border-blue-600 hover:text-blue-600"
+                                className={`px-1 md:px-4 py-2 text-xs md:text-sm font-medium transition-colors border-b-2 ${isActive
+                                    ? "border-blue-600 text-blue-600"
+                                    : "border-transparent text-gray-600 hover:border-blue-600 hover:text-blue-600 hover:bg-gray-200"
                                     }`}
                             >
                                 {tab.label}
@@ -42,9 +42,10 @@ export default function SalesReportLayout({ children }: { children: React.ReactN
                 </div>
 
                 {/* Filtros */}
-                <div className="p-2 border rounded-lg bg-gray-50">
-                    <FiltersReportsSales />
+                <div className="">
+                    <DateRangeDropdown />
                 </div>
+
             </aside>
 
             {/* Contenido principal */}

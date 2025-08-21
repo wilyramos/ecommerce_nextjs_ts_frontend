@@ -19,7 +19,7 @@ import {
     ChevronDown,
     ChevronRight,
 } from "lucide-react";
-import { TbLayoutSidebarLeftCollapse, TbLayoutSidebarLeftExpand  } from "react-icons/tb";
+import { TbLayoutSidebarLeftCollapse, TbLayoutSidebarLeftExpand } from "react-icons/tb";
 
 import {
     Tooltip,
@@ -75,10 +75,10 @@ export default function AdminSidebar({ user }: Props) {
 
     return (
         <motion.aside
-            animate={{ width: expanded ? 220 : 56 }}
+            animate={{ width: expanded ? 180 : 56 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
             className={cn(
-                "h-screen flex flex-col border-r border-gray-200 overflow-hidden bg-white text-gray-900 shadow-sm"
+                "h-screen flex flex-col border-r border-gray-300 overflow-hidden bg-white text-gray-900 shadow-xl rounded-r-2xl py-4"
             )}
         >
             {/* Header Sidebar */}
@@ -152,7 +152,7 @@ export default function AdminSidebar({ user }: Props) {
                     }
 
                     return (
-                        <Tooltip key={label} delayDuration={200}>
+                        <Tooltip key={label} delayDuration={300}>
                             <TooltipTrigger asChild>
                                 <Link
                                     href={href!}
@@ -167,7 +167,7 @@ export default function AdminSidebar({ user }: Props) {
                                             className="absolute left-0 top-0 h-full w-[3px] bg-orange-500 rounded-r"
                                         />
                                     )}
-                                    <Icon className="h-5 w-5 shrink-0" />
+                                    <Icon className="h-4 w-4 shrink-0" />
                                     {expanded && <span>{label}</span>}
                                 </Link>
                             </TooltipTrigger>
@@ -181,7 +181,7 @@ export default function AdminSidebar({ user }: Props) {
             <div className="border-t border-gray-200 p-3 flex items-center gap-3 bg-gray-50">
                 {expanded && (
                     <div className="flex-1 overflow-hidden">
-                        <p className="text-sm font-semibold truncate">{user?.nombre}</p>
+                        <p className="text-sm truncate uppercase font-black">{user?.nombre}</p>
                         <p className="text-xs text-gray-500 truncate">
                             {user?.email}
                         </p>

@@ -15,7 +15,7 @@ export default async function ProductsReportsSalesPage({searchParams}: SalesRepo
 
     const { startDate, endDate } = await searchParams;
     return (
-        <div className="space-y-6">
+        <div className="">
             {/* Resumen de métricas */}
             <Suspense fallback={<SpinnerLoading />}>
                 <SalesReportProductAdmin

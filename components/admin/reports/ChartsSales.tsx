@@ -49,9 +49,9 @@ export default function ChartsSales({ data }: Props) {
     });
 
     return (
-        <div className="w-full rounded-xl bg-white p-6 border">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">
-                Resumen de ventas
+        <div className="w-full ">
+            <h2 className="px-4 text-gray-700">
+                Ventas:
             </h2>
 
             <ResponsiveContainer width="100%" height={360}>

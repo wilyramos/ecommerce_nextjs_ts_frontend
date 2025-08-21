@@ -7,9 +7,11 @@ import {
     YAxis,
     Tooltip,
     ResponsiveContainer,
+    LabelList,
 } from "recharts";
+import { formatCurrency } from "@/src/utils/formatCurrency";
 
-type ChartData = {
+type ProductData = {
     productId: string;
     nombre: string;
     margin: number;
@@ -17,73 +19,115 @@ type ChartData = {
     totalSales: number;
 }[];
 
-export default function ChartsProducts({ data }: { data: ChartData }) {
+// Custom label for the bar chart - Simplified and styled for a modern look
+const CustomLabel = (props: any) => {
+    const { x, y, width, value } = props;
     return (
-        <div className="space-y-8">
-            {/* Gráfico */}
-            <div className="p-4">
-                <h2 className="text-lg font-light text-gray-700 mb-4">Top Productos</h2>
-                <ResponsiveContainer width="100%" height={350}>
+        <text
+            x={x + width + 5}
+            y={y}
+            dy={4}
+            fill="#555" // A slightly darker gray for better contrast
+            fontSize={12}
+            textAnchor="start"
+            className="font-sans" // Using a standard sans-serif font
+        >
+            {formatCurrency(value)}
+        </text>
+    );
+};
+
+export default function ChartsProducts({ data }: { data: ProductData }) {
+    const maxSales = Math.max(...data.map((item) => item.totalSales));
+
+    return (
+        <div className="flex flex-col gap-8 lg:flex-row">
+            {/* Product Sales Chart - Minimalist Design */}
+            <div className="flex-1 rounded-lg bg-white p-6">
+                <h2 className="mb-6 text-sm font-extrabold text-gray-700">
+                    Total Sales by Product:
+                </h2>
+                <ResponsiveContainer width="100%" height={300}>
                     <BarChart
                         data={data}
                         layout="vertical"
-                        margin={{ top: 10, right: 20, left: 80, bottom: 10 }}
-                        barCategoryGap={18} // más espacio entre barras
+                        margin={{ top: 10, right: 90, left: 100, bottom: 10 }}
+                        barSize={12}
+                        barCategoryGap={10}
                     >
-                        <XAxis type="number" hide />
+                        <XAxis
+                            type="number"
+                            tickFormatter={formatCurrency}
+                            axisLine={false}
+                            tickLine={false}
+                            stroke="#e0e0e0" // Lighter color for axes
+                            tick={{ fontSize: 12, fill: "#888" }}
+                            domain={[0, maxSales * 1.1]}
+                        />
                         <YAxis
                             dataKey="nombre"
                             type="category"
-                            tick={{ fontSize: 13 }}
-                            width={140}
+                            axisLine={false}
+                            tickLine={false}
+                            tick={{ fontSize: 13, fill: "#555" }}
+                            width={120}
                         />
                         <Tooltip
-                            formatter={(value: number) =>
-                                new Intl.NumberFormat("es-PE", {
-                                    style: "currency",
-                                    currency: "PEN",
-                                }).format(value)
-                            }
-                            labelClassName="text-sm"
+                            formatter={(value: number) => formatCurrency(value)}
+                            labelStyle={{
+                                color: "#333",
+                                fontSize: "14px",
+                                fontWeight: "bold",
+                            }}
+                            contentStyle={{
+                                background: "white",
+                                border: "1px solid #ccc", // Lighter border
+                                borderRadius: "4px",
+                                fontSize: "12px",
+                                padding: "8px",
+                            }}
                         />
                         <Bar
                             dataKey="totalSales"
-                            fill="#4f46e5"
-                            radius={[4, 4, 4, 4]}
-                            barSize={14} // 👈 controla el grosor
-                            name="Ventas Totales"
-                        />
+                            fill="#007bff" // Modern blue color
+                            radius={[0, 4, 4, 0]} // Slightly more rounded
+                            name="Total Sales"
+                        >
+                            <LabelList dataKey="totalSales" content={CustomLabel} />
+                        </Bar>
                     </BarChart>
                 </ResponsiveContainer>
             </div>
 
-            {/* Tabla */}
-            <div className="p-4 bg-white overflow-x-auto">
-                <table className="w-full text-sm">
+            {/* Product Details Table - Clean and Simple Design */}
+            <div className="flex-1 overflow-x-auto rounded-lg bg-white p-6">
+                <h2 className="mb-6 text-sm font-extrabold text-gray-700">
+                    Product Details:
+                </h2>
+                <table className="min-w-full text-sm">
                     <thead>
-                        <tr className="bg-gray-50 text-gray-600">
-                            <th className="p-2 text-left">Producto</th>
-                            <th className="p-2 text-right">Cantidad</th>
-                            <th className="p-2 text-right">Ventas</th>
-                            <th className="p-2 text-right">Margen</th>
+                        <tr className="border-b border-gray-200 text-gray-500">
+                            <th className="py-2 text-left font-medium">Product</th>
+                            <th className="py-2 text-right font-medium">Quantity</th>
+                            <th className="py-2 text-right font-medium">Sales</th>
+                            <th className="py-2 text-right font-medium">Margin</th>
                         </tr>
                     </thead>
                     <tbody>
                         {data.map((p) => (
-                            <tr key={p.productId} className="hover:bg-gray-50 text-xs">
-                                <td className="p-2 ">{p.nombre}</td>
-                                <td className="p-2  text-right">{p.totalQuantity}</td>
-                                <td className="p-2  text-right">
-                                    {new Intl.NumberFormat("es-PE", {
-                                        style: "currency",
-                                        currency: "PEN",
-                                    }).format(p.totalSales)}
+                            <tr
+                                key={p.productId}
+                                className="border-b border-gray-100 last:border-b-0"
+                            >
+                                <td className="py-3 text-gray-700">{p.nombre}</td>
+                                <td className="py-3 text-right text-gray-700">
+                                    {p.totalQuantity}
                                 </td>
-                                <td className="p-2 text-right">
-                                    {new Intl.NumberFormat("es-PE", {
-                                        style: "currency",
-                                        currency: "PEN",
-                                    }).format(p.margin)}
+                                <td className="py-3 text-right text-gray-700">
+                                    {formatCurrency(p.totalSales)}
+                                </td>
+                                <td className="py-3 text-right text-gray-700">
+                                    {formatCurrency(p.margin)}
                                 </td>
                             </tr>
                         ))}

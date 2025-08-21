@@ -18,10 +18,8 @@ export default async function ReportByVenderosAdmin({ startDate, endDate }: Sale
 
     if (!topProducts) {
         console.error("No se pudieron obtener los productos más vendidos.");
-        return <p>Error al cargar los productos más vendidos.</p>;
+        return <p>No hay datos disponibles.</p>;
     }
-
-    console.log("Top products by vendor:", topProducts);
 
     return (
         <>

@@ -20,7 +20,7 @@ export default async function SalesReportProductAdmin({ startDate, endDate }: Sa
 
     if (!topProducts) {
         console.error("No se pudieron obtener los productos más vendidos.");
-        return <p>Error al cargar los productos más vendidos.</p>;
+        return <p>No hay datos disponibles.</p>;
     }
 
     return (

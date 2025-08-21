@@ -9,97 +9,123 @@ import {
     ResponsiveContainer,
     Legend,
 } from "recharts";
+import { formatCurrency } from "@/src/utils/formatCurrency";
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#a855f7", "#f43f5e"];
+// A more modern and professional color palette
+const COLORS = [
+    "#0077B6", // Dark Blue
+    "#00B4D8", // Cyan
+    "#90E0EF", // Light Cyan
+    "#48CAE4", // Medium Cyan
+    "#5467C3", // Another Blue
+    "#03045E", // Darker Blue
+];
+
+// Custom Tooltip for a cleaner look
+const CustomTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+        return (
+            <div className="bg-white p-3 text-xs shadow-md rounded-lg">
+                <p className="font-semibold text-gray-800">{payload[0].name}</p>
+                <p className="text-gray-600">
+                    Ventas: {formatCurrency(payload[0].value)}
+                </p>
+            </div>
+        );
+    }
+    return null;
+};
 
 export default function ChartsByVendors({ data }: { data: VendorReport[] }) {
     return (
-        <div className="grid grid-cols-2 gap-8">
-            {/* Gráfico en pastel */}
-            <div className="p-6 flex flex-col items-center">
-                <h2 className="text-lg font-semibold mb-6 text-gray-800">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Pie Chart and Summary List */}
+            <div className="md:col-span-1 lg:col-span-2 rounded-lg bg-white p-4 flex flex-col items-center justify-center">
+                <h2 className="text-lg font-bold mb-4 text-gray-900">
                     Ventas por Vendedor
                 </h2>
-                <ResponsiveContainer width="100%" height={300}>
-                    <PieChart>
-                        <Pie
-                            data={data}
-                            dataKey="totalSales"
-                            nameKey="nombre"
-                            cx="50%"
-                            cy="50%"
-                            outerRadius={100}
-                            label
-                        >
-                            {data.map((_, index) => (
-                                <Cell
-                                    key={`cell-${index}`}
-                                    fill={COLORS[index % COLORS.length]}
-                                    className="transition-opacity hover:opacity-80"
+                <div className="flex flex-col lg:flex-row items-center justify-center w-full">
+                    <div className="w-full lg:w-2/3 h-64 lg:h-80">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <PieChart>
+                                <Pie
+                                    data={data}
+                                    dataKey="totalSales"
+                                    nameKey="nombre"
+                                    cx="50%"
+                                    cy="50%"
+                                    outerRadius={100}
+                                    labelLine={false}
+                                >
+                                    {data.map((_, index) => (
+                                        <Cell
+                                            key={`cell-${index}`}
+                                            fill={COLORS[index % COLORS.length]}
+                                            className="transition-opacity duration-300 hover:opacity-80"
+                                        />
+                                    ))}
+                                </Pie>
+                                <Tooltip content={<CustomTooltip />} />
+                                <Legend
+                                    layout="vertical"
+                                    verticalAlign="middle"
+                                    align="right"
+                                    wrapperStyle={{ fontSize: "12px", paddingLeft: "20px" }}
                                 />
-                            ))}
-                        </Pie>
-                        <Tooltip
-                            contentStyle={{
-                                borderRadius: "8px",
-                                border: "none",
-                                boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-                            }}
-                        />
-                        <Legend />
-                    </PieChart>
-                </ResponsiveContainer>
+                            </PieChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
             </div>
 
-            {/* Lista de vendedores */}
-            <div className="bg-white p-6">
-                <h2 className="text-lg font-semibold mb-4 text-gray-800">
-                    Lista de Vendedores
+            {/* Vendor Details List */}
+            <div className="md:col-span-1 lg:col-span-1 rounded-lg bg-white p-4">
+                <h2 className="text-lg font-bold mb-4 text-gray-900">
+                    Detalle de Vendedores
                 </h2>
                 <ul className="divide-y divide-gray-100">
                     {data.map((vendor, i) => (
                         <li
                             key={i}
-                            className="flex justify-between py-3 text-sm text-gray-600 hover:bg-gray-50 rounded-lg px-2 transition"
+                            className="flex justify-between py-2 text-xs transition hover:bg-gray-50"
                         >
-                            <span className="font-medium text-gray-800">{vendor.nombre}</span>
-                            <span className="font-semibold text-gray-900">
-                                ${vendor.totalSales.toFixed(2)}
+                            <span className="font-medium text-gray-700">{vendor.nombre}</span>
+                            <span className="font-bold text-gray-900">
+                                {formatCurrency(vendor.totalSales)}
                             </span>
                         </li>
                     ))}
                 </ul>
             </div>
 
-            {/* Tabla completa */}
-            <div className="col-span-2 mt-6">
-                <h2 className="text-lg font-semibold mb-4 text-gray-800">
-                    Detalle en Tabla
+            {/* Full Table */}
+            <div className="col-span-full rounded-lg bg-white p-4 mt-4">
+                <h2 className="text-lg font-bold mb-4 text-gray-900">
+                    Resumen de Ventas por Vendedor
                 </h2>
                 <div className="overflow-x-auto">
-                    <table className="w-full text-sm text-left border-collapse">
-                        <thead>
-                            <tr className="bg-gray-50 text-gray-700 text-sm">
-                                <th className="px-4 py-3 font-medium">Vendedor</th>
-                                <th className="px-4 py-3 font-medium text-right">Ventas Totales</th>
-                                <th className="px-4 py-3 font-medium text-right">Unidades</th>
-                                <th className="px-4 py-3 font-medium text-right"># Ventas</th>
-                                <th className="px-4 py-3 font-medium text-right">Margen</th>
+                    <table className="w-full text-xs text-left">
+                        <thead className="bg-gray-50">
+                            <tr>
+                                <th className="px-4 py-2 font-semibold text-gray-600">Vendedor</th>
+                                <th className="px-4 py-2 font-semibold text-gray-600 text-right">Ventas Totales</th>
+                                <th className="px-4 py-2 font-semibold text-gray-600 text-right">Unidades</th>
+                                <th className="px-4 py-2 font-semibold text-gray-600 text-right"># Ventas</th>
+                                <th className="px-4 py-2 font-semibold text-gray-600 text-right">Margen</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
                             {data.map((vendor, i) => (
-                                <tr
-                                    key={i}
-                                    className="hover:bg-gray-50 transition"
-                                >
-                                    <td className="px-4 py-3 text-gray-800">{vendor.nombre}</td>
-                                    <td className="px-4 py-3 text-right font-medium text-gray-900">
-                                        ${vendor.totalSales.toFixed(2)}
+                                <tr key={i} className="hover:bg-gray-50 transition">
+                                    <td className="px-4 py-2 text-gray-800 font-medium">{vendor.nombre}</td>
+                                    <td className="px-4 py-2 text-right text-gray-900 font-bold">
+                                        {formatCurrency(vendor.totalSales)}
                                     </td>
-                                    <td className="px-4 py-3 text-right">{vendor.totalUnits}</td>
-                                    <td className="px-4 py-3 text-right">{vendor.numSales}</td>
-                                    <td className="px-4 py-3 text-right">${vendor.margin}</td>
+                                    <td className="px-4 py-2 text-right text-gray-700">{vendor.totalUnits}</td>
+                                    <td className="px-4 py-2 text-right text-gray-700">{vendor.numSales}</td>
+                                    <td className="px-4 py-2 text-right text-gray-700">
+                                        {formatCurrency(vendor.margin)}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
