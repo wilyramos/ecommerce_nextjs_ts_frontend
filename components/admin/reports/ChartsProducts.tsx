@@ -19,24 +19,6 @@ type ProductData = {
     totalSales: number;
 }[];
 
-// Custom label for the bar chart - Simplified and styled for a modern look
-const CustomLabel = (props: any) => {
-    const { x, y, width, value } = props;
-    return (
-        <text
-            x={x + width + 5}
-            y={y}
-            dy={4}
-            fill="#555" // A slightly darker gray for better contrast
-            fontSize={12}
-            textAnchor="start"
-            className="font-sans" // Using a standard sans-serif font
-        >
-            {formatCurrency(value)}
-        </text>
-    );
-};
-
 export default function ChartsProducts({ data }: { data: ProductData }) {
     const maxSales = Math.max(...data.map((item) => item.totalSales));
 
@@ -60,7 +42,7 @@ export default function ChartsProducts({ data }: { data: ProductData }) {
                             tickFormatter={formatCurrency}
                             axisLine={false}
                             tickLine={false}
-                            stroke="#e0e0e0" // Lighter color for axes
+                            stroke="#e0e0e0"
                             tick={{ fontSize: 12, fill: "#888" }}
                             domain={[0, maxSales * 1.1]}
                         />
@@ -81,7 +63,7 @@ export default function ChartsProducts({ data }: { data: ProductData }) {
                             }}
                             contentStyle={{
                                 background: "white",
-                                border: "1px solid #ccc", // Lighter border
+                                border: "1px solid #ccc",
                                 borderRadius: "4px",
                                 fontSize: "12px",
                                 padding: "8px",
@@ -89,17 +71,22 @@ export default function ChartsProducts({ data }: { data: ProductData }) {
                         />
                         <Bar
                             dataKey="totalSales"
-                            fill="#007bff" // Modern blue color
-                            radius={[0, 4, 4, 0]} // Slightly more rounded
+                            fill="#007bff"
+                            radius={[0, 4, 4, 0]}
                             name="Total Sales"
                         >
-                            <LabelList dataKey="totalSales" content={CustomLabel} />
+                            <LabelList
+                                dataKey="totalSales"
+                                position="right"
+                                formatter={(value: number) => formatCurrency(value)}
+                                style={{ fontSize: 12, fill: "#555" }}
+                            />
                         </Bar>
                     </BarChart>
                 </ResponsiveContainer>
             </div>
 
-            {/* Product Details Table - Clean and Simple Design */}
+            {/* Product Details Table */}
             <div className="flex-1 overflow-x-auto rounded-lg bg-white p-6">
                 <h2 className="mb-6 text-sm font-extrabold text-gray-700">
                     Product Details:

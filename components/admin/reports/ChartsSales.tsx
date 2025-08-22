@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
     LineChart,
@@ -28,31 +28,22 @@ export default function ChartsSales({ data }: Props) {
     const formattedData = data.map((item) => {
         let newLabel = item.label;
 
-        // Caso YYYY-MM
         if (/^\d{4}-\d{2}$/.test(item.label)) {
             const [year, month] = item.label.split("-").map(Number);
-            const localDate = new Date(year, month - 1); // solo año y mes
+            const localDate = new Date(year, month - 1);
             newLabel = format(localDate, "MMM yyyy", { locale: es });
-        }
-
-        // Caso YYYY-MM-DD
-        else if (/^\d{4}-\d{2}-\d{2}$/.test(item.label)) {
+        } else if (/^\d{4}-\d{2}-\d{2}$/.test(item.label)) {
             const [year, month, day] = item.label.split("-").map(Number);
             const localDate = new Date(year, month - 1, day);
             newLabel = format(localDate, "dd MMM", { locale: es });
         }
 
-        return {
-            ...item,
-            label: newLabel,
-        };
+        return { ...item, label: newLabel };
     });
 
     return (
-        <div className="w-full ">
-            <h2 className="px-4 text-gray-700">
-                Ventas:
-            </h2>
+        <div className="w-full">
+            <h2 className="px-4 text-gray-700 font-semibold">Ventas</h2>
 
             <ResponsiveContainer width="100%" height={360}>
                 <LineChart
@@ -98,7 +89,7 @@ export default function ChartsSales({ data }: Props) {
                     <Line
                         type="monotone"
                         dataKey="ventas"
-                        stroke="#3b82f6"
+                        stroke="#0EA5E9" // Celeste principal
                         strokeWidth={2}
                         dot={{ r: 3 }}
                         activeDot={{ r: 5 }}
@@ -107,7 +98,7 @@ export default function ChartsSales({ data }: Props) {
                     <Line
                         type="monotone"
                         dataKey="cantidadVentas"
-                        stroke="#10b981"
+                        stroke="#38BDF8" // Celeste medio
                         strokeWidth={2}
                         dot={{ r: 3 }}
                         activeDot={{ r: 5 }}
@@ -116,7 +107,7 @@ export default function ChartsSales({ data }: Props) {
                     <Line
                         type="monotone"
                         dataKey="unidadesVendidas"
-                        stroke="#f59e0b"
+                        stroke="#0369A1" // Azul celeste oscuro
                         strokeWidth={2}
                         dot={{ r: 3 }}
                         activeDot={{ r: 5 }}
