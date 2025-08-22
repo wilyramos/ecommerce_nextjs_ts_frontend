@@ -13,7 +13,6 @@ export default async function reportsOrdersPage({ searchParams }: SalesReportsPa
 
     const { startDate, endDate } = await searchParams;
 
-    console.log("datte", startDate, endDate);
 
     return (
         <div>

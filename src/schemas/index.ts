@@ -933,4 +933,11 @@ export const OrdersSummarySchema = z.object({
     avgPaidOrderValue: z.number().min(0).optional(),
 });
 
+export const OrdersOverTimeSchema = z.object({
+    date: z.string().min(10).max(10),
+    totalSales: z.number().min(0),
+    numberOfOrders: z.number().min(0),
+});
+
 export type TOrdersSummary = z.infer<typeof OrdersSummarySchema>;
+export type TOrdersOverTime = z.infer<typeof OrdersOverTimeSchema>;

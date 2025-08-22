@@ -2,7 +2,7 @@ import "server-only"
 
 
 import getToken from "@/src/auth/token"
-import { OrdersListResponseSchema, OrdersSummarySchema } from "@/src/schemas";
+import { OrdersListResponseSchema, OrdersOverTimeSchema, OrdersSummarySchema } from "@/src/schemas";
 
 // === new 
 import { OrderPopulatedSchema } from "@/src/schemas";
@@ -143,5 +143,51 @@ export const getSummaryOrders = async (params: GetOrdersReportsParams) => {
     } catch (error) {
         console.error("Error fetching sales summary:", error);
         return null;
+    }
+}
+
+export const getOrdersOverTime = async (params: GetOrdersReportsParams) => {
+    try {
+        const token = await getToken();
+        let { fechaInicio, fechaFin } = params;
+
+        const getDate = (daysAgo = 0) => {
+            const date = new Date();
+            date.setDate(date.getDate() - daysAgo);
+            return date.toISOString().split("T")[0];
+        };
+
+        if (!fechaInicio) fechaInicio = getDate(7);
+        if (!fechaFin) fechaFin = getDate(0);
+
+        const queryParams = new URLSearchParams();
+        if (fechaInicio) {
+            queryParams.append('fechaInicio', fechaInicio);
+        }
+        if (fechaFin) {
+            queryParams.append('fechaFin', fechaFin);
+        }
+
+        const url = `${process.env.API_URL}/orders/reports/sales-over-time?${queryParams.toString()}`;
+
+        const req = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!req.ok) {
+            return [];
+        }
+
+        const json = await req.json();
+        console.log("Sales over time:", json);
+        const ordersOverTime = OrdersOverTimeSchema.array().parse(json);
+        console.log("Parsed orders over time:", ordersOverTime);
+        return ordersOverTime;
+    } catch (error) {
+        console.error("Error fetching sales over time:", error);
+        return [];
     }
 }

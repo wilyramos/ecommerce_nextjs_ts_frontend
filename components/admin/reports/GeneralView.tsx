@@ -6,8 +6,8 @@ import renderSummaryItem from "./renderSummaryItem";
 
 export default function GeneralView() {
 
-    const startDate: string = new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString();
-    const endDate: string = new Date().toISOString();
+    // const startDate: string = new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString();
+    // const endDate: string = new Date().toISOString();
 
     const salesSummary = {
         totalSales: 10000,

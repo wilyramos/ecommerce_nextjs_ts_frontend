@@ -8,16 +8,18 @@ type KpiCardProps = {
 
 export default function KpiCard({ title, value, icon }: KpiCardProps) {
     return (
-        <div className="p-2 bg-gray-100  rounded-lg border-gray-200 hover:shadow-md transition-shadow duration-200 border-r-sky-400 border-2">
-            <div className="flex items-center gap-4">
+        <div className="p-3 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
+            <div className="flex items-center gap-3">
                 {icon && (
-                    <div className="p-3 rounded-xl bg-gray-100 text-gray-600 flex items-center justify-center text-lg">
+                    <div className="p-2 rounded-lg bg-gradient-to-br from-sky-100 to-sky-200 text-sky-600 flex items-center justify-center text-base shadow-inner">
                         {icon}
                     </div>
                 )}
-                <div className="flex justify-between items-center flex-1 ml-3">
-                    <p className="text-sm text-gray-500">{title}</p>
-                    <p className="text-lg font-semibold text-gray-900">{value}</p>
+                <div className="flex flex-col flex-1">
+                    <p className="text-xs text-gray-500 font-medium">{title}</p>
+                    <p className="text-lg font-semibold text-gray-900 tracking-tight">
+                        {value}
+                    </p>
                 </div>
             </div>
         </div>

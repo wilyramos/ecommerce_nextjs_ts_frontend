@@ -27,7 +27,6 @@ export default async function SalesReportProductAdmin({ startDate, endDate }: Sa
         <div>
 
             <ChartsProducts data={topProducts} />
-
         </div>
     )
 }

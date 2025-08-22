@@ -5,7 +5,7 @@ import PaymentMethodsChart from "./PaymentMethodsChart";
 import SalesByRegionChart from "./SalesByRegionChart";
 import KpiCardsOrders from "./KpiCardsOrders";
 
-import { getSummaryOrders } from "@/src/services/orders";
+import { getOrdersOverTime, getSummaryOrders } from "@/src/services/orders";
 
 
 type OrdersReportsResultsAdminProps = {
@@ -19,29 +19,33 @@ export default async function OrdersReportsResultsAdmin({
 }: OrdersReportsResultsAdminProps) {
 
 
-     const dataSummary = await getSummaryOrders({
-            fechaInicio: startDate,
-            fechaFin: endDate,
-        });
+    const dataSummary = await getSummaryOrders({
+        fechaInicio: startDate,
+        fechaFin: endDate,
+    });
 
-    console.log("Sales summary:", dataSummary);
+    const dataRechardsOrders = await getOrdersOverTime({
+        fechaInicio: startDate,
+        fechaFin: endDate,
+    });
 
+    console.log("dataRechardsOrders", dataRechardsOrders);
 
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-2">
             {/* Header */}
             <header className="flex justify-between items-center">
                 <div>
-                    <p className="text-sm text-gray-500">
-                        Desde: {startDate ?? "01/08/2025"} | Hasta:{" "}
-                        {endDate ?? "05/08/2025"}
-                    </p>
+                    <h3 className="mb-1 text-sm font-semibold text-gray-700">
+                        Desde: {startDate ?? new Date().toLocaleDateString()} | Hasta:{" "}
+                        {endDate ?? new Date().toLocaleDateString()}
+                    </h3>
                 </div>
             </header>
 
             {/* KPI CARDS */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
                 {dataSummary && (
                     <KpiCardsOrders
                         kpis={dataSummary}
@@ -49,8 +53,10 @@ export default async function OrdersReportsResultsAdmin({
                 )}
             </div>
 
-            <div>
-                <RechardOrdersSales />
+            <div className="">
+                <RechardOrdersSales
+                    data={dataRechardsOrders}
+                />
             </div>
 
             {/* GRID 3 CHARTS */}
