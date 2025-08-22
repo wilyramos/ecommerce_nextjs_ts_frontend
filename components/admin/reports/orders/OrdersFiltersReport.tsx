@@ -34,14 +34,14 @@ export default function OrdersFiltersReport() {
                 {/* Botón de volver */}
                 <Link
                     href="/admin/reports"
-                    className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-blue-600 transition-colors mb-6"
+                    className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-blue-600 transition-colors"
                 >
                     <ArrowLeft size={16} />
                     Volver a Reportes
                 </Link>
 
                 {/* Encabezado Principal */}
-                <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2 mb-6">
+                <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2 mb-2">
                     <HeadingH2>Reporte de Órdenes</HeadingH2>
                     <div className="mt-4 sm:mt-0">
                         <DateRangeDropdown />
@@ -49,7 +49,7 @@ export default function OrdersFiltersReport() {
                 </header>
 
                 {/* Navegación de Pestañas */}
-                <div className="flex flex-wrap gap-2 mb-8 border-b border-gray-200">
+                <div className="flex flex-wrap gap-2 border-b border-gray-200">
                     {tabs.map((tab) => {
                         const isActive = pathname === tab.href;
                         const Icon = tab.icon;
@@ -57,7 +57,7 @@ export default function OrdersFiltersReport() {
                             <Link
                                 key={tab.href}
                                 href={tab.href}
-                                className={`flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-t-lg transition-colors
+                                className={`flex items-center gap-2 px-5 py-2.5 text-sm rounded-t-lg transition-colors
                                     ${isActive
                                         ? "border-b-2 border-blue-600 text-blue-600 bg-white"
                                         : "text-gray-600 hover:text-blue-600 hover:bg-gray-100"

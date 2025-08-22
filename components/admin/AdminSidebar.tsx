@@ -78,7 +78,7 @@ export default function AdminSidebar({ user }: Props) {
             animate={{ width: expanded ? 180 : 56 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
             className={cn(
-                "h-screen flex flex-col border-r border-gray-300 overflow-hidden bg-white text-gray-900 shadow-xl rounded-r-2xl py-4"
+                "h-screen flex flex-col border-r border-gray-200 overflow-hidden bg-white text-gray-900 shadow-xs rounded-r-2xl py-4"
             )}
         >
             {/* Header Sidebar */}
