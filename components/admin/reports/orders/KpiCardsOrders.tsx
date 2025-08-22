@@ -1,34 +1,30 @@
-import React from 'react'
-import KpiCard from '@/components/ui/admin/KpiCard'
+import { TOrdersSummary } from "@/src/schemas"
+import KpiCard from "@/components/ui/admin/KpiCard"
 
-
-
-const kpis = {
-    ventasTotales: 45200,
-    ordenesTotales: 320,
-    ticketPromedio: 141.25,
-    ordenesCanceladas: 20,
+const KPI_LABELS: Record<string, string> = {
+    grossSales: "Ventas Brutas",
+    netSales: "Ventas Netas",
+    numberOrders: "Órdenes Totales",
+    numberOrdersPagadas: "Órdenes Pagadas",
+    numberOrdersPendientes: "Órdenes Pendientes",
+    numberOrdersCanceladas: "Órdenes Canceladas",
+    totalUnitsSold: "Unidades Vendidas",
+    margin: "Margen",
+    marginRate: "Margen %",
+    avgPaidOrderValue: "Ticket Promedio Pagado"
 };
 
-export default function KpiCardsOrders() {
+
+export default function KpiCardsOrders({ kpis }: { kpis: TOrdersSummary }) {
     return (
         <>
-            <KpiCard
-                title="Ventas Totales"
-                value={`S/ ${kpis.ventasTotales.toLocaleString()}`}
-            />
-            <KpiCard
-                title="Órdenes Totales"
-                value={kpis.ordenesTotales}
-            />
-            <KpiCard
-                title="Ticket Promedio"
-                value={`S/ ${kpis.ticketPromedio}`}
-            />
-            <KpiCard
-                title="Órdenes Canceladas"
-                value={kpis.ordenesCanceladas}
-            />
+            {Object.entries(kpis).map(([key, value]) => (
+                <KpiCard
+                    key={key}
+                    title={KPI_LABELS[key] || key}  // usar label si existe
+                    value={typeof value === "number" ? value.toLocaleString("es-PE") : value}
+                />
+            ))}
         </>
     )
 }

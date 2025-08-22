@@ -1,4 +1,3 @@
-"use client";
 
 import RechardOrdersSales from "./RechardOrdersSales";
 import DonutChartsOrders from "./DonutChartsOrders";
@@ -6,24 +5,27 @@ import PaymentMethodsChart from "./PaymentMethodsChart";
 import SalesByRegionChart from "./SalesByRegionChart";
 import KpiCardsOrders from "./KpiCardsOrders";
 
+import { getSummaryOrders } from "@/src/services/orders";
+
 
 type OrdersReportsResultsAdminProps = {
     startDate?: string;
     endDate?: string;
 };
 
-export default function OrdersReportsResultsAdmin({
+export default async function OrdersReportsResultsAdmin({
     startDate,
     endDate,
 }: OrdersReportsResultsAdminProps) {
 
 
-    const kpis = {
-        ventasTotales: 45200,
-        ordenesTotales: 320,
-        ticketPromedio: 141.25,
-        ordenesCanceladas: 20,
-    };
+     const dataSummary = await getSummaryOrders({
+            fechaInicio: startDate,
+            fechaFin: endDate,
+        });
+
+    console.log("Sales summary:", dataSummary);
+
 
 
     return (
@@ -40,17 +42,21 @@ export default function OrdersReportsResultsAdmin({
 
             {/* KPI CARDS */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <KpiCardsOrders />
+                {dataSummary && (
+                    <KpiCardsOrders
+                        kpis={dataSummary}
+                    />
+                )}
             </div>
 
             <div>
                 <RechardOrdersSales />
             </div>
-            
+
             {/* GRID 3 CHARTS */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* Pie chart */}
-               
+
                 <div>
                     <DonutChartsOrders />
                 </div>

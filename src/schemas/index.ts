@@ -917,3 +917,20 @@ export const PaymentMethodSchema = z.enum([
   "PLIN",
   "TRANSFER",
 ])
+
+// **** REPORT ORDERS
+
+export const OrdersSummarySchema = z.object({
+    grossSales: z.number().min(0).optional(),
+    netSales: z.number().min(0).optional(),
+    numberOrders: z.number().min(0).optional(),
+    numberOrdersPagadas: z.number().min(0).optional(),
+    numberOrdersPendientes: z.number().min(0).optional(),
+    numberOrdersCanceladas: z.number().min(0).optional(),
+    totalUnitsSold: z.number().min(0).optional(),
+    margin: z.number().min(0).optional(),
+    marginRate: z.string().min(0).optional(),
+    avgPaidOrderValue: z.number().min(0).optional(),
+});
+
+export type TOrdersSummary = z.infer<typeof OrdersSummarySchema>;
