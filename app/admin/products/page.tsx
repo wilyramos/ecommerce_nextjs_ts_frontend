@@ -17,7 +17,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: Sea
     const itemsPerPage = params.limit ? parseInt(params.limit, 10) : 10;
 
     return (
-        <main className="p-4">
+        <main className="">
             {/* Header */}
             <div className="flex flex-col md:flex-row gap-4 py-2">
 

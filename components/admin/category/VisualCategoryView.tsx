@@ -27,14 +27,14 @@ export default function VisualCategoryView({ categories }: Props) {
     const rootCategories = grouped["root"] || [];
 
     return (
-        <div className="space-y-8 bg-white rounded-md shadow-sm p-4 border border-gray-200">
+        <div className="space-y-8 p-4 ">
             {rootCategories.map((parent) => {
                 const subcategories = grouped[parent._id] || [];
 
                 return (
-                    <div key={parent._id} className="space-y-2">
+                    <div key={parent._id} className="space-y-2 border-b border-gray-400">
                         {/* Título principal */}
-                        <div className="flex justify-between items-center">
+                        <div className="flex justify-between items-center ">
                             <h2 className="text-lg font-semibold text-gray-800">{parent.nombre}</h2>
                             <Link
                                 href={`/admin/products/category/${parent._id}`}

@@ -33,7 +33,7 @@ export default function AddClientButton() {
     return (
         <Sheet>
             <SheetTrigger asChild>
-                <button className="rounded-2xl bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition flex text-center items-center cursor-pointer">
+                <button className="rounded bg-rose-600 px-2 py-1 text-white hover:bg-rose-700 transition flex text-center items-center cursor-pointer">
                     <LuUserRoundPlus className="mr-2" />
                     <p className="hidden md:block">Agregar Cliente</p>
                 </button>

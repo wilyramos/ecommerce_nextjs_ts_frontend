@@ -13,10 +13,9 @@ export default function ExportClientsButton() {
     return (
         <button
             onClick={handleExport}
-            className="flex items-center gap-2 rounded-xl border-2 border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
+            className="flex items-center px-2 hover:text-rose-600 border p-2 rounded border-gray-300"
         >
             <FaFileExport className="text-gray-500" />
-            Exportar
         </button>
     );
 }

@@ -5,6 +5,7 @@ import ExportClientsButton from "@/components/admin/clients/ExportClientsButton"
 import ClientsTable from "@/components/admin/clients/ClientsTable";
 import { getUsers } from "@/src/services/users";
 import Pagination from "@/components/ui/Pagination";
+import { HeadingH1 } from "@/components/ui/Heading";
 
 
 
@@ -34,20 +35,13 @@ export default async function AdminClientsPage({ searchParams }: { searchParams:
         numeroDocumento: params.numeroDocumento,
     });
 
-
-
-
-
     return (
-        <main className="p-1">
+        <main className="">
 
             <div className="flex justify-between md:flex-row gap-2 pb-2 border-b-2 border-gray-300 items-center">
                 {/* Search */}
-                <h1 className="text-lg font-semibold text-gray-800">
-                    Clientes / usuarios
-                </h1>
+                <HeadingH1>Clientes / usuarios</HeadingH1>
                 <div className="flex items-center gap-2">
-
                     <AddClientButton />
                     <ExportClientsButton />
                 </div>
