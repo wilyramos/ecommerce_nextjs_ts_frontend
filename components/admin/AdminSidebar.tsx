@@ -71,7 +71,7 @@ export default function AdminSidebar({ user }: Props) {
     const activeLinkClass =
         "text-gray-900 bg-gray-200";
     const inactiveLinkClass =
-        "text-gray-500 hover:bg-gray-100 hover:text-gray-900";
+        "text-black text-sm hover:bg-gray-100 hover:text-gray-900";
 
     return (
         <motion.aside

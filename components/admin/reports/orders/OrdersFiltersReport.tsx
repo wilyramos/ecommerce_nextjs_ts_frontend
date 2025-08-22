@@ -9,7 +9,7 @@ import {
     Users,
     ShoppingCart,
     DollarSign,
-    BarChart3
+    BarChart3,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -23,7 +23,6 @@ const tabs = [
     { href: "/admin/reports/orders/products", label: "Por Productos", icon: Package },
     { href: "/admin/reports/orders/locations", label: "Por Ubicación", icon: Users },
 ];
-
 
 export default function OrdersFiltersReport() {
     const pathname = usePathname();
@@ -41,33 +40,36 @@ export default function OrdersFiltersReport() {
                 </Link>
 
                 {/* Encabezado Principal */}
-                <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2 mb-2">
+                <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-2 mb-2 gap-3">
                     <HeadingH2>Reporte de Órdenes</HeadingH2>
-                    <div className="mt-4 sm:mt-0">
+                    <div className="sm:ml-auto">
                         <DateRangeDropdown />
                     </div>
                 </header>
 
                 {/* Navegación de Pestañas */}
-                <div className="flex flex-wrap gap-2 border-b border-gray-200">
-                    {tabs.map((tab) => {
-                        const isActive = pathname === tab.href;
-                        const Icon = tab.icon;
-                        return (
-                            <Link
-                                key={tab.href}
-                                href={tab.href}
-                                className={`flex items-center gap-2 px-5 py-2.5 text-sm rounded-t-lg transition-colors
-                                    ${isActive
-                                        ? "border-b-2 border-blue-600 text-blue-600 bg-white"
-                                        : "text-gray-600 hover:text-blue-600 hover:bg-gray-100"
-                                    }`}
-                            >
-                                <Icon size={18} />
-                                {tab.label}
-                            </Link>
-                        );
-                    })}
+                <div className="flex overflow-x-auto border-b-2 border-gray-300 text-xs scrollbar-hide">
+                    <div className="flex min-w-max gap-1">
+                        {tabs.map((tab) => {
+                            const isActive = pathname === tab.href;
+                            const Icon = tab.icon;
+                            return (
+                                <Link
+                                    key={tab.href}
+                                    href={tab.href}
+                                    className={`flex items-center gap-2 px-4 py-2 font-semibold rounded-t-lg whitespace-nowrap transition-colors
+                    ${isActive
+                                            ? "border-b-4 border-blue-600 text-blue-600 bg-white"
+                                            : "text-gray-600 hover:text-blue-600 hover:bg-gray-100"
+                                        }`}
+                                >
+                                    <Icon size={16} />
+                                    <span className="hidden sm:inline">{tab.label}</span>
+                                    <span className="sm:hidden">{/* versión corta móvil */}{tab.label.split(" ")[0]}</span>
+                                </Link>
+                            );
+                        })}
+                    </div>
                 </div>
             </aside>
         </div>
