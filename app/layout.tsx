@@ -80,7 +80,7 @@ export default function RootLayout({
     return (
         <html lang="es">
             <body
-                className={`${manrope.className}`}
+                className={`${manrope.className} bg-slate-100`}
             >
                 <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
                     <MercadoPagoProvider />

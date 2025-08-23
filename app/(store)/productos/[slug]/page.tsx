@@ -80,7 +80,7 @@ export default async function pageProduct({ params }: { params: Params }) {
     const { slug } = await params;
 
     return (
-        <main className="px-4">            
+        <main className="px-4 ">            
             <Suspense fallback={<SpinnerLoading />}>
                 <ProductPageServer
                     slug={slug}

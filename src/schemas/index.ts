@@ -218,6 +218,8 @@ export const productBaseSchema = z.object({
     nombre: z.string().min(1, 'El nombre es obligatorio'),
     slug: z.string().optional(),
     descripcion: z.string().optional(),
+    especificaciones: z.record(z.string(), z.string()).optional(),
+    recomendaciones : z.string().optional(), // TODO:
     precio: z.number().min(0, 'El precio no puede ser negativo').optional(),
     costo: z.number().min(0, 'El costo no puede ser negativo').optional(),
     imagenes: z.array(z.string().url('Debe ser una URL válida')).optional(),

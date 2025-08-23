@@ -23,7 +23,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
         <div className="w-full max-w-xl mx-auto">
             {/* Imagen principal con zoom */}
             <div
-                className="relative aspect-square overflow-hidden cursor-zoom-in"
+                className="relative aspect-square overflow-hidden cursor-zoom-in bg-white rounded-xl shadow-xs"
                 onMouseEnter={() => setZoom(true)}
                 onMouseLeave={() => setZoom(false)}
                 onMouseMove={handleMouseMove}
