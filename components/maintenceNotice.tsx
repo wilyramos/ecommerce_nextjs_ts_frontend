@@ -9,14 +9,14 @@ export default function MaintenanceNotice({
     showHomeButton = true,
 }) {
     return (
-        <div className="flex flex-col items-center justify-center text-center min-h-[60vh] px-6 py-12">
-            <div className="bg-yellow-100 text-yellow-600 p-4 rounded-full mb-6">
-                <MdBuild className="text-5xl animate-pulse" />
+        <div className="flex flex-col items-center px-6 py-12">
+            <div className="bg-gray-100 text-gray-500 p-4 rounded-full mb-6">
+                <MdBuild className="text-5xl" />
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">{title}</h2>
-            <p className="text-gray-600 text-base sm:text-lg max-w-xl mb-6">{message}</p>
+            <h2 className="text-lg sm:text-2xl font-bold text-gray-800 mb-2">{title}</h2>
+            <p className="text-gray-600 text-base max-w-xl mb-6">{message}</p>
             {showHomeButton && (
-                <Link href="/" className="px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors">
+                <Link href="/" className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-700 transition-colors">
                     Volver al inicio
                 </Link>
             )}

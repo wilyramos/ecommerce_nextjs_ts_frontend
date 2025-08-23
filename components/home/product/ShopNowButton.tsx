@@ -27,7 +27,7 @@ export default function ShopNowButton({ product }: { product: ProductWithCategor
         <button
             type="button"
             onClick={handleClick}
-            className="w-full px-6 py-3 rounded-full bg-gray-700 hover:bg-gray-950 text-white font-medium flex items-center justify-center gap-2 transition-transform duration-200 hover:scale-105 cursor-pointer"
+            className="w-full px-6 py-2 rounded-md bg-gray-700 hover:bg-gray-950 text-white font-medium flex items-center justify-center gap-2 transition-transform duration-200 hover:scale-105 cursor-pointer"
         >
             <IoBagCheckOutline size={20} />
             Comprar ahora

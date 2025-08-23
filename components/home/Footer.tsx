@@ -21,7 +21,7 @@ export default function Footer() {
     ];
 
     return (
-        <footer className="bg-gray-950 text-gray-300 text-sm">
+        <footer className="bg-black text-gray-100 text-sm">
             {/* Contenido principal */}
             <div className="max-w-7xl mx-auto px-6 py-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
                 {/* Branding */}

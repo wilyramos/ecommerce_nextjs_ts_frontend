@@ -50,13 +50,13 @@ export default function ProductDetails({ producto }: Props) {
 
                         <div className="flex items-center gap-4">
                             <span
-                                className="text-2xl text-indigo-600"
+                                className="text-3xl text-gray-700"
                                 itemProp="offers"
                                 itemScope
                                 itemType="https://schema.org/Offer"
                             >
                                 <meta itemProp="priceCurrency" content="PEN" />
-                                <span itemProp="price">S/ {producto.precio?.toFixed(2)}</span>
+                                <span itemProp="price"><span className="font-extrabold text-sm">s/</span> {producto.precio?.toFixed(2)}</span>
                             </span>
 
                             {producto.stock !== undefined && (
@@ -124,7 +124,7 @@ export default function ProductDetails({ producto }: Props) {
                 <section className="mx-auto py-2" aria-labelledby="descripcion-adicional">
                     <button
                         onClick={() => setShowDescripcion(!showDescripcion)}
-                        className="w-full flex justify-between items-center text-left text-xl text-gray-700 font-medium hover:text-indigo-600 transition"
+                        className="w-full flex justify-between items-center text-left text-xl text-gray-700 font-medium hover:text-black transition"
                     >
                         <span id="descripcion-adicional">Información adicional</span>
                         {showDescripcion ? <ChevronUp size={20} /> : <ChevronDown size={20} />}

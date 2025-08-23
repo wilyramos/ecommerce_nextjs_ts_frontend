@@ -31,7 +31,7 @@ export default function AddProductToCart({ product }: { product: ProductWithCate
     return (
         <button
             type="button"
-            className="w-full px-6 py-3 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium flex items-center justify-center gap-2 transition-transform duration-200 hover:scale-105 cursor-pointer"
+            className="w-full px-6 py-2 rounded-md bg-black hover:bg-gray-700 text-white font-medium flex items-center justify-center gap-2 transition-transform duration-200 hover:scale-105 cursor-pointer"
             onClick={handleClick}
         >
             <FaShoppingCart size={18} className="shrink-0" />

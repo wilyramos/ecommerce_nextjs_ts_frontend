@@ -37,7 +37,7 @@ export default async function ProductPageServer({ slug }: Props) {
                     productName={producto.nombre}
                 />
 
-                <div className="flex flex-col lg:flex-row gap-10">
+                <div className="flex flex-col lg:flex-row">
                     <div className="w-full">
                         <ProductDetails producto={producto} />
                     </div>

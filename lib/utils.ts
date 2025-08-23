@@ -25,4 +25,13 @@ export function formatCurrency(amount: number): string {
     }).format(amount);
 }
 
+export function getProvincesByDepartment(department: string): string[] {
 
+    const data = [
+        { department: "Amazonas", provinces: ["Chachapoyas", "Bagua", "Bongará", "Condorcanqui", "Luya", "Rodríguez de Mendoza", "Utcubamba"] },
+        { department: "Áncash", provinces: ["Huaraz", "Aija", "Antonio Raymondi", "Asunción", "Bolognesi", "Carhuaz", "Carlos Fermín Fitzcarrald", "Casma", "Corongo", "Huari", "Huarmey", "Huaylas", "Mariscal Luzuriaga", "Ocros", "Pallasca", "Pomabamba", "Recuay", "Santa", "Sihuas", "Yungay"] },
+        { department: "Ucayali", provinces: ["Atalaya", "Coronel Portillo", "Padre Abad", "Purús"] }
+    ];
+
+    return data.find(item => item.department === department)?.provinces || [];
+}
