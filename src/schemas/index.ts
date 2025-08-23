@@ -939,5 +939,11 @@ export const OrdersOverTimeSchema = z.object({
     numberOfOrders: z.number().min(0),
 });
 
+export const OrdersByStatusSchema = z.object({
+    status: z.string(),
+    numberOfOrders: z.number().min(0),
+});
+
 export type TOrdersSummary = z.infer<typeof OrdersSummarySchema>;
 export type TOrdersOverTime = z.infer<typeof OrdersOverTimeSchema>;
+export type TOrdersByStatus = z.infer<typeof OrdersByStatusSchema>;

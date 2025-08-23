@@ -2,7 +2,7 @@ import "server-only"
 
 
 import getToken from "@/src/auth/token"
-import { OrdersListResponseSchema, OrdersOverTimeSchema, OrdersSummarySchema } from "@/src/schemas";
+import { OrdersByStatusSchema, OrdersListResponseSchema, OrdersOverTimeSchema, OrdersSummarySchema } from "@/src/schemas";
 
 // === new 
 import { OrderPopulatedSchema } from "@/src/schemas";
@@ -188,6 +188,52 @@ export const getOrdersOverTime = async (params: GetOrdersReportsParams) => {
         return ordersOverTime;
     } catch (error) {
         console.error("Error fetching sales over time:", error);
+        return [];
+    }
+}
+
+export const getReportOrdersByStatus = async (params: GetOrdersReportsParams) => {
+    try {
+        const token = await getToken();
+        let { fechaInicio, fechaFin } = params;
+
+        const getDate = (daysAgo = 0) => {
+            const date = new Date();
+            date.setDate(date.getDate() - daysAgo);
+            return date.toISOString().split("T")[0];
+        };
+
+        if (!fechaInicio) fechaInicio = getDate(7);
+        if (!fechaFin) fechaFin = getDate(0);
+
+        const queryParams = new URLSearchParams();
+        if (fechaInicio) {
+            queryParams.append('fechaInicio', fechaInicio);
+        }
+        if (fechaFin) {
+            queryParams.append('fechaFin', fechaFin);
+        }
+
+        const url = `${process.env.API_URL}/orders/reports/orders-by-status?${queryParams.toString()}`;
+
+        const req = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!req.ok) {
+            return [];
+        }
+
+        const json = await req.json();
+        console.log("Orders by status:", json);
+        const ordersByStatus = OrdersByStatusSchema.array().parse(json);
+        console.log("Parsed orders by status:", ordersByStatus);
+        return ordersByStatus;
+    } catch (error) {
+        console.error("Error fetching orders by status:", error);
         return [];
     }
 }

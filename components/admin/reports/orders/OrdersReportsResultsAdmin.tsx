@@ -5,7 +5,7 @@ import PaymentMethodsChart from "./PaymentMethodsChart";
 import SalesByRegionChart from "./SalesByRegionChart";
 import KpiCardsOrders from "./KpiCardsOrders";
 
-import { getOrdersOverTime, getSummaryOrders } from "@/src/services/orders";
+import { getOrdersOverTime, getReportOrdersByStatus, getSummaryOrders } from "@/src/services/orders";
 
 
 type OrdersReportsResultsAdminProps = {
@@ -29,7 +29,12 @@ export default async function OrdersReportsResultsAdmin({
         fechaFin: endDate,
     });
 
-    console.log("dataRechardsOrders", dataRechardsOrders);
+    const dataStatusOrders = await getReportOrdersByStatus({
+        fechaInicio: startDate,
+        fechaFin: endDate,
+    });
+
+    console.log("dataStatusOrders", dataStatusOrders);
 
 
     return (
@@ -64,7 +69,9 @@ export default async function OrdersReportsResultsAdmin({
                 {/* Pie chart */}
 
                 <div>
-                    <DonutChartsOrders />
+                    <DonutChartsOrders 
+                        data={dataStatusOrders}
+                    />
                 </div>
 
                 {/* Bar chart métodos de pago */}
