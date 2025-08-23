@@ -27,7 +27,7 @@ export default async function ProductPageServer({ slug }: Props) {
             <ProductJsonLd producto={producto} />
 
             <h1 className="text-xl text-center my-6 hidden">
-                {producto.nombre}
+                {producto.nombre}   
             </h1>
 
             <section className="max-w-7xl mx-auto py-2">

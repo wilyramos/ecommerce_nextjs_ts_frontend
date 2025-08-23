@@ -11,7 +11,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <div className="group relative flex flex-col bg-white text-gray-700 rounded-xl shadow-mds transform transition-transform duration-500 hover:scale-[1.03] overflow-visible my-2">
             <Link href={`/productos/${product.slug}`} className="flex flex-col h-full">
                 {/* Imagen */}
-                <div className="relative w-full aspect-square bg-gray-100 overflow-hidden rounded-t-xl">
+                <div className="relative w-full aspect-square bg-white overflow-hidden rounded-t-xl">
                     {product.imagenes.length > 0 ? (
                         <div className="relative w-full h-full group-hover:opacity-90 transition-opacity duration-300">
                             <Image
@@ -59,16 +59,16 @@ export default function ProductCard({ product }: { product: Product }) {
 
                 {/* Info */}
                 <div className="flex flex-col justify-between flex-1 p-3 gap-2">
-                    <h3 className="text-xs md:text-sm line-clamp-3 leading-tight text-gray-800">
+                    <h3 className="text-xs md:text-base line-clamp-3 leading-tight text-gray-800">
                         {product.nombre}
                     </h3>
                     <div className="flex items-center gap-2 text-md font-base text-gray-700">
                         {color && <ColorCircle color={color} />}
                         <div className="ml-auto font-bold">
-                            <span className="text-xs">s/ </span>
+                            <span className="">s/ </span>
                             {product.precio.toFixed(2)}
                         </div>
-                    </div>
+                    </div>  
 
                 </div>
             </Link>

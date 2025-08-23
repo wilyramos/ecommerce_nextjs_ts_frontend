@@ -26,6 +26,7 @@ export default function ColorCircle({ color }: { color: string }) {
         "verde oscuro": "#006400",
         "verde lima": "#32CD32",
         "vino": "#8B0000",
+        "beige": "#F5F5DC"
     };
 
     // Normalizar clave (evitar errores por mayúsculas)
@@ -34,7 +35,7 @@ export default function ColorCircle({ color }: { color: string }) {
 
     return (
         <div
-            className="w-3 h-3 rounded-full shadow-md border border-gray-50 hover:scale-105 transition-transform duration-150"
+            className="w-3 h-3 rounded-full shadow-lg border border-gray-200 hover:scale-105 transition-transform duration-150"
             title={color}
             style={{
                 backgroundColor: colorHex,

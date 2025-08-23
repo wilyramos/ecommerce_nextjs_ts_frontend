@@ -15,13 +15,13 @@ type Props = {
 };
 
 export default function ProductDetails({ producto }: Props) {
-    const color = producto.atributos?.Color || null;
+    const color = producto.atributos?.Color || producto.atributos?.color || producto.atributos?.COLOR || null;
     const [showDescripcion, setShowDescripcion] = useState(false);
 
     return (
         <>
             <article
-                className="mx-auto grid gap-6 lg:grid-cols-2 items-start max-w-7xl pb-4"
+                className="mx-auto grid gap-6 md:grid-cols-2 items-start max-w-7xl pb-4"
                 itemScope
                 itemType="https://schema.org/Product"
 
@@ -36,7 +36,7 @@ export default function ProductDetails({ producto }: Props) {
                     <div className=" space-y-6 bg-white rounded-xl p-6 shadow-sm">
                         {/* Título y Precio */}
                         <header className="space-y-2">
-                            <div className='flex justify-between'>
+                            <div className='flex justify-between uppercase'>
                                 {producto.sku && (
                                     <span className="text-xs text-gray-400" itemProp="sku">
                                         SKU: {producto.sku}
@@ -83,19 +83,19 @@ export default function ProductDetails({ producto }: Props) {
                             <section aria-labelledby="caracteristicas">
                                 <h2
                                     id="caracteristicas"
-                                    className="text-sm font-medium text-gray-400 mb-3"
+                                    className="hidden"
                                 >
                                     Características
                                 </h2>
-                                <table className="w-full text-xs">
+                                <table className="w-full text-sm">
                                     <tbody>
                                         {Object.entries(producto.atributos).map(([key, value]) => (
                                             <tr
                                                 key={key}
-                                                className="border-b last:border-b-0 even:bg-gray-50"
+                                                className="border-b even:bg-gray-50 border-gray-50"
                                             >
-                                                <td className="px-4 py-2 font-medium text-gray-700">{key}</td>
-                                                <td className="px-4 py-2 text-gray-600">{value}</td>
+                                                <td className="text-gray-700 uppercase font-semibold">{key}</td>
+                                                <td className="px-4 py-2 text-gray-700">{value}</td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -106,7 +106,7 @@ export default function ProductDetails({ producto }: Props) {
                         {/* Color */}
                         {color && (
                             <section className="flex items-center gap-2" aria-label="Color del producto">
-                                <span className="text-sm font-medium text-gray-400">Color:</span>
+                                <span className="text-sm font-medium text-gray-400"></span>
                                 <ColorCircle color={color} />
                             </section>
                         )}
