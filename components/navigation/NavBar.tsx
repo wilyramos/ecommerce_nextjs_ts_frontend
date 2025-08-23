@@ -11,7 +11,7 @@ import ButtonShowSheetMobile from "./ButtonShowSheetMobile"; // Mobile
 export default function NavBar() {
 
     return (
-        <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
             <div className="max-w-7xl mx-auto flex justify-between items-center px-4 md:px-6 py-2">
 
                 {/* Mobile: Menú lateral + Logo centrado */}

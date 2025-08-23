@@ -17,33 +17,32 @@ type PaymentPageProps = {
 export default async function PaymentPage({ searchParams }: PaymentPageProps) {
     const { orderId } = await searchParams;
 
-    if(!orderId){
+    if (!orderId) {
         redirect("/checkout/shipping")
     }
     // Leer de la url orderId
 
     const order = await getOrder(orderId);
-    if(!order) {
+    if (!order) {
         return <p>Orden no encontrada</p>;
     }
-    if(order.payment.status === "approved") {
+    if (order.payment.status === "approved") {
         return <p>Pago ya realizado</p>;
     }
 
     return (
-        <div className="px-4 py-6 max-w-xl mx-auto">
-            <div className="flex items-center gap-2 text-gray-700 text-sm mb-4">
+        <div className="max-w-xl mx-auto">
+            <p className="flex items-center gap-2 text-sm text-black px-2">
                 <FiCreditCard className="text-base" />
-                <h1 className="text-sm sm:text-base font-medium">
-                    Selecciona tu método de pago
-                </h1>
-            </div>
+                Pagar con IZIPAY:
+
+            </p>
             <div>
                 {/* <h2>Pagar con mercado pago</h2> */}
                 {/* <CheckoutMercadoPagoBricks /> */}
             </div>
 
-            <div>
+            <div className="flex justify-center">
                 {/* <CheckoutSelector /> */}
                 {/* <CheckoutCulqi /> */}
                 <CheckoutIzipay

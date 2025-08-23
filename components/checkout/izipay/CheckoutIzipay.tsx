@@ -73,6 +73,7 @@ export default function CheckoutIzipay({ order }: { order: TOrderPopulated }) {
                 await KR.onSubmit(async (paymentData) => {
                     // TODO:revisar el paymentdata
                     console.log("Datos de pago:", paymentData._type);
+                    
                     setMessage("Pago procesado correctamente");
                     toast.success("Pago procesado correctamente");
                     window.location.href = `/checkout-result/success?orderId=${order._id}`;
@@ -90,8 +91,7 @@ export default function CheckoutIzipay({ order }: { order: TOrderPopulated }) {
     }, [order]);
 
     return (
-        <div className="p-6">
-            <h2 className="text-lg font-semibold">Pagar con Izipay</h2>
+        <div className="">
             <div id="myPaymentForm">
                 <div className="kr-smart-form" kr-card-form-expanded="true" />
             </div>
