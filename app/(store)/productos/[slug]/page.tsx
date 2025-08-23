@@ -11,6 +11,7 @@ export async function generateMetadata({ params }: { params: Params }) {
 
     const { slug } = await params;
     const product = await GetProductsBySlug(slug);
+    
 
     if (!product) {
         return {
@@ -23,6 +24,7 @@ export async function generateMetadata({ params }: { params: Params }) {
     const description = product.descripcion?.replace(/\r?\n|\r/g, ' ').trim() || 'No description available';
     const categoryName = product.categoria?.nombre || 'General';
     const image = product.imagenes?.[0] || 'https://www.gophone.pe/logob.svg';
+    const url = `https://www.gophone.pe/productos/${slug}`;
 
     return {
         title,
@@ -47,7 +49,7 @@ export async function generateMetadata({ params }: { params: Params }) {
             title,
             description,
             url: `https://www.gophone.pe/productos/${slug}`,
-            siteName: 'GoPhone Cañete',
+            siteName: 'GoPhone',
             type: 'website',
             images: [
                 {
@@ -72,6 +74,9 @@ export async function generateMetadata({ params }: { params: Params }) {
         icons: {
             icon: "/logomini.svg",
             apple: "/logomini.svg",
+        },
+        alternates: {
+            canonical: url,
         }
     }
 }

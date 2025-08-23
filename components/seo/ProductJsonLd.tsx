@@ -11,7 +11,7 @@ export default function ProductJsonLd({ producto }: { producto: ProductWithCateg
     const firstImage = producto.imagenes?.[0] || 'https://www.gophone.pe/default-product.jpg'
     const url = `https://www.gophone.pe/product/${producto.slug}`
     const brand = producto.atributos?.Marca || 'GoPhone'
-    const price = producto.precio || 0
+    const price = Number(producto.precio) || 0
     const availability =
         producto.stock && producto.stock > 0
             ? 'https://schema.org/InStock'
@@ -24,7 +24,7 @@ export default function ProductJsonLd({ producto }: { producto: ProductWithCateg
         image: firstImage,
         description: producto.descripcion?.replace(/\r?\n|\r/g, ' ').trim() || "No description available",
         category: producto.categoria?.nombre || 'General',
-        sku: producto.sku || undefined,
+        sku: producto.sku?.replace(/[^a-zA-Z0-9_-]/g, '') || undefined,
         gtin13: producto.barcode || undefined,
         brand: {
             '@type': 'Brand',
@@ -35,16 +35,34 @@ export default function ProductJsonLd({ producto }: { producto: ProductWithCateg
             '@type': 'Offer',
             url,
             priceCurrency: 'PEN',
-            price: price.toFixed(2),
+            price: price.toFixed(2), // ahora siempre un decimal válido
             itemCondition: 'https://schema.org/NewCondition',
             availability,
             seller: {
                 '@type': 'Organization',
                 name: 'GoPhone Cañete',
             },
+            // Opcionales recomendados por Google
+            shippingDetails: {
+                '@type': 'OfferShippingDetails',
+                shippingRate: {
+                    '@type': 'MonetaryAmount',
+                    value: '10.00',
+                    currency: 'PEN'
+                },
+                shippingDestination: {
+                    '@type': 'DefinedRegion',
+                    addressCountry: 'PE'
+                }
+            },
+            hasMerchantReturnPolicy: {
+                '@type': 'MerchantReturnPolicy',
+                returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+                merchantReturnDays: 7,
+                returnMethod: 'https://schema.org/ReturnByMail'
+            }
         },
     }
-
 
     return (
         <script
