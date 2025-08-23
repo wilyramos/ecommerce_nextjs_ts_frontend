@@ -12,6 +12,9 @@ import {
 } from "recharts"
 
 import { Cell } from "recharts"
+
+
+
 const paymentMethods = [
     { name: "Tarjeta", value: 220 },
     { name: "PayPal", value: 140 },
@@ -22,7 +25,7 @@ const paymentMethods = [
 // 🎨 Colores suaves consistentes
 const COLORS = ["#93c5fd", "#bae6fd", "#60a5fa", "#7dd3fc"]
 
-export default function PaymentMethodsChart() {
+export default function PaymentMethodsChart({}) {
     return (
         <div className="p-2">
             <h3 className="text-sm font-semibold text-gray-700 mb-1">

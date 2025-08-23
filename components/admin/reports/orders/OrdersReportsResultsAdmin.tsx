@@ -5,7 +5,7 @@ import PaymentMethodsChart from "./PaymentMethodsChart";
 import SalesByRegionChart from "./SalesByRegionChart";
 import KpiCardsOrders from "./KpiCardsOrders";
 
-import { getOrdersOverTime, getReportOrdersByStatus, getSummaryOrders } from "@/src/services/orders";
+import { getOrdersOverTime, getReportOrdersByCity, getReportOrdersByStatus, getSummaryOrders } from "@/src/services/orders";
 
 
 type OrdersReportsResultsAdminProps = {
@@ -34,7 +34,14 @@ export default async function OrdersReportsResultsAdmin({
         fechaFin: endDate,
     });
 
-    console.log("dataStatusOrders", dataStatusOrders);
+    // orders by city
+
+    const dataCityOrders = await getReportOrdersByCity({
+        fechaInicio: startDate,
+        fechaFin: endDate,
+    });
+
+    console.log("dataCityOrders", dataCityOrders);
 
 
     return (
@@ -81,7 +88,7 @@ export default async function OrdersReportsResultsAdmin({
 
                 {/* Bar chart regiones */}
                 <div className="">
-                    <SalesByRegionChart />
+                    <SalesByRegionChart data={dataCityOrders} />
                 </div>
             </div>
         </div>

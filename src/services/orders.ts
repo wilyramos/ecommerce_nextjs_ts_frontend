@@ -2,7 +2,7 @@ import "server-only"
 
 
 import getToken from "@/src/auth/token"
-import { OrdersByStatusSchema, OrdersListResponseSchema, OrdersOverTimeSchema, OrdersSummarySchema } from "@/src/schemas";
+import { OrdersByCitySchema, OrdersByStatusSchema, OrdersListResponseSchema, OrdersOverTimeSchema, OrdersSummarySchema } from "@/src/schemas";
 
 // === new 
 import { OrderPopulatedSchema } from "@/src/schemas";
@@ -234,6 +234,52 @@ export const getReportOrdersByStatus = async (params: GetOrdersReportsParams) =>
         return ordersByStatus;
     } catch (error) {
         console.error("Error fetching orders by status:", error);
+        return [];
+    }
+}
+
+export const getReportOrdersByCity = async (params: GetOrdersReportsParams) => {
+    try {
+        const token = await getToken();
+        let { fechaInicio, fechaFin } = params;
+
+        const getDate = (daysAgo = 0) => {
+            const date = new Date();
+            date.setDate(date.getDate() - daysAgo);
+            return date.toISOString().split("T")[0];
+        };
+
+        if (!fechaInicio) fechaInicio = getDate(7);
+        if (!fechaFin) fechaFin = getDate(0);
+
+        const queryParams = new URLSearchParams();
+        if (fechaInicio) {
+            queryParams.append('fechaInicio', fechaInicio);
+        }
+        if (fechaFin) {
+            queryParams.append('fechaFin', fechaFin);
+        }
+
+        const url = `${process.env.API_URL}/orders/reports/orders-by-city?${queryParams.toString()}`;
+
+        const req = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!req.ok) {
+            return [];
+        }
+
+        const json = await req.json();
+        console.log("Orders by city:", json);
+        const ordersByCity = OrdersByCitySchema.array().parse(json);
+        console.log("Parsed orders by city:", ordersByCity);
+        return ordersByCity;
+    } catch (error) {
+        console.error("Error fetching orders by city:", error);
         return [];
     }
 }

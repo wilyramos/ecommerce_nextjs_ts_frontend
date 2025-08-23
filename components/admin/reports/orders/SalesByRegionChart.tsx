@@ -9,36 +9,35 @@ import {
     Tooltip,
     Legend,
     ResponsiveContainer,
-    Cell,
 } from "recharts"
-
-const salesByRegionPeru = [
-    { region: "Lima", value: 850 },
-    { region: "La Libertad", value: 320 },
-    { region: "Loreto", value: 210 },
-    { region: "Arequipa", value: 400 },
-    { region: "Cusco", value: 280 },
-    { region: "Piura", value: 350 },
-    { region: "Puno", value: 150 },
-]
+import type { TOrdersByCity } from "@/src/schemas"
 
 // 🎨 Paleta de colores suaves
-const COLORS = ["#93c5fd", "#bae6fd", "#60a5fa", "#7dd3fc", "#bfdbfe", "#a5f3fc", "#38bdf8"]
+const COLORS = {
+    totalSales: "#60a5fa",     // azul medio
+    numberOfOrders: "#93c5fd", // azul claro
+}
 
-export default function SalesByRegionPeruChart() {
+export default function SalesByRegionPeruChart({ data }: { data: TOrdersByCity[] }) {
+    const salesByCity = data.map((item) => ({
+        region: item.department,
+        totalSales: item.totalSales,
+        numberOfOrders: item.numberOfOrders,
+    }))
+
     return (
-        <div className="p-4 ">
+        <div className="p-4">
             <h3 className="text-sm font-semibold text-gray-700 mb-1">
                 Ventas por Región (Perú)
             </h3>
             <p className="text-xs text-gray-400 mb-4">
-                Distribución de ventas en principales regiones del país
+                Distribución de ventas y órdenes en principales regiones del país
             </p>
             <div className="h-96">
                 <ResponsiveContainer width="100%" height="100%">
                     <BarChart
                         layout="vertical"
-                        data={salesByRegionPeru}
+                        data={salesByCity}
                         margin={{ left: 20 }}
                     >
                         <CartesianGrid strokeDasharray="3 3" className="stroke-gray-100" />
@@ -65,14 +64,22 @@ export default function SalesByRegionPeruChart() {
                             }}
                         />
                         <Legend wrapperStyle={{ fontSize: "12px" }} />
-                        <Bar dataKey="value" radius={[0, 6, 6, 0]}>
-                            {salesByRegionPeru.map((_, index) => (
-                                <Cell
-                                    key={index}
-                                    fill={COLORS[index % COLORS.length]}
-                                />
-                            ))}
-                        </Bar>
+
+                        {/* Barra para total de ventas */}
+                        <Bar
+                            dataKey="totalSales"
+                            name="Ventas (S/.)"
+                            fill={COLORS.totalSales}
+                            radius={[0, 6, 6, 0]}
+                        />
+
+                        {/* Barra para número de órdenes */}
+                        <Bar
+                            dataKey="numberOfOrders"
+                            name="Órdenes"
+                            fill={COLORS.numberOfOrders}
+                            radius={[0, 6, 6, 0]}
+                        />
                     </BarChart>
                 </ResponsiveContainer>
             </div>
