@@ -60,9 +60,9 @@ export default function LoginForm() {
                 />
             </div>
 
-            <div className="relative text-center text-sm text-gray-500 my-6">
+            <div className="relative text-center text-sm text-black my-6">
                 <hr className="border-gray-300 mb-2" />
-                <span className="bg-white px-2 absolute -top-3 left-1/2 -translate-x-1/2 font-bold">
+                <span className="bg-gray-100 px-2 absolute -top-3 left-1/2 -translate-x-1/2 font-bold">
                     O bien
                 </span>
             </div>

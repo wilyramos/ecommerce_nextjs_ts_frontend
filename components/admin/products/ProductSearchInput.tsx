@@ -20,8 +20,6 @@ export default function ProductSearchInput() {
         }
 
         router.push(`/admin/products?${params.toString()}`);
-
-
     }, 500); // 500ms debounce
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +31,7 @@ export default function ProductSearchInput() {
     return (
         <input
             type="text"
-            className="px-3 py-2 border-2 border-blue-500 rounded-full text-sm w-full sm:w-64"
+            className="w-full max-w-xl px-4 py-2 rounded-full border border-slate-300 bg-white text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             placeholder="Buscar por nombre o SKU..."
             value={query}
             onChange={onChange}

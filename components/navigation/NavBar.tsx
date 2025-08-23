@@ -36,8 +36,8 @@ export default function NavBar() {
                 </div>
 
                 {/* Desktop: Buscador */}
-                <nav className="hidden md:flex flex-1 items-center justify-center gap-6 text-sm text-gray-700">
-                    <div className=" max-w-lg w-full">
+                <nav className="hidden md:flex flex-1 items-center justify-center">
+                    <div className=" max-w-xl w-full">
                         <ButtonSearchFormStore />
                     </div>
                 </nav>

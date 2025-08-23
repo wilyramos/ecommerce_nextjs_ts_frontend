@@ -9,7 +9,6 @@ import { cn } from "@/lib/utils";
 import AdminMenu from "./AdminMenu";
 
 import {
-    Home,
     Package,
     Users,
     Tag,
@@ -17,7 +16,7 @@ import {
     BarChart3,
     ShoppingCart,
     ChevronDown,
-    ChevronRight,
+    ChevronRight
 } from "lucide-react";
 import { TbLayoutSidebarLeftCollapse, TbLayoutSidebarLeftExpand } from "react-icons/tb";
 
@@ -40,7 +39,7 @@ type NavLink = {
 };
 
 const links: NavLink[] = [
-    { href: "/admin", icon: Home, label: "Dashboard" },
+    // { href: "/admin", icon: Home, label: "Dashboard" },
     { href: "/admin/products", icon: Package, label: "Productos" },
     { href: "/admin/clients", icon: Users, label: "Clientes" },
     { href: "/admin/products/category", icon: Tag, label: "Categorías" },
@@ -67,33 +66,33 @@ export default function AdminSidebar({ user }: Props) {
         setOpenMenus((prev) => ({ ...prev, [label]: !prev[label] }));
     };
 
-    // 🎨 Estilo Shopify
+    // 🎨 Paleta moderna y corporativa
     const activeLinkClass =
-        "text-gray-900 bg-gray-200";
+        "text-blue-600 bg-blue-50 font-semibold";
     const inactiveLinkClass =
-        "text-black text-sm hover:bg-gray-100 hover:text-gray-900";
+        "text-slate-600 text-sm hover:bg-slate-100 hover:text-slate-900";
 
     return (
         <motion.aside
             animate={{ width: expanded ? 180 : 56 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
             className={cn(
-                "h-screen flex flex-col border-r border-gray-200 overflow-hidden bg-white text-gray-900 shadow-xs rounded-r-2xl py-4"
+                "h-screen flex flex-col border-r border-slate-200 overflow-hidden bg-white text-slate-900 shadow-sm rounded-r-2xl py-4"
             )}
         >
             {/* Header Sidebar */}
-            <div className="flex items-center justify-between px-3 h-16 border-b border-gray-200">
+            <div className="flex items-center justify-between px-3 h-16 border-b border-slate-200">
                 {expanded && (
                     <Logo />
                 )}
                 <button
                     onClick={() => setExpanded(!expanded)}
-                    className="p-2 rounded-md hover:bg-gray-100 transition-colors"
+                    className="p-2 rounded-md hover:bg-slate-100 transition-colors"
                 >
                     {expanded ? (
-                        < TbLayoutSidebarLeftCollapse className="h-5 w-5 text-gray-500" />
+                        < TbLayoutSidebarLeftCollapse className="h-5 w-5 text-slate-500" />
                     ) : (
-                        <TbLayoutSidebarLeftExpand className="h-5 w-5 text-gray-500" />
+                        <TbLayoutSidebarLeftExpand className="h-5 w-5 text-slate-500" />
                     )}
                 </button>
             </div>
@@ -118,9 +117,9 @@ export default function AdminSidebar({ user }: Props) {
                                     {expanded && <span className="flex-1 text-left">{label}</span>}
                                     {expanded &&
                                         (isOpen ? (
-                                            <ChevronDown className="h-4 w-4 text-gray-400" />
+                                            <ChevronDown className="h-4 w-4 text-slate-400" />
                                         ) : (
-                                            <ChevronRight className="h-4 w-4 text-gray-400" />
+                                            <ChevronRight className="h-4 w-4 text-slate-400" />
                                         ))}
                                 </button>
                                 {isOpen && expanded && (
@@ -164,7 +163,7 @@ export default function AdminSidebar({ user }: Props) {
                                     {active && (
                                         <motion.span
                                             layoutId="active-indicator"
-                                            className="absolute left-0 top-0 h-full w-[3px] bg-orange-500 rounded-r"
+                                            className="absolute left-0 top-0 h-full w-[3px] bg-blue-600 rounded-r"
                                         />
                                     )}
                                     <Icon className="h-4 w-4 shrink-0" />
@@ -178,11 +177,11 @@ export default function AdminSidebar({ user }: Props) {
             </nav>
 
             {/* Footer user info */}
-            <div className="border-t border-gray-200 p-3 flex items-center gap-3 bg-gray-50">
+            <div className="border-t border-slate-200 p-3 flex items-center gap-3 bg-slate-50">
                 {expanded && (
                     <div className="flex-1 overflow-hidden">
                         <p className="text-sm truncate uppercase font-black">{user?.nombre}</p>
-                        <p className="text-xs text-gray-500 truncate">
+                        <p className="text-xs text-slate-500 truncate">
                             {user?.email}
                         </p>
                     </div>

@@ -17,12 +17,10 @@ export default async function ProductsPage({ searchParams }: { searchParams: Sea
     const itemsPerPage = params.limit ? parseInt(params.limit, 10) : 10;
 
     return (
-        <main className="">
+        <main className="text-slate-600">
             {/* Header */}
-            <div className="flex flex-col md:flex-row gap-4 py-2">
-
-
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto pt-10 md:pt-0">
+            <div className="flex flex-col md:flex-row gap-4 py-2 border-b-2">
+                <div className="flex justify-between items-center w-full">
                     <ProductSearchInput />
                     <AddProductButton />
                 </div>

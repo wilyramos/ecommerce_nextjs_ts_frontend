@@ -1,9 +1,10 @@
-import { getCurrentUser } from "@/src/auth/currentUser"
+import { getCurrentUser } from "@/src/auth/currentUser";
 import ProfileForm from "@/components/profile/ProfileForm";
 
 
 export default async function ProfilePage() {
     const user = await getCurrentUser();
+
 
     // console.log('User profile:', user);
 
@@ -15,6 +16,7 @@ export default async function ProfilePage() {
             </div>
         );
     }
+
 
     return (
         <>

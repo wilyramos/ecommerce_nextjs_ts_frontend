@@ -1,57 +1,57 @@
 import type { ProductsAPIResponse } from "@/src/schemas";
 import Link from "next/link";
-import { FaCheckCircle, FaTimesCircle, FaStar } from "react-icons/fa";
+import { CheckCircle, XCircle, Star } from "lucide-react"; // ✅ reemplazo moderno
 import ProductMenuAction from "./ProductMenuActionts";
 
 export default function ProductsTable({ products }: { products: ProductsAPIResponse }) {
     return (
         <div className="overflow-x-auto text-sm">
-            <table className="min-w-full divide-y divide-gray-100">
-                <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-slate-200">
+                <thead className="bg-slate-50">
                     <tr>
-                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
-                        <th className="px-4 py-2 hidden md:table-cell text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SKU</th>
-                        <th className="px-4 py-2 hidden md:table-cell text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Precio</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
-                        <th className="px-4 py-2 hidden md:table-cell text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Activo</th>
-                        <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nuevo</th>
-                        <th className="px-4 py-2 hidden md:table-cell text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Destacado</th>
-                        <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Nombre</th>
+                        <th className="px-4 py-2 hidden md:table-cell text-left text-xs font-medium text-slate-500 uppercase tracking-wider">SKU</th>
+                        <th className="px-4 py-2 hidden md:table-cell text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Precio</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Stock</th>
+                        <th className="px-4 py-2 hidden md:table-cell text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Activo</th>
+                        <th className="px-4 py-2 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Nuevo</th>
+                        <th className="px-4 py-2 hidden md:table-cell text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Destacado</th>
+                        <th className="px-4 py-2 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">Acciones</th>
                     </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-white divide-y divide-slate-100">
                     {products.products.map((product) => (
-                        <tr key={product._id} className="hover:bg-gray-50">
+                        <tr key={product._id} className="hover:bg-slate-50 transition-colors">
                             <td className="px-4 py-2 whitespace-nowrap">
                                 <Link
                                     href={`/admin/products/${product._id}`}
-                                    className="flex items-center gap-2 hover:text-indigo-600 transition-colors"
+                                    className="flex items-center gap-2 text-slate-700 hover:text-blue-600 transition-colors"
                                 >
                                     {product.nombre}
                                 </Link>
                             </td>
-                            <td className="px-4 py-2 whitespace-nowrap hidden md:table-cell uppercase text-gray-900">{product.sku}</td>
-                            <td className="px-4 py-2 whitespace-nowrap hidden md:table-cell text-gray-900">s/ {product.precio?.toFixed(2)}</td>
-                            <td className="px-4 py-2 whitespace-nowrap text-gray-900">{product.stock}</td>
-                            <td className="px-4 py-2 whitespace-nowrap hidden md:table-cell">
+                            <td className="px-4 py-2 whitespace-nowrap hidden md:table-cell uppercase text-slate-700">{product.sku}</td>
+                            <td className="px-4 py-2 whitespace-nowrap hidden md:table-cell text-slate-700">S/ {product.precio?.toFixed(2)}</td>
+                            <td className="px-4 py-2 whitespace-nowrap text-slate-700">{product.stock}</td>
+                            <td className="px-4 py-2 whitespace-nowrap hidden md:table-cell text-center">
                                 {product.isActive ? (
-                                    <FaCheckCircle className="text-green-500 mx-auto" title="Activo" />
+                                    <CheckCircle className="text-emerald-500 h-4 w-4 mx-auto" />
                                 ) : (
-                                    <FaTimesCircle className="text-red-500 mx-auto" title="Inactivo" />
+                                    <XCircle className="text-rose-500 h-4 w-4 mx-auto" />
                                 )}
                             </td>
-                            <td className="px-4 py-2 whitespace-nowrap">
+                            <td className="px-4 py-2 whitespace-nowrap text-center">
                                 {product.esNuevo ? (
-                                    <FaCheckCircle className="text-green-500 mx-auto" title="Nuevo" />
+                                    <CheckCircle className="text-emerald-500 h-4 w-4 mx-auto" />
                                 ) : (
-                                    <FaTimesCircle className="text-red-500 mx-auto" title="No es nuevo" />
+                                    <XCircle className="text-rose-500 h-4 w-4 mx-auto" />
                                 )}
                             </td>
-                            <td className="px-4 py-2 whitespace-nowrap hidden md:table-cell">
+                            <td className="px-4 py-2 whitespace-nowrap hidden md:table-cell text-center">
                                 {product.esDestacado ? (
-                                    <FaStar className="text-yellow-500 mx-auto" title="Destacado" />
+                                    <Star className="text-amber-500 fill-amber-500 h-4 w-4 mx-auto" />
                                 ) : (
-                                    <FaTimesCircle className="text-gray-400 mx-auto" title="No destacado" />
+                                    <XCircle className="text-slate-400 h-4 w-4 mx-auto" />
                                 )}
                             </td>
                             <td className="px-4 py-2 whitespace-nowrap text-right">
