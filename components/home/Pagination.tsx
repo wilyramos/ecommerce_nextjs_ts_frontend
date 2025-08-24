@@ -34,7 +34,7 @@ export default function Pagination({
             key={page}
             href={{ pathname, query: getQuery(page) }}
             className={`px-3 py-2 text-sm border rounded-lg ${currentPage === page
-                ? "bg-blue-600 text-white"
+                ? "bg-black text-white"
                 : "text-gray-600 border-gray-300 hover:bg-gray-100 transition"
               }`}
           >

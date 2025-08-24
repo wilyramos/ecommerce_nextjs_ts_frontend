@@ -26,6 +26,7 @@ const MAX = 3000;
 export default function DrawerFiltersGeneral({ categorias }: Props) {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const [ open, setOpen ] = useState(false);
 
     const [filters, setFilters] = useState({
         category: "",
@@ -65,10 +66,11 @@ export default function DrawerFiltersGeneral({ categorias }: Props) {
         setFilters({ category: "", priceRange: "" });
         setPriceValues([MIN, MAX]);
         router.push("/productos");
+        setOpen(false);
     };
 
     return (
-        <Drawer>
+        <Drawer open={open} onOpenChange={setOpen}>
             <DrawerTrigger asChild>
                 <button className="flex items-center gap-2 cursor-pointer font-semibold bg-white p-2 rounded-lg shadow-md hover:bg-gray-100 transition">
                     <VscSettings size={18} />
@@ -85,11 +87,11 @@ export default function DrawerFiltersGeneral({ categorias }: Props) {
                         onClick={clearFilters}
                         className="flex items-center text-sm text-red-500 hover:text-red-600 transition"
                     >
-                        <MdClear className="mr-1" size={16} /> Limpiar
+                        <MdClear className="mr-1" size={16} /> Limpiar filtros
                     </button>
                 </DrawerHeader>
 
-                <ScrollArea className="h-[calc(100vh-120px)]">
+                <ScrollArea className="h-auto overflow-auto">
                     <div className="p-5 space-y-8">
                         {/* Filtro por categoría */}
                         <div>

@@ -90,6 +90,7 @@ export default function DrawerFilters({ categorySlug, attributes }: Props) {
             priceRange: null,
             sort: null,
         });
+        setOpen(false);
     };
 
     return (
@@ -106,15 +107,15 @@ export default function DrawerFilters({ categorySlug, attributes }: Props) {
                     <DrawerTitle className="text-lg font-medium text-gray-700">Filtros</DrawerTitle>
                     <button
                         onClick={clearFilters}
-                        className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 transition"
+                        className="flex items-center gap-1 text-xs text-red-600 hover:text-red-500 transition"
                     >
                         <MdClear size={18} />
-                        Limpiar
+                        Limpiar filtros
                     </button>
                 </DrawerHeader>
 
                 {/* Contenido scrolleable */}
-                <ScrollArea className="h-auto pr-2 mt-2">
+                <ScrollArea className="h-auto pr-2 mt-2 overflow-y-auto">
                     {/* Filtro de precio */}
                     <div className="mb-6">
                         <h2 className="text-sm font-medium text-black mb-1">Precio</h2>
@@ -143,7 +144,7 @@ export default function DrawerFilters({ categorySlug, attributes }: Props) {
                                     <div
                                         key={key}
                                         {...rest}
-                                        className="w-4 h-4 bg-indigo-600 rounded-full shadow-md transition-transform duration-150 ease-out"
+                                        className="w-4 h-4 bg-indigo-600 rounded-full shadow-md transition-transform duration-150 ease-out px-2"
                                     />
                                 );
                             }}

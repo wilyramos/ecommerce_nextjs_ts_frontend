@@ -165,10 +165,18 @@ export type UsersAPIResponse = z.infer<typeof UsersAPIResponse>;
 
 export const categoryAttributeSchema = z.object({
     name: z.string().min(1, 'El nombre del atributo es obligatorio'),
-    values: z.array(z.string().min(1, 'El valor no puede estar vacío')),
+    values: z.array(z.string().min(1, 'El valor no puede estar vacío'))
+        .refine(
+            (vals) => new Set(vals.map(v => v.toLowerCase())).size === vals.length,
+            { message: "No se permiten valores duplicados dentro del mismo atributo" }
+        )
 });
 
-export const categoryAttributesArraySchema = z.array(categoryAttributeSchema);
+export const categoryAttributesArraySchema = z.array(categoryAttributeSchema)
+    .refine(
+        (attrs) => new Set(attrs.map(a => a.name.toLowerCase())).size === attrs.length,
+        { message: "No se permiten atributos con el mismo nombre" }
+    );
 
 
 export const categoryBaseSchema = z.object({
@@ -219,7 +227,7 @@ export const productBaseSchema = z.object({
     slug: z.string().optional(),
     descripcion: z.string().optional(),
     especificaciones: z.record(z.string(), z.string()).optional(),
-    recomendaciones : z.string().optional(), // TODO:
+    recomendaciones: z.string().optional(), // TODO:
     precio: z.number().min(0, 'El precio no puede ser negativo').optional(),
     costo: z.number().min(0, 'El costo no puede ser negativo').optional(),
     imagenes: z.array(z.string().url('Debe ser una URL válida')).optional(),
@@ -904,20 +912,20 @@ export const SaleSourceSchema = z.enum(["ONLINE", "POS"])
 
 // Estado de la venta
 export const SaleStatusSchema = z.enum([
-  "PENDING",
-  "COMPLETED",
-  "PARTIALLY_REFUNDED",
-  "REFUNDED",
-  "CANCELED",
+    "PENDING",
+    "COMPLETED",
+    "PARTIALLY_REFUNDED",
+    "REFUNDED",
+    "CANCELED",
 ])
 
 // Métodos de pago en POS
 export const PaymentMethodSchema = z.enum([
-  "CASH",
-  "CARD",
-  "YAPE",
-  "PLIN",
-  "TRANSFER",
+    "CASH",
+    "CARD",
+    "YAPE",
+    "PLIN",
+    "TRANSFER",
 ])
 
 // **** REPORT ORDERS
