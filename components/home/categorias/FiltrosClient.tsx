@@ -74,8 +74,6 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
     };
 
 
-
-
     const clearFilters = () => {
         const cleared: Record<string, null> = {};
         attributes.forEach(attr => cleared[attr.name] = null);
@@ -86,14 +84,10 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
             priceRange: null,
             sort: null,
         });
-
-
     };
 
-
-
     return (
-        <aside className="py-6 border-gray-200">
+        <aside className="py-4 border-gray-200">
             <div className="flex justify-end mb-4">
                 <button
                     onClick={clearFilters}

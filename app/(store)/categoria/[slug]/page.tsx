@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
             "ofertas en tecnología",
             "cañete",
             "san vicente",
-            
+
         ],
         openGraph: {
             title: `${categoryName} | GoPhone`,
@@ -84,8 +84,9 @@ export default async function pageCategoria({
 
         <main className="max-w-7xl mx-auto p-5">
             <section className="grid grid-cols-1 sm:grid-cols-5 gap-6">
-                {/* Filtros */}
-                <div className="sm:col-span-1">
+
+                {/* Filtros en sidebar solo en escritorio */}
+                <div className="hidden sm:block sm:col-span-1">
                     <Suspense fallback={<SpinnerLoading />}>
                         <FiltrosPorCategoria categorySlug={slug} />
                     </Suspense>
@@ -93,11 +94,22 @@ export default async function pageCategoria({
 
                 {/* Productos */}
                 <section className="sm:col-span-4 space-y-4">
-                    {/* Ordenar por */}
-                    <div className="flex justify-end">
+
+                    {/* Barra responsive arriba en mobile */}
+                    <div className="flex items-center justify-between gap-2 sm:hidden">
+                        {/* DrawerFilters ya está dentro de FiltrosPorCategoria */}
+                        <Suspense fallback={<SpinnerLoading />}>
+                            <FiltrosPorCategoria categorySlug={slug} />
+                        </Suspense>
                         <OrdenarPor pathname={`/categoria/${slug}`} />
                     </div>
 
+                    {/* Ordenar en escritorio */}
+                    <div className="hidden sm:flex sm:justify-end">
+                        <OrdenarPor pathname={`/categoria/${slug}`} />
+                    </div>
+
+                    {/* Lista de productos */}
                     <Suspense fallback={<SpinnerLoading />}>
                         <ListaProducts
                             category={slug}

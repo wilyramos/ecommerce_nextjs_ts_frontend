@@ -35,9 +35,9 @@ export default function OrdenarPor({ pathname }: { pathname?: string }) {
         <div className="relative w-64 max-w-xs text-sm">
             <Listbox value={selected.value} onChange={handleChange}>
                 <div className="relative">
-                    <Listbox.Button className="w-full cursor-pointer  bg-white rounded-md shadow-sm pl-3 pr-10 py-2">
+                    <Listbox.Button className="w-full cursor-pointer  bg-white rounded-lg shadow-md px-2 py-2">
                         <div className="flex items-center gap-2">
-                            <HiOutlineSortDescending className="text-indigo-600 text-xl" />
+                            <HiOutlineSortDescending className="text-black text-xl" />
                             <span>{selected.label}</span>
                         </div>
                     </Listbox.Button>

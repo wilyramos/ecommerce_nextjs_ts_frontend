@@ -1,6 +1,7 @@
 //FILE: frontend/components/home/product/CategoriasFiltros.tsx
 import ProductsFilters from "./ProductsFilters";
 import { getAllSubcategories } from "@/src/services/categorys";
+import DrawerFiltersGeneral from "./DrawerFiltersGeneral";
 
 
 export default async function CategoriasFiltros() {
@@ -9,6 +10,14 @@ export default async function CategoriasFiltros() {
     const subcategories = await getAllSubcategories();
 
     return (
-        <ProductsFilters categorias={subcategories} />
+        <div>
+            <div className="hidden sm:block">
+                <ProductsFilters categorias={subcategories} />
+            </div>
+
+            <div className="sm:hidden">
+                <DrawerFiltersGeneral categorias={subcategories} />
+            </div>
+        </div>
     )
 }

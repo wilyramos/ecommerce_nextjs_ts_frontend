@@ -1,6 +1,7 @@
 import FiltrosClient from "./FiltrosClient";
 import { getCategoryBySlug } from "@/src/services/categorys";
 import { Attributes } from "@/src/schemas";
+import DrawerFilters from "./DrawerFilters";
 
 
 export default async function FiltrosPorCategoria({ categorySlug }: { categorySlug: string }) {
@@ -24,9 +25,20 @@ export default async function FiltrosPorCategoria({ categorySlug }: { categorySl
     // const brands = await getBrandsByCategory(); //TODO: Implementar servicio para obtener marcas por categoría
 
     return (
-        <FiltrosClient
-            categorySlug={categorySlug}
-            attributes={attributes}
-        />
+        <>
+            <div className="hidden sm:block">
+                <FiltrosClient
+                    categorySlug={categorySlug}
+                    attributes={attributes}
+                />
+            </div>
+
+            <div className="sm:hidden">
+                <DrawerFilters
+                    categorySlug={categorySlug}
+                    attributes={attributes}
+                />
+            </div>
+        </>
     )
 }

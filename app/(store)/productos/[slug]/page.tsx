@@ -2,26 +2,28 @@ import { GetProductsBySlug } from '@/src/services/products';
 import ProductPageServer from '@/components/home/product/ProductPageServer';
 import { Suspense } from 'react';
 import SpinnerLoading from '@/components/ui/SpinnerLoading';
+import type { Metadata } from "next";
 
 type Params = Promise<{
     slug: string;
 }>;
 
-export async function generateMetadata({ params }: { params: Params }) {
-
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
     const { slug } = await params;
     const product = await GetProductsBySlug(slug);
-    
 
     if (!product) {
         return {
             title: 'Producto no encontrado - GoPhone',
             description: 'El producto que buscas no está disponible.',
+            robots: { index: false, follow: false },
         };
     }
 
-    const title = `${product.nombre} - GoPhone`;
-    const description = product.descripcion?.replace(/\r?\n|\r/g, ' ').trim() || 'No description available';
+    const title = `${product.nombre} - GoPhone Cañete`;
+    const description =
+        product.descripcion?.replace(/\r?\n|\r/g, ' ').trim() ||
+        'Encuentra lo mejor en tecnología y celulares en GoPhone.';
     const categoryName = product.categoria?.nombre || 'General';
     const image = product.imagenes?.[0] || 'https://www.gophone.pe/logob.svg';
     const url = `https://www.gophone.pe/productos/${slug}`;
@@ -30,25 +32,24 @@ export async function generateMetadata({ params }: { params: Params }) {
         title,
         description,
         keywords: [
-            title,
             product.nombre,
             categoryName,
             'GoPhone',
             'Cañete',
             'Productos',
             'Tienda Online',
-            'San vicente de Cañete',
+            'San Vicente de Cañete',
             'Perú',
-            'iphone',
+            'iPhone',
             'Celulares',
             'Accesorios',
             'Tecnología',
-            'Smartphones',  
+            'Smartphones',
         ],
         openGraph: {
             title,
             description,
-            url: `https://www.gophone.pe/productos/${slug}`,
+            url,
             siteName: 'GoPhone',
             type: 'website',
             images: [
@@ -57,19 +58,14 @@ export async function generateMetadata({ params }: { params: Params }) {
                     alt: product.nombre,
                 },
             ],
-            price: product.precio,
-            currency: 'PEN',
-            category: categoryName,
-            image: {
-                url: image,
-                alt: product.nombre,
-            }
-
+            locale: 'es_PE',
         },
         twitter: {
             card: 'summary_large_image',
             title,
             description,
+            images: [image],
+            creator: '@GoPhone', // cámbialo si tienes twitter
         },
         icons: {
             icon: "/logomini.svg",
@@ -77,6 +73,16 @@ export async function generateMetadata({ params }: { params: Params }) {
         },
         alternates: {
             canonical: url,
+        },
+        robots: {
+            index: true,
+            follow: true,
+        },
+        other: {
+            "product:category": categoryName,
+            "product:availability": (product?.stock ?? 0) > 0 ? "in stock" : "out of stock",
+            "product:price:amount": product?.precio?.toString() || "",
+            "product:price:currency": "PEN",
         }
     }
 }
@@ -85,11 +91,9 @@ export default async function pageProduct({ params }: { params: Params }) {
     const { slug } = await params;
 
     return (
-        <main className="px-4 ">            
+        <main className="px-4">
             <Suspense fallback={<SpinnerLoading />}>
-                <ProductPageServer
-                    slug={slug}
-                />
+                <ProductPageServer slug={slug} />
             </Suspense>
         </main>
     );

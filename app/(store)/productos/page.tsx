@@ -3,7 +3,6 @@ import { Suspense } from "react";
 import ProductResults from "@/components/home/product/ProductResults";
 import CategoriasFiltros from "@/components/home/product/CategoriasFiltros";
 import OrdenarPor from "@/components/home/products/OrdenarPor";
-import { CiFilter } from "react-icons/ci";
 import SpinnerLoading from "@/components/ui/SpinnerLoading";
 
 export const metadata: Metadata = {
@@ -64,36 +63,29 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
     const limitNumber = limit ? parseInt(limit) : 12;
 
     return (
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 bg-gray-50">
-            {/* Filtros móviles colapsables */}
-            <div className="sm:hidden mb-6">
-                <details className="bg-white rounded-xl shadow p-4 border border-gray-200">
-                    <summary className="flex items-center gap-2 text-gray-700 font-semibold cursor-pointer">
-                        <CiFilter className="text-xl" />
-                        <span>Mostrar filtros</span>
-                    </summary>
-                    <div className="mt-4">
-                        <Suspense fallback={<SpinnerLoading />}>
-                            <CategoriasFiltros />
-                        </Suspense>
-                    </div>
-                </details>
-            </div >
-
+        <main className="max-w-7xl mx-auto p-5">
             <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
-                {/* Sidebar filtros desktop */}
+
+                {/* Sidebar filtros SOLO desktop */}
                 <aside className="hidden sm:block sm:col-span-1">
-                    <div className="sticky top-24 bg-white p-4">
-                        <h2 className="text-lg font-semibold text-gray-800 mb-4">Filtros</h2>
-                        <Suspense fallback={<SpinnerLoading />}>
-                            <CategoriasFiltros />
-                        </Suspense>
-                    </div>
+                    <Suspense fallback={<SpinnerLoading />}>
+                        <CategoriasFiltros />
+                    </Suspense>
                 </aside>
 
-                {/* Productos y orden */}
+                {/* Productos */}
                 <section className="sm:col-span-4 flex flex-col gap-6">
-                    <div className="flex justify-end">
+
+                    {/* Barra de filtros + ordenar en MOBILE */}
+                    <div className="flex items-center justify-between gap-3 sm:hidden">
+                        <Suspense fallback={<SpinnerLoading />}>
+                            <CategoriasFiltros /> {/* Esto en mobile renderiza DrawerFiltersGeneral */}
+                        </Suspense>
+                        <OrdenarPor pathname="/productos" />
+                    </div>
+
+                    {/* Ordenar solo en DESKTOP */}
+                    <div className="hidden sm:flex justify-end">
                         <OrdenarPor pathname="/productos" />
                     </div>
 
@@ -109,6 +101,6 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
                     </Suspense>
                 </section>
             </div>
-        </main >
+        </main>
     );
 }
