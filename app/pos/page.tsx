@@ -27,7 +27,7 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
 
 
     return (
-        <div className="grid md:grid-cols-2">
+        <div className="grid md:grid-cols-2 ">
             {/* Productos */}
             <main className="p-4 overflow-y-auto">
                 <ProductSearchForm />
@@ -49,9 +49,8 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
             </main>
 
             {/* Carrito */}
-            <aside className="p-4 border-t md:border-t-0 md:border-l bg-white ">
-                <h2 className="text-xl font-bold mb-4 flex gap-2">
-                    <PiShoppingCartFill size={24} />
+            <aside className="px-2 md:border-t-0 md:border-l ">
+                <h2 className="text-xl mb-4 flex gap-2 font-extrabold">
                     Carrito de venta
                 </h2>
                 <VentaCart />

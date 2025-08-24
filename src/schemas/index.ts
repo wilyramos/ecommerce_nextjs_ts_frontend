@@ -648,6 +648,8 @@ export const SaleItemSchema = z.object({
     price: z.number().min(0, { message: 'El precio debe ser al menos 0' }),
 });
 
+export const receiptTypeSchema = z.enum(['TICKET', 'BOLETA', 'FACTURA']).optional();
+export type TReceiptType = z.infer<typeof receiptTypeSchema>;
 
 export const CreateSaleSchema = z.object({
     items: z.array(SaleItemSchema).min(1, { message: 'Debe tener al menos un producto' }),
@@ -659,7 +661,8 @@ export const CreateSaleSchema = z.object({
     order: z.string().optional(),
     status: SaleStatusEnum.optional(),
     paymentMethod: SalePaymentMethodEnum.optional(),
-    paymentStatus: SalePaymentStatusEnum.optional()
+    paymentStatus: SalePaymentStatusEnum.optional(),
+    receiptType: receiptTypeSchema,
 });
 
 export type CreateSaleInput = z.infer<typeof CreateSaleSchema>;

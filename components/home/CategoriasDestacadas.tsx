@@ -19,6 +19,9 @@ const ImagenesPorCategoria: Record<string, string> = {
     "cargadores-y-cables": "/categorias/cable.svg",
     iphone: "/categorias/iphone.svg",
     "fundas-y-carcasas": "/categorias/cases.svg",
+    // "smartwatches-y-bandas": "/categorias/smartwatch.svg",
+    // "tablets": "/categorias/tablet.svg",
+    // "laptops": "/categorias/laptop.svg",
 };
 
 export default function CategoriasDestacadas({
@@ -31,8 +34,8 @@ export default function CategoriasDestacadas({
     );
 
     return (
-        <section className="w-full py-10">
-            <div className="max-w-7xl mx-auto px-2">
+        <section className="w-full py-5">
+            <div className="max-w-7xl mx-auto">
                 <Carousel
                     responsive={responsive}
                     infinite
@@ -40,14 +43,15 @@ export default function CategoriasDestacadas({
                     autoPlaySpeed={4000}
                     keyBoardControl
                     transitionDuration={400}
-                    itemClass="px-3"
-                    arrows={false}
+                    itemClass=""
+                    arrows={true} // siempre true
+                    containerClass="relative"
                 >
                     {filteredCategorias.map((categoria) => (
                         <Link
                             key={categoria._id}
                             href={`/categoria/${categoria.slug}`}
-                            className="bg-white border-2 rounded-lg hover:shadow-md transition p-4 flex flex-col items-center text-center group"
+                            className=" transition p-2 flex flex-col items-center text-center group/item"
                         >
                             <Image
                                 src={
@@ -56,15 +60,40 @@ export default function CategoriasDestacadas({
                                 alt={categoria.nombre}
                                 width={90}
                                 height={90}
-                                className="mb-2 object-contain transition-transform duration-300 group-hover:scale-120"
+                                className="mb-2 object-contain transition-transform duration-300 group-hover/item:scale-110"
                             />
-                            <p className="text-sm font-medium group-hover:text-indigo-600">
+                            <p className=" group-hover/item:text-black font-bold">
                                 {categoria.nombre}
                             </p>
                         </Link>
                     ))}
                 </Carousel>
             </div>
+
+            {/* estilos para flechas */}
+            <style jsx global>{`
+                /* Siempre visibles en mobile/tablet */
+                @media (max-width: 1023px) {
+                    .react-multiple-carousel__arrow {
+                        opacity: 1 !important;
+                        visibility: visible !important;
+                    }
+                }
+
+                /* En desktop: ocultas por defecto */
+                @media (min-width: 1024px) {
+                    .react-multiple-carousel__arrow {
+                        opacity: 0;
+                        visibility: hidden;
+                        transition: opacity 0.3s ease;
+                    }
+                    /* visibles solo al hacer hover en el contenedor */
+                    .group:hover .react-multiple-carousel__arrow {
+                        opacity: 1;
+                        visibility: visible;
+                    }
+                }
+            `}</style>
         </section>
     );
 }

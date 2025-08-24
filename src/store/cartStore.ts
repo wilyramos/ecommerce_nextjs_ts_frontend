@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import type { CartItem, ProductWithCategoryResponse } from '@/src/schemas';
+import { receiptTypeSchema, type CartItem, type ProductWithCategoryResponse, type TReceiptType } from '@/src/schemas';
 import { saveCartToDB } from '@/lib/api/cart';
 
 
@@ -11,6 +11,9 @@ interface Store {
 
     total: number;
     dni: string | null;
+    comprobante: TReceiptType;
+    setComprobante: (comprobante: TReceiptType) => void;
+
 
     addToCart: (item: ProductWithCategoryResponse) => void;
     updateQuantity: (id: string, quantity: number) => void;
@@ -22,6 +25,7 @@ interface Store {
 
     setDni: (dni: string) => void;
     clearDni: () => void;
+    clearComprobante: () => void;
 }
 
 const initialState = {
@@ -31,6 +35,7 @@ const initialState = {
 
     total: 0,
     dni: null,
+    comprobante: receiptTypeSchema.parse('TICKET'),
 
     addToCart: () => { },
     updateQuantity: () => { },
@@ -42,6 +47,7 @@ const initialState = {
 
     setDni: () => { },
     clearDni: () => { },
+    clearComprobante: () => { },
 };
 
 export const useCartStore = create<Store>()(devtools(persist((set, get) => ({
@@ -49,6 +55,10 @@ export const useCartStore = create<Store>()(devtools(persist((set, get) => ({
     ...initialState,
     setCartOpen: (isOpen) => {
         set({ isCartOpen: isOpen });
+    },
+
+    setComprobante: (comprobante) => {
+        set({ comprobante });
     },
 
     addToCart: (item) => {
@@ -139,6 +149,9 @@ export const useCartStore = create<Store>()(devtools(persist((set, get) => ({
     },
     clearDni: () => {
         set({ dni: null });
+    },
+    clearComprobante: () => {
+        set({ comprobante: "TICKET" });
     },
 
 }),

@@ -17,6 +17,8 @@ type ActionStateType = {
 export async function submitSaleAction(orderData: CreateSaleInput, prevState: ActionStateType) {
 
     //TODO: - validate orderData with zod schema
+    
+    console.log("data recibida", orderData)
     const token = await getToken();
     const { user } = await verifySession();
 
@@ -47,22 +49,22 @@ export async function submitSaleAction(orderData: CreateSaleInput, prevState: Ac
     })
 
     const json = await req.json()
-    console.log("jsonnnnn", json)
+    // console.log("jsonnnnn", json)
     if (!req.ok) {
         const errors = ErrorResponseSchema.parse(json)
         return {
             errors: [errors.message],
-            success: "",
+            success: json.saleId ? json.saleId : ''
         }
     }
 
     // Revalidate the sale data
 
     revalidatePath("/pos")
-    
 
+    console.log("Venta creada con ID:", json.saleId);
     return {
         errors: [],
-        success: json.message
+        success: json.saleId
     }
 }
