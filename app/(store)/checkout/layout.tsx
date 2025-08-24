@@ -1,16 +1,13 @@
 import CheckoutSteps from '@/components/checkout/CheckoutSteps';
 import ResumenFinalCarrito from '@/components/cart/ResumenFinalCarrito';
-import { verifySession } from '@/src/auth/dal';
 import { redirect } from 'next/navigation';
+import { getCurrentUser } from '@/src/auth/currentUser';
 
 
 export default async function CheckoutLayout({ children }: { children: React.ReactNode }) {
 
-    const { user } = await verifySession();
-    if (!user) {
-        // Si no hay usuario, redirigir a la página de inicio de sesión
-        redirect('/login');
-    }
+    const user = await getCurrentUser();
+    if (!user) redirect("/auth/login?redirect=/checkout/profile");
 
     return (
         <main className="max-w-6xl mx-auto ">
