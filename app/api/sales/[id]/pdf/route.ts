@@ -9,10 +9,11 @@ type params = Promise<{
 // TODO: AÑADIR autenticación
 
 export async function GET(
-    req: Request,
+    request: Request,
     { params }: { params: params }
 ) {
-    const { id } = await params;
+    try {
+        const { id } = await params;
 
     const res = await fetch(`${process.env.API_URL}/sales/${id}/pdf`, {
         method: "GET",
@@ -31,4 +32,8 @@ export async function GET(
             "Content-Disposition": "inline; filename=receipt.pdf",
         },
     });
+    } catch (error) {
+        console.error("Error en la ruta PDF:", error);
+        return new NextResponse("Error al obtener PDF", { status: 500 });
+    }
 }

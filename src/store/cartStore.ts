@@ -7,10 +7,16 @@ import { saveCartToDB } from '@/lib/api/cart';
 interface Store {
     cart: CartItem[];
     isCartOpen: boolean;
-    setCartOpen: (isOpen: boolean) => void; 
+    setCartOpen: (isOpen: boolean) => void;
+
+    saleCompleted: boolean; // Estado de la venta
+    setSaleCompleted: (value: boolean) => void;
+    saleId: string | null;
+    setSaleId: (id: string | null) => void;
+    resetSale: () => void;
 
     total: number;
-    dni: string | null;
+    dni: string | undefined;
     comprobante: TReceiptType;
     setComprobante: (comprobante: TReceiptType) => void;
 
@@ -31,10 +37,16 @@ interface Store {
 const initialState = {
     cart: [],
     isCartOpen: false,
-    setCartOpen: () => {}, // Función para abrir/cerrar el carrito
+    setCartOpen: () => { }, // Función para abrir/cerrar el carrito
+
+    saleCompleted: false,
+    setSaleCompleted: () => { },
+    saleId: null,
+    setSaleId: () => { },
+    resetSale: () => { },
 
     total: 0,
-    dni: null,
+    dni: undefined,
     comprobante: receiptTypeSchema.parse('TICKET'),
 
     addToCart: () => { },
@@ -60,6 +72,17 @@ export const useCartStore = create<Store>()(devtools(persist((set, get) => ({
     setComprobante: (comprobante) => {
         set({ comprobante });
     },
+
+    setSaleCompleted: (value: boolean) => set({ saleCompleted: value }),
+    setSaleId: (id: string | null) => set({ saleId: id }),
+    resetSale: () => set({
+        saleCompleted: false,
+        saleId: null,
+        cart: [],
+        total: 0,
+        dni: undefined,
+        comprobante: 'TICKET',
+    }),
 
     addToCart: (item) => {
         const cart = get().cart
@@ -148,7 +171,7 @@ export const useCartStore = create<Store>()(devtools(persist((set, get) => ({
         set({ dni });
     },
     clearDni: () => {
-        set({ dni: null });
+        set({ dni: undefined });
     },
     clearComprobante: () => {
         set({ comprobante: "TICKET" });

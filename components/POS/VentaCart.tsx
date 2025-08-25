@@ -6,11 +6,20 @@ import { FaShoppingCart } from "react-icons/fa";
 import CustomerDniInput from "./CustomerDniInput";
 import CartItemsList from "./CartItemsList";
 import ProofPayment from "./ProofPayment";
+import VentaCompletada from "./VentaCompletada";
 
 export default function VentaCart() {
-    const { cart } = useCartStore();
+    const { cart, saleCompleted, saleId } = useCartStore();
     const dni = useCartStore((s) => s.dni);
     const total = cart.reduce((acc, item) => acc + item.subtotal, 0);
+
+
+    if (saleCompleted && saleId) {
+        return (
+            <VentaCompletada />
+        );
+    }
+
 
     if (cart.length === 0) {
         return (

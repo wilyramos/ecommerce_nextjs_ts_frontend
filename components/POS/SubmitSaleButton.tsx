@@ -2,11 +2,10 @@
 
 import { useCartStore } from "@/src/store/cartStore";
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 import { submitSaleAction } from "@/actions/pos/submit-sale-action";
 import type { CreateSaleInput } from "@/src/schemas";
-import PrintReceiptButton from "./PrintReceiptButton";
 
 export default function SubmitSaleButton() {
     const clearCart = useCartStore((s) => s.clearCart);
@@ -16,9 +15,11 @@ export default function SubmitSaleButton() {
     const clearDni = useCartStore((s) => s.clearDni);
     const comprobante = useCartStore((s) => s.comprobante);
     const clearComprobante = useCartStore((s) => s.clearComprobante);
+    const setSaleCompleted = useCartStore((s) => s.setSaleCompleted);
+    const setSaleIdStore = useCartStore((s) => s.setSaleId);
+
 
     const router = useRouter();
-    const [saleId, setSaleId] = useState<string | null>(null);
 
     const sale: CreateSaleInput = {
         items: cart.map((item) => ({
@@ -47,20 +48,13 @@ export default function SubmitSaleButton() {
             state.errors.forEach((error) => toast.error(error));
         }
         if (state.success) {
-            toast.success("Venta creada correctamente");
-            setSaleId(state.success); // guardamos el ID de la venta
-            // clearDni();
-            // clearCart();
-            // clearComprobante();
+            setSaleIdStore(state.success); // store
+            clearCart();
+            clearDni();
+            clearComprobante();
+            setSaleCompleted(true);
         }
-    }, [state, router, clearCart, clearDni]);
-
-    const handlePrint = () => {
-        if (saleId) {
-            // Puedes apuntar al backend directo o a un proxy en Next.js
-            window.open(`/api/sales/${saleId}/pdf`, "_blank");
-        }
-    };
+    }, [state, router, clearCart, clearDni, clearComprobante, setSaleCompleted, setSaleIdStore, ]);
 
     return (
         <div className="space-y-4">
@@ -71,9 +65,6 @@ export default function SubmitSaleButton() {
                     value="GUARDAR VENTA"
                 />
             </form>
-
-            {saleId && <PrintReceiptButton saleId={saleId} />}
-
         </div>
     );
 }

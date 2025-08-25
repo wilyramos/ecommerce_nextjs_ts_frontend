@@ -1,8 +1,6 @@
 import VentaCart from "@/components/POS/VentaCart";
 import { searchProducts } from "@/src/services/products";
 import ProductCardPOS from "@/components/POS/ProductCardPOS";
-import { PiShoppingCartFill } from "react-icons/pi";
-
 import ProductSearchForm from "@/components/POS/ProductSearchForm";
 
 type SearchParams = Promise<{
