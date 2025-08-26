@@ -637,7 +637,6 @@ export const IzipayTokenSchema = z.object({
 
 //** SALES **//
 
-export const SaleSourceEnum = z.enum(['ONLINE', 'POS']);
 export const SaleStatusEnum = z.enum(['PENDING', 'COMPLETED', 'PARTIALLY_REFUNDED', 'REFUNDED', 'CANCELED']);
 export const SalePaymentMethodEnum = z.enum(['CASH', 'CARD', 'TRANSFER', 'YAPE', 'PLIN', 'MERCADOPAGO', 'OTHER']);
 export const SalePaymentStatusEnum = z.enum(['pending', 'approved', 'rejected', 'refunded']);
@@ -657,7 +656,6 @@ export const CreateSaleSchema = z.object({
     employee: z.string().optional(),
     customerDNI: z.string().optional(),
     totalDiscountAmount: z.number().min(0).optional(),
-    source: SaleSourceEnum,
     order: z.string().optional(),
     status: SaleStatusEnum.optional(),
     paymentMethod: SalePaymentMethodEnum.optional(),
@@ -685,12 +683,12 @@ export const SaleResponseSchema = z.object({
     items: z.array(SaleItemResponseSchema),
     totalPrice: z.number(),
     totalDiscountAmount: z.number().optional(),
-    source: SaleSourceEnum,
     order: z.string().optional().nullable(),
     status: SaleStatusEnum,
     paymentStatus: SalePaymentStatusEnum,
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime(),
+    receiptNumber: z.string().optional(),
     __v: z.number().optional(),
 });
 

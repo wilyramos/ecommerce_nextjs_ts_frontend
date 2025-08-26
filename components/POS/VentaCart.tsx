@@ -45,7 +45,6 @@ export default function VentaCart() {
 
             <div className="flex items-center gap-2">
                 <ProofPayment 
-
                 />
             </div>
 

@@ -1,6 +1,6 @@
 
 import getToken from "../auth/token";
-import { SalesAPIResponse } from "@/src/schemas";
+import { SaleResponseSchema, SalesAPIResponse } from "@/src/schemas";
 
 interface GetSalesParams {
     search?: string;
@@ -9,6 +9,33 @@ interface GetSalesParams {
     page?: number;
     limit?: number;
 }
+
+export const getSale = async (id: string) => {
+    try {
+        const token = await getToken();
+        const url = `${process.env.API_URL}/sales/${id}`;
+
+        const req = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!req.ok) {
+            console.error("Error en la respuesta:", req.statusText);
+            return null;
+        }
+
+        const json = await req.json();
+        const saleData = SaleResponseSchema.parse(json);
+        return saleData;
+
+    } catch (error) {
+        console.error("Error fetching sale:", error);
+        return null;
+    }
+};
 
 export const getSales = async (params: GetSalesParams) => {
     try {
@@ -29,7 +56,6 @@ export const getSales = async (params: GetSalesParams) => {
         queryParams.append('limit', limit.toString());
 
         const url = `${process.env.API_URL}/sales?${queryParams.toString()}`;
-
 
         const req = await fetch(url, {
             method: 'GET',

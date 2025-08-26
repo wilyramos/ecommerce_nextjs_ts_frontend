@@ -49,6 +49,7 @@ export default function SubmitSaleButton() {
         }
         if (state.success) {
             setSaleIdStore(state.success); // store
+            toast.success("Venta guardada con éxito");
             clearCart();
             clearDni();
             clearComprobante();

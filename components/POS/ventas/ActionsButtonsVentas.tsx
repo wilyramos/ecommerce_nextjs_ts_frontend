@@ -2,34 +2,21 @@
 
 import { Sale } from '@/src/schemas';
 import { FaEye, FaPrint } from 'react-icons/fa';
+import Link from 'next/link';
 
 export default function ActionsButtonsVentas({ venta }: { venta: Sale }) {
 
-    const handleVerDetalle = () => {
-        console.log('Ver detalle de venta:', venta._id);
-        
-    };
-
     const handleImprimir = () => {
         console.log('Imprimir venta:', venta._id);
-        // Lógica de impresión
+        window.open(`/api/sales/${venta._id}/pdf`, '_blank');
     };
-
-    // const handleAnular = () => {
-    //     console.log('Anular venta:', venta._id);
-    //     // Confirmación + lógica de anulación
-    // };
 
     return (
         <div className="flex gap-1">
             {/* Ver Detalle */}
-            <button
-                onClick={handleVerDetalle}
-                className="p-2 rounded"
-                title="Ver detalle"
-            >
+            <Link href={`/pos/ventas/${venta._id}`} className="p-2 rounded" title="Ver detalle">
                 <FaEye className="text-gray-600 hover:text-gray-950" />
-            </button>
+            </Link>
 
             {/* Imprimir */}
             <button

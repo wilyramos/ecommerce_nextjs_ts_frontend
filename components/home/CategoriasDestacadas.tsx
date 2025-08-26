@@ -60,9 +60,9 @@ export default function CategoriasDestacadas({
                                 alt={categoria.nombre}
                                 width={90}
                                 height={90}
-                                className="mb-2 object-contain transition-transform duration-300 group-hover/item:scale-110"
+                                className="mb-2 object-contain transition-transform duration-300 group-hover/item:scale-120"
                             />
-                            <p className=" group-hover/item:text-black font-bold">
+                            <p className=" ">
                                 {categoria.nombre}
                             </p>
                         </Link>

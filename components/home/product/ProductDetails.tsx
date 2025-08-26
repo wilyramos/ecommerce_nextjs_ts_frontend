@@ -129,7 +129,7 @@ export default function ProductDetails({ producto }: Props) {
                         <div className="flex items-center gap-2 bg-white rounded-lg px-6 py-3 shadow-sm text-gray-600">
                             <Truck className="w-5 h-5 text-gray-600" />
                             <span className="text-sm">
-                                Envío gratis en Cañete. Envíos a todo el Perú a través de Shalom.                            </span>
+                                Envío gratis en Cañete. Envíos a todo el Perú a través de <span className=' bg-rose-600 text-white uppercase font-bold italic px-1'>Shalom</span></span>
                         </div>
 
                         <div className="flex items-center gap-2 bg-white rounded-lg px-6 py-3 shadow-sm text-gray-600">

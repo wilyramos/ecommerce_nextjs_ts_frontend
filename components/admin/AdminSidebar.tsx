@@ -7,6 +7,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import AdminMenu from "./AdminMenu";
+import Logo from "../ui/Logo";
 
 import {
     Package,
@@ -16,20 +17,15 @@ import {
     BarChart3,
     ShoppingCart,
     ChevronDown,
-    ChevronRight
+    ChevronRight,
 } from "lucide-react";
-import { TbLayoutSidebarLeftCollapse, TbLayoutSidebarLeftExpand } from "react-icons/tb";
-
 import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from "@/components/ui/tooltip";
-import Logo from "../ui/Logo";
+    TbLayoutSidebarLeftCollapse,
+    TbLayoutSidebarLeftExpand,
+} from "react-icons/tb";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
-type Props = {
-    user: User;
-};
+type Props = { user: User };
 
 type NavLink = {
     href?: string;
@@ -39,7 +35,6 @@ type NavLink = {
 };
 
 const links: NavLink[] = [
-    // { href: "/admin", icon: Home, label: "Dashboard" },
     { href: "/admin/products", icon: Package, label: "Productos" },
     { href: "/admin/clients", icon: Users, label: "Clientes" },
     { href: "/admin/products/category", icon: Tag, label: "Categorías" },
@@ -62,42 +57,39 @@ export default function AdminSidebar({ user }: Props) {
     const [expanded, setExpanded] = useState(true);
     const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
 
-    const toggleMenu = (label: string) => {
+    const toggleMenu = (label: string) =>
         setOpenMenus((prev) => ({ ...prev, [label]: !prev[label] }));
-    };
 
-    // 🎨 Paleta moderna y corporativa
-    const activeLinkClass =
-        "text-blue-600 bg-blue-50 font-semibold";
-    const inactiveLinkClass =
-        "text-slate-600 text-sm hover:bg-slate-100 hover:text-slate-900";
+    const linkClasses = (active: boolean) =>
+        cn(
+            "relative flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+            active
+                ? "text-blue-600 bg-blue-50 font-semibold"
+                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+        );
 
     return (
         <motion.aside
             animate={{ width: expanded ? 180 : 56 }}
-            transition={{ duration: 0.25, ease: "easeInOut" }}
-            className={cn(
-                "h-screen flex flex-col border-r border-slate-200 overflow-hidden bg-white text-slate-900 shadow-sm rounded-r-2xl py-4"
-            )}
+            transition={{ duration: 0.25 }}
+            className="h-screen flex flex-col border-r border-slate-200 bg-white shadow-sm rounded-r-2xl py-4"
         >
-            {/* Header Sidebar */}
-            <div className="flex items-center justify-between px-3 h-16 border-b border-slate-200">
-                {expanded && (
-                    <Logo />
-                )}
+            {/* Header */}
+            <div className="flex items-center justify-between px-3 h-16 border-b">
+                {expanded && <Logo />}
                 <button
-                    onClick={() => setExpanded(!expanded)}
-                    className="p-2 rounded-md hover:bg-slate-100 transition-colors"
+                    onClick={() => setExpanded((e) => !e)}
+                    className="p-2 rounded-md hover:bg-slate-100"
                 >
                     {expanded ? (
-                        < TbLayoutSidebarLeftCollapse className="h-5 w-5 text-slate-500" />
+                        <TbLayoutSidebarLeftCollapse className="h-5 w-5 text-slate-500" />
                     ) : (
                         <TbLayoutSidebarLeftExpand className="h-5 w-5 text-slate-500" />
                     )}
                 </button>
             </div>
 
-            {/* Nav */}
+            {/* Navigation */}
             <nav className="flex-1 mt-2 px-2 space-y-1">
                 {links.map(({ href, icon: Icon, label, children }) => {
                     const active = href && pathname === href;
@@ -108,13 +100,10 @@ export default function AdminSidebar({ user }: Props) {
                             <div key={label}>
                                 <button
                                     onClick={() => toggleMenu(label)}
-                                    className={cn(
-                                        "relative flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                                        isOpen ? activeLinkClass : inactiveLinkClass
-                                    )}
+                                    className={linkClasses(isOpen)}
                                 >
                                     <Icon className="h-5 w-5 shrink-0" />
-                                    {expanded && <span className="flex-1 text-left">{label}</span>}
+                                    {expanded && <span className="flex-1">{label}</span>}
                                     {expanded &&
                                         (isOpen ? (
                                             <ChevronDown className="h-4 w-4 text-slate-400" />
@@ -126,19 +115,15 @@ export default function AdminSidebar({ user }: Props) {
                                     <motion.div
                                         initial={{ height: 0, opacity: 0 }}
                                         animate={{ height: "auto", opacity: 1 }}
-                                        transition={{ duration: 0.2 }}
                                         className="ml-8 mt-1 space-y-1"
                                     >
                                         {children.map((sub) => {
                                             const subActive = pathname === sub.href;
                                             return (
                                                 <Link
-                                                    key={sub.label}
+                                                    key={sub.href}
                                                     href={sub.href}
-                                                    className={cn(
-                                                        "block rounded-md px-3 py-2 text-sm transition-colors",
-                                                        subActive ? activeLinkClass : inactiveLinkClass
-                                                    )}
+                                                    className={linkClasses(subActive)}
                                                 >
                                                     {sub.label}
                                                 </Link>
@@ -153,13 +138,7 @@ export default function AdminSidebar({ user }: Props) {
                     return (
                         <Tooltip key={label} delayDuration={300}>
                             <TooltipTrigger asChild>
-                                <Link
-                                    href={href!}
-                                    className={cn(
-                                        "relative flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                                        active ? activeLinkClass : inactiveLinkClass
-                                    )}
-                                >
+                                <Link href={href!} className={linkClasses(!!active)}>
                                     {active && (
                                         <motion.span
                                             layoutId="active-indicator"
@@ -176,14 +155,12 @@ export default function AdminSidebar({ user }: Props) {
                 })}
             </nav>
 
-            {/* Footer user info */}
+            {/* Footer */}
             <div className="border-t border-slate-200 p-3 flex items-center gap-3 bg-slate-50">
                 {expanded && (
                     <div className="flex-1 overflow-hidden">
                         <p className="text-sm truncate uppercase font-black">{user?.nombre}</p>
-                        <p className="text-xs text-slate-500 truncate">
-                            {user?.email}
-                        </p>
+                        <p className="text-xs text-slate-500 truncate">{user?.email}</p>
                     </div>
                 )}
                 <AdminMenu user={user} />

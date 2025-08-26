@@ -1,5 +1,7 @@
-import { FaFilePdf, FaWhatsapp, FaEnvelope, FaPlus } from "react-icons/fa";
+import { FaWhatsapp, FaEnvelope, FaPlus } from "react-icons/fa";
 import { useCartStore } from "@/src/store/cartStore";
+import { RiPrinterFill } from "react-icons/ri";
+
 
 export default function VentaCompletada() {
     const { saleId, resetSale } = useCartStore();
@@ -25,7 +27,7 @@ export default function VentaCompletada() {
             <div className="flex gap-3">
                 {/* Abrir PDF */}
                 <a href={pdfUrl} target="_blank" className={buttonStyle}>
-                    <FaFilePdf /> 
+                    <RiPrinterFill />
                 </a>
 
                 {/* WhatsApp */}
@@ -35,7 +37,7 @@ export default function VentaCompletada() {
 
                 {/* Email */}
                 <a href={emailUrl} target="_blank" className={buttonStyle}>
-                    <FaEnvelope /> 
+                    <FaEnvelope />
                 </a>
             </div>
 

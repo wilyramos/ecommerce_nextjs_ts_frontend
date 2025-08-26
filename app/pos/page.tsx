@@ -48,9 +48,6 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
 
             {/* Carrito */}
             <aside className="px-2 md:border-t-0 md:border-l ">
-                <h2 className="text-xl mb-4 flex gap-2 font-extrabold">
-                    Carrito de venta
-                </h2>
                 <VentaCart />
             </aside>
         </div>

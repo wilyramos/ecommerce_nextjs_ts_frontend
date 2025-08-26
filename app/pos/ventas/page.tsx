@@ -42,7 +42,6 @@ export default async function PageVentas({ searchParams }: PageVentasProps) {
 
     return (
         <section className=" space-y-4">
-            <h2 className="text-2xl font-bold text-gray-800">Ventas</h2>
 
             <div className='sticky top-0 z-10 '>
                 <VentasFilters />
@@ -50,8 +49,8 @@ export default async function PageVentas({ searchParams }: PageVentasProps) {
 
             <div className='overflow-y-auto'>
                 <div>
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                        Suma Total: S/ {data.totalAmount.toFixed(2)}
+                    <h3 className="text-lg text-gray-700 mb-4">
+                        Suma Total: S/ <span className='font-bold'>{data.totalAmount.toFixed(2)}</span>
                     </h3>
                 </div>
                 <VentasTable
