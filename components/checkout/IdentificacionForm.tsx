@@ -25,7 +25,7 @@ export default function IdentificacionForm({ user }: Props) {
         defaultValues: {
             email: user.email || profile?.email || '',
             nombre: user.nombre || profile?.nombre || '',
-  apellidos: user.apellidos ?? profile?.apellidos ?? "", // <- aquí
+            apellidos: user.apellidos || "",
             tipoDocumento: user.tipoDocumento || profile?.tipoDocumento || 'DNI',
             numeroDocumento: user.numeroDocumento || profile?.numeroDocumento || '',
             telefono: user.telefono || profile?.telefono || '',

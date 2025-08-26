@@ -19,13 +19,16 @@ export const RegisterSchema = z.object({
 export const CheckoutRegisterSchema = z.object({
     nombre: z.string()
         .min(1, { message: 'El nombre es obligatorio' }),
-    apellidos: z.string().optional(),
+    apellidos: z.string()
+        .min(1, { message: 'Los apellidos son obligatorios' }),
     tipoDocumento: z.enum(['DNI', 'RUC', 'CE']),
     numeroDocumento: z.string()
         .min(1, { message: 'El número de documento es obligatorio' }),
     email: z.string()
         .email({ message: 'Email no válido' }),
-    telefono: z.string().optional()
+    telefono: z.string()
+        .min(1, { message: 'El teléfono es obligatorio' })
+        .regex(/^[0-9]{9}$/, { message: 'Debe contener 9 dígitos numéricos' }),
 })
 
 export type CheckoutRegister = z.infer<typeof CheckoutRegisterSchema>;

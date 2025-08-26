@@ -33,7 +33,6 @@ export default function SubmitSaleButton() {
         paymentMethod: "CASH",
         paymentStatus: "approved",
         customerDNI: dni || undefined,
-        source: "POS",
         receiptType: comprobante || "TICKET",
     };
 
