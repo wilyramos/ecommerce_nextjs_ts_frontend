@@ -1,12 +1,13 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
 export default function ProductSearchInput() {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const pathname =usePathname();
 
     const [query, setQuery] = useState(() => searchParams.get('query') || '');
 
@@ -19,7 +20,8 @@ export default function ProductSearchInput() {
             params.delete('query');
         }
 
-        router.push(`/admin/products?${params.toString()}`);
+        router.push(`${pathname}?${params.toString()}`);
+        // router.push(`/admin/products?${params.toString()}`);
     }, 500); // 500ms debounce
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

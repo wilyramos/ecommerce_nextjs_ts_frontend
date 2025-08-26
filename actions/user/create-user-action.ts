@@ -25,6 +25,8 @@ export async function createUserAction(prevState: ActionStateType, formData: For
         telefono: formData.get('telefono'),
     }
 
+    console.log("rregg", registerData)
+
     // Validate the data using Zod
     const validationResult = CheckoutRegisterSchema.safeParse(registerData);
     

@@ -80,8 +80,10 @@ export default function AddClientButton() {
                     {/* Campos generales */}
                     {[
                         { id: "nombre", label: "Nombre", type: "text" },
+                        { id: "apellidos", label: "Apellidos", type: "text" },
                         { id: "email", label: "Email", type: "email" },
                         { id: "telefono", label: "Teléfono", type: "tel" },
+
                     ].map(({ id, label, type }) => (
                         <div key={id} className="flex items-center gap-4">
                             <label htmlFor={id} className="w-24 text-gray-700 font-bold">

@@ -1,6 +1,6 @@
 "use client"
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { FiSearch } from "react-icons/fi";
@@ -8,6 +8,7 @@ import { FiSearch } from "react-icons/fi";
 export default function ClientsTableFilters() {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const pathname = usePathname();
 
     const [filters, setFilters] = useState({
         nombre: searchParams.get("nombre") || "",
@@ -25,7 +26,7 @@ export default function ClientsTableFilters() {
             }
         });
 
-        router.push(`/admin/clients?${params.toString()}`);
+        router.push(`${pathname}?${params.toString()}`);
     }, 400);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

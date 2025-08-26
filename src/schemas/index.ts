@@ -19,15 +19,13 @@ export const RegisterSchema = z.object({
 export const CheckoutRegisterSchema = z.object({
     nombre: z.string()
         .min(1, { message: 'El nombre es obligatorio' }),
-    apellidos: z.string()
-        .min(1, { message: 'Los apellidos son obligatorios' }),
+    apellidos: z.string().optional(),
     tipoDocumento: z.enum(['DNI', 'RUC', 'CE']),
     numeroDocumento: z.string()
         .min(1, { message: 'El número de documento es obligatorio' }),
     email: z.string()
         .email({ message: 'Email no válido' }),
-    telefono: z.string()
-        .min(1, { message: 'El teléfono es obligatorio' }),
+    telefono: z.string().optional()
 })
 
 export type CheckoutRegister = z.infer<typeof CheckoutRegisterSchema>;
@@ -965,3 +963,50 @@ export type TOrdersSummary = z.infer<typeof OrdersSummarySchema>;
 export type TOrdersOverTime = z.infer<typeof OrdersOverTimeSchema>;
 export type TOrdersByStatus = z.infer<typeof OrdersByStatusSchema>;
 export type TOrdersByCity = z.infer<typeof OrdersByCitySchema>;
+
+
+//  ***** Purchases  *****
+
+export const purchaseItemSchema = z.object({
+    productId: z.string().min(1, "El producto es obligatorio"), // ObjectId como string
+    quantity: z.number().int().positive("Cantidad debe ser mayor a 0"),
+    priceUnit: z.number().nonnegative("El precio unitario no puede ser negativo"),
+    totalPrice: z.number().nonnegative("El total no puede ser negativo").optional(),
+});
+
+// ---------- COMPRA ----------
+export const purchaseSchema = z.object({
+    numeroCompra: z.number().optional(), // generado automáticamente
+    proveedor: z.string().min(1, "El proveedor es obligatorio"),
+    items: z.array(purchaseItemSchema).min(1, "Debe haber al menos un producto"),
+    total: z.number().nonnegative("El total no puede ser negativo").optional(),
+    createdAt: z.string().datetime().optional(),
+    updatedAt: z.string().datetime().optional(),
+    _id: z.string().min(1, "El ID es obligatorio"),
+});
+
+// ---------- INPUTS ----------
+export const createPurchaseSchema = purchaseSchema.omit({
+    numeroCompra: true,
+    createdAt: true,
+    updatedAt: true,
+    _id: true
+});
+
+export const updatePurchaseSchema = purchaseSchema.partial();
+
+// ---------- API  ----------
+
+export const purchasesResponseSchema = z.object({
+    total: z.number(),
+    page: z.number(),
+    limit: z.number(),
+    purchases: z.array(purchaseSchema),
+});
+
+// ---------- TYPESCRIPT TYPES ----------
+export type TPurchaseItemInput = z.infer<typeof purchaseItemSchema>;
+export type TPurchaseInput = z.infer<typeof createPurchaseSchema>;
+export type TPurchaseUpdateInput = z.infer<typeof updatePurchaseSchema>;
+export type TPurchase = z.infer<typeof purchaseSchema>;
+export type TPurchasesResponse = z.infer<typeof purchasesResponseSchema>;

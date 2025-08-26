@@ -8,8 +8,6 @@ import Pagination from "@/components/ui/Pagination";
 import { HeadingH1 } from "@/components/ui/Heading";
 
 
-
-
 type SearchParams = Promise<{
     page?: string;
     limit?: string;
