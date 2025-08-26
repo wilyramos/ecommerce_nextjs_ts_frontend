@@ -667,6 +667,12 @@ export type CreateSaleInput = z.infer<typeof CreateSaleSchema>;
 // Esquemas para ventas
 
 
+export const SaleItemResponseSchemaPopulate = z.object({
+    product: ProductAPIResponseInPopulate,
+    quantity: z.number(),
+    price: z.number(),
+});
+
 export const SaleItemResponseSchema = z.object({
     product: ProductAPIResponseInPopulate.or(z.string()), // puede venir populado o como id
     quantity: z.number(),
@@ -674,11 +680,29 @@ export const SaleItemResponseSchema = z.object({
 });
 
 
+
+
 export const SaleResponseSchema = z.object({
     _id: z.string(),
     customerDNI: z.string().optional(),
     employee: UserSchema.or(z.string()).optional().nullable(),
     items: z.array(SaleItemResponseSchema),
+    totalPrice: z.number(),
+    totalDiscountAmount: z.number().optional(),
+    order: z.string().optional().nullable(),
+    status: SaleStatusEnum,
+    paymentStatus: SalePaymentStatusEnum,
+    createdAt: z.string().datetime(),
+    updatedAt: z.string().datetime(),
+    receiptNumber: z.string().optional(),
+    __v: z.number().optional(),
+});
+
+export const SaleResponsePopulate = z.object({
+    _id: z.string(),
+    customerDNI: z.string().optional(),
+    employee: UserSchema.or(z.string()).optional().nullable(),
+    items: z.array(SaleItemResponseSchemaPopulate),
     totalPrice: z.number(),
     totalDiscountAmount: z.number().optional(),
     order: z.string().optional().nullable(),

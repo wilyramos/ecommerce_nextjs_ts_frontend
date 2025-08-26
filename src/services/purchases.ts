@@ -3,7 +3,6 @@ import "server-only";
 
 import getToken from "../auth/token";
 import { purchasesResponseSchema, purchaseSchema } from "@/src/schemas";
-import { cache } from 'react';
 
 
 
@@ -43,6 +42,7 @@ type getPurchasesProps = {
 }
 export const getPurchases = async (props: getPurchasesProps) => {
     try {
+        console.log("Fetching purchases with params:", props);
         const token = await getToken();
         const url = `${process.env.API_URL}/purchases`;
 

@@ -1,6 +1,6 @@
 
 import getToken from "../auth/token";
-import { SaleResponseSchema, SalesAPIResponse } from "@/src/schemas";
+import { SaleResponsePopulate, SalesAPIResponse } from "@/src/schemas";
 
 interface GetSalesParams {
     search?: string;
@@ -28,7 +28,7 @@ export const getSale = async (id: string) => {
         }
 
         const json = await req.json();
-        const saleData = SaleResponseSchema.parse(json);
+        const saleData = SaleResponsePopulate.parse(json);
         return saleData;
 
     } catch (error) {

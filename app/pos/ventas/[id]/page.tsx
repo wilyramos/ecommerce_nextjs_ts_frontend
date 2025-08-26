@@ -29,16 +29,16 @@ export default async function PageVenta({ params }: { params: Params }) {
             {/* Encabezado empresa + acciones */}
 
             <div className="flex items-center gap-3">
-                    <Link 
-                        href="/pos/ventas" 
-                        className="flex items-center gap-2 text-sm text-gray-600 hover:text-black"
-                    >
-                        <FaArrowLeft /> Volver
-                    </Link>
-                </div>
+                <Link
+                    href="/pos/ventas"
+                    className="flex items-center gap-2 text-sm text-gray-600 hover:text-black"
+                >
+                    <FaArrowLeft /> Volver
+                </Link>
+            </div>
             <div className="flex justify-between items-start border-b pb-4">
                 {/* Botón Volver */}
-                
+
 
                 {/* Empresa + acciones */}
                 <div className="flex-1 flex justify-between items-start">
@@ -71,13 +71,13 @@ export default async function PageVenta({ params }: { params: Params }) {
 
                             {/* Cancelar */}
                             <div
-                               
+
                             >
                                 <FaTimesCircle className="text-gray-600" />
                                 {/* Cancelar la venta */}
                             </div>
 
-                            
+
 
                             {/* WhatsApp */}
                             <a
@@ -106,32 +106,42 @@ export default async function PageVenta({ params }: { params: Params }) {
             <div>
                 <h2 className="font-semibold mb-2">Detalle de productos</h2>
                 <div className="divide-y border rounded-lg">
-                    {sale.items.map((item: any, idx: number) => (
-                        <div
-                            key={idx}
-                            className="flex justify-between items-center px-4 py-3 text-sm"
-                        >
-                            <div className="flex items-center gap-3">
-                                <Image
-                                    src={item.product.imagenes[0]}
-                                    alt={item.product.nombre}
-                                    width={45}
-                                    height={45}
-                                    className="rounded border"
-                                />
-                                <div>
-                                    <p className="font-medium">{item.product.nombre}</p>
-                                    <p className="text-gray-500">Cant: {item.quantity}</p>
+
+                    {sale.items.map((item, idx) => {
+                        const isPopulated = typeof item.product !== "string";
+
+                        return (
+                            <div
+                                key={idx}
+                                className="flex justify-between items-center px-4 py-3 text-sm"
+                            >
+                                <div className="flex items-center gap-3">
+                                    {isPopulated && (
+                                        <Image
+                                            src={item.product.imagenes[0]}
+                                            alt={item.product.nombre}
+                                            width={45}
+                                            height={45}
+                                            className="rounded border"
+                                        />
+                                    )}
+                                    <div>
+                                        <p className="font-medium">
+                                            {isPopulated ? item.product.nombre : "Producto eliminado"}
+                                        </p>
+                                        <p className="text-gray-500">Cant: {item.quantity}</p>
+                                    </div>
+                                </div>
+                                <div className="text-right">
+                                    <p className="font-medium">
+                                        S/ {(item.price * item.quantity).toFixed(2)}
+                                    </p>
+                                    <p className="text-xs text-gray-400">S/ {item.price} c/u</p>
                                 </div>
                             </div>
-                            <div className="text-right">
-                                <p className="font-medium">
-                                    S/ {(item.price * item.quantity).toFixed(2)}
-                                </p>
-                                <p className="text-xs text-gray-400">S/ {item.price} c/u</p>
-                            </div>
-                        </div>
-                    ))}
+                        );
+                    })}
+
                 </div>
             </div>
 
@@ -148,7 +158,7 @@ export default async function PageVenta({ params }: { params: Params }) {
             </div>
 
             {/* Footer */}
-           
+
         </div>
     )
 }

@@ -9,11 +9,11 @@ type tipoDocumento = 'DNI' | 'RUC' | 'CE';
 export type ProfileFormData = {
     userId?: string; // Optional, will be set when the user is logged in
     nombre: string;
-    apellidos: string;
+    apellidos?: string;
     tipoDocumento: tipoDocumento;
     numeroDocumento: string;
     email: string;
-    telefono: string;
+    telefono?: string;
 }
 
 

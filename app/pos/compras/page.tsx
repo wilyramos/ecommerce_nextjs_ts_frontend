@@ -1,5 +1,4 @@
 import { getPurchases } from "@/src/services/purchases";
-import ComprasFilters from "@/components/POS/compras/ComprasFilters";
 import ComprasTable from "@/components/POS/compras/ComprasTable";
 import Pagination from "@/components/ui/Pagination";
 
