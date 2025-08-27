@@ -1,21 +1,22 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
-
 export type PurchaseItem = {
-    _id: string;
+    productId: string;
     nombre: string;
-    precio: number;
+    costo: number;
     cantidad: number;
     imagen: string;
+    total: number;
 };
 
 interface Store {
     items: PurchaseItem[];
-    addItem: (item: PurchaseItem) => void;
-    updateItem: (id: string, quantity: number) => void;
+    addItem: (item: Omit<PurchaseItem, 'total'>) => boolean; // retorna true si se agregó
+    updateItem: (id: string, quantity: number, cost: number) => void;
     removeItem: (id: string) => void;
     clearItems: () => void;
+    getTotalAmount: () => number;
 }
 
 export const usePurchaseStore = create<Store>()(
@@ -24,32 +25,51 @@ export const usePurchaseStore = create<Store>()(
             (set, get) => ({
                 items: [],
 
-                // Agregar un producto (si ya existe, no lo duplica)
-                addItem: (item) => set((state) => {
-                    const exists = state.items.find((i) => i._id === item._id);
-                    if (exists) return state;
-                    return { items: [...state.items, item] };
-                }),
+                addItem: (item) => {
+                    const exists = get().items.some((i) => i.productId === item.productId);
+                    if (exists) {
+                        // No permitir duplicados
+                        return false;
+                    }
 
-                // Actualizar cantidad y precio de un producto
-                updateItem: (id, quantity) =>
                     set((state) => ({
-                        items: state.items.map((i) =>
-                            i._id === id ? { ...i, cantidad: quantity } : i
+                        items: [
+                            ...state.items,
+                            {
+                                ...item,
+                                total: item.cantidad * item.costo,
+                            },
+                        ],
+                    }));
+                    return true;
+                },
+
+                updateItem: (id, quantity, newCosto) =>
+                    set((state) => ({
+                        items: state.items.map((item) =>
+                            item.productId === id
+                                ? {
+                                      ...item,
+                                      cantidad: quantity,
+                                      costo: newCosto,
+                                      total: quantity * newCosto,
+                                  }
+                                : item
                         ),
                     })),
 
-                // Eliminar un producto
                 removeItem: (id) =>
                     set((state) => ({
-                        items: state.items.filter((i) => i._id !== id),
+                        items: state.items.filter((i) => i.productId !== id),
                     })),
 
-                // Limpiar todos los productos
                 clearItems: () => set({ items: [] }),
+
+                getTotalAmount: () =>
+                    get().items.reduce((acc, item) => acc + item.total, 0),
             }),
             {
-                name: 'purchase-storage-ecomm', // unique store in localStorage
+                name: 'purchase-storage-ecomm',
             }
         )
     )

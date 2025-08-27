@@ -10,7 +10,6 @@ import type { ProductResponse } from "@/src/schemas";
 
 export default function ProductSearchInputPurchase() {
 
-    
 
 
     const router = useRouter();
@@ -37,18 +36,18 @@ export default function ProductSearchInputPurchase() {
     }, 500);
 
     return (
-        <div className="flex items-center w-full max-w-4xl rounded-lg overflow-hidden border border-gray-300 bg-gray-100">
+        <div className="flex items-center w-full max-w-4xl rounded-2xl overflow-hidden bg-gray-100">
             {/* Input búsqueda */}
             <div className="relative flex-1">
                 <input
                     type="text"
-                    placeholder="Buscar producto..."
+                    placeholder="Buscar producto"
                     value={query}
                     onChange={(e) => {
                         setQuery(e.target.value);
                         handleSearch(e.target.value);
                     }}
-                    className="w-full bg-gray-100 py-2 pl-10 pr-4 focus:outline-none focus:ring-1 focus:ring-gray-500"
+                    className="w-full bg-gray-100 py-2 pl-10 pr-4 focus:outline-none placeholder:font-bold placeholder:text-sm"
                 />
                 <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
             </div>

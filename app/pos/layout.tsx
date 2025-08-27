@@ -1,9 +1,15 @@
 import { verifySession } from '@/src/auth/dal';
 import ToastNotification from "@/components/ui/ToastNotification";
 import SidebarPOS from "@/components/POS/SidebarPOS";
+import { redirect } from 'next/navigation';
+
 
 export default async function POSlayout({ children }: { children: React.ReactNode }) {
     const { user } = await verifySession();
+     if ( user.rol !== 'administrador' && user.rol !== 'vendedor' ) {
+        redirect("/auth/login?redirect=/pos");
+    }
+
 
     return (
         <div className="flex h-screen bg-gray-50 overflow-hidden">

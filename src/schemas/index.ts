@@ -1023,7 +1023,7 @@ export const createPurchaseSchema = purchaseSchema.omit({
 
 export const updatePurchaseSchema = purchaseSchema.partial();
 
-// ---------- API  ----------
+// ---------- API  ---------- 
 
 export const purchasesResponseSchema = z.object({
     total: z.number(),
