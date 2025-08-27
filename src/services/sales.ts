@@ -114,7 +114,7 @@ export const getSummarySales = async (params: GetSalesParams) => {
             queryParams.append('fechaFin', fechaFin);
         }
 
-        const url = `${process.env.API_URL}/sales/report?${queryParams.toString()}`;
+        const url = `${process.env.API_URL}/sales/report/summary?${queryParams.toString()}`;
 
         const req = await fetch(url, {
             method: 'GET',

@@ -47,7 +47,7 @@ export default function ComprasFilters() {
                         value={filters.numeroCompra}
                         onChange={handleChange}
                         placeholder="N° de compra"
-                        className="w-full pl-8 pr-3 py-2 text-lg font-semibold placeholder-gray-700 focus:outline-none border-b-4 focus:border-rose-600"
+                        className="w-full pl-8 pr-3 py-2 text-lg font-semibold placeholder-black focus:outline-none border-b-4 focus:border-rose-600"
                     />
                     <FiSearch className="absolute left-2 text-gray-400" />
                 </div>
@@ -61,7 +61,7 @@ export default function ComprasFilters() {
                         value={filters.proveedor}
                         onChange={handleChange}
                         placeholder="Buscar proveedor"
-                        className="w-full pl-8 pr-3 py-2 text-lg font-semibold placeholder-gray-700 focus:outline-none border-b-4 focus:border-rose-600"
+                        className="w-full pl-8 pr-3 py-2 text-lg font-semibold placeholder-black focus:outline-none border-b-4 focus:border-rose-600"
                     />
                     <FiSearch className="absolute left-2 text-gray-400" />
                 </div>
@@ -73,7 +73,7 @@ export default function ComprasFilters() {
                     name="fecha"
                     value={filters.fecha}
                     onChange={handleChange}
-                    className="w-full px-3 py-2 text-lg font-semibold placeholder-gray-700 focus:outline-none border-b-4 focus:border-rose-600"
+                    className="w-full px-3 py-2 text-lg font-semibold placeholder-black focus:outline-none border-b-4 focus:border-rose-600"
                 />
             </td>
             {/* Campo Total */}

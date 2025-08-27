@@ -2,7 +2,7 @@ import "server-only";
 
 
 import getToken from "../auth/token";
-import { ProductsAPIResponse, productsSchema } from "@/src/schemas";
+import { apiProductListSchema, ProductsAPIResponse, productsSchema } from "@/src/schemas";
 import { cache } from 'react';
 
 // new
@@ -83,12 +83,12 @@ export const getProductsByFilter = async ({
 
     // Agregar los atributos dinámicos al query string
     for (const [key, value] of Object.entries(atributos)) {
-    if (value) {
-        // Asegura que sea string[]
-        const valuesArray = Array.isArray(value) ? value : [value];
-        params.append(`atributos[${key}]`, valuesArray.join(","));
+        if (value) {
+            // Asegura que sea string[]
+            const valuesArray = Array.isArray(value) ? value : [value];
+            params.append(`atributos[${key}]`, valuesArray.join(","));
+        }
     }
-}
 
 
     const url = `${process.env.API_URL}/products/filter?${params.toString()}`;
@@ -126,6 +126,39 @@ export const searchProducts = async ({ query, page, limit }: {
     const products = productsWithCategoryAPIResponse.parse(json);
     return products;
 }
+
+type GetProductListParams = {
+    q?: string;
+};
+
+export const getProductList = async ({ q }: GetProductListParams) => {
+    try {
+        const token = getToken();
+
+        const params = new URLSearchParams();
+        if (q) params.set("q", q);
+
+        const url = `${process.env.API_URL}/products/list?${params.toString()}`;
+
+        const req = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        if (!req.ok) {
+            return [];
+        }
+
+        const json = await req.json();
+        const products = apiProductListSchema.parse(json);
+        return products;
+    } catch (error) {
+        console.error("Error fetching product list:", error);
+        return [];
+    }
+};
 
 export const getNewProducts = cache(async () => {
     const url = `${process.env.API_URL}/products/new`;

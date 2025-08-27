@@ -11,13 +11,16 @@ export default async function SalesReportsCards() {
     const startDate: string = new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString();
     const endDate: string = new Date().toISOString();
 
+    const startDateFormatted = startDate.split("T")[0];
+    const endDateFormatted = endDate.split("T")[0];
+
     const salesSummary = await getSummarySales({
-        fechaInicio: startDate,
-        fechaFin: endDate,
+        fechaInicio: startDateFormatted,
+        fechaFin: endDateFormatted,
     });
 
     return (
-        <section className="bg-white p-4 ">
+        <section className="bg-white p-4 rounded-xl shadow-md ">
             {/* Header */}
             <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-2">
                 <HeadingH3>Resumen de Ventas</HeadingH3>

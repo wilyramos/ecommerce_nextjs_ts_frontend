@@ -266,6 +266,7 @@ export const ApiProductSchema = productBaseSchema
         __v: z.number().optional(),
     });
 
+export const apiProductListSchema = z.array(ApiProductSchema);
 export const productsAPIResponse = z.object({
     products: z.array(ApiProductSchema),
     totalPages: z.number(),

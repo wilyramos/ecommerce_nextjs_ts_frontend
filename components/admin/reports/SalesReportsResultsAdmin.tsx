@@ -22,7 +22,6 @@ export default async function SalesReportsResultsAdmin({ startDate, endDate }: S
         fechaFin: endDate,
     });
 
-
     // 
 
     return (
