@@ -126,6 +126,8 @@ export default function ButtonSearchFormStore() {
                                     width={50}
                                     height={50}
                                     className="object-cover rounded-md"
+                                    loading="lazy"
+                                    quality={10}
                                 />
                             ) : (
                                 <div className="w-12 h-12 bg-gray-200 animate-pulse rounded-md" />
