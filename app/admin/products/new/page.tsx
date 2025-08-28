@@ -1,27 +1,28 @@
-import CreateProductForm from '@/components/admin/products/CreateProductForm'
-import Link from 'next/link'
-import { getAllSubcategories } from '@/src/services/categorys'
-
+import Link from "next/link";
+import CreateProductForm from "@/components/admin/products/CreateProductForm";
+import { getAllSubcategories } from "@/src/services/categorys";
 
 export default async function NewProductPage() {
-
-    const categorias = await getAllSubcategories()
+    const categorias = await getAllSubcategories();
 
     return (
-        <section className='p-6'>
-            <div className="flex flex-col md:flex-row justify-between items-center border-b pb-4 gap-2">
-                <h1 className='text-lg font-semibold text-gray-800 '>Nuevo producto</h1>
+        <main className="p-4">
+            {/* Encabezado */}
+            <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-gray-200 pb-3">
+                <h1 className="text-2xl font-bold text-gray-900">Nuevo producto</h1>
+
                 <Link
-                    href={"/admin/products"}
-                    className='bg-gray-800 text-white text-sm px-2 py-1 rounded-xl hover:bg-gray-950 cursor-pointer transition-all duration-200 ease-in-out hidden md:block'
+                    href="/admin/products"
+                    className="hidden md:inline-block bg-gray-800 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-gray-900 transition"
                 >
                     Volver
                 </Link>
-            </div>
+            </header>
 
-            <div className='w-full mx-auto mt-10'>
+            {/* Formulario */}
+            <section className="mt-6">
                 <CreateProductForm categorias={categorias} />
-            </div>
-        </section>
-    )
+            </section>
+        </main>
+    );
 }

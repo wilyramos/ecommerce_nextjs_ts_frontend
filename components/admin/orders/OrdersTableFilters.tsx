@@ -48,7 +48,7 @@ export default function OrdersTableFilters() {
 
     return (
         <div className="overflow-x-auto">
-            <div className=" mb-4">
+            <div className="mb-2">
                 <button
                     onClick={handleClearFilters}
                     className="text-sm text-red-600 hover:underline"
@@ -56,7 +56,7 @@ export default function OrdersTableFilters() {
                     Limpiar Filtros
                 </button>
             </div>
-            <table className="min-w-full text-sm">
+            <table className="min-w-full text-md">
                 <thead>
                     <tr className="text-gray-700">
                         {/* Pedido */}

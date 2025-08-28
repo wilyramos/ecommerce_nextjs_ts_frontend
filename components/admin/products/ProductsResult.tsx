@@ -31,7 +31,7 @@ export default async function ProductsResultsAdmin({
         <>
             <ProductsTable products={productsData} />
 
-            <div className="pt-2">
+            <div className="py-4">
 
                 <Pagination
                     currentPage={currentPage}

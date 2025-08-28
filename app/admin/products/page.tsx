@@ -1,8 +1,13 @@
+import { Suspense } from "react";
+
+// UI
+import { HeadingH1 } from "@/components/ui/Heading";
+import SpinnerLoading from "@/components/ui/SpinnerLoading";
+
+// Admin
 import AddProductButton from "@/components/admin/products/AddProductButton";
 import ProductSearchInput from "@/components/admin/products/ProductSearchInput";
 import ProductsResultsAdmin from "@/components/admin/products/ProductsResult";
-import SpinnerLoading from "@/components/ui/SpinnerLoading";
-import { Suspense } from "react";
 
 type SearchParams = Promise<{
     page?: string;
@@ -11,29 +16,31 @@ type SearchParams = Promise<{
 }>;
 
 export default async function ProductsPage({ searchParams }: { searchParams: SearchParams }) {
-
     const params = await searchParams;
-    const currentPage = params.page ? parseInt(params.page, 10) : 1;
-    const itemsPerPage = params.limit ? parseInt(params.limit, 10) : 10;
+    const currentPage = Number(params.page) || 1;
+    const itemsPerPage = Number(params.limit) || 10;
 
     return (
-        <main className="text-slate-600">
-            {/* Header */}
-            <div className="flex flex-col md:flex-row gap-4 py-2 border-b-2">
-                <div className="flex justify-between items-center w-full">
+        <main className="p-4">
+            {/* Encabezado */}
+            <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-gray-200 pb-3">
+                <HeadingH1>Productos</HeadingH1>
+                <div className="flex items-center gap-3">
                     <ProductSearchInput />
                     <AddProductButton />
                 </div>
-            </div>
+            </header>
 
-            {/* Product Results */}
-            <Suspense fallback={<SpinnerLoading />}>
-                <ProductsResultsAdmin
-                    currentPage={currentPage}
-                    itemsPerPage={itemsPerPage}
-                    params={params}
-                />
-            </Suspense>
+            {/* Resultados */}
+            <section className="mt-6">
+                <Suspense fallback={<SpinnerLoading />}>
+                    <ProductsResultsAdmin
+                        currentPage={currentPage}
+                        itemsPerPage={itemsPerPage}
+                        params={params}
+                    />
+                </Suspense>
+            </section>
         </main>
     );
 }

@@ -4,11 +4,11 @@ import { User } from "@/src/schemas";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import AdminMenu from "./AdminMenu";
 import Logo from "../ui/Logo";
 
+// Íconos
 import {
     Package,
     Users,
@@ -34,6 +34,9 @@ type NavLink = {
     children?: { href: string; label: string }[];
 };
 
+// ---------------------
+// LINKS DE NAVEGACIÓN
+// ---------------------
 const links: NavLink[] = [
     { href: "/admin/products", icon: Package, label: "Productos" },
     { href: "/admin/clients", icon: Users, label: "Clientes" },
@@ -44,37 +47,44 @@ const links: NavLink[] = [
         icon: Users,
         label: "Usuarios",
         children: [
-            { href: "/admin/users/create", label: "Crear usuario" },
-            { href: "/admin/users", label: "Lista de usuarios" },
+            { href: "/admin/clients", label: "Lista de usuarios" },
             { href: "/admin/users/roles", label: "Roles y permisos" },
         ],
     },
     { href: "/pos", icon: ShoppingCart, label: "POS" },
 ];
 
+// ---------------------
+// COMPONENTE PRINCIPAL
+// ---------------------
 export default function AdminSidebar({ user }: Props) {
     const pathname = usePathname();
     const [expanded, setExpanded] = useState(true);
     const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
 
+    // Cambia el estado de un menú con hijos
     const toggleMenu = (label: string) =>
         setOpenMenus((prev) => ({ ...prev, [label]: !prev[label] }));
 
+    // Clases base de los links
     const linkClasses = (active: boolean) =>
         cn(
-            "relative flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+            "relative flex items-center gap-2 rounded-md px-3 py-2 text-base font-semibold transition-colors",
             active
                 ? "text-blue-600 bg-blue-50 font-semibold"
                 : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
         );
 
     return (
-        <motion.aside
-            animate={{ width: expanded ? 180 : 56 }}
-            transition={{ duration: 0.25 }}
-            className="h-screen flex flex-col border-r border-slate-200 bg-white shadow-sm rounded-r-2xl py-4"
+        <aside
+            className={cn(
+                "h-screen flex flex-col border-r border-slate-200 bg-white shadow-sm rounded-r-2xl py-4 transition-all duration-300",
+                expanded ? "w-44" : "w-14"
+            )}
         >
-            {/* Header */}
+            {/* ---------------------
+          HEADER (Logo + Botón)
+      --------------------- */}
             <div className="flex items-center justify-between px-3 h-16 border-b">
                 {expanded && <Logo />}
                 <button
@@ -89,11 +99,14 @@ export default function AdminSidebar({ user }: Props) {
                 </button>
             </div>
 
-            {/* Navigation */}
-            <nav className="flex-1 mt-2 px-2 space-y-1">
+            {/* ---------------------
+          NAVEGACIÓN PRINCIPAL
+      --------------------- */}
+            <nav className="flex-1 mt-2 px-2 space-y-4 overflow-auto">
                 {links.map(({ href, icon: Icon, label, children }) => {
                     const active = href && pathname === href;
 
+                    // Caso: Menú con sublinks
                     if (children) {
                         const isOpen = openMenus[label];
                         return (
@@ -111,12 +124,10 @@ export default function AdminSidebar({ user }: Props) {
                                             <ChevronRight className="h-4 w-4 text-slate-400" />
                                         ))}
                                 </button>
+
+                                {/* Sublinks */}
                                 {isOpen && expanded && (
-                                    <motion.div
-                                        initial={{ height: 0, opacity: 0 }}
-                                        animate={{ height: "auto", opacity: 1 }}
-                                        className="ml-8 mt-1 space-y-1"
-                                    >
+                                    <div className="ml-8 mt-1 space-y-1">
                                         {children.map((sub) => {
                                             const subActive = pathname === sub.href;
                                             return (
@@ -129,21 +140,19 @@ export default function AdminSidebar({ user }: Props) {
                                                 </Link>
                                             );
                                         })}
-                                    </motion.div>
+                                    </div>
                                 )}
                             </div>
                         );
                     }
 
+                    // Caso: Link simple
                     return (
                         <Tooltip key={label} delayDuration={300}>
                             <TooltipTrigger asChild>
                                 <Link href={href!} className={linkClasses(!!active)}>
                                     {active && (
-                                        <motion.span
-                                            layoutId="active-indicator"
-                                            className="absolute left-0 top-0 h-full w-[3px] bg-blue-600 rounded-r"
-                                        />
+                                        <span className="absolute left-0 top-0 h-full w-[3px] bg-blue-600 rounded-r" />
                                     )}
                                     <Icon className="h-4 w-4 shrink-0" />
                                     {expanded && <span>{label}</span>}
@@ -155,7 +164,9 @@ export default function AdminSidebar({ user }: Props) {
                 })}
             </nav>
 
-            {/* Footer */}
+            {/* ---------------------
+          FOOTER (Usuario + Menú)
+      --------------------- */}
             <div className="border-t border-slate-200 p-3 flex items-center gap-3 bg-slate-50">
                 {expanded && (
                     <div className="flex-1 overflow-hidden">
@@ -165,6 +176,6 @@ export default function AdminSidebar({ user }: Props) {
                 )}
                 <AdminMenu user={user} />
             </div>
-        </motion.aside>
+        </aside>
     );
 }

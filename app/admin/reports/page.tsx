@@ -7,9 +7,9 @@ export default function ReportsAdminPage() {
 
     return (
         <>
-            <HeadingH2>Resumen</HeadingH2>
+            <HeadingH2>Reportes</HeadingH2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 p-2">
 
                 <SalesReportsCards /> 
                 <GeneralView />              

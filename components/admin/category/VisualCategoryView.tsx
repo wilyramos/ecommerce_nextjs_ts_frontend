@@ -27,7 +27,7 @@ export default function VisualCategoryView({ categories }: Props) {
     const rootCategories = grouped["root"] || [];
 
     return (
-        <div className="space-y-8 p-4 ">
+        <div className="space-y-8 mx-auto">
             {rootCategories.map((parent) => {
                 const subcategories = grouped[parent._id] || [];
 

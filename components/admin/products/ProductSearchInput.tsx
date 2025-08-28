@@ -7,7 +7,7 @@ import { useDebouncedCallback } from 'use-debounce';
 export default function ProductSearchInput() {
     const router = useRouter();
     const searchParams = useSearchParams();
-    const pathname =usePathname();
+    const pathname = usePathname();
 
     const [query, setQuery] = useState(() => searchParams.get('query') || '');
 
@@ -21,8 +21,7 @@ export default function ProductSearchInput() {
         }
 
         router.push(`${pathname}?${params.toString()}`);
-        // router.push(`/admin/products?${params.toString()}`);
-    }, 500); // 500ms debounce
+    }, 500);
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -33,10 +32,10 @@ export default function ProductSearchInput() {
     return (
         <input
             type="text"
-            className="w-full max-w-xl px-4 py-2 rounded-full border border-slate-300 bg-white text-slate-700 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-            placeholder="Buscar por nombre o SKU..."
             value={query}
             onChange={onChange}
+            placeholder="Buscar productos..."
+            className="w-full max-w-md px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-700 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
         />
     );
 }

@@ -39,7 +39,7 @@ export default async function pageOrders({ searchParams }: PageOrdersProps) {
     return (
         <div className="max-w-7xl mx-auto">
             <div className="flex justify-between mb-6">
-                <HeadingH1>Listado de Pedidos</HeadingH1>
+                <HeadingH1>Pedidos</HeadingH1>
                 <div className="flex gap-2">
                     <AddOrderButton />
                 </div>

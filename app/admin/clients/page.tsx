@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import SpinnerLoading from "@/components/ui/SpinnerLoading";
 import AddClientButton from "@/components/admin/clients/AddClientButton";
-import ExportClientsButton from "@/components/admin/clients/ExportClientsButton";
 import ClientsTable from "@/components/admin/clients/ClientsTable";
 import { getUsers } from "@/src/services/users";
 import Pagination from "@/components/ui/Pagination";
@@ -41,7 +40,7 @@ export default async function AdminClientsPage({ searchParams }: { searchParams:
                 <HeadingH1>Clientes / usuarios</HeadingH1>
                 <div className="flex items-center gap-2">
                     <AddClientButton />
-                    <ExportClientsButton />
+                    {/* <ExportClientsButton /> */}
                 </div>
 
             </div>

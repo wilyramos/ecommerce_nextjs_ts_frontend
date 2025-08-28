@@ -20,7 +20,7 @@ export default async function SalesReportsCards() {
     });
 
     return (
-        <section className="bg-white p-4 rounded-xl shadow-md ">
+        <section className="border border-slate-100 rounded-2xl p-2">
             {/* Header */}
             <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-2">
                 <HeadingH3>Resumen de Ventas</HeadingH3>

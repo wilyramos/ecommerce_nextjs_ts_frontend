@@ -7,9 +7,8 @@ import { redirect } from 'next/navigation';
 export default async function POSlayout({ children }: { children: React.ReactNode }) {
     const { user } = await verifySession();
      if ( user.rol !== 'administrador' && user.rol !== 'vendedor' ) {
-        redirect("/auth/login?redirect=/pos");
+        redirect("/profile");
     }
-
 
     return (
         <div className="flex h-screen bg-gray-50 overflow-hidden">
