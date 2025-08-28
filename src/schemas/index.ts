@@ -995,11 +995,39 @@ export type TOrdersByCity = z.infer<typeof OrdersByCitySchema>;
 
 //  ***** Purchases  *****
 
+export const  ProductForPurchasesOrderSchema = z.object({
+    _id: z.string(),
+    nombre: z.string().optional(),
+    sku: z.string().optional(),
+    barcode: z.string().optional(),
+    imagenes: z.array(z.string().url()).optional(),
+});
+
+
+
+export const purchaseItemSchemaPopulated = z.object({
+    productId: ProductForPurchasesOrderSchema.nullable(),
+    quantity: z.number().int().positive("Cantidad debe ser mayor a 0"),
+    priceUnit: z.number().nonnegative("El precio unitario no puede ser negativo"),
+    totalPrice: z.number().nonnegative("El total no puede ser negativo").optional(),
+})
+
 export const purchaseItemSchema = z.object({
     productId: z.string().min(1, "El producto es obligatorio"), // ObjectId como string
     quantity: z.number().int().positive("Cantidad debe ser mayor a 0"),
     priceUnit: z.number().nonnegative("El precio unitario no puede ser negativo"),
     totalPrice: z.number().nonnegative("El total no puede ser negativo").optional(),
+});
+
+// ---------- COMPRA ----------
+export const purchaseSchemaPopulated = z.object({
+    numeroCompra: z.number().optional(), // generado automáticamente
+    proveedor: z.string().min(1, "El proveedor es obligatorio"),
+    items: z.array(purchaseItemSchemaPopulated).min(1, "Debe haber al menos un producto"),
+    total: z.number().nonnegative("El total no puede ser negativo").optional(),
+    createdAt: z.string().datetime().optional(),
+    updatedAt: z.string().datetime().optional(),
+    _id: z.string().min(1, "El ID es obligatorio"),
 });
 
 // ---------- COMPRA ----------
@@ -1038,3 +1066,4 @@ export type TPurchaseInput = z.infer<typeof createPurchaseSchema>;
 export type TPurchaseUpdateInput = z.infer<typeof updatePurchaseSchema>;
 export type TPurchase = z.infer<typeof purchaseSchema>;
 export type TPurchasesResponse = z.infer<typeof purchasesResponseSchema>;
+export type TpurchaseSchemaPopulated = z.infer<typeof purchaseSchemaPopulated>;

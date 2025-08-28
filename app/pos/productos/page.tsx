@@ -24,13 +24,7 @@ export default async function pageProductosPOS({ searchParams }: { searchParams:
         query: params.query,
     });
 
-    if (!productsData || productsData.products.length === 0) {
-        return (
-            <div className="text-center py-12">
-                <p className="text-gray-500 text-sm">No se encontraron productos.</p>
-            </div>
-        );
-    }
+   
 
     return (
 
@@ -42,7 +36,7 @@ export default async function pageProductosPOS({ searchParams }: { searchParams:
             <div className="pt-2">
                 <Pagination
                     currentPage={currentPage}
-                    totalPages={Math.ceil(productsData.totalProducts / itemsPerPage)}
+                    totalPages={productsData?.totalPages ?? 1}
                     limit={itemsPerPage}
                     pathname="/pos/productos"
                 />

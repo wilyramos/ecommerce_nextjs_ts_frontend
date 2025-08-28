@@ -1,9 +1,17 @@
 import type { ProductsAPIResponse } from "@/src/schemas";
 import Link from "next/link";
-import { CheckCircle, XCircle, Star } from "lucide-react"; // ✅ reemplazo moderno
+import { CheckCircle, XCircle, Star } from "lucide-react";
 import ProductMenuAction from "./ProductMenuActionts";
 
-export default function ProductsTable({ products }: { products: ProductsAPIResponse }) {
+export default function ProductsTable({ products }: { products?: ProductsAPIResponse | null }) {
+    if (!products || products.products.length === 0) {
+        return (
+            <div className="p-6 text-center text-slate-500">
+                No se encontraron productos
+            </div>
+        );
+    }
+
     return (
         <div className="overflow-x-auto text-sm">
             <table className="min-w-full divide-y divide-slate-200">
@@ -30,8 +38,12 @@ export default function ProductsTable({ products }: { products: ProductsAPIRespo
                                     {product.nombre}
                                 </Link>
                             </td>
-                            <td className="px-4 py-2 whitespace-nowrap hidden md:table-cell uppercase text-slate-700">{product.sku}</td>
-                            <td className="px-4 py-2 whitespace-nowrap hidden md:table-cell text-slate-700">S/ {product.precio?.toFixed(2)}</td>
+                            <td className="px-4 py-2 whitespace-nowrap hidden md:table-cell uppercase text-slate-700">
+                                {product.sku}
+                            </td>
+                            <td className="px-4 py-2 whitespace-nowrap hidden md:table-cell text-slate-700">
+                                S/ {product.precio?.toFixed(2)}
+                            </td>
                             <td className="px-4 py-2 whitespace-nowrap text-slate-700">{product.stock}</td>
                             <td className="px-4 py-2 whitespace-nowrap hidden md:table-cell text-center">
                                 {product.isActive ? (

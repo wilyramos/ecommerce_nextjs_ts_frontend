@@ -2,14 +2,14 @@ import "server-only";
 
 
 import getToken from "../auth/token";
-import { purchasesResponseSchema, purchaseSchema } from "@/src/schemas";
+import { purchasesResponseSchema, purchaseSchemaPopulated } from "@/src/schemas";
 
 
 
 export const getPurchase = async (id: string) => {
     try {
         const token = await getToken();
-        const url = `${process.env.NEXT_PUBLIC_API_URL}/purchases/${id}`;
+        const url = `${process.env.API_URL}/purchases/${id}`;
 
         const response = await fetch(url, {
             method: "GET",
@@ -20,31 +20,43 @@ export const getPurchase = async (id: string) => {
         });
 
         const data = await response.json();
-
-        const result = purchaseSchema.safeParse(data);
+        console.log("daa", data)
+        const result = purchaseSchemaPopulated.safeParse(data);
 
         if (!result.success) {
-            throw new Error("Invalid response");
+            return null;
         }
 
         return result.data;
     } catch (error) {
         console.error(error);
-        throw new Error("Failed to fetch purchase");
+        return null;
     }
 }
 
-type getPurchasesProps = {
+type getPurchasesParams = {
     page?: number;
     limit?: number;
-    query?: string;
-    sort?: string;
+    numeroCompra?: string;
+    proveedor?: string;
+    fecha?: string;
+    // total?: string;
 }
-export const getPurchases = async (props: getPurchasesProps) => {
+
+export const getPurchases = async ({ page = 1, limit = 10, ...filters }: getPurchasesParams) => {
     try {
-        console.log("Fetching purchases with params:", props);
+
         const token = await getToken();
-        const url = `${process.env.API_URL}/purchases`;
+        const params = new URLSearchParams();
+        for (const [key, value] of Object.entries(filters)) {
+            if (value) {
+                params.append(key, value);
+            }
+        }
+
+        params.set('page', page.toString());
+        params.set('limit', limit.toString());
+        const url = `${process.env.API_URL}/purchases?${params.toString()}`;
 
         const response = await fetch(url, {
             method: "GET",
@@ -54,18 +66,21 @@ export const getPurchases = async (props: getPurchasesProps) => {
             },
         });
 
-        const data = await response.json();
-        console.log("Purchases data:", data);
-        const result = purchasesResponseSchema.safeParse(data);
-        console.log("Parsed purchases data:", result);
 
-        if (!result.success) {
-            throw new Error("Invalid response");
+        if (!response.ok) {
+            return null;
         }
 
+        const data = await response.json();
+
+        const result = purchasesResponseSchema.safeParse(data);
+        if (!result.success) {
+            console.error("Schema validation error:", result.error.format());
+            return null;
+        }
         return result.data;
     } catch (error) {
         console.error(error);
-        throw new Error("Failed to fetch purchases");
+        return  null;
     }
 }

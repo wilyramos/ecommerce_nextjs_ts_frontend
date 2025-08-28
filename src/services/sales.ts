@@ -1,6 +1,8 @@
 
 import getToken from "../auth/token";
 import { SaleResponsePopulate, SalesAPIResponse } from "@/src/schemas";
+import { format } from 'date-fns';
+
 
 interface GetSalesParams {
     search?: string;
@@ -40,18 +42,20 @@ export const getSale = async (id: string) => {
 export const getSales = async (params: GetSalesParams) => {
     try {
         const token = await getToken();
-        const { search, fechaInicio, fechaFin, page = 1, limit = 10 } = params;
+        let { fechaInicio, fechaFin } = params;
+        const { search } = params;
+        const { page = 1, limit = 10 } = params;
+        // 📌 Si no viene rango, poner el día actual
+        if (!fechaInicio && !fechaFin) {
+            const today = format(new Date(), 'yyyy-MM-dd');
+            fechaInicio = today;
+            fechaFin = today;
+        }
 
         const queryParams = new URLSearchParams();
-        if (search) {
-            queryParams.append('search', search);
-        }
-        if (fechaInicio) {
-            queryParams.append('fechaInicio', fechaInicio);
-        }
-        if (fechaFin) {
-            queryParams.append('fechaFin', fechaFin);
-        }
+        if (search) queryParams.append('search', search);
+        if (fechaInicio) queryParams.append('fechaInicio', fechaInicio);
+        if (fechaFin) queryParams.append('fechaFin', fechaFin);
         queryParams.append('page', page.toString());
         queryParams.append('limit', limit.toString());
 

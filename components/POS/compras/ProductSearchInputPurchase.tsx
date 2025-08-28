@@ -4,7 +4,6 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { FiSearch } from "react-icons/fi";
-import type { ProductResponse } from "@/src/schemas";
 
 
 

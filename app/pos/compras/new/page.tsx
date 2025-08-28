@@ -3,7 +3,6 @@ import { MdOutlineArrowBackIos } from "react-icons/md";
 import ProductSearchInputPurchase from "@/components/POS/compras/ProductSearchInputPurchase";
 import NewPurchaseForm from "@/components/POS/compras/NewPurchaseForm";
 import { getProductList } from "@/src/services/products";
-import type { ProductResponse } from "@/src/schemas";
 import ProductResultsPurchase from "@/components/POS/compras/ProductResultsPurchase";
 
 type SearchParams = Promise<{

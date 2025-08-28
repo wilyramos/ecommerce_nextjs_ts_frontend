@@ -38,8 +38,6 @@ export async function createUserAction(prevState: ActionStateType, formData: For
         }
     };
 
-    console.log('Validated data:', validationResult.data);
-
     const url = `${process.env.API_URL}/auth/create-user-if-not-exists`;
     const req = await fetch(url, {
         method: 'POST',
@@ -56,7 +54,6 @@ export async function createUserAction(prevState: ActionStateType, formData: For
         }),
     });
 
-    console.log('Response status:', req);
     if (!req.ok) {
         const errorData = await req.json();
         return {

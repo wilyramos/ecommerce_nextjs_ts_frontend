@@ -1,7 +1,7 @@
-import VentasFilters from '@/components/POS/ventas/VentasFilters'
-import { getSales } from '@/src/services/sales'
-import VentasTable from '@/components/POS/ventas/VentasTable'
-import Pagination from '@/components/home/Pagination'
+import VentasFilters from '@/components/POS/ventas/VentasFilters';
+import { getSales } from '@/src/services/sales';
+import VentasTable from '@/components/POS/ventas/VentasTable';
+import Pagination from '@/components/home/Pagination';
 
 
 type PageVentasProps = {
@@ -48,11 +48,7 @@ export default async function PageVentas({ searchParams }: PageVentasProps) {
             </div>
 
             <div className='overflow-y-auto'>
-                <div>
-                    <h3 className="text-lg text-gray-700 mb-4">
-                        Suma Total: S/ <span className='font-bold'>{data.totalAmount.toFixed(2)}</span>
-                    </h3>
-                </div>
+
                 <VentasTable
                     ventas={data?.sales || []}
                 />
@@ -68,6 +64,11 @@ export default async function PageVentas({ searchParams }: PageVentasProps) {
                         fechaFin: params.fechaFin,
                     }}
                 />
+                <div>
+                    <h3 className="text-lg text-gray-700 mb-4">
+                        Suma total: S/ <span className='font-bold'>{data.totalAmount.toFixed(2)}</span>
+                    </h3>
+                </div>
             </div>
         </section>
     );

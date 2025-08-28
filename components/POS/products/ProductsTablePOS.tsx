@@ -3,7 +3,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { XCircle, Star } from "lucide-react";
 
-export default function ProductsTablePOS({ products }: { products: ProductsAPIResponse }) {
+export default function ProductsTablePOS({ products }: { products?: ProductsAPIResponse | null }) {
+
+    if (!products || products.products.length === 0) {
+        return (
+            <div className="text-center py-12">
+                <p className="text-gray-500 text-sm">No se encontraron productos.</p>
+            </div>
+        );
+    }
     return (
         <div className="overflow-x-auto text-sm">
             <table className="min-w-full divide-y divide-slate-200">
@@ -24,7 +32,7 @@ export default function ProductsTablePOS({ products }: { products: ProductsAPIRe
                             {/* Producto con imagen + nombre */}
                             <td className="px-4 py-3 whitespace-nowrap">
                                 <Link
-                                    href={`/admin/products/${product._id}`}
+                                    href={`/pos/productos/${product._id}`}
                                     className="flex items-center gap-3 text-slate-700 hover:text-blue-600 transition-colors"
                                 >
                                     <Image
@@ -51,8 +59,8 @@ export default function ProductsTablePOS({ products }: { products: ProductsAPIRe
                             <td className="px-4 py-2">
                                 <span
                                     className={`px-2 py-1 text-xs rounded-full ${product.stock ?? 0 > 0
-                                            ? "bg-emerald-100 text-emerald-700"
-                                            : "bg-rose-100 text-rose-700"
+                                        ? "bg-emerald-100 text-emerald-700"
+                                        : "bg-rose-100 text-rose-700"
                                         }`}
                                 >
                                     {product.stock}
