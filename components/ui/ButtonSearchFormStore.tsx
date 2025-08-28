@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { searchProductsIndex } from "@/actions/product/get-list-products-search";
 import type { TProductListSchema } from "@/src/schemas";
+import Image from "next/image";
 
 export default function ButtonSearchFormStore() {
 
@@ -48,7 +49,7 @@ export default function ButtonSearchFormStore() {
         const data = await searchProductsIndex(trimmed);
         setResults(data || []);
         setIsOpen(data && data.length > 0);
-    }, 600);
+    }, 400);
 
     // Ejecutar búsqueda al cambiar el query
     useEffect(() => {
@@ -111,14 +112,25 @@ export default function ButtonSearchFormStore() {
 
             {/* Desplegable de resultados */}
             {isOpen && results.length > 0 && (
-                <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-b-lg shadow-lg mt-1 max-h-48 overflow-y-auto">
+                <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-b-lg shadow-lg mt-1 max-h-60 overflow-y-auto">
                     {results.map((item) => (
                         <li
                             key={item._id}
-                            className="p-2 hover:bg-gray-100 cursor-pointer"
+                            className="flex items-center gap-3 p-2 hover:bg-gray-100 cursor-pointer"
                             onClick={() => handleSelectItem(item)}
                         >
-                            {item.nombre}
+                            {item.imagenes && item.imagenes.length > 0 ? (
+                                <Image
+                                    src={item.imagenes[0]}
+                                    alt={item.nombre}
+                                    width={50}
+                                    height={50}
+                                    className="object-cover rounded-md"
+                                />
+                            ) : (
+                                <div className="w-12 h-12 bg-gray-200 animate-pulse rounded-md" />
+                            )}
+                            <span className="text-gray-700 text-sm truncate">{item.nombre}</span>
                         </li>
                     ))}
                 </ul>
