@@ -1,7 +1,7 @@
+// ProductResults.tsx
 import { getProductsByFilter } from "@/src/services/products";
 import ProductosList from "./ProductsList";
 import Pagination from "../Pagination";
-
 
 type ProductResultsProps = {
     category?: string;
@@ -12,10 +12,18 @@ type ProductResultsProps = {
     query?: string;
 };
 
-export default async function ProductResults({ category, priceRange, page, limit = 10, sort, query }: ProductResultsProps) {
+export default async function ProductResults({
+    category,
+    priceRange,
+    page,
+    limit = 10,
+    sort,
+    query,
+}: ProductResultsProps) {
+    const currentPage = page ? parseInt(page) : 1;
 
     const products = await getProductsByFilter({
-        page: page ? parseInt(page) : 1,
+        page: currentPage,
         limit,
         category: category || "",
         priceRange: priceRange || "",
@@ -38,13 +46,14 @@ export default async function ProductResults({ category, priceRange, page, limit
                 currentPage={products.currentPage}
                 totalPages={products.totalPages}
                 limit={limit}
-                pathname="/productos"
+                pathname="/productos" // solo la ruta
                 queryParams={{
                     category,
                     priceRange,
                     sort,
+                    query,
                 }}
             />
         </>
-    )
+    );
 }

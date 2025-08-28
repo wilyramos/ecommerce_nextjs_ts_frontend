@@ -24,7 +24,7 @@ export default async function pageProductosPOS({ searchParams }: { searchParams:
         query: params.query,
     });
 
-   
+
 
     return (
 
@@ -38,7 +38,7 @@ export default async function pageProductosPOS({ searchParams }: { searchParams:
                     currentPage={currentPage}
                     totalPages={productsData?.totalPages ?? 1}
                     limit={itemsPerPage}
-                    pathname="/pos/productos"
+                    pathname={`/pos/productos?page=${currentPage}&limit=${itemsPerPage}`}
                 />
             </div>
         </>

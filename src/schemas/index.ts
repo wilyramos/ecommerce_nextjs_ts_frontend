@@ -266,6 +266,18 @@ export const ApiProductSchema = productBaseSchema
         __v: z.number().optional(),
     });
 
+
+// Product response in list only name hacer un pick
+
+export const ProductListSchema = ApiProductSchema.pick({
+    _id: true,
+    nombre: true,
+    slug: true,
+});
+
+export const ProductsListSchema = z.array(ProductListSchema);
+export type TProductListSchema = z.infer<typeof ProductListSchema>;
+
 export const apiProductListSchema = z.array(ApiProductSchema);
 export const productsAPIResponse = z.object({
     products: z.array(ApiProductSchema),

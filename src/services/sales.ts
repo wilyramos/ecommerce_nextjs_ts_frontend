@@ -1,3 +1,5 @@
+import "server-only";
+
 
 import getToken from "../auth/token";
 import { SaleResponsePopulate, SalesAPIResponse } from "@/src/schemas";
