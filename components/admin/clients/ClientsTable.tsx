@@ -5,9 +5,7 @@ import {
     Table,
     TableHeader,
     TableBody,
-    TableRow,
-    TableHead,
-    TableCell,
+    TableRow, TableCell
 } from "@/components/ui/table";
 
 type Props = {

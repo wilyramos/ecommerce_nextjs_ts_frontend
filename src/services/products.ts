@@ -160,7 +160,7 @@ export const getProductList = async ({ q }: GetProductListParams) => {
     }
 };
 
-export const getNewProducts = cache(async () => {
+export const getNewProducts = (async () => {
     const url = `${process.env.API_URL}/products/new`;
 
     const req = await fetch(url, {
