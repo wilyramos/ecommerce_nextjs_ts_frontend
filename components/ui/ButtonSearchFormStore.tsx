@@ -112,7 +112,7 @@ export default function ButtonSearchFormStore() {
 
             {/* Desplegable de resultados */}
             {isOpen && results.length > 0 && (
-                <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-b-lg shadow-lg mt-1 max-h-60 overflow-y-auto">
+                <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-b-lg shadow-lg mt-1 max-h-max overflow-y-auto">
                     {results.map((item) => (
                         <li
                             key={item._id}
