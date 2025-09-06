@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
         'Encuentra lo mejor en tecnología y celulares en GoPhone.';
     const categoryName = product.categoria?.nombre || 'General';
     const image = product.imagenes?.[0] || 'https://www.gophone.pe/logob.svg';
-    const url = `https://www.gophone.pe/productos/${slug}`;
+    const url = `https://www.gophone.pe/productos/${product.slug}`;
 
     return {
         title,
@@ -81,8 +81,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
         other: {
             "product:category": categoryName,
             "product:availability": (product?.stock ?? 0) > 0 ? "in stock" : "out of stock",
-            "product:price:amount": product?.precio?.toString() || "",
+            "product:price:amount": product?.precio ? product.precio.toFixed(2) : "",
             "product:price:currency": "PEN",
+
         }
     }
 }

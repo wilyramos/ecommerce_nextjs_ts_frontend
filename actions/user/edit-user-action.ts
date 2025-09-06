@@ -3,7 +3,6 @@
 import getToken from "@/src/auth/token"
 // import { ErrorResponse } from "@/src/schemas" // TODO
 import { revalidatePath } from "next/cache"
-import type { Variant } from "@/src/schemas"
 import { UserEditSchema } from "@/src/schemas"
 
 
