@@ -272,6 +272,7 @@ export const ApiProductSchema = productBaseSchema
 export const ProductListSchema = ApiProductSchema.pick({
     _id: true,
     nombre: true,
+    precio: true,
     slug: true,
     imagenes: true,
 });

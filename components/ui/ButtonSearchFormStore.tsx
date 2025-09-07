@@ -10,28 +10,6 @@ import Image from "next/image";
 
 export default function ButtonSearchFormStore() {
 
-    // Para manejar la búsqueda de productos sin desplegable
-    /** const router = useRouter();
-    const [query, setQuery] = useState('');
-
-    useEffect(() => {
-        // Leer el valor actual del parámetro "query" del URL en el cliente
-        const params = new URLSearchParams(window.location.search);
-        const currentQuery = params.get('query') || '';
-        setQuery(currentQuery);
-    }, []);
-
-    // Buscar productos dando click
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const trimmed = query.trim();
-        if (trimmed) {
-            router.push(`/productos?query=${encodeURIComponent(trimmed)}`);
-        } else {
-            router.push('/productos');
-        }
-    };
- */
     const router = useRouter();
     const [query, setQuery] = useState("");
     const [results, setResults] = useState<TProductListSchema[]>([]);
@@ -120,19 +98,25 @@ export default function ButtonSearchFormStore() {
                             onClick={() => handleSelectItem(item)}
                         >
                             {item.imagenes && item.imagenes.length > 0 ? (
-                                <Image
-                                    src={item.imagenes[0]}
-                                    alt={item.nombre}
-                                    width={50}
-                                    height={50}
-                                    className="object-cover rounded-md"
-                                    loading="lazy"
-                                    quality={10}
-                                />
+                                <div className="w-16 h-16 flex-shrink-0">
+                                    <Image
+                                        src={item.imagenes[0]}
+                                        alt={item.nombre}
+                                        width={64}
+                                        height={64}
+                                        className="w-full h-full object-cover rounded-md"
+                                        loading="lazy"
+                                        quality={20}
+                                    />
+                                </div>
                             ) : (
-                                <div className="w-12 h-12 bg-gray-200 animate-pulse rounded-md" />
+                                <div className="w-16 h-16 bg-gray-200 animate-pulse rounded-md" />
                             )}
-                            <span className="text-gray-700 text-sm truncate">{item.nombre}</span>
+
+                            <div className="flex flex-col">
+                                <span className="text-gray-700 text truncate">{item.nombre}</span>
+                                <span className="text-black font-bold truncate">s/.{item.precio}</span>
+                            </div>
                         </li>
                     ))}
                 </ul>
