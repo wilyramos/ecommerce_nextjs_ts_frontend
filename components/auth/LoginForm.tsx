@@ -56,7 +56,6 @@ export default function LoginForm() {
                     onError={() => toast.error("Error al iniciar sesión con Google")}
                     size="large"
                     shape="circle"
-                    width={300}
                 />
             </div>
 
@@ -108,7 +107,7 @@ export default function LoginForm() {
 
                 <button
                     type="submit"
-                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-full transition-colors cursor-pointer mt-2"
+                    className="w-full bg-black hover:bg-gray-700 text-white font-semibold py-2 rounded transition-colors cursor-pointer mt-2"
                     disabled={isPending}
                 >
                     Iniciar Sesión

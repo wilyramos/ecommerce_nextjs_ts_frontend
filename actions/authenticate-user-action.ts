@@ -57,12 +57,12 @@ export async function authenticateUserAction(prevState: ActionStateType, formDat
     console.log(successResponse);
     (await cookies()).set({
         name: 'ecommerce-token',
-        value: token,    
+        value: token,
         path: '/',
         httpOnly: true,
         sameSite: 'lax', // Protect against CSRF basic
         secure: process.env.NODE_ENV === 'production',
-        maxAge: 60*60*24*30 // 30 días
+        maxAge: 60 * 60 * 24 * 30 // 30 días
     })
 
 
@@ -74,5 +74,4 @@ export async function authenticateUserAction(prevState: ActionStateType, formDat
     }
 
     redirect(redirectTo);
-
 }

@@ -90,15 +90,16 @@ export default function ButtonSearchFormStore() {
 
             {/* Desplegable de resultados */}
             {isOpen && results.length > 0 && (
-                <ul className="absolute z-10 w-full bg-white border border-gray-300 rounded-b-lg shadow-lg mt-1 max-h-max overflow-y-auto">
+                <ul className="absolute z-10 w-full bg-white border border-gray-200 rounded-xl shadow-lg mt-2 max-h-screen overflow-y-auto">
                     {results.map((item) => (
                         <li
                             key={item._id}
-                            className="flex items-center gap-3 p-2 hover:bg-gray-100 cursor-pointer"
+                            className="flex items-center gap-3 p-2 sm:p-3 hover:bg-gray-50 cursor-pointer transition"
                             onClick={() => handleSelectItem(item)}
                         >
+                            {/* Imagen del producto */}
                             {item.imagenes && item.imagenes.length > 0 ? (
-                                <div className="w-16 h-16 flex-shrink-0">
+                                <div className="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0">
                                     <Image
                                         src={item.imagenes[0]}
                                         alt={item.nombre}
@@ -106,16 +107,21 @@ export default function ButtonSearchFormStore() {
                                         height={64}
                                         className="w-full h-full object-cover rounded-md"
                                         loading="lazy"
-                                        quality={20}
+                                        quality={50}
                                     />
                                 </div>
                             ) : (
-                                <div className="w-16 h-16 bg-gray-200 animate-pulse rounded-md" />
+                                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gray-200 animate-pulse rounded" />
                             )}
 
-                            <div className="flex flex-col">
-                                <span className="text-gray-700 text truncate">{item.nombre}</span>
-                                <span className="text-black font-bold truncate">s/.{item.precio}</span>
+                            {/* Información del producto */}
+                            <div className="flex flex-col flex-1 min-w-0">
+                                <span className="text-gray-800 text-sm sm:text-base font-medium truncate">
+                                    {item.nombre}
+                                </span>
+                                <span className="text-gray-500 font-bold text-xs sm:text-base">
+                                    s/. <span className="text-black">{item.precio?.toFixed(2)}</span>
+                                </span>
                             </div>
                         </li>
                     ))}

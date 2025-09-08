@@ -27,7 +27,7 @@ export default function Footer() {
                 {/* Branding */}
                 <div>
                     <div className="flex items-center gap-2 mb-4">
-                        
+
                         <h3 className="font-bold text-2xl text-white"> GOPHONE Cañete</h3>
                     </div>
                     <p className="text-gray-400 leading-relaxed text-sm">
@@ -107,8 +107,12 @@ export default function Footer() {
             </div>
 
             {/* Footer bottom */}
-            <div className="border-t border-gray-700 text-center py-5 text-xs text-gray-500">
-                © {new Date().getFullYear()} Gophone. Todos los derechos reservados.
+            <div className="border-t border-gray-700 text-center py-4 px-6 text-xs text-gray-500">
+                © {new Date().getFullYear()} <span className="font-semibold">Gophone</span>.
+                Todos los derechos reservados · Desarrollado por{" "}
+                <span className="text-gray-500 font-medium  transition">
+                    WILY RAMOS
+                </span>
             </div>
         </footer>
     );
