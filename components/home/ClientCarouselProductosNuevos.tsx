@@ -27,7 +27,7 @@ export default function ClientCarouselProductosNuevos({ products, items }: Props
                 autoPlaySpeed={3000}
                 pauseOnHover
                 arrows={false}
-                showDots={false}
+                showDots={true}
                 containerClass="gap-4"
                 itemClass="px-2"
             >

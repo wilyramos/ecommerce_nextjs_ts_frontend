@@ -13,16 +13,10 @@ export default async function ProductosNuevos() {
     }
 
     return (
-        <section className="py-4">
-            <div className="max-w-7xl mx-auto p-4 shadow rounded-xl bg-white">
-                <div className=" mb-2">
-                    <h2 className="text-xl font-bold text-black">
-                        Productos Nuevos
-                    </h2>
-                    <div className="w-40 h-1 bg-black mx-auto" />
-                </div>
-
-                <ClientCarouselProductosNuevos products={newProducts.products} items={5}/>
+        <section className="">
+            <div className="max-w-7xl mx-auto p-4 ">
+                <h2 className="text-2xl font-semibold mb-4">Productos Nuevos</h2>
+                <ClientCarouselProductosNuevos products={newProducts.products} items={4}/>
             </div>
         </section>
     );
