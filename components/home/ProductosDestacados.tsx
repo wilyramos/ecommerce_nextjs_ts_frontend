@@ -15,17 +15,17 @@ export default async function ProductosDestacados() {
     }
 
     return (
-        <section className="max-w-7xl mx-auto py-8 px-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+        <section className=" mx-auto py-8 px-4 bg-black">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center max-w-7xl mx-auto">
                 {/* Texto arriba en mobile, derecha en desktop */}
                 <header className="order-1 md:order-2 space-y-3 text-center md:text-left">
-                    <h2 className="text-2xl  font-semibold text-black">
+                    <h2 className="text-2xl  font-semibold text-gray-200">
                         Lo mejor de{" "}
                         <span className="text-white bg-gray-950 px-2">
                             GoPhone
                         </span>
                     </h2>
-                    <p className="text-sm md:text-base text-gray-700">
+                    <p className="text-sm md:text-base text-gray-400">
                         Nuestros productos más populares y recomendados.
                     </p>
                 </header>

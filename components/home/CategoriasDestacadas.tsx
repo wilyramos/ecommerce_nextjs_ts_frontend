@@ -53,15 +53,17 @@ export default function CategoriasDestacadas({
                             href={`/categoria/${categoria.slug}`}
                             className=" transition p-2 flex flex-col items-center text-center group/item"
                         >
-                            <Image
+                            <div className="border-2 p-2 rounded-full border-black/10 shadow-xs mb-2">
+                                <Image
                                 src={
                                     ImagenesPorCategoria[categoria.slug || ""] || "/logob.svg"
                                 }
                                 alt={categoria.nombre}
                                 width={90}
                                 height={90}
-                                className="mb-2 object-contain transition-transform duration-800 group-hover/item:scale-120 border rounded-full border-black/10 shadow-xs"
+                                className="object-contain transition-transform duration-500 group-hover/item:scale-110"
                             />
+                            </div>
                             <p className="font-medium">
                                 {categoria.nombre}
                             </p>

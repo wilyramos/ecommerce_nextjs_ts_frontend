@@ -21,16 +21,15 @@ export default function Footer() {
     ];
 
     return (
-        <footer className="bg-black text-gray-100 text-sm">
+        <footer className="bg-gray-100 text-gray-700 text-sm">
             {/* Contenido principal */}
             <div className="max-w-7xl mx-auto px-6 py-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
                 {/* Branding */}
                 <div>
                     <div className="flex items-center gap-2 mb-4">
-
-                        <h3 className="font-bold text-2xl text-white"> GOPHONE Cañete</h3>
+                        <h3 className="font-bold text-2xl text-gray-900">GOPHONE Cañete</h3>
                     </div>
-                    <p className="text-gray-400 leading-relaxed text-sm">
+                    <p className="text-gray-600 leading-relaxed text-sm">
                         Tecnología móvil, accesorios originales y atención personalizada.
                         <br />
                         Jr. O Higgins 120, San Vicente de Cañete.
@@ -39,7 +38,7 @@ export default function Footer() {
 
                 {/* Navegación */}
                 <nav>
-                    <h3 className="mb-4 font-semibold text-white text-lg relative after:block after:w-8 after:h-1 after:bg-indigo-500 after:mt-1">
+                    <h3 className="mb-4 font-semibold text-gray-900 text-lg relative after:block after:w-8 after:h-1 after:bg-indigo-500 after:mt-1">
                         Explora
                     </h3>
                     <ul className="space-y-2">
@@ -47,7 +46,7 @@ export default function Footer() {
                             <li key={href}>
                                 <Link
                                     href={href}
-                                    className="hover:text-indigo-400 transition-colors duration-200"
+                                    className="hover:text-indigo-500 transition-colors duration-200"
                                 >
                                     {label}
                                 </Link>
@@ -58,15 +57,15 @@ export default function Footer() {
 
                 {/* Contacto */}
                 <div>
-                    <h3 className="mb-4 font-semibold text-white text-lg relative after:block after:w-8 after:h-1 after:bg-indigo-500 after:mt-1">
+                    <h3 className="mb-4 font-semibold text-gray-900 text-lg relative after:block after:w-8 after:h-1 after:bg-indigo-500 after:mt-1">
                         Contacto
                     </h3>
-                    <ul className="space-y-2 text-gray-400">
+                    <ul className="space-y-2 text-gray-600">
                         <li>
                             Tel:{" "}
                             <a
                                 href="tel:+51907103353"
-                                className="hover:text-indigo-400 transition-colors duration-200"
+                                className="hover:text-indigo-500 transition-colors duration-200"
                             >
                                 +51 907 103 353
                             </a>
@@ -75,7 +74,7 @@ export default function Footer() {
                             Email:{" "}
                             <a
                                 href="mailto:ventas@gophone.pe"
-                                className="hover:text-indigo-400 transition-colors duration-200"
+                                className="hover:text-indigo-500 transition-colors duration-200"
                             >
                                 ventas@gophone.pe
                             </a>
@@ -86,7 +85,7 @@ export default function Footer() {
 
                 {/* Redes sociales */}
                 <div>
-                    <h3 className="mb-4 font-semibold text-white text-lg relative after:block after:w-8 after:h-1 after:bg-indigo-500 after:mt-1">
+                    <h3 className="mb-4 font-semibold text-gray-900 text-lg relative after:block after:w-8 after:h-1 after:bg-indigo-500 after:mt-1">
                         Síguenos
                     </h3>
                     <div className="flex gap-4">
@@ -97,7 +96,7 @@ export default function Footer() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label={name}
-                                className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-800 hover:bg-indigo-500 text-white transition-colors duration-300 shadow-lg hover:shadow-indigo-500/30"
+                                className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-indigo-500 text-gray-700 hover:text-white transition-colors duration-300 shadow-sm hover:shadow-indigo-200"
                             >
                                 {icon}
                             </a>
@@ -107,12 +106,10 @@ export default function Footer() {
             </div>
 
             {/* Footer bottom */}
-            <div className="border-t border-gray-700 text-center py-4 px-6 text-xs text-gray-500">
-                © {new Date().getFullYear()} <span className="font-semibold">Gophone</span>.
-                Todos los derechos reservados · Desarrollado por{" "}
-                <span className="text-gray-500 font-medium  transition">
-                    WILY RAMOS
-                </span>
+            <div className="border-t border-gray-300 text-center py-4 px-6 text-xs text-gray-500">
+                © {new Date().getFullYear()} <span className="font-semibold text-gray-700">Gophone</span>.
+                Todos los derechos reservados · developed by{" "}
+                <span className="text-gray-700 font-semibold">Wily Ramos</span>
             </div>
         </footer>
     );

@@ -13,7 +13,7 @@ export default function ProductCard({ product }: { product: Product }) {
                 {/* Imagen */}
                 <div className="relative w-full aspect-square bg-white overflow-hidden rounded-t">
                     {product.imagenes.length > 0 ? (
-                        <div className="relative w-full h-full group-hover:opacity-90 transition-opacity duration-300">
+                        <div className="relative w-full h-full">
                             <Image
                                 src={product.imagenes[0]}
                                 alt={product.nombre}
@@ -41,16 +41,16 @@ export default function ProductCard({ product }: { product: Product }) {
                     )}
 
                     {/* Etiquetas */}
-                    {(product.esNuevo || product.esDestacado) && (
-                        <div className="absolute top-5 left-1 right-1 flex justify-between px-2 pointer-events-none text-[14px] font-bold">
+                   {(product.esNuevo || product.esDestacado) && (
+                        <div className="absolute top-4 left-2 right-2 flex justify-between text-[13px] font-semibold">
                             {product.esNuevo && (
-                                <span className="px-1.5 border-2 border-red-500 bg-red-500 rotate-315 text-white text-xs">
+                                <span className="px-2 py-0.5 bg-red-500 text-white rounded text-xs shadow-sm">
                                     Nuevo
                                 </span>
                             )}
                             {product.esDestacado && (
-                                <span className="px-1.5 text-orange-500 flex items-center">
-                                    <FaFireAlt className="inline-block mr-1" />
+                                <span className="px-2 py-0.5 bg-yellow-400 text-white rounded text-xs shadow-sm flex items-center gap-1">
+                                    <FaFireAlt />
                                 </span>
                             )}
                         </div>
@@ -59,12 +59,12 @@ export default function ProductCard({ product }: { product: Product }) {
 
                 {/* Info */}
                 <div className="flex flex-col justify-between flex-1 p-3 gap-2">
-                    <h3 className="text-xs md:text-base line-clamp-3 leading-tight text-gray-800">
+                    <h3 className="text-sm md:text-base font-medium text-gray-800 line-clamp-3 leading-tight">
                         {product.nombre}
                     </h3>
-                    <div className="flex items-center gap-2 text-md font-base text-gray-700">
+                    <div className="flex items-center gap-2 mt-auto">
                         {color && <ColorCircle color={color} />}
-                        <div className="ml-auto font-bold">
+                        <div className="ml-auto font-semibold">
                             <span className="">s/ </span>
                             {product.precio.toFixed(2)}
                         </div>
