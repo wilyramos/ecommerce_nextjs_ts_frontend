@@ -14,11 +14,11 @@ export default async function ProductosRelated({ slug }: { slug: string }) {
     }
 
     return (
-        <section className="my-8 flex flex-col  mx-auto">
-            <h2 className="text-xl font-semibold ">
+        <section className="my-8 flex flex-col  mx-auto ">
+            <h2 className="text-xl font-bold">
                 PRODUCTOS RELACIONADOS
             </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3 text-start">
                 {productsRelated.map((product: Product) => (
                     <ProductCard key={product._id} product={product} />
                 ))}
