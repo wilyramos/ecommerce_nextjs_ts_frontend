@@ -230,9 +230,10 @@ export const getProductsByAdmin = async (
         return null;
     }
 
+
     const json = await req.json();
+
+    console.log(json);
     const products = productsAPIResponse.parse(json);
-    console.log("Products by admin:", products);
     return products;
 }
-

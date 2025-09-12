@@ -5,9 +5,8 @@ import ColorCircle from '@/components/ui/ColorCircle';
 import ImagenesProductoCarousel from './ImagenesProductoCarousel';
 import type { ProductWithCategoryResponse } from '@/src/schemas';
 import ShopNowButton from './ShopNowButton';
-import { useState } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Truck, ShieldCheck } from "lucide-react";
+import ProductExpandableSections from './ProductExpandableSections ';
 
 
 type Props = {
@@ -16,7 +15,6 @@ type Props = {
 
 export default function ProductDetails({ producto }: Props) {
     const color = producto.atributos?.Color || producto.atributos?.color || producto.atributos?.COLOR || null;
-    const [showDescripcion, setShowDescripcion] = useState(false);
 
     return (
         <>
@@ -143,31 +141,9 @@ export default function ProductDetails({ producto }: Props) {
 
             </article>
 
-            {producto.descripcion && (
-                <section className="mx-auto py-2 bg-white rounded-lg p-6" aria-labelledby="descripcion-adicional">
-                    <button
-                        onClick={() => setShowDescripcion(!showDescripcion)}
-                        className="w-full flex justify-between items-center text-left text-xl text-gray-700 font-medium hover:text-black transition pt-4 cursor-pointer"
-                    >
-                        <span id="descripcion-adicional" className='text-gray-700 font-semibold'>Información adicional</span>
-                        {showDescripcion ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-                    </button>
-                    <div className="border-b border-gray-200 my-2" />
-
-                    <div
-                        className={`transition-all overflow-hidden text-gray-700 whitespace-pre-wrap duration-300 ease-in-out 
-                ${showDescripcion ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}
-            `}
-                    >
-                        <p
-                            itemProp="description"
-                            className="leading-normal px-1 py-2 text-sm md:text-base break-words"
-                        >
-                            {producto.descripcion}
-                        </p>
-                    </div>
-                </section>
-            )}
+            <section className="mx-auto mt-6">
+                <ProductExpandableSections producto={producto} />
+            </section>
 
 
             {/* Espaciador mobile */}

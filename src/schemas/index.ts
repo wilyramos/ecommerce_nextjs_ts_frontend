@@ -223,12 +223,17 @@ export type CategoryListResponse = z.infer<typeof apiCategoryListSchema>;
 
 const atributosSchema = z.record(z.string(), z.string());
 
+export const especificacionSchema = z.object({
+    key: z.string().min(1),
+    value: z.string().min(1),
+});
+
+export type TEspecificacion = z.infer<typeof especificacionSchema>;
+
 export const productBaseSchema = z.object({
     nombre: z.string().min(1, 'El nombre es obligatorio'),
     slug: z.string().optional(),
     descripcion: z.string().optional(),
-    especificaciones: z.record(z.string(), z.string()).optional(),
-    recomendaciones: z.string().optional(), // TODO:
     precio: z.number().min(0, 'El precio no puede ser negativo').optional(),
     costo: z.number().min(0, 'El costo no puede ser negativo').optional(),
     imagenes: z.array(z.string().url('Debe ser una URL válida')).optional(),
@@ -240,6 +245,9 @@ export const productBaseSchema = z.object({
     esDestacado: z.boolean().optional().default(false),
     esNuevo: z.boolean().optional().default(false),
     atributos: atributosSchema.optional(),
+    especificaciones: z.array(especificacionSchema).optional(),
+    brand: z.string().trim().optional(), //TODO: añadir brand al producto
+
 });
 
 // Create product
@@ -1009,7 +1017,7 @@ export type TOrdersByCity = z.infer<typeof OrdersByCitySchema>;
 
 //  ***** Purchases  *****
 
-export const  ProductForPurchasesOrderSchema = z.object({
+export const ProductForPurchasesOrderSchema = z.object({
     _id: z.string(),
     nombre: z.string().optional(),
     sku: z.string().optional(),

@@ -9,9 +9,6 @@ export default function ProductSwitches({ product }: { product?: ProductWithCate
     const [esDestacado, setEsDestacado] = useState(product?.esDestacado ?? false)
     const [esNuevo, setEsNuevo] = useState(product?.esNuevo ?? false)
 
-
-    console.log("ProductSwitches", { isActive, esDestacado, esNuevo })
-
     return (
         <div className="space-y-4 border-l-2 bg-white p-6 text-xs font-semibold">
             <div className="flex items-center justify-between">

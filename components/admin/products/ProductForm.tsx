@@ -3,6 +3,7 @@ import type { CategoryListResponse } from "@/src/schemas";
 import UploadProductImage from "./UploadProductImage";
 import ClientCategoryAttributes from "./ClientCategoryAttributes"
 import ProductSwitches from "./ProductSwitches";
+import SpecificationsSection from "./SpecificationsSection";
 
 
 export default function ProductForm({ product, categorias }: { product?: ProductWithCategoryResponse, categorias: CategoryListResponse }) {
@@ -97,6 +98,8 @@ export default function ProductForm({ product, categorias }: { product?: Product
                 <UploadProductImage
                     CurrentImagenes={product?.imagenes}
                 />
+
+                <SpecificationsSection initial={product?.especificaciones} />
 
             </div>
             <div className="">

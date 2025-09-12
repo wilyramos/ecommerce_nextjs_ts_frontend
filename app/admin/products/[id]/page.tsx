@@ -3,6 +3,7 @@ import { getCategories } from "@/src/services/categorys";
 import EditProductForm from "@/components/admin/products/EditProductForm";
 import DeleteProductButton from "@/components/admin/products/DeleteProductButton";
 import Link from "next/link";
+import BackButton from "../../../../components/ui/BackButton";
 // import EditStatusProductButton from "@/components/admin/products/EditStatusProductButton";
 
 type Params = Promise<{
@@ -34,12 +35,7 @@ export default async function ProductDetailsPage({ params }: { params: Params })
             <div className="flex flex-col md:flex-row justify-between items-center border-b pb-4 gap-2">
                 <h1 className="text-xl font-semibold text-gray-800">{product.nombre}</h1>
                 <div className="flex gap-2">
-                    <Link
-                        href="/admin/products"
-                        className="bg-gray-700 hover:bg-gray-900 text-white px-3 py-1 rounded text-sm"
-                    >
-                        Volver
-                    </Link>
+                    <BackButton />
                     <DeleteProductButton productId={product._id} />
                     {/* <EditStatusProductButton productId={product._id} isActive={product.isActive} /> */}
                 </div>

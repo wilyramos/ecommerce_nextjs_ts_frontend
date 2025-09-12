@@ -49,7 +49,7 @@ export default function ProductCard({ product }: { product: Product }) {
                                 </span>
                             )}
                             {product.esDestacado && (
-                                <span className="px-2 py-0.5 bg-yellow-400 text-white rounded text-xs shadow-sm flex items-center gap-1">
+                                <span className=" text-orange-500 rounded text-xs flex items-center gap-1">
                                     <FaFireAlt />
                                 </span>
                             )}

@@ -4,7 +4,7 @@ import { useActionState, useEffect } from 'react'
 import ProductForm from './ProductForm'
 import { useRouter } from 'next/navigation'
 import { createProduct } from '@/actions/product/add-product-action'
-import { toast } from 'react-toastify'
+import { toast } from 'sonner'
 import type { CategoryListResponse } from '@/src/schemas'
 
 export default function CreateProductForm({ categorias }: { categorias: CategoryListResponse }) {

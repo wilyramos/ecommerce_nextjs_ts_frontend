@@ -1,12 +1,11 @@
 "use server"
 
 import getToken from "@/src/auth/token"
-import { CreateProductSchema, SuccessResponse } from "@/src/schemas"
+import { SuccessResponse } from "@/src/schemas"
 
 // Nuevo
-import { createProductSchema } from "@/src/schemas"
-import { isAborted } from "zod"
-
+import { createProductSchema, especificacionSchema } from "@/src/schemas"
+import type { TEspecificacion } from "@/src/schemas"
 
 type ActionStateType = {
     errors: string[],
@@ -31,6 +30,22 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         }
     }
 
+    // validaor las specificaciones del formulario
+    const especificacionesString = formData.get('especificaciones') as string;
+    let especificaciones: TEspecificacion[] = [];
+    if (especificacionesString) {
+        try {
+            const parsed = JSON.parse(especificacionesString);
+            especificaciones = especificacionSchema.array().parse(parsed);
+        } catch (error) {
+            console.error("Error parsing especificaciones:", error);
+            return {
+                errors: ["Las especificaciones son inválidas."],
+                success: ""
+            }
+        }
+    }
+
     // console.log("atributos", atributos)
 
     const productData = {
@@ -46,7 +61,8 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         esDestacado: formData.get('esDestacado') === 'true',
         esNuevo: formData.get('esNuevo') === 'true',
         isActive: formData.get('isActive') === 'true',
-        atributos: atributos
+        atributos: atributos,
+        especificaciones: especificaciones
     }
 
 
