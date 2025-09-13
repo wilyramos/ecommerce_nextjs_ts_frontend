@@ -1,25 +1,23 @@
-'use client';
+"use client";
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
-import { useDebouncedCallback } from 'use-debounce';
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 
 export default function ProductSearchInput() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const pathname = usePathname();
 
-    const [query, setQuery] = useState(() => searchParams.get('query') || '');
+    const [query, setQuery] = useState(() => searchParams.get("query") || "");
 
     const handleSearch = useDebouncedCallback((value: string) => {
         const params = new URLSearchParams();
-
         if (value.trim()) {
-            params.set('query', value);
+            params.set("query", value);
         } else {
-            params.delete('query');
+            params.delete("query");
         }
-
         router.push(`${pathname}?${params.toString()}`);
     }, 500);
 
@@ -35,7 +33,7 @@ export default function ProductSearchInput() {
             value={query}
             onChange={onChange}
             placeholder="Buscar productos..."
-            className="w-full max-w-md px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-700 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+            className="w-full max-w-md px-3 py-2 rounded-lg border border-gray-300 bg-white text-sm text-gray-600 placeholder-gray-600 focus:border-black focus:ring-1 focus:ring-black outline-none transition"
         />
     );
 }

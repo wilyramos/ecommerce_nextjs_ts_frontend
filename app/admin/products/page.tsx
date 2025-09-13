@@ -15,15 +15,19 @@ type SearchParams = Promise<{
     query?: string;
 }>;
 
-export default async function ProductsPage({ searchParams }: { searchParams: SearchParams }) {
+export default async function ProductsPage({
+    searchParams,
+}: {
+    searchParams: SearchParams;
+}) {
     const params = await searchParams;
     const currentPage = Number(params.page) || 1;
     const itemsPerPage = Number(params.limit) || 10;
 
     return (
-        <main className="p-4">
+        <main>
             {/* Encabezado */}
-            <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-gray-200 pb-3">
+            <header className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between border-b border-gray-200 pb-3">
                 <HeadingH1>Productos</HeadingH1>
                 <div className="flex items-center gap-3">
                     <ProductSearchInput />

@@ -18,7 +18,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
                 </aside>
 
                 {/* Contenido principal */}
-                <main className="flex-1 overflow-y-auto p-1 md:p-2 bg-white">
+                <main className="flex-1 overflow-y-auto p-1 md:p-2">
                     {children}
                 </main>
             </div>

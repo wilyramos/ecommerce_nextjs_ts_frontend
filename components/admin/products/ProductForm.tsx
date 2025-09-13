@@ -28,7 +28,7 @@ export default function ProductForm({ product, categorias }: { product?: Product
                     <textarea
                         id="descripcion"
                         name="descripcion"
-                        rows={4}
+                        rows={10}
                         className="w-full border border-gray-300 rounded-lg p-3 "
                         defaultValue={product?.descripcion}
                     />
