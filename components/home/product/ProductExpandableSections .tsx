@@ -11,6 +11,11 @@ import type { ProductWithCategoryResponse } from "@/src/schemas";
 type Props = { producto: ProductWithCategoryResponse };
 
 export default function ProductExpandableSections({ producto }: Props) {
+
+    if (!producto.descripcion && !producto.especificaciones?.length) {
+        return null;
+    }
+
     return (
         <Accordion
             type="multiple"

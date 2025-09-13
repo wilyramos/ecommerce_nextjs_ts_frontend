@@ -33,6 +33,7 @@ export default function ClientCarouselProductosNuevos({ products, items }: Props
                 itemClass="px-2"
                 customLeftArrow={<CarouselArrow direction="left" />}
                 customRightArrow={<CarouselArrow direction="right" />}
+    
             >
                 {products.map((product) => (
                     <ProductCard key={product._id} product={product} />

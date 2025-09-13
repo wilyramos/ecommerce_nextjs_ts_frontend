@@ -24,7 +24,6 @@ export default function NavBar() {
                 // Scroll hacia arriba → mostrar
                 setShow(true);
             }
-
             setLastScrollY(currentScrollY);
         };
 

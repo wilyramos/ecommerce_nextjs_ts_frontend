@@ -19,7 +19,7 @@ export default function ProductDetails({ producto }: Props) {
     return (
         <>
             <article
-                className="mx-auto grid gap-6 md:grid-cols-2 items-start max-w-7xl pb-4"
+                className="mx-auto grid gap-4 md:grid-cols-2 items-start max-w-7xl pb-4"
                 itemScope
                 itemType="https://schema.org/Product"
 
@@ -31,7 +31,7 @@ export default function ProductDetails({ producto }: Props) {
 
                 {/* Detalles */}
                 <div>
-                    <div className=" space-y-6 bg-white rounded-xl p-6 shadow-sm">
+                    <div className=" space-y-6 bg-white rounded-xl p-4 shadow-sm">
                         {/* Título y Precio */}
                         <header className="space-y-2">
                             <div className='flex justify-between uppercase'>
@@ -46,7 +46,7 @@ export default function ProductDetails({ producto }: Props) {
                                     </span>
                                 )}
                             </div>
-                            <h1 className="text-2xl md:text-4xl font-bold leading-tight break-words whitespace-normal " itemProp="name">
+                            <h1 className="text-lg md:text-2xl font-bold leading-tight break-words whitespace-normal " itemProp="name">
                                 {producto.nombre}
                             </h1>
 
@@ -123,7 +123,7 @@ export default function ProductDetails({ producto }: Props) {
                         </section>
                     </div>
 
-                    <div className="space-y-2 text-center items-center  mt-4">
+                    <div className="space-y-2 items-center  mt-4">
                         <div className="flex items-center gap-2 bg-white rounded-lg px-6 py-3 shadow-sm text-gray-600">
                             <Truck className="w-5 h-5 text-gray-600" />
                             <span className="text-sm">
@@ -132,7 +132,7 @@ export default function ProductDetails({ producto }: Props) {
 
                         <div className="flex items-center gap-2 bg-white rounded-lg px-6 py-3 shadow-sm text-gray-600">
                             <ShieldCheck className="w-5 h-5 text-gray-600" />
-                            <span className="text-sm">Compra segura</span>
+                            <span className="text-sm">Compra segura.</span>
                         </div>
                     </div>
 
@@ -141,7 +141,7 @@ export default function ProductDetails({ producto }: Props) {
 
             </article>
 
-            <section className="mx-auto mt-6">
+            <section className="mx-auto">
                 <ProductExpandableSections producto={producto} />
             </section>
 
