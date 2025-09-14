@@ -3,7 +3,6 @@ import { GetProductsBySlug } from '@/src/services/products';
 import ProductDetails from '@/components/home/product/ProductDetails';
 import ProductosRelated from '@/components/home/product/ProductosRelated';
 import Breadcrumb from '@/components/home/products/Breadcrumbs';
-import ProductJsonLd from '@/components/seo/ProductJsonLd';
 
 type Props = {
     slug: string;
@@ -24,7 +23,7 @@ export default async function ProductPageServer({ slug }: Props) {
 
     return (
         <>
-            <ProductJsonLd producto={producto} />
+            {/* <ProductJsonLd producto={producto} /> */}
 
             <h1 className="text-xl text-center my-6 hidden">
                 {producto.nombre}   

@@ -1,23 +1,21 @@
+//File: frontend/app/(store)/productos/[slug]/page.tsx
+
 import { GetProductsBySlug } from '@/src/services/products';
 import ProductPageServer from '@/components/home/product/ProductPageServer';
 import { Suspense } from 'react';
 import SpinnerLoading from '@/components/ui/SpinnerLoading';
 import type { Metadata } from "next";
+import { notFound } from 'next/navigation';
+import ProductJsonLd from '@/components/seo/ProductJsonLd';
 
-type Params = Promise<{
-    slug: string;
-}>;
+type Params = Promise<{ slug: string }>;
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
     const { slug } = await params;
     const product = await GetProductsBySlug(slug);
 
     if (!product) {
-        return {
-            title: 'Producto no encontrado - GoPhone',
-            description: 'El producto que buscas no está disponible.',
-            robots: { index: false, follow: false },
-        };
+        notFound();
     }
 
     const title = `${product.nombre} - GoPhone Cañete`;
@@ -90,9 +88,12 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
 export default async function pageProduct({ params }: { params: Params }) {
     const { slug } = await params;
+    const producto = await GetProductsBySlug(slug)
+
 
     return (
         <main className="px-4">
+            <ProductJsonLd producto={producto} />
             <Suspense fallback={<SpinnerLoading />}>
                 <ProductPageServer slug={slug} />
             </Suspense>

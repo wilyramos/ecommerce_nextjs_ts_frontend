@@ -5,7 +5,7 @@ import type { ProductWithCategoryResponse } from "@/src/schemas"
 export default function ProductJsonLd({ producto }: { producto: ProductWithCategoryResponse }) {
     if (!producto) return null
 
-    const firstImage = producto.imagenes?.[0] || 'https://www.gophone.pe/default-product.jpg'
+    const firstImage = producto.imagenes?.[0] || 'https://www.gophone.pe/logomini.svg'
     const url = `https://www.gophone.pe/product/${producto.slug}`
     const brand = producto.atributos?.Marca || 'GoPhone'
 
@@ -20,9 +20,10 @@ export default function ProductJsonLd({ producto }: { producto: ProductWithCateg
         '@context': 'https://schema.org',
         '@type': 'Product',
         name: producto.nombre,
-        image: firstImage,
-        description: producto.descripcion?.replace(/\r?\n|\r/g, ' ').trim() || "No description available",
-        category: producto.categoria?.nombre || 'General',
+        image: [firstImage],
+        description:
+            producto.descripcion?.replace(/\r?\n|\r/g, ' ').trim() ||
+            'No description available',        // category: producto.categoria?.nombre || 'General',
         sku: producto.sku?.replace(/[^a-zA-Z0-9_-]/g, ''),
         gtin13: producto.barcode,
         brand: {

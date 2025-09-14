@@ -2,12 +2,13 @@ import "server-only";
 
 
 import getToken from "../auth/token";
-import { apiProductListSchema, ProductsAPIResponse, productsSchema } from "@/src/schemas";
+import { apiProductListSchema, ProductsAPIResponse, productsSchema, productsResponseAllSchema } from "@/src/schemas";
 import { cache } from 'react';
 
 // new
 
 import { ApiProductWithCategorySchema, productsAPIResponse, productsWithCategoryAPIResponse } from "@/src/schemas";
+import { notFound } from "next/navigation";
 
 
 export const getProduct = async (id: string) => {
@@ -43,7 +44,7 @@ export const GetProductsBySlug = async (slug: string) => {
     });
 
     if (!req.ok) {
-        return null;
+        return notFound();
     }
 
     const json = await req.json();
@@ -236,4 +237,27 @@ export const getProductsByAdmin = async (
     console.log(json);
     const products = productsAPIResponse.parse(json);
     return products;
+}
+
+
+export const GetAllProductsSlug = async () => {
+    const token = getToken();
+    const url = `${process.env.API_URL}/products/all/slug`;
+    const req = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    if (!req.ok) {
+        return [];
+    }
+
+    const json = await req.json();
+    const parsed = productsResponseAllSchema.safeParse(json);
+    if (!parsed.success) {
+        console.error("Error validando productos:", parsed.error);
+        return [];
+    }
+    return parsed.data;
 }
