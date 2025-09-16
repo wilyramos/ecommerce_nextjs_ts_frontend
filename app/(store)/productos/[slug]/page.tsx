@@ -90,7 +90,7 @@ export default async function pageProduct({ params }: { params: Params }) {
     const { slug } = await params;
     const producto = await GetProductsBySlug(slug)
 
-
+    //TODO: mejorar el get del product
     return (
         <main className="px-4">
             <ProductJsonLd producto={producto} />

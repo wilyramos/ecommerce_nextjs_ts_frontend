@@ -40,6 +40,7 @@ const links: NavLink[] = [
     { href: "/admin/products/category", icon: Tag, label: "Categorías" },
     { href: "/admin/orders", icon: Receipt, label: "Órdenes" },
     { href: "/admin/reports", icon: BarChart3, label: "Reportes" },
+    { href: "/admin/brands", icon: Tag, label: "Marcas" },
     {
         icon: Users,
         label: "Usuarios",
