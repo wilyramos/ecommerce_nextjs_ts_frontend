@@ -4,6 +4,7 @@ import UploadProductImage from "./UploadProductImage";
 import ClientCategoryAttributes from "./ClientCategoryAttributes"
 import ProductSwitches from "./ProductSwitches";
 import SpecificationsSection from "./SpecificationsSection";
+import ProductDescriptionEditor from "./ProductDescriptionEditor";
 
 
 export default function ProductForm({ product, categorias }: { product?: ProductWithCategoryResponse, categorias: CategoryListResponse }) {
@@ -24,13 +25,9 @@ export default function ProductForm({ product, categorias }: { product?: Product
                 </div>
 
                 <div className="py-1">
-                    <label htmlFor="descripcion" className="block font-semibold text-gray-700">Descripción</label>
-                    <textarea
-                        id="descripcion"
-                        name="descripcion"
-                        rows={10}
-                        className="w-full border border-gray-300 rounded-lg p-3 "
-                        defaultValue={product?.descripcion}
+                    <label htmlFor="descripcion" className="block font-semibold text-gray-700 mb-1">Descripción</label>
+                    <ProductDescriptionEditor
+                        initialHTML={product?.descripcion || ""}
                     />
                 </div>
 

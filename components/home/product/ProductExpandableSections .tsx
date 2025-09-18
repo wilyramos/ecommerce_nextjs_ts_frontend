@@ -1,4 +1,4 @@
-'use client';
+"use client"
 
 import {
     Accordion,
@@ -26,8 +26,8 @@ export default function ProductExpandableSections({ producto }: Props) {
                     <AccordionTrigger className="font-semibold text-gray-800 hover:cursor-pointer hover:text-black text-base">
                         Descripción
                     </AccordionTrigger>
-                    <AccordionContent className="text-gray-700 whitespace-pre-line">
-                        {producto.descripcion}
+                    <AccordionContent className=" text-gray-700">
+                        <div dangerouslySetInnerHTML={{ __html: producto.descripcion }} />
                     </AccordionContent>
                 </AccordionItem>
             )}
@@ -38,7 +38,7 @@ export default function ProductExpandableSections({ producto }: Props) {
                         Especificaciones
                     </AccordionTrigger>
                     <AccordionContent>
-                        <table className="w-full text-sm ">
+                        <table className="w-full text-sm">
                             <tbody>
                                 {producto.especificaciones.map((spec) => (
                                     <tr key={spec.key} className="even:bg-gray-100 border-b">

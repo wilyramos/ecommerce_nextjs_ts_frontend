@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation';
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
     const { user } = await verifySession();
     if ( user.rol !== 'administrador' ) {
-        redirect("/pos");
+        redirect("/profile");
     }
 
     return (

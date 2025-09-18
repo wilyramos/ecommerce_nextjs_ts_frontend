@@ -113,7 +113,7 @@ export const searchProducts = async ({ query, page, limit }: {
     page?: number;
     limit?: number;
 }) => {
-    console.log("seeding")
+    // console.log("seeding")
     const url = `${process.env.API_URL}/products/search?query=${encodeURIComponent(query)}&page=${page}&limit=${limit}`;
     const req = await fetch(url, {
         method: 'GET'
@@ -165,7 +165,8 @@ export const getNewProducts = (async () => {
     const url = `${process.env.API_URL}/products/new`;
 
     const req = await fetch(url, {
-        method: 'GET'
+        method: 'GET',
+        next: { revalidate: 180 } // Revalida cada 3 minutos //TODO: Cambiar a 10 minutos
     });
 
     if (!req.ok) {
@@ -183,7 +184,8 @@ export const getDestacadosProducts = cache(async () => {
     const url = `${process.env.API_URL}/products/destacados/all`;
 
     const req = await fetch(url, {
-        method: 'GET'
+        method: 'GET',
+        next: { revalidate: 180 } // Revalida cada 3 minutos //TODO: Cambiar a "no-store"
     });
 
     if (!req.ok) {
@@ -234,7 +236,7 @@ export const getProductsByAdmin = async (
 
     const json = await req.json();
 
-    console.log(json);
+    // console.log(json);
     const products = productsAPIResponse.parse(json);
     return products;
 }
