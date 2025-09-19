@@ -3,6 +3,7 @@ import { getCategories } from "@/src/services/categorys";
 import Pagination from "@/components/ui/Pagination";
 import VisualCategoryView from "@/components/admin/category/VisualCategoryView";
 import { HeadingH1 } from "@/components/ui/Heading";
+import { Button } from "@/components/ui/button";
 
 
 export default async function CreatePageCategory() {
@@ -15,11 +16,10 @@ export default async function CreatePageCategory() {
             <div className="flex justify-between border-b-2 pb-4">
                 <HeadingH1>Categorías</HeadingH1>
 
-                <Link
-                    href="/admin/products/category/new"
-                    className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors"
-                >
-                    + Nueva Categoría
+                <Link href="/admin/products/category/new">
+                    <Button>
+                        Nueva categoría
+                    </Button>
                 </Link>
             </div>
 

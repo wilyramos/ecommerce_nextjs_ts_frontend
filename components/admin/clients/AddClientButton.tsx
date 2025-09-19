@@ -13,6 +13,7 @@ import {
 import { toast } from "sonner";
 import ErrorMessage from "@/components/ui/ErrorMessage";
 import { LuUserRoundPlus } from "react-icons/lu";
+import { Button } from "@/components/ui/button";
 
 
 export default function AddClientButton() {
@@ -33,10 +34,10 @@ export default function AddClientButton() {
     return (
         <Sheet>
             <SheetTrigger asChild>
-                <button className="rounded-2xl bg-blue-600 px-2 py-1 text-white hover:bg-blue-700 transition flex text-center items-center cursor-pointer">
-                    <LuUserRoundPlus className="mr-2" />
-                    <p className="hidden md:block">Agregar Cliente</p>
-                </button>
+                <Button className="flex items-center gap-2">
+                    <LuUserRoundPlus className="h-4 w-4" />
+                    <span>Nuevo</span>
+                </Button>
             </SheetTrigger>
 
             <SheetContent>

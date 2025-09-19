@@ -3,6 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
+import { Input } from "@/components/ui/input";
 
 export default function ProductSearchInput() {
     const router = useRouter();
@@ -28,12 +29,13 @@ export default function ProductSearchInput() {
     };
 
     return (
-        <input
-            type="text"
-            value={query}
-            onChange={onChange}
-            placeholder="Buscar productos..."
-            className="w-full max-w-md px-3 py-2 rounded-lg border border-gray-300 bg-white text-sm text-gray-600 placeholder-gray-600 focus:border-black focus:ring-1 focus:ring-black outline-none transition"
-        />
+        // <div className="relative">
+            <Input
+                type="text"
+                value={query}
+                onChange={onChange}
+                placeholder="Buscar productos..."
+            />
+        // </div>
     );
 }

@@ -35,7 +35,7 @@ export default async function AdminClientsPage({ searchParams }: { searchParams:
     return (
         <main className="">
 
-            <div className="flex justify-between md:flex-row gap-2 pb-2 border-b-2 border-gray-300 items-center">
+            <header className="flex justify-between md:flex-row gap-2 items-center">
                 {/* Search */}
                 <HeadingH1>Clientes / usuarios</HeadingH1>
                 <div className="flex items-center gap-2">
@@ -43,9 +43,9 @@ export default async function AdminClientsPage({ searchParams }: { searchParams:
                     {/* <ExportClientsButton /> */}
                 </div>
 
-            </div>
+            </header>
 
-            <div>
+            <div className="mt-4">
                 <Suspense fallback={<SpinnerLoading />}>
 
                     {clients && clients.users ? (

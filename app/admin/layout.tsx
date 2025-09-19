@@ -13,12 +13,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     return (
         <>
             <div className="flex md:flex-row h-screen">
-                <aside className="hidden sm:block">
+                <aside className="block">
                     <AdminSidebar user={user} />
                 </aside>
 
                 {/* Contenido principal */}
-                <main className="flex-1 overflow-y-auto p-1 md:p-2">
+                <main className="flex-1 overflow-y-auto p-1 md:p-4">
                     {children}
                 </main>
             </div>
