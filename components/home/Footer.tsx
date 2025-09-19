@@ -108,7 +108,7 @@ export default function Footer() {
             {/* Footer bottom */}
             <div className="border-t border-gray-300 text-center py-4 px-6 text-xs text-gray-500">
                 © {new Date().getFullYear()} <span className="font-semibold text-gray-700">Gophone</span>.
-                Todos los derechos reservados · developed by{" "}
+                Todos los derechos reservados · Developed by{" "}
                 <span className="text-gray-700 font-semibold">Wily Ramos</span>
             </div>
         </footer>

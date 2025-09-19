@@ -3,7 +3,6 @@ import "server-only";
 
 import getToken from "../auth/token";
 import { apiProductListSchema, ProductsAPIResponse, productsSchema, productsResponseAllSchema } from "@/src/schemas";
-import { cache } from 'react';
 
 // new
 
