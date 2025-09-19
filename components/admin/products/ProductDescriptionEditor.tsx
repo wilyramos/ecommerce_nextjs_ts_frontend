@@ -13,6 +13,8 @@ import { $getRoot } from "lexical";
 import { LinkNode } from "@lexical/link";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import Toolbar from "./Toolbar";
+import { $insertNodes } from "lexical";
+
 
 const editorConfig: InitialConfigType = {
     namespace: "EcommerceEditor",
@@ -28,11 +30,12 @@ function InitialHTMLPlugin({ html }: { html: string }) {
     useEffect(() => {
         if (!html) return;
         editor.update(() => {
-            const dom = new DOMParser().parseFromString(html, "text/html");
+            const parser = new DOMParser();
+            const dom = parser.parseFromString(html, "text/html");
             const nodes = $generateNodesFromDOM(editor, dom);
             const root = $getRoot();
             root.clear();
-            root.append(...nodes);
+            $insertNodes(nodes); // ✅ se encarga de añadirlos correctamente
         });
     }, [editor, html]);
 

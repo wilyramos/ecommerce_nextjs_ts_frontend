@@ -1,7 +1,7 @@
 "use server"
 
 import getToken from "@/src/auth/token"
-import { SuccessResponse } from "@/src/schemas"
+import { especificacionSchema, SuccessResponse, type TEspecificacion } from "@/src/schemas"
 // import { ErrorResponse } from "@/src/schemas" // TODO
 import { revalidatePath } from "next/cache"
 
@@ -34,6 +34,22 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         }
     }
 
+    // parsear las especificaciones del formulario
+    const especificacionesString = formData.get('especificaciones') as string;
+    let especificaciones: TEspecificacion[] = [];
+    if (especificacionesString) {
+        try {
+            const parsed = JSON.parse(especificacionesString);
+            especificaciones = especificacionSchema.array().parse(parsed);
+        } catch (error) {
+            console.error("Error parsing especificaciones:", error);
+            return {
+                errors: ["Las especificaciones son inválidas."],
+                success: ""
+            }
+        }
+    }
+
     const productData = {
         nombre: formData.get("nombre"),
         descripcion: formData.get("descripcion"),
@@ -47,7 +63,9 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         esDestacado: formData.get("esDestacado") === "true",
         esNuevo: formData.get("esNuevo") === "true",
         isActive: formData.get("isActive") === "true",
-        atributos: atributos
+        atributos: atributos,
+        brand: formData.get("brand") || undefined,
+        especificaciones: especificaciones,
     }
     console.log("productData", productData)
 
@@ -80,7 +98,7 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         }
     }
     const success = SuccessResponse.parse(json);
-    
+
     //Revalidate
     revalidatePath(`/admin/products/${id}`)
 

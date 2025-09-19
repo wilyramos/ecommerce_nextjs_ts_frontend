@@ -62,7 +62,8 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         esNuevo: formData.get('esNuevo') === 'true',
         isActive: formData.get('isActive') === 'true',
         atributos: atributos,
-        especificaciones: especificaciones
+        especificaciones: especificaciones,
+        brand: formData.get('brand') || undefined,
     }
 
 

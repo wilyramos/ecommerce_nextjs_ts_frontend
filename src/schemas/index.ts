@@ -246,7 +246,7 @@ export const productBaseSchema = z.object({
     esNuevo: z.boolean().optional().default(false),
     atributos: atributosSchema.optional(),
     especificaciones: z.array(especificacionSchema).optional(),
-    brand: z.string().trim().optional(), //TODO: añadir brand al producto
+    brand: z.string().optional(),
 
 });
 
@@ -449,6 +449,9 @@ export const ImageSchemaResponse = z.object({
     images: z.array(z.string()),
 })
 
+export const ImageSchema = z.object({
+    image: z.string(),
+})
 
 
 export const ProductAPIResponse = z.object({

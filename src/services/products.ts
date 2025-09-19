@@ -241,7 +241,6 @@ export const getProductsByAdmin = async (
     return products;
 }
 
-
 export const GetAllProductsSlug = async () => {
     const token = getToken();
     const url = `${process.env.API_URL}/products/all/slug`;
@@ -262,4 +261,22 @@ export const GetAllProductsSlug = async () => {
         return [];
     }
     return parsed.data;
+}
+
+export const getProductsByBrandSlug = async (brandSlug: string) => {
+    console.log('Brand slug:', brandSlug);
+    const url = `${process.env.API_URL}/products/brand/${brandSlug}`;
+    console.log('Fetching products from URL:', url);
+    const req = await fetch(url, {
+        method: 'GET',
+    });
+    console.log('Response status:', req.status);
+    if (!req.ok) {
+        return null;
+    }
+
+    const json = await req.json();
+    console.log('Response JSON:', json);
+    const products = ProductsAPIResponse.parse(json);
+    return products;
 }

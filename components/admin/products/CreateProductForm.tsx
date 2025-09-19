@@ -6,8 +6,9 @@ import { useRouter } from 'next/navigation'
 import { createProduct } from '@/actions/product/add-product-action'
 import { toast } from 'sonner'
 import type { CategoryListResponse } from '@/src/schemas'
+import type { TBrand } from '@/src/schemas/brands' 
 
-export default function CreateProductForm({ categorias }: { categorias: CategoryListResponse }) {
+export default function CreateProductForm({ categorias, brands }: { categorias: CategoryListResponse, brands: TBrand[] }) {
 
     const router = useRouter();
 
@@ -43,7 +44,9 @@ export default function CreateProductForm({ categorias }: { categorias: Category
             action={dispatch}
         >
             <ProductForm
-                categorias={categoriasOrdenadas} />
+                categorias={categoriasOrdenadas} 
+                brands={brands}
+            />
             <input
                 type='submit'
                 className='bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800 cursor-pointer inline-block'

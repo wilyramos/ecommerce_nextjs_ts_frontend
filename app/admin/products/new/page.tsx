@@ -1,9 +1,11 @@
 import CreateProductForm from "@/components/admin/products/CreateProductForm";
 import { getAllSubcategories } from "@/src/services/categorys";
 import BackButton from "@/components/ui/BackButton";
+import { getActiveBrands } from "@/src/services/brands";
 
 export default async function NewProductPage() {
     const categorias = await getAllSubcategories();
+    const brands = await getActiveBrands();
 
     return (
         <main className="">
@@ -16,7 +18,9 @@ export default async function NewProductPage() {
 
             {/* Formulario */}
             <section className="mt-6">
-                <CreateProductForm categorias={categorias} />
+                <CreateProductForm categorias={categorias}
+                    brands={brands}
+                />
             </section>
         </main>
     );

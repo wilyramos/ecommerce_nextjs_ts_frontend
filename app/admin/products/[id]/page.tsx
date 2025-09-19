@@ -4,6 +4,7 @@ import EditProductForm from "@/components/admin/products/EditProductForm";
 import DeleteProductButton from "@/components/admin/products/DeleteProductButton";
 import Link from "next/link";
 import BackButton from "../../../../components/ui/BackButton";
+import { getActiveBrands } from "@/src/services/brands";
 // import EditStatusProductButton from "@/components/admin/products/EditStatusProductButton";
 
 type Params = Promise<{
@@ -15,6 +16,7 @@ export default async function ProductDetailsPage({ params }: { params: Params })
     const { id } = await params;
     const categorias = await getCategories();
     const product = await getProduct(id);
+    const brands = await getActiveBrands();
 
     if (!product) {
         return (
@@ -41,7 +43,7 @@ export default async function ProductDetailsPage({ params }: { params: Params })
                 </div>
             </div>
 
-            <EditProductForm product={product} categorias={categorias} />
+            <EditProductForm product={product} categorias={categorias} brands={brands} />
         </div>
     );
 }

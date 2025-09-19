@@ -7,10 +7,11 @@ import ProductForm from "./ProductForm";
 import { EditProduct } from "@/actions/product/edit-product-action";
 import type { CategoryListResponse } from '@/src/schemas'
 import { toast } from "react-toastify";
+import type { TBrand } from "@/src/schemas/brands";
 
 
 
-export default function EditProductForm({ product, categorias }: { product: ProductWithCategoryResponse, categorias: CategoryListResponse }) {
+export default function EditProductForm({ product, categorias, brands }: { product: ProductWithCategoryResponse, categorias: CategoryListResponse, brands: TBrand[] }) {
 
     const editProductWithId = EditProduct.bind(null, product._id);
     const [state, dispatch] = useActionState(editProductWithId, {
@@ -44,9 +45,10 @@ export default function EditProductForm({ product, categorias }: { product: Prod
                 action={dispatch}
             >
                 <ProductForm
-                    key={product.updatedAt} // Ensure the form re-renders when the product is updated
+                    key={product._id} // Ensure the form re-renders when the product is updated
                     product={product}
                     categorias={categoriasOrdenadas}
+                    brands={brands}
                 />
                 <input
                     type="submit"

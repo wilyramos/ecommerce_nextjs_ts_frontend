@@ -6,6 +6,7 @@ import ProductosNuevos from "@/components/home/ProductosNuevos";
 import ProductosDestacados from "@/components/home/ProductosDestacados";
 import CategoriasDestacadasWrapper from "@/components/home/CategoriasDestacadasWrapper";
 import FeaturesList from "@/components/home/FeaturesList";
+import BrandsList from "@/components/home/BrandsList";
 
 
 export const metadata: Metadata = {
@@ -77,6 +78,10 @@ export default function HomePage() {
 
             <section className="">
                 <ProductosDestacados />
+            </section>
+
+            <section className="my-8">
+                <BrandsList />
             </section>
         </>
     );

@@ -1,11 +1,30 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/src/schemas";
 import ColorCircle from "@/components/ui/ColorCircle";
 import { FaFireAlt } from "react-icons/fa";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function ProductCard({ product }: { product: Product }) {
     const color = product.atributos?.Color || null;
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const nextImage = (e: React.MouseEvent) => {
+        e.preventDefault();
+        setCurrentIndex((prev) =>
+            prev === product.imagenes.length - 1 ? 0 : prev + 1
+        );
+    };
+
+    const prevImage = (e: React.MouseEvent) => {
+        e.preventDefault();
+        setCurrentIndex((prev) =>
+            prev === 0 ? product.imagenes.length - 1 : prev - 1
+        );
+    };
 
     return (
         <div className="group relative flex flex-col bg-white text-gray-700 rounded shadow-xs transform transition-transform duration-500 hover:scale-[1.03] overflow-visible my-2">
@@ -15,23 +34,44 @@ export default function ProductCard({ product }: { product: Product }) {
                     {product.imagenes.length > 0 ? (
                         <div className="relative w-full h-full">
                             <Image
-                                src={product.imagenes[0]}
+                                src={product.imagenes[currentIndex]}
                                 alt={product.nombre}
                                 fill
-                                className={`object-cover transition-opacity duration-300 ${product.imagenes[1] ? "group-hover:opacity-0" : ""
-                                    }`}
+                                className="object-cover transition-opacity duration-300"
                                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                                quality={50}
+                                quality={70}
                             />
-                            {product.imagenes[1] && (
-                                <Image
-                                    src={product.imagenes[1]}
-                                    alt={`${product.nombre} hover`}
-                                    fill
-                                    className="object-cover transition-opacity duration-300 opacity-0 group-hover:opacity-100"
-                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                                    quality={80}
-                                />
+
+                            {product.imagenes.length > 1 && (
+                                <>
+                                    {/* flecha izquierda */}
+                                    <button
+                                        onClick={prevImage}
+                                        className="
+                      absolute left-2 top-1/2 -translate-y-1/2 
+                      bg-black/40 text-white p-1.5 rounded-full
+                      opacity-100
+                      md:opacity-0 md:group-hover:opacity-100
+                      transition
+                    "
+                                    >
+                                        <ChevronLeft size={20} />
+                                    </button>
+
+                                    {/* flecha derecha */}
+                                    <button
+                                        onClick={nextImage}
+                                        className="
+                      absolute right-2 top-1/2 -translate-y-1/2 
+                      bg-black/40 text-white p-1.5 rounded-full
+                      opacity-100
+                      md:opacity-0 md:group-hover:opacity-100
+                      transition
+                    "
+                                    >
+                                        <ChevronRight size={20} />
+                                    </button>
+                                </>
                             )}
                         </div>
                     ) : (
@@ -41,7 +81,7 @@ export default function ProductCard({ product }: { product: Product }) {
                     )}
 
                     {/* Etiquetas */}
-                   {(product.esNuevo || product.esDestacado) && (
+                    {(product.esNuevo || product.esDestacado) && (
                         <div className="absolute top-4 left-2 right-2 flex justify-between text-[13px] font-semibold">
                             {product.esNuevo && (
                                 <span className="px-2 py-0.5 bg-red-500 text-white rounded text-xs shadow-sm">
@@ -49,7 +89,7 @@ export default function ProductCard({ product }: { product: Product }) {
                                 </span>
                             )}
                             {product.esDestacado && (
-                                <span className=" text-orange-500 rounded text-xs flex items-center gap-1">
+                                <span className="text-orange-500 rounded text-xs flex items-center gap-1">
                                     <FaFireAlt />
                                 </span>
                             )}
@@ -65,11 +105,10 @@ export default function ProductCard({ product }: { product: Product }) {
                     <div className="flex items-center gap-2 mt-auto">
                         {color && <ColorCircle color={color} />}
                         <div className="ml-auto font-semibold">
-                            <span className="">s/ </span>
+                            <span>s/ </span>
                             {product.precio.toFixed(2)}
                         </div>
-                    </div>  
-
+                    </div>
                 </div>
             </Link>
         </div>

@@ -1,9 +1,7 @@
-import { Suspense } from "react";
 import type { Metadata } from "next";
 import FiltrosPorCategoria from "@/components/home/categorias/FiltrosPorCategoria ";
 import ListaProducts from "@/components/home/categorias/ListaProducts";
 import OrdenarPor from "@/components/home/products/OrdenarPor";
-import SpinnerLoading from "@/components/ui/SpinnerLoading";
 
 type Params = Promise<{
     slug: string;
@@ -86,10 +84,8 @@ export default async function pageCategoria({
             <section className="grid grid-cols-1 sm:grid-cols-5 gap-6">
 
                 {/* Filtros en sidebar solo en escritorio */}
-                <div className="hidden sm:block sm:col-span-1">
-                    <Suspense fallback={<SpinnerLoading />}>
-                        <FiltrosPorCategoria categorySlug={slug} />
-                    </Suspense>
+                <div className="hidden sm:block sm:col-span-1 bg-white px-2 rounded">
+                    <FiltrosPorCategoria categorySlug={slug} />
                 </div>
 
                 {/* Productos */}
@@ -98,9 +94,9 @@ export default async function pageCategoria({
                     {/* Barra responsive arriba en mobile */}
                     <div className="flex items-center justify-between gap-2 sm:hidden">
                         {/* DrawerFilters ya está dentro de FiltrosPorCategoria */}
-                        <Suspense fallback={<SpinnerLoading />}>
-                            <FiltrosPorCategoria categorySlug={slug} />
-                        </Suspense>
+                        {/* <Suspense fallback={<SpinnerLoading />}> */}
+                        <FiltrosPorCategoria categorySlug={slug} />
+                        {/* </Suspense> */}
                         <OrdenarPor pathname={`/categoria/${slug}`} />
                     </div>
 
@@ -110,7 +106,7 @@ export default async function pageCategoria({
                     </div>
 
                     {/* Lista de productos */}
-                    <Suspense fallback={<SpinnerLoading />}>
+                    {/* <Suspense fallback={<SpinnerLoading />}> */}
                         <ListaProducts
                             category={slug}
                             priceRange={priceRange as string}
@@ -121,7 +117,7 @@ export default async function pageCategoria({
                             query={query as string}
                             atributos={atributos}
                         />
-                    </Suspense>
+                    {/* </Suspense> */}
                 </section>
             </section>
         </main>
