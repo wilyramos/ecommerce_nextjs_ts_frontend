@@ -8,6 +8,7 @@ import ColorCircle from "@/components/ui/ColorCircle";
 import { FaFireAlt } from "react-icons/fa";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+
 export default function ProductCard({ product }: { product: Product }) {
     const color = product.atributos?.Color || null;
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -63,7 +64,7 @@ export default function ProductCard({ product }: { product: Product }) {
                                         onClick={nextImage}
                                         className="
                       absolute right-2 top-1/2 -translate-y-1/2 
-                      bg-black/40 text-white p-1.5 rounded-full
+                      bg-black/5 text-white p-1.5 rounded-full
                       opacity-100
                       md:opacity-0 md:group-hover:opacity-100
                       transition

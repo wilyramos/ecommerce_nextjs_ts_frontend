@@ -161,7 +161,7 @@ export const getProductList = async ({ q }: GetProductListParams) => {
     }
 };
 
-export const getNewProducts = (async () => {
+export const getNewProducts = async () => {
     const url = `${process.env.API_URL}/products/new`;
 
     const req = await fetch(url, {
@@ -178,9 +178,9 @@ export const getNewProducts = (async () => {
 
     // console.log("Nuevos productos", products);
     return products;
-});
+};
 
-export const getDestacadosProducts = cache(async () => {
+export const getDestacadosProducts = async () => {
     const url = `${process.env.API_URL}/products/destacados/all`;
 
     const req = await fetch(url, {
@@ -195,7 +195,7 @@ export const getDestacadosProducts = cache(async () => {
     const json = await req.json();
     const products = ProductsAPIResponse.parse(json);
     return products;
-});
+};
 
 
 export const getProductsRelated = async (slug: string) => {

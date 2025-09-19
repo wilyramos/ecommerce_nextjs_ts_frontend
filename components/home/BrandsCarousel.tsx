@@ -20,7 +20,7 @@ export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {
                 responsive={responsive}
                 infinite
                 autoPlay
-                autoPlaySpeed={2500}
+                autoPlaySpeed={5000}
                 customLeftArrow={<CarouselArrow direction="left" />}
                 customRightArrow={<CarouselArrow direction="right" />}
                 itemClass="px-4"
