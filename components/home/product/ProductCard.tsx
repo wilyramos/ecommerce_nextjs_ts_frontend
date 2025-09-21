@@ -3,33 +3,54 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import type { Product } from "@/src/schemas";
-import ColorCircle from "@/components/ui/ColorCircle";
-import { FaFireAlt } from "react-icons/fa";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { FaFireAlt } from "react-icons/fa";
+import ColorCircle from "@/components/ui/ColorCircle";
+import type { Product } from "@/src/schemas";
 
 export default function ProductCard({ product }: { product: Product }) {
     const color = product.atributos?.Color || null;
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [startX, setStartX] = useState<number | null>(null);
 
-    // Show 2nd image on hover (if it exists)
+    // Hover image
     const handleMouseEnter = () => {
         if (product.imagenes.length > 1) setCurrentIndex(1);
     };
     const handleMouseLeave = () => setCurrentIndex(0);
 
-    const nextImage = (e: React.MouseEvent) => {
-        e.preventDefault();
+    // Image navigation
+    const nextImage = () =>
         setCurrentIndex((prev) =>
             prev === product.imagenes.length - 1 ? 0 : prev + 1
         );
-    };
-
-    const prevImage = (e: React.MouseEvent) => {
-        e.preventDefault();
+    const prevImage = () =>
         setCurrentIndex((prev) =>
             prev === 0 ? product.imagenes.length - 1 : prev - 1
         );
+
+    // Swipe events (mobile)
+    const handleTouchStart = (e: React.TouchEvent) => setStartX(e.touches[0].clientX);
+    const handleTouchEnd = (e: React.TouchEvent) => {
+        if (startX === null) return;
+        const diff = startX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 30) {
+            if (diff > 0) nextImage();
+            else prevImage();
+        }
+        setStartX(null);
+    };
+
+    // Drag events (desktop)
+    const handleMouseDown = (e: React.MouseEvent) => setStartX(e.clientX);
+    const handleMouseUp = (e: React.MouseEvent) => {
+        if (startX === null) return;
+        const diff = startX - e.clientX;
+        if (Math.abs(diff) > 30) {
+            if (diff > 0) nextImage();
+            else prevImage();
+        }
+        setStartX(null);
     };
 
     return (
@@ -37,6 +58,10 @@ export default function ProductCard({ product }: { product: Product }) {
             className="group relative flex flex-col bg-white text-gray-700 rounded shadow-xs transform transition-transform duration-500 hover:scale-[1.03] overflow-visible my-2"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+            onMouseDown={handleMouseDown}
+            onMouseUp={handleMouseUp}
         >
             <Link href={`/productos/${product.slug}`} className="flex flex-col h-full">
                 {/* Imagen */}
@@ -55,35 +80,41 @@ export default function ProductCard({ product }: { product: Product }) {
                             {product.imagenes.length > 1 && (
                                 <>
                                     <button
-                                        onClick={prevImage}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            prevImage();
+                                        }}
                                         className="absolute left-2 top-1/2 -translate-y-1/2 
                                bg-black/40 text-white p-1.5 rounded-full
-                               opacity-100 md:opacity-0 md:group-hover:opacity-100
+                               opacity-0 md:opacity-0 md:group-hover:opacity-100
                                transition"
                                     >
                                         <ChevronLeft size={15} />
                                     </button>
 
                                     <button
-                                        onClick={nextImage}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            nextImage();
+                                        }}
                                         className="absolute right-2 top-1/2 -translate-y-1/2 
                                bg-black/40 text-white p-1 rounded-full
-                               opacity-100 md:opacity-0 md:group-hover:opacity-100
+                               opacity-0 md:opacity-0 md:group-hover:opacity-100
                                transition"
                                     >
                                         <ChevronRight size={15} />
                                     </button>
 
+                                    {/* Indicators */}
                                     <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1">
                                         {product.imagenes.map((_, idx) => (
                                             <span
                                                 key={idx}
-                                                className={`h-1 w-2 rounded-full transition-colors duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100 ${idx === currentIndex ? 'bg-black' : 'bg-black/40'
+                                                className={`h-1 w-2 rounded-full transition-colors duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100 ${idx === currentIndex ? "bg-black" : "bg-black/40"
                                                     }`}
                                             />
                                         ))}
                                     </div>
-
                                 </>
                             )}
                         </div>
@@ -93,7 +124,7 @@ export default function ProductCard({ product }: { product: Product }) {
                         </div>
                     )}
 
-                    {/* Etiquetas */}
+                    {/* Labels */}
                     {(product.esNuevo || product.esDestacado) && (
                         <div className="absolute top-4 left-2 right-2 flex justify-between text-[13px] font-semibold">
                             {product.esNuevo && (

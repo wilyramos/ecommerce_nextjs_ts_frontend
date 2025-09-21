@@ -1,33 +1,40 @@
+// app/brands/[slug]/page.tsx
 import { getProductsByBrandSlug } from '@/src/services/products';
+import FiltersSidebar from '@/components/home/brand/FiltersSidebar';
 import ProductosList from '@/components/home/product/ProductsList';
+import { getAllSubcategories } from '@/src/services/categorys';
+import { getBrandBySlug } from '@/src/services/brands';
 
 
 type Params = Promise<{
     slug: string;
 }>;
 
-// type SearchParams = Promise<Record<string, string | string[] | undefined>>;
-
 export default async function BrandsPage({ params }: { params: Params }) {
-
-    console.log('Params:', params);
-
     const { slug } = await params;
+    const [products, subcategories, brand] = await Promise.all([
+        getProductsByBrandSlug(slug),
+        getAllSubcategories(),
+        getBrandBySlug(slug),
+    ]);
 
-    const products = await getProductsByBrandSlug(slug);
+    if (!brand) return <div className="p-6 text-center">Marca no encontrada</div>;
 
-    if (!products || products.products.length === 0) {
-        return (
-            <div className="text-center py-10 text-gray-500">
-                No se encontraron productos.
-            </div>
-        );
-    }
     return (
-        <div className='p-6'>
+        <div className="flex flex-col md:flex-row gap-6 py-3">
+            <aside className="md:w-64">
+                <FiltersSidebar brand={brand} categorias={subcategories} />
+            </aside>
 
-            <h1 className="text-2xl font-bold mb-6 text-center">Productos de la Marca</h1>
-            <ProductosList products={products} />
+            <main className="flex-1">
+               
+
+                {products?.products?.length ? (
+                    <ProductosList products={products} />
+                ) : (
+                    <p className="text-center py-8 text-gray-500">No se encontraron productos.</p>
+                )}
+            </main>
         </div>
-    )
+    );
 }

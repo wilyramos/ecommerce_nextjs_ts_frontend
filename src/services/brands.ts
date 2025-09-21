@@ -36,3 +36,18 @@ export const getActiveBrands = cache(async (): Promise<Brand[]> => {
     }
     return res.json();
 });
+
+export const getBrandBySlug = async (slug: string): Promise<Brand | null> => {
+
+    const url = `${process.env.API_URL}/brands/slug/${slug}`;
+    console.log('Fetching brand by slug from URL:', url);
+    const res = await fetch(url, {
+        cache: "no-store",
+    });
+
+    console.log('Fetching brand by slug:', slug, 'Response status:', res.status);
+    if (!res.ok) {
+        return null;
+    }
+    return res.json();
+};

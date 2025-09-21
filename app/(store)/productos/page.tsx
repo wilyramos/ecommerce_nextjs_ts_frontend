@@ -81,7 +81,7 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
                     {/* Barra de filtros + ordenar en MOBILE */}
                     <div className="flex items-center justify-between gap-3 sm:hidden">
                         <Suspense fallback={<SpinnerLoading />}>
-                            <CategoriasFiltros /> {/* Esto en mobile renderiza DrawerFiltersGeneral */}
+                            <CategoriasFiltros />
                         </Suspense>
                         <OrdenarPor pathname="/productos" />
                     </div>

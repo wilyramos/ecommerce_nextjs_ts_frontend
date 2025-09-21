@@ -1,13 +1,12 @@
 // File: frontend/app/(store)/page.tsx
 
-import type { Metadata } from "next";
+import { Metadata } from "next";
 import CarruselPrincipal from "@/components/home/CarruselPrincipal";
 import ProductosNuevos from "@/components/home/ProductosNuevos";
 import ProductosDestacados from "@/components/home/ProductosDestacados";
 import CategoriasDestacadasWrapper from "@/components/home/CategoriasDestacadasWrapper";
 import FeaturesList from "@/components/home/FeaturesList";
 import BrandsList from "@/components/home/BrandsList";
-
 
 export const metadata: Metadata = {
     title: "GoPhone | Tecnologia y productos a tu alcance",

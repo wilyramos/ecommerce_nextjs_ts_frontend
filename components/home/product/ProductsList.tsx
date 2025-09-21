@@ -1,8 +1,8 @@
 import type { ProductsList } from "@/src/schemas";
 import ProductCard from "@/components/home/product/ProductCard";
+import Pagination from "@/components/ui/Pagination";
 
 export default function ProductosList({ products }: { products: ProductsList }) {
-
 
     if (!products || products.products.length === 0) {
         return <div className="text-center text-gray-500">No hay productos disponibles</div>;
@@ -11,10 +11,15 @@ export default function ProductosList({ products }: { products: ProductsList }) 
     const { products: productList } = products;
 
     return (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-            {productList.map((product) => (
-                <ProductCard key={product._id} product={product} />
-            ))}
-        </div>
+        <>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                {productList.map((product) => (
+                    <ProductCard key={product._id} product={product} />
+                ))}
+            </div>
+            <Pagination totalPages={products.totalPages} currentPage={products.currentPage}
+                pathname={`/brands/dasdas`}
+            />
+        </>
     );
 }

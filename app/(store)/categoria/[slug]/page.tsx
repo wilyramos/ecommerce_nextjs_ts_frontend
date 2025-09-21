@@ -87,7 +87,8 @@ export default async function pageCategoria({
                 <div className="hidden sm:block sm:col-span-1 bg-white px-2 rounded">
                     <div className="sticky top-20 bg-white px-2 rounded">
                         <FiltrosPorCategoria categorySlug={slug} />
-                    </div>                </div>
+                    </div>
+                </div>
 
                 {/* Productos */}
                 <section className="sm:col-span-4 space-y-4">
