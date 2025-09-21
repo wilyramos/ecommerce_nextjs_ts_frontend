@@ -1,25 +1,22 @@
 // ProductosDestacados.tsx
 import { getDestacadosProducts } from '@/src/services/products';
-import ClientCarouselProductosNuevos from '@/components/home/ClientCarouselProductosNuevos';
+import ProductCard from './product/ProductCard';
+
 
 export default async function ProductosDestacados() {
     const destacados = await getDestacadosProducts();
     const productos = destacados?.products ?? [];
 
     if (!productos.length) {
-        return (
-            <p className="text-center py-6 text-gray-500 text-sm">
-                No hay productos destacados por ahora.
-            </p>
-        );
+        return null;
     }
 
     return (
-        <section className=" mx-auto py-8 px-4 bg-black">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center max-w-7xl mx-auto">
+        <section className="mx-auto py-5 px-4 bg-black">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center max-w-7xl mx-auto">
                 {/* Texto arriba en mobile, derecha en desktop */}
                 <header className="order-1 md:order-2 space-y-3 text-center md:text-left">
-                    <h2 className="text-2xl  font-semibold text-gray-200">
+                    <h2 className="text-2xl font-semibold text-gray-200">
                         Lo mejor de{" "}
                         <span className="text-white bg-gray-950 px-2">
                             GoPhone
@@ -31,8 +28,10 @@ export default async function ProductosDestacados() {
                 </header>
 
                 {/* Carrusel ocupa más espacio en desktop */}
-                <div className="order-2 md:order-1 md:col-span-2">
-                    <ClientCarouselProductosNuevos products={productos} />
+                <div className="order-2 md:order-2 md:col-span-4 grid grid-cols-2 md:grid-cols-5 grid-rows-2 gap-4">
+                    {productos.slice(0, 10).map((product) => (
+                        <ProductCard key={product._id} product={product} />
+                    ))}
                 </div>
             </div>
         </section>

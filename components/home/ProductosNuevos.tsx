@@ -1,5 +1,5 @@
 import { getNewProducts } from '@/src/services/products';
-import ClientCarouselProductosNuevos from '@/components/home/ClientCarouselProductosNuevos';
+import ClientCarouselProductosNuevos from './ClientCarouselProductosNuevos';
 
 export default async function ProductosNuevos() {
     const newProducts = await getNewProducts();

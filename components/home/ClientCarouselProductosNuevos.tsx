@@ -2,6 +2,7 @@
 
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+
 import ProductCard from "@/components/home/product/ProductCard";
 import type { Product } from "@/src/schemas";
 import { CarouselArrow } from "../ui/CarouselArrow";
@@ -33,7 +34,6 @@ export default function ClientCarouselProductosNuevos({ products, items }: Props
                 itemClass="px-2"
                 customLeftArrow={<CarouselArrow direction="left" />}
                 customRightArrow={<CarouselArrow direction="right" />}
-    
             >
                 {products.map((product) => (
                     <ProductCard key={product._id} product={product} />
