@@ -44,7 +44,7 @@ export default function ProductsFilters({ categorias }: { categorias: CategoryLi
     };
 
     return (
-        <aside className="py-6 border-gray-200 font-bold">
+        <aside className="py-6 border-gray-200 ">
             <div className="flex justify-end mb-4">
                 <button
                     onClick={() => updateFilters({ category: "", priceRange: "" })}

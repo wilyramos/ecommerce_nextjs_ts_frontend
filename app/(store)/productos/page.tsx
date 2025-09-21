@@ -68,9 +68,11 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
 
                 {/* Sidebar filtros SOLO desktop */}
                 <aside className="hidden sm:block sm:col-span-1">
-                    <Suspense fallback={<SpinnerLoading />}>
-                        <CategoriasFiltros />
-                    </Suspense>
+                    <div className="sticky top-20">  {/* top-20 ≈ 5rem de espacio para el header */}
+                        <Suspense fallback={<SpinnerLoading />}>
+                            <CategoriasFiltros />
+                        </Suspense>
+                    </div>
                 </aside>
 
                 {/* Productos */}

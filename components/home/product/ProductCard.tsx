@@ -78,7 +78,7 @@ export default function ProductCard({ product }: { product: Product }) {
                                         {product.imagenes.map((_, idx) => (
                                             <span
                                                 key={idx}
-                                                className={`h-1 w-2 rounded-full transition-colors duration-300 ${idx === currentIndex ? 'bg-black' : 'bg-black/40'
+                                                className={`h-1 w-2 rounded-full transition-colors duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100 ${idx === currentIndex ? 'bg-black' : 'bg-black/40'
                                                     }`}
                                             />
                                         ))}
