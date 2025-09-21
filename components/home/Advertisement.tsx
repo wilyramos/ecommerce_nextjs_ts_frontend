@@ -5,11 +5,13 @@ import { FaRegCreditCard } from "react-icons/fa";
 import { MdLocalShipping } from "react-icons/md"; // nuevo icono para envíos
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { useState } from "react";
+import { IoClose } from "react-icons/io5";
 
 const ads = [
     {
         id: 1,
-        icon: <TbTruckDelivery className="text-blue-800 text-lg" aria-hidden="true" />,
+        icon: <TbTruckDelivery />,
         text: (
             <>
                 Envíos en <span className="font-semibold">Cañete</span>
@@ -21,7 +23,7 @@ const ads = [
     },
     {
         id: 2,
-        icon: <MdLocalShipping className="text-blue-800 text-lg" aria-hidden="true" />,
+        icon: <MdLocalShipping />,
         text: (
             <>
                 Envíos a <span className="font-semibold">todo el Perú</span>
@@ -30,7 +32,7 @@ const ads = [
     },
     {
         id: 3,
-        icon: <FaRegCreditCard className="text-blue-800 text-lg" aria-hidden="true" />,
+        icon: <FaRegCreditCard />,
         text: (
             <>
                 Paga con <span className="font-semibold">tarjeta o Yape</span>
@@ -40,7 +42,7 @@ const ads = [
     // Extra opcional
     {
         id: 4,
-        icon: <TbTruckDelivery className="text-blue-800 text-lg" aria-hidden="true" />,
+        icon: <TbTruckDelivery />,
         text: (
             <>
                 Recoge en <span className="font-semibold">tienda física</span> sin costo
@@ -50,8 +52,18 @@ const ads = [
 ];
 
 export default function Advertisement() {
+
+    const [showBanner, setShowBanner] = useState(true);
+    if (!showBanner) return null;
+
     return (
-        <section className="bg-yellow-300 text-blue-900 py-2 px-4 shadow-sm">
+        <section className="relative bg-black text-white py-2 px-4 shadow-md">
+            <button
+                onClick={() => setShowBanner(false)}
+                className="absolute top-2 right-2 text-white hover:text-gray-300 focus:outline-none"
+            >
+                <IoClose className="text-xl" aria-label="Cerrar anuncio" />
+            </button>
             <Carousel
                 additionalTransfrom={0}
                 arrows={false}

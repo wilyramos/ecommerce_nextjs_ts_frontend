@@ -1,4 +1,3 @@
-import React from 'react';
 import renderSummaryItem from './renderSummaryItem';
 import { getSummarySales } from '@/src/services/sales';
 import { FiDollarSign, FiPackage, FiShoppingCart, FiTrendingUp } from 'react-icons/fi';

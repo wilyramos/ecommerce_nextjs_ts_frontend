@@ -61,32 +61,30 @@ export default function ProductCard({ product }: { product: Product }) {
                                opacity-100 md:opacity-0 md:group-hover:opacity-100
                                transition"
                                     >
-                                        <ChevronLeft size={20} />
+                                        <ChevronLeft size={15} />
                                     </button>
 
                                     <button
                                         onClick={nextImage}
                                         className="absolute right-2 top-1/2 -translate-y-1/2 
-                               bg-black/40 text-white p-1.5 rounded-full
+                               bg-black/40 text-white p-1 rounded-full
                                opacity-100 md:opacity-0 md:group-hover:opacity-100
                                transition"
                                     >
-                                        <ChevronRight size={20} />
+                                        <ChevronRight size={15} />
                                     </button>
 
                                     <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1">
                                         {product.imagenes.map((_, idx) => (
                                             <span
                                                 key={idx}
-                                                className={`h-2 w-2 rounded-full transition-colors duration-300 ${idx === currentIndex ? 'bg-white' : 'bg-white/40'
+                                                className={`h-1 w-2 rounded-full transition-colors duration-300 ${idx === currentIndex ? 'bg-black' : 'bg-black/40'
                                                     }`}
                                             />
                                         ))}
                                     </div>
 
                                 </>
-
-
                             )}
                         </div>
                     ) : (
