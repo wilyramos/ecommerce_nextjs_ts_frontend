@@ -65,8 +65,9 @@ export const metadata: Metadata = {
         images: ["https://gophone.pe/og-image.jpg"],
     },
     icons: {
-        icon: "/logomini.svg",
-        apple: "/logomini.svg",
+        icon: "/favicon.ico",
+        apple: "/favicon.ico",
+        shortcut: "/favicon.ico",
     },
 };
 

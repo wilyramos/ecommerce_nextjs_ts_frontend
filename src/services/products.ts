@@ -31,15 +31,9 @@ export const getProduct = async (id: string) => {
 };
 
 export const GetProductsBySlug = async (slug: string) => {
-    const token = getToken();
     const url = `${process.env.API_URL}/products/slug/${slug}`;
 
     const req = await fetch(url, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        },
-        cache: 'no-store' // Ensure fresh data
     });
 
     if (!req.ok) {
@@ -47,7 +41,6 @@ export const GetProductsBySlug = async (slug: string) => {
     }
 
     const json = await req.json();
-    // console.log("jsson", json)
     const product = ApiProductWithCategorySchema.parse(json);
     return product;
 };
@@ -95,7 +88,6 @@ export const getProductsByFilter = async ({
 
     const req = await fetch(url, {
         method: "GET",
-        // headers: { Authorization: `Bearer ${token}` },
     });
 
     if (!req.ok) {
@@ -131,7 +123,7 @@ type GetProductListParams = {
     q?: string;
 };
 
-export const getProductList = async ({ q }: GetProductListParams) => {
+export const getAllProductsSlug = async ({ q }: GetProductListParams) => {
     try {
         const token = getToken();
 
@@ -241,13 +233,9 @@ export const getProductsByAdmin = async (
 }
 
 export const GetAllProductsSlug = async () => {
-    const token = getToken();
     const url = `${process.env.API_URL}/products/all/slug`;
     const req = await fetch(url, {
         method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
     });
     if (!req.ok) {
         return [];
@@ -263,19 +251,15 @@ export const GetAllProductsSlug = async () => {
 }
 
 export const getProductsByBrandSlug = async (brandSlug: string) => {
-    console.log('Brand slug:', brandSlug);
     const url = `${process.env.API_URL}/products/brand/${brandSlug}`;
-    console.log('Fetching products from URL:', url);
     const req = await fetch(url, {
         method: 'GET',
     });
-    console.log('Response status:', req.status);
     if (!req.ok) {
         return null;
     }
 
     const json = await req.json();
-    console.log('Response JSON:', json);
     const products = ProductsAPIResponse.parse(json);
     return products;
 }

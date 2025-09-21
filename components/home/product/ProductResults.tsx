@@ -16,7 +16,7 @@ export default async function ProductResults({
     category,
     priceRange,
     page,
-    limit = 10,
+    limit = 24,
     sort,
     query,
 }: ProductResultsProps) {

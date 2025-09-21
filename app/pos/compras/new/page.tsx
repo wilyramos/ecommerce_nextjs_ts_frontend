@@ -2,7 +2,7 @@ import Link from "next/link";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import ProductSearchInputPurchase from "@/components/POS/compras/ProductSearchInputPurchase";
 import NewPurchaseForm from "@/components/POS/compras/NewPurchaseForm";
-import { getProductList } from "@/src/services/products";
+import { getAllProductsSlug } from "@/src/services/products";
 import ProductResultsPurchase from "@/components/POS/compras/ProductResultsPurchase";
 
 type SearchParams = Promise<{
@@ -11,7 +11,7 @@ type SearchParams = Promise<{
 
 export default async function NewPurchasePage({ searchParams }: { searchParams: SearchParams }) {
     const params = await searchParams;
-    const dataProducts = await getProductList({ q: params.q });
+    const dataProducts = await getAllProductsSlug({ q: params.q });
 
     return (
         <main className="p-2">

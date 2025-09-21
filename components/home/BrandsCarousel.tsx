@@ -8,14 +8,15 @@ import { CarouselArrow } from "../ui/CarouselArrow";
 import Link from "next/link";
 
 const responsive = {
-    desktop: { breakpoint: { max: 3000, min: 1024 }, items: 6 },
+    desktop: { breakpoint: { max: 3000, min: 1024 }, items: 8 },
     tablet: { breakpoint: { max: 1024, min: 640 }, items: 4 },
     mobile: { breakpoint: { max: 640, min: 0 }, items: 2 },
 };
 
 export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {
+
     return (
-        <section className="w-full py-10">
+        <section className="w-full py-5">
             <Carousel
                 responsive={responsive}
                 infinite

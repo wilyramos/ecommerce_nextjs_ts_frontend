@@ -8,10 +8,15 @@ import ColorCircle from "@/components/ui/ColorCircle";
 import { FaFireAlt } from "react-icons/fa";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-
 export default function ProductCard({ product }: { product: Product }) {
     const color = product.atributos?.Color || null;
     const [currentIndex, setCurrentIndex] = useState(0);
+
+    // Show 2nd image on hover (if it exists)
+    const handleMouseEnter = () => {
+        if (product.imagenes.length > 1) setCurrentIndex(1);
+    };
+    const handleMouseLeave = () => setCurrentIndex(0);
 
     const nextImage = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -28,7 +33,11 @@ export default function ProductCard({ product }: { product: Product }) {
     };
 
     return (
-        <div className="group relative flex flex-col bg-white text-gray-700 rounded shadow-xs transform transition-transform duration-500 hover:scale-[1.03] overflow-visible my-2">
+        <div
+            className="group relative flex flex-col bg-white text-gray-700 rounded shadow-xs transform transition-transform duration-500 hover:scale-[1.03] overflow-visible my-2"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
             <Link href={`/productos/${product.slug}`} className="flex flex-col h-full">
                 {/* Imagen */}
                 <div className="relative w-full aspect-square bg-white overflow-hidden rounded-t">
@@ -45,34 +54,39 @@ export default function ProductCard({ product }: { product: Product }) {
 
                             {product.imagenes.length > 1 && (
                                 <>
-                                    {/* flecha izquierda */}
                                     <button
                                         onClick={prevImage}
-                                        className="
-                      absolute left-2 top-1/2 -translate-y-1/2 
-                      bg-black/40 text-white p-1.5 rounded-full
-                      opacity-100
-                      md:opacity-0 md:group-hover:opacity-100
-                      transition
-                    "
+                                        className="absolute left-2 top-1/2 -translate-y-1/2 
+                               bg-black/40 text-white p-1.5 rounded-full
+                               opacity-100 md:opacity-0 md:group-hover:opacity-100
+                               transition"
                                     >
                                         <ChevronLeft size={20} />
                                     </button>
 
-                                    {/* flecha derecha */}
                                     <button
                                         onClick={nextImage}
-                                        className="
-                      absolute right-2 top-1/2 -translate-y-1/2 
-                      bg-black/5 text-white p-1.5 rounded-full
-                      opacity-100
-                      md:opacity-0 md:group-hover:opacity-100
-                      transition
-                    "
+                                        className="absolute right-2 top-1/2 -translate-y-1/2 
+                               bg-black/40 text-white p-1.5 rounded-full
+                               opacity-100 md:opacity-0 md:group-hover:opacity-100
+                               transition"
                                     >
                                         <ChevronRight size={20} />
                                     </button>
+
+                                    <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1">
+                                        {product.imagenes.map((_, idx) => (
+                                            <span
+                                                key={idx}
+                                                className={`h-2 w-2 rounded-full transition-colors duration-300 ${idx === currentIndex ? 'bg-white' : 'bg-white/40'
+                                                    }`}
+                                            />
+                                        ))}
+                                    </div>
+
                                 </>
+
+
                             )}
                         </div>
                     ) : (

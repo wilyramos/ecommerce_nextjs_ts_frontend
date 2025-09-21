@@ -16,7 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         {
             url: "https://www.gophone.pe",
             lastModified: new Date(),
-            changefreq: "daily",
+            changefreq: "weekly",
             priority: 1,
         },
         ...productUrls,

@@ -6,7 +6,7 @@ export default function ProductJsonLd({ producto }: { producto: ProductWithCateg
     if (!producto) return null
 
     const firstImage = producto.imagenes?.[0] || 'https://www.gophone.pe/logomini.svg'
-    const url = `https://www.gophone.pe/product/${producto.slug}`
+    const url = `https://www.gophone.pe/productos/${producto.slug}`
     const brand = producto.atributos?.Marca || 'GoPhone'
 
     // Price siempre como string con 2 decimales
