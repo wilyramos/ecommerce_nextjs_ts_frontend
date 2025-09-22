@@ -4,10 +4,18 @@ import { useCheckoutStore } from '@/src/store/checkoutStore'
 import { useForm } from 'react-hook-form'
 import ErrorMessage from '@/components/ui/ErrorMessage'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import type { TCreateOrder } from '@/src/schemas'
 import { useCartStore } from '@/src/store/cartStore'
 import { createOrderAction } from '@/actions/order/create-order-action'
+import { locations } from '@/src/data/locations'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 
 type ShippingData = {
     departamento: string
@@ -24,12 +32,7 @@ export default function ShippingForm() {
     const { shipping, setShipping } = useCheckoutStore((state) => state)
     const { cart } = useCartStore((state) => state)
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-        reset,
-    } = useForm<ShippingData>({
+    const { register, handleSubmit, watch, reset, setValue, formState: { errors } } = useForm<ShippingData>({
         defaultValues: {
             departamento: shipping?.departamento || '',
             provincia: shipping?.provincia || '',
@@ -41,15 +44,38 @@ export default function ShippingForm() {
         },
     })
 
+    const selectedDepartamento = watch('departamento')
+    const selectedProvincia = watch('provincia')
+    const [provincias, setProvincias] = useState<string[]>([])
+    const [distritos, setDistritos] = useState<string[]>([])
+
+    // Reset form if shipping exists
     useEffect(() => {
         if (shipping) reset(shipping)
     }, [shipping, reset])
+
+    // Actualizar provincias al cambiar departamento
+    useEffect(() => {
+        const dept = locations.find(d => d.departamento === selectedDepartamento)
+        setProvincias(dept ? dept.provincias.map(p => p.nombre) : [])
+        setDistritos([])
+        setValue('provincia', '')
+        setValue('distrito', '')
+    }, [selectedDepartamento, setValue])
+
+    // Actualizar distritos al cambiar provincia
+    useEffect(() => {
+        const dept = locations.find(d => d.departamento === selectedDepartamento)
+        const prov = dept?.provincias.find(p => p.nombre === selectedProvincia)
+        setDistritos(prov ? prov.distritos : [])
+        setValue('distrito', '')
+    }, [selectedProvincia, selectedDepartamento, setValue])
 
     const onSubmit = async (data: ShippingData) => {
         setShipping(data)
 
         const orderPayload: TCreateOrder = {
-            items: cart.map((item) => ({
+            items: cart.map(item => ({
                 productId: item._id,
                 quantity: item.cantidad,
                 price: item.precio,
@@ -68,59 +94,55 @@ export default function ShippingForm() {
     }
 
     return (
-        <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="max-w-md mx-auto space-y-3"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto space-y-3">
             {/* Departamento / Provincia / Distrito */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {/* Departamento */}
                 <div>
-                    <label className="text-xs font-bold">Departamento
-                        <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                        type="text"
-                        {...register('departamento', {
-                            required: 'El departamento es obligatorio',
-                        })}
-                        placeholder="Ej. Lima"
-                        className="w-full px-3 py-2 border rounded-lg"
-                    />
-                    {errors.departamento && (
-                        <ErrorMessage>{errors.departamento.message}</ErrorMessage>
-                    )}
+                    <label className="text-xs font-bold">Departamento <span className="text-red-500">*</span></label>
+                    <Select onValueChange={(val) => setValue('departamento', val)}>
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="--Seleccione--" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {locations.map(d => (
+                                <SelectItem key={d.departamento} value={d.departamento}>{d.departamento}</SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    {errors.departamento && <ErrorMessage>{errors.departamento.message}</ErrorMessage>}
                 </div>
 
+                {/* Provincia */}
                 <div>
-                    <label className="text-xs font-bold">Provincia
-                        <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                        type="text"
-                        {...register('provincia', {
-                            required: 'La provincia es obligatoria',
-                        })}
-                        placeholder="Ej. Lima"
-                        className="w-full px-3 py-2 border rounded-lg"
-                    />
-                    {errors.provincia && (
-                        <ErrorMessage>{errors.provincia.message}</ErrorMessage>
-                    )}
+                    <label className="text-xs font-bold">Provincia <span className="text-red-500">*</span></label>
+                    <Select onValueChange={(val) => setValue('provincia', val)} disabled={!provincias.length}>
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="--Seleccione--" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {provincias.map(p => (
+                                <SelectItem key={p} value={p}>{p}</SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    {errors.provincia && <ErrorMessage>{errors.provincia.message}</ErrorMessage>}
                 </div>
 
+                {/* Distrito */}
                 <div>
-                    <label className="text-xs font-bold">Distrito</label>
-                    <input
-                        type="text"
-                        {...register('distrito', {
-                            required: 'El distrito es obligatorio',
-                        })}
-                        placeholder="Ej. Miraflores"
-                        className="w-full px-3 py-2 border rounded-lg"
-                    />
-                    {errors.distrito && (
-                        <ErrorMessage>{errors.distrito.message}</ErrorMessage>
-                    )}
+                    <label className="text-xs font-bold">Distrito <span className="text-red-500">*</span></label>
+                    <Select onValueChange={(val) => setValue('distrito', val)} disabled={!distritos.length}>
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="--Seleccione--" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {distritos.map(d => (
+                                <SelectItem key={d} value={d}>{d}</SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                    {errors.distrito && <ErrorMessage>{errors.distrito.message}</ErrorMessage>}
                 </div>
             </div>
 
@@ -129,15 +151,11 @@ export default function ShippingForm() {
                 <label className="text-xs font-bold">Dirección *</label>
                 <input
                     type="text"
-                    {...register('direccion', {
-                        required: 'La dirección es obligatoria',
-                    })}
+                    {...register('direccion', { required: 'La dirección es obligatoria' })}
                     placeholder="Av. Siempre Viva 123"
                     className="w-full px-3 py-2 border rounded-lg"
                 />
-                {errors.direccion && (
-                    <ErrorMessage>{errors.direccion.message}</ErrorMessage>
-                )}
+                {errors.direccion && <ErrorMessage>{errors.direccion.message}</ErrorMessage>}
             </div>
 
             {/* Número y Piso/Dpto */}
@@ -168,15 +186,11 @@ export default function ShippingForm() {
                 <label className="text-xs font-bold">Referencia *</label>
                 <input
                     type="text"
-                    {...register('referencia', {
-                        required: 'La referencia es obligatoria',
-                    })}
+                    {...register('referencia', { required: 'La referencia es obligatoria' })}
                     placeholder="Ej. Frente a la tienda Tottus"
                     className="w-full px-3 py-2 border rounded-lg"
                 />
-                {errors.referencia && (
-                    <ErrorMessage>{errors.referencia.message}</ErrorMessage>
-                )}
+                {errors.referencia && <ErrorMessage>{errors.referencia.message}</ErrorMessage>}
             </div>
 
             {/* Botón */}
