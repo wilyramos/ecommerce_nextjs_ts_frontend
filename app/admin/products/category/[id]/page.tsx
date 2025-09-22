@@ -13,6 +13,8 @@ export default async function CategoryPageDetails({ params }: { params: params }
     const category = await getCategory(id);
     const patternCategories = await getPatternCategories();
 
+    console.log("category", category);
+
     return (
 
         <div className="h-screen overflow-y-auto p-6 bg-white">

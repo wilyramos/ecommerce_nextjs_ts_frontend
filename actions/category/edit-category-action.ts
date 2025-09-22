@@ -44,8 +44,10 @@ export async function EditCategory(id: string, prevState: ActionStateType, formD
         descripcion: formData.get("description"),
         parent: formData.get("parent") || null,
         attributes: attributesData,
+        image: formData.get("image") || undefined,
     }
 
+    console.log("imagen", categoryData.image)
     // console.log("categoryData", categoryData)
     // console.log("attributesData", attributesData)
 

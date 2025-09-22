@@ -1,5 +1,7 @@
+import * as React from "react";
 import type { CategoryResponse } from "@/src/schemas";
 import AttributeFields from "./AttributeFileds";
+import { ImageUploadDialog } from "./ImageUploadDialog";
 
 type Props = {
     category?: CategoryResponse;
@@ -7,12 +9,12 @@ type Props = {
 };
 
 export default function CategoryForm({ category, categories }: Props) {
-
+    const imageInputRef = React.useRef<HTMLInputElement>(null);
 
     return (
         <div className="text-xs text-gray-500 space-y-4">
             <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="name" className="block text-sm text-black font-semibold">
                     Nombre de la categoría
                 </label>
                 <input
@@ -25,7 +27,7 @@ export default function CategoryForm({ category, categories }: Props) {
             </div>
 
             <div>
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="description" className="block text-sm text-black font-semibold">
                     Descripción
                 </label>
                 <textarea
@@ -37,7 +39,7 @@ export default function CategoryForm({ category, categories }: Props) {
             </div>
 
             <div>
-                <label htmlFor="parent" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="parent" className="block text-sm text-black font-semibold">
                     Categoría padre
                 </label>
                 <select
@@ -54,12 +56,28 @@ export default function CategoryForm({ category, categories }: Props) {
                     ))}
                 </select>
                 {category?._id && (
-                    <p className="text-xs text-gray-500 mt-1">No puedes seleccionar la misma categoría como padre.</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                        No puedes seleccionar la misma categoría como padre.
+                    </p>
                 )}
             </div>
 
             <AttributeFields defaultAttributes={category?.attributes} />
 
+            <div>
+                <label className="block text-sm text-black font-semibold mb-1">
+                    Imagen de la categoría
+                </label>
+                {/* Pasamos la referencia del input a ImageUploadDialog */}
+                <ImageUploadDialog image={category?.image} inputRef={imageInputRef} />
+                {/* Hidden input dentro del form */}
+                <input
+                    ref={imageInputRef}
+                    type="hidden"
+                    name="image"
+                    defaultValue={category?.image || ""}
+                />
+            </div>
         </div>
     );
 }

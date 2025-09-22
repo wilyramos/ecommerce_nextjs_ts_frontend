@@ -42,7 +42,10 @@ export async function createCategoryAction(prevState: ActionStateType, formData:
         descripcion: formData.get("description"),
         parent: formData.get("parent") || undefined,
         attributes: attributesData,
+        image: formData.get("image") || undefined,
     })
+
+    console.log("imagen", formData.get("image"))
 
     if (!category.success) {
         return {
@@ -64,6 +67,7 @@ export async function createCategoryAction(prevState: ActionStateType, formData:
             descripcion: category.data.descripcion,
             parent: category.data.parent ? category.data.parent : undefined,
             attributes: category.data.attributes,
+            image: category.data.image,
         })
     })
 
@@ -76,11 +80,8 @@ export async function createCategoryAction(prevState: ActionStateType, formData:
         }
     }
 
-
     // Revalidate for redirect
     revalidatePath("/admin/category")
-
-
 
     // console.log("category", category.data)
 

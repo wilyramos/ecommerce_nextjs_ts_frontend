@@ -186,6 +186,8 @@ export const categoryBaseSchema = z.object({
     slug: z.string().optional(),
     parent: z.string().nullable().optional(),
     attributes: categoryAttributesArraySchema.optional(),
+    image: z.string().url('Debe ser una URL válida').optional(),
+    isActive: z.boolean().optional(),
 });
 
 // Create category
