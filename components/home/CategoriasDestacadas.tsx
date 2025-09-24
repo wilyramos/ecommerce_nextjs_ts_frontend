@@ -10,8 +10,8 @@ import { CarouselArrow } from "../ui/CarouselArrow";
 const responsive = {
     superLargeDesktop: { breakpoint: { max: 4000, min: 3000 }, items: 8 },
     desktop: { breakpoint: { max: 3000, min: 1024 }, items: 6 },
-    tablet: { breakpoint: { max: 1024, min: 640 }, items: 5 },
-    mobile: { breakpoint: { max: 640, min: 0 }, items: 4 },
+    tablet: { breakpoint: { max: 1024, min: 640 }, items: 4 },
+    mobile: { breakpoint: { max: 640, min: 0 }, items: 3 },
 };
 
 
@@ -70,30 +70,7 @@ export default function CategoriasDestacadas({
                 </Carousel>
             </div>
 
-            {/* estilos para flechas */}
-            <style jsx global>{`
-                /* Siempre visibles en mobile/tablet */
-                @media (max-width: 1023px) {
-                    .react-multiple-carousel__arrow {
-                        opacity: 1 !important;
-                        visibility: visible !important;
-                    }
-                }
-
-                /* En desktop: ocultas por defecto */
-                @media (min-width: 1024px) {
-                    .react-multiple-carousel__arrow {
-                        opacity: 0;
-                        visibility: hidden;
-                        transition: opacity 0.3s ease;
-                    }
-                    /* visibles solo al hacer hover en el contenedor */
-                    .group:hover .react-multiple-carousel__arrow {
-                        opacity: 1;
-                        visibility: visible;
-                    }
-                }
-            `}</style>
+          
         </section>
     );
 }
