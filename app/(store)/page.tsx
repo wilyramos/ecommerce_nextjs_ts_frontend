@@ -80,7 +80,7 @@ export default function HomePage() {
                 <ProductosDestacados />
             </section>
 
-            <section className="my-8">
+            <section className="my-5">
                 <BrandsList />
             </section>
         </>
