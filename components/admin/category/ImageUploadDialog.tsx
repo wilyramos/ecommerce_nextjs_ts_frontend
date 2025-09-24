@@ -16,6 +16,7 @@ import Image from "next/image";
 import { useState } from "react";
 import SpinnerLoading from "@/components/ui/SpinnerLoading";
 import { useRef } from "react";
+import { toast } from "sonner";
 
 type Props = {
     image?: string;
@@ -31,6 +32,17 @@ export function ImageUploadDialog({ image, inputRef }: Props) {
     async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
         if (!file) return;
+
+        if (!file.type.startsWith("image/")) {
+            toast.error("Por favor, selecciona un archivo de imagen válido.");
+            return;
+        }
+        if (file.size > 1 * 1024 * 1024) { // 1MB
+            toast.error("El tamaño de la imagen no debe superar los 1MB.");
+            return;
+        }
+
+        console.log("Archivo válido");
 
         setIsUploading(true);
 
@@ -135,7 +147,7 @@ export function ImageUploadDialog({ image, inputRef }: Props) {
                         </button>
                     )}
                     <DialogClose asChild>
-                        
+
                     </DialogClose>
                 </DialogFooter>
             </DialogContent>

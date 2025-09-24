@@ -46,13 +46,16 @@ export default function CategoriasDestacadas({
                         >
                             <div className="border-2 p-2 rounded-full border-black/10 shadow-xs mb-2 bg-white">
                                 {categoria.image ? (
-                                    <Image
-                                        src={categoria.image}
-                                        alt={categoria.nombre}
-                                        width={90}
-                                        height={90}
-                                        className="object-contain transition-transform duration-500 group-hover/item:scale-110"
-                                    />
+                                    <div className="w-20 h-20 rounded-full overflow-hidden">
+
+                                        <Image
+                                            src={categoria.image}
+                                            alt={categoria.nombre}
+                                            width={90}
+                                            height={90}
+                                            className="object-cover transition-transform duration-500 group-hover/item:scale-110"
+                                        />
+                                    </div>
                                 ) : (
                                     <div className="w-20 h-20 flex items-center justify-center bg-gray-100 rounded-full">
                                         <span className="text-gray-400 text-sm">Sin imagen</span>
