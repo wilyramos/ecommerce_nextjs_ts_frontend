@@ -16,7 +16,7 @@ export default async function ProductosNuevos() {
         <section className="">
             <div className="max-w-7xl mx-auto p-4 ">
                 <h2 className="text-2xl font-semibold mb-4">Productos Nuevos</h2>
-                <ClientCarouselProductosNuevos products={newProducts.products} items={6} />
+                <ClientCarouselProductosNuevos products={newProducts.products}  />
             </div>
         </section>
     );

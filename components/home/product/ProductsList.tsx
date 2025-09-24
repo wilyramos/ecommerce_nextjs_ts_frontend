@@ -1,6 +1,5 @@
 import type { ProductsList } from "@/src/schemas";
 import ProductCard from "@/components/home/product/ProductCard";
-import Pagination from "@/components/ui/Pagination";
 
 export default function ProductosList({ products }: { products: ProductsList }) {
 
@@ -17,9 +16,6 @@ export default function ProductosList({ products }: { products: ProductsList }) 
                     <ProductCard key={product._id} product={product} />
                 ))}
             </div>
-            <Pagination totalPages={products.totalPages} currentPage={products.currentPage}
-                pathname={`/brands/dasdas`}
-            />
         </>
     );
 }

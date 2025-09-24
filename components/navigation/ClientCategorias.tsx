@@ -19,8 +19,6 @@ import type { CategoryListResponse, CategoryResponse } from "@/src/schemas";
 export default function ClientCategorias({ categories }: { categories: CategoryResponse[] }) {
     const [open, setOpen] = useState(false);
 
-
-    console.log(categories);
     const grouped = categories.reduce((acc, category) => {
         const parentId =
             category.parent && typeof category.parent !== "string"
@@ -36,6 +34,10 @@ export default function ClientCategorias({ categories }: { categories: CategoryR
     }, {} as Record<string, CategoryListResponse>);
 
     const rootCategories = grouped["root"] || [];
+
+    const handleToggle = () => {
+        setOpen(!open);
+    }
 
 
     return (
@@ -71,7 +73,7 @@ export default function ClientCategorias({ categories }: { categories: CategoryR
                                     <details className="group">
                                         <summary className="cursor-pointer list-none flex items-center justify-between text-base font-semibold px-2 py-2 rounded-lg transition-colors duration-200 hover:text-indigo-600 hover:bg-indigo-50">
                                             <span className="flex items-center gap-2">
-                                                <span className="text-gray-700 font-medium">{cat.nombre}</span>
+                                                <span className="text-black font-medium">{cat.nombre}</span>
                                             </span>
                                             <PiCaretRightBold
                                                 size={16}
@@ -83,8 +85,9 @@ export default function ClientCategorias({ categories }: { categories: CategoryR
                                             {subcategories.map((sub) => (
                                                 <li key={sub._id}>
                                                     <Link
-                                                        href={`/categoria/${sub._id}`}
-                                                        className="block text-sm text-gray-600 hover:text-indigo-600"
+                                                        href={`/categoria/${sub.slug}`}
+                                                        className="block px-2 py-1 text-gray-600 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-colors duration-200"
+                                                        onClick={handleToggle}
                                                     >
                                                         {sub.nombre}
                                                     </Link>

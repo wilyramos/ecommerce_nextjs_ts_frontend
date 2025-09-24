@@ -103,12 +103,13 @@ export default function ButtonShowSheetMobile({
                                             </span>
                                             <PiCaretRightBold className="h-4 w-4 text-gray-400 group-open:rotate-90 transition-transform" />
                                         </summary>
-                                        <div className="pl-6">
+                                        <div className="pl-6 space-y-2">
                                             {subcategories.map((subcategory) => (
                                                 <Link
                                                     key={subcategory._id}
                                                     href={`/categoria/${subcategory.slug}`}
                                                     className="block text-sm text-gray-600 hover:text-indigo-600 transition"
+                                                    onClick={() => setOpen(false)}
                                                 >
                                                     {subcategory.nombre}
                                                 </Link>
