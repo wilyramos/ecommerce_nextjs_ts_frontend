@@ -34,13 +34,19 @@ export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {
                         className="group flex flex-col items-center space-y-2"
                     >
                         <div className="relative h-24 w-24 overflow-hidden ">
-                            <Image
-                                src={brand.logo || "/logomini.svg"}
-                                alt={brand.nombre}
-                                fill
-                                className="object-contain p-3"
-                                quality={10}
-                            />
+                            {brand.logo ? (
+                                <Image
+                                    src={brand.logo}
+                                    alt={brand.nombre}
+                                    fill
+                                    className="object-contain p-3"
+                                    quality={10}
+                                />
+                            ) : (
+                                <div className="flex items-center justify-center w-full h-full text-gray-400 text-sm">
+                                    Sin logo
+                                </div>
+                            )}
                         </div>
                         <p className="text-sm font-medium text-gray-700 ">
                             {brand.nombre}

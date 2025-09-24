@@ -4,7 +4,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MdClear } from "react-icons/md";
 import type { Attribute } from "@/src/schemas";
-import { Range } from "react-range";
 
 import {
     Accordion,
@@ -26,19 +25,27 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
     const searchParams = useSearchParams();
 
     const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
-    const [priceValues, setPriceValues] = useState<[number, number]>([MIN, MAX]);
+    const [minPrice, setMinPrice] = useState<number>(MIN);
+    const [maxPrice, setMaxPrice] = useState<number>(MAX);
 
+    // --- Cargar valores iniciales desde la URL ---
     useEffect(() => {
         const filters: Record<string, string[]> = {};
-        attributes.forEach(attr => {
+        attributes.forEach((attr) => {
             const param = searchParams.get(attr.name);
             if (param) filters[attr.name] = param.split(",");
         });
         setSelectedFilters(filters);
 
         const range = searchParams.get("priceRange");
-        const [min, max] = range?.split("-").map(Number) || [MIN, MAX];
-        setPriceValues([min, max]);
+        if (range) {
+            const [min, max] = range.split("-").map(Number);
+            setMinPrice(min);
+            setMaxPrice(max);
+        } else {
+            setMinPrice(MIN);
+            setMaxPrice(MAX);
+        }
     }, [searchParams, attributes]);
 
     const updateParams = (updates: Record<string, string[] | null>) => {
@@ -53,7 +60,7 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
     const toggleCheckboxValue = (attrName: string, value: string) => {
         const prevValues = selectedFilters[attrName] || [];
         const updatedValues = prevValues.includes(value)
-            ? prevValues.filter(v => v !== value)
+            ? prevValues.filter((v) => v !== value)
             : [...prevValues, value];
 
         setSelectedFilters({ ...selectedFilters, [attrName]: updatedValues });
@@ -62,14 +69,28 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
 
     const clearFilters = () => {
         const cleared: Record<string, null> = {};
-        attributes.forEach(attr => (cleared[attr.name] = null));
+        attributes.forEach((attr) => (cleared[attr.name] = null));
         setSelectedFilters({});
-        setPriceValues([MIN, MAX]);
+        setMinPrice(MIN);
+        setMaxPrice(MAX);
         updateParams({ ...cleared, priceRange: null, sort: null });
+    };
+
+    // --- Manejar cambios en inputs de precio ---
+    const handlePriceChange = (type: "min" | "max", value: string) => {
+        const number = Number(value);
+        if (type === "min") {
+            setMinPrice(number);
+            updateParams({ priceRange: [`${number}-${maxPrice}`] });
+        } else {
+            setMaxPrice(number);
+            updateParams({ priceRange: [`${minPrice}-${number}`] });
+        }
     };
 
     return (
         <aside className="py-4 border-gray-200">
+            {/* Botón limpiar filtros */}
             <div className="flex justify-end mb-4">
                 <button
                     onClick={clearFilters}
@@ -79,68 +100,78 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
                     Limpiar filtros
                 </button>
             </div>
-
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Filtros</h3>
-
-            {/* ----- Filtro por Precio ----- */}
+            {/* ----- Filtro por Precio con inputs ----- */}
             <div className="mb-6">
-                <h2 className="text-sm font-medium text-black mb-1">Precio</h2>
-                <Range
-                    step={10}
-                    min={MIN}
-                    max={MAX}
-                    values={priceValues}
-                    onChange={(values) => setPriceValues([values[0], values[1]])}
-                    onFinalChange={(values) =>
-                        updateParams({ priceRange: [`${values[0]}-${values[1]}`] })
-                    }
-                    renderTrack={({ props, children }) => (
-                        <div
-                            {...props}
-                            className="w-full h-2 bg-gray-200 rounded-full"
-                            style={{ padding: "0 12px" }}
-                        >
-                            {children}
-                        </div>
-                    )}
-                    renderThumb={({ props }) => {
-                        const { key, ...rest } = props;
-                        return (
-                            <div
-                                key={key}
-                                {...rest}
-                                className="w-4 h-4 bg-indigo-600 rounded-full shadow-md transition-transform duration-150 ease-out"
-                            />
-                        );
-                    }}
-                />
-                <div className="flex justify-between text-xs text-black pt-2 px-1">
-                    <span>S/ {priceValues[0]}</span>
-                    <span>S/ {priceValues[1]}</span>
+                <h2 className="text-base font-medium text-black mb-1">Precio</h2>
+
+                <div
+                    className="flex items-center gap-2 flex-wrap"
+                >
+                    {/* Input Mín */}
+                    <div className="flex flex-col text-base text-black w-full sm:w-auto">
+                        <label htmlFor="min" className="mb-1">
+                            Mín
+                        </label>
+                        <input
+                            id="min"
+                            type="number"
+                            min={0}
+                            value={minPrice}
+                            onChange={(e) => handlePriceChange("min", e.target.value)}
+                            className="w-full sm:w-24
+          border border-gray-300 rounded 
+          px-2 py-1
+          focus:outline-none focus:ring-1 focus:ring-gray-400"
+                        />
+                    </div>
+
+                    <span className="text-gray-500 md:mt-5">-</span>
+
+                    {/* Input Máx */}
+                    <div className="flex flex-col text-base text-black w-full sm:w-auto">
+                        <label htmlFor="max" className="mb-1">
+                            Máx
+                        </label>
+                        <input
+                            id="max"
+                            type="number"
+                            min={0}
+                            value={maxPrice}
+                            onChange={(e) => handlePriceChange("max", e.target.value)}
+                            className="
+          w-full sm:w-24
+          border border-gray-300 rounded 
+          px-2 py-1
+          focus:outline-none focus:ring-1 focus:ring-gray-400
+        "
+                        />
+                    </div>
                 </div>
             </div>
 
+
             {/* ----- Filtros por atributos con shadcn Accordion ----- */}
             <Accordion type="multiple" className="space-y-4">
-                {attributes.map(attr => (
+                {attributes.map((attr) => (
                     <AccordionItem key={attr.name} value={attr.name}>
-                        <AccordionTrigger className="text-sm font-medium text-black hover:bg-gray-100 py-2 px-1 rounded-md">
+                        <AccordionTrigger className="text-base font-medium text-black hover:bg-gray-100 py-2 px-2 rounded-md">
                             {attr.name}
                         </AccordionTrigger>
-                        <AccordionContent className="pl-2 pt-2 text-sm text-gray-600">
+                        <AccordionContent className="pl-2 pt-2 text-base text-gray-600">
                             <ul className="space-y-1">
-                                {attr.values.map(value => (
+                                {attr.values.map((value) => (
                                     <li
                                         key={value}
-                                        className="flex items-center gap-2 hover:bg-gray-100 cursor-pointer py-1 rounded-md"
+                                        onClick={() => toggleCheckboxValue(attr.name, value)}
+                                        className="flex items-center gap-2 hover:bg-gray-100  px-2 cursor-pointer py-1 rounded-md select-none"
                                     >
                                         <input
                                             type="checkbox"
                                             checked={!!selectedFilters[attr.name]?.includes(value)}
-                                            onChange={() => toggleCheckboxValue(attr.name, value)}
-                                            className="accent-blue-600"
+                                            readOnly
+                                            className="accent-blue-600 pointer-events-none"
                                         />
-                                        <label className="text-sm text-gray-600">{value}</label>
+                                        <span className="text-base text-gray-600">{value}</span>
                                     </li>
                                 ))}
                             </ul>

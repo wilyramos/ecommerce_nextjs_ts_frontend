@@ -81,17 +81,17 @@ export default async function pageCategoria({
     return (
 
         <main className="max-w-7xl mx-auto p-5">
-            <section className="grid grid-cols-1 sm:grid-cols-5 gap-6">
+            <section className="grid grid-cols-1 sm:grid-cols-8 gap-6">
 
                 {/* Filtros en sidebar solo en escritorio */}
-                <div className="hidden sm:block sm:col-span-1 bg-white px-2 rounded">
+                <div className="hidden sm:block sm:col-span-2 bg-white px-2 rounded">
                     <div className="sticky top-20 bg-white px-2 rounded">
                         <FiltrosPorCategoria categorySlug={slug} />
                     </div>
                 </div>
 
                 {/* Productos */}
-                <section className="sm:col-span-4 space-y-4">
+                <section className="sm:col-span-6 space-y-4 ">
 
                     {/* Barra responsive arriba en mobile */}
                     <div className="flex items-center justify-between gap-2 sm:hidden">

@@ -7,6 +7,7 @@ import type { Product } from "@/src/schemas";
 import Link from "next/link";
 import { CustomDot } from "../ui/CustomDot";
 import { ShoppingBag, Sparkles } from "lucide-react";
+import { CustomArrow } from "../ui/CustomArrows";
 
 const responsive = {
     superLargeDesktop: { breakpoint: { max: 3000, min: 2000 }, items: 1 },
@@ -17,15 +18,20 @@ const responsive = {
 
 export default function MainCarousel({ products }: { products: Product[] }) {
     return (
-        <div className="w-full max-w-screen-2xl mx-auto">
+        <div className="w-full max-w-screen-2xl mx-auto relative">
             <Carousel
                 responsive={responsive}
                 autoPlay
                 infinite
                 autoPlaySpeed={7000}
-                arrows={false}
                 showDots
                 customDot={<CustomDot />}
+                renderDotsOutside
+                containerClass="carousel-container"
+                itemClass="carousel-item"
+                dotListClass="custom-dot-list-style"
+                customLeftArrow={<CustomArrow direction="left" />}
+                customRightArrow={<CustomArrow direction="right" />}
             >
                 {products.map((product) => (
                     <div

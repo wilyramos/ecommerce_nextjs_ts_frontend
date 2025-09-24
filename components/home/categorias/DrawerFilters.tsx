@@ -8,7 +8,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import type { Attribute } from "@/src/schemas";
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
-import { Range } from "react-range";
 
 import {
     Drawer,
@@ -32,82 +31,81 @@ export default function DrawerFilters({ categorySlug, attributes }: Props) {
     const [open, setOpen] = useState(false);
 
     const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
-    const [priceValues, setPriceValues] = useState<[number, number]>([MIN, MAX]);
+    const [minPrice, setMinPrice] = useState<number>(MIN);
+    const [maxPrice, setMaxPrice] = useState<number>(MAX);
 
     useEffect(() => {
         const filters: Record<string, string[]> = {};
-
         attributes.forEach((attr) => {
             const param = searchParams.get(attr.name);
-            if (param) {
-                filters[attr.name] = param.split(",");
-            }
+            if (param) filters[attr.name] = param.split(",");
         });
-
         setSelectedFilters(filters);
 
         const range = searchParams.get("priceRange");
         const [min, max] = range?.split("-").map(Number) || [MIN, MAX];
-        setPriceValues([min, max]);
+        setMinPrice(min);
+        setMaxPrice(max);
     }, [searchParams, attributes]);
 
     const updateParams = (updates: Record<string, string[] | null>) => {
         const params = new URLSearchParams(searchParams.toString());
-
         for (const [key, val] of Object.entries(updates)) {
-            if (val === null || val.length === 0) {
-                params.delete(key);
-            } else {
-                params.set(key, val.join(","));
-            }
+            if (!val || val.length === 0) params.delete(key);
+            else params.set(key, val.join(","));
         }
-
         router.push(`/categoria/${categorySlug}?${params.toString()}`);
     };
 
     const toggleCheckboxValue = (attrName: string, value: string) => {
         const prevValues = selectedFilters[attrName] || [];
-        let updatedValues: string[];
-
-        if (prevValues.includes(value)) {
-            updatedValues = prevValues.filter((v) => v !== value);
-        } else {
-            updatedValues = [...prevValues, value];
-        }
-
-        const newFilters = { ...selectedFilters, [attrName]: updatedValues };
-        setSelectedFilters(newFilters);
+        const updatedValues = prevValues.includes(value)
+            ? prevValues.filter((v) => v !== value)
+            : [...prevValues, value];
+        setSelectedFilters({ ...selectedFilters, [attrName]: updatedValues });
         updateParams({ [attrName]: updatedValues });
+    };
+
+    const handlePriceChange = (type: "min" | "max", value: string) => {
+        const num = Math.max(0, Number(value) || 0);
+        if (type === "min") {
+            setMinPrice(num);
+            updateParams({ priceRange: [`${num}-${maxPrice}`] });
+        } else {
+            setMaxPrice(num);
+            updateParams({ priceRange: [`${minPrice}-${num}`] });
+        }
     };
 
     const clearFilters = () => {
         const cleared: Record<string, null> = {};
         attributes.forEach((attr) => (cleared[attr.name] = null));
         setSelectedFilters({});
-        setPriceValues([MIN, MAX]);
-        updateParams({
-            ...cleared,
-            priceRange: null,
-            sort: null,
-        });
+        setMinPrice(MIN);
+        setMaxPrice(MAX);
+        updateParams({ ...cleared, priceRange: null, sort: null });
         setOpen(false);
     };
 
     return (
         <Drawer open={open} onOpenChange={setOpen}>
             <DrawerTrigger asChild>
-                <button className="flex items-center gap-1 text-black font-semibold bg-white px-2 py-1 rounded-xl shadow-md">
+                <button className="w-full cursor-pointer bg-white rounded-md shadow-xs px-2 py-2 flex items-center gap-2 justify-center sm:hidden">
                     <VscSettings size={20} />
                     Filtros
                 </button>
             </DrawerTrigger>
 
             <DrawerContent className="p-4">
-                <DrawerHeader className="flex justify-between items-center">
-                    <DrawerTitle className="text-lg font-medium text-gray-700">Filtros</DrawerTitle>
+                <DrawerHeader className="flex justify-between ">
+                    <DrawerTitle className="text-lg font-medium text-gray-700">
+                        Filtros
+                    </DrawerTitle>
+
+                   
                     <button
                         onClick={clearFilters}
-                        className="flex items-center gap-1 text-xs text-red-600 hover:text-red-500 transition"
+                        className="flex justify-end gap-1 text-xs text-red-600 hover:text-red-500 transition"
                     >
                         <MdClear size={18} />
                         Limpiar filtros
@@ -116,46 +114,39 @@ export default function DrawerFilters({ categorySlug, attributes }: Props) {
 
                 {/* Contenido scrolleable */}
                 <ScrollArea className="h-auto pr-2 mt-2 overflow-y-auto">
-                    {/* Filtro de precio */}
+                    {/* ----- Filtro por Precio ----- */}
                     <div className="mb-6">
                         <h2 className="text-sm font-medium text-black mb-1">Precio</h2>
-                        <Range
-                            step={10}
-                            min={MIN}
-                            max={MAX}
-                            values={priceValues}
-                            onChange={(values) => setPriceValues([values[0], values[1]])}
-                            onFinalChange={(values) => {
-                                const rangeValue = `${values[0]}-${values[1]}`;
-                                updateParams({ priceRange: [rangeValue] });
-                            }}
-                            renderTrack={({ props, children }) => (
-                                <div
-                                    {...props}
-                                    className="w-full h-2 bg-gray-200 rounded-full"
-                                    style={{ padding: "0 12px" }}
-                                >
-                                    {children}
-                                </div>
-                            )}
-                            renderThumb={({ props }) => {
-                                const { key, ...rest } = props;
-                                return (
-                                    <div
-                                        key={key}
-                                        {...rest}
-                                        className="w-4 h-4 bg-indigo-600 rounded-full shadow-md transition-transform duration-150 ease-out px-2"
-                                    />
-                                );
-                            }}
-                        />
-                        <div className="flex justify-between text-xs text-black pt-2 px-1">
-                            <span>S/ {priceValues[0]}</span>
-                            <span>S/ {priceValues[1]}</span>
+                        <div className="flex flex-nowrap items-center gap-4 sm:gap-2 pt-2">
+                            <div className="flex flex-col text-xs text-black w-full sm:w-auto">
+                                <label htmlFor="min" className="mb-1">Mín</label>
+                                <input
+                                    id="min"
+                                    type="number"
+                                    min={0}
+                                    value={minPrice}
+                                    onChange={(e) => handlePriceChange("min", e.target.value)}
+                                    className="w-full sm:w-24 border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-gray-400"
+                                />
+                            </div>
+
+                            <span className="text-gray-500 mt-5 sm:mt-6">-</span>
+
+                            <div className="flex flex-col text-xs text-black w-full sm:w-auto">
+                                <label htmlFor="max" className="mb-1">Máx</label>
+                                <input
+                                    id="max"
+                                    type="number"
+                                    min={0}
+                                    value={maxPrice}
+                                    onChange={(e) => handlePriceChange("max", e.target.value)}
+                                    className="w-full sm:w-24 border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-gray-400"
+                                />
+                            </div>
                         </div>
                     </div>
 
-                    {/* Filtros por atributos */}
+                    {/* ----- Filtros por atributos ----- */}
                     <div className="space-y-4">
                         {attributes.map((attr) => (
                             <Disclosure key={attr.name}>
@@ -173,17 +164,16 @@ export default function DrawerFilters({ categorySlug, attributes }: Props) {
                                                 {attr.values.map((value) => (
                                                     <li
                                                         key={value}
-                                                        className="flex items-center gap-2 hover:bg-gray-100 cursor-pointer py-1"
+                                                        onClick={() => toggleCheckboxValue(attr.name, value)}
+                                                        className="flex items-center gap-2 hover:bg-gray-100 cursor-pointer py-1 rounded-md select-none"
                                                     >
                                                         <input
                                                             type="checkbox"
-                                                            name={`${attr.name}-${value}`}
-                                                            value={value}
                                                             checked={!!selectedFilters[attr.name]?.includes(value)}
-                                                            onChange={() => toggleCheckboxValue(attr.name, value)}
-                                                            className="accent-blue-600"
+                                                            readOnly
+                                                            className="accent-blue-600 pointer-events-none"
                                                         />
-                                                        <label className="text-sm text-gray-600">{value}</label>
+                                                        <span className="text-sm text-gray-600">{value}</span>
                                                     </li>
                                                 ))}
                                             </ul>

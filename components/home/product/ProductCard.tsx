@@ -4,7 +4,6 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { FaFireAlt } from "react-icons/fa";
 import ColorCircle from "@/components/ui/ColorCircle";
 import type { Product } from "@/src/schemas";
 
@@ -55,7 +54,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
     return (
         <div
-            className="group relative flex flex-col bg-white text-gray-700 rounded shadow-xs transform transition-transform duration-500 hover:scale-[1.03] overflow-visible my-2"
+            className="group relative flex flex-col bg-white text-gray-700 rounded shadow-xs transform transition-transform duration-500 hover:scale-[1.01] overflow-visible my-2"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onTouchStart={handleTouchStart}
@@ -132,11 +131,7 @@ export default function ProductCard({ product }: { product: Product }) {
                                     Nuevo
                                 </span>
                             )}
-                            {product.esDestacado && (
-                                <span className="text-orange-500 rounded text-xs flex items-center gap-1">
-                                    <FaFireAlt />
-                                </span>
-                            )}
+
                         </div>
                     )}
                 </div>

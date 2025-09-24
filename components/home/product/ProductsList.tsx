@@ -12,7 +12,7 @@ export default function ProductosList({ products }: { products: ProductsList }) 
 
     return (
         <>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                 {productList.map((product) => (
                     <ProductCard key={product._id} product={product} />
                 ))}

@@ -5,6 +5,7 @@ import "react-multi-carousel/lib/styles.css";
 import type { CategoryListResponse } from "@/src/schemas";
 import Image from "next/image";
 import Link from "next/link";
+import { CarouselArrow } from "../ui/CarouselArrow";
 
 const responsive = {
     superLargeDesktop: { breakpoint: { max: 4000, min: 3000 }, items: 8 },
@@ -13,25 +14,13 @@ const responsive = {
     mobile: { breakpoint: { max: 640, min: 0 }, items: 4 },
 };
 
-const ImagenesPorCategoria: Record<string, string> = {
-    "vidrios-templados": "/categorias/vidriotemplado.svg",
-    "auriculares-y-audifonos": "/categorias/auriculares.svg",
-    "cargadores-y-cables": "/categorias/cable.svg",
-    iphone: "/categorias/iphone.svg",
-    "fundas-y-carcasas": "/categorias/cases.svg",
-    // "smartwatches-y-bandas": "/categorias/smartwatch.svg",
-    // "tablets": "/categorias/tablet.svg",
-    // "laptops": "/categorias/laptop.svg",
-};
 
 export default function CategoriasDestacadas({
     categorias,
 }: {
     categorias: CategoryListResponse;
 }) {
-    const filteredCategorias = categorias.filter((c) =>
-        Object.keys(ImagenesPorCategoria).includes(c.slug || "")
-    );
+
 
     return (
         <section className="w-full py-5">
@@ -46,23 +35,29 @@ export default function CategoriasDestacadas({
                     itemClass=""
                     arrows={true} // siempre true
                     containerClass="relative"
+                    customLeftArrow={<CarouselArrow direction="left" />}
+                    customRightArrow={<CarouselArrow direction="right" />}
                 >
-                    {filteredCategorias.map((categoria) => (
+                    {categorias.map((categoria) => (
                         <Link
                             key={categoria._id}
                             href={`/categoria/${categoria.slug}`}
                             className=" transition p-2 flex flex-col items-center text-center group/item"
                         >
                             <div className="border-2 p-2 rounded-full border-black/10 shadow-xs mb-2 bg-white">
-                                <Image
-                                src={
-                                    ImagenesPorCategoria[categoria.slug || ""] || "/logob.svg"
-                                }
-                                alt={categoria.nombre}
-                                width={90}
-                                height={90}
-                                className="object-contain transition-transform duration-500 group-hover/item:scale-110"
-                            />
+                                {categoria.image ? (
+                                    <Image
+                                        src={categoria.image}
+                                        alt={categoria.nombre}
+                                        width={90}
+                                        height={90}
+                                        className="object-contain transition-transform duration-500 group-hover/item:scale-110"
+                                    />
+                                ) : (
+                                    <div className="w-20 h-20 flex items-center justify-center bg-gray-100 rounded-full">
+                                        <span className="text-gray-400 text-sm">Sin imagen</span>
+                                    </div>
+                                )}
                             </div>
                             <p className="font-medium">
                                 {categoria.nombre}
