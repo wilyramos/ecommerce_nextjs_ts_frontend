@@ -1,4 +1,3 @@
-// components/store/ButtonShowSheetMobile.tsx
 "use client";
 
 import {
@@ -8,7 +7,7 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { FaUser } from "react-icons/fa";
@@ -17,7 +16,7 @@ import ButtonSearchFormStore from "../ui/ButtonSearchFormStore";
 import { ScrollArea } from "../ui/scroll-area";
 import Logo from "../ui/Logo";
 import type { CategoryListResponse, CategoryResponse } from "@/src/schemas";
-
+import { usePathname } from "next/navigation";
 
 interface ButtonShowSheetMobileProps {
     categories: CategoryResponse[];
@@ -27,6 +26,11 @@ export default function ButtonShowSheetMobile({
     categories,
 }: ButtonShowSheetMobileProps) {
     const [open, setOpen] = useState(false);
+    const pathname = usePathname(); // Detect route changes
+
+    useEffect(() => {
+        setOpen(false);
+    }, [pathname]);
 
     const grouped = categories.reduce((acc, category) => {
         const parentId =
@@ -63,7 +67,9 @@ export default function ButtonShowSheetMobile({
                             <Logo />
                             <p className="text-start text-sm font-normal text-gray-500">
                                 Explora por{" "}
-                                <span className="text-black uppercase font-bold">categorías</span>
+                                <span className="text-black uppercase font-bold">
+                                    categorías
+                                </span>
                             </p>
                         </SheetTitle>
                     </SheetHeader>
@@ -81,7 +87,6 @@ export default function ButtonShowSheetMobile({
                         <Link
                             href="/auth/registro"
                             className="flex items-center gap-2 text-sm text-gray-950 hover:text-indigo-600 transition"
-                            onClick={() => setOpen(false)}
                         >
                             <FaUser className="h-4 w-4" />
                             Iniciar sesión
@@ -109,7 +114,6 @@ export default function ButtonShowSheetMobile({
                                                     key={subcategory._id}
                                                     href={`/categoria/${subcategory.slug}`}
                                                     className="block text-sm text-gray-600 hover:text-indigo-600 transition"
-                                                    onClick={() => setOpen(false)}
                                                 >
                                                     {subcategory.nombre}
                                                 </Link>

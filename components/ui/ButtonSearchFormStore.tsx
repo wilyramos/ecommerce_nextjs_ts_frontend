@@ -1,6 +1,6 @@
 "use client";
 
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaClock, FaArrowRight } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
@@ -14,12 +14,30 @@ export default function ButtonSearchFormStore() {
     const [query, setQuery] = useState("");
     const [results, setResults] = useState<TProductListSchema[]>([]);
     const [isOpen, setIsOpen] = useState(false);
-    const containerRef = useRef<HTMLFormElement>(null);  
+    const [loading, setLoading] = useState(false);
+    const containerRef = useRef<HTMLFormElement>(null);
 
-    // Para calcular la posición del portal
-    const [coords, setCoords] = useState<{ top: number; left: number; width: number } | null>(null);
+    const [coords, setCoords] = useState<{
+        top: number;
+        left: number;
+        width: number;
+    } | null>(null);
 
-    // Debounced search
+    // Historial en localStorage
+    const [history, setHistory] = useState<string[]>([]);
+    useEffect(() => {
+        const saved = JSON.parse(localStorage.getItem("search-history") || "[]");
+        setHistory(saved);
+    }, []);
+
+    const saveHistory = (term: string) => {
+        if (!term) return;
+        const updated = [term, ...history.filter((h) => h !== term)].slice(0, 5);
+        setHistory(updated);
+        localStorage.setItem("search-history", JSON.stringify(updated));
+    };
+
+    // Búsqueda con debounce
     const debouncedSearch = useDebouncedCallback(async (value: string) => {
         const trimmed = value.trim();
         if (!trimmed) {
@@ -27,47 +45,17 @@ export default function ButtonSearchFormStore() {
             setIsOpen(false);
             return;
         }
+        setLoading(true);
         const data = await searchProductsIndex(trimmed);
         setResults(data || []);
-        setIsOpen(data && data.length > 0);
+        setIsOpen(true);
+        setLoading(false);
     }, 400);
 
     useEffect(() => {
         debouncedSearch(query);
     }, [query, debouncedSearch]);
 
-    useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-        const currentQuery = params.get("query") || "";
-        setQuery(currentQuery);
-    }, []);
-
-    useEffect(() => {
-        const handleClickOutside = (e: MouseEvent) => {
-            if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
-                setIsOpen(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
-
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const trimmed = query.trim();
-        setIsOpen(false);
-        setResults([]);
-        if (trimmed) router.push(`/productos?query=${encodeURIComponent(trimmed)}`);
-        else router.push("/productos");
-    };
-
-    const handleSelectItem = (item: TProductListSchema) => {
-        setQuery("");
-        setIsOpen(false);
-        router.push(`/productos/${item.slug}`);
-    };
-
-    // Calcular posición del input para colocar el dropdown en el body
     useEffect(() => {
         if (isOpen && containerRef.current) {
             const rect = containerRef.current.getBoundingClientRect();
@@ -79,32 +67,73 @@ export default function ButtonSearchFormStore() {
         }
     }, [isOpen, results]);
 
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const trimmed = query.trim();
+        if (!trimmed) return;
+        saveHistory(trimmed);
+        setIsOpen(false);
+        setResults([]);
+        router.push(`/productos?query=${encodeURIComponent(trimmed)}`);
+    };
+
+    const handleSelectItem = (item: TProductListSchema) => {
+        saveHistory(query);
+        setQuery("");
+        setIsOpen(false);
+        router.push(`/productos/${item.slug}`);
+    };
+
+    // Cerrar al hacer clic fuera (form + portal)
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as Node;
+            const formEl = containerRef.current;
+            const portalEl = document.getElementById("search-results");
+
+            if (
+                formEl &&
+                !formEl.contains(target) &&
+                portalEl &&
+                !portalEl.contains(target)
+            ) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
     return (
         <form ref={containerRef} className="relative w-full" onSubmit={handleSubmit}>
-            <div className="flex items-center w-full border border-gray-300 rounded-full overflow-hidden">
+            {/* Input moderno */}
+            <div className="flex items-center w-full border border-gray-300 rounded-2xl overflow-hidden shadow-sm focus-within:shadow-md transition bg-white">
                 <input
                     type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder="¿Qué estás buscando?"
-                    className="flex-1 px-4 py-1.5 text-md text-gray-700 bg-transparent placeholder-gray-700 outline-none"
-                    onFocus={() => {
-                        if (results.length > 0) setIsOpen(true);
-                    }}
+                    placeholder="Buscar productos, categorías..."
+                    className="flex-1 px-4 py-2 text-md text-gray-700 bg-transparent placeholder-gray-400 outline-none"
+                    onFocus={() => setIsOpen(true)}
                 />
                 <button
                     type="submit"
-                    className="px-4 text-black hover:text-gray-600 transition"
+                    className="px-4 text-indigo-600 hover:text-indigo-800 transition"
                     aria-label="Buscar"
                 >
-                    <FaSearch size={14} />
+                    <FaSearch size={16} />
                 </button>
             </div>
 
-            {isOpen && results.length > 0 && coords &&
+            {isOpen &&
+                coords &&
                 createPortal(
-                    <ul
-                        className="absolute z-[9999] bg-white border border-gray-200 rounded-xl shadow-lg max-h-[70vh] overflow-y-auto"
+                    <div
+                        id="search-results"
+                        className="absolute z-[9999] bg-white border border-gray-200 rounded-xl shadow-xl max-h-[70vh] overflow-y-auto animate-fade-in pointer-events-auto"
                         style={{
                             position: "absolute",
                             top: coords.top,
@@ -112,38 +141,91 @@ export default function ButtonSearchFormStore() {
                             width: coords.width,
                         }}
                     >
-                        {results.map((item) => (
-                            <li
-                                key={item._id}
-                                className="flex items-center gap-3 p-2 sm:p-3 hover:bg-gray-50 cursor-pointer transition"
-                                onClick={() => handleSelectItem(item)}
-                            >
-                                {item.imagenes && item.imagenes.length > 0 ? (
-                                    <div className="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0">
-                                        <Image
-                                            src={item.imagenes[0]}
-                                            alt={item.nombre}
-                                            width={64}
-                                            height={64}
-                                            className="w-full h-full object-cover rounded-md"
-                                            loading="lazy"
-                                            quality={50}
-                                        />
-                                    </div>
-                                ) : (
-                                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gray-200 animate-pulse rounded" />
-                                )}
-                                <div className="flex flex-col flex-1 min-w-0">
-                                    <span className="text-gray-800 text-sm sm:text-base font-medium truncate">
-                                        {item.nombre}
-                                    </span>
-                                    <span className="text-gray-500 font-bold text-xs sm:text-base">
-                                        s/. <span className="text-black">{item.precio?.toFixed(2)}</span>
+                        {/* Loading */}
+                        {loading && (
+                            <div className="p-4 text-sm text-gray-500">Buscando...</div>
+                        )}
+
+                        {/* Historial si no hay query */}
+                        {!query && history.length > 0 && (
+                            <div className="p-3">
+                                <h4 className="text-xs text-gray-400 mb-2">
+                                    Búsquedas recientes
+                                </h4>
+                                <ul className="space-y-2">
+                                    {history.map((h, i) => (
+                                        <li
+                                            key={i}
+                                            className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 cursor-pointer text-sm"
+                                            onClick={() => setQuery(h)}
+                                        >
+                                            <FaClock size={12} /> {h}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
+                        {/* Resultados */}
+                        {results.length > 0 ? (
+                            <>
+                                <ul className="divide-y">
+                                    {results.slice(0, 6).map((item) => (
+                                        <li
+                                            key={item._id}
+                                            className="flex items-center gap-4 p-3 hover:bg-gray-50 cursor-pointer transition"
+                                            onMouseDown={() => handleSelectItem(item)}
+                                        >
+                                            {item.imagenes?.[0] ? (
+                                                <Image
+                                                    src={item.imagenes[0]}
+                                                    alt={item.nombre}
+                                                    width={56}
+                                                    height={56}
+                                                    className="w-14 h-14 rounded-lg object-cover border"
+                                                />
+                                            ) : (
+                                                <div className="w-14 h-14 bg-gray-200 rounded-lg" />
+                                            )}
+                                            <div className="flex flex-col flex-1 min-w-0">
+                                                <span className="text-gray-800 text-sm font-medium truncate">
+                                                    {item.nombre}
+                                                </span>
+                                                <span className="text-indigo-600 font-bold text-sm">
+                                                    S/. {item.precio?.toFixed(2)}
+                                                </span>
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                                {/* Ver todos */}
+                                <div
+                                    className="flex items-center justify-between px-4 py-2 text-sm text-indigo-600 font-medium hover:bg-indigo-50 cursor-pointer"
+                                    onMouseDown={(e) => {
+                                        e.preventDefault();
+                                        saveHistory(query);
+                                        setIsOpen(false);
+                                        router.push(
+                                            `/productos?query=${encodeURIComponent(query)}`
+                                        );
+                                    }}
+                                >
+                                    Ver todos los resultados para “{query}”{" "}
+                                    <FaArrowRight size={12} />
+                                </div>
+                            </>
+                        ) : (
+                            !loading &&
+                            query && (
+                                <div className="p-4 text-sm text-gray-500">
+                                    No encontramos resultados.
+                                    <span className="block mt-1 text-indigo-600 cursor-pointer hover:underline">
+                                        Ver todos los productos
                                     </span>
                                 </div>
-                            </li>
-                        ))}
-                    </ul>,
+                            )
+                        )}
+                    </div>,
                     document.body
                 )}
         </form>
