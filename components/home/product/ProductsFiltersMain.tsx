@@ -49,12 +49,12 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                         <AccordionContent>
                             <ul className="space-y-1">
                                 {brands.map((brand) => (
-                                    <li key={brand.id}>
+                                    <li key={brand.slug}>
                                         <label className="flex items-center gap-2 cursor-pointer text-sm">
                                             <input
                                                 type="checkbox"
-                                                checked={searchParams.getAll("brand").includes(brand.id)}
-                                                onChange={() => handleFilterChange("brand", brand.nombre)}
+                                                checked={searchParams.getAll("brand").includes(brand.slug)}
+                                                onChange={() => handleFilterChange("brand", brand.slug)}
                                             />
                                             {brand.nombre}
                                         </label>

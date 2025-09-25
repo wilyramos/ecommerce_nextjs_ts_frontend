@@ -121,7 +121,7 @@ export default function ButtonSearchFormStore() {
                 />
                 <button
                     type="submit"
-                    className="px-4 text-indigo-600 hover:text-indigo-800 transition"
+                    className="px-4 text-gray-800 hover:text-black transition"
                     aria-label="Buscar"
                 >
                     <FaSearch size={16} />
@@ -156,7 +156,7 @@ export default function ButtonSearchFormStore() {
                                     {history.map((h, i) => (
                                         <li
                                             key={i}
-                                            className="flex items-center gap-2 text-gray-600 hover:text-indigo-600 cursor-pointer text-sm"
+                                            className="flex items-center gap-2 text-gray-600 hover:text-gray-800 cursor-pointer text-sm"
                                             onClick={() => setQuery(h)}
                                         >
                                             <FaClock size={12} /> {h}
@@ -191,7 +191,7 @@ export default function ButtonSearchFormStore() {
                                                 <span className="text-gray-800 text-sm font-medium truncate">
                                                     {item.nombre}
                                                 </span>
-                                                <span className="text-indigo-600 font-bold text-sm">
+                                                <span className="text-gray-800 font-bold text-sm">
                                                     S/. {item.precio?.toFixed(2)}
                                                 </span>
                                             </div>
@@ -200,7 +200,7 @@ export default function ButtonSearchFormStore() {
                                 </ul>
                                 {/* Ver todos */}
                                 <div
-                                    className="flex items-center justify-between px-4 py-2 text-sm text-indigo-600 font-medium hover:bg-indigo-50 cursor-pointer"
+                                    className="flex items-center justify-between px-4 py-2 text-sm text-gray-800 font-medium hover:bg-indigo-50 cursor-pointer"
                                     onMouseDown={(e) => {
                                         e.preventDefault();
                                         saveHistory(query);
@@ -219,7 +219,7 @@ export default function ButtonSearchFormStore() {
                             query && (
                                 <div className="p-4 text-sm text-gray-500">
                                     No encontramos resultados.
-                                    <span className="block mt-1 text-indigo-600 cursor-pointer hover:underline">
+                                    <span className="block mt-1 text-gray-800 cursor-pointer hover:underline">
                                         Ver todos los productos
                                     </span>
                                 </div>

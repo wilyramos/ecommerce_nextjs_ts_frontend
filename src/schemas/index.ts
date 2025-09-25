@@ -315,7 +315,7 @@ export const productsAPIResponse = z.object({
 export const brandSchema = z.object({
     id: z.string(),
     nombre: z.string(),
-    slug: z.string().optional(),
+    slug: z.string(),
 });
 
 // Atributos de filtro
