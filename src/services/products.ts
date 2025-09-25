@@ -208,7 +208,6 @@ export const getNewProducts = async () => {
     const json = await req.json();
     const products = productsAPIResponse.parse(json);
 
-    // console.log("Nuevos productos", products);
     return products;
 };
 
