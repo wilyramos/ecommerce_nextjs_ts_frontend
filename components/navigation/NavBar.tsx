@@ -15,7 +15,7 @@ export default function NavBar() {
                 <div className="max-w-7xl mx-auto flex justify-between items-center px-4 md:px-6 py-2">
                     {/* Mobile: Menú lateral */}
                     <div className="md:hidden flex items-center gap-2">
-                        <ServerSheetMobile /> 
+                        <ServerSheetMobile />
                     </div>
 
                     {/* Mobile: Logo centrado */}

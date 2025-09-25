@@ -6,7 +6,7 @@ import { apiProductListSchema, ProductsAPIResponse, productsSchema, productsResp
 
 // new
 
-import { ApiProductWithCategorySchema, productsAPIResponse, productsWithCategoryAPIResponse } from "@/src/schemas";
+import { ApiProductWithCategorySchema, productsAPIResponse, productsWithCategoryAPIResponse, productsApiResponseWithFilters } from "@/src/schemas";
 import { notFound } from "next/navigation";
 
 
@@ -121,6 +121,22 @@ export const searchProducts = async ({ query, page, limit }: {
 
 type GetProductListParams = {
     q?: string;
+};
+
+export const getProductsMainPage = async () => {
+    const url = `${process.env.API_URL}/products/mainpage`;
+    const req = await fetch(url, {
+        method: 'GET',
+    });
+
+    if (!req.ok) {
+        return null;
+    }
+
+    const json = await req.json();
+    console.log("Products main page", json);
+    const products = productsApiResponseWithFilters.parse(json);
+    return products;
 };
 
 export const getAllProductsSlug = async ({ q }: GetProductListParams) => {

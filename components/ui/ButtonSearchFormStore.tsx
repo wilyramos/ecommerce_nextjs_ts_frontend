@@ -7,14 +7,17 @@ import { useDebouncedCallback } from "use-debounce";
 import { searchProductsIndex } from "@/actions/product/get-list-products-search";
 import type { TProductListSchema } from "@/src/schemas";
 import Image from "next/image";
+import { createPortal } from "react-dom";
 
 export default function ButtonSearchFormStore() {
-
     const router = useRouter();
     const [query, setQuery] = useState("");
     const [results, setResults] = useState<TProductListSchema[]>([]);
     const [isOpen, setIsOpen] = useState(false);
-    const containerRef = useRef<HTMLFormElement>(null);
+    const containerRef = useRef<HTMLFormElement>(null);  
+
+    // Para calcular la posición del portal
+    const [coords, setCoords] = useState<{ top: number; left: number; width: number } | null>(null);
 
     // Debounced search
     const debouncedSearch = useDebouncedCallback(async (value: string) => {
@@ -29,19 +32,16 @@ export default function ButtonSearchFormStore() {
         setIsOpen(data && data.length > 0);
     }, 400);
 
-    // Ejecutar búsqueda al cambiar el query
     useEffect(() => {
         debouncedSearch(query);
     }, [query, debouncedSearch]);
 
-    // Leer query desde URL al cargar
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const currentQuery = params.get("query") || "";
         setQuery(currentQuery);
     }, []);
 
-    // Cerrar dropdown al hacer click fuera
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -56,15 +56,28 @@ export default function ButtonSearchFormStore() {
         e.preventDefault();
         const trimmed = query.trim();
         setIsOpen(false);
+        setResults([]);
         if (trimmed) router.push(`/productos?query=${encodeURIComponent(trimmed)}`);
         else router.push("/productos");
     };
 
     const handleSelectItem = (item: TProductListSchema) => {
-        setQuery(""); // limpiar query al seleccionar
+        setQuery("");
         setIsOpen(false);
         router.push(`/productos/${item.slug}`);
     };
+
+    // Calcular posición del input para colocar el dropdown en el body
+    useEffect(() => {
+        if (isOpen && containerRef.current) {
+            const rect = containerRef.current.getBoundingClientRect();
+            setCoords({
+                top: rect.bottom + window.scrollY,
+                left: rect.left + window.scrollX,
+                width: rect.width,
+            });
+        }
+    }, [isOpen, results]);
 
     return (
         <form ref={containerRef} className="relative w-full" onSubmit={handleSubmit}>
@@ -88,45 +101,51 @@ export default function ButtonSearchFormStore() {
                 </button>
             </div>
 
-            {/* Desplegable de resultados */}
-            {isOpen && results.length > 0 && (
-                <ul className="absolute z-10 w-full bg-white border border-gray-200 rounded-xl shadow-lg mt-2 max-h-screen overflow-y-auto">
-                    {results.map((item) => (
-                        <li
-                            key={item._id}
-                            className="flex items-center gap-3 p-2 sm:p-3 hover:bg-gray-50 cursor-pointer transition"
-                            onClick={() => handleSelectItem(item)}
-                        >
-                            {/* Imagen del producto */}
-                            {item.imagenes && item.imagenes.length > 0 ? (
-                                <div className="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0">
-                                    <Image
-                                        src={item.imagenes[0]}
-                                        alt={item.nombre}
-                                        width={64}
-                                        height={64}
-                                        className="w-full h-full object-cover rounded-md"
-                                        loading="lazy"
-                                        quality={50}
-                                    />
+            {isOpen && results.length > 0 && coords &&
+                createPortal(
+                    <ul
+                        className="absolute z-[9999] bg-white border border-gray-200 rounded-xl shadow-lg max-h-[70vh] overflow-y-auto"
+                        style={{
+                            position: "absolute",
+                            top: coords.top,
+                            left: coords.left,
+                            width: coords.width,
+                        }}
+                    >
+                        {results.map((item) => (
+                            <li
+                                key={item._id}
+                                className="flex items-center gap-3 p-2 sm:p-3 hover:bg-gray-50 cursor-pointer transition"
+                                onClick={() => handleSelectItem(item)}
+                            >
+                                {item.imagenes && item.imagenes.length > 0 ? (
+                                    <div className="w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0">
+                                        <Image
+                                            src={item.imagenes[0]}
+                                            alt={item.nombre}
+                                            width={64}
+                                            height={64}
+                                            className="w-full h-full object-cover rounded-md"
+                                            loading="lazy"
+                                            quality={50}
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gray-200 animate-pulse rounded" />
+                                )}
+                                <div className="flex flex-col flex-1 min-w-0">
+                                    <span className="text-gray-800 text-sm sm:text-base font-medium truncate">
+                                        {item.nombre}
+                                    </span>
+                                    <span className="text-gray-500 font-bold text-xs sm:text-base">
+                                        s/. <span className="text-black">{item.precio?.toFixed(2)}</span>
+                                    </span>
                                 </div>
-                            ) : (
-                                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gray-200 animate-pulse rounded" />
-                            )}
-
-                            {/* Información del producto */}
-                            <div className="flex flex-col flex-1 min-w-0">
-                                <span className="text-gray-800 text-sm sm:text-base font-medium truncate">
-                                    {item.nombre}
-                                </span>
-                                <span className="text-gray-500 font-bold text-xs sm:text-base">
-                                    s/. <span className="text-black">{item.precio?.toFixed(2)}</span>
-                                </span>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-            )}
+                            </li>
+                        ))}
+                    </ul>,
+                    document.body
+                )}
         </form>
     );
 }

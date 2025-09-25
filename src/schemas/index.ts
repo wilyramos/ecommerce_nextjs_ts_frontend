@@ -309,6 +309,10 @@ export const productsAPIResponse = z.object({
     totalProducts: z.number(),
 })
 
+export const productsApiResponseWithFilters = productsAPIResponse.extend({
+    filters: z.array(z.string())
+});
+
 // Type inference
 
 export type CreateProductInput = z.infer<typeof createProductSchema>;
