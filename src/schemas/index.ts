@@ -236,7 +236,7 @@ export const productBaseSchema = z.object({
     nombre: z.string().min(1, 'El nombre es obligatorio'),
     slug: z.string().optional(),
     descripcion: z.string().optional(),
-    precio: z.number().min(0, 'El precio no puede ser negativo').optional(),
+    precio: z.number().min(0, 'El precio no puede ser negativo').default(0),
     costo: z.number().min(0, 'El costo no puede ser negativo').optional(),
     imagenes: z.array(z.string().url('Debe ser una URL válida')).optional(),
     categoria: z.string().min(1, 'La categoría es obligatoria'),
@@ -309,9 +309,33 @@ export const productsAPIResponse = z.object({
     totalProducts: z.number(),
 })
 
-export const productsApiResponseWithFilters = productsAPIResponse.extend({
-    filters: z.array(z.string())
+
+export const brandSchema = z.object({
+    id: z.string(),
+    nombre: z.string(),
 });
+
+// Atributos de filtro
+const filterAttributeSchema = z.object({
+    name: z.string(),
+    values: z.array(z.string()),
+});
+
+// Filtros
+const filterSchema = z.object({
+    brands: z.array(brandSchema).optional(),
+    atributos: z.array(filterAttributeSchema).optional(),
+});
+
+export type TFilter = z.infer<typeof filterSchema>;
+
+// Respuesta con filtros
+export const productsApiResponseWithFilters = productsAPIResponse.extend({
+    filters: z.array(filterSchema),
+});
+
+
+export type TProductsApiResponseWithFilters = z.infer<typeof productsApiResponseWithFilters>;
 
 // Type inference
 

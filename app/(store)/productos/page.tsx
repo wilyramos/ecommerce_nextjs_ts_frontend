@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import ProductResults from "@/components/home/product/ProductResults";
-import CategoriasFiltros from "@/components/home/product/CategoriasFiltros";
 import OrdenarPor from "@/components/home/products/OrdenarPor";
 import SpinnerLoading from "@/components/ui/SpinnerLoading";
 
@@ -63,46 +62,30 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
     const limitNumber = limit ? parseInt(limit) : 24;
 
     return (
-        <main className="max-w-7xl mx-auto p-5">
-            <div className="grid grid-cols-1 sm:grid-cols-5 gap-6">
+        <main className="">
 
-                {/* Sidebar filtros SOLO desktop */}
-                <aside className="hidden sm:block sm:col-span-1">
-                    <div className="sticky top-20">  {/* top-20 ≈ 5rem de espacio para el header */}
-                        <Suspense fallback={<SpinnerLoading />}>
-                            <CategoriasFiltros />
-                        </Suspense>
-                    </div>
-                </aside>
 
-                {/* Productos */}
-                <section className="sm:col-span-4 flex flex-col gap-6">
 
-                    {/* Barra de filtros + ordenar en MOBILE */}
-                    <div className="flex items-center justify-between gap-3 sm:hidden">
-                        <Suspense fallback={<SpinnerLoading />}>
-                            <CategoriasFiltros />
-                        </Suspense>
-                        <OrdenarPor pathname="/productos" />
-                    </div>
+            {/* Productos */}
 
-                    {/* Ordenar solo en DESKTOP */}
-                    <div className="hidden sm:flex justify-end">
-                        <OrdenarPor pathname="/productos" />
-                    </div>
 
-                    <Suspense fallback={<SpinnerLoading />}>
-                        <ProductResults
-                            category={category}
-                            priceRange={priceRange}
-                            page={page}
-                            limit={limitNumber}
-                            sort={sort}
-                            query={query}
-                        />
-                    </Suspense>
-                </section>
+
+            {/* Ordenar solo en DESKTOP */}
+            <div className="hidden sm:flex justify-end">
+                <OrdenarPor pathname="/productos" />
             </div>
+
+            <Suspense fallback={<SpinnerLoading />}>
+                <ProductResults
+                    category={category}
+                    priceRange={priceRange}
+                    page={page}
+                    limit={limitNumber}
+                    sort={sort}
+                    query={query}
+                />
+            </Suspense>
+
         </main>
     );
 }

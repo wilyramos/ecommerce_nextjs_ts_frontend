@@ -123,8 +123,33 @@ type GetProductListParams = {
     q?: string;
 };
 
-export const getProductsMainPage = async () => {
-    const url = `${process.env.API_URL}/products/mainpage`;
+type GetProductsMainPageParams = {
+    page: number;
+    limit: number;
+    query?: string;
+    category?: string;
+    priceRange?: string;
+    sort?: string;
+};
+
+export const getProductsMainPage = async ({
+    page,
+    limit,
+    query,
+    category,
+    priceRange,
+    sort
+}: GetProductsMainPageParams) => {
+    const params = new URLSearchParams({
+        page: page.toString(),
+        limit: limit.toString(),
+        query: query || "",
+        category: category || "",
+        priceRange: priceRange || "",
+        sort: sort || "",
+    });
+
+    const url = `${process.env.API_URL}/products/mainpage?${params.toString()}`;
     const req = await fetch(url, {
         method: 'GET',
     });

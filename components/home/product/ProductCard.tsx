@@ -5,27 +5,31 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ColorCircle from "@/components/ui/ColorCircle";
-import type { Product } from "@/src/schemas";
+import type { ProductResponse } from "@/src/schemas";
 
-export default function ProductCard({ product }: { product: Product }) {
+export default function ProductCard({ product }: { product: ProductResponse }) {
     const color = product.atributos?.Color || null;
     const [currentIndex, setCurrentIndex] = useState(0);
     const [startX, setStartX] = useState<number | null>(null);
 
+    const imagenes = product.imagenes ?? [];
+    const precio = product.precio ?? 0;
+    const stock = product.stock ?? 0;
+
     // Hover image
     const handleMouseEnter = () => {
-        if (product.imagenes.length > 1) setCurrentIndex(1);
+        if (imagenes.length > 1) setCurrentIndex(1);
     };
     const handleMouseLeave = () => setCurrentIndex(0);
 
     // Image navigation
     const nextImage = () =>
         setCurrentIndex((prev) =>
-            prev === product.imagenes.length - 1 ? 0 : prev + 1
+            prev === imagenes.length - 1 ? 0 : prev + 1
         );
     const prevImage = () =>
         setCurrentIndex((prev) =>
-            prev === 0 ? product.imagenes.length - 1 : prev - 1
+            prev === 0 ? imagenes.length - 1 : prev - 1
         );
 
     // Swipe events (mobile)
@@ -65,10 +69,10 @@ export default function ProductCard({ product }: { product: Product }) {
             <Link href={`/productos/${product.slug}`} className="flex flex-col h-full">
                 {/* Imagen */}
                 <div className="relative w-full aspect-square bg-white overflow-hidden rounded-t">
-                    {product.imagenes.length > 0 ? (
+                    {imagenes.length > 0 ? (
                         <div className="relative w-full h-full">
                             <Image
-                                src={product.imagenes[currentIndex]}
+                                src={imagenes[currentIndex]}
                                 alt={product.nombre}
                                 fill
                                 className="object-cover transition-opacity duration-300"
@@ -76,7 +80,7 @@ export default function ProductCard({ product }: { product: Product }) {
                                 quality={70}
                             />
 
-                            {product.imagenes.length > 1 && (
+                            {imagenes.length > 1 && (
                                 <>
                                     <button
                                         onClick={(e) => {
@@ -85,7 +89,7 @@ export default function ProductCard({ product }: { product: Product }) {
                                         }}
                                         className="absolute left-2 top-1/2 -translate-y-1/2 
                                bg-black/40 text-white p-1.5 rounded-full
-                               opacity-0 md:opacity-0 md:group-hover:opacity-100
+                               opacity-0 md:group-hover:opacity-100
                                transition"
                                     >
                                         <ChevronLeft size={15} />
@@ -98,7 +102,7 @@ export default function ProductCard({ product }: { product: Product }) {
                                         }}
                                         className="absolute right-2 top-1/2 -translate-y-1/2 
                                bg-black/40 text-white p-1 rounded-full
-                               opacity-0 md:opacity-0 md:group-hover:opacity-100
+                               opacity-0 md:group-hover:opacity-100
                                transition"
                                     >
                                         <ChevronRight size={15} />
@@ -106,7 +110,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
                                     {/* Indicators */}
                                     <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1">
-                                        {product.imagenes.map((_, idx) => (
+                                        {imagenes.map((_, idx) => (
                                             <span
                                                 key={idx}
                                                 className={`h-1 w-2 rounded-full transition-colors duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100 ${idx === currentIndex ? "bg-black" : "bg-black/40"
@@ -131,7 +135,6 @@ export default function ProductCard({ product }: { product: Product }) {
                                     Nuevo
                                 </span>
                             )}
-
                         </div>
                     )}
                 </div>
@@ -144,8 +147,14 @@ export default function ProductCard({ product }: { product: Product }) {
                     <div className="flex items-center gap-2 mt-auto">
                         {color && <ColorCircle color={color} />}
                         <div className="ml-auto font-semibold">
-                            <span>s/ </span>
-                            {product.precio.toFixed(2)}
+                            {stock > 0 ? (
+                                <>
+                                    <span>s/ </span>
+                                    {precio.toFixed(2)}
+                                </>
+                            ) : (
+                                <span className="text-gray-400 text-sm">Sin stock</span>
+                            )}
                         </div>
                     </div>
                 </div>

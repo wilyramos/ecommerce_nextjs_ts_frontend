@@ -1,13 +1,14 @@
-import type { ProductsList } from "@/src/schemas";
+import type { TProductsApiResponseWithFilters } from "@/src/schemas";
 import ProductCard from "@/components/home/product/ProductCard";
 
-export default function ProductosList({ products }: { products: ProductsList }) {
+export default function ProductosList({ products }: { products: TProductsApiResponseWithFilters["products"] }) {
 
-    if (!products || products.products.length === 0) {
+    if (!products || products.length === 0) {
         return <div className="text-center text-gray-500">No hay productos disponibles</div>;
     }
 
-    const { products: productList } = products;
+    const productList = products.slice(0, 24);
+    
 
     return (
         <>
