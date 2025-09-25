@@ -2,8 +2,8 @@ import Link from "next/link";
 import { getCategories } from "@/src/services/categorys";
 import Pagination from "@/components/ui/Pagination";
 import VisualCategoryView from "@/components/admin/category/VisualCategoryView";
-import { HeadingH1 } from "@/components/ui/Heading";
 import { Button } from "@/components/ui/button";
+import AdminPageWrapper from "@/components/admin/AdminPageWrapper";
 
 
 export default async function CreatePageCategory() {
@@ -12,18 +12,16 @@ export default async function CreatePageCategory() {
     const categories = await getCategories();
 
     return (
-        <div className="max-w-7xl mx-auto ">
-            <div className="flex justify-between border-b-2 pb-4">
-                <HeadingH1>Categorías</HeadingH1>
 
+        <AdminPageWrapper
+            title="Categorías"
+            showBackButton={false}
+            actions={
                 <Link href="/admin/products/category/new">
-                    <Button>
-                        Nueva categoría
-                    </Button>
+                    <Button variant="default">Nueva categoría</Button>
                 </Link>
-            </div>
-
-
+            }
+        >
             {!categories ? (
                 <div className="flex justify-center min-h-[200px]">
                     <h2 className="text-lg">
@@ -40,6 +38,6 @@ export default async function CreatePageCategory() {
                     />
                 </>
             )}
-        </div>
+        </AdminPageWrapper>
     );
 }

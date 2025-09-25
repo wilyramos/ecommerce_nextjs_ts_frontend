@@ -33,7 +33,7 @@ export default function BrandCombobox({ brands, value: defaultValue }: BrandComb
                         variant="outline"
                         role="combobox"
                         aria-expanded={open}
-                        className="w-full justify-between"
+                        className="w-full border border-gray-300 rounded-lg p-3 justify-between text-left font-normal focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         {value
                             ? brands.find((b) => b._id === value)?.nombre
@@ -41,7 +41,9 @@ export default function BrandCombobox({ brands, value: defaultValue }: BrandComb
                         <ChevronsUpDown className="opacity-50 w-4 h-4" />
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-full p-0">
+                <PopoverContent
+                    className="w-auto min-w-[var(--radix-popover-trigger-width)] p-0"
+                >
                     <Command>
                         <CommandInput placeholder="Buscar marca..." className="h-9" />
                         <CommandList>

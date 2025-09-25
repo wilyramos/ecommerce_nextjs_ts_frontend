@@ -3,6 +3,7 @@ import { getBrands } from "@/src/services/brands";
 import { Button } from "@/components/ui/button";
 import BrandTable from "@/components/admin/brands/BrandTable";
 import NewBrandDialog from "@/components/admin/brands/NewBrandDialog";
+import AdminPageWrapper from "@/components/admin/AdminPageWrapper";
 
 export default async function BrandsPage() {
     const brands = await getBrands();
@@ -10,16 +11,16 @@ export default async function BrandsPage() {
     console.log("Brands:", brands);
 
     return (
-        <section className="p-6 space-y-6">
-            <header className="flex items-center justify-between">
-                <h1 className="text-2xl font-bold">Administrar Marcas</h1>
+        <AdminPageWrapper
+            title="Marcas"
+            showBackButton={false}
+            actions={
                 <NewBrandDialog
                     trigger={<Button>+ Nueva Marca</Button>}
-
                 />
-            </header>
-
+            }
+        >
             <BrandTable brands={brands} />
-        </section>
+        </AdminPageWrapper>
     );
 }

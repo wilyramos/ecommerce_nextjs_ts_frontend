@@ -12,7 +12,7 @@ import BrandCombobox from "./BrandCombobox";
 export default function ProductForm({ product, categorias, brands }: { product?: ProductWithCategoryResponse, categorias: CategoryListResponse, brands: TBrand[] }) {
 
     return (
-        <div className="text-xs grid grid-cols-1 sm:grid-cols-4 gap-4 p-4">
+        <div className="text-xs grid grid-cols-1 sm:grid-cols-4 gap-4 p-4 space-y-1">
 
             <div className="col-span-1 sm:col-span-3">
                 <div className="py-1">
@@ -90,24 +90,9 @@ export default function ProductForm({ product, categorias, brands }: { product?:
                         />
                     </div>
 
-                    {/* <div className="py-1">
-                        <label htmlFor="brand" className="block font-semibold text-gray-700">Marca</label>
-                        <select
-                            id="brand"
-                            name="brand"
-                            defaultValue={product?.brand || ""}
-                            className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                            <option value="">Selecciona una marca</option>
-                            {brands.map((b) => (
-                                <option key={b._id} value={b._id}>{b.nombre}</option>
-                            ))}
-                        </select>
-                    </div> */}
-
                     <div className="py-1">
+                        <label htmlFor="brand" className="block font-semibold text-gray-700">Marca</label>
                         <BrandCombobox brands={brands} value={product?.brand} />
-
                     </div>
 
                 </div>

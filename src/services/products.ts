@@ -169,7 +169,6 @@ export const getProductsMainPage = async ({
 
 export const getAllProductsSlug = async ({ q }: GetProductListParams) => {
     try {
-        const token = getToken();
 
         const params = new URLSearchParams();
         if (q) params.set("q", q);
@@ -178,9 +177,7 @@ export const getAllProductsSlug = async ({ q }: GetProductListParams) => {
 
         const req = await fetch(url, {
             method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
+            next: { revalidate: 604800 } // Revalida cada semana
         });
 
         if (!req.ok) {

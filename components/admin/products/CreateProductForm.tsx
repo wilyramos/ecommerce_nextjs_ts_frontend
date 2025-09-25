@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { createProduct } from '@/actions/product/add-product-action'
 import { toast } from 'sonner'
 import type { CategoryListResponse } from '@/src/schemas'
-import type { TBrand } from '@/src/schemas/brands' 
+import type { TBrand } from '@/src/schemas/brands'
 
 export default function CreateProductForm({ categorias, brands }: { categorias: CategoryListResponse, brands: TBrand[] }) {
 

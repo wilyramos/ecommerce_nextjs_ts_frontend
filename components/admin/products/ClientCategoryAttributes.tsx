@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
+import { Listbox, Transition } from "@headlessui/react";
+import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import type { CategoryListResponse } from "@/src/schemas";
 
 type Props = {
@@ -19,7 +21,7 @@ export default function ClientCategoryAttributes({
     const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
 
     useEffect(() => {
-        const selected = categorias.find(cat => cat._id === selectedCategoryId);
+        const selected = categorias.find((cat) => cat._id === selectedCategoryId);
 
         if (!selected) {
             setCategoryAttributes([]);
@@ -30,7 +32,7 @@ export default function ClientCategoryAttributes({
         const validAttributes = selected.attributes || [];
         setCategoryAttributes(validAttributes);
 
-        // Solo conservar los atributos válidos para la categoría seleccionada
+        // Solo conservar los atributos válidos
         const filteredAttributes: Record<string, string> = {};
         if (currentAttributes) {
             for (const attr of validAttributes) {
@@ -44,63 +46,97 @@ export default function ClientCategoryAttributes({
         setSelectedAttributes(filteredAttributes);
     }, [selectedCategoryId, categorias, currentAttributes]);
 
-    const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setSelectedCategoryId(e.target.value);
-    };
-
     const handleAttributeChange = (name: string, value: string) => {
-        setSelectedAttributes(prev => ({
+        setSelectedAttributes((prev) => ({
             ...prev,
             [name]: value,
         }));
     };
 
+    const selectedCategory = categorias.find((c) => c._id === selectedCategoryId);
+
     return (
         <div className="space-y-4">
             <div className="py-1">
-                <label htmlFor="categoria" className="block font-semibold text-gray-700">Categoría</label>
-                <select
-                    id="categoria"
-                    name="categoria"
-                    className="w-full border border-gray-300 rounded-lg p-3"
-                    value={selectedCategoryId}
-                    onChange={handleCategoryChange}
-                >
-                    <option value="">Selecciona una categoría</option>
-                    {categorias.map(cat => (
-                        <option key={cat._id} value={cat._id}>
-                            {cat.nombre}
-                        </option>
-                    ))}
-                </select>
+                <label className="block font-semibold text-gray-700 mb-1">Categoría</label>
+                <input type="hidden" name="categoria" value={selectedCategoryId} />
+                <Listbox value={selectedCategoryId} onChange={setSelectedCategoryId}>
+                    <div className="relative">
+                        <Listbox.Button className="w-full border border-gray-300 rounded-lg p-3 text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <span>
+                                {selectedCategory ? selectedCategory.nombre : "Selecciona una categoría"}
+                            </span>
+                            <ChevronUpDownIcon className="h-5 w-5 text-gray-400" />
+                        </Listbox.Button>
+                        <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
+                            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white shadow-lg border border-gray-200 z-50">
+                                {categorias.map((cat) => (
+                                    <Listbox.Option
+                                        key={cat._id}
+                                        value={cat._id}
+                                        className={({ active }) =>
+                                            `cursor-pointer select-none relative p-2 ${active ? "bg-blue-100 text-blue-900" : "text-gray-900"
+                                            }`
+                                        }
+                                    >
+                                        {({ selected }) => (
+                                            <span className={`flex items-center ${selected ? "font-semibold" : "font-normal"}`}>
+                                                {cat.nombre}
+                                                {selected && <CheckIcon className="h-4 w-4 ml-auto text-blue-600" />}
+                                            </span>
+                                        )}
+                                    </Listbox.Option>
+                                ))}
+                            </Listbox.Options>
+                        </Transition>
+                    </div>
+                </Listbox>
             </div>
 
             {categoryAttributes.length > 0 && (
                 <div>
-                    <input
-                        type="hidden"
-                        name="atributos"
-                        value={JSON.stringify(selectedAttributes)}
-                    />
+                    <input type="hidden" name="atributos" value={JSON.stringify(selectedAttributes)} />
 
                     <h4 className="font-semibold text-gray-700 mb-2">Atributos de la categoría</h4>
 
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                        {categoryAttributes.map(attr => (
-                            <div key={attr.name}>
-                                <label className="block font-medium text-gray-600 mb-1">{attr.name}</label>
-                                <select
-                                    className="w-full border border-gray-300 rounded-lg p-2"
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        {categoryAttributes.map((attr) => (
+                            <div key={attr.name} className="space-y-1">
+                                <label className="block font-medium text-gray-600">{attr.name}</label>
+                                <Listbox
                                     value={selectedAttributes[attr.name] || ""}
-                                    onChange={(e) => handleAttributeChange(attr.name, e.target.value)}
+                                    onChange={(val) => handleAttributeChange(attr.name, val)}
                                 >
-                                    <option value="">Selecciona un valor</option>
-                                    {attr.values.map(value => (
-                                        <option key={value} value={value}>
-                                            {value}
-                                        </option>
-                                    ))}
-                                </select>
+                                    <div className="relative">
+                                        <Listbox.Button className="w-full border border-gray-300 rounded-lg p-2 text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                            <span>
+                                                {selectedAttributes[attr.name] || "Selecciona un valor"}
+                                            </span>
+                                            <ChevronUpDownIcon className="h-5 w-5 text-gray-400" />
+                                        </Listbox.Button>
+                                        <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
+                                            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white shadow-lg border border-gray-200 z-50">
+                                                {attr.values.map((val) => (
+                                                    <Listbox.Option
+                                                        key={val}
+                                                        value={val}
+                                                        className={({ active }) =>
+                                                            `cursor-pointer select-none relative p-2 ${active ? "bg-blue-100 text-blue-900" : "text-gray-900"
+                                                            }`
+                                                        }
+                                                    >
+                                                        {({ selected }) => (
+                                                            <span className={`flex items-center ${selected ? "font-semibold" : "font-normal"}`}>
+                                                                {val}
+                                                                {selected && <CheckIcon className="h-4 w-4 ml-auto text-blue-600" />}
+                                                            </span>
+                                                        )}
+                                                    </Listbox.Option>
+                                                ))}
+                                            </Listbox.Options>
+                                        </Transition>
+                                    </div>
+                                </Listbox>
                             </div>
                         ))}
                     </div>

@@ -3,8 +3,8 @@ import { getCategories } from "@/src/services/categorys";
 import EditProductForm from "@/components/admin/products/EditProductForm";
 import DeleteProductButton from "@/components/admin/products/DeleteProductButton";
 import Link from "next/link";
-import BackButton from "../../../../components/ui/BackButton";
 import { getActiveBrands } from "@/src/services/brands";
+import AdminPageWrapper from "@/components/admin/AdminPageWrapper";
 // import EditStatusProductButton from "@/components/admin/products/EditStatusProductButton";
 
 type Params = Promise<{
@@ -12,7 +12,6 @@ type Params = Promise<{
 }>;
 
 export default async function ProductDetailsPage({ params }: { params: Params }) {
-    
     const { id } = await params;
     const categorias = await getCategories();
     const product = await getProduct(id);
@@ -33,17 +32,16 @@ export default async function ProductDetailsPage({ params }: { params: Params })
     }
 
     return (
-        <div className="">
-            <div className="flex flex-col md:flex-row justify-between items-center border-b pb-4 gap-2">
-                <h1 className="text-xl font-semibold text-gray-800">{product.nombre}</h1>
+        <AdminPageWrapper
+            title={product.nombre}
+            actions={
                 <div className="flex gap-2">
-                    <BackButton />
                     <DeleteProductButton productId={product._id} />
                     {/* <EditStatusProductButton productId={product._id} isActive={product.isActive} /> */}
                 </div>
-            </div>
-
+            }
+        >
             <EditProductForm product={product} categorias={categorias} brands={brands} />
-        </div>
+        </AdminPageWrapper>
     );
 }
