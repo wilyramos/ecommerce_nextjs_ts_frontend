@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/accordion";
 
 type ProductsFiltersProps = {
-    filters: TFilter[] | null;
+    filters: TFilter[] | undefined;
 };
 
 export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import type { Product } from "@/src/schemas";
+import type { ProductResponse } from "@/src/schemas";
 import Link from "next/link";
 import { CustomDot } from "../ui/CustomDot";
 import { ShoppingBag, Sparkles } from "lucide-react";
@@ -16,7 +16,7 @@ const responsive = {
     mobile: { breakpoint: { max: 640, min: 0 }, items: 1 },
 };
 
-export default function MainCarousel({ products }: { products: Product[] }) {
+export default function MainCarousel({ products }: { products: ProductResponse[] }) {
     return (
         <div className="w-full max-w-screen-2xl mx-auto relative">
             <Carousel

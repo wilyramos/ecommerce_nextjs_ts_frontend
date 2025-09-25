@@ -21,7 +21,7 @@ export default async function BrandsPage({ params, searchParams }: { params: Par
 
     const { limit = 10 } = allParams;
 
-    const [products, subcategories, brand] = await Promise.all([
+    const [data, subcategories, brand] = await Promise.all([
         getProductsByBrandSlug(slug),
         getAllSubcategories(),
         getBrandBySlug(slug),
@@ -39,12 +39,12 @@ export default async function BrandsPage({ params, searchParams }: { params: Par
 
             <main className="flex-1">
                
-                {products?.products?.length ? (
+                {data?.products?.length ? (
                     <>
-                        <ProductosList products={products} />
+                        <ProductosList products={data.products} />
                         <Pagination
-                            currentPage={products.currentPage}
-                            totalPages={products.totalPages}
+                            currentPage={data.currentPage}
+                            totalPages={data.totalPages}
                             pathname={`/marca/${slug}`}
                             queryParams={{}}
                             limit={limit ? parseInt(limit.toString()) : 10}

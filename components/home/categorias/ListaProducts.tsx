@@ -42,7 +42,7 @@ export default async function ListaProducts({
 
     return (
         <>
-            <ProductosList products={products} />
+            <ProductosList products={products.products} />
 
             <Pagination
                 currentPage={products.currentPage}

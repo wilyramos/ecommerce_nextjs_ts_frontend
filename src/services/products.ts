@@ -2,7 +2,7 @@ import "server-only";
 
 
 import getToken from "../auth/token";
-import { apiProductListSchema, ProductsAPIResponse, productsSchema, productsResponseAllSchema } from "@/src/schemas";
+import { apiProductListSchema, productsResponseAllSchema, ApiProductsSchema } from "@/src/schemas";
 
 // new
 
@@ -95,7 +95,7 @@ export const getProductsByFilter = async ({
     }
 
     const json = await req.json();
-    const products = ProductsAPIResponse.parse(json);
+    const products = productsAPIResponse.parse(json);
     return products;
 };
 
@@ -206,7 +206,7 @@ export const getNewProducts = async () => {
     }
 
     const json = await req.json();
-    const products = ProductsAPIResponse.parse(json);
+    const products = productsAPIResponse.parse(json);
 
     // console.log("Nuevos productos", products);
     return products;
@@ -225,7 +225,7 @@ export const getDestacadosProducts = async () => {
     }
 
     const json = await req.json();
-    const products = ProductsAPIResponse.parse(json);
+    const products = productsAPIResponse.parse(json);
     return products;
 };
 
@@ -242,7 +242,7 @@ export const getProductsRelated = async (slug: string) => {
     }
 
     const json = await req.json();
-    const products = productsSchema.parse(json);
+    const products = ApiProductsSchema.parse(json);
     return products;
 
 }
@@ -301,6 +301,6 @@ export const getProductsByBrandSlug = async (brandSlug: string) => {
     }
 
     const json = await req.json();
-    const products = ProductsAPIResponse.parse(json);
+    const products = productsApiResponseWithFilters.parse(json);
     return products;
 }

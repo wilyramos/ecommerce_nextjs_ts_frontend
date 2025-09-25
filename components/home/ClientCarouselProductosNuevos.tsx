@@ -4,11 +4,11 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 import ProductCard from "@/components/home/product/ProductCard";
-import type { Product } from "@/src/schemas";
+import type { ProductResponse } from "@/src/schemas";
 import { CarouselArrow } from "../ui/CarouselArrow";
 
 interface Props {
-    products: Product[];
+    products: ProductResponse[];
 }
 
 export default function ClientCarouselProductosNuevos({ products }: Props) {

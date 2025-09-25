@@ -277,6 +277,8 @@ export const ApiProductSchema = productBaseSchema
     });
 
 
+export const ApiProductsSchema = z.array(ApiProductSchema);
+export type TApiProductsSchema = z.infer<typeof ApiProductsSchema>;
 
 
 // Product response in list only name hacer un pick
@@ -331,7 +333,7 @@ export type TFilter = z.infer<typeof filterSchema>;
 
 // Respuesta con filtros
 export const productsApiResponseWithFilters = productsAPIResponse.extend({
-    filters: z.array(filterSchema),
+    filters: z.array(filterSchema).optional(),
 });
 
 
@@ -341,7 +343,9 @@ export type TProductsApiResponseWithFilters = z.infer<typeof productsApiResponse
 
 export type CreateProductInput = z.infer<typeof createProductSchema>;
 export type UpdateProductInput = z.infer<typeof updateProductSchema>;
+
 export type ProductResponse = z.infer<typeof ApiProductSchema>;
+
 
 export type ProductsAPIResponse = z.infer<typeof productsAPIResponse>;
 
