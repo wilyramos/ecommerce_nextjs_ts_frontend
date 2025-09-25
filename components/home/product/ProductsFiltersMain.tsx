@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/accordion";
 
 type ProductsFiltersProps = {
-    filters: TFilter[] | undefined;
+    filters: TFilter[] | null;
 };
 
 export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
@@ -38,7 +38,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
     const { brands = [], atributos = [] } = filters[0]; // backend lo manda en array
 
     return (
-        <aside className="w-full md:w-64 border rounded-lg p-4 bg-white shadow-sm">
+        <aside className="w-full p-2 border border-gray-100 shadow-xs rounded-md bg-white">
             <h2 className="text-lg font-semibold mb-3">Filtros</h2>
 
             <Accordion type="multiple" className="w-full">
@@ -54,7 +54,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                                             <input
                                                 type="checkbox"
                                                 checked={searchParams.getAll("brand").includes(brand.id)}
-                                                onChange={() => handleFilterChange("brand", brand.id)}
+                                                onChange={() => handleFilterChange("brand", brand.nombre)}
                                             />
                                             {brand.nombre}
                                         </label>

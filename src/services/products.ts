@@ -125,11 +125,12 @@ type GetProductListParams = {
 
 type GetProductsMainPageParams = {
     page: number;
-    limit: number;
+    limit?: number;
     query?: string;
     category?: string;
     priceRange?: string;
     sort?: string;
+    [key: string]: string | number | undefined; // Para atributos dinámicos
 };
 
 export const getProductsMainPage = async ({
@@ -138,15 +139,17 @@ export const getProductsMainPage = async ({
     query,
     category,
     priceRange,
-    sort
+    sort,
+    ...rest // Atributos dinámicos
 }: GetProductsMainPageParams) => {
     const params = new URLSearchParams({
         page: page.toString(),
-        limit: limit.toString(),
+        limit: limit?.toString() || "24",
         query: query || "",
         category: category || "",
         priceRange: priceRange || "",
         sort: sort || "",
+        ...rest as Record<string, string> // Asegura que rest sea del tipo correcto
     });
 
     const url = `${process.env.API_URL}/products/mainpage?${params.toString()}`;

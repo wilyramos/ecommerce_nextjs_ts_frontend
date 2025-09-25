@@ -11,6 +11,7 @@ const sortOptions = [
     { label: "Precio: mayor a menor", value: "price-desc" },
     { label: "Nombre: A-Z", value: "name-asc" },
     { label: "Nombre: Z-A", value: "name-desc" },
+    { label: "Más recientes", value: "recientes" },
 ];
 
 export default function OrdenarPor({ pathname }: { pathname?: string }) {

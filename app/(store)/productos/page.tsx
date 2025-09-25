@@ -55,14 +55,15 @@ type SearchParams = Promise<{
     limit?: string;
     sort?: string;
     query?: string;
+    [key: string]: string | string[] | undefined;
 }>;
 
 export default async function PageProducts({ searchParams }: { searchParams: SearchParams }) {
-    const { category, priceRange, page, limit, sort, query } = await searchParams;
+    const { category, priceRange, page, limit, sort, query, ...rest } = await searchParams;
     const limitNumber = limit ? parseInt(limit) : 24;
 
     return (
-        <main className="">
+        <main className=" max-w-7xl mx-auto p-4">
 
 
 
@@ -71,7 +72,7 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
 
 
             {/* Ordenar solo en DESKTOP */}
-            <div className="hidden sm:flex justify-end">
+            <div className="flex justify-end">
                 <OrdenarPor pathname="/productos" />
             </div>
 
@@ -83,6 +84,7 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
                     limit={limitNumber}
                     sort={sort}
                     query={query}
+                    {...rest}
                 />
             </Suspense>
 

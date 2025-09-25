@@ -15,7 +15,7 @@ export default function ProductosList({ products }: { products: TProductsApiResp
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                 {productList.map((product) => (
                     <ProductCard key={product._id} product={product} />
-                ))}
+                ))} 
             </div>
         </>
     );
