@@ -2,6 +2,7 @@ import { getProductsMainPage } from "@/src/services/products";
 import ProductosList from "./ProductsList";
 import Pagination from "../Pagination";
 import ProductsFiltersMain from "./ProductsFiltersMain";
+import OrdenarPor from "../products/OrdenarPor";
 
 type ProductResultsProps = {
     category?: string;
@@ -40,21 +41,26 @@ export default async function ProductResults({
             <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
 
                 {/* Sidebar de filtros (desktop) */}
-                <aside className="hidden md:block md:col-span-1">
-                    <ProductsFiltersMain filters={products?.filters || null} />
+                <aside className="block md:col-span-1">
+                    <div className="sticky top-20">
+                        <ProductsFiltersMain filters={products?.filters || null} />
+                    </div>
                 </aside>
 
                 {/* Contenido principal */}
-                <section className="col-span-1 md:col-span-4 flex flex-col gap-6">
-                    {/* Filtros solo en mobile */}
-                    <div className="md:hidden">
-                        <ProductsFiltersMain filters={products?.filters || null} />
-                    </div>
+                <section className="sticky z-20 col-span-1 md:col-span-4 flex flex-col gap-6">
 
                     {/* Lista de productos */}
                     {
+
                         products && products.products.length > 0 ? (
                             <>
+                                <div className="flex justify-end">
+                                    <div className="flex items-center gap-2 text-sm">
+                                        <p>Ordenar por:</p>
+                                        <OrdenarPor pathname="/productos" />
+                                    </div>
+                                </div>
                                 <ProductosList products={products.products} />
                                 {/* Paginación */}
                                 <Pagination

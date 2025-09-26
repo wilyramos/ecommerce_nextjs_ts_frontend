@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import ProductResults from "@/components/home/product/ProductResults";
-import OrdenarPor from "@/components/home/products/OrdenarPor";
 import SpinnerLoading from "@/components/ui/SpinnerLoading";
 
 export const metadata: Metadata = {
@@ -65,16 +64,7 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
     return (
         <main className=" max-w-7xl mx-auto p-4">
 
-
-
-            {/* Productos */}
-
-
-
-            {/* Ordenar solo en DESKTOP */}
-            <div className="flex justify-end">
-                <OrdenarPor pathname="/productos" />
-            </div>
+            
 
             <Suspense fallback={<SpinnerLoading />}>
                 <ProductResults

@@ -49,14 +49,14 @@ export default function OrdenarPor({ pathname }: { pathname?: string }) {
                                 key={option.value}
                                 value={option.value}
                                 className={({ active }) =>
-                                    `cursor-pointer select-none px-4 py-2 ${active ? "bg-indigo-100 text-indigo-700" : "text-gray-800"
+                                    `cursor-pointer select-none px-4 py-2 ${active ? "bg-gray-100 text-black" : "text-gray-800"
                                     }`
                                 }
                             >
                                 {({ selected }) => (
                                     <div className="flex justify-between items-center">
                                         <span>{option.label}</span>
-                                        {selected && <FaCheck className="text-indigo-600 text-xs" />}
+                                        {selected && <FaCheck className="text-black text-xs" />}
                                     </div>
                                 )}
                             </Listbox.Option>
