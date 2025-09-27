@@ -60,7 +60,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
     return (
         <>
-            <div className="container mx-auto">
+            <div className="container mx-auto ">
                 <CarruselPrincipal />
             </div>
 
