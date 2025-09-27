@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 
-
 export const brandBaseSchema = z.object({
     nombre: z.string().trim().min(1, "Nombre requerido"),
     slug: z.string().optional(),
@@ -14,8 +13,9 @@ export const createBrandSchema = brandBaseSchema;
 export const updateBrandSchema = brandBaseSchema.partial();
 
 export const ApiBrandSchema = brandBaseSchema.extend({
-    _id: z.string(),
-    createdAt: z.string(),
+    _id: z.string().optional(),
+    updatedAt: z.string().optional(),
+    createdAt: z.string().optional(),
 });
 
 export type CreateBrandInput = z.infer<typeof createBrandSchema>;

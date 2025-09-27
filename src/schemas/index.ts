@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { ApiBrandSchema } from './brands';
 
 // For register validation
 export const RegisterSchema = z.object({
@@ -271,6 +272,7 @@ export const ApiProductSchema = productBaseSchema
     .extend({
         _id: z.string(),
         slug: z.string(),
+        brand: ApiBrandSchema.optional(),
         createdAt: z.string().datetime().optional(),
         updatedAt: z.string().datetime().optional(),
         __v: z.number().optional(),
@@ -328,6 +330,7 @@ const filterAttributeSchema = z.object({
 const filterSchema = z.object({
     brands: z.array(brandSchema).optional(),
     atributos: z.array(filterAttributeSchema).optional(),
+    price: z.array(z.object({ min: z.number().nullable(), max: z.number().nullable() })).optional(),
 });
 
 export type TFilter = z.infer<typeof filterSchema>;

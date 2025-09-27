@@ -8,6 +8,9 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Slider } from "@/components/ui/slider";
+import { LuListFilter } from "react-icons/lu";
+import { useState, useEffect } from "react";
 
 type ProductsFiltersProps = {
     filters: TFilter[] | null;
@@ -17,11 +20,41 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    // función para actualizar query params en la url
+    // inicializa datos aunque filters sea null
+    const { brands = [], atributos = [], price = [] } = filters?.[0] ?? {};
+    const priceFilter = price?.[0] ?? null;
+
+    // hooks SIEMPRE al inicio
+    const [priceRange, setPriceRange] = useState<[number, number]>([
+        priceFilter?.min ?? 0,
+        priceFilter?.max ?? 0,
+    ]);
+
+    useEffect(() => {
+        if (!priceFilter) return;
+        const paramRange = searchParams.get("priceRange");
+        if (paramRange) {
+            const [min, max] = paramRange.split("-").map(Number);
+            setPriceRange([
+                min || priceFilter.min || 0,
+                max || priceFilter.max || 0,
+            ]);
+        } else {
+            setPriceRange([priceFilter.min ?? 0, priceFilter.max ?? 0]);
+        }
+    }, [searchParams, priceFilter]);
+
+    // si no hay filtros, retorno temprano después de hooks
+    if (!filters || filters.length === 0) return null;
+
+    const updatePriceRange = (range: [number, number]) => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("priceRange", `${range[0]}-${range[1]}`);
+        router.push(`/productos?${params.toString()}`);
+    };
+
     const handleFilterChange = (key: string, value: string) => {
         const params = new URLSearchParams(searchParams.toString());
-
-        // toggle: si ya está lo quitamos, si no lo añadimos
         if (params.getAll(key).includes(value)) {
             const newValues = params.getAll(key).filter((v) => v !== value);
             params.delete(key);
@@ -29,17 +62,15 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
         } else {
             params.append(key, value);
         }
-
         router.push(`/productos?${params.toString()}`);
     };
 
-    if (!filters || filters.length === 0) return null;
-
-    const { brands = [], atributos = [] } = filters[0]; // backend lo manda en array
-
     return (
-        <aside className="w-full p-2 border border-gray-100 shadow-xs rounded-md bg-white">
-            <h2 className="text-lg font-semibold mb-3">Filtros</h2>
+        <aside className="w-full p-4 border border-gray-100 shadow-xs rounded-md bg-white">
+            <h2 className="text-lg font-semibold mb-3">
+                <LuListFilter className="inline mr-2 mb-1" />
+                Filtros
+            </h2>
 
             <Accordion type="multiple" className="w-full">
                 {/* Brands */}
@@ -50,7 +81,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                             <ul className="space-y-1">
                                 {brands.map((brand) => (
                                     <li key={brand.slug}>
-                                        <label className="flex items-center gap-2 cursor-pointer text-sm">
+                                        <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-600">
                                             <input
                                                 type="checkbox"
                                                 checked={searchParams.getAll("brand").includes(brand.slug)}
@@ -73,7 +104,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                             <ul className="space-y-1">
                                 {attr.values.map((value) => (
                                     <li key={value}>
-                                        <label className="flex items-center gap-2 cursor-pointer text-sm">
+                                        <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-600">
                                             <input
                                                 type="checkbox"
                                                 checked={searchParams.getAll(attr.name).includes(value)}
@@ -87,6 +118,29 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                         </AccordionContent>
                     </AccordionItem>
                 ))}
+
+                {/* Precio dinámico con slider */}
+                {priceFilter && (
+                    <AccordionItem value="price">
+                        <AccordionTrigger>Precio</AccordionTrigger>
+                        <AccordionContent>
+                            <div className="flex flex-col gap-4 text-sm p-2">
+                                <Slider
+                                    min={priceFilter.min ?? 0}
+                                    max={priceFilter.max ?? 1000}
+                                    step={2}
+                                    value={priceRange}
+                                    onValueChange={(val) => setPriceRange(val as [number, number])}
+                                    onValueCommit={(val) => updatePriceRange(val as [number, number])}
+                                />
+                                <div className="flex justify-between text-gray-600">
+                                    <span>S/. {priceRange[0]}</span>
+                                    <span>S/. {priceRange[1]}</span>
+                                </div>
+                            </div>
+                        </AccordionContent>
+                    </AccordionItem>
+                )}
             </Accordion>
         </aside>
     );

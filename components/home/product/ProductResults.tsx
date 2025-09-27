@@ -57,7 +57,7 @@ export default async function ProductResults({
                             <>
                                 <div className="flex justify-end">
                                     <div className="flex items-center gap-2 text-sm">
-                                        <p>Ordenar por:</p>
+                                        <p className="text-gray-700">Ordenar por:</p>
                                         <OrdenarPor pathname="/productos" />
                                     </div>
                                 </div>

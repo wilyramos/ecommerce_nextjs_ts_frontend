@@ -92,7 +92,7 @@ export default function ProductForm({ product, categorias, brands }: { product?:
 
                     <div className="py-1">
                         <label htmlFor="brand" className="block font-semibold text-gray-700">Marca</label>
-                        <BrandCombobox brands={brands} value={product?.brand} />
+                        <BrandCombobox brands={brands} value={product?.brand?._id} />
                     </div>
 
                 </div>
