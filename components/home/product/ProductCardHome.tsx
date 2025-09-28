@@ -10,59 +10,54 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
     const precio = product.precio ?? 0;
     const stock = product.stock ?? 0;
     const color = product.atributos?.Color ?? null;
+    const brand = typeof product.brand === "string" ? product.brand : product.brand?.nombre;
 
     return (
-        <div className="group relative bg-white border border-gray-100 shadow-sm hover:shadow-xl overflow-hidden transition-all duration-300 hover:-translate-y-1">
+        <div className="group relative bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
             <Link href={`/productos/${product.slug}`} className="flex flex-col h-full">
-                {/* Imagen */}
-                <div className="relative w-full aspect-square bg-gray-50 flex items-center justify-center overflow-hidden">
+
+                {/* Marca + Nombre */}
+                <div className="p-3 flex flex-col">
+                    {brand && (
+                        <span className="text-xs sm:text-sm uppercase tracking-wide text-gray-400 font-bold">
+                            {brand}
+                        </span>
+                    )}
+                    <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 line-clamp-2 group-hover:text-black transition-colors">
+                        {product.nombre}
+                    </h3>
+                </div>
+
+                {/* Imagen centrada */}
+                <div className="relative w-full aspect-square flex items-center justify-center overflow-hidden">
                     {imagen ? (
                         <Image
                             src={imagen}
                             alt={product.nombre}
                             fill
-                            className="object-contain p-8 group-hover:scale-110 transition-transform duration-500 ease-out"
+                            className="object-contain p-6 group-hover:scale-105 transition-transform duration-500 ease-out"
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                            quality={85}
+                            quality={90}
                         />
                     ) : (
-                        <div className="flex items-center justify-center w-full h-full text-gray-400 text-sm">
+                        <div className="flex items-center justify-center w-full h-full text-gray-400 text-xs sm:text-sm">
                             Sin imagen
                         </div>
                     )}
                 </div>
 
-                {/* Info */}
-                <div className="flex flex-col flex-1 p-4 gap-2">
-
-
-                    {product.brand && (
-                        <span className="text-xs uppercase tracking-wide text-gray-500 font-medium">
-                            {typeof product.brand === "string" ? product.brand : product.brand.nombre}
+                {/* Precio, stock y color */}
+                <div className="flex items-center justify-between gap-2 p-3 sm:p-4 mt-auto border-t border-gray-100 bg-gray-50/40">
+                    {stock > 0 ? (
+                        <span className="text-sm sm:text-base md:text-lg font-semibold text-gray-900">
+                            S/ {precio.toFixed(2)}
+                        </span>
+                    ) : (
+                        <span className="text-xs sm:text-sm font-medium text-red-500">
+                            Sin stock
                         </span>
                     )}
-
-
-
-                    <div className="flex items-center justify-between gap-2 mt-auto">
-
-                        <h3 className="text-sm md:text-base font-semibold text-gray-900 line-clamp-2 group-hover:text-blue-600 transition-colors">
-                            {product.nombre}
-                        </h3>
-                        <div className="ml-auto font-bold text-gray-900 text-xl">
-                            {stock > 0 ? (
-                                <>
-                                    <span className="text-gray-500 text-base font-normal">s/</span>{" "}
-                                    {precio.toFixed(2)}
-                                </>
-                            ) : (
-                                <span className="text-gray-400 text-sm">Sin stock</span>
-                            )}
-                            {color && <ColorCircle color={color} />}
-
-                        </div>
-                    </div>
-
+                    {color && <ColorCircle color={color} />}
                 </div>
             </Link>
         </div>
