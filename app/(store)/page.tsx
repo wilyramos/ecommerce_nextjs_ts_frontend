@@ -7,6 +7,7 @@ import ProductosDestacados from "@/components/home/ProductosDestacados";
 import CategoriasDestacadasWrapper from "@/components/home/CategoriasDestacadasWrapper";
 import FeaturesList from "@/components/home/FeaturesList";
 import BrandsList from "@/components/home/BrandsList";
+import NovedadesCategorias from "@/components/home/NovedadesCategorias";
 
 export const metadata: Metadata = {
     title: "GoPhone | Tecnologia y productos a tu alcance",
@@ -60,12 +61,12 @@ export const metadata: Metadata = {
 export default function HomePage() {
     return (
         <>
-            <div className="container mx-auto">
+            <section className="container mx-auto">
                 <CarruselPrincipal />
-            </div>
+            </section>
 
-            <section className="">
-                <CategoriasDestacadasWrapper />
+            <section className="my-5">
+                <NovedadesCategorias />
             </section>
 
             <section className="">
@@ -75,6 +76,12 @@ export default function HomePage() {
             <section>
                 <FeaturesList />
             </section>
+
+            
+            <section className="">
+                <CategoriasDestacadasWrapper />
+            </section>
+
 
             <section className="">
                 <ProductosDestacados />

@@ -21,9 +21,9 @@ export default function CategoriasDestacadas({
     categorias: CategoryListResponse;
 }) {
 
-
     return (
-        <section className="w-full py-5">
+        <section className="w-full py-5 max-w-7xl mx-auto px-4">
+            <h2 className="text-2xl font-semibold mb-4">Categorías Destacadas</h2>
             <div className="max-w-7xl mx-auto">
                 <Carousel
                     responsive={responsive}
