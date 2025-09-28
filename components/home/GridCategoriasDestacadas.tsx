@@ -13,7 +13,7 @@ export default function GridCategoriasDestacadas({
     return (
         <section className="container mx-auto px-4 py-10 max-w-7xl">
             <header>
-                <h2 className="text-2xl font-bold mb-6 text-center">
+                <h2 className="text-2xl font-semibold mb-6">
                     Novedades de Gophone
                 </h2>
             </header>
@@ -21,28 +21,31 @@ export default function GridCategoriasDestacadas({
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                 {/* Principal */}
                 {categorias[0] && (
-                    <article className="col-span-2 md:col-span-3 lg:col-span-4 group">
+                    
+                    <>
+                    </>
+//                     <article className="col-span-2 md:col-span-3 lg:col-span-4 group">
 
-                        <div className="mt-2 text-center flex flex-col md:flex-row items-center bg-white md:gap-10 md:p-6">
-
-                            <Image
-                                src={categorias[0].image || "/logo.png"}
-                                alt={categorias[0].nombre}
-                                width={1200}
-                                height={400}
-                                className="w-full h-40 sm:h-56 md:h-72 lg:h-80 object-contain rounded-lg "
-                                priority
-                            />
-                            <h3 className="text-base sm:text-lg md:text-xl font-semibold uppercase">
-                                <Link
-                                    href={`/categorias/${categorias[0].slug}`}
-                                    className="hover:text-black transition"
-                                >
-                                    {categorias[0].nombre}
-                                </Link>
-                            </h3>
-                        </div>
-                    </article>
+//                         <div className="mt-2 text-center flex flex-col md:flex-row items-center bg-white md:gap-10 md:p-6">
+// {/* 
+//                             <Image
+//                                 src={categorias[0].image || "/logo.png"}
+//                                 alt={categorias[0].nombre}
+//                                 width={1200}
+//                                 height={400}
+//                                 className="w-full h-40 sm:h-56 md:h-72 lg:h-80 object-contain rounded-lg "
+//                                 priority
+//                             />
+//                             <h3 className="text-base sm:text-lg md:text-xl font-semibold uppercase">
+//                                 <Link
+//                                     href={`/categorias/${categorias[0].slug}`}
+//                                     className="hover:text-black transition"
+//                                 >
+//                                     {categorias[0].nombre}
+//                                 </Link> */}
+//                             {/* </h3> */}
+//                         </div>
+//                     </article>
                 )}
 
                 {/* Secundarias */}
@@ -61,13 +64,13 @@ export default function GridCategoriasDestacadas({
                         <div className="p-2 sm:p-3 text-center">
                             <h3 className="text-sm sm:text-base font-semibold uppercase">
                                 <Link
-                                    href={`/categorias/${cat.slug}`}
+                                    href={`/categoria/${cat.slug}`}
                                     className="hover:text-black transition"
                                 >
                                     {cat.nombre}
                                 </Link>
                             </h3>
-                            <Link href={`/categorias/${cat.slug}`} className="mt-2 inline-block">
+                            <Link href={`/categoria/${cat.slug}`} className="mt-2 inline-block">
                                 <Button variant="outline" size="sm" className="w-full cursor-pointer p-1 hidde">
                                     Ver más
                                 </Button>
