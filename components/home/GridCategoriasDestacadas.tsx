@@ -30,10 +30,10 @@ export default function GridCategoriasDestacadas({
                                 alt={categorias[0].nombre}
                                 width={1200}
                                 height={400}
-                                className="w-full h-40 sm:h-56 md:h-72 lg:h-80 object-cover rounded-lg"
+                                className="w-full h-40 sm:h-56 md:h-72 lg:h-80 object-contain rounded-lg "
                                 priority
                             />
-                            <h3 className="text-base sm:text-lg md:text-xl font-semibold">
+                            <h3 className="text-base sm:text-lg md:text-xl font-semibold uppercase">
                                 <Link
                                     href={`/categorias/${categorias[0].slug}`}
                                     className="hover:text-black transition"
@@ -49,7 +49,7 @@ export default function GridCategoriasDestacadas({
                 {categorias.slice(1, 5).map((cat) => (
                     <article
                         key={cat._id}
-                        className="group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition"
+                        className="group bg-white rounded-lg overflow-hidden  transition"
                     >
                         <Image
                             src={cat.image || "/logo.png"}
@@ -59,7 +59,7 @@ export default function GridCategoriasDestacadas({
                             className="w-full h-32 sm:h-40 object-contain"
                         />
                         <div className="p-2 sm:p-3 text-center">
-                            <h3 className="text-sm sm:text-base font-medium">
+                            <h3 className="text-sm sm:text-base font-semibold uppercase">
                                 <Link
                                     href={`/categorias/${cat.slug}`}
                                     className="hover:text-black transition"
@@ -67,14 +67,11 @@ export default function GridCategoriasDestacadas({
                                     {cat.nombre}
                                 </Link>
                             </h3>
-                            <Button
-                                asChild
-                                size="sm"
-                                variant="secondary"
-                                className="mt-1 sm:mt-2 inline-block md:opacity-0 md:group-hover:opacity-100 transition"
-                            >
-                                <Link href={`/categorias/${cat.slug}`}>Ver más</Link>
-                            </Button>
+                            <Link href={`/categorias/${cat.slug}`} className="mt-2 inline-block">
+                                <Button variant="outline" size="sm" className="w-full cursor-pointer p-1 hidde">
+                                    Ver más
+                                </Button>
+                            </Link>
                         </div>
                     </article>
                 ))}
