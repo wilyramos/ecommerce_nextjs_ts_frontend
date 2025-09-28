@@ -49,7 +49,7 @@ export default function GridCategoriasDestacadas({
                 )}
 
                 {/* Secundarias */}
-                {categorias.slice(1, 5).map((cat) => (
+                {categorias.slice(3, 7).map((cat) => (
                     <article
                         key={cat._id}
                         className="group bg-white rounded-lg overflow-hidden  transition"
