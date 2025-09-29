@@ -2,6 +2,7 @@ import * as React from "react";
 import type { CategoryResponse } from "@/src/schemas";
 import AttributeFields from "./AttributeFileds";
 import { ImageUploadDialog } from "./ImageUploadDialog";
+import CategorySwitches from "./CategorySwitches";
 
 type Props = {
     category?: CategoryResponse;
@@ -78,6 +79,12 @@ export default function CategoryForm({ category, categories }: Props) {
                     defaultValue={category?.image || ""}
                 />
             </div>
+
+            <CategorySwitches 
+                isActive={category?.isActive}
+            />
+
+
         </div>
     );
 }

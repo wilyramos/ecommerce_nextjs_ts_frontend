@@ -76,12 +76,10 @@ export default function HomePage() {
             <section>
                 <FeaturesList />
             </section>
-
             
             <section className="">
                 <CategoriasDestacadasWrapper />
             </section>
-
 
             <section className="">
                 <ProductosDestacados />

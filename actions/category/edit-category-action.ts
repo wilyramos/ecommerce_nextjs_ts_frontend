@@ -45,6 +45,7 @@ export async function EditCategory(id: string, prevState: ActionStateType, formD
         parent: formData.get("parent") || null,
         attributes: attributesData,
         image: formData.get("image") || undefined,
+        isActive: formData.get("isActive") === "on" ? true : false
     }
 
     console.log("imagen", categoryData.image)
