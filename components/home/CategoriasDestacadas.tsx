@@ -23,7 +23,9 @@ export default function CategoriasDestacadas({
 
     return (
         <section className="w-full py-5 max-w-7xl mx-auto px-4">
-            <h2 className="text-2xl font-semibold mb-4">Categorías Destacadas</h2>
+            <h2 className="text-2xl font-bold tracking-tight">
+                Categorías Destacadas
+            </h2>
             <div className="max-w-7xl mx-auto">
                 <Carousel
                     responsive={responsive}
@@ -70,7 +72,7 @@ export default function CategoriasDestacadas({
                 </Carousel>
             </div>
 
-          
+
         </section>
     );
 }

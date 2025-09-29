@@ -23,7 +23,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                             {brand}
                         </span>
                     )}
-                    <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-900 line-clamp-2 group-hover:text-black transition-colors">
+                    <h3 className="text-xs sm:text-base font-semibold text-gray-900 line-clamp-2 group-hover:text-black transition-colors">
                         {product.nombre}
                     </h3>
                 </div>

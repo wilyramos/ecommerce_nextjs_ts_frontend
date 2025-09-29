@@ -1,7 +1,6 @@
 import type { CategoryListResponse } from "@/src/schemas";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 export default function GridCategoriasDestacadas({
     categorias,
@@ -12,71 +11,40 @@ export default function GridCategoriasDestacadas({
 
     return (
         <section className="container mx-auto px-4 py-10 max-w-7xl">
-            <header>
-                <h2 className="text-2xl font-semibold mb-6">
+            <header className="mb-6 text-center">
+                <h2 className="text-2xl font-bold tracking-tight">
                     Novedades de Gophone
                 </h2>
+                <p className="text-muted-foreground text-sm">
+                    Descubre nuestras categorías más populares
+                </p>
             </header>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {/* Principal */}
-                {categorias[0] && (
-                    
-                    <>
-                    </>
-//                     <article className="col-span-2 md:col-span-3 lg:col-span-4 group">
-
-//                         <div className="mt-2 text-center flex flex-col md:flex-row items-center bg-white md:gap-10 md:p-6">
-// {/* 
-//                             <Image
-//                                 src={categorias[0].image || "/logo.png"}
-//                                 alt={categorias[0].nombre}
-//                                 width={1200}
-//                                 height={400}
-//                                 className="w-full h-40 sm:h-56 md:h-72 lg:h-80 object-contain rounded-lg "
-//                                 priority
-//                             />
-//                             <h3 className="text-base sm:text-lg md:text-xl font-semibold uppercase">
-//                                 <Link
-//                                     href={`/categorias/${categorias[0].slug}`}
-//                                     className="hover:text-black transition"
-//                                 >
-//                                     {categorias[0].nombre}
-//                                 </Link> */}
-//                             {/* </h3> */}
-//                         </div>
-//                     </article>
-                )}
+               
 
                 {/* Secundarias */}
-                {categorias.slice(3, 7).map((cat) => (
-                    <article
+                {categorias.slice(1, 5).map((cat) => (
+                    <Link
                         key={cat._id}
-                        className="group bg-white rounded-lg overflow-hidden  transition"
+                        href={`/categoria/${cat.slug}`}
+                        className="group bg-white rounded-xl "
                     >
-                        <Image
-                            src={cat.image || "/logo.png"}
-                            alt={cat.nombre}
-                            width={200}
-                            height={200}
-                            className="w-full h-32 sm:h-40 object-contain"
-                        />
-                        <div className="p-2 sm:p-3 text-center">
-                            <h3 className="text-sm sm:text-base font-semibold uppercase">
-                                <Link
-                                    href={`/categoria/${cat.slug}`}
-                                    className="hover:text-black transition"
-                                >
-                                    {cat.nombre}
-                                </Link>
-                            </h3>
-                            <Link href={`/categoria/${cat.slug}`} className="mt-2 inline-block">
-                                <Button variant="outline" size="sm" className="w-full cursor-pointer p-1 hidde">
-                                    Ver más
-                                </Button>
-                            </Link>
+                        <div className="aspect-square relative">
+                            <Image
+                                src={cat.image || "/logo.png"}
+                                alt={cat.nombre}
+                                fill
+                                className="object-contain p-4 group-hover:scale-105 transition-transform"
+                            />
                         </div>
-                    </article>
+                        <div className="p-3 text-center">
+                            <h3 className="text-sm sm:text-base font-medium uppercase group-hover:text-primary transition">
+                                {cat.nombre}
+                            </h3>
+                        </div>
+                    </Link>
                 ))}
             </div>
         </section>
