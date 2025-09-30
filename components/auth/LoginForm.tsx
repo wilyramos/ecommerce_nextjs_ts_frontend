@@ -74,7 +74,7 @@ export default function LoginForm() {
                         type="email"
                         name="email"
                         placeholder="tu@email.com"
-                        className="mt-1 w-full rounded-full border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-800 font-medium"
+                        className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-800 font-medium"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
@@ -88,7 +88,7 @@ export default function LoginForm() {
                             type={showPassword ? "text" : "password"}
                             name="password"
                             placeholder="********"
-                            className="mt-1 w-full rounded-full border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-800 font-medium"
+                            className="mt-1 w-full rounded-lg border border-gray-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-800 font-medium"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
