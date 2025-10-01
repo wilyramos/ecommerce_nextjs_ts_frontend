@@ -76,7 +76,6 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                                 alt={product.nombre}
                                 fill
                                 className="object-cover transition-opacity duration-300"
-                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                 quality={70}
                             />
 
@@ -141,9 +140,12 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
 
                 {/* Info */}
                 <div className="flex flex-col justify-between flex-1 p-3 gap-2">
-                    <h3 className="text-sm md:text-base font-medium text-gray-800 line-clamp-3 leading-tight">
+                    <h3
+                        className="text-sm md:text-base font-medium text-gray-800 line-clamp-3 min-h-[4.5rem]"
+                    >
                         {product.nombre}
                     </h3>
+
                     <div className="flex items-center gap-2 mt-auto">
                         {color && <ColorCircle color={color} />}
                         <div className="ml-auto font-semibold">

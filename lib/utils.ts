@@ -35,3 +35,16 @@ export function getProvincesByDepartment(department: string): string[] {
 
     return data.find(item => item.department === department)?.provinces || [];
 }
+
+export function getSearchHistory(): string[] {
+    if (typeof window === "undefined") return [];
+    const saved = JSON.parse(localStorage.getItem("search-history") || "[]");
+    return Array.isArray(saved) ? saved : [];
+}
+
+export function saveSearchTerm(term: string): void {
+    if (typeof window === "undefined" || !term) return;
+    const history = getSearchHistory();
+    const updated = [term, ...history.filter(h => h !== term)].slice(0, 5);
+    localStorage.setItem("search-history", JSON.stringify(updated));
+}

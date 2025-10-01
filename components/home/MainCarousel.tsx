@@ -18,7 +18,7 @@ const responsive = {
 
 export default function MainCarousel({ products }: { products: ProductResponse[] }) {
     return (
-        <div className="w-full max-w-screen-2xl mx-auto relative">
+        <div className="w-full mx-auto relative">
             <Carousel
                 responsive={responsive}
                 autoPlay
@@ -36,7 +36,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                 {products.map((product) => (
                     <div
                         key={product._id}
-                        className="relative w-full flex flex-col md:flex-row bg-white overflow-hidden group h-auto md:h-[440px]"
+                        className="relative w-full flex flex-col md:flex-row bg-white overflow-hidden group h-auto md:h-[440px] px-20"
                     >
                         {/* Texto */}
                         <div className="z-10 w-full md:w-1/2 flex flex-col justify-center items-start px-6 sm:px-10 md:px-16 py-8 sm:py-10 md:py-16 gap-4 sm:gap-5 md:gap-6">

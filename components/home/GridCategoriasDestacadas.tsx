@@ -20,7 +20,7 @@ export default function GridCategoriasDestacadas({
                 </p>
             </header>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                 {/* Secundarias */}
                 {categorias.slice(1, 5).map((cat) => (
                     <Link
@@ -28,7 +28,7 @@ export default function GridCategoriasDestacadas({
                         href={`/categoria/${cat.slug}`}
                         className="group bg-white rounded-xl"
                     >
-                        <div className="relative h-40 w-full overflow-hidden rounded-xl">
+                        <div className="relative h-32 w-full overflow-hidden rounded-xl">
                             <Image
                                 src={cat.image || "/logo.png"}
                                 alt={cat.nombre}
@@ -38,7 +38,7 @@ export default function GridCategoriasDestacadas({
                         </div>
 
                         <div className="p-3 text-center">
-                            <h3 className="text-sm sm:text-base font-medium uppercase group-hover:text-primary transition">
+                            <h3 className="text-sm font-bold uppercase group-hover:text-primary transition">
                                 {cat.nombre}
                             </h3>
                         </div>
