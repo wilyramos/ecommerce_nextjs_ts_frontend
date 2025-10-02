@@ -11,6 +11,7 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { LuListFilter } from "react-icons/lu";
 import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 
 type ProductsFiltersProps = {
     filters: TFilter[] | null;
@@ -65,12 +66,32 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
         router.push(`/productos?${params.toString()}`);
     };
 
+    // función para limpiar todos los filtros menos el query de búsqueda
+    const clearFilters = () => {
+        const params = new URLSearchParams();
+        const query = searchParams.get("query");
+        if (query) {
+            params.set("query", query);
+        }
+        router.push(`/productos?${params.toString()}`);
+    };
+
     return (
         <aside className="w-full p-4 border border-gray-100 shadow-xs rounded-md bg-white">
-            <h2 className="text-lg font-semibold mb-3">
-                <LuListFilter className="inline mr-2 mb-1" />
-                Filtros
-            </h2>
+            <div className="flex justify-between items-center mb-3">
+                <h2 className="text-lg font-semibold flex items-center gap-2">
+                    <LuListFilter className="text-gray-600" />
+                    Filtros
+                </h2>
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={clearFilters}
+                    className="text-xs text-red-600 hover:text-red-500"
+                >
+                    Limpiar
+                </Button>
+            </div>
 
             <Accordion type="multiple" className="w-full">
                 {/* Brands */}

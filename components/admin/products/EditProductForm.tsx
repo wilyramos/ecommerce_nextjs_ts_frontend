@@ -1,14 +1,12 @@
 "use client"
 
-
 import type { ProductWithCategoryResponse } from "@/src/schemas";
-import { useActionState, useEffect } from "react"
+import { useActionState, useEffect } from "react";
 import ProductForm from "./ProductForm";
 import { EditProduct } from "@/actions/product/edit-product-action";
-import type { CategoryListResponse } from '@/src/schemas'
+import type { CategoryListResponse } from '@/src/schemas';
 import { toast } from "react-toastify";
 import type { TBrand } from "@/src/schemas/brands";
-
 
 
 export default function EditProductForm({ product, categorias, brands }: { product: ProductWithCategoryResponse, categorias: CategoryListResponse, brands: TBrand[] }) {

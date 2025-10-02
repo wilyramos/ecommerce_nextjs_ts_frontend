@@ -153,11 +153,6 @@ export const UsersAPIResponse = z.object({
 
 export type UsersAPIResponse = z.infer<typeof UsersAPIResponse>;
 
-//TODO:HACER SCHEMAS ESCALABLES PARA CATEGORY Y PRODUCT
-
-
-
-
 
 // ************* NEW CATEGORY **************//
 // ***********************************
@@ -238,6 +233,7 @@ export const productBaseSchema = z.object({
     slug: z.string().optional(),
     descripcion: z.string().optional(),
     precio: z.number().min(0, 'El precio no puede ser negativo').default(0),
+    precioComparativo: z.number().min(0, 'El precio comparativo no puede ser negativo').optional(),
     costo: z.number().min(0, 'El costo no puede ser negativo').optional(),
     imagenes: z.array(z.string().url('Debe ser una URL válida')).optional(),
     categoria: z.string().min(1, 'La categoría es obligatoria'),

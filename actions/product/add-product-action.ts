@@ -52,6 +52,7 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         nombre: formData.get('nombre'),
         descripcion: formData.get('descripcion'),
         precio: Number(formData.get('precio')),
+        precioComparativo: Number(formData.get('precioComparativo')),
         costo: Number(formData.get('costo')),
         categoria: formData.get('categoria'),
         stock: Number(formData.get('stock')),

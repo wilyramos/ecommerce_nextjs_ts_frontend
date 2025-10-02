@@ -3,6 +3,7 @@ import ProductosList from "./ProductsList";
 import Pagination from "../Pagination";
 import ProductsFiltersMain from "./ProductsFiltersMain";
 import OrdenarPor from "../products/OrdenarPor";
+import DrawerFiltersMain from "./DrawerFiltersMain";
 
 type ProductResultsProps = {
     category?: string;
@@ -36,53 +37,57 @@ export default async function ProductResults({
 
 
     return (
-        <main className="max-w-7xl mx-auto flex flex-col gap-6">
+        <main className="flex flex-col gap-3">
             {/* GRID principal: sidebar (filtros) + contenido */}
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
 
                 {/* Sidebar de filtros (desktop) */}
-                <aside className="block md:col-span-1">
+                <aside className="hidden md:block md:col-span-1">
                     <div className="sticky top-20">
                         <ProductsFiltersMain filters={products?.filters || null} />
                     </div>
                 </aside>
 
                 {/* Contenido principal */}
-                <section className="sticky z-20 col-span-1 md:col-span-4 flex flex-col gap-6">
+                <section className="col-span-1 md:col-span-4 flex flex-col gap-2">
+                    {/* Barra superior (mobile + desktop) */}
+                    <div className="flex justify-between md:justify-end items-center gap-2 text-sm py-2 border-b md:border-none">
+                        {/* Drawer solo en mobile */}
+                        <div className="md:hidden">
+                            <DrawerFiltersMain filters={products?.filters || null} />
+                        </div>
+
+                        <p className="text-gray-700">Ordenar por:</p>
+                        <OrdenarPor pathname="/productos" />
+                    </div>
 
                     {/* Lista de productos */}
-                    {
+                    {products && products.products.length > 0 ? (
+                        <>
+                            <ProductosList products={products.products} />
 
-                        products && products.products.length > 0 ? (
-                            <>
-                                <div className="flex justify-end">
-                                    <div className="flex items-center gap-2 text-sm">
-                                        <p className="text-gray-700">Ordenar por:</p>
-                                        <OrdenarPor pathname="/productos" />
-                                    </div>
-                                </div>
-                                <ProductosList products={products.products} />
-                                {/* Paginación */}
-                                <Pagination
-                                    currentPage={products.currentPage}
-                                    totalPages={products.totalPages}
-                                    limit={limit}
-                                    pathname="/productos"
-                                    queryParams={{
-                                        category,
-                                        priceRange,
-                                        sort,
-                                        query,
-                                        ...rest,
-                                    }}
-                                />
-                            </>
-                        ) : (
-                            <div className="text-center py-10 text-gray-500">
-                                No se encontraron productos.
-                            </div>
-                        )}
+                            {/* Paginación */}
+                            <Pagination
+                                currentPage={products.currentPage}
+                                totalPages={products.totalPages}
+                                limit={limit}
+                                pathname="/productos"
+                                queryParams={{
+                                    category,
+                                    priceRange,
+                                    sort,
+                                    query,
+                                    ...rest,
+                                }}
+                            />
+                        </>
+                    ) : (
+                        <div className="text-center py-10 text-gray-500">
+                            No se encontraron productos.
+                        </div>
+                    )}
                 </section>
+
             </div>
         </main>
     );

@@ -58,7 +58,7 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
 
     return (
         <div
-            className="group relative flex flex-col bg-white text-gray-700 rounded shadow-xs transform transition-transform duration-500 hover:scale-[1.01] overflow-visible my-2"
+            className="group relative flex flex-col bg-white text-gray-700 rounded shadow-xs transform transition-transform duration-500 hover:scale-[1.01] overflow-visible"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onTouchStart={handleTouchStart}
@@ -139,20 +139,30 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                 </div>
 
                 {/* Info */}
-                <div className="flex flex-col justify-between flex-1 p-3 gap-2">
+                <div className="flex flex-col justify-between flex-1 p-2">
+                    <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-gray-500 uppercase">{product.brand?.nombre}</span>
+                    </div>
+
                     <h3
-                        className="text-sm md:text-base font-medium text-gray-800 line-clamp-3 min-h-[4.5rem]"
+                        className="text-sm md:text-base font-medium text-black line-clamp-3 min-h-[4.5rem]"
                     >
                         {product.nombre}
                     </h3>
 
                     <div className="flex items-center gap-2 mt-auto">
                         {color && <ColorCircle color={color} />}
-                        <div className="ml-auto font-semibold">
+                        <div className="ml-auto font-semibold flex flex-col items-end leading-tight">
                             {stock > 0 ? (
                                 <>
-                                    <span>s/ </span>
-                                    {precio.toFixed(2)}
+                                    {product.precioComparativo && (
+                                        <span className="text-sm text-gray-400 line-through">
+                                            s/ {product.precioComparativo.toFixed(2)}
+                                        </span>
+                                    )}
+                                    <span className="text-black text-base">
+                                        s/ {precio.toFixed(2)}
+                                    </span>
                                 </>
                             ) : (
                                 <span className="text-gray-400 text-sm">Sin stock</span>

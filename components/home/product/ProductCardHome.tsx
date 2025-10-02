@@ -49,9 +49,17 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                 {/* Precio, stock y color */}
                 <div className="flex items-center justify-between gap-2 p-3 sm:p-4 mt-auto border-t border-gray-100 bg-gray-50/40">
                     {stock > 0 ? (
-                        <span className="text-sm sm:text-base md:text-lg font-semibold text-gray-900">
-                            S/ {precio.toFixed(2)}
-                        </span>
+                        <>
+                            {product.precioComparativo && (
+                                <span className="text-xs sm:text-sm font-medium text-gray-400 line-through">
+                                    s/ {product.precioComparativo.toFixed(2)}
+                                </span>
+                            )}
+                            <span className="text-sm sm:text-base font-semibold text-gray-900">
+                                s/ {precio.toFixed(2)}
+                            </span>
+
+                        </>
                     ) : (
                         <span className="text-xs sm:text-sm font-medium text-red-500">
                             Sin stock

@@ -1,112 +1,135 @@
 import type { ProductWithCategoryResponse } from "@/src/schemas";
 import type { CategoryListResponse } from "@/src/schemas";
 import UploadProductImage from "./UploadProductImage";
-import ClientCategoryAttributes from "./ClientCategoryAttributes"
+import ClientCategoryAttributes from "./ClientCategoryAttributes";
 import ProductSwitches from "./ProductSwitches";
 import SpecificationsSection from "./SpecificationsSection";
 import ProductDescriptionEditor from "./ProductDescriptionEditor";
 import type { TBrand } from "@/src/schemas/brands";
 import BrandCombobox from "./BrandCombobox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
-
-export default function ProductForm({ product, categorias, brands }: { product?: ProductWithCategoryResponse, categorias: CategoryListResponse, brands: TBrand[] }) {
-
+export default function ProductForm({
+    product,
+    categorias,
+    brands,
+}: {
+    product?: ProductWithCategoryResponse;
+    categorias: CategoryListResponse;
+    brands: TBrand[];
+}) {
     return (
         <div className="text-xs grid grid-cols-1 sm:grid-cols-4 gap-4 p-4 space-y-1">
-
             <div className="col-span-1 sm:col-span-3">
-                <div className="py-1">
-                    <label htmlFor="nombre" className="block font-semibold text-gray-700">Nombre del producto</label>
-                    <input
+                {/* Nombre */}
+                <div className="py-1 space-y-1">
+                    <Label htmlFor="nombre">Nombre
+                        <span className="text-red-500">*</span>
+                    </Label>
+                    <Input
                         type="text"
                         id="nombre"
                         name="nombre"
-                        className="w-full border border-gray-200 rounded-lg p-2"
                         defaultValue={product?.nombre}
+                        required
                     />
                 </div>
 
-                <div className="py-1">
-                    <label htmlFor="descripcion" className="block font-semibold text-gray-700 mb-1">Descripción</label>
-                    <ProductDescriptionEditor
-                        initialHTML={product?.descripcion || ""}
-                    />
+                {/* Descripción */}
+                <div className="py-1 space-y-1">
+                    <Label htmlFor="descripcion">Descripción</Label>
+                    <ProductDescriptionEditor initialHTML={product?.descripcion || ""} />
                 </div>
 
+                {/* Precios y stock */}
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    <div className="py-1">
-                        <label htmlFor="precio" className="block font-semibold text-gray-700">Precio</label>
-                        <input
+                    <div className="py-1 space-y-1">
+                        <Label htmlFor="precio">Precio</Label>
+                        <Input
                             type="number"
                             id="precio"
                             name="precio"
-                            className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             defaultValue={product?.precio}
                         />
                     </div>
 
-                    <div className="py-1">
-                        <label htmlFor="costo" className="block font-semibold text-gray-700">Costo</label>
-                        <input
+                    <div className="py-1 space-y-1">
+                        <Label htmlFor="costo">Costo</Label>
+                        <Input
                             type="number"
                             id="costo"
                             name="costo"
-                            className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             defaultValue={product?.costo}
                         />
                     </div>
 
-                    <div className="space-y-1">
-                        <label htmlFor="stock" className="block font-semibold text-gray-700">Stock</label>
-                        <input
+                    <div className="py-1 space-y-1">
+                        <Label htmlFor="precioComparativo">Precio comparativo</Label>
+                        <Input
+                            type="number"
+                            id="precioComparativo"
+                            name="precioComparativo"
+                            defaultValue={product?.precioComparativo}
+                        />
+                    </div>
+
+                    <div className="py-1 space-y-1">
+                        <Label htmlFor="stock">Stock</Label>
+                        <Input
                             type="number"
                             id="stock"
                             name="stock"
-                            className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             defaultValue={product?.stock}
                         />
                     </div>
                 </div>
 
+                {/* SKU y Código de barras */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="py-1">
-                        <label htmlFor="sku" className="block font-semibold text-gray-700">SKU (opcional)</label>
-                        <input
+                    <div className="py-1 space-y-1">
+                        <Label htmlFor="sku">SKU (opcional)</Label>
+                        <Input
                             type="text"
                             id="sku"
                             name="sku"
-                            className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             defaultValue={product?.sku}
                         />
                     </div>
-                    <div className="py-1">
-                        <label htmlFor="barcode" className="block font-semibold text-gray-700">Código de barras (opcional)</label>
-                        <input
+
+                    <div className="py-1 space-y-1">
+                        <Label htmlFor="barcode">Código de barras (opcional)</Label>
+                        <Input
                             type="text"
                             id="barcode"
                             name="barcode"
-                            className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             defaultValue={product?.barcode}
                         />
                     </div>
-
-                    <div className="py-1">
-                        <label htmlFor="brand" className="block font-semibold text-gray-700">Marca</label>
-                        <BrandCombobox brands={brands} value={product?.brand?._id} />
-                    </div>
-
                 </div>
 
-                <ClientCategoryAttributes categorias={categorias} initialCategoryId={product?.categoria?._id} currentAttributes={product?.atributos} />
+                {/* Marca */}
+                <div className="py-1 space-y-1">
+                    <Label htmlFor="brand">Marca</Label>
+                    <BrandCombobox brands={brands} value={product?.brand?._id} />
+                </div>
 
-                <UploadProductImage
-                    CurrentImagenes={product?.imagenes}
+                {/* Categoría + atributos dinámicos */}
+                <ClientCategoryAttributes
+                    categorias={categorias}
+                    initialCategoryId={product?.categoria?._id}
+                    currentAttributes={product?.atributos}
                 />
 
-                <SpecificationsSection initial={product?.especificaciones} />
+                {/* Imagenes */}
+                <UploadProductImage CurrentImagenes={product?.imagenes} />
 
+                {/* Especificaciones */}
+                <SpecificationsSection initial={product?.especificaciones} />
             </div>
-            <div className="">
+
+            {/* Switches */}
+            <div>
                 <ProductSwitches product={product} />
             </div>
         </div>

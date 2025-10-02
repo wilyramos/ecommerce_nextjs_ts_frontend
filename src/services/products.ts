@@ -162,7 +162,6 @@ export const getProductsMainPage = async ({
     }
 
     const json = await req.json();
-    console.log("Products main page", json);
     const products = productsApiResponseWithFilters.parse(json);
     return products;
 };
@@ -218,7 +217,7 @@ export const getDestacadosProducts = async () => {
 
     const req = await fetch(url, {
         method: 'GET',
-        next: { revalidate: 180 } // Revalida cada 3 minutos //TODO: Cambiar a "no-store"
+        next: { revalidate: 180 }
     });
 
     if (!req.ok) {

@@ -58,7 +58,9 @@ export default function ClientCategoryAttributes({
     return (
         <div className="space-y-4">
             <div className="py-1">
-                <label className="block font-semibold text-gray-700 mb-1">Categoría</label>
+                <label className="block font-semibold text-gray-700 mb-1">Categoría
+                    <span className="text-red-500">*</span>
+                </label>
                 <input type="hidden" name="categoria" value={selectedCategoryId} />
                 <Listbox value={selectedCategoryId} onChange={setSelectedCategoryId}>
                     <div className="relative">
