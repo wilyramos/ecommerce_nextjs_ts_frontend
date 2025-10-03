@@ -15,6 +15,11 @@ type Props = {
 
 export default function ProductDetails({ producto }: Props) {
     const color = producto.atributos?.Color || producto.atributos?.color || producto.atributos?.COLOR || null;
+    const precio = producto.precio ?? 0;
+    const precioComparativo = producto.precioComparativo ?? null;
+    const descuento = precioComparativo
+        ? Math.round(((precioComparativo - precio) / precioComparativo) * 100)
+        : null;
 
     return (
         <>
@@ -46,23 +51,36 @@ export default function ProductDetails({ producto }: Props) {
                                     </span>
                                 )}
                             </div>
-                            <h1 className="text-lg md:text-2xl font-bold leading-tight break-words whitespace-normal " itemProp="name">
+                            <h1 className="text-lg md:text-2xl font-bold leading-tight break-words whitespace-normal" itemProp="name">
                                 {producto.nombre}
                             </h1>
 
-                            <div className="flex items-center gap-4">
-                                <span
-                                    className="text-3xl text-gray-700"
-                                    itemProp="offers"
-                                    itemScope
-                                    itemType="https://schema.org/Offer"
-                                >
-                                    <meta itemProp="priceCurrency" content="PEN" />
-                                    <p itemProp="price" className='font-extrabold text-gray-600'>
-                                        <span className="font-extrabold text-sm">s/</span> {producto.precio?.toFixed(2)}</p>
-                                </span>
+                            <div className="space-y-1">
+                                <div className="flex items-center gap-2">
+                                    <p
+                                        className="text-3xl font-extrabold text-gray-800 flex items-baseline"
+                                        itemProp="offers"
+                                        itemScope
+                                        itemType="https://schema.org/Offer"
+                                    >
+                                        <meta itemProp="priceCurrency" content="PEN" />
+                                        <span className="text-sm mr-1">S/</span>
+                                        <span itemProp="price">{precio.toFixed(2)}</span>
+                                    </p>
 
+                                    {descuento && (
+                                        <span className="bg-black text-white text-xs font-bold px-2  rounded-l-xl">
+                                            -{descuento}%
+                                        </span>
+                                    )}
+                                </div>
 
+                                {precioComparativo && precioComparativo > precio && (
+                                    <div className="text-gray-400 text-sm">
+                                        <span className="line-through">S/ {precioComparativo.toFixed(2)}</span>{" "}
+                                        <span>Antes</span>
+                                    </div>
+                                )}
                             </div>
                             {producto.stock !== undefined && (
                                 <span
