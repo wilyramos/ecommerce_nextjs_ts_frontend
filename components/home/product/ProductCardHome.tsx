@@ -12,11 +12,25 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
     const color = product.atributos?.Color ?? null;
     const brand = typeof product.brand === "string" ? product.brand : product.brand?.nombre;
 
+    // Calcular porcentaje de descuento si existe precio comparativo
+    const descuento = product.precioComparativo
+        ? Math.round(((product.precioComparativo - precio) / product.precioComparativo) * 100)
+        : null;
+
     return (
         <Link
             href={`/productos/${product.slug}`}
-            className="group block w-full aspect-square bg-white shadow-sm hover:shadow-md transition-shadow duration-300 rounded overflow-hidden"
+            className="group block w-full aspect-square bg-white shadow-sm hover:shadow-md transition-shadow duration-300 rounded overflow-visible relative"
         >
+            {/* Badge superior: Nuevo */}
+            {product.esNuevo && (
+                <div className="absolute -top-2 left-2 z-10">
+                    <span className="px-2 py-0.5 bg-red-500 text-white text-xs shadow-sm rounded-tl-lg rounded-br-lg">
+                        Nuevo
+                    </span>
+                </div>
+            )}
+
             <div className="flex flex-col h-full">
 
                 {/* Marca + Nombre */}
@@ -49,25 +63,41 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                     )}
                 </div>
 
-                {/* Precio + Color debajo de la imagen */}
+                {/* Color */}
+                {color && (
+                    <div className="flex justify-start px-2 sm:px-3 mt-2">
+                        <ColorCircle color={color} />
+                    </div>
+                )}
+
+                {/* Precio */}
                 <div className="flex items-center justify-between gap-2 p-2 sm:p-3 mt-auto">
-                    {stock > 0 ? (
-                        <div className="flex items-center gap-2">
-                            {product.precioComparativo && (
-                                <span className="text-xs sm:text-sm font-medium text-gray-400 line-through">
-                                    s/ {product.precioComparativo.toFixed(2)}
+                    {/* Lado izquierdo: precio normal + descuento */}
+                    <div className="flex items-center gap-2">
+                        {stock > 0 ? (
+                            <>
+                                <span className="text-sm sm:text-base font-semibold text-gray-900">
+                                    s/ {precio.toFixed(2)}
                                 </span>
-                            )}
-                            <span className="text-sm sm:text-base font-semibold text-gray-900">
-                                s/ {precio.toFixed(2)}
+                                {descuento && (
+                                    <span className="text-xs font-medium text-white bg-black px-1 rounded">
+                                        -{descuento}%
+                                    </span>
+                                )}
+                            </>
+                        ) : (
+                            <span className="text-xs sm:text-sm font-medium text-red-500">
+                                Sin stock
                             </span>
-                        </div>
-                    ) : (
-                        <span className="text-xs sm:text-sm font-medium text-red-500">
-                            Sin stock
+                        )}
+                    </div>
+
+                    {/* Lado derecho: precio comparativo tachado */}
+                    {product.precioComparativo && (
+                        <span className="text-xs sm:text-sm font-medium text-gray-400 line-through">
+                            s/ {product.precioComparativo.toFixed(2)}
                         </span>
                     )}
-                    {color && <ColorCircle color={color} />}
                 </div>
 
             </div>
