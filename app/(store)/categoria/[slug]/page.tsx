@@ -1,4 +1,8 @@
+//File: frontend/app/(store)/categoria/[slug]/page.tsx
+
 import type { Metadata } from "next";
+import { metadata as globalMetadata } from "@/app/layout";
+
 import FiltrosPorCategoria from "@/components/home/categorias/FiltrosPorCategoria ";
 import ListaProducts from "@/components/home/categorias/ListaProducts";
 import OrdenarPor from "@/components/home/products/OrdenarPor";
@@ -9,41 +13,50 @@ type Params = Promise<{
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
+
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
     const { slug } = await params;
     const categoryName = decodeURIComponent(slug).replace(/-/g, " ");
 
     return {
-        title: `${categoryName} | en GoPhone`,
+        title: `${categoryName} | GoPhone`,
         description: `Descubre la mejor selección de ${categoryName} en GoPhone. Ofertas exclusivas, precios competitivos y envío rápido.`,
         keywords: [
             categoryName,
             `comprar ${categoryName}`,
-            `${categoryName} cañete`,
+            `${categoryName} Cañete`,
             `${categoryName} precio`,
-            "gophone",
+            "GoPhone",
             "accesorios",
             "tienda de tecnología",
             "ofertas en tecnología",
-            "cañete",
-            "san vicente",
-
+            "Cañete",
+            "San Vicente",
         ],
         openGraph: {
+            ...globalMetadata.openGraph,
             title: `${categoryName} | GoPhone`,
             description: `Explora nuestra colección de ${categoryName}. Encuentra productos de calidad, con garantía y envío rápido en GoPhone.`,
-            type: "website",
             url: `https://gophone.pe/categoria/${slug}`,
-            siteName: "GoPhone"
+            images: [
+                {
+                    url: "https://gophone.pe/logomini.svg", // tu logo si no tienes imagen específica
+                    width: 1200,
+                    height: 630,
+                    alt: `GoPhone - ${categoryName}`,
+                },
+            ],
         },
         twitter: {
-            card: "summary_large_image",
+            ...globalMetadata.twitter,
             title: `${categoryName} | GoPhone`,
             description: `Compra ${categoryName} en GoPhone. Calidad garantizada y envío rápido.`,
+            images: ["https://gophone.pe/logomini.svg"],
         },
         icons: {
-            icon: "/logomini.svg",
-            apple: "/logomini.svg",
+            icon: "/favicon.svg",
+            shortcut: "/favicon.svg",
+            apple: "/favicon.svg"
         }
     };
 }

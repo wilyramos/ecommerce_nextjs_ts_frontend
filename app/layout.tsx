@@ -1,3 +1,5 @@
+//File: frontend/app/layout.tsx
+
 import type { Metadata } from "next";
 import "./globals.css";
 import { Assistant } from "next/font/google";
@@ -12,33 +14,14 @@ const assistant = Assistant({
 
 export const metadata: Metadata = {
     title: {
-        default: "GoPhone Cañete | iPhones, Accesorios y Tecnología",
+        default: "GoPhone Cañete | Accesorios y Tecnología",
         template: "%s | GoPhone Cañete",
     },
-    description:
-        "En GoPhone Cañete encuentras iPhones, fundas, accesorios y tecnología original al mejor precio. Compra en línea con garantía, envío rápido y atención personalizada.",
-    keywords: [
-        "GoPhone",
-        "GoPhone Cañete",
-        "iPhones en Cañete",
-        "comprar iPhone Perú",
-        "accesorios para iPhone",
-        "fundas de celular",
-        "repuestos iPhone Perú",
-        "tecnología en Cañete",
-        "tienda de celulares",
-        "tienda online Cañete",
-        "envío rápido iPhone",
-        "compras seguras",
-        "productos Apple",
-        "repuestos originales iPhone",
-        "GoPhone tienda online",
-        "smartphones en Cañete",
-        "San Vicente de Cañete tecnología",
-        "mejor tienda de iPhones en Perú",
+  description: "Tu tienda de confianza en Cañete: iPhones, accesorios y tecnología.",
+    keywords: [ "GoPhone", "Cañete", "iPhones", "Accesorios", "Tecnología", "Repuestos", "Tienda Online", "Electrónica", "Gadgets", "Smartphones", "Tablets", "Laptops", "Ofertas", "Promociones", "Envío Rápido", "Garantía", "Calidad", "Servicio al Cliente" , "Cañete", "San Vicente", "Imperial", "Mala", "Asia", "Lunahuana"
     ],
     authors: [{ name: "GoPhone Cañete", url: "https://gophone.pe" }],
-    creator: "GoPhone Cañete",
+    creator: "GoPhone",
     metadataBase: new URL("https://gophone.pe"),
     openGraph: {
         title: "GoPhone Cañete | Tu Tienda de iPhones y Tecnología en Perú",
@@ -50,10 +33,10 @@ export const metadata: Metadata = {
         type: "website",
         images: [
             {
-                url: "https://gophone.pe/og-image.jpg",
+                url: "https://gophone.pe/logob.svg",
                 width: 1200,
                 height: 630,
-                alt: "GoPhone Cañete - Venta de iPhones y Tecnología",
+                alt: "GoPhone Cañete - Accesorios y Tecnología",
             },
         ],
     },
@@ -62,7 +45,7 @@ export const metadata: Metadata = {
         title: "GoPhone Cañete | iPhones y Tecnología en Perú",
         description:
             "Compra iPhones y accesorios con envío rápido y atención personalizada. GoPhone, tu tienda de confianza en Cañete.",
-        images: ["https://gophone.pe/og-image.jpg"],
+        images: ["https://www.gophone.pe/logomini.svg"],
     },
     icons: {
         icon: "/favicon.ico",

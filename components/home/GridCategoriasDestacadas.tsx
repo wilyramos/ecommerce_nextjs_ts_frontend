@@ -10,7 +10,7 @@ export default function GridCategoriasDestacadas({
     if (!categorias?.length) return null;
 
     return (
-        <section className="container mx-auto px-4 py-6 max-w-7xl">
+        <section className="container mx-auto px-4 max-w-7xl">
             <header className="mb-6 text-center">
                 <h2 className="text-2xl font-bold tracking-tight">
                     Novedades de Gophone
@@ -38,7 +38,7 @@ export default function GridCategoriasDestacadas({
                         </div>
 
                         <div className="p-3 text-center">
-                            <h3 className="text-sm font-bold uppercase group-hover:text-primary transition">
+                            <h3 className="text-sm font-semibold uppercase group-hover:text-primary transition">
                                 {cat.nombre}
                             </h3>
                         </div>

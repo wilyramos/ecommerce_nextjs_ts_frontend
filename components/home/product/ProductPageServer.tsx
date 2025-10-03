@@ -23,10 +23,9 @@ export default async function ProductPageServer({ slug }: Props) {
 
     return (
         <>
-            {/* <ProductJsonLd producto={producto} /> */}
 
             <h1 className="text-xl text-center my-6 hidden">
-                {producto.nombre}   
+                {producto.nombre}
             </h1>
 
             <section className="max-w-7xl mx-auto py-2">
@@ -46,7 +45,6 @@ export default async function ProductPageServer({ slug }: Props) {
             <section className="max-w-7xl mx-auto py-10">
                 <ProductosRelated slug={slug} />
             </section>
-            
         </>
     );
 }

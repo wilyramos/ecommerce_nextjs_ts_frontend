@@ -75,6 +75,8 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                                 src={imagenes[currentIndex]}
                                 alt={product.nombre}
                                 fill
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                priority={currentIndex === 0}
                                 className="object-cover transition-opacity duration-300"
                                 quality={70}
                             />
@@ -128,13 +130,22 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
 
                     {/* Labels */}
                     {(product.esNuevo || product.esDestacado) && (
-                        <div className="absolute top-4 left-2 right-2 flex justify-between text-[13px] font-semibold">
+                        <div className="absolute top-4 left-2 right-2 flex justify-between items-start text-[13px] font-semibold">
+                            {/* Nuevo siempre a la izquierda */}
                             {product.esNuevo && (
                                 <span className="px-2 py-0.5 bg-red-500 text-white rounded text-xs shadow-sm">
                                     Nuevo
                                 </span>
                             )}
+
+                            {/* Porcentaje de descuento a la derecha si hay precio comparativo */}
+                            {product.precioComparativo && (
+                                <span className="px-2 py-0.5 bg-black text-white rounded text-xs shadow-sm">
+                                    -{Math.round(((product.precioComparativo - precio) / product.precioComparativo) * 100)}%
+                                </span>
+                            )}
                         </div>
+
                     )}
                 </div>
 
@@ -156,9 +167,7 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                             {stock > 0 ? (
                                 <>
                                     {product.precioComparativo && (
-                                        <span className="text-sm text-gray-400 line-through">
-                                            s/ {product.precioComparativo.toFixed(2)}
-                                        </span>
+                                        <span className="text-gray-400 text-sm line-through">s/ {product.precioComparativo.toFixed(2)}</span>
                                     )}
                                     <span className="text-black text-base">
                                         s/ {precio.toFixed(2)}

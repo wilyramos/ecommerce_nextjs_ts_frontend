@@ -94,6 +94,8 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                             fill
                             className="object-cover transition-transform duration-300 hover:scale-105"
                             quality={1}
+                            unoptimized
+                            sizes="(max-width: 768px) 20vw, 10vw"
                         />
                     </button>
                 ))}

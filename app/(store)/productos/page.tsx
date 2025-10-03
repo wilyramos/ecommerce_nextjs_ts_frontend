@@ -1,3 +1,5 @@
+//File: frontend/app/%28store%29/productos/page.tsx
+
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import ProductResults from "@/components/home/product/ProductResults";

@@ -1,4 +1,4 @@
-//File: frontend/app/(store)/productos/[slug]/page.tsx
+// File: frontend/app/(store)/productos/[slug]/page.tsx
 
 import { GetProductsBySlug } from '@/src/services/products';
 import ProductPageServer from '@/components/home/product/ProductPageServer';
@@ -8,22 +8,26 @@ import type { Metadata } from "next";
 import { notFound } from 'next/navigation';
 import ProductJsonLd from '@/components/seo/ProductJsonLd';
 
-type Params = Promise<{ slug: string }>;
+type Params = Promise<{
+    slug: string;
+}>;
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
     const { slug } = await params;
     const product = await GetProductsBySlug(slug);
 
     if (!product) {
-        notFound();
+        notFound(); // redirige a 404 si no existe
     }
 
-    const title = `${product.nombre} - GoPhone Cañete`;
-    const description =
-        product.descripcion?.replace(/\r?\n|\r/g, ' ').trim() ||
-        'Encuentra lo mejor en tecnología y celulares en GoPhone.';
+    const title = `${product.nombre}`;
+
+    // Limpiar EL HTML y solo mostrar texto plano
+    const description = product.descripcion
+        ? product.descripcion.replace(/<[^>]+>/g, '').slice(0, 160)
+        : 'Descubre nuestros productos en GoPhone Cañete. Calidad y tecnología a tu alcance.';
     const categoryName = product.categoria?.nombre || 'General';
-    const image = product.imagenes?.[0] || 'https://www.gophone.pe/logob.svg';
+    const image = product.imagenes?.[0] || 'https://www.gophone.pe/logomini.svg';
     const url = `https://www.gophone.pe/productos/${product.slug}`;
 
     return {
@@ -54,6 +58,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
                 {
                     url: image,
                     alt: product.nombre,
+                    width: 1200,
+                    height: 630,
                 },
             ],
             locale: 'es_PE',
@@ -63,7 +69,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
             title,
             description,
             images: [image],
-            creator: '@GoPhone', // cámbialo si tienes twitter
+            creator: '@GoPhone', // opcional si tienes cuenta de Twitter
         },
         icons: {
             icon: "/logomini.svg",
@@ -81,7 +87,6 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
             "product:availability": (product?.stock ?? 0) > 0 ? "in stock" : "out of stock",
             "product:price:amount": product?.precio ? product.precio.toFixed(2) : "",
             "product:price:currency": "PEN",
-
         }
     }
 }

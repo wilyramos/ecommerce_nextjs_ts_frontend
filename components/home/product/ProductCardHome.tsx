@@ -13,11 +13,14 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
     const brand = typeof product.brand === "string" ? product.brand : product.brand?.nombre;
 
     return (
-        <div className="group relative bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
-            <Link href={`/productos/${product.slug}`} className="flex flex-col h-full">
+        <Link
+            href={`/productos/${product.slug}`}
+            className="group block w-full aspect-square bg-white shadow-sm hover:shadow-md transition-shadow duration-300 rounded overflow-hidden"
+        >
+            <div className="flex flex-col h-full">
 
                 {/* Marca + Nombre */}
-                <div className="p-3 flex flex-col">
+                <div className="p-2 sm:p-3">
                     {brand && (
                         <span className="text-xs sm:text-sm uppercase tracking-wide text-gray-400 font-bold">
                             {brand}
@@ -28,14 +31,14 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                     </h3>
                 </div>
 
-                {/* Imagen centrada */}
-                <div className="relative w-full aspect-square flex items-center justify-center overflow-hidden">
+                {/* Imagen */}
+                <div className="relative w-full flex-1">
                     {imagen ? (
                         <Image
                             src={imagen}
                             alt={product.nombre}
                             fill
-                            className="object-contain p-6 group-hover:scale-105 transition-transform duration-500 ease-out"
+                            className="object-contain p-4 group-hover:scale-105 transition-transform duration-500 ease-out"
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                             quality={90}
                         />
@@ -46,10 +49,10 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                     )}
                 </div>
 
-                {/* Precio, stock y color */}
-                <div className="flex items-center justify-between gap-2 p-3 sm:p-4 mt-auto border-t border-gray-100 bg-gray-50/40">
+                {/* Precio + Color debajo de la imagen */}
+                <div className="flex items-center justify-between gap-2 p-2 sm:p-3 mt-auto">
                     {stock > 0 ? (
-                        <>
+                        <div className="flex items-center gap-2">
                             {product.precioComparativo && (
                                 <span className="text-xs sm:text-sm font-medium text-gray-400 line-through">
                                     s/ {product.precioComparativo.toFixed(2)}
@@ -58,8 +61,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                             <span className="text-sm sm:text-base font-semibold text-gray-900">
                                 s/ {precio.toFixed(2)}
                             </span>
-
-                        </>
+                        </div>
                     ) : (
                         <span className="text-xs sm:text-sm font-medium text-red-500">
                             Sin stock
@@ -67,7 +69,8 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                     )}
                     {color && <ColorCircle color={color} />}
                 </div>
-            </Link>
-        </div>
+
+            </div>
+        </Link>
     );
 }

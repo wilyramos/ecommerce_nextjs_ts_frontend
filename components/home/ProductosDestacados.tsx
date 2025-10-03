@@ -28,7 +28,7 @@ export default async function ProductosDestacados() {
                 </header>
 
                 {/* Carrusel ocupa más espacio en desktop */}
-                <div className="order-2 md:order-2 md:col-span-4 grid grid-cols-2 md:grid-cols-5 grid-rows-2 gap-4">
+                <div className="order-2 md:order-2 md:col-span-4 grid grid-cols-2 md:grid-cols-3 grid-rows-2 gap-4">
                     {productos.slice(0, 10).map((product) => (
                         <ProductCardHome key={product._id} product={product} />
                     ))}

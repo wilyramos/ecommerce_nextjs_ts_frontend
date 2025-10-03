@@ -1,6 +1,7 @@
 // File: frontend/app/(store)/page.tsx
 
 import { Metadata } from "next";
+import { metadata as globalMetadata } from "@/app/layout";
 import CarruselPrincipal from "@/components/home/CarruselPrincipal";
 import ProductosNuevos from "@/components/home/ProductosNuevos";
 import ProductosDestacados from "@/components/home/ProductosDestacados";
@@ -9,9 +10,15 @@ import FeaturesList from "@/components/home/FeaturesList";
 import BrandsList from "@/components/home/BrandsList";
 import NovedadesCategorias from "@/components/home/NovedadesCategorias";
 
+// Metadata de la página principal de la tienda, extendiendo la global
 export const metadata: Metadata = {
-    title: "GoPhone | Tecnologia y productos a tu alcance",
-    description: "GoPhone es tu tienda de confianza para la compra de celulares, accesorios y más. Ofrecemos una amplia variedad de productos a los mejores precios.",
+    ...globalMetadata,
+    title: {
+        default: "GoPhone | Tecnología y productos a tu alcance",
+        template: "%s | GoPhone Cañete",
+    },
+    description:
+        "GoPhone es tu tienda de confianza en Cañete para la compra de celulares, accesorios y más. Ofrecemos productos de calidad, envío rápido y atención personalizada.",
     keywords: [
         "GoPhone Cañete",
         "tienda iPhone Cañete",
@@ -29,32 +36,31 @@ export const metadata: Metadata = {
         "ofertas de tecnología Cañete",
         "smartphones en Cañete",
         "tienda de tecnología en Cañete",
-        "iphone",
-        "audifonos",
-        "case"
+        "iPhone",
+        "audífonos",
+        "cases"
     ],
-    authors: [{ name: "GoPhone Cañete", url: "https://gophone.pe" }],
-    creator: "GoPhone",
     openGraph: {
-        title: "GoPhone - Venta accesorios y tecnología en Cañete",
+        ...globalMetadata.openGraph,
+        title: "GoPhone - Venta de accesorios y tecnología en Cañete",
         description:
             "En GoPhone encontrarás una amplia variedad de accesorios y productos tecnológicos en Cañete. ¡Visítanos y descubre nuestras ofertas!",
         url: "https://gophone.pe",
-        siteName: "GoPhone",
-        locale: "es_PE",
-        type: "website",
+        images: [
+            {
+                url: "https://gophone.pe/logomini.svg",
+                width: 1200,
+                height: 630,
+                alt: "GoPhone Home - Accesorios y Tecnología",
+            },
+        ],
     },
     twitter: {
-        card: "summary_large_image",
-        title: "GoPhone - Venta de accesorios y Tecnología en Cañete",
+        ...globalMetadata.twitter,
+        title: "GoPhone - Venta de accesorios y tecnología en Cañete",
         description:
             "Compra iPhones, accesorios y más en GoPhone, tu tienda online de confianza en Cañete.",
-    },
-    metadataBase: new URL("https://gophone.pe"),
-    icons: {
-        icon: "/favicon.ico",
-        shortcut: "/favicon.ico",
-        apple: "/favicon.ico",
+        images: ["https://gophone.pe/logomini.svg"],
     }
 };
 
@@ -69,19 +75,19 @@ export default function HomePage() {
                 <NovedadesCategorias />
             </section>
 
-            <section className="">
+            <section>
                 <ProductosNuevos />
             </section>
 
             <section>
                 <FeaturesList />
             </section>
-            
-            <section className="">
+
+            <section>
                 <CategoriasDestacadasWrapper />
             </section>
 
-            <section className="">
+            <section>
                 <ProductosDestacados />
             </section>
 
