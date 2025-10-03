@@ -24,7 +24,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
         >
             {/* Badge superior: Nuevo */}
             {product.esNuevo && (
-                <div className="absolute -top-2 left-2 z-10">
+                <div className="absolute -top-4 left-2 z-10">
                     <span className="px-2 py-0.5 bg-red-500 text-white text-xs shadow-sm rounded-tl-lg rounded-br-lg">
                         Nuevo
                     </span>
@@ -40,7 +40,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                             {brand}
                         </span>
                     )}
-                    <h3 className="text-xs sm:text-base font-semibold text-gray-900 line-clamp-2 group-hover:text-black transition-colors">
+                    <h3 className="text-sm sm:text-base font-semibold text-gray-900 line-clamp-2 group-hover:text-black transition-colors">
                         {product.nombre}
                     </h3>
                 </div>
@@ -52,7 +52,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                             src={imagen}
                             alt={product.nombre}
                             fill
-                            className="object-contain p-4 group-hover:scale-105 transition-transform duration-500 ease-out"
+                            className="object-contain group-hover:scale-105 transition-transform duration-500 ease-out"
                             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                             quality={90}
                         />

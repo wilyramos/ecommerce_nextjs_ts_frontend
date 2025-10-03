@@ -7,7 +7,7 @@ export default async function BrandsList() {
     if (brands.length === 0) return null;
 
     return (
-        <section className="max-w-7xl mx-auto">
+        <section className="max-w-7xl mx-auto px-4">
             <h2 className="text-2xl font-bold tracking-tight">
                 Marcas
             </h2>

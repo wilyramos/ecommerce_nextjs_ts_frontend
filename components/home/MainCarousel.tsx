@@ -36,7 +36,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                 {products.map((product) => (
                     <div
                         key={product._id}
-                        className="relative w-full flex flex-col md:flex-row bg-white overflow-hidden group h-auto md:h-[440px] px-20"
+                        className="relative w-full flex flex-col md:flex-row bg-white overflow-hidden group h-auto md:h-[440px] md:px-20"
                     >
                         {/* Texto */}
                         <div className="z-10 w-full md:w-1/2 flex flex-col justify-center items-start px-6 sm:px-10 md:px-16 py-8 sm:py-10 md:py-16 gap-4 sm:gap-5 md:gap-6">
@@ -49,7 +49,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                 {product.nombre}
                             </h2>
 
-                            <div className="flex flex-wrap items-center gap-4 sm:gap-6">
+                            <div className="flex justify-between items-center gap-4 sm:gap-6">
                                 <p className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800">
                                     {product.precio ? `S/. ${product.precio.toFixed(2)}` : "-"}
                                 </p>

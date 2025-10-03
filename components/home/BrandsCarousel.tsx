@@ -16,7 +16,7 @@ const responsive = {
 export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {
 
     return (
-        <section className="w-full py-5">
+        <section className="w-full">
             <Carousel
                 responsive={responsive}
                 infinite
