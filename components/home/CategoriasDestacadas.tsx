@@ -43,13 +43,13 @@ export default function CategoriasDestacadas({
                         href={`/categoria/${categoria.slug}`}
                         className="flex flex-col items-center text-center group/item"
                     >
-                        <div className="relative flex items-center justify-center">
+                        <div className=" flex items-center justify-center">
                             {/* círculo negro detrás */}
-                            <div className="absolute w-10 h-10 sm:w-14 sm:h-14 bg-black rounded-full -z-10"></div>
+                            <div className="absolute w-12 h-12 sm:w-14 sm:h-14 bg-black rounded-full -z-10"></div>
 
                             {/* imagen más grande */}
                             {categoria.image ? (
-                                <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden">
+                                <div className="w-20 h-20 sm:w-28 sm:h-28">
                                     <Image
                                         src={categoria.image}
                                         alt={categoria.nombre}
