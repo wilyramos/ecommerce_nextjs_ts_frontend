@@ -43,26 +43,29 @@ export default function CategoriasDestacadas({
                         href={`/categoria/${categoria.slug}`}
                         className="flex flex-col items-center text-center group/item"
                     >
-                        <div className="border-1 p-1 sm:p-2 rounded-full border-black/10  mb-2 bg-white">
+                        <div className="relative flex items-center justify-center">
+                            {/* círculo negro detrás */}
+                            <div className="absolute w-10 h-10 sm:w-14 sm:h-14 bg-black rounded-full -z-10"></div>
+
+                            {/* imagen más grande */}
                             {categoria.image ? (
-                                <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-full overflow-hidden">
+                                <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden">
                                     <Image
                                         src={categoria.image}
                                         alt={categoria.nombre}
-                                        width={90}
-                                        height={90}
+                                        width={120}
+                                        height={120}
                                         className="object-cover transition-transform duration-500 group-hover/item:scale-110"
                                     />
                                 </div>
                             ) : (
-                                <div className="w-14 h-14 sm:w-20 sm:h-20 flex items-center justify-center bg-gray-100 rounded-full">
-                                    <span className="text-gray-400 text-xs sm:text-sm">
-                                        Sin imagen
-                                    </span>
+                                <div className="w-20 h-20 sm:w-28 sm:h-28 flex items-center justify-center bg-gray-100 rounded-full">
+                                    <span className="text-gray-400 text-xs sm:text-sm">Sin imagen</span>
                                 </div>
                             )}
                         </div>
-                        <p className="font-medium text-sm sm:text-base">{categoria.nombre}</p>
+
+                        <p className="font-medium text-sm sm:text-lg text-gray-600">{categoria.nombre}</p>
                     </Link>
                 ))}
             </Carousel>
