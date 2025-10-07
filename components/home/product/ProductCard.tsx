@@ -152,7 +152,7 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                 {/* Info */}
                 <div className="flex flex-col justify-between flex-1 p-2">
                     <div className="flex items-center gap-2">
-                        <span className="text-xs font-medium text-gray-500 uppercase">{product.brand?.nombre}</span>
+                        <span className="text-xs font-semibold text-gray-500 uppercase">{product.brand?.nombre}</span>
                     </div>
 
                     <h3

@@ -64,7 +64,7 @@ export default async function PageProducts({ searchParams }: { searchParams: Sea
     const limitNumber = limit ? parseInt(limit) : 24;
 
     return (
-        <main className=" max-w-7xl mx-auto p-2">
+        <main className="md:max-w-7xl mx-auto p-2">
 
             <Suspense fallback={<SpinnerLoading />}>
                 <ProductResults

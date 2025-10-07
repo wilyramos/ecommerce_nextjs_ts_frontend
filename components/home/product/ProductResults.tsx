@@ -57,7 +57,7 @@ export default async function ProductResults({
                             <DrawerFiltersMain filters={products?.filters || null} />
                         </div>
 
-                        <p className="text-gray-700">Ordenar por:</p>
+                        <p className="text-xs md:text-base text-gray-700">Ordenar por:</p>
                         <OrdenarPor pathname="/productos" />
                     </div>
 
