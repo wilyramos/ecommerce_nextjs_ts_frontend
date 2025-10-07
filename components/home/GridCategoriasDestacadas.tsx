@@ -38,7 +38,7 @@ export default function GridCategoriasDestacadas({
                         </div>
 
                         <div className="p-3 text-center">
-                            <h3 className="text-sm font-semibold uppercase group-hover:text-primary transition">
+                            <h3 className="font-semibold uppercase group-hover:text-primary transition">
                                 {cat.nombre}
                             </h3>
                         </div>

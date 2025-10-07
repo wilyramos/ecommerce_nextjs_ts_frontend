@@ -9,7 +9,7 @@ import MercadoPagoProvider from "@/components/provider/MercadoPagoProvider";
 
 const assistant = Assistant({
     subsets: ["latin"],
-    weight: ["400", "600", "700"],
+    weight: ["500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -17,8 +17,8 @@ export const metadata: Metadata = {
         default: "GoPhone Cañete | Accesorios y Tecnología",
         template: "%s | GoPhone Cañete",
     },
-  description: "Tu tienda de confianza en Cañete: iPhones, accesorios y tecnología.",
-    keywords: [ "GoPhone", "Cañete", "iPhones", "Accesorios", "Tecnología", "Repuestos", "Tienda Online", "Electrónica", "Gadgets", "Smartphones", "Tablets", "Laptops", "Ofertas", "Promociones", "Envío Rápido", "Garantía", "Calidad", "Servicio al Cliente" , "Cañete", "San Vicente", "Imperial", "Mala", "Asia", "Lunahuana"
+    description: "Tu tienda de confianza en Cañete: iPhones, accesorios y tecnología.",
+    keywords: ["GoPhone", "Cañete", "iPhones", "Accesorios", "Tecnología", "Repuestos", "Tienda Online", "Electrónica", "Gadgets", "Smartphones", "Tablets", "Laptops", "Ofertas", "Promociones", "Envío Rápido", "Garantía", "Calidad", "Servicio al Cliente", "Cañete", "San Vicente", "Imperial", "Mala", "Asia", "Lunahuana"
     ],
     authors: [{ name: "GoPhone Cañete", url: "https://gophone.pe" }],
     creator: "GoPhone",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
         images: ["https://www.gophone.pe/logomini.svg"],
     },
     icons: {
-        icon: "/favicon.ico",
+        icon: "/logoapp.svg",
         apple: "/favicon.ico",
         shortcut: "/favicon.ico",
     },

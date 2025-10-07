@@ -45,7 +45,15 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
         }
     }, [searchParams, priceFilter]);
 
-    // si no hay filtros, retorno temprano después de hooks
+    // Ordena alfabéticamente los atributos y valores
+    useEffect(() => {
+        if (!atributos?.length) return;
+        atributos.forEach((attr) => {
+            attr.values.sort((a, b) => a.localeCompare(b));
+        });
+        price.sort((a, b) => (a.min ?? 0) - (b.min ?? 0));
+    }, [atributos, price, searchParams]);
+
     if (!filters || filters.length === 0) return null;
 
     const updatePriceRange = (range: [number, number]) => {
@@ -66,7 +74,6 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
         router.push(`/productos?${params.toString()}`);
     };
 
-    // función para limpiar todos los filtros menos el query de búsqueda
     const clearFilters = () => {
         const params = new URLSearchParams();
         const query = searchParams.get("query");
@@ -93,20 +100,22 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                 </Button>
             </div>
 
-            <Accordion type="multiple" className="w-full">
-                {/* Brands */}
+            <Accordion type="multiple" className="w-full text-base">
+                {/* Marcas */}
                 {brands.length > 0 && (
                     <AccordionItem value="brands">
-                        <AccordionTrigger>Marcas</AccordionTrigger>
+                        <AccordionTrigger className="text-base">Marcas</AccordionTrigger>
                         <AccordionContent>
                             <ul className="space-y-1">
                                 {brands.map((brand) => (
                                     <li key={brand.slug}>
-                                        <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-600">
+                                        <label className="flex items-center gap-2 cursor-pointer text-base text-gray-600">
                                             <input
                                                 type="checkbox"
                                                 checked={searchParams.getAll("brand").includes(brand.slug)}
-                                                onChange={() => handleFilterChange("brand", brand.slug)}
+                                                onChange={() =>
+                                                    handleFilterChange("brand", brand.slug)
+                                                }
                                             />
                                             {brand.nombre}
                                         </label>
@@ -120,16 +129,22 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                 {/* Atributos dinámicos */}
                 {atributos.map((attr) => (
                     <AccordionItem key={attr.name} value={attr.name}>
-                        <AccordionTrigger className="capitalize">{attr.name}</AccordionTrigger>
+                        <AccordionTrigger className="capitalize text-base">
+                            {attr.name}
+                        </AccordionTrigger>
                         <AccordionContent>
                             <ul className="space-y-1">
                                 {attr.values.map((value) => (
                                     <li key={value}>
-                                        <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-600">
+                                        <label className="flex items-center gap-2 cursor-pointer text-base text-gray-600">
                                             <input
                                                 type="checkbox"
-                                                checked={searchParams.getAll(attr.name).includes(value)}
-                                                onChange={() => handleFilterChange(attr.name, value)}
+                                                checked={searchParams
+                                                    .getAll(attr.name)
+                                                    .includes(value)}
+                                                onChange={() =>
+                                                    handleFilterChange(attr.name, value)
+                                                }
                                             />
                                             {value}
                                         </label>
@@ -140,19 +155,23 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                     </AccordionItem>
                 ))}
 
-                {/* Precio dinámico con slider */}
+                {/* Precio dinámico */}
                 {priceFilter && (
                     <AccordionItem value="price">
-                        <AccordionTrigger>Precio</AccordionTrigger>
+                        <AccordionTrigger className="text-base">
+                            Precio
+                        </AccordionTrigger>
                         <AccordionContent>
-                            <div className="flex flex-col gap-4 text-sm p-2">
+                            <div className="flex flex-col gap-4 text-base p-2">
                                 <Slider
                                     min={priceFilter.min ?? 0}
                                     max={priceFilter.max ?? 1000}
                                     step={2}
                                     value={priceRange}
                                     onValueChange={(val) => setPriceRange(val as [number, number])}
-                                    onValueCommit={(val) => updatePriceRange(val as [number, number])}
+                                    onValueCommit={(val) =>
+                                        updatePriceRange(val as [number, number])
+                                    }
                                 />
                                 <div className="flex justify-between text-gray-600">
                                     <span>S/. {priceRange[0]}</span>

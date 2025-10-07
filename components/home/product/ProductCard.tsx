@@ -152,7 +152,7 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                 {/* Info */}
                 <div className="flex flex-col justify-between flex-1 p-2">
                     <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-gray-500 uppercase">{product.brand?.nombre}</span>
+                        <span className="text-xs font-medium text-gray-500 uppercase">{product.brand?.nombre}</span>
                     </div>
 
                     <h3
@@ -163,13 +163,14 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
 
                     <div className="flex items-center gap-2 mt-auto">
                         {color && <ColorCircle color={color} />}
-                        <div className="ml-auto font-semibold flex flex-col items-end leading-tight">
+                        <div className="ml-auto flex flex-col items-end leading-tight">
                             {stock > 0 ? (
                                 <>
                                     {product.precioComparativo && (
+                                        
                                         <span className="text-gray-400 text-sm line-through">s/ {product.precioComparativo.toFixed(2)}</span>
                                     )}
-                                    <span className="text-black text-base">
+                                    <span className="text-black text-base md:text-lg">
                                         s/ {precio.toFixed(2)}
                                     </span>
                                 </>
