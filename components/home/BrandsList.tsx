@@ -8,7 +8,7 @@ export default async function BrandsList() {
 
     return (
         <section className="max-w-7xl mx-auto px-4">
-            <h2 className="text-2xl font-bold tracking-tight">
+            <h2 className="text-2xl font-medium tracking-tight text-gray-800 mb-6">
                 Marcas
             </h2>
             <BrandsCarousel brands={brands} />

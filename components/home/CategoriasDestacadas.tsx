@@ -21,7 +21,7 @@ export default function CategoriasDestacadas({
 }) {
     return (
         <section className="w-full max-w-7xl mx-auto px-4 py-5">
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight mb-4">
+            <h2 className="text-2xl font-medium tracking-tight text-gray-800 mb-6">
                 Categorías Destacadas
             </h2>
             <Carousel
