@@ -58,7 +58,7 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
 
     return (
         <div
-            className="group relative flex flex-col bg-white text-gray-700 rounded shadow-xs transform transition-transform duration-500 hover:scale-[1.01] overflow-visible"
+            className="group relative flex flex-col transform transition-transform duration-500 hover:scale-[1.01] overflow-visible"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onTouchStart={handleTouchStart}
@@ -70,7 +70,7 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                 {/* Imagen */}
                 <div className="relative w-full aspect-square bg-white overflow-hidden rounded-t">
                     {imagenes.length > 0 ? (
-                        <div className="relative w-full h-full">
+                        <div className="relative w-full h-full bg-white">
                             <Image
                                 src={imagenes[currentIndex]}
                                 alt={product.nombre}
