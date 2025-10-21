@@ -1,22 +1,18 @@
-// ProductosDestacados.tsx
 import { getDestacadosProducts } from '@/src/services/products';
 import ProductCardHome from './product/ProductCardHome';
-
 
 export default async function ProductosDestacados() {
     const destacados = await getDestacadosProducts();
     const productos = destacados?.products ?? [];
 
-    if (!productos.length) {
-        return null;
-    }
+    if (!productos.length) return null;
 
     return (
-        <section className="mx-auto py-5 px-4 bg-black">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center max-w-7xl mx-auto">
-                {/* Texto arriba en mobile, derecha en desktop */}
-                <header className="order-1 md:order-2 space-y-3 text-center md:text-left">
-                    <h2 className="text-xl font-semibold text-gray-200">
+        <section className="mx-auto py-8 px-4 bg-black">
+            <div className="max-w-7xl mx-auto space-y-6">
+                {/* Texto superior */}
+                <header className="text-center md:text-left">
+                    <h2 className="text-xl md:text-2xl font-semibold text-gray-200">
                         Lo mejor de{" "}
                         <span className="text-white bg-gray-950 px-2">
                             GoPhone
@@ -27,8 +23,18 @@ export default async function ProductosDestacados() {
                     </p>
                 </header>
 
-                {/* Carrusel ocupa más espacio en desktop */}
-                <div className="order-2 md:order-2 md:col-span-4 grid grid-cols-2 md:grid-cols-3 grid-rows-2 gap-4">
+                {/* Grilla de productos responsive */}
+                <div
+                    className="
+                        grid
+                        grid-cols-1
+                        sm:grid-cols-2
+                        md:grid-cols-3
+                        lg:grid-cols-4
+                        xl:grid-cols-5
+                        gap-4
+                    "
+                >
                     {productos.slice(0, 10).map((product) => (
                         <ProductCardHome key={product._id} product={product} />
                     ))}
