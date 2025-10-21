@@ -8,6 +8,7 @@ export default function ShippingPage() {
             <p className="flex items-center gap-2 text-sm text-black mb-4">
                 <FiMapPin />
                 Direccion de envío:
+                
             </p>
             <ShippingForm />
         </div>
