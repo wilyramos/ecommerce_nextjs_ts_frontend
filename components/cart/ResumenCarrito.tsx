@@ -5,6 +5,7 @@ import ItemCarrito from "./ItemCarrito";
 import { useRouter } from "next/navigation";
 import { FaShoppingCart } from "react-icons/fa";
 import { HeadingH1 } from "../ui/Heading";
+import { Button } from "../ui/button";
 
 export default function ResumenCarrito() {
     const { cart } = useCartStore();
@@ -84,12 +85,12 @@ export default function ResumenCarrito() {
                         Verifica tus productos antes de continuar al siguiente paso.
                     </p>
 
-                    <button
+                    <Button
                         onClick={handleContinuar}
-                        className="w-full bg-indigo-600 text-white px-4 py-3 rounded-full hover:bg-indigo-700 transition-colors font-medium flex items-center justify-center gap-2"
+                        className="w-full mt-2 cursor-pointer"
                     >
                         Realizar pedido
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>

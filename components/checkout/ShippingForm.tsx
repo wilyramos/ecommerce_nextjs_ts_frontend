@@ -16,6 +16,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { Button } from '../ui/button'
 
 type ShippingData = {
     departamento: string
@@ -194,12 +195,12 @@ export default function ShippingForm() {
             </div>
 
             {/* Botón */}
-            <button
+            <Button
                 type="submit"
-                className="w-full py-3 text-white bg-gray-900 rounded-lg disabled:opacity-50 cursor-pointer"
+                className="w-full mt-2 disabled:opacity-50 cursor-pointer"
             >
                 Ir a pagar
-            </button>
+            </Button>
         </form>
     )
 }
