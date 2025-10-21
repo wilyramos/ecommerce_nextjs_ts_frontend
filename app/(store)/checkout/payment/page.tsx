@@ -16,7 +16,7 @@ export default async function PaymentPage({ searchParams }: PaymentPageProps) {
   if (order.payment.status === "approved") return <p>Pago ya realizado</p>;
 
   return (
-    <div className="max-w-xl mx-auto mt-6">
+    <div className="max-w-xl mx-auto">
       <PaymentMethodsAccordion order={order} />
     </div>
   );

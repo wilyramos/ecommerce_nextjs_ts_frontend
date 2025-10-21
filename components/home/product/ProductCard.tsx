@@ -75,7 +75,7 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                                 src={imagenes[currentIndex]}
                                 alt={product.nombre}
                                 fill
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                sizes=""
                                 priority={currentIndex === 0}
                                 className="object-cover transition-opacity duration-300"
                                 quality={70}

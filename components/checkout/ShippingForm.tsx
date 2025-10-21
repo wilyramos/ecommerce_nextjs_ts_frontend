@@ -1,14 +1,13 @@
 'use client'
 
 import { useCheckoutStore } from '@/src/store/checkoutStore'
+import { useCartStore } from '@/src/store/cartStore'
 import { useForm } from 'react-hook-form'
-import ErrorMessage from '@/components/ui/ErrorMessage'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import type { TCreateOrder } from '@/src/schemas'
-import { useCartStore } from '@/src/store/cartStore'
 import { createOrderAction } from '@/actions/order/create-order-action'
 import { locations } from '@/src/data/locations'
+import ErrorMessage from '@/components/ui/ErrorMessage'
 import {
     Select,
     SelectContent,
@@ -17,6 +16,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { Button } from '../ui/button'
+import type { TCreateOrder } from '@/src/schemas'
 
 type ShippingData = {
     departamento: string
@@ -30,10 +30,10 @@ type ShippingData = {
 
 export default function ShippingForm() {
     const router = useRouter()
-    const { shipping, setShipping } = useCheckoutStore((state) => state)
-    const { cart } = useCartStore((state) => state)
+    const { shipping, setShipping } = useCheckoutStore()
+    const { cart } = useCartStore()
 
-    const { register, handleSubmit, watch, reset, setValue, formState: { errors } } = useForm<ShippingData>({
+    const { register, handleSubmit, watch, reset, setValue, trigger, formState: { errors } } = useForm<ShippingData>({
         defaultValues: {
             departamento: shipping?.departamento || '',
             provincia: shipping?.provincia || '',
@@ -50,13 +50,14 @@ export default function ShippingForm() {
     const [provincias, setProvincias] = useState<string[]>([])
     const [distritos, setDistritos] = useState<string[]>([])
 
-    // Reset form if shipping exists
     useEffect(() => {
+        console.log('Shipping data loaded:', shipping)
         if (shipping) reset(shipping)
     }, [shipping, reset])
 
     // Actualizar provincias al cambiar departamento
     useEffect(() => {
+        console.log('Departamento changed:', selectedDepartamento)
         const dept = locations.find(d => d.departamento === selectedDepartamento)
         setProvincias(dept ? dept.provincias.map(p => p.nombre) : [])
         setDistritos([])
@@ -73,6 +74,7 @@ export default function ShippingForm() {
     }, [selectedProvincia, selectedDepartamento, setValue])
 
     const onSubmit = async (data: ShippingData) => {
+        console.log('Shipping data submitted:', data)
         setShipping(data)
 
         const orderPayload: TCreateOrder = {
@@ -98,26 +100,44 @@ export default function ShippingForm() {
         <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto space-y-3">
             {/* Departamento / Provincia / Distrito */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
                 {/* Departamento */}
                 <div>
                     <label className="text-xs font-bold">Departamento <span className="text-red-500">*</span></label>
-                    <Select onValueChange={(val) => setValue('departamento', val)}>
+                    <Select
+                        onValueChange={(val) => {
+                            setValue('departamento', val)
+                            trigger('departamento')
+                        }}
+                    >
                         <SelectTrigger className="w-full">
                             <SelectValue placeholder="--Seleccione--" />
                         </SelectTrigger>
                         <SelectContent>
                             {locations.map(d => (
-                                <SelectItem key={d.departamento} value={d.departamento}>{d.departamento}</SelectItem>
+                                <SelectItem key={d.departamento} value={d.departamento}>
+                                    {d.departamento}
+                                </SelectItem>
                             ))}
                         </SelectContent>
                     </Select>
+                    <input
+                        type="hidden"
+                        {...register('departamento', { required: 'El departamento es obligatorio' })}
+                    />
                     {errors.departamento && <ErrorMessage>{errors.departamento.message}</ErrorMessage>}
                 </div>
 
                 {/* Provincia */}
                 <div>
                     <label className="text-xs font-bold">Provincia <span className="text-red-500">*</span></label>
-                    <Select onValueChange={(val) => setValue('provincia', val)} disabled={!provincias.length}>
+                    <Select
+                        onValueChange={(val) => {
+                            setValue('provincia', val)
+                            trigger('provincia')
+                        }}
+                        disabled={!provincias.length}
+                    >
                         <SelectTrigger className="w-full">
                             <SelectValue placeholder="--Seleccione--" />
                         </SelectTrigger>
@@ -127,13 +147,23 @@ export default function ShippingForm() {
                             ))}
                         </SelectContent>
                     </Select>
+                    <input
+                        type="hidden"
+                        {...register('provincia', { required: 'La provincia es obligatoria' })}
+                    />
                     {errors.provincia && <ErrorMessage>{errors.provincia.message}</ErrorMessage>}
                 </div>
 
                 {/* Distrito */}
                 <div>
                     <label className="text-xs font-bold">Distrito <span className="text-red-500">*</span></label>
-                    <Select onValueChange={(val) => setValue('distrito', val)} disabled={!distritos.length}>
+                    <Select
+                        onValueChange={(val) => {
+                            setValue('distrito', val)
+                            trigger('distrito')
+                        }}
+                        disabled={!distritos.length}
+                    >
                         <SelectTrigger className="w-full">
                             <SelectValue placeholder="--Seleccione--" />
                         </SelectTrigger>
@@ -143,6 +173,10 @@ export default function ShippingForm() {
                             ))}
                         </SelectContent>
                     </Select>
+                    <input
+                        type="hidden"
+                        {...register('distrito', { required: 'El distrito es obligatorio' })}
+                    />
                     {errors.distrito && <ErrorMessage>{errors.distrito.message}</ErrorMessage>}
                 </div>
             </div>

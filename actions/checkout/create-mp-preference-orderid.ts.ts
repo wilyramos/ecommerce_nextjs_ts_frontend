@@ -1,27 +1,25 @@
 //File: frontend/actions/checkout/create-mp-preference.ts
 
+//File: frontend/actions/checkout/create-mp-preference.ts
+
 'use server'
 
-import type { CreatePreferenceInput } from "@/src/schemas/index"
 import getToken from "@/src/auth/token";
 
 
-export async function createMPPreference(orderData: CreatePreferenceInput) {
+export async function createMPPreferenceWithOrderId( orderId: string) {
     const token = await getToken();
-    // console.log('Creando preferencia de Mercado Pago con los siguientes datos:', orderData);
     const url = process.env.API_URL;
 
-    const res = await fetch(`${url}/checkout/create-preference`, {
+    const res = await fetch(`${url}/checkout/create-preference-orderid`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         },
 
-        body: JSON.stringify(orderData),
+        body: JSON.stringify({ orderId }),
     });
-
-    console.log(res)
 
     if (!res.ok) throw new Error('No se pudo crear la preferencia');
 
