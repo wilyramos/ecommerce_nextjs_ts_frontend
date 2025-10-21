@@ -12,7 +12,7 @@ export default function GridCategoriasDestacadas({
     return (
         <section className="container mx-auto px-4 max-w-7xl">
             <header className="mb-6">
-            <h2 className="text-2xl font-medium tracking-tight text-gray-800 mb-6">
+            <h2 className="text-xl font-medium tracking-tight text-gray-800 mb-6">
                     Novedades de Gophone
                 </h2>
             </header>

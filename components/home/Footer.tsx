@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { FaFacebookF, FaInstagram, FaWhatsapp } from "react-icons/fa";
+import PaymentMethods from "./PaymentMethods";
 
 export default function Footer() {
     const links = [
@@ -22,8 +23,10 @@ export default function Footer() {
 
     return (
         <footer className="bg-gray-100 text-gray-700 text-sm">
+
+            <PaymentMethods />
             {/* Contenido principal */}
-            <div className="max-w-7xl mx-auto px-6 py-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="max-w-7xl mx-auto px-6 py-2 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
                 {/* Branding */}
                 <div>
                     <div className="flex items-center gap-2 mb-4">

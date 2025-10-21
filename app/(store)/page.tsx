@@ -9,7 +9,6 @@ import CategoriasDestacadasWrapper from "@/components/home/CategoriasDestacadasW
 import FeaturesList from "@/components/home/FeaturesList";
 import BrandsList from "@/components/home/BrandsList";
 import NovedadesCategorias from "@/components/home/NovedadesCategorias";
-import PaymentMethods from "@/components/home/PaymentMethods";
 
 // Metadata de la página principal de la tienda, extendiendo la global
 export const metadata: Metadata = {
@@ -94,10 +93,6 @@ export default function HomePage() {
 
              <section>
                 <FeaturesList />
-            </section>
-
-            <section className="">
-                <PaymentMethods />
             </section>
 
         </>

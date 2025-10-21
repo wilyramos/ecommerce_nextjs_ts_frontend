@@ -16,7 +16,7 @@ export default async function ProductosDestacados() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center max-w-7xl mx-auto">
                 {/* Texto arriba en mobile, derecha en desktop */}
                 <header className="order-1 md:order-2 space-y-3 text-center md:text-left">
-                    <h2 className="text-2xl font-semibold text-gray-200">
+                    <h2 className="text-xl font-semibold text-gray-200">
                         Lo mejor de{" "}
                         <span className="text-white bg-gray-950 px-2">
                             GoPhone

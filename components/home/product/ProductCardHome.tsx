@@ -34,13 +34,13 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
             <div className="flex flex-col h-full">
 
                 {/* Marca + Nombre */}
-                <div className="p-2 sm:p-3">
+                <div className="p-2">
                     {brand && (
                         <span className="text-xs sm:text-sm uppercase tracking-wide text-gray-400 font-bold">
                             {brand}
                         </span>
                     )}
-                    <h3 className="text-sm sm:text-base font-semibold text-gray-900 line-clamp-2 group-hover:text-black transition-colors">
+                    <h3 className="text-sm sm:text-base text-gray-900 line-clamp-2 group-hover:text-black transition-colors">
                         {product.nombre}
                     </h3>
                 </div>
@@ -76,7 +76,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                     <div className="flex items-center gap-2">
                         {stock > 0 ? (
                             <>
-                                <span className="text-sm sm:text-base font-semibold text-gray-900">
+                                <span className="text-sm sm:text-base text-gray-900">
                                     s/ {precio.toFixed(2)}
                                 </span>
                                 {descuento && (
@@ -86,7 +86,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                                 )}
                             </>
                         ) : (
-                            <span className="text-xs sm:text-sm font-medium text-red-500">
+                            <span className="text-xs sm:text-sm text-red-500">
                                 Sin stock
                             </span>
                         )}
@@ -94,7 +94,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
 
                     {/* Lado derecho: precio comparativo tachado */}
                     {product.precioComparativo && (
-                        <span className="text-xs sm:text-sm font-medium text-gray-400 line-through">
+                        <span className="text-xs sm:text-sm text-gray-400 line-through">
                             s/ {product.precioComparativo.toFixed(2)}
                         </span>
                     )}

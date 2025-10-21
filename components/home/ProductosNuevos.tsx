@@ -15,7 +15,7 @@ export default async function ProductosNuevos() {
     return (
         <section className="">
             <div className="max-w-7xl mx-auto p-4 ">
-                <h2 className="text-2xl font-medium tracking-tight text-gray-800 mb-6">
+                <h2 className="text-xl font-medium tracking-tight text-gray-800 mb-6">
                     Productos Nuevos
                 </h2>
                 <ClientCarouselProductosNuevos products={newProducts.products}  />

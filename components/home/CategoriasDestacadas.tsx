@@ -20,8 +20,8 @@ export default function CategoriasDestacadas({
     categorias: CategoryListResponse;
 }) {
     return (
-        <section className="w-full max-w-7xl mx-auto px-4 py-5">
-            <h2 className="text-2xl font-medium tracking-tight text-gray-800 mb-6">
+        <section className="w-full max-w-7xl mx-auto px-4 py-5 bg-white rounded-md my-2">
+            <h2 className="text-xl font-medium tracking-tight text-gray-800 mb-6">
                 Categorías Destacadas
             </h2>
             <Carousel
@@ -36,6 +36,7 @@ export default function CategoriasDestacadas({
                 customLeftArrow={<CarouselArrow direction="left" />}
                 customRightArrow={<CarouselArrow direction="right" />}
                 itemClass="px-1 sm:px-2" // menos padding en móviles
+                className=""
             >
                 {categorias.map((categoria) => (
                     <Link
