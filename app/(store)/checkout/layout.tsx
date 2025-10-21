@@ -10,7 +10,7 @@ export default async function CheckoutLayout({ children }: { children: React.Rea
     if (!user) redirect("/auth/login?redirect=/checkout/profile");
 
     return (
-        <main className="max-w-6xl mx-auto ">
+        <main className="max-w-6xl mx-auto">
 
             {/* Pasos del checkout */}
             <div className=" ">

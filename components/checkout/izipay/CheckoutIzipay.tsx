@@ -5,15 +5,19 @@ import KRGlue from "@lyracom/embedded-form-glue";
 import { createPaymentIzipay, type IzipayPaymentPayload } from "@/actions/checkout/create-payment-izipay";
 import { toast } from "sonner";
 import type { TOrderPopulated } from "@/src/schemas";
+import SpinnerLoading from "@/components/ui/SpinnerLoading";
 
 export default function CheckoutIzipay({ order }: { order: TOrderPopulated }) {
     const [message, setMessage] = useState("");
-    const initialized = useRef(false); // bandera para evitar múltiples cargas
+    const [loading, setLoading] = useState(false);
+    const initialized = useRef(false);
 
     useEffect(() => {
         async function setupPaymentForm() {
-            if (initialized.current) return; // evita doble inicialización
+            if (initialized.current) return;
             initialized.current = true;
+
+            setLoading(true);
 
             const endpoint = "https://api.micuentaweb.pe";
             const publicKey = process.env.NEXT_PUBLIC_IZIPAY_PUBLIC_KEY!;
@@ -51,9 +55,9 @@ export default function CheckoutIzipay({ order }: { order: TOrderPopulated }) {
                             district: order.shippingAddress.distrito || "",
                             phoneNumber: order.user.telefono || "",
                         },
-                        shoppingCart: order.items.map(item => ({
+                        shoppingCart: order.items.map((item) => ({
                             productId: item.productId?._id || "",
-                            quantity: item.quantity
+                            quantity: item.quantity,
                         })),
                     },
                 };
@@ -67,13 +71,11 @@ export default function CheckoutIzipay({ order }: { order: TOrderPopulated }) {
                     "kr-language": "es-ES",
                 });
 
-                await KR.removeForms(); // limpiar cualquier form previo
+                await KR.removeForms();
                 await KR.renderElements("#myPaymentForm");
 
                 await KR.onSubmit(async (paymentData) => {
-                    // TODO:revisar el paymentdata
                     console.log("Datos de pago:", paymentData._type);
-                    
                     setMessage("Pago procesado correctamente");
                     toast.success("Pago procesado correctamente");
                     window.location.href = `/checkout-result/success?orderId=${order._id}`;
@@ -84,6 +86,8 @@ export default function CheckoutIzipay({ order }: { order: TOrderPopulated }) {
                 console.error("Error al configurar Izipay:", error);
                 toast.error(`Error al iniciar pago Izipay`);
                 setMessage("Error al iniciar pago");
+            } finally {
+                setLoading(false); 
             }
         }
 
@@ -91,10 +95,14 @@ export default function CheckoutIzipay({ order }: { order: TOrderPopulated }) {
     }, [order]);
 
     return (
-        <div className="">
+        <div className="relative">
+            {loading && (
+                <SpinnerLoading />
+            )}
             <div id="myPaymentForm">
                 <div className="kr-smart-form" kr-card-form-expanded="true" />
             </div>
+
             {message && <p className="mt-4 text-green-600">{message}</p>}
         </div>
     );
