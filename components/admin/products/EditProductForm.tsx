@@ -5,7 +5,7 @@ import { useActionState, useEffect } from "react";
 import ProductForm from "./ProductForm";
 import { EditProduct } from "@/actions/product/edit-product-action";
 import type { CategoryListResponse } from '@/src/schemas';
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import type { TBrand } from "@/src/schemas/brands";
 
 

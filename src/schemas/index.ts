@@ -226,7 +226,11 @@ export const especificacionSchema = z.object({
     value: z.string().min(1),
 });
 
+// validacion para que las key no se repitan
+ 
+
 export type TEspecificacion = z.infer<typeof especificacionSchema>;
+
 
 export const productBaseSchema = z.object({
     nombre: z.string().min(1, 'El nombre es obligatorio'),
@@ -244,9 +248,16 @@ export const productBaseSchema = z.object({
     esDestacado: z.boolean().optional().default(false),
     esNuevo: z.boolean().optional().default(false),
     atributos: atributosSchema.optional(),
-    especificaciones: z.array(especificacionSchema).optional(),
-    brand: z.string().optional(),
+    especificaciones: 
+        z.array(especificacionSchema)
+        .optional()
+        .refine((specs) => {
+            if (!specs) return true; // Si no hay especificaciones, es válido
+            const keys = specs.map(spec => spec.key.toLowerCase());
+            return new Set(keys).size === keys.length;
+        }, { message: "No se permiten claves duplicadas en las especificaciones" }),
 
+    brand: z.string().optional(),
 });
 
 // Create product
