@@ -75,7 +75,7 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                                 src={imagenes[currentIndex]}
                                 alt={product.nombre}
                                 fill
-                                sizes=""
+                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Tamaños optimizados
                                 priority={currentIndex === 0}
                                 className="object-cover transition-opacity duration-300"
                                 quality={70}
@@ -84,38 +84,26 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                             {imagenes.length > 1 && (
                                 <>
                                     <button
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            prevImage();
-                                        }}
-                                        className="absolute left-2 top-1/2 -translate-y-1/2 
-                               bg-black/40 text-white p-1.5 rounded-full
-                               opacity-0 md:group-hover:opacity-100
-                               transition"
+                                        onClick={(e) => { e.preventDefault(); prevImage(); }}
+                                        className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white p-1.5 rounded-full opacity-0 md:group-hover:opacity-100 transition"
+                                        aria-label="Imagen anterior"
                                     >
                                         <ChevronLeft size={15} />
                                     </button>
 
                                     <button
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            nextImage();
-                                        }}
-                                        className="absolute right-2 top-1/2 -translate-y-1/2 
-                               bg-black/40 text-white p-1 rounded-full
-                               opacity-0 md:group-hover:opacity-100
-                               transition"
+                                        onClick={(e) => { e.preventDefault(); nextImage(); }}
+                                        className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white p-1.5 rounded-full opacity-0 md:group-hover:opacity-100 transition"
+                                        aria-label="Siguiente imagen"
                                     >
                                         <ChevronRight size={15} />
                                     </button>
 
-                                    {/* Indicators */}
                                     <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1">
                                         {imagenes.map((_, idx) => (
                                             <span
                                                 key={idx}
-                                                className={`h-1 w-2 rounded-full transition-colors duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100 ${idx === currentIndex ? "bg-black" : "bg-black/40"
-                                                    }`}
+                                                className={`h-1 w-2 rounded-full transition-colors duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100 ${idx === currentIndex ? "bg-black" : "bg-black/40"}`}
                                             />
                                         ))}
                                     </div>
@@ -129,50 +117,59 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                     )}
 
                     {/* Labels */}
-                    {(product.esNuevo || product.esDestacado) && (
+                    {(product.esNuevo || product.precioComparativo) && (
                         <div className="absolute top-4 left-2 right-2 flex justify-between items-start text-[13px] font-semibold">
-                            {/* Nuevo siempre a la izquierda */}
                             {product.esNuevo && (
-                                <span className="px-2 py-0.5 bg-red-500 text-white rounded text-xs shadow-sm">
+                                <span className="px-2 py-0.5 bg-black text-white rounded text-xs shadow-sm">
                                     Nuevo
                                 </span>
                             )}
-
-                            {/* Porcentaje de descuento a la derecha si hay precio comparativo */}
                             {product.precioComparativo && (
-                                <span className="px-2 py-0.5 bg-black text-white rounded text-xs shadow-sm">
+                                <span className="px-2 py-0.5 bg-black text-white rounded text-xs shadow-sm ml-auto">
                                     -{Math.round(((product.precioComparativo - precio) / product.precioComparativo) * 100)}%
                                 </span>
                             )}
                         </div>
-
                     )}
                 </div>
 
-                {/* Info */}
-                <div className="flex flex-col justify-between flex-1 p-2">
-                    <div className="flex items-center gap-2">
-                        <span className="text-xs font-semibold text-gray-500 uppercase">{product.brand?.nombre}</span>
+                {/* --- SECCIÓN DE INFO CORREGIDA --- */}
+                {/* 1. flex-1 y flex-col para que este div ocupe todo el espacio vertical disponible */}
+                <div className="flex flex-col flex-1 p-2">
+                    {/* Contenedor para marca y nombre */}
+                    <div>
+                        {/* Fila 1: Marca */}
+                        <div className="h-5"> {/* Altura fija para la marca */}
+                           <span className="text-xs font-semibold text-gray-500 uppercase">
+                               {product.brand?.nombre}
+                           </span>
+                        </div>
+                       
+                        {/* Fila 2, 3, 4: Nombre del Producto */}
+                        <h3
+                            className="text-sm md:text-base font-medium text-black line-clamp-3 h-[4.5rem] md:h-[5rem]" // 2. Altura fija
+                        >
+                            {product.nombre}
+                        </h3>
                     </div>
 
-                    <h3
-                        className="text-sm md:text-base font-medium text-black line-clamp-3 min-h-[4.5rem]"
-                    >
-                        {product.nombre}
-                    </h3>
-
-                    <div className="flex items-center gap-2 mt-auto">
+                    {/* Fila 5: Precios y color (empujado hacia abajo) */}
+                    {/* 3. mt-auto empuja este div hasta el final del contenedor flex-col */}
+                    <div className="flex items-center gap-2 mt-auto pt-1">
                         {color && <ColorCircle color={color} />}
                         <div className="ml-auto flex flex-col items-end leading-tight">
                             {stock > 0 ? (
                                 <>
-                                    {product.precioComparativo && (
-                                        
-                                        <span className="text-gray-400 text-sm line-through">s/ {product.precioComparativo.toFixed(2)}</span>
+                                    <div className="">
+                                        {product.precioComparativo && (
+                                        <span className="text-gray-400 text-sm line-through px-2">
+                                            s/ {product.precioComparativo.toFixed(2)}
+                                        </span>
                                     )}
-                                    <span className="text-black text-base md:text-lg">
-                                        s/ {precio.toFixed(2)}
-                                    </span>
+                                        <span className="text-black text-base ">
+                                            s/ {precio.toFixed(2)}
+                                        </span>
+                                    </div>
                                 </>
                             ) : (
                                 <span className="text-gray-400 text-sm">Sin stock</span>
