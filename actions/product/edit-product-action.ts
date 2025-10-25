@@ -50,11 +50,18 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         }
     }
 
+    // valoidar precio comparativo
+    const precioCompString = formData.get('precioComparativo') as string;
+    const precioComparativo = 
+    precioCompString && precioCompString.trim() !== ''
+        ? Number(precioCompString)
+        : undefined;
+
     const productData = {
         nombre: formData.get("nombre"),
         descripcion: formData.get("descripcion"),
         precio: Number(formData.get("precio")),
-        precioComparativo: Number(formData.get("precioComparativo")),
+        precioComparativo: precioComparativo,
         costo: Number(formData.get("costo")),
         categoria: formData.get("categoria"),
         stock: Number(formData.get("stock")),

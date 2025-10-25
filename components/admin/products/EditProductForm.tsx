@@ -51,7 +51,7 @@ export default function EditProductForm({ product, categorias, brands }: { produ
                 <input
                     type="submit"
                     value="Actualizar Producto"
-                    className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer inline-block' 
+                    className='bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 cursor-pointer inline-block' 
                 />
 
             </form>

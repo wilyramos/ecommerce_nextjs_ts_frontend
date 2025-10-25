@@ -15,6 +15,8 @@ type ActionStateType = {
 export async function createProduct(prevState: ActionStateType, formData: FormData) {
 
 
+    console.log("formData entries:", Array.from(formData.entries()));
+
     // parsear los atributos del formulario
     const atributosString = formData.get('atributos') as string;
     let atributos: Record<string, string> = {};
@@ -46,13 +48,20 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         }
     }
 
+    // valoidar precio 
+    const precioCompString = formData.get('precioComparativo') as string;
+    const precioComparativo = 
+    precioCompString && precioCompString.trim() !== ''
+        ? Number(precioCompString)
+        : undefined;    
+
     // console.log("atributos", atributos)
 
     const productData = {
         nombre: formData.get('nombre'),
         descripcion: formData.get('descripcion'),
         precio: Number(formData.get('precio')),
-        precioComparativo: Number(formData.get('precioComparativo')),
+        precioComparativo: precioComparativo,
         costo: Number(formData.get('costo')),
         categoria: formData.get('categoria'),
         stock: Number(formData.get('stock')),
@@ -67,9 +76,12 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         brand: formData.get('brand') || undefined,
     }
 
+    console.log("productData", productData)
+
 
     // Validar con zod 
     const result = createProductSchema.safeParse(productData)
+    console.log("createProductSchema result", result)
     if (!result.success) {
         return {
             errors: result.error.issues.map((issue) => issue.message),
@@ -77,6 +89,7 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         }
     }
 
+    console.log("Validated product data:", JSON.stringify(result.data));
     // Hacer la petición al API
     const token = await getToken()
     const url = `${process.env.API_URL}/products`
