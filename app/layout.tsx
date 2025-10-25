@@ -2,14 +2,14 @@
 
 import type { Metadata } from "next";
 import "./globals.css";
-import { Assistant } from "next/font/google";
+import { Manrope } from "next/font/google";
 import { Toaster } from 'sonner';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import MercadoPagoProvider from "@/components/provider/MercadoPagoProvider";
 
-const assistant = Assistant({
+const monrope = Manrope({
     subsets: ["latin"],
-    weight: ["500", "700"],
+    weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -65,7 +65,7 @@ export default function RootLayout({
     return (
         <html lang="es">
             <body
-                className={`${assistant.className} bg-gray-50`}
+                className={`${monrope.className} bg-gray-50`}
             >
                 <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
                     <MercadoPagoProvider />

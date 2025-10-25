@@ -5,7 +5,7 @@ import "react-multi-carousel/lib/styles.css";
 
 import ProductCard from "@/components/home/product/ProductCard";
 import type { ProductResponse } from "@/src/schemas";
-import { CarouselArrow } from "../ui/CarouselArrow";
+// import { CarouselArrow } from "../ui/CarouselArrow";
 
 interface Props {
     products: ProductResponse[];
@@ -27,12 +27,12 @@ export default function ClientCarouselProductosNuevos({ products }: Props) {
                 autoPlay
                 autoPlaySpeed={3000}
                 pauseOnHover
-                arrows
+                arrows={false}
                 showDots={false}
                 containerClass="gap-4"
                 itemClass="px-2"
-                customLeftArrow={<CarouselArrow direction="left" />}
-                customRightArrow={<CarouselArrow direction="right" />}
+                // customLeftArrow={<CarouselArrow direction="left" />}
+                // customRightArrow={<CarouselArrow direction="right" />}
             >
                 {products.map((product) => (
                     <ProductCard key={product._id} product={product} />

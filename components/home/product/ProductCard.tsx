@@ -58,7 +58,7 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
 
     return (
         <div
-            className="group relative flex flex-col transform transition-transform duration-500 hover:scale-[1.01] overflow-visible"
+            className="group relative flex flex-col transform transition-transform duration-500 hover:scale-[1.01] overflow-visible bg-white"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onTouchStart={handleTouchStart}

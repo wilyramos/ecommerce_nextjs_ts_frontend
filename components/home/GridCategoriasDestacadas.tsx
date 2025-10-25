@@ -30,12 +30,12 @@ export default function GridCategoriasDestacadas({
                                 src={cat.image || "/logo.png"}
                                 alt={cat.nombre}
                                 fill
-                                className="object-contain group-hover:scale-105 transition-transform"
+                                className="object-contain"
                             />
                         </div>
 
                         <div className="p-3 text-center">
-                            <h3 className="font-medium uppercase group-hover:text-primary transition">
+                            <h3 className="font-medium group-hover:text-primary transition">
                                 {cat.nombre}
                             </h3>
                         </div>
