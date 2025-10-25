@@ -43,7 +43,7 @@ export default async function ProductResults({
 
                 {/* Sidebar de filtros (desktop) */}
                 <aside className="hidden md:block md:col-span-1">
-                    <div className="sticky top-20">
+                    <div className="sticky top-15">
                         <ProductsFiltersMain filters={products?.filters || null} />
                     </div>
                 </aside>

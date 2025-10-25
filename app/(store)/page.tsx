@@ -79,8 +79,8 @@ export default function HomePage() {
                 <ProductosNuevos />
             </section>
 
-            <section>
-                <CategoriasDestacadasWrapper />
+            <section className="bg-white">
+                <CategoriasDestacadasWrapper/>
             </section>
 
             <section>

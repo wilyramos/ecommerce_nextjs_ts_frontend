@@ -58,7 +58,7 @@ export default function CategoriasDestacadas({
                             >
                                 <div className="flex items-center justify-center">
                                     {categoria.image ? (
-                                        <div className="w-20 h-20 sm:w-28 sm:h-28">
+                                        <div className="w-16 h-16 sm:w-22 sm:h-22">
                                             <Image
                                                 src={categoria.image}
                                                 alt={categoria.nombre}
@@ -68,7 +68,7 @@ export default function CategoriasDestacadas({
                                             />
                                         </div>
                                     ) : (
-                                        <div className="w-20 h-20 sm:w-28 sm:h-28 flex items-center justify-center bg-gray-100 rounded-full">
+                                        <div className="w-16 h-16 sm:w-22 sm:h-22 flex items-center justify-center bg-gray-100 rounded-full">
                                             <span className="text-gray-400 text-xs sm:text-sm">
                                                 Sin imagen
                                             </span>

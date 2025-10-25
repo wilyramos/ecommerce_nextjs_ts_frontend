@@ -42,7 +42,7 @@ export default async function ProductPageServer({ slug }: Props) {
                 </div>
             </section>
 
-            <section className="max-w-7xl mx-auto py-10">
+            <section className="max-w-7xl mx-auto py-8">
                 <ProductosRelated slug={slug} />
             </section>
         </>

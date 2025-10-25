@@ -6,100 +6,91 @@ import ColorCircle from "@/components/ui/ColorCircle";
 import type { ProductResponse } from "@/src/schemas";
 
 export default function ProductCardHome({ product }: { product: ProductResponse }) {
-    const imagen = product.imagenes?.[0] ?? null;
+    const primaryImage = product.imagenes?.[0] ?? null;
+    const hoverImage = product.imagenes?.[1] ?? primaryImage;
     const precio = product.precio ?? 0;
     const stock = product.stock ?? 0;
     const color = product.atributos?.Color ?? null;
     const brand = typeof product.brand === "string" ? product.brand : product.brand?.nombre;
 
-    // Calcular porcentaje de descuento si existe precio comparativo
-    const descuento = product.precioComparativo
-        ? Math.round(((product.precioComparativo - precio) / product.precioComparativo) * 100)
-        : null;
-
     return (
         <Link
             href={`/productos/${product.slug}`}
-            className="group block w-full aspect-square bg-white shadow-sm hover:shadow-md transition-shadow duration-300 rounded overflow-visible relative"
+            className="group flex flex-col bg-white"
         >
-            {/* Badge superior: Nuevo */}
-            {product.esNuevo && (
-                <div className="absolute -top-4 left-2 z-10">
-                    <span className="px-2 py-0.5 bg-red-500 text-white text-xs shadow-sm rounded-tl-lg rounded-br-lg">
-                        Nuevo
-                    </span>
-                </div>
-            )}
+            {/* Imagen */}
+            <div className="relative aspect-[3/4] bg-white overflow-hidden">
+                {primaryImage && (
+                    <Image
+                        src={primaryImage}
+                        alt={product.nombre}
+                        fill
+                        className="object-contain transition-opacity duration-500 ease-in-out group-hover:opacity-0"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        quality={95}
+                    />
+                )}
 
-            <div className="flex flex-col h-full">
+                {hoverImage && (
+                    <Image
+                        src={hoverImage}
+                        alt={`${product.nombre} - vista alternativa`}
+                        fill
+                        className="object-contain opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        quality={95}
+                    />
+                )}
 
-                {/* Marca + Nombre */}
-                <div className="p-2">
+                {/* Badge Nuevo */}
+                {product.esNuevo && (
+                    <div className="absolute top-1 left-1 z-10">
+                        <span className="px-2 bg-neutral-100 text-neutral-800 text-[10px] uppercase font-medium tracking-wider">
+                            Nuevo
+                        </span>
+                    </div>
+                )}
+            </div>
+
+            {/* Contenedor de información con altura fija */}
+            <div className="flex flex-col justify-between flex-1 px-2 min-h-[160px]">
+                <div className="flex flex-col gap-1">
                     {brand && (
-                        <span className="text-xs sm:text-sm uppercase tracking-wide text-gray-400 font-bold">
+                        <span className="text-xs uppercase tracking-wide text-gray-500">
                             {brand}
                         </span>
                     )}
-                    <h3 className="text-sm sm:text-base text-gray-900 line-clamp-2 group-hover:text-black transition-colors">
+
+                    <h3 className="text-sm text-gray-900 font-medium leading-snug line-clamp-2">
                         {product.nombre}
                     </h3>
-                </div>
 
-                {/* Imagen */}
-                <div className="relative w-full flex-1">
-                    {imagen ? (
-                        <Image
-                            src={imagen}
-                            alt={product.nombre}
-                            fill
-                            className="object-contain group-hover:scale-105 transition-transform duration-500 ease-out"
-                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                            quality={90}
-                        />
-                    ) : (
-                        <div className="flex items-center justify-center w-full h-full text-gray-400 text-xs sm:text-sm">
-                            Sin imagen
+                    {color && (
+                        <div className="pt-1">
+                            <ColorCircle color={color} />
                         </div>
                     )}
                 </div>
 
-                {/* Color */}
-                {color && (
-                    <div className="flex justify-start px-2 sm:px-3 mt-2">
-                        <ColorCircle color={color} />
-                    </div>
-                )}
-
                 {/* Precio */}
-                <div className="flex items-center justify-between gap-2 p-2 sm:p-3 mt-auto">
-                    {/* Lado izquierdo: precio normal + descuento */}
-                    <div className="flex items-center gap-2">
-                        {stock > 0 ? (
-                            <>
-                                <span className="text-sm sm:text-base text-gray-900">
-                                    s/ {precio.toFixed(2)}
-                                </span>
-                                {descuento && (
-                                    <span className="text-xs font-medium text-white bg-black px-1 rounded">
-                                        -{descuento}%
-                                    </span>
-                                )}
-                            </>
-                        ) : (
-                            <span className="text-xs sm:text-sm text-red-500">
-                                Sin stock
+                <div className="flex items-baseline gap-2 mt-1">
+                    {stock > 0 ? (
+                        <>
+                            <span className="text-sm font-semibold text-black">
+                                S/ {precio.toFixed(2)}
                             </span>
-                        )}
-                    </div>
-
-                    {/* Lado derecho: precio comparativo tachado */}
-                    {product.precioComparativo && (
-                        <span className="text-xs sm:text-sm text-gray-400 line-through">
-                            s/ {product.precioComparativo.toFixed(2)}
+                            {product.precioComparativo && (
+                                <span className="text-xs text-gray-400 line-through">
+                                    S/ {product.precioComparativo.toFixed(2)}
+                                </span>
+                            )}
+                        </>
+                    ) : (
+                        <span className="text-sm font-semibold text-neutral-500">
+                            Agotado
                         </span>
                     )}
                 </div>
-
             </div>
         </Link>
     );

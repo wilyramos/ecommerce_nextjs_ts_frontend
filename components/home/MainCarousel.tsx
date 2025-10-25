@@ -45,7 +45,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                 Nuevo lanzamiento
                             </div>
 
-                            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-gray-900 leading-tight">
+                            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-700 leading-tight">
                                 {product.nombre}
                             </h2>
 

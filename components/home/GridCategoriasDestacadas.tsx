@@ -25,7 +25,7 @@ export default function GridCategoriasDestacadas({
                         href={`/categoria/${cat.slug}`}
                         className="group bg-white rounded-xl"
                     >
-                        <div className="relative h-32 w-full overflow-hidden rounded-xl">
+                        <div className="relative h-28 w-full overflow-hidden rounded-xl">
                             <Image
                                 src={cat.image || "/logo.png"}
                                 alt={cat.nombre}

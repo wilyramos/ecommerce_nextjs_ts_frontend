@@ -86,7 +86,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
     return (
         <aside className="w-full p-4 border border-gray-100 shadow-xs rounded-md bg-white">
             <div className="flex justify-between items-center mb-3">
-                <h2 className="text-lg font-semibold flex items-center gap-2">
+                <h2 className="text-lg flex items-center gap-2">
                     <LuListFilter className="text-gray-600" />
                     Filtros
                 </h2>
@@ -100,16 +100,16 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                 </Button>
             </div>
 
-            <Accordion type="multiple" className="w-full text-base">
+            <Accordion type="multiple" className="w-full text-sm">
                 {/* Marcas */}
                 {brands.length > 0 && (
                     <AccordionItem value="brands">
-                        <AccordionTrigger className="text-base">Marcas</AccordionTrigger>
+                        <AccordionTrigger className="text-sm">Marcas</AccordionTrigger>
                         <AccordionContent>
                             <ul className="space-y-1">
                                 {brands.map((brand) => (
                                     <li key={brand.slug}>
-                                        <label className="flex items-center gap-2 cursor-pointer text-base text-gray-600">
+                                        <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-600">
                                             <input
                                                 type="checkbox"
                                                 checked={searchParams.getAll("brand").includes(brand.slug)}
@@ -129,14 +129,14 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                 {/* Atributos dinámicos */}
                 {atributos.map((attr) => (
                     <AccordionItem key={attr.name} value={attr.name}>
-                        <AccordionTrigger className="capitalize text-base">
+                        <AccordionTrigger className="capitalize text-sm">
                             {attr.name}
                         </AccordionTrigger>
                         <AccordionContent>
                             <ul className="space-y-1">
                                 {attr.values.map((value) => (
                                     <li key={value}>
-                                        <label className="flex items-center gap-2 cursor-pointer text-base text-gray-600">
+                                        <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-600">
                                             <input
                                                 type="checkbox"
                                                 checked={searchParams
@@ -158,11 +158,11 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                 {/* Precio dinámico */}
                 {priceFilter && (
                     <AccordionItem value="price">
-                        <AccordionTrigger className="text-base">
+                        <AccordionTrigger className="text-sm">
                             Precio
                         </AccordionTrigger>
                         <AccordionContent>
-                            <div className="flex flex-col gap-4 text-base p-2">
+                            <div className="flex flex-col gap-4 text-sm p-2">
                                 <Slider
                                     min={priceFilter.min ?? 0}
                                     max={priceFilter.max ?? 1000}
