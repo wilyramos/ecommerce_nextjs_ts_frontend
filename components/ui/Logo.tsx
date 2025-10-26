@@ -4,7 +4,7 @@ export default function Logo() {
 
     return (
         <Image
-            src="/logob.svg"
+            src="/logo.svg"
             alt="Logo"
             width={120}
             height={120}
