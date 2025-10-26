@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { FaFacebookF, FaInstagram, FaWhatsapp } from "react-icons/fa";
 import PaymentMethods from "./PaymentMethods";
+import Logo from "../ui/Logo";
 
 export default function Footer() {
     const links = [
@@ -22,7 +23,7 @@ export default function Footer() {
     ];
 
     return (
-        <footer className="bg-gray-100 text-gray-700 text-sm">
+        <footer className="bg-neutral-100 text-gray-700 text-sm py-4">
 
             <PaymentMethods />
             {/* Contenido principal */}
@@ -30,7 +31,7 @@ export default function Footer() {
                 {/* Branding */}
                 <div>
                     <div className="flex items-center gap-2 mb-4">
-                        <h3 className="font-bold text-2xl text-gray-900">GOPHONE Cañete</h3>
+                        <Logo />
                     </div>
                     <p className="text-gray-600 leading-relaxed text-sm">
                         Tecnología móvil, accesorios originales y atención personalizada.
@@ -112,7 +113,7 @@ export default function Footer() {
             <div className="border-t border-gray-300 text-center py-4 px-6 text-xs text-gray-500">
                 © {new Date().getFullYear()} <span className="font-semibold text-gray-700">Gophone</span>.
                 Todos los derechos reservados · Developed by{" "}
-                <span className="text-gray-700 font-semibold">Wily Ramos</span>
+                <span className="font-light">Wily Ramos</span>
             </div>
         </footer>
     );
