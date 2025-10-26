@@ -11,8 +11,6 @@ type SearchParams = Promise<{
 
 export default async function pageProductosPOS({ searchParams }: { searchParams: SearchParams }) {
 
-
-
     const params = await searchParams;
     const currentPage = params.page ? parseInt(params.page, 10) : 1;
     const itemsPerPage = params.limit ? parseInt(params.limit, 10) : 10;
@@ -24,15 +22,10 @@ export default async function pageProductosPOS({ searchParams }: { searchParams:
         query: params.query,
     });
 
-
-
     return (
-
         <>
             <ProductSearchInput />
-
             <ProductsTablePOS products={productsData} />
-
             <div className="pt-2">
                 <Pagination
                     currentPage={currentPage}

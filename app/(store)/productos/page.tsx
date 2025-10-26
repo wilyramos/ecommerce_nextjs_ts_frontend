@@ -44,8 +44,8 @@ export const metadata: Metadata = {
     },
     metadataBase: new URL("https://gophone.pe"),
     icons: {
-        icon: "/logomini.svg",
-        apple: "/logomini.svg",
+        icon: "/logoapp.png",
+        apple: "/logoapp.png",
     }
 };
 
