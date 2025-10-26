@@ -140,7 +140,7 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                     <div>
                         {/* Fila 1: Marca */}
                         <div className="h-5"> {/* Altura fija para la marca */}
-                           <span className="text-xs font-semibold text-gray-500 uppercase">
+                           <span className="text-xs font-medium text-gray-400 uppercase">
                                {product.brand?.nombre}
                            </span>
                         </div>
@@ -162,7 +162,7 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                                 <>
                                     <div className="">
                                         {product.precioComparativo && (
-                                        <span className="text-gray-400 text-sm line-through px-2">
+                                        <span className="text-gray-400 text-xs line-through px-2">
                                             s/ {product.precioComparativo.toFixed(2)}
                                         </span>
                                     )}
