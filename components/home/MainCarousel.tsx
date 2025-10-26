@@ -40,12 +40,12 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                     >
                         {/* Texto */}
                         <div className="z-10 w-full md:w-1/2 flex flex-col justify-center items-start px-6 sm:px-10 md:px-16 py-8 sm:py-10 md:py-16 gap-4 sm:gap-5 md:gap-6">
-                            <div className="flex items-center gap-2 text-black font-extrabold text-xs sm:text-xs uppercase tracking-wide">
+                            <div className="flex items-center gap-2 text-gray-500 text-xs sm:text-xs uppercase tracking-wide">
                                 <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 " />
                                 Nuevo lanzamiento
                             </div>
 
-                            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-700 leading-tight">
+                            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold leading-tight">
                                 {product.nombre}
                             </h2>
 

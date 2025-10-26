@@ -93,7 +93,7 @@ export default async function pageCategoria({
 
     return (
 
-        <main className="max-w-7xl mx-auto p-5">
+        <main className="max-w-screen-2xl mx-auto p-5">
             <section className="grid grid-cols-1 sm:grid-cols-8 gap-6">
 
                 {/* Filtros en sidebar solo en escritorio */}

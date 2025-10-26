@@ -94,7 +94,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                     variant="ghost"
                     size="sm"
                     onClick={clearFilters}
-                    className="text-xs text-red-600 hover:text-red-500"
+                    className="text-xs cursor-pointer"
                 >
                     Limpiar
                 </Button>
