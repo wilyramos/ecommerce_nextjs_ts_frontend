@@ -1,5 +1,4 @@
 import { getProductsByAdmin } from '@/src/services/products';
-import React from 'react'
 import ProductsTable from '@/components/admin/products/ProductsTable';
 import Pagination from '@/components/ui/Pagination';
 
@@ -22,7 +21,7 @@ export default async function ProductsResultsAdmin({
     const productsData = await getProductsByAdmin({
         page: currentPage,
         limit: itemsPerPage,
-        query: params.query,
+        ...params
     });
 
     // console.log("Products data:", productsData);
@@ -30,8 +29,7 @@ export default async function ProductsResultsAdmin({
     return (
         <>
             <ProductsTable products={productsData} />
-
-            <div className="py-4">
+            <div className="py-2">
 
                 <Pagination
                     currentPage={currentPage}

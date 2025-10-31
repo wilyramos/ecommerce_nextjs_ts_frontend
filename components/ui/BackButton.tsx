@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { ArrowLeft } from "lucide-react"; // icono moderno
+import { ArrowLeft } from "lucide-react";
 
 export default function BackButton() {
     const router = useRouter();

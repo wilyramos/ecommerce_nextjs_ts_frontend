@@ -1,7 +1,6 @@
 // frontend/src/services/brands.ts
 import "server-only";
 import { cache } from "react";
-import getToken from "../auth/token";
 
 export interface Brand {
     _id: string;
@@ -14,9 +13,7 @@ export interface Brand {
 }
 
 export const getBrands = cache(async (): Promise<Brand[]> => {
-    const token = await getToken();
     const res = await fetch(`${process.env.API_URL}/brands`, {
-        headers: { Authorization: `Bearer ${token}` },
         cache: "no-store",
     });
     if (!res.ok) {
@@ -26,9 +23,7 @@ export const getBrands = cache(async (): Promise<Brand[]> => {
 });
 
 export const getActiveBrands = cache(async (): Promise<Brand[]> => {
-    const token = await getToken();
     const res = await fetch(`${process.env.API_URL}/brands/active`, {
-        headers: { Authorization: `Bearer ${token}` },
         cache: "no-store",
     });
     if (!res.ok) {
@@ -40,7 +35,6 @@ export const getActiveBrands = cache(async (): Promise<Brand[]> => {
 export const getBrandBySlug = async (slug: string): Promise<Brand | null> => {
 
     const url = `${process.env.API_URL}/brands/slug/${slug}`;
-    console.log('Fetching brand by slug from URL:', url);
     const res = await fetch(url, {
         cache: "no-store",
     });

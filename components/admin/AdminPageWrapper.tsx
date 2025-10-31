@@ -17,7 +17,7 @@ export default function AdminPageWrapper({
     return (
         <div>
             {/* Encabezado común */}
-            <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-gray-200 pb-3">
+            <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 border-b border-gray-200 pb-1">
                 <h1 className="text-2xl font-bold text-gray-800">{title}</h1>
 
                 <div className="flex items-center gap-2">
@@ -27,7 +27,7 @@ export default function AdminPageWrapper({
             </header>
 
             {/* Contenido de la página */}
-            <section className="mt-6">{children}</section>
+            <section>{children}</section>
         </div>
     );
 }

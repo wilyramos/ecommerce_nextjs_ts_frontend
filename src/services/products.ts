@@ -205,7 +205,7 @@ export const getNewProducts = async () => {
     }
 
     const json = await req.json();
-        console.log("Destacados products JSON:", json);
+    console.log("Destacados products JSON:", json);
 
     const products = productsAPIResponse.parse(json);
 
@@ -247,31 +247,42 @@ export const getProductsRelated = async (slug: string) => {
 
 }
 
-export const getProductsByAdmin = async (
-    { page = 1, limit = 10, query = "" }: { page?: number; limit?: number; query?: string } = {}
-) => {
+type GetProductsByAdminParams = {
+    page?: number;
+    limit?: number;
+    nombre?: string;
+    sku?: string;
+    precioSort?: "asc" | "desc";
+    stockSort?: "asc" | "desc";
+    isActive?: string;
+    esNuevo?: string;
+    esDestacado?: string;
+    query?: string;
+};
+
+export const getProductsByAdmin = async (filters: GetProductsByAdminParams = {}) => {
     const token = await getToken();
-    const url = `${process.env.API_URL}/products?page=${page}&limit=${limit}&query=${query}`;
+    const paramsObject = Object.fromEntries(
+        Object.entries(filters)
+            .filter(([, value]) => value !== undefined && value !== "")
+            .map(([key, value]) => [key, String(value)])
+    );
+    const queryString = new URLSearchParams(paramsObject).toString();
+
+    const url = `${process.env.API_URL}/products?${queryString}`;
 
     const req = await fetch(url, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`
-
         }
     });
 
-    if (!req.ok) {
-        return null;
-    }
-
-
+    if (!req.ok) return null;
     const json = await req.json();
+    return productsAPIResponse.parse(json);
+};
 
-    // console.log(json);
-    const products = productsAPIResponse.parse(json);
-    return products;
-}
 
 export const GetAllProductsSlug = async () => {
     const url = `${process.env.API_URL}/products/all/slug`;
