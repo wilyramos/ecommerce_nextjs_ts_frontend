@@ -17,7 +17,7 @@ export default function Footer() {
         { icon: <FaInstagram />, href: "https://www.instagram.com/gophone.pe", name: "Instagram" },
         {
             icon: <FaWhatsapp />,
-            href: "https://api.whatsapp.com/send?phone=51907103353&text=Hola%20Gophone,%20tengo%20una%20consulta",
+            href: "https://api.whatsapp.com/send?phone=51925054636&text=Hola%20Gophone,%20tengo%20una%20consulta",
             name: "WhatsApp",
         },
     ];
@@ -42,7 +42,7 @@ export default function Footer() {
 
                 {/* Navegación */}
                 <nav>
-                    <h3 className="mb-4 font-semibold text-gray-900 text-lg relative after:block after:w-8 after:h-1 after:bg-indigo-500 after:mt-1">
+                    <h3 className="mb-4 font-semibold text-gray-900 text-lg relative after:block after:w-8 after:h-1 after:bg-black after:mt-1">
                         Explora
                     </h3>
                     <ul className="space-y-2">
@@ -50,7 +50,7 @@ export default function Footer() {
                             <li key={href}>
                                 <Link
                                     href={href}
-                                    className="hover:text-indigo-500 transition-colors duration-200"
+                                    className="hover:text-black transition-colors duration-200"
                                 >
                                     {label}
                                 </Link>
@@ -61,24 +61,24 @@ export default function Footer() {
 
                 {/* Contacto */}
                 <div>
-                    <h3 className="mb-4 font-semibold text-gray-900 text-lg relative after:block after:w-8 after:h-1 after:bg-indigo-500 after:mt-1">
+                    <h3 className="mb-4 font-semibold text-gray-900 text-lg relative after:block after:w-8 after:h-1 after:bg-black after:mt-1">
                         Contacto
                     </h3>
                     <ul className="space-y-2 text-gray-600">
                         <li>
                             Tel:{" "}
                             <a
-                                href="tel:+51907103353"
-                                className="hover:text-indigo-500 transition-colors duration-200"
+                                href="tel:+51925054636"
+                                className="hover:text-black transition-colors duration-200"
                             >
-                                +51 907 103 353
+                                +51 925 054 636
                             </a>
                         </li>
                         <li>
                             Email:{" "}
                             <a
                                 href="mailto:ventas@gophone.pe"
-                                className="hover:text-indigo-500 transition-colors duration-200"
+                                className="hover:text-black transition-colors duration-200"
                             >
                                 ventas@gophone.pe
                             </a>
@@ -89,7 +89,7 @@ export default function Footer() {
 
                 {/* Redes sociales */}
                 <div>
-                    <h3 className="mb-4 font-semibold text-gray-900 text-lg relative after:block after:w-8 after:h-1 after:bg-indigo-500 after:mt-1">
+                    <h3 className="mb-4 font-semibold text-gray-900 text-lg relative after:block after:w-8 after:h-1 after:bg-black after:mt-1">
                         Síguenos
                     </h3>
                     <div className="flex gap-4">
@@ -100,7 +100,7 @@ export default function Footer() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label={name}
-                                className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-indigo-500 text-gray-700 hover:text-white transition-colors duration-300 shadow-sm hover:shadow-indigo-200"
+                                className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200 hover:bg-black text-gray-700 hover:text-white transition-colors duration-300 shadow-sm hover:shadow-indigo-200"
                             >
                                 {icon}
                             </a>

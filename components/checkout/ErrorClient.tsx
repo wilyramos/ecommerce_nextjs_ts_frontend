@@ -49,7 +49,7 @@ export default function ErrorClient({ errorMessage, orderId }: ErrorClientProps)
 
                 <div className="mt-8 text-xs text-gray-500">
                     Si el problema persiste, por favor, <a href="mailto:soporte@gophone.pe" className="text-blue-600 hover:underline">contacta a soporte</a>.
-                    O puedes contactar a nuestro whatsapp al <a href="https://wa.me/51907103353" className="text-blue-600 hover:underline">+51 907103353</a>.
+                    O puedes contactar a nuestro whatsapp al <a href="https://wa.me/51925054636" className="text-blue-600 hover:underline">+51 925054636</a>.
                 </div>
             </div>
         </div>
