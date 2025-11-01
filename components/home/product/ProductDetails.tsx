@@ -51,14 +51,14 @@ export default function ProductDetails({ producto }: Props) {
                                     </span>
                                 )}
                             </div>
-                            <h1 className="text-lg md:text-2xl font-bold leading-tight break-words whitespace-normal" itemProp="name">
+                            <h1 className="text-lg md:text-2xl font-semibold leading-tight break-words whitespace-normal" itemProp="name">
                                 {producto.nombre}
                             </h1>
 
                             <div className="space-y-1">
                                 <div className="flex items-center gap-2">
                                     <p
-                                        className="text-3xl font-extrabold text-gray-800 flex items-baseline"
+                                        className="text-3xl flex items-baseline"
                                         itemProp="offers"
                                         itemScope
                                         itemType="https://schema.org/Offer"
@@ -103,7 +103,7 @@ export default function ProductDetails({ producto }: Props) {
                                 >
                                     Características
                                 </h2>
-                                <table className="w-full text-sm">
+                                <table className="w-full text-xs">
                                     <tbody>
                                         {Object.entries(producto.atributos).map(([key, value]) => (
                                             <tr

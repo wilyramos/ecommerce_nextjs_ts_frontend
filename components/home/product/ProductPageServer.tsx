@@ -23,7 +23,6 @@ export default async function ProductPageServer({ slug }: Props) {
 
     return (
         <>
-
             <h1 className="text-xl text-center my-6 hidden">
                 {producto.nombre}
             </h1>

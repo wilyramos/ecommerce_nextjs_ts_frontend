@@ -205,7 +205,6 @@ export const getNewProducts = async () => {
     }
 
     const json = await req.json();
-    console.log("Destacados products JSON:", json);
 
     const products = productsAPIResponse.parse(json);
 

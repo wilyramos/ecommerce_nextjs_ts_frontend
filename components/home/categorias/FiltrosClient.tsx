@@ -102,13 +102,12 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
             </div>
             {/* ----- Filtro por Precio con inputs ----- */}
             <div className="mb-6">
-                <h2 className="text-base font-medium text-black mb-1">Precio</h2>
-
+                <h2 className="text-sm font-medium text-black mb-1">Precio</h2>
                 <div
                     className="flex items-center gap-2 flex-wrap"
                 >
                     {/* Input Mín */}
-                    <div className="flex flex-col text-base text-black w-full sm:w-auto">
+                    <div className="flex flex-col text-sm text-black w-full sm:w-auto">
                         <label htmlFor="min" className="mb-1">
                             Mín
                         </label>
@@ -128,7 +127,7 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
                     <span className="text-gray-500 md:mt-5">-</span>
 
                     {/* Input Máx */}
-                    <div className="flex flex-col text-base text-black w-full sm:w-auto">
+                    <div className="flex flex-col text-sm text-black w-full sm:w-auto">
                         <label htmlFor="max" className="mb-1">
                             Máx
                         </label>
@@ -154,10 +153,10 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
             <Accordion type="multiple" className="space-y-4">
                 {attributes.map((attr) => (
                     <AccordionItem key={attr.name} value={attr.name}>
-                        <AccordionTrigger className="text-base font-medium text-black hover:bg-gray-100 py-2 px-2 rounded-md">
+                        <AccordionTrigger className="text-sm font-medium text-black hover:bg-gray-100 py-2 px-2 rounded-md">
                             {attr.name}
                         </AccordionTrigger>
-                        <AccordionContent className="pl-2 pt-2 text-base text-gray-600">
+                        <AccordionContent className="pl-2 pt-2 text-sm text-gray-600">
                             <ul className="space-y-1">
                                 {attr.values.map((value) => (
                                     <li
@@ -171,7 +170,7 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
                                             readOnly
                                             className="accent-blue-600 pointer-events-none"
                                         />
-                                        <span className="text-base text-gray-600">{value}</span>
+                                        <span className="text-sm text-gray-600">{value}</span>
                                     </li>
                                 ))}
                             </ul>
