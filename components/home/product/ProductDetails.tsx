@@ -7,6 +7,7 @@ import type { ProductWithCategoryResponse } from '@/src/schemas';
 import ShopNowButton from './ShopNowButton';
 import { Truck, ShieldCheck } from "lucide-react";
 import ProductExpandableSections from './ProductExpandableSections ';
+import { getDeliveryRange } from '@/lib/utils';
 
 
 type Props = {
@@ -27,7 +28,6 @@ export default function ProductDetails({ producto }: Props) {
                 className="mx-auto grid gap-4 md:grid-cols-2 items-start max-w-7xl pb-4"
                 itemScope
                 itemType="https://schema.org/Product"
-
             >
                 {/* Imágenes */}
                 <div>
@@ -152,6 +152,14 @@ export default function ProductDetails({ producto }: Props) {
                             <ShieldCheck className="w-5 h-5 text-gray-600" />
                             <span className="text-sm">Compra segura.</span>
                         </div>
+                        <div className="flex items-center gap-2 bg-white rounded-lg px-6 py-3 shadow-sm text-gray-600">
+                            <span className="text-sm">
+                                {producto.diasEnvio
+                                    ? `Entrega estimada: ${getDeliveryRange(producto.diasEnvio)}`
+                                    : "Entrega estimada: 1-3 días hábiles."}
+                            </span>
+                        </div>
+
                     </div>
 
                 </div>

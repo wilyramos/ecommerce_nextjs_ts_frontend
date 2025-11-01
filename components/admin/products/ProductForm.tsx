@@ -83,6 +83,16 @@ export default function ProductForm({
                             defaultValue={product?.stock}
                         />
                     </div>
+                    <div className="py-1 space-y-1">
+                        <Label htmlFor="diasEnvio">Días de envío</Label>
+                        <Input
+                            type="number"
+                            id="diasEnvio"
+                            name="diasEnvio"
+                            min={1}
+                            defaultValue={product?.diasEnvio ?? 1}
+                        />
+                    </div>
                 </div>
 
                 {/* SKU y Código de barras */}

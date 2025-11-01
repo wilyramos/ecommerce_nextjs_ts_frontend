@@ -13,9 +13,7 @@ export interface Brand {
 }
 
 export const getBrands = cache(async (): Promise<Brand[]> => {
-    const res = await fetch(`${process.env.API_URL}/brands`, {
-        cache: "no-store",
-    });
+    const res = await fetch(`${process.env.API_URL}/brands`);
     if (!res.ok) {
         return [];
     }
@@ -23,9 +21,7 @@ export const getBrands = cache(async (): Promise<Brand[]> => {
 });
 
 export const getActiveBrands = cache(async (): Promise<Brand[]> => {
-    const res = await fetch(`${process.env.API_URL}/brands/active`, {
-        cache: "no-store",
-    });
+    const res = await fetch(`${process.env.API_URL}/brands/active`);
     if (!res.ok) {
         return [];
     }
@@ -35,9 +31,7 @@ export const getActiveBrands = cache(async (): Promise<Brand[]> => {
 export const getBrandBySlug = async (slug: string): Promise<Brand | null> => {
 
     const url = `${process.env.API_URL}/brands/slug/${slug}`;
-    const res = await fetch(url, {
-        cache: "no-store",
-    });
+    const res = await fetch(url);
 
     console.log('Fetching brand by slug:', slug, 'Response status:', res.status);
     if (!res.ok) {

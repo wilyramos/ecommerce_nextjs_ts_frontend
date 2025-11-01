@@ -74,6 +74,7 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         atributos: atributos,
         brand: formData.get("brand") || undefined,
         especificaciones: especificaciones,
+        diasEnvio: formData.get('diasEnvio') ? Number(formData.get('diasEnvio')) : undefined,
     }
     console.log("productData", productData)
 

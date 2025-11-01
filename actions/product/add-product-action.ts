@@ -74,6 +74,7 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         atributos: atributos,
         especificaciones: especificaciones,
         brand: formData.get('brand') || undefined,
+        diasEnvio: formData.get('diasEnvio') ? Number(formData.get('diasEnvio')) : undefined,
     }
 
     console.log("productData", productData)

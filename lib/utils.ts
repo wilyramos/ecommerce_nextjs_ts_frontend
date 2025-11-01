@@ -1,5 +1,5 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -47,4 +47,22 @@ export function saveSearchTerm(term: string): void {
     const history = getSearchHistory();
     const updated = [term, ...history.filter(h => h !== term)].slice(0, 5);
     localStorage.setItem("search-history", JSON.stringify(updated));
+}
+
+export function getDeliveryRange(days: number): string {
+    const today = new Date();
+
+    const endDate = new Date(today);
+    endDate.setDate(today.getDate() + days);
+
+    const startDate = new Date(endDate);
+    startDate.setDate(endDate.getDate() - 1);
+
+    const format = (date: Date) =>
+        date.toLocaleDateString("es-ES", {
+            day: "numeric",
+            month: "short"
+        });
+
+    return `${format(startDate)} – ${format(endDate)}`;
 }
