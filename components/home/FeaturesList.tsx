@@ -23,10 +23,10 @@ export default function MinimalFeatures() {
         {features.map((feature) => {
           const Content = (
             <div
-              className="flex flex-col items-center text-center text-gray-600 hover:text-gray-900 transition p-3 rounded-md"
+              className="flex flex-col items-center text-center text-black hover:text-gray-900 transition p-3 rounded-md border border-gray-200 hover:shadow-md"
               aria-label={feature.title}
             >
-              <feature.icon size={28} className="mb-2" />
+              <feature.icon size={20} className="mb-2" />
               <span className="text-xs font-medium">{feature.title}</span>
             </div>
           );

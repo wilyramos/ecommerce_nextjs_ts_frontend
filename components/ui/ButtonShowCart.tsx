@@ -36,7 +36,7 @@ export default function ButtonShowCart() {
 
     return (
         <Sheet open={isCartOpen} onOpenChange={setCartOpen}>
-            <SheetTrigger className="relative cursor-pointer hover:text-blue-800 transition">
+            <SheetTrigger className="relative cursor-pointer hover:text-gray-800 transition">
                 <RiShoppingCartLine className="h-6 w-6" />
                 {carrito.length > 0 && (
                     <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-md">

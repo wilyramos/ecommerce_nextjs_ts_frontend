@@ -49,7 +49,7 @@ export default function NavBar() {
                     <div className="hidden md:flex items-center gap-6">
                         <Link
                             href="/auth/registro"
-                            className="flex items-center gap-1 text-gray-600 hover:text-indigo-600 transition"
+                            className="flex items-center gap-1 hover:text-black transition"
                             aria-label="Cuenta"
                         >
                             <AiOutlineUser className="h-6 w-6" />

@@ -26,7 +26,6 @@ export default async function BrandsPage({ params, searchParams }: { params: Par
         getAllSubcategories(),
         getBrandBySlug(slug),
     ]);
-
     
 
     if (!brand) return <div className="p-6 text-center">Marca no encontrada</div>;

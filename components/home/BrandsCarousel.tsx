@@ -29,7 +29,7 @@ export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {
             >
                 {brands.map((brand) => (
                     <Link
-                        href={`/marca/${brand.slug}`}
+                        href={`/productos?brand=${brand.slug}`}
                         key={brand._id}
                         className="group flex flex-col items-center space-y-2"
                     >
