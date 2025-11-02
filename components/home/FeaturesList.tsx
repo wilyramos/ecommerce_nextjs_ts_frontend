@@ -1,29 +1,50 @@
-"use client";
 
-import { FaTags } from "react-icons/fa";
-import { TbTruckDelivery } from "react-icons/tb";
-import { RiSecurePaymentLine } from "react-icons/ri";
+import Link from "next/link";
+import type { IconType } from "react-icons";
+import { FaTags, FaTruck, FaLock, FaExchangeAlt } from "react-icons/fa";
 
-const features = [
-    { title: "Precios especiales", icon: FaTags },
-    { title: "Envíos gratis", icon: TbTruckDelivery },
-    { title: "Pago seguro", icon: RiSecurePaymentLine },
+type Feature = {
+  title: string;
+  icon: IconType;
+  url?: string; // opcional: si está presente el feature será clicable
+};
+
+const features: Feature[] = [
+  { title: "Ofertas exclusivas", icon: FaTags, url: "/ofertas" }, // <-- añadí url aquí
+  { title: "Envíos rápidos", icon: FaTruck },
+  { title: "Pago 100% seguro", icon: FaLock },
+  { title: "Cambios y devoluciones", icon: FaExchangeAlt, url: "/cambios-y-devoluciones" }, // <-- añadí url aquí
 ];
 
 export default function MinimalFeatures() {
-    return (
-        <section className="bg-white py-10">
-            <div className="max-w-6xl mx-auto px-4 grid grid-cols-3 gap-4">
-                {features.map((feature) => (
-                    <div
-                        key={feature.title}
-                        className="flex flex-col items-center text-center text-gray-500 hover:text-gray-600 transition-colors cursor-pointer"
-                    >
-                        <feature.icon size={28} />
-                        <span className="text-xs font-medium mt-2">{feature.title}</span>
-                    </div>
-                ))}
+  return (
+    <section className="bg-white py-10">
+      <div className="max-w-6xl mx-auto px-4 grid grid-cols-2 sm:grid-cols-4 gap-6">
+        {features.map((feature) => {
+          const Content = (
+            <div
+              className="flex flex-col items-center text-center text-gray-600 hover:text-gray-900 transition p-3 rounded-md"
+              aria-label={feature.title}
+            >
+              <feature.icon size={28} className="mb-2" />
+              <span className="text-xs font-medium">{feature.title}</span>
             </div>
-        </section>
-    );
+          );
+
+          // Si feature.url existe, lo envolvemos en Link para hacerlo navegable
+          return (
+            <div key={feature.title}>
+              {feature.url ? (
+                <Link href={feature.url} aria-label={feature.title}>
+                  {Content}
+                </Link>
+              ) : (
+                Content
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
 }
