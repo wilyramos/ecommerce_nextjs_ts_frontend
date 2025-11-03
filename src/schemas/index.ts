@@ -1,115 +1,84 @@
 import { z } from 'zod';
 import { ApiBrandSchema } from './brands';
 
-// For register validation
+/* ============================================================
+   🧩 AUTENTICACIÓN Y USUARIOS
+============================================================ */
+
+// ---------- Registro ----------
 export const RegisterSchema = z.object({
-    email: z.string()
-        .email({ message: 'Email no válido' }),
-    nombre: z.string()
-        .min(1, { message: 'El nombre es obligatorio' }),
-    password: z.string()
-        .min(6, { message: 'La contraseña debe tener al menos 6 caracteres' }),
-    //     password_confirmation: z.string(),
-    // }).refine((data) => data.password === data.password_confirmation, {
-    //     message: 'Las contraseñas no coinciden',
-    //     path: ['password_confirmation'],
+    email: z.string().email({ message: 'Email no válido' }),
+    nombre: z.string().min(1, { message: 'El nombre es obligatorio' }),
+    password: z.string().min(6, { message: 'La contraseña debe tener al menos 6 caracteres' }),
 });
 
-// For register validation with user data
-
+// ---------- Registro en Checkout ----------
 export const CheckoutRegisterSchema = z.object({
-    nombre: z.string()
-        .min(1, { message: 'El nombre es obligatorio' }),
-    apellidos: z.string()
-        .min(1, { message: 'Los apellidos son obligatorios' }),
+    nombre: z.string().min(1, { message: 'El nombre es obligatorio' }),
+    apellidos: z.string().min(1, { message: 'Los apellidos son obligatorios' }),
     tipoDocumento: z.enum(['DNI', 'RUC', 'CE']),
-    numeroDocumento: z.string()
-        .min(1, { message: 'El número de documento es obligatorio' }),
-    email: z.string()
-        .email({ message: 'Email no válido' }),
+    numeroDocumento: z.string().min(1, { message: 'El número de documento es obligatorio' }),
+    email: z.string().email({ message: 'Email no válido' }),
     telefono: z.string()
         .min(1, { message: 'El teléfono es obligatorio' })
         .regex(/^[0-9]{9}$/, { message: 'Debe contener 9 dígitos numéricos' }),
-})
-
+});
 export type CheckoutRegister = z.infer<typeof CheckoutRegisterSchema>;
 
-// For login validation
-
+// ---------- Login ----------
 export const LoginSchema = z.object({
-    email: z.string()
-        .email({ message: 'Email no válido' }),
-    password: z.string()
-        .min(6, { message: 'La contraseña debe tener al menos 6 caracteres' }),
-})
+    email: z.string().email({ message: 'Email no válido' }),
+    password: z.string().min(6, { message: 'La contraseña debe tener al menos 6 caracteres' }),
+});
 
-
-// For succes validation
-
+// ---------- Respuestas de éxito ----------
 export const SuccessSchemaRegister = z.object({
     message: z.string(),
     userId: z.string(),
     token: z.string(),
-})
-
-
-// Infeteria del succes y añadir el rol
+});
 
 export const SuccessSchemaLogin = z.object({
     message: z.string(),
     token: z.string(),
     role: z.enum(['cliente', 'administrador', 'vendedor']),
-})
-
-// succes for forgot password
+});
 
 export const SuccessSchemaForgotPassword = z.object({
     message: z.string(),
-})
-
-
-export const ErrorResponseSchema = z.object({
-    message: z.string(),
-})
-
-export const ForgotPasswordSchema = z.object({
-    email: z.string()
-        .email({ message: 'Email no válido' }),
-})
-
-// schema for error response with message
-export const ErrorResponse = z.object({
-    message: z.string(),
-})
-
-// schema for success response with message
-export const SuccessResponse = z.object({
-    message: z.string(),
-})
-
-// Schema for token validation
-
-export const TokenSchema = z.string({ message: "Token inválido" })
-    .length(6, { message: "Token inválido" })
+});
 
 export const SuccessSchemaTokenValidation = z.object({
     message: z.string(),
-})
+});
 
-// Schema for reset password
+// ---------- Respuestas de error ----------
+export const ErrorResponseSchema = z.object({
+    message: z.string(),
+});
+
+export const ErrorResponse = z.object({
+    message: z.string(),
+});
+
+export const SuccessResponse = z.object({
+    message: z.string(),
+});
+
+// ---------- Validación de token ----------
+export const TokenSchema = z.string({ message: 'Token inválido' })
+    .length(6, { message: 'Token inválido' });
+
+// ---------- Reset password ----------
 export const resetPasswordSchema = z.object({
-    password: z.string()
-        .min(6, { message: 'La contraseña debe tener al menos 6 caracteres' }),
+    password: z.string().min(6, { message: 'La contraseña debe tener al menos 6 caracteres' }),
     password_confirmation: z.string(),
 }).refine((data) => data.password === data.password_confirmation, {
     message: 'Las contraseñas no coinciden',
     path: ['password_confirmation'],
 });
 
-// *************************
-// Schema para el user edit 
-// **************************
-
+// ---------- Edición y respuesta de usuarios ----------
 export const BaseUserSchema = z.object({
     nombre: z.string().optional(),
     apellidos: z.string().optional(),
@@ -119,12 +88,11 @@ export const BaseUserSchema = z.object({
     email: z.string().email().optional(),
     rol: z.enum(['cliente', 'administrador', 'vendedor']).optional(),
     googleId: z.string().optional(),
-})
-
+});
 
 export const UserEditSchema = BaseUserSchema.extend({
     _id: z.string().optional(),
-})
+});
 
 export const UserSchema = z.object({
     _id: z.string().optional(),
@@ -139,10 +107,8 @@ export const UserSchema = z.object({
     createdAt: z.string().optional(),
     updatedAt: z.string().optional(),
     __v: z.number().optional(),
-})
-
-
-export type User = z.infer<typeof UserSchema>
+});
+export type User = z.infer<typeof UserSchema>;
 
 export const UsersAPIResponse = z.object({
     users: z.array(UserSchema),
@@ -150,32 +116,30 @@ export const UsersAPIResponse = z.object({
     totalPages: z.number(),
     currentPage: z.number(),
 });
-
 export type UsersAPIResponse = z.infer<typeof UsersAPIResponse>;
 
 
-// ************* NEW CATEGORY **************//
-// ***********************************
-// //////////////////////////////****
-// ********************************* */
+/* ============================================================
+   🏷️ CATEGORÍAS
+============================================================ */
 
-
+// ---------- Atributos ----------
 export const categoryAttributeSchema = z.object({
     name: z.string().min(1, 'El nombre del atributo es obligatorio'),
     values: z.array(z.string().min(1, 'El valor no puede estar vacío'))
         .refine(
             (vals) => new Set(vals.map(v => v.toLowerCase())).size === vals.length,
-            { message: "No se permiten valores duplicados dentro del mismo atributo" }
-        )
+            { message: 'No se permiten valores duplicados dentro del mismo atributo' }
+        ),
 });
 
 export const categoryAttributesArraySchema = z.array(categoryAttributeSchema)
     .refine(
         (attrs) => new Set(attrs.map(a => a.name.toLowerCase())).size === attrs.length,
-        { message: "No se permiten atributos con el mismo nombre" }
+        { message: 'No se permiten atributos con el mismo nombre' }
     );
 
-
+// ---------- Categoría base ----------
 export const categoryBaseSchema = z.object({
     nombre: z.string().min(1, 'El nombre es obligatorio'),
     descripcion: z.string().optional(),
@@ -186,19 +150,18 @@ export const categoryBaseSchema = z.object({
     isActive: z.boolean().optional(),
 });
 
-// Create category
+// ---------- Create & Update ----------
 export const createCategorySchema = categoryBaseSchema;
-// Update category
 export const updateCategorySchema = categoryBaseSchema.partial();
 
+// ---------- Respuestas ----------
 export const categoryParentSchema = z.object({
     _id: z.string(),
     nombre: z.string(),
     slug: z.string().optional(),
 });
+export type categoryParentSchemaType = z.infer<typeof categoryParentSchema>;
 
-
-// Response category
 export const apiCategorySchema = categoryBaseSchema.extend({
     _id: z.string(),
     slug: z.string().optional(),
@@ -208,17 +171,16 @@ export const apiCategorySchema = categoryBaseSchema.extend({
     parent: z.union([z.string(), categoryParentSchema]).nullable().optional(),
 });
 
-export type categoryParentSchemaType = z.infer<typeof categoryParentSchema>;
 export const apiCategoryListSchema = z.array(apiCategorySchema);
 export type CategoryResponse = z.infer<typeof apiCategorySchema>;
 export type CategoryListResponse = z.infer<typeof apiCategoryListSchema>;
 
 
-// *****************************************//
+/* ============================================================
+   PRODUCTOS Y VARIANTES
+============================================================ */
 
-
-/* PRODUCTS NUEVO */
-
+// ---------- Esquemas base ----------
 const atributosSchema = z.record(z.string(), z.string());
 
 export const especificacionSchema = z.object({
@@ -226,12 +188,19 @@ export const especificacionSchema = z.object({
     value: z.string().min(1),
 });
 
-// validacion para que las key no se repitan
- 
+// ---------- Variantes ----------
+export const variantSchema = z.object({
+    nombre: z.string().optional(),
+    precio: z.number().min(0, 'El precio no puede ser negativo').optional(),
+    precioComparativo: z.number().min(0, 'El precio comparativo no puede ser negativo').optional(),
+    stock: z.number().min(0, 'El stock no puede ser negativo').default(0),
+    sku: z.string().optional(),
+    barcode: z.string().optional(),
+    imagenes: z.array(z.string().url('Debe ser una URL válida')).optional(),
+    atributos: atributosSchema.default({}),
+});
 
-export type TEspecificacion = z.infer<typeof especificacionSchema>;
-
-
+// ---------- Producto base ----------
 export const productBaseSchema = z.object({
     nombre: z.string().min(1, 'El nombre es obligatorio'),
     slug: z.string().optional(),
@@ -249,50 +218,53 @@ export const productBaseSchema = z.object({
     esDestacado: z.boolean().optional().default(false),
     esNuevo: z.boolean().optional().default(false),
     atributos: atributosSchema.optional(),
-    especificaciones: 
-        z.array(especificacionSchema)
+    especificaciones: z.array(especificacionSchema)
         .optional()
         .refine((specs) => {
-            if (!specs) return true; // Si no hay especificaciones, es válido
+            if (!specs) return true;
             const keys = specs.map(spec => spec.key.toLowerCase());
             return new Set(keys).size === keys.length;
-        }, { message: "No se permiten claves duplicadas en las especificaciones" }),
-
+        }, { message: 'No se permiten claves duplicadas en las especificaciones' }),
     brand: z.string().optional(),
+    variants: z.array(variantSchema).optional(),
 });
 
-// Create product
-
+// ---------- Create & Update ----------
 export const createProductSchema = productBaseSchema.extend({
     nombre: z.string().min(1, 'El nombre es obligatorio'),
     categoria: z.string().min(1, 'La categoría es obligatoria'),
 });
-
-// Update product
 export const updateProductSchema = productBaseSchema.partial();
 
+// ---------- API Response ----------
+export const ApiVariantSchema = variantSchema.extend({
+    _id: z.string().optional(),
+});
 
-// Product response schema
 export const ApiProductSchema = productBaseSchema
-    .omit({
-        slug: true,
-    })
+    .omit({ slug: true, brand: true })
     .extend({
         _id: z.string(),
         slug: z.string(),
         brand: ApiBrandSchema.optional(),
+        variants: z.array(ApiVariantSchema).optional(),
         createdAt: z.string().datetime().optional(),
         updatedAt: z.string().datetime().optional(),
         __v: z.number().optional(),
     });
 
-
 export const ApiProductsSchema = z.array(ApiProductSchema);
-export type TApiProductsSchema = z.infer<typeof ApiProductsSchema>;
 
+// ---------- Tipos inferidos ----------
+export type TEspecificacion = z.infer<typeof especificacionSchema>;
+export type TVariant = z.infer<typeof variantSchema>;
+export type TProductBase = z.infer<typeof productBaseSchema>;
+export type TCreateProduct = z.infer<typeof createProductSchema>;
+export type TUpdateProduct = z.infer<typeof updateProductSchema>;
+export type TApiProduct = z.infer<typeof ApiProductSchema>;
+export type TApiProducts = z.infer<typeof ApiProductsSchema>;
 
-// Product response in list only name hacer un pick
-
+// ---------- Listas y Respuestas ----------
 export const ProductListSchema = ApiProductSchema.pick({
     _id: true,
     nombre: true,
@@ -304,7 +276,7 @@ export const ProductListSchema = ApiProductSchema.pick({
 export const productResponseAllSchema = ApiProductSchema.pick({
     slug: true,
     updatedAt: true,
-})
+});
 
 export const productsResponseAllSchema = z.array(productResponseAllSchema);
 export type TProductResponseAll = z.infer<typeof productResponseAllSchema>;
@@ -314,13 +286,19 @@ export const ProductsListSchema = z.array(ProductListSchema);
 export type TProductListSchema = z.infer<typeof ProductListSchema>;
 
 export const apiProductListSchema = z.array(ApiProductSchema);
+
 export const productsAPIResponse = z.object({
     products: z.array(ApiProductSchema),
     totalPages: z.number(),
     currentPage: z.number(),
     totalProducts: z.number(),
-})
+});
+export type ProductsAPIResponse = z.infer<typeof productsAPIResponse>;
 
+
+/* ============================================================
+   🏷️ MARCAS Y FILTROS
+============================================================ */
 
 export const brandSchema = z.object({
     id: z.string(),
@@ -328,45 +306,31 @@ export const brandSchema = z.object({
     slug: z.string(),
 });
 
-// Atributos de filtro
 const filterAttributeSchema = z.object({
     name: z.string(),
     values: z.array(z.string()),
 });
 
-// Filtros
 const filterSchema = z.object({
     brands: z.array(brandSchema).optional(),
     atributos: z.array(filterAttributeSchema).optional(),
     price: z.array(z.object({ min: z.number().nullable(), max: z.number().nullable() })).optional(),
 });
-
 export type TFilter = z.infer<typeof filterSchema>;
 
-// Respuesta con filtros
 export const productsApiResponseWithFilters = productsAPIResponse.extend({
     filters: z.array(filterSchema).optional(),
 });
-
-
 export type TProductsApiResponseWithFilters = z.infer<typeof productsApiResponseWithFilters>;
 
-// Type inference
 
-export type CreateProductInput = z.infer<typeof createProductSchema>;
-export type UpdateProductInput = z.infer<typeof updateProductSchema>;
+/* ============================================================
+   📚 PRODUCTOS CON CATEGORÍA POBLADA
+============================================================ */
 
-export type ProductResponse = z.infer<typeof ApiProductSchema>;
-
-
-export type ProductsAPIResponse = z.infer<typeof productsAPIResponse>;
-
-
-// Producto con la categoría poblada (en vez de solo un string)
 export const ApiProductWithCategorySchema = ApiProductSchema.extend({
-    categoria: apiCategorySchema, // Reemplazo del string por el esquema de categoría
+    categoria: apiCategorySchema,
 });
-
 
 export const productsWithCategoryAPIResponse = z.object({
     products: z.array(ApiProductWithCategorySchema),
@@ -374,8 +338,16 @@ export const productsWithCategoryAPIResponse = z.object({
     currentPage: z.number(),
     totalProducts: z.number(),
 });
-
 export type ProductWithCategoryResponse = z.infer<typeof ApiProductWithCategorySchema>;
+
+/* ============================================================
+   🧾 TIPOS GENERALES
+============================================================ */
+
+export type CreateProductInput = z.infer<typeof createProductSchema>;
+export type UpdateProductInput = z.infer<typeof updateProductSchema>;
+export type ProductResponse = z.infer<typeof ApiProductSchema>;
+
 
 /* **********************************************
 *************************************************

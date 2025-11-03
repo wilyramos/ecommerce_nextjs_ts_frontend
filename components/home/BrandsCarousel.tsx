@@ -48,9 +48,7 @@ export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {
                                 </div>
                             )}
                         </div>
-                        <p className="text-sm font-medium text-gray-700 ">
-                            {brand.nombre}
-                        </p>
+                        
                     </Link>
                 ))}
             </Carousel>
