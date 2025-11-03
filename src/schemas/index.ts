@@ -238,7 +238,7 @@ export const updateProductSchema = productBaseSchema.partial();
 
 // ---------- API Response ----------
 export const ApiVariantSchema = variantSchema.extend({
-    _id: z.string().optional(),
+    _id: z.string(),
 });
 
 export const ApiProductSchema = productBaseSchema
@@ -258,6 +258,7 @@ export const ApiProductsSchema = z.array(ApiProductSchema);
 // ---------- Tipos inferidos ----------
 export type TEspecificacion = z.infer<typeof especificacionSchema>;
 export type TVariant = z.infer<typeof variantSchema>;
+export type TApiVariant = z.infer<typeof ApiVariantSchema>;
 export type TProductBase = z.infer<typeof productBaseSchema>;
 export type TCreateProduct = z.infer<typeof createProductSchema>;
 export type TUpdateProduct = z.infer<typeof updateProductSchema>;
@@ -349,16 +350,56 @@ export type UpdateProductInput = z.infer<typeof updateProductSchema>;
 export type ProductResponse = z.infer<typeof ApiProductSchema>;
 
 
+// CARTA Y ITEMS DE CARRITO
+
+export const VariantCartSchema = z.object({
+    _id: z.string(),
+    nombre: z.string().optional(),
+    precio: z.number().optional(),
+    atributos: z.record(z.string()).default({}),
+    stock: z.number().min(0).optional(),
+    imagenes: z.array(z.string()).optional(),
+});
+
+export type VariantCart = z.infer<typeof VariantCartSchema>;
+
+const CartItemSchema = ApiProductSchema.pick({
+    _id: true,
+    nombre: true,
+    precio: true,
+    imagenes: true,
+    stock: true,
+}).extend({
+    cantidad: z.number().min(1, { message: 'La cantidad debe ser al menos 1' }),
+    subtotal: z.number().min(0, { message: 'El subtotal debe ser al menos 0' }),
+    variant: VariantCartSchema.optional(),
+});
+
+export type CartItem = z.infer<typeof CartItemSchema>;
+export const CartSchema = z.object({
+    cart: z.array(CartItemSchema),
+    total: z.number(),
+});
+export type Cart = z.infer<typeof CartSchema>;
+
+
 /* **********************************************
 *************************************************
+
+
+
 
 
 END END END 
 
 
 
+
+
 *************************************************
 */
+
+// CART
 
 
 export const AttributeSchema = z.object({
@@ -521,24 +562,7 @@ export type Category = z.infer<typeof CategorySchema>
 export const CategoriesAPIResponse = z.array(CategorySchema)
 export type CategoriasList = z.infer<typeof CategoriesAPIResponse>
 
-// CART
-const CartItemSchema = ProductSchema.pick({
-    _id: true,
-    nombre: true,
-    precio: true,
-    imagenes: true,
-    stock: true,
-}).extend({
-    cantidad: z.number().min(1, { message: 'La cantidad debe ser al menos 1' }),
-    subtotal: z.number().min(0, { message: 'El subtotal debe ser al menos 0' }),
-});
 
-export type CartItem = z.infer<typeof CartItemSchema>;
-export const CartSchema = z.object({
-    cart: z.array(CartItemSchema),
-    total: z.number(),
-});
-export type Cart = z.infer<typeof CartSchema>;
 
 // ORDER
 

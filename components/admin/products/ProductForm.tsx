@@ -9,7 +9,6 @@ import type { TBrand } from "@/src/schemas/brands";
 import BrandCombobox from "./BrandCombobox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import ProductVariantsSection from "./ProductVariantsSection";
 
 export default function ProductForm({
     product,
@@ -137,11 +136,6 @@ export default function ProductForm({
 
                 {/* Especificaciones */}
                 <SpecificationsSection initial={product?.especificaciones} />
-
-                <div className="border-t border-gray-200 mt-4"></div>
-
-                <ProductVariantsSection />
-
             </div>
 
             {/* Switches */}

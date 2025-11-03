@@ -1,15 +1,20 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import { receiptTypeSchema, type CartItem, type ProductWithCategoryResponse, type TReceiptType } from '@/src/schemas';
+import {
+    CartItem,
+    ProductWithCategoryResponse,
+    VariantCart,
+    TReceiptType,
+    receiptTypeSchema,
+} from '@/src/schemas';
 import { saveCartToDB } from '@/lib/api/cart';
-
 
 interface Store {
     cart: CartItem[];
     isCartOpen: boolean;
     setCartOpen: (isOpen: boolean) => void;
 
-    saleCompleted: boolean; // Estado de la venta
+    saleCompleted: boolean;
     setSaleCompleted: (value: boolean) => void;
     saleId: string | null;
     setSaleId: (id: string | null) => void;
@@ -20,10 +25,9 @@ interface Store {
     comprobante: TReceiptType;
     setComprobante: (comprobante: TReceiptType) => void;
 
-
-    addToCart: (item: ProductWithCategoryResponse) => void;
-    updateQuantity: (id: string, quantity: number) => void;
-    removeFromCart: (id: string) => void;
+    addToCart: (item: ProductWithCategoryResponse, variant?: VariantCart) => void;
+    updateQuantity: (id: string, quantity: number, variantId?: string) => void;
+    removeFromCart: (id: string, variantId?: string) => void;
 
     clearCart: () => void;
     saveCart: () => Promise<void>;
@@ -34,151 +38,135 @@ interface Store {
     clearComprobante: () => void;
 }
 
-const initialState = {
-    cart: [],
-    isCartOpen: false,
-    setCartOpen: () => { }, // Función para abrir/cerrar el carrito
+export const useCartStore = create<Store>()(
+    devtools(
+        persist(
+            (set, get) => ({
+                cart: [],
+                isCartOpen: false,
+                saleCompleted: false,
+                saleId: null,
+                total: 0,
+                dni: undefined,
+                comprobante: receiptTypeSchema.parse('TICKET'),
 
-    saleCompleted: false,
-    setSaleCompleted: () => { },
-    saleId: null,
-    setSaleId: () => { },
-    resetSale: () => { },
+                setCartOpen: (isOpen) => set({ isCartOpen: isOpen }),
+                setComprobante: (comprobante) => set({ comprobante }),
+                setSaleCompleted: (value) => set({ saleCompleted: value }),
+                setSaleId: (id) => set({ saleId: id }),
+                resetSale: () =>
+                    set({
+                        saleCompleted: false,
+                        saleId: null,
+                        cart: [],
+                        total: 0,
+                        dni: undefined,
+                        comprobante: 'TICKET',
+                    }),
 
-    total: 0,
-    dni: undefined,
-    comprobante: receiptTypeSchema.parse('TICKET'),
+                addToCart: (item, variant) => {
+                    const cart = get().cart;
 
-    addToCart: () => { },
-    updateQuantity: () => { },
-    removeFromCart: () => { },
+                    const productInCart = cart.find((cartItem) =>
+                        variant
+                            ? cartItem._id === item._id && cartItem.variant?._id === variant._id
+                            : cartItem._id === item._id && !cartItem.variant
+                    );
 
-    calculateTotal: () => { },
-    clearCart: () => { },
-    saveCart: async () => { },
+                    const stock = variant?.stock ?? item.stock ?? 0;
+                    const precio = variant?.precio ?? item.precio ?? 0;
+                    const imagenes = variant?.imagenes ?? item.imagenes ?? [];
 
-    setDni: () => { },
-    clearDni: () => { },
-    clearComprobante: () => { },
-};
+                    if (productInCart) {
+                        if (productInCart.cantidad >= stock) return;
 
-export const useCartStore = create<Store>()(devtools(persist((set, get) => ({
+                        set({
+                            cart: cart.map((cartItem) =>
+                                cartItem === productInCart
+                                    ? {
+                                        ...cartItem,
+                                        cantidad: cartItem.cantidad + 1,
+                                        subtotal: (cartItem.cantidad + 1) * cartItem.precio,
+                                    }
+                                    : cartItem
+                            ),
+                        });
+                    } else {
+                        set({
+                            cart: [
+                                ...cart,
+                                {
+                                    _id: item._id,
+                                    nombre: item.nombre,
+                                    precio,
+                                    cantidad: 1,
+                                    subtotal: precio,
+                                    stock,
+                                    imagenes,
+                                    variant: variant
+                                        ? {
+                                            _id: variant._id,
+                                            nombre: variant.nombre,
+                                            precio: variant.precio,
+                                            atributos: variant.atributos ?? {},
+                                            stock: variant.stock,
+                                            imagenes: variant.imagenes ?? [],
+                                        }
+                                        : undefined,
+                                },
+                            ],
+                        });
+                    }
 
-    ...initialState,
-    setCartOpen: (isOpen) => {
-        set({ isCartOpen: isOpen });
-    },
+                    get().calculateTotal();
+                },
 
-    setComprobante: (comprobante) => {
-        set({ comprobante });
-    },
+                updateQuantity: (id, quantity, variantId) => {
+                    const cart = get().cart;
+                    const productInCart = cart.find((cartItem) =>
+                        variantId
+                            ? cartItem._id === id && cartItem.variant?._id === variantId
+                            : cartItem._id === id && !cartItem.variant
+                    );
 
-    setSaleCompleted: (value: boolean) => set({ saleCompleted: value }),
-    setSaleId: (id: string | null) => set({ saleId: id }),
-    resetSale: () => set({
-        saleCompleted: false,
-        saleId: null,
-        cart: [],
-        total: 0,
-        dni: undefined,
-        comprobante: 'TICKET',
-    }),
+                    if (!productInCart) return;
+                    if (quantity > (productInCart.stock ?? 0)) return;
 
-    addToCart: (item) => {
-        const cart = get().cart
-        const productInCart = cart.find((cartItem) => cartItem._id === item._id)
+                    set({
+                        cart: cart.map((cartItem) =>
+                            cartItem === productInCart
+                                ? { ...cartItem, cantidad: quantity, subtotal: quantity * cartItem.precio }
+                                : cartItem
+                        ),
+                    });
+                },
 
-        if (productInCart) {
+                removeFromCart: (id, variantId) => {
+                    const cart = get().cart;
+                    set({
+                        cart: cart.filter((cartItem) =>
+                            variantId
+                                ? !(cartItem._id === id && cartItem.variant?._id === variantId)
+                                : !(cartItem._id === id && !cartItem.variant)
+                        ),
+                    });
+                    get().calculateTotal();
+                },
 
-            // Evitar sobrepasar el stock
+                calculateTotal: () => {
+                    const total = get().cart.reduce((acc, item) => acc + item.subtotal, 0);
+                    set({ total });
+                },
 
-            if (productInCart.cantidad >= (productInCart.stock || 0)) {
-                return;
-            }
-
-            set({
-                cart: cart.map((cartItem) =>
-                    cartItem._id === item._id
-                        ? { ...cartItem, cantidad: cartItem.cantidad + 1, subtotal: (cartItem.cantidad + 1) * cartItem.precio }
-                        : cartItem
-                ),
-            })
-        } else {
-            set({
-                cart: [...cart, {
-                    _id: item._id,
-                    nombre: item.nombre,
-                    precio: item.precio ? item.precio : 0,
-                    cantidad: 1,
-                    subtotal: item.precio ? item.precio : 0,
-                    imagenes: item.imagenes || [],
-                    stock: item.stock ? item.stock : 0
-                }],
-            })
-        }
-        get().calculateTotal()
-    },
-
-
-    updateQuantity: (id, quantity) => {
-        const cart = get().cart
-        const productInCart = cart.find((cartItem) => cartItem._id === id)
-
-        if (productInCart) {
-            // Evitar sobrepasar el stock
-            if (quantity > (productInCart.stock || 0)) {
-                return;
-            }
-            set({
-                cart: cart.map((cartItem) =>
-                    cartItem._id === id
-                        ? { ...cartItem, cantidad: quantity, subtotal: quantity * cartItem.precio }
-                        : cartItem
-                ),
-            })
-        }
-    },
-
-    removeFromCart: (id) => {
-        const cart = get().cart
-        const productInCart = cart.find((cartItem) => cartItem._id === id)
-
-        if (productInCart) {
-            set({
-                cart: cart.filter((cartItem) => cartItem._id !== id),
-            })
-        }
-
-        get().calculateTotal()
-    },
-
-    calculateTotal: () => {
-        const total = get().cart.reduce((acc, item) => acc + item.subtotal, 0);
-        set({ total });
-    },
-
-    clearCart: () => {
-        set({ cart: [], total: 0 });
-    },
-    // TODO: Implementar la función para guardar el carrito en la base de datos
-
-    saveCart: async () => {
-        const cart = get().cart
-        await saveCartToDB(cart)
-    },
-
-    setDni: (dni) => {
-        set({ dni });
-    },
-    clearDni: () => {
-        set({ dni: undefined });
-    },
-    clearComprobante: () => {
-        set({ comprobante: "TICKET" });
-    },
-
-}),
-    {
-        name: 'cart-storage-ecomm', // unique store in localStorage
-    }
-)));
+                clearCart: () => set({ cart: [], total: 0 }),
+                saveCart: async () => {
+                    await saveCartToDB(get().cart);
+                },
+                setDni: (dni) => set({ dni }),
+                clearDni: () => set({ dni: undefined }),
+                clearComprobante: () => set({ comprobante: 'TICKET' }),
+            }),
+            { name: 'cart-storage-ecomm' }
+        )
+    )
+);
