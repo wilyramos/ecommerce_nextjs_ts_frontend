@@ -45,6 +45,7 @@ export default function AddProductToCart({ product, variant }: Props) {
         addToCart(product, activeVariant);
         toast.success("Producto añadido al carrito");
         setCartOpen(true);
+        console.log("Items en el carrito:", cart);
     };
 
     return (

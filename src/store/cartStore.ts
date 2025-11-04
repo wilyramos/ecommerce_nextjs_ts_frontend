@@ -67,6 +67,10 @@ export const useCartStore = create<Store>()(
                 addToCart: (item, variant) => {
                     const cart = get().cart;
 
+                    const alreadyInCart = cart.find((cartItem) => cartItem._id === item._id);
+                    if (alreadyInCart && variant && alreadyInCart.variant?._id !== variant._id) {
+                        return;
+                    }
                     const productInCart = cart.find((cartItem) =>
                         variant
                             ? cartItem._id === item._id && cartItem.variant?._id === variant._id

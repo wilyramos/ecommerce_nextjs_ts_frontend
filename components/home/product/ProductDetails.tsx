@@ -15,6 +15,10 @@ import {
     SelectTrigger,
     SelectValue
 } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { useMemo } from "react";
 
 type Props = {
     producto: ProductWithCategoryResponse;
@@ -24,9 +28,20 @@ export default function ProductDetails({ producto }: Props) {
     // Sin preselección
     const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
     const [selectedVariant, setSelectedVariant] = useState<TApiVariant | null>(null);
+    const router = useRouter();
+    const searchParams = useSearchParams();
 
     // Lista de atributos posibles
-    const allAttributes: Record<string, string[]> = {};
+    const allAttributes = useMemo(() => {
+        const attrs: Record<string, string[]> = {};
+        producto.variants?.forEach(v => {
+            Object.entries(v.atributos).forEach(([key, value]) => {
+                if (!attrs[key]) attrs[key] = [];
+                if (!attrs[key].includes(value)) attrs[key].push(value);
+            });
+        });
+        return attrs;
+    }, [producto.variants]);
     producto.variants?.forEach(v => {
         Object.entries(v.atributos).forEach(([key, value]) => {
             if (!allAttributes[key]) allAttributes[key] = [];
@@ -34,16 +49,40 @@ export default function ProductDetails({ producto }: Props) {
         });
     });
 
+    useEffect(() => {
+        const initialAttrs: Record<string, string> = {};
+
+        Object.keys(allAttributes).forEach(attr => {
+            const val = searchParams.get(attr);
+            if (val) initialAttrs[attr] = val;
+        });
+
+        setSelectedAttributes(initialAttrs);
+
+        const matched = producto.variants?.find(v =>
+            Object.keys(initialAttrs).every(k => initialAttrs[k] === v.atributos[k])
+        ) ?? null;
+
+        setSelectedVariant(matched);
+    }, [allAttributes, searchParams, producto.variants]);
+
+
     // Actualizar selección y variante
     const updateSelectedVariant = (attrKey: string, attrValue: string) => {
         const newAttributes = { ...selectedAttributes, [attrKey]: attrValue };
         setSelectedAttributes(newAttributes);
 
+        // Buscar variante coincidente
         const matchedVariant = producto.variants?.find(v =>
             Object.keys(v.atributos).every(k => newAttributes[k] === v.atributos[k])
         ) ?? null;
 
         setSelectedVariant(matchedVariant);
+        const params = new URLSearchParams(window.location.search);
+
+        Object.entries(newAttributes).forEach(([k, v]) => params.set(k, v));
+
+        router.replace(`?${params.toString()}`, { scroll: false });
     };
 
     // Valores disponibles según selección
@@ -135,11 +174,27 @@ export default function ProductDetails({ producto }: Props) {
                         </header>
 
                         {/* Selects de atributos */}
-                        {Object.keys(allAttributes).length > 0 && (
-                            <div className="flex flex-col gap-2">
-                                {Object.entries(allAttributes).map(([key]) => (
-                                    <section key={key} className="flex flex-col gap-1">
-                                        <label className="text-sm font-medium">{key}:</label>
+                        {Object.entries(allAttributes).map(([key]) => {
+                            const availableValues = getAvailableValues(key);
+
+                            return (
+                                <section key={key} className="flex flex-col gap-1">
+                                    <label className="text-sm font-medium">{key}:</label>
+
+                                    {availableValues.length <= 5 ? (
+                                        <div className="flex flex-wrap gap-2">
+                                            {availableValues.map(val => (
+                                                <Button
+                                                    key={val}
+                                                    variant={selectedAttributes[key] === val ? "default" : "outline"}
+                                                    size="sm"
+                                                    onClick={() => updateSelectedVariant(key, val)}
+                                                >
+                                                    {val}
+                                                </Button>
+                                            ))}
+                                        </div>
+                                    ) : (
                                         <Select
                                             value={selectedAttributes[key] || ""}
                                             onValueChange={(value) => updateSelectedVariant(key, value)}
@@ -148,17 +203,18 @@ export default function ProductDetails({ producto }: Props) {
                                                 <SelectValue placeholder={`-- Elige ${key} --`} />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                {getAvailableValues(key).map(val => (
+                                                {availableValues.map(val => (
                                                     <SelectItem key={val} value={val}>
                                                         {val}
                                                     </SelectItem>
                                                 ))}
                                             </SelectContent>
                                         </Select>
-                                    </section>
-                                ))}
-                            </div>
-                        )}
+                                    )}
+                                </section>
+                            );
+                        })}
+
 
                         {/* Nombre variante */}
                         {selectedVariant && (

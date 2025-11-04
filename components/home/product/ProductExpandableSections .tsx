@@ -23,7 +23,7 @@ export default function ProductExpandableSections({ producto }: Props) {
         >
             {producto.descripcion && (
                 <AccordionItem value="descripcion">
-                    <AccordionTrigger className="font-semibold text-gray-800 hover:cursor-pointer hover:text-black text-base">
+                    <AccordionTrigger className=" text-gray-800 hover:cursor-pointer hover:text-black text-base">
                         Descripción
                     </AccordionTrigger>
                     <AccordionContent className=" text-gray-700">
@@ -34,7 +34,7 @@ export default function ProductExpandableSections({ producto }: Props) {
 
             {producto.especificaciones?.length ? (
                 <AccordionItem value="especificaciones">
-                    <AccordionTrigger className="font-semibold text-gray-800 hover:cursor-pointer hover:text-black text-base">
+                    <AccordionTrigger className="text-gray-800 hover:cursor-pointer hover:text-black text-base">
                         Especificaciones
                     </AccordionTrigger>
                     <AccordionContent>

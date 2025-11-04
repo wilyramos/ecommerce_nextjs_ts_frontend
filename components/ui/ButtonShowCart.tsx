@@ -62,7 +62,10 @@ export default function ButtonShowCart() {
                         </p>
                     ) : (
                         carrito.map((item) => (
-                            <ItemCarrito key={item._id} item={item} />
+                            <ItemCarrito
+                                key={`${item._id}-${item.variant?._id ?? "no-variant"}`}
+                                item={item}
+                            />
                         ))
                     )}
                 </div>
