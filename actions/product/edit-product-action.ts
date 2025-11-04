@@ -4,6 +4,7 @@ import getToken from "@/src/auth/token"
 import { especificacionSchema, SuccessResponse, type TEspecificacion } from "@/src/schemas"
 // import { ErrorResponse } from "@/src/schemas" // TODO
 import { revalidatePath } from "next/cache"
+import type { TApiVariant } from "@/src/schemas"
 
 // New schema
 
@@ -52,10 +53,27 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
 
     // valoidar precio comparativo
     const precioCompString = formData.get('precioComparativo') as string;
-    const precioComparativo = 
-    precioCompString && precioCompString.trim() !== ''
-        ? Number(precioCompString)
-        : undefined;
+    const precioComparativo =
+        precioCompString && precioCompString.trim() !== ''
+            ? Number(precioCompString)
+            : undefined;
+
+    const rawVariants = formData.get('variants') ? JSON.parse(formData.get('variants') as string) : [];
+
+    const cleanedVariants = rawVariants.map((variant: TApiVariant) => {
+        // Filtrar atributos vacíos
+        const filteredAttributes: Record<string, string> = {};
+        Object.entries(variant.atributos).forEach(([key, value]) => {
+            if (value.trim() !== "") {
+                filteredAttributes[key] = value;
+            }
+        });
+
+        return {
+            ...variant,
+            atributos: filteredAttributes
+        };
+    });
 
     const productData = {
         nombre: formData.get("nombre"),
@@ -75,8 +93,10 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         brand: formData.get("brand") || undefined,
         especificaciones: especificaciones,
         diasEnvio: formData.get('diasEnvio') ? Number(formData.get('diasEnvio')) : undefined,
+        variants: cleanedVariants
     }
     console.log("productData", productData)
+    console.log("variants ", productData.variants)
 
     const product = updateProductSchema.safeParse(productData);
     if (!product.success) {

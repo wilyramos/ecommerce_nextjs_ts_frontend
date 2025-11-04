@@ -39,7 +39,7 @@ export default function CreateProductForm({ categorias, brands }: { categorias: 
 
     return (
         <form
-            className="flex flex-col gap-2 w-full max-w-4xl mx-auto mt-8"
+            className="flex flex-col gap-2 w-full max-w-7xl mx-auto mt-8"
             noValidate
             action={dispatch}
         >

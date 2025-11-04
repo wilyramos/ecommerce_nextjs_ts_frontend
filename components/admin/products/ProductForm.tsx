@@ -9,6 +9,7 @@ import type { TBrand } from "@/src/schemas/brands";
 import BrandCombobox from "./BrandCombobox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import ProductVariantsForm from "./ProductVariantsForm";
 
 export default function ProductForm({
     product,
@@ -19,6 +20,12 @@ export default function ProductForm({
     categorias: CategoryListResponse;
     brands: TBrand[];
 }) {
+
+
+    console.log('categorias y sus atributos:', categorias);
+    const selectedCategory = categorias.find((c) => c._id === product?.categoria?._id);
+    const categoryAttributes = selectedCategory?.attributes || [];
+    console.log('atributos de la categoría seleccionada:', categoryAttributes);
     return (
         <div className="text-xs grid grid-cols-1 sm:grid-cols-4 gap-4 p-4 space-y-1">
             <div className="col-span-1 sm:col-span-3">
@@ -136,6 +143,11 @@ export default function ProductForm({
 
                 {/* Especificaciones */}
                 <SpecificationsSection initial={product?.especificaciones} />
+
+                <ProductVariantsForm
+                    product={product}
+                    categoryAttributes={categoryAttributes}
+                />
             </div>
 
             {/* Switches */}

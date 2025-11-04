@@ -6,19 +6,19 @@ import { redirect } from 'next/navigation';
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
     const { user } = await verifySession();
-    if ( user.rol !== 'administrador' ) {
+    if (user.rol !== 'administrador') {
         redirect("/profile");
     }
 
     return (
         <>
-            <div className="flex md:flex-row h-screen">
+            <div className="flex min-h-screen">
                 <aside className="block">
                     <AdminSidebar user={user} />
                 </aside>
 
                 {/* Contenido principal */}
-                <main className="flex-1 overflow-y-auto p-1 md:p-4">
+                <main className="flex-1 overflow-y-auto p-1 md:p-4 ml-14 md:ml-44">
                     {children}
                 </main>
             </div>
