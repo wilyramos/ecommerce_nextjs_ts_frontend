@@ -78,6 +78,10 @@ export const resetPasswordSchema = z.object({
     path: ['password_confirmation'],
 });
 
+export const ForgotPasswordSchema = z.object({
+    email: z.string().email({ message: 'Email no válido' }),
+});
+
 // ---------- Edición y respuesta de usuarios ----------
 export const BaseUserSchema = z.object({
     nombre: z.string().optional(),

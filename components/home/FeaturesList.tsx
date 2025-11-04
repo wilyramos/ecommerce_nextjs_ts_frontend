@@ -10,7 +10,7 @@ type Feature = {
 };
 
 const features: Feature[] = [
-  { title: "Ofertas exclusivas", icon: FaTags, url: "/ofertas" }, // <-- añadí url aquí
+  { title: "Ofertas exclusivas", icon: FaTags },
   { title: "Envíos rápidos", icon: FaTruck },
   { title: "Pago 100% seguro", icon: FaLock },
   { title: "Cambios y devoluciones", icon: FaExchangeAlt, url: "/cambios-y-devoluciones" }, // <-- añadí url aquí

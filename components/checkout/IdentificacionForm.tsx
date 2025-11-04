@@ -8,6 +8,7 @@ import type { CheckoutRegister, User } from '@/src/schemas'
 import ErrorMessage from '../ui/ErrorMessage'
 import { useActionState } from 'react'
 import { EditUserAction } from '@/actions/user/edit-user-action'
+import { Button } from '../ui/button'
 
 type Props = {
     user: User
@@ -181,13 +182,13 @@ export default function IdentificacionForm({ user }: Props) {
             )}
 
             {/* Botón */}
-            <button
+            <Button
                 type="submit"
                 disabled={isPending}
-                className="w-full py-3 text-white bg-gray-900 rounded-lg disabled:opacity-50 cursor-pointer"
+                className="w-full disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
                 {isPending ? 'Guardando...' : 'Continuar'}
-            </button>
+            </Button>
         </form>
     )
 }

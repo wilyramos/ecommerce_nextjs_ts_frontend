@@ -140,11 +140,11 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                     <div>
                         {/* Fila 1: Marca */}
                         <div className="h-5"> {/* Altura fija para la marca */}
-                           <span className="text-xs font-medium text-gray-400 uppercase">
-                               {product.brand?.nombre}
-                           </span>
+                            <span className="text-xs font-medium text-gray-400 uppercase">
+                                {product.brand?.nombre}
+                            </span>
                         </div>
-                       
+
                         {/* Fila 2, 3, 4: Nombre del Producto */}
                         <h3
                             className=" text-sm text-gray-900 font-medium leading-snug line-clamp-3 h-[4.5rem] md:h-[5rem]" // 2. Altura fija
@@ -160,13 +160,13 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                         <div className="ml-auto flex flex-col items-end leading-tight">
                             {stock > 0 ? (
                                 <>
-                                    <div className="">
-                                        {product.precioComparativo && (
-                                        <span className="text-gray-400 text-xs line-through px-2">
-                                            s/ {product.precioComparativo.toFixed(2)}
-                                        </span>
-                                    )}
-                                        <span className="text-black text-base ">
+                                    <div>
+                                        {(product.precioComparativo ?? 0) > 0 && (
+                                            <span className="text-gray-400 text-xs line-through px-2">
+                                                s/ {product.precioComparativo!.toFixed(2)}
+                                            </span>
+                                        )}
+                                        <span className="text-black text-base">
                                             s/ {precio.toFixed(2)}
                                         </span>
                                     </div>

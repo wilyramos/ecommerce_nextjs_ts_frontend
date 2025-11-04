@@ -8,13 +8,13 @@ import ShopNowButton from './ShopNowButton';
 import { Truck, ShieldCheck } from "lucide-react";
 import ProductExpandableSections from './ProductExpandableSections ';
 import { getDeliveryRange } from '@/lib/utils';
-import { 
+import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
-    SelectValue    
- } from '@/components/ui/select';
+    SelectValue
+} from '@/components/ui/select';
 
 type Props = {
     producto: ProductWithCategoryResponse;
@@ -54,9 +54,7 @@ export default function ProductDetails({ producto }: Props) {
 
     const precio = selectedVariant?.precio ?? producto.precio ?? 0;
     const precioComparativo = selectedVariant?.precioComparativo ?? producto.precioComparativo ?? null;
-    const descuento = precioComparativo
-        ? Math.round(((precioComparativo - precio) / precioComparativo) * 100)
-        : null;
+
 
     const stock = selectedVariant?.stock ?? producto.stock ?? 0;
 
@@ -65,7 +63,13 @@ export default function ProductDetails({ producto }: Props) {
             <article className="mx-auto grid gap-4 md:grid-cols-2 items-start max-w-7xl pb-4">
                 {/* Imágenes */}
                 <div>
-                    <ImagenesProductoCarousel images={selectedVariant?.imagenes ?? producto.imagenes ?? []} />
+                    <ImagenesProductoCarousel
+                        images={
+                            selectedVariant?.imagenes && selectedVariant.imagenes.length > 0
+                                ? selectedVariant.imagenes
+                                : producto.imagenes ?? []
+                        }
+                    />
                 </div>
 
                 {/* Detalles */}
@@ -93,23 +97,32 @@ export default function ProductDetails({ producto }: Props) {
                             {/* Precio y descuento */}
                             <div className="space-y-1">
                                 <div className="flex items-center gap-2">
+                                    {/* Precio actual */}
                                     <p className="text-3xl flex items-baseline">
                                         <span className="text-sm mr-1">S/</span>
                                         <span>{precio.toFixed(2)}</span>
                                     </p>
-                                    {descuento && (
-                                        <span className="bg-black text-white text-xs font-bold px-2 rounded-l-xl">
-                                            -{descuento}%
-                                        </span>
-                                    )}
+
+                                    {precioComparativo !== null &&
+                                        precioComparativo > 0 &&
+                                        precioComparativo > precio && (
+                                            <span className="bg-black text-white text-xs font-bold px-2 rounded-l-xl">
+                                                -{Math.round(((precioComparativo - precio) / precioComparativo) * 100)}%
+                                            </span>
+                                        )}
                                 </div>
-                                {precioComparativo && precioComparativo > precio && (
-                                    <div className="text-gray-400 text-sm">
-                                        <span className="line-through">S/ {precioComparativo.toFixed(2)}</span>{" "}
-                                        <span>Antes</span>
-                                    </div>
-                                )}
+
+                                {/* Mostrar precio comparativo solo si es válido y mayor que el precio */}
+                                {precioComparativo !== null &&
+                                    precioComparativo > 0 &&
+                                    precioComparativo > precio && (
+                                        <div className="text-gray-400 text-sm">
+                                            <span className="line-through">S/ {precioComparativo.toFixed(2)}</span>{" "}
+                                            <span>Antes</span>
+                                        </div>
+                                    )}
                             </div>
+
 
                             {/* Stock */}
                             <span
@@ -148,8 +161,8 @@ export default function ProductDetails({ producto }: Props) {
 
                         {/* Nombre completo de la variante */}
                         {selectedVariant && (
-                            <p className="text-sm mt-2 font-medium">
-                                Variante: {selectedVariant.nombre} - S/ {selectedVariant.precio ?? producto.precio}
+                            <p className="text-xs mt-2 font-medium text-gray-600">
+                                Variante Seleccionada: {selectedVariant.nombre} - S/ {selectedVariant.precio ?? producto.precio}
                             </p>
                         )}
 

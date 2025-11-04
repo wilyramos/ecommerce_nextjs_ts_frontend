@@ -75,7 +75,7 @@ export default function CategoriasDestacadas({
                                         </div>
                                     )}
                                 </div>
-                                <p className="font-medium text-sm sm:text-base text-gray-600 mt-2">
+                                <p className="font-medium text-xs sm:text-base text-gray-600 mt-2">
                                     {categoria.nombre}
                                 </p>
                             </Link>
