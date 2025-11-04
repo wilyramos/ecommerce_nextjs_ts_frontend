@@ -53,7 +53,7 @@ export default function AddProductToCart({ product, variant }: Props) {
                 type="button"
                 className="w-full px-6 py-2 rounded bg-black text-white font-medium flex items-center justify-center gap-2 transition-transform duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={handleClick}
-                disabled={!selectedVariant || stock <= 0}
+                disabled={product.variants?.length ? !selectedVariant || stock <= 0 : stock <= 0}
             >
                 <FaShoppingCart size={18} className="shrink-0" />
                 <span className="inline">Añadir al carrito</span>
