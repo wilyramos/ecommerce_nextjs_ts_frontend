@@ -25,17 +25,13 @@ interface Props {
 }
 
 export default function ProductVariantsForm({ product, categoryAttributes }: Props) {
-    // ✅ Estado tipado correctamente
     const [variants, setVariants] = useState<TApiVariant[]>(product?.variants ?? []);
 
     const addVariant = (event: React.FormEvent) => {
-        // Prevent default behavior
         event.preventDefault();
-        // ✅ Construimos atributos con tipo seguro
+
         const attributes: Record<string, string> = {};
-        categoryAttributes.forEach((attr) => {
-            attributes[attr.name] = "";
-        });
+        categoryAttributes.forEach((attr) => (attributes[attr.name] = ""));
 
         const newVariant: TApiVariant = {
             _id: crypto.randomUUID(),
@@ -51,31 +47,26 @@ export default function ProductVariantsForm({ product, categoryAttributes }: Pro
         setVariants((prev) => [...prev, newVariant]);
     };
 
-    // ✅ Updating variante completo sin any
     const updateVariant = <K extends keyof TApiVariant>(
         index: number,
         key: K,
         value: TApiVariant[K]
     ) => {
         setVariants((prev) => {
-            const newArr = [...prev];
-            newArr[index] = { ...newArr[index], [key]: value };
-            return newArr;
+            const next = [...prev];
+            next[index] = { ...next[index], [key]: value };
+            return next;
         });
     };
 
-    // ✅ Updating atributo tipado
     const updateAttribute = (index: number, attrName: string, value: string) => {
         setVariants((prev) => {
-            const newArr = [...prev];
-            newArr[index] = {
-                ...newArr[index],
-                atributos: {
-                    ...newArr[index].atributos,
-                    [attrName]: value,
-                },
+            const next = [...prev];
+            next[index] = {
+                ...next[index],
+                atributos: { ...next[index].atributos, [attrName]: value },
             };
-            return newArr;
+            return next;
         });
     };
 
@@ -91,123 +82,119 @@ export default function ProductVariantsForm({ product, categoryAttributes }: Pro
     }
 
     return (
-        <div className="space-y-3 mt-6">
+        <div className="space-y-4 mt-6">
             <div className="flex justify-between items-center">
                 <h3 className="text-base font-semibold">Variantes</h3>
             </div>
 
-            <div className="rounded-xl border bg-card shadow-sm overflow-x-auto">
-                <table className="w-full text-sm min-w-[950px]">
-                    <thead className="bg-muted/30">
-                        <tr>
+            <div className="space-y-4">
+                {variants.map((variant, index) => (
+                    <div
+                        key={variant._id}
+                        className="border rounded-xl p-4 bg-card shadow-sm space-y-4"
+                    >
+                        {/* Primera fila: atributos */}
+                        <div className="flex flex-wrap gap-4">
                             {categoryAttributes.map((attr) => (
-                                <th key={attr.name} className="p-2 text-left font-medium">
-                                    {attr.name}
-                                </th>
-                            ))}
-
-                            <th className="p-2 font-medium text-left">Precio</th>
-                            <th className="p-2 font-medium text-left">Precio Comp.</th>
-                            <th className="p-2 font-medium text-left">Stock</th>
-                            <th className="p-2 font-medium text-left">SKU</th>
-                            <th className="p-2 font-medium text-left">Barcode</th>
-                            <th className="p-2" />
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {variants.map((variant, index) => (
-                            <tr key={variant._id} className="border-t hover:bg-muted/20 transition">
-                                {categoryAttributes.map((attr) => (
-                                    <td key={attr.name} className="p-2">
-                                        <Select
-                                            value={variant.atributos[attr.name] ?? ""}
-                                            onValueChange={(val) => updateAttribute(index, attr.name, val)}
-                                        >
-                                            <SelectTrigger className="h-9">
-                                                <SelectValue placeholder={`Elegir`} />
-                                            </SelectTrigger>
-
-                                            <SelectContent>
-                                                {attr.values.map((val) => (
-                                                    <SelectItem key={val} value={val}>
-                                                        {val}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                    </td>
-                                ))}
-
-                                <td className="p-2">
-                                    <Input
-                                        className="h-9"
-                                        type="number"
-                                        value={variant.precio}
-                                        onChange={(e) =>
-                                            updateVariant(index, "precio", Number(e.target.value))
-                                        }
-                                    />
-                                </td>
-
-                                <td className="p-2">
-                                    <Input
-                                        className="h-9"
-                                        type="number"
-                                        value={variant.precioComparativo}
-                                        onChange={(e) =>
-                                            updateVariant(index, "precioComparativo", Number(e.target.value))
-                                        }
-                                    />
-                                </td>
-
-                                <td className="p-2">
-                                    <Input
-                                        className="h-9"
-                                        type="number"
-                                        value={variant.stock}
-                                        onChange={(e) =>
-                                            updateVariant(index, "stock", Number(e.target.value))
-                                        }
-                                    />
-                                </td>
-
-                                <td className="p-2">
-                                    <Input
-                                        className="h-9"
-                                        value={variant.sku}
-                                        onChange={(e) => updateVariant(index, "sku", e.target.value)}
-                                    />
-                                </td>
-
-                                <td className="p-2">
-                                    <Input
-                                        className="h-9"
-                                        value={variant.barcode}
-                                        onChange={(e) => updateVariant(index, "barcode", e.target.value)}
-                                    />
-                                </td>
-
-                                <td className="p-2 text-right">
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={() => removeVariant(index)}
+                                <div key={attr.name} className="space-y-1">
+                                    <label className="text-xs font-medium">{attr.name}</label>
+                                    <Select
+                                        value={variant.atributos[attr.name] ?? ""}
+                                        onValueChange={(val) => updateAttribute(index, attr.name, val)}
                                     >
-                                        <Trash2 className="h-4 w-4 text-red-500" />
-                                    </Button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                                        <SelectTrigger className="h-9">
+                                            <SelectValue placeholder="Elegir" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {attr.values.map((val) => (
+                                                <SelectItem key={val} value={val}>
+                                                    {val}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Segunda fila: campos generales */}
+                        {/* Segunda fila: campos generales con labels */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 items-start">
+
+                            <div className="space-y-1">
+                                <label className="text-xs font-medium">Precio</label>
+                                <Input
+                                    className="h-9"
+                                    type="number"
+                                    value={variant.precio}
+                                    onChange={(e) => updateVariant(index, "precio", Number(e.target.value))}
+                                    placeholder="0.00"
+                                />
+                            </div>
+
+                            <div className="space-y-1">
+                                <label className="text-xs font-medium">Precio Comparativo</label>
+                                <Input
+                                    className="h-9"
+                                    type="number"
+                                    value={variant.precioComparativo}
+                                    onChange={(e) =>
+                                        updateVariant(index, "precioComparativo", Number(e.target.value))
+                                    }
+                                    placeholder="0.00"
+                                />
+                            </div>
+
+                            <div className="space-y-1">
+                                <label className="text-xs font-medium">Stock</label>
+                                <Input
+                                    className="h-9"
+                                    type="number"
+                                    value={variant.stock}
+                                    onChange={(e) => updateVariant(index, "stock", Number(e.target.value))}
+                                    placeholder="0"
+                                />
+                            </div>
+
+                            <div className="space-y-1">
+                                <label className="text-xs font-medium">SKU</label>
+                                <Input
+                                    className="h-9"
+                                    value={variant.sku}
+                                    onChange={(e) => updateVariant(index, "sku", e.target.value)}
+                                    placeholder="SKU"
+                                />
+                            </div>
+
+                            <div className="space-y-1">
+                                <label className="text-xs font-medium">Barcode</label>
+                                <Input
+                                    className="h-9"
+                                    value={variant.barcode}
+                                    onChange={(e) => updateVariant(index, "barcode", e.target.value)}
+                                    placeholder="Código de barras"
+                                />
+                            </div>
+
+                            <div className="flex justify-end items-end pb-0.5">
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => removeVariant(index)}
+                                    className="text-red-500"
+                                >
+                                    <Trash2 className="h-5 w-5" />
+                                </Button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                ))}
             </div>
 
-            <input
-                type="hidden"
-                name="variants"
-                value={JSON.stringify(variants)}
-            />
+            {/* Hidden input para el form */}
+            <input type="hidden" name="variants" value={JSON.stringify(variants)} />
 
             <Button onClick={addVariant} size="sm" className="gap-1">
                 <Plus className="w-4 h-4" /> Añadir variante
