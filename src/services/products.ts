@@ -197,7 +197,7 @@ export const getNewProducts = async () => {
 
     const req = await fetch(url, {
         method: 'GET',
-        next: { revalidate: 180 } // Revalida cada 3 minutos //TODO: Cambiar a 10 minutos
+        next: { revalidate: 86400 } // Revalida cada dia
     });
 
     if (!req.ok) {
@@ -212,11 +212,11 @@ export const getNewProducts = async () => {
 };
 
 export const getDestacadosProducts = async () => {
-    const url = `${process.env.API_URL}/products/destacados/all?limit=6`;
+    const url = `${process.env.API_URL}/products/destacados/all?limit=5`;
 
     const req = await fetch(url, {
         method: 'GET',
-        next: { revalidate: 180 }
+        next: { revalidate: 86400 }
     });
 
     if (!req.ok) {
