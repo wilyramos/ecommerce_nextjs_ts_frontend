@@ -33,7 +33,7 @@ export default function OrdenarPor({ pathname }: { pathname?: string }) {
     };
 
     return (
-        <div className="relative max-w-md text-sm">
+        <div className="relative w-54 px-2">
             <Listbox value={selected.value} onChange={handleChange}>
                 <div className="relative">
                     <Listbox.Button className="w-full cursor-pointer  bg-white rounded-md shadow-xs px-2 py-2">

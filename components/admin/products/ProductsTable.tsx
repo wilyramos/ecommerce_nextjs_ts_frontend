@@ -161,7 +161,7 @@ export default function ProductsTable({ products }: { products: ProductsAPIRespo
                                             <div className="w-9 h-9 bg-muted rounded" />
                                         )}
                                         <div className="flex flex-col">
-                                            <span className="truncate max-w-[120px]">{product.nombre}</span>
+                                            <span className="truncate md:max-w-[300px]">{product.nombre}</span>
                                             <span className="md:hidden text-muted-foreground text-[11px]">
                                                 S/ {product.precio?.toFixed(2)} · Stock: {product.stock}
                                             </span>

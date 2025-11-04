@@ -84,10 +84,10 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
     };
 
     return (
-        <aside className="w-full p-4 border border-gray-100 shadow-xs rounded-md bg-white">
-            <div className="flex justify-between items-center mb-3">
-                <h2 className="text-lg flex items-center gap-2">
-                    <LuListFilter className="text-gray-600" />
+        <aside className="w-full  shadow-xs rounded-md bg-white">
+            <div className="flex justify-between items-center mb-3 bg-black rounded-t-lg">
+                <h2 className="text-lg flex items-center gap-2 px-4 py-2 font-semibold text-white">
+                    <LuListFilter className="" />
                     Filtros
                 </h2>
                 <Button
@@ -100,7 +100,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                 </Button>
             </div>
 
-            <Accordion type="multiple" className="w-full text-sm">
+            <Accordion type="multiple" className="w-full text-sm px-4">
                 {/* Marcas */}
                 {brands.length > 0 && (
                     <AccordionItem value="brands">
