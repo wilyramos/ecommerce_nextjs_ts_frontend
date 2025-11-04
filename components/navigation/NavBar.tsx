@@ -53,7 +53,7 @@ export default function NavBar() {
                             aria-label="Cuenta"
                         >
                             <AiOutlineUser className="h-6 w-6" />
-                            <span className="hidden lg:inline text-sm font-medium">Cuenta</span>
+                            <span className="hidden lg:inline text-sm font-medium hover:text-gray-800">Cuenta</span>
                         </Link>
                         <ButtonShowCart />
                     </div>

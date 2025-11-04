@@ -68,8 +68,16 @@ export default function ProductDetails({ producto }: Props) {
 
 
     // Actualizar selección y variante
-    const updateSelectedVariant = (attrKey: string, attrValue: string) => {
-        const newAttributes = { ...selectedAttributes, [attrKey]: attrValue };
+    const updateSelectedVariant = (attrKey: string, attrValue: string | null) => {
+        const newAttributes = { ...selectedAttributes };
+
+        // ✅ Si clic en el mismo valor o attrValue es null → deseleccionar
+        if (attrValue === null || newAttributes[attrKey] === attrValue) {
+            delete newAttributes[attrKey];
+        } else {
+            newAttributes[attrKey] = attrValue;
+        }
+
         setSelectedAttributes(newAttributes);
 
         // Buscar variante coincidente
@@ -78,9 +86,13 @@ export default function ProductDetails({ producto }: Props) {
         ) ?? null;
 
         setSelectedVariant(matchedVariant);
-        const params = new URLSearchParams(window.location.search);
 
-        Object.entries(newAttributes).forEach(([k, v]) => params.set(k, v));
+        // ✅ Actualizar URL
+        const params = new URLSearchParams();
+
+        Object.entries(newAttributes).forEach(([k, v]) => {
+            if (v) params.set(k, v);
+        });
 
         router.replace(`?${params.toString()}`, { scroll: false });
     };
