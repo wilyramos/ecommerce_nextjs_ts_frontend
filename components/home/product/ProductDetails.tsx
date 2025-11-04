@@ -16,7 +16,7 @@ import {
     SelectValue
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useMemo } from "react";
 
@@ -28,7 +28,6 @@ export default function ProductDetails({ producto }: Props) {
     // Sin preselección
     const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
     const [selectedVariant, setSelectedVariant] = useState<TApiVariant | null>(null);
-    const router = useRouter();
     const searchParams = useSearchParams();
 
     // Lista de atributos posibles
@@ -94,7 +93,8 @@ export default function ProductDetails({ producto }: Props) {
             if (v) params.set(k, v);
         });
 
-        router.replace(`?${params.toString()}`, { scroll: false });
+        const newUrl = `${window.location.pathname}?${params.toString()}`;
+        window.history.replaceState(null, "", newUrl);
     };
 
     // Valores disponibles según selección
@@ -115,6 +115,17 @@ export default function ProductDetails({ producto }: Props) {
 
     // Validar si todas las variantes han sido seleccionadas
     const allAttributesSelected = Object.keys(allAttributes).every(key => selectedAttributes[key]);
+
+    const isOptionOutOfStock = (attrKey: string, attrValue: string) => {
+        const variant = producto.variants?.find(v =>
+            v.atributos[attrKey] === attrValue &&
+            Object.entries(selectedAttributes).every(
+                ([key, value]) => key === attrKey || v.atributos[key] === value
+            )
+        );
+        return variant?.stock === 0;
+    };
+
 
     return (
         <>
@@ -195,16 +206,23 @@ export default function ProductDetails({ producto }: Props) {
 
                                     {availableValues.length <= 5 ? (
                                         <div className="flex flex-wrap gap-2">
-                                            {availableValues.map(val => (
-                                                <Button
-                                                    key={val}
-                                                    variant={selectedAttributes[key] === val ? "default" : "outline"}
-                                                    size="sm"
-                                                    onClick={() => updateSelectedVariant(key, val)}
-                                                >
-                                                    {val}
-                                                </Button>
-                                            ))}
+                                            {availableValues.map(val => {
+                                                const outOfStock = isOptionOutOfStock(key, val);
+
+                                                return (
+                                                    <Button
+                                                        key={val}
+                                                        variant={selectedAttributes[key] === val ? "default" : "outline"}
+                                                        size="sm"
+                                                        onClick={() => !outOfStock && updateSelectedVariant(key, val)}
+                                                        disabled={outOfStock}
+                                                        className={outOfStock ? "opacity-40 cursor-not-allowed" : ""}
+                                                    >
+                                                        {val} {outOfStock}
+                                                    </Button>
+                                                );
+                                            })}
+
                                         </div>
                                     ) : (
                                         <Select
@@ -214,14 +232,24 @@ export default function ProductDetails({ producto }: Props) {
                                             <SelectTrigger>
                                                 <SelectValue placeholder={`-- Elige ${key} --`} />
                                             </SelectTrigger>
+
                                             <SelectContent>
-                                                {availableValues.map(val => (
-                                                    <SelectItem key={val} value={val}>
-                                                        {val}
-                                                    </SelectItem>
-                                                ))}
+                                                {availableValues.map(val => {
+                                                    const outOfStock = isOptionOutOfStock(key, val);
+                                                    return (
+                                                        <SelectItem
+                                                            key={val}
+                                                            value={val}
+                                                            disabled={outOfStock}
+                                                            className={outOfStock ? "opacity-40 cursor-not-allowed" : ""}
+                                                        >
+                                                            {val} {outOfStock}
+                                                        </SelectItem>
+                                                    );
+                                                })}
                                             </SelectContent>
                                         </Select>
+
                                     )}
                                 </section>
                             );
