@@ -231,6 +231,7 @@ export const productBaseSchema = z.object({
         }, { message: 'No se permiten claves duplicadas en las especificaciones' }),
     brand: z.string().optional(),
     variants: z.array(variantSchema).optional(),
+    isFrontPage: z.boolean().optional().default(false),
 });
 
 // ---------- Create & Update ----------

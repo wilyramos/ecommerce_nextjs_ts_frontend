@@ -228,6 +228,21 @@ export const getDestacadosProducts = async () => {
     return products;
 };
 
+export const getFrontPageProducts = async () => {
+    const url = `${process.env.API_URL}/products/frontpage/all`;
+    const req = await fetch(url, {
+        method: 'GET',
+        next: { revalidate: 86400 }
+    });
+
+    if (!req.ok) {
+        return null;
+    }
+
+    const json = await req.json();
+    const products = productsAPIResponse.parse(json);
+    return products;
+};
 
 export const getProductsRelated = async (slug: string) => {
     const url = `${process.env.API_URL}/products/${slug}/related`;

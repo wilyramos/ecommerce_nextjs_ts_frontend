@@ -1,4 +1,3 @@
-// File: components/store/ClientCategorias.tsx
 "use client";
 
 import {
@@ -14,7 +13,7 @@ import { RiMenu2Line } from "react-icons/ri";
 import Link from "next/link";
 import { useState } from "react";
 import type { CategoryListResponse, CategoryResponse } from "@/src/schemas";
-
+import Logo from "../ui/Logo";
 
 export default function ClientCategorias({ categories }: { categories: CategoryResponse[] }) {
     const [open, setOpen] = useState(false);
@@ -37,56 +36,55 @@ export default function ClientCategorias({ categories }: { categories: CategoryR
 
     const handleToggle = () => {
         setOpen(!open);
-    }
-
+    };
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-                <button className="hover:text-indigo-600 transition flex items-center gap-1 cursor-pointer ">
-                    <RiMenu2Line size={20} />
+                <button className="flex items-center gap-2 text-gray-700 hover:text-black transition-colors font-medium">
+                    <RiMenu2Line size={22} />
                     Categorías
                 </button>
             </SheetTrigger>
 
             <SheetContent
                 side="left"
-                className="w-[320px] px-4 py-5 bg-white shadow-xl border-r border-gray-200"
+                className="w-[340px] px-5 py-6 bg-white shadow-xl border-r border-gray-200 rounded-r-2xl"
             >
                 {/* Encabezado */}
-                <div className="pb-4 border-b border-gray-200 mb-2">
+                <div className="pb-4 border-b border-gray-200 mb-4">
                     <SheetHeader>
-                        <SheetTitle className="text-lg font-medium text-gray-600">
-                            Explora por{" "}
-                            <span className="text-black uppercase font-bold">categorías</span>
+                        <SheetTitle className="text-lg font-semibold  bg-amber-400 p-2 flex flex-col gap-2">
+                            <div className="items-center text-center">
+                                <Logo />
+                            </div>
+                            <span className=" uppercase font-bold text-end justify-end">categorías</span>
                         </SheetTitle>
                     </SheetHeader>
                 </div>
 
                 {/* Lista de categorías */}
-                <ScrollArea className="h-[calc(100vh-120px)] pr-2">
-                    <div className="space-y-5">
+                <ScrollArea className="h-[calc(100vh-140px)] pr-2">
+                    <div className="space-y-4">
                         {rootCategories.map((cat) => {
                             const subcategories = grouped[cat._id] || [];
                             return (
                                 <div key={cat._id}>
                                     <details className="group">
-                                        <summary className="cursor-pointer list-none flex items-center justify-between text-base font-semibold px-2 py-2 rounded-lg transition-colors duration-200 hover:text-indigo-600 hover:bg-indigo-50">
-                                            <span className="flex items-center gap-2">
-                                                <span className="text-black font-medium">{cat.nombre}</span>
-                                            </span>
+                                        <summary className="cursor-pointer list-none flex items-center justify-between px-3 py-2 rounded-lg font-medium text-gray-800 transition-all duration-200 hover:bg-gray-100 hover:text-black">
+                                            <span>{cat.nombre}</span>
                                             <PiCaretRightBold
-                                                size={16}
-                                                className="text-gray-400 transition-transform group-open:rotate-90 group-hover:text-indigo-600"
+                                                size={18}
+                                                className="text-gray-400 transition-transform group-open:rotate-90 group-hover:text-gray-600"
                                             />
                                         </summary>
 
-                                        <ul className="pl-4 mt-2 space-y-1">
+                                        <ul className="pl-5 mt-2 space-y-1">
                                             {subcategories.map((sub) => (
                                                 <li key={sub._id}>
                                                     <Link
                                                         href={`/categoria/${sub.slug}`}
-                                                        className="block px-2 py-1 text-gray-600 rounded-lg hover:bg-indigo-50 hover:text-indigo-600 transition-colors duration-200"
+                                                        className="block px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-black transition-all duration-200"
                                                         onClick={handleToggle}
                                                     >
                                                         {sub.nombre}

@@ -11,11 +11,15 @@ export default function GridCategoriasDestacadas({
 
     return (
         <section className="container mx-auto px-4 max-w-7xl">
-            <header className="mb-6">
-            <h2 className="text-xl font-medium tracking-tight text-gray-800 mb-6">
-                    Novedades de Gophone
-                </h2>
-            </header>
+            <header className="text-center md:text-left">
+                    <h2 className="text-xl md:text-2xl font-semibold text-gray-500">
+                        Categorías{" "}
+                        <span className="text-white bg-gray-950 px-2">
+                            Destacadas
+                        </span>
+                    </h2>
+                    
+                </header>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                 {/* Secundarias */}

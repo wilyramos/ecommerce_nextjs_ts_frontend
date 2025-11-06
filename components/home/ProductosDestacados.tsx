@@ -8,7 +8,7 @@ export default async function ProductosDestacados() {
     if (!productos.length) return null;
 
     return (
-        <section className="mx-auto py-8 px-4 bg-white">
+        <section className="mx-auto py-8 px-4">
             <div className="max-w-7xl mx-auto space-y-6">
                 {/* Texto superior */}
                 <header className="text-center md:text-left">
@@ -32,7 +32,7 @@ export default async function ProductosDestacados() {
                         md:grid-cols-3
                         lg:grid-cols-4
                         xl:grid-cols-5
-                        gap-4
+                        gap-2
                     "
                 >
                     {productos.slice(0, 10).map((product) => (

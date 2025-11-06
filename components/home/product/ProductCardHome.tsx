@@ -26,7 +26,6 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                         alt={product.nombre}
                         fill
                         className="object-contain transition-opacity duration-500 ease-in-out group-hover:opacity-0"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                         quality={95}
                     />
                 )}
@@ -53,7 +52,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
             </div>
 
             {/* Contenedor de información con altura fija */}
-            <div className="flex flex-col justify-between flex-1 px-2 min-h-[160px]">
+            <div className="flex flex-col justify-between flex-1 px-2 min-h-[120px]">
                 <div className="flex flex-col gap-1">
                     {brand && (
                         <span className="text-xs uppercase tracking-wide text-gray-500">

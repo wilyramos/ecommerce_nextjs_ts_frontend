@@ -27,9 +27,12 @@ export default function CategoriasDestacadas({
 
     return (
         <section className="w-full max-w-7xl mx-auto px-4 py-5 bg-white rounded-md my-2 relative">
-            <h2 className="text-xl font-medium tracking-tight text-gray-800 mb-6">
-                Categorías
-            </h2>
+            <header className="text-center md:text-left">
+                <h2 className="text-xl md:text-2xl font-semibold text-gray-500">
+                    Categorías{" "}
+                  
+                </h2>
+            </header>
 
             {/* Contenedor principal */}
             <div className="relative">
@@ -75,7 +78,9 @@ export default function CategoriasDestacadas({
                                         </div>
                                     )}
                                 </div>
-                                <p className="font-medium text-xs sm:text-base text-gray-600 mt-2">
+                                {/* tener espaciado entre las letras */}
+                                <p className="font-medium text-xs sm:text-base text-gray-600 mt-2 tracking-wide group-hover/item:text-primary transition
+                                ">
                                     {categoria.nombre}
                                 </p>
                             </Link>

@@ -71,6 +71,10 @@ export default function HomePage() {
                 <CarruselPrincipal />
             </section>
 
+            <section>
+                <ProductosDestacados />
+            </section>
+
             <section className="my-5">
                 <NovedadesCategorias />
             </section>
@@ -81,11 +85,7 @@ export default function HomePage() {
 
             <section className="bg-white">
                 <CategoriasDestacadasWrapper/>
-            </section>
-
-            <section>
-                <ProductosDestacados />
-            </section>
+            </section>            
 
             <section className="my-5">
                 <BrandsList />
