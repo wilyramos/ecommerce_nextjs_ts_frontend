@@ -133,33 +133,62 @@ export default async function OrderProfilePage({ params }: { params: Params }) {
             </div>
 
             {/* Productos */}
+            {/* Productos */}
             <div className="bg-white border rounded-xl p-5 shadow-sm">
                 <h2 className="text-base font-semibold text-gray-900 mb-4">Productos comprados</h2>
                 <ul className="divide-y divide-gray-200">
-                    {order.items.map((item, i) => (
-                        <li key={i} className="flex items-center justify-between py-4">
-                            <div className="flex items-center gap-4">
-                                <div className="rounded-md overflow-hidden bg-gray-100 border">
-                                    <Image
-                                        src={item.productId?.imagenes?.[0] || "/logob.svg"}
-                                        alt={item.productId?.nombre || "Producto sin imagen"}
-                                        width={40}
-                                        height={40}
-                                        className="w-10 h-10 object-cover"
-                                    />
+                    {order.items.map((item, i) => {
+                        const variant = item.variantAttributes || {};
+                        const variantText = Object.entries(variant)
+                            .map(([key, value]) => `${key}: ${value}`)
+                            .join(" • ");
+
+                        const imageSrc =
+                            item.imagen ||
+                            item.imagen
+
+                        const nombreProducto =
+                            item.nombre ||
+                            item.nombre ||
+                            "Producto sin nombre";
+
+                        return (
+                            <li key={i} className="flex items-center justify-between py-4">
+                                <div className="flex items-center gap-4">
+                                    <div className="rounded-md overflow-hidden bg-gray-100 border">
+                                        {imageSrc ? (
+                                            <Image
+                                                src={imageSrc}
+                                                alt={nombreProducto}
+                                                width={60}
+                                                height={60}
+                                                className="w-14 h-14 object-cover"
+                                            />
+                                        ) : (
+                                            <div className="w-14 h-14 bg-gray-200 flex items-center justify-center">
+                                                <span className="text-gray-500">Sin imagen</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <p className="text-sm font-medium text-gray-900">
+                                            {nombreProducto}
+                                        </p>
+
+                                        {variantText && (
+                                            <p className="text-xs text-gray-500">{variantText}</p>
+                                        )}
+
+                                        <p className="text-xs text-gray-500">Cantidad: {item.quantity}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="text-sm font-medium text-gray-900">
-                                        {item.productId?.nombre || "Producto sin nombre"}
-                                    </p>
-                                    <p className="text-xs text-gray-500">x{item.quantity}</p>
+
+                                <div className="text-sm font-semibold text-gray-800">
+                                    S/ {item.price.toFixed(2)}
                                 </div>
-                            </div>
-                            <div className="text-sm font-semibold text-gray-800">
-                                S/ {item.price.toFixed(2)}
-                            </div>
-                        </li>
-                    ))}
+                            </li>
+                        );
+                    })}
                 </ul>
             </div>
 

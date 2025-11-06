@@ -70,7 +70,6 @@ export default function ProductDetails({ producto }: Props) {
     const updateSelectedVariant = (attrKey: string, attrValue: string | null) => {
         const newAttributes = { ...selectedAttributes };
 
-        // ✅ Si clic en el mismo valor o attrValue es null → deseleccionar
         if (attrValue === null || newAttributes[attrKey] === attrValue) {
             delete newAttributes[attrKey];
         } else {
@@ -86,7 +85,6 @@ export default function ProductDetails({ producto }: Props) {
 
         setSelectedVariant(matchedVariant);
 
-        // ✅ Actualizar URL
         const params = new URLSearchParams();
 
         Object.entries(newAttributes).forEach(([k, v]) => {

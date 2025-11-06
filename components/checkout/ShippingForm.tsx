@@ -77,15 +77,27 @@ export default function ShippingForm() {
         console.log('Shipping data submitted:', data)
         setShipping(data)
 
+        // Totals
+        const subtotal = cart.reduce((t, i) => t + i.precio * i.cantidad, 0)
+        const shippingCost = 0
+        const totalPrice = subtotal + shippingCost;
+
+        // items for order
+
+
         const orderPayload: TCreateOrder = {
             items: cart.map(item => ({
                 productId: item._id,
                 quantity: item.cantidad,
                 price: item.precio,
+                variantId: item.variant?._id,
+                variantAttributes: item.variant?.atributos || {},
+                nombre: item.nombre,
+                imagen: item.imagenes?.[0],
             })),
-            subtotal: cart.reduce((t, i) => t + i.precio * i.cantidad, 0),
-            shippingCost: 0,
-            totalPrice: cart.reduce((t, i) => t + i.precio * i.cantidad, 0),
+            subtotal: subtotal,
+            shippingCost: shippingCost,
+            totalPrice: totalPrice,
             shippingAddress: data,
             currency: 'PEN',
             payment: { provider: 'IZIPAY', status: 'pending' },

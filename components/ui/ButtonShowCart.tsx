@@ -24,7 +24,7 @@ export default function ButtonShowCart() {
     const router = useRouter();
     const total = carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0).toFixed(2);
 
-
+    console.log({ carrito, total });
     const handleCheckout = () => {
         if (carrito.length === 0) {
             toast.error("Tu carrito está vacío.");

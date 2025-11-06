@@ -71,7 +71,9 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
                     <h2 className="text-sm font-semibold text-gray-700 mb-2">Pago</h2>
                     <p className="text-sm"><strong>Método:</strong> {order.payment.provider}</p>
                     <p className="text-sm"><strong>ID pago:</strong> {order.payment.transactionId || "—"}</p>
-                    <p className="text-sm"><strong>Estado:</strong> <PaymentStatusBadge status={order.payment.status} /></p>
+                    <p className="text-sm">
+                        <strong>Estado:</strong> <PaymentStatusBadge status={order.payment.status} />
+                    </p>
                 </div>
 
                 {/* Envío */}
@@ -101,26 +103,32 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
                     </thead>
                     <tbody>
                         {order.items.map((item, i) => {
-                            const product = item.productId;
+                            const imagenurl = item.imagen;
+                            const variantAttrs = item.variantAttributes || {};
                             return (
                                 <tr key={i} className="border-b">
-                                    <td className="py-2 px-3 flex items-center gap-2">
-                                        <Image
-                                            src={product?.imagenes?.[0] || "/logomini.svg"}
-                                            alt={product?.nombre || "Producto sin imagen"}
-                                            className="w-10 h-10 object-cover rounded"
-                                            width={40}
-                                            height={40}
-                                        />
-                                        <span>{product?.nombre || "Producto no disponible"}</span>
+                                    <td className="py-2 px-3 flex flex-col gap-1">
+                                        <div className="flex items-center gap-2">
+                                            <Image
+                                                src={imagenurl || "/logomini.svg"}
+                                                alt={item.nombre || "Producto sin imagen"}
+                                                className="w-10 h-10 object-cover rounded"
+                                                width={40}
+                                                height={40}
+                                            />
+                                            <span>{item.nombre}</span>
+                                        </div>
+                                        {Object.keys(variantAttrs).length > 0 && (
+                                            <div className="text-xs text-gray-500 ml-12">
+                                                {Object.entries(variantAttrs).map(([key, value]) => (
+                                                    <span key={key}>{key}: {value} </span>
+                                                ))}
+                                            </div>
+                                        )}
                                     </td>
                                     <td className="text-center py-2 px-3">{item.quantity}</td>
-                                    <td className="text-right py-2 px-3">
-                                        {currency} {item.price.toFixed(2)}
-                                    </td>
-                                    <td className="text-right py-2 px-3">
-                                        {currency} {(item.quantity * item.price).toFixed(2)}
-                                    </td>
+                                    <td className="text-right py-2 px-3">{currency} {item.price.toFixed(2)}</td>
+                                    <td className="text-right py-2 px-3">{currency} {(item.quantity * item.price).toFixed(2)}</td>
                                 </tr>
                             );
                         })}

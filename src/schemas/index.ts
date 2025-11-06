@@ -883,12 +883,16 @@ export const ShippingAddressSchema = z.object({
 
 // Item de la orden
 export const OrderItemSchema = z.object({
-    productId: z.string().min(1, "El producto es requerido"), // ID en string
+    productId: z.string().min(1, "El producto es requerido"),
+    variantId: z.string().optional(),
+    variantAttributes: z.record(z.string()).optional(),
     quantity: z.number().positive("La cantidad debe ser mayor a 0"),
     price: z.number().nonnegative("El precio no puede ser negativo"),
+    nombre: z.string().optional(),
+    imagen: z.string().url().optional(),
 });
 
-// item de la orden populada 
+// Product for order populated
 
 export const ProductForOrderSchema = z.object({
     _id: z.string(),
@@ -901,6 +905,7 @@ export const ProductForOrderSchema = z.object({
 
 export const OrderItemPopulatedSchema = z.object({
     productId: ProductForOrderSchema.nullable(),
+    variantId: z.string().optional(),
     quantity: z.number().positive("La cantidad debe ser mayor a 0"),
     price: z.number().nonnegative("El precio no puede ser negativo"),
 });
@@ -911,7 +916,7 @@ export const PaymentInfoSchema = z.object({
     method: z.string().optional(), // Ej: 'visa', 'yape'
     transactionId: z.string().optional(),
     status: PaymentStatus.default("pending"),
-    rawResponse: z.any().optional(), // respuesta completa del gateway
+    rawResponse: z.any().optional(),
 });
 
 // Historial de estados
@@ -948,7 +953,7 @@ export const OrderPopulatedSchema = z.object({
     _id: z.string(),
     orderNumber: z.string(),
     user: UserSchema, // ID del usuario
-    items: z.array(OrderItemPopulatedSchema),
+    items: z.array(OrderItemSchema),
     subtotal: z.number().nonnegative(),
     shippingCost: z.number().nonnegative(),
     totalPrice: z.number().nonnegative(),
@@ -984,7 +989,6 @@ export const UpdateOrderStatusSchema = z.object({
 /* ============================
    RESPONSES DEL BACKEND
 ============================ */
-
 
 // Respuesta de lista de órdenes (con paginación)
 export const OrdersListResponseSchema = z.object({

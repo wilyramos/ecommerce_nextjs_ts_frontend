@@ -56,7 +56,7 @@ export default function CheckoutIzipay({ order }: { order: TOrderPopulated }) {
                             phoneNumber: order.user.telefono || "",
                         },
                         shoppingCart: order.items.map((item) => ({
-                            productId: item.productId?._id || "",
+                            productId: item.productId || "",
                             quantity: item.quantity,
                         })),
                     },
