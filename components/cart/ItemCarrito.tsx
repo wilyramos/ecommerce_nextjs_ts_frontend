@@ -38,7 +38,9 @@ export default function ItemCarrito({ item }: { item: CartItem }) {
 
                 {/* Detalles */}
                 <div className="flex flex-col flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-gray-800 truncate">
+                    <p
+                        className="text-sm font-semibold text-gray-800 truncate max-w-[160px] sm:max-w-[200px]"
+                    >
                         {item.nombre}
                     </p>
 

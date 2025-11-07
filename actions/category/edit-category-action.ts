@@ -31,7 +31,7 @@ export async function EditCategory(id: string, prevState: ActionStateType, formD
         attributesData = result.data;
 
     } catch (error) {
-        // console.error("Error parsing attributes:", error);
+        console.error("Error parsing attributes:", error);
         return {
             errors: ["Error al procesar los atributos de la categoría."],
             success: ""

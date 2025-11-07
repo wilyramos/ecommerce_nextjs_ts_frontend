@@ -271,9 +271,12 @@ export default function ProductDetails({ producto }: Props) {
                             </div>
                             <div className="flex-1">
                                 <ShopNowButton
-                                    disabled={!allAttributesSelected || !selectedVariant || stock <= 0}
+                                    disabled={
+                                        ((producto.variants?.length ?? 0) > 0 && (!allAttributesSelected || !selectedVariant)) ||
+                                        stock <= 0
+                                    }
                                     product={producto}
-                                    variant={allAttributesSelected ? selectedVariant ?? undefined : undefined}
+                                    variant={selectedVariant ?? undefined}
                                 />
                             </div>
                         </section>
