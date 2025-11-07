@@ -1,14 +1,13 @@
 "use client";
 
-import { FaSearch, FaClock, FaArrowRight } from "react-icons/fa";
-import { useRouter } from "next/navigation";
+import { Search, History, Loader2, ArrowRight } from "lucide-react";
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { searchProductsIndex } from "@/actions/product/get-list-products-search";
 import type { TProductListSchema } from "@/src/schemas";
 import { getSearchHistory, saveSearchTerm } from "@/lib/utils";
 import ProductResultSearch from "./home/ProductResultSearch";
-import { usePathname } from "next/navigation";
 
 export default function ButtonSearchFormStore() {
     const router = useRouter();
@@ -18,8 +17,8 @@ export default function ButtonSearchFormStore() {
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const containerRef = useRef<HTMLFormElement>(null);
-
     const [history, setHistory] = useState<string[]>([]);
+
     useEffect(() => setHistory(getSearchHistory()), []);
 
     const saveHistory = (term: string) => {
@@ -35,10 +34,11 @@ export default function ButtonSearchFormStore() {
         setIsOpen(false);
     }, [pathname]);
 
-    // Búsqueda con debounce
+    // Búsqueda con debounce con al menos 3 caracteres
     const debouncedSearch = useDebouncedCallback(async (value: string) => {
         const trimmed = value.trim();
-        if (!trimmed) {
+
+        if (!trimmed || trimmed.length < 3) {
             setResults([]);
             setIsOpen(false);
             return;
@@ -67,7 +67,10 @@ export default function ButtonSearchFormStore() {
     // Cerrar al hacer clic fuera
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+            if (
+                containerRef.current &&
+                !containerRef.current.contains(event.target as Node)
+            ) {
                 setIsOpen(false);
             }
         };
@@ -76,78 +79,87 @@ export default function ButtonSearchFormStore() {
     }, []);
 
     return (
-        <form ref={containerRef} className="relative w-full" onSubmit={handleSubmit}>
-            {/* Input */}
-            <div className="flex items-center border border-gray-300 rounded-2xl">
+        <form ref={containerRef} className="relative" onSubmit={handleSubmit}>
+            {/* Input con tonos neutros */}
+            <div className="flex items-center bg-gray-100 dark:bg-neutral-800 rounded-lg transition-all duration-200 focus-within:ring-2 focus-within:ring-gray-400 focus-within:bg-white dark:focus-within:bg-neutral-900">
                 <input
                     type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Buscar productos, categorías..."
-                    className="flex-1 px-4 py-2 text-gray-700 placeholder-gray-400 outline-none"
+                    className="flex-1 px-4 py-2.5 bg-transparent text-sm text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 outline-none"
                     onFocus={() => setIsOpen(true)}
                 />
                 <button
                     type="submit"
-                    className="px-4 text-gray-600 hover:text-black"
+                    className="px-4 text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors"
                     aria-label="Buscar"
                 >
-                    <FaSearch size={16} />
+                    <Search size={18} />
                 </button>
             </div>
 
             {isOpen && (
-                <div className="absolute top-full left-0 z-50 w-full bg-white border border-gray-200 rounded-xl shadow-xl max-h-[70vh] overflow-y-auto">
+                <div className="absolute top-full left-0 z-50 w-full mt-2 bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 rounded-lg shadow-xl max-h-[70vh] overflow-y-auto overflow-hidden">
                     {/* Loading */}
-                    {loading && <div className="p-4 text-sm text-gray-500">Buscando...</div>}
+                    {loading && (
+                        <div className="p-4 text-sm text-gray-500 dark:text-gray-400 flex items-center justify-center gap-2">
+                            <Loader2 className="animate-spin" size={16} />
+                            Buscando...
+                        </div>
+                    )}
 
                     {/* Historial si no hay query */}
                     {!query && history.length > 0 && (
-                        <div className="p-3">
-                            <h4 className="text-xs text-gray-400 mb-2">Búsquedas recientes</h4>
-                            <ul className="space-y-2">
+                        <div className="p-4">
+                            <h4 className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-3">
+                                Búsquedas recientes
+                            </h4>
+                            <ul className="space-y-1">
                                 {history.map((h, i) => (
                                     <li
                                         key={i}
-                                        className="flex items-center gap-2 text-gray-600 hover:text-gray-800 cursor-pointer text-sm"
-                                        onClick={() => setQuery(h)}
+                                        className="flex items-center gap-3 p-2 -m-2 rounded-lg text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-neutral-800 cursor-pointer"
+                                        onMouseDown={() => setQuery(h)}
                                     >
-                                        <FaClock size={12} /> {h}
+                                        <History size={14} /> {h}
                                     </li>
                                 ))}
                             </ul>
                         </div>
                     )}
 
+                    {/* Resultados */}
                     {results.length > 0 ? (
                         <>
-                            {/* Ver todos (primera fila) */}
+                            {/* Ver todos */}
                             <div
-                                className="flex items-center justify-between px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100 cursor-pointer "
-                                onMouseDown={(e) => {
+                                className="flex items-center justify-between px-4 py-3 text-sm font-medium text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-neutral-800 cursor-pointer border-b border-gray-200 dark:border-neutral-800"
+                                onMouseDown={(e: React.MouseEvent) => {
                                     e.preventDefault();
-                                    saveHistory(query);
-                                    setIsOpen(false);
-                                    router.push(`/productos?query=${encodeURIComponent(query)}`);
+                                    handleSubmit(e as unknown as React.FormEvent<HTMLFormElement>);
                                 }}
                             >
-                                Ver todos los resultados para “{query}” <FaArrowRight size={12} />
+                                <span>Ver todos los resultados</span>
+                                <ArrowRight size={14} />
                             </div>
 
-                            {/* Resultados */}
-                            <ul className="">
+                            <ul className="p-2">
                                 {results.map((item) => (
-                                    <ProductResultSearch key={item._id} item={item} />
+                                    <ProductResultSearch
+                                        key={item._id}
+                                        item={item}
+                                    />
                                 ))}
                             </ul>
                         </>
                     ) : (
                         !loading &&
                         query && (
-                            <div className="p-4 text-sm text-gray-500">
-                                No encontramos resultados.
+                            <div className="p-6 text-sm text-center text-gray-500 dark:text-gray-400">
+                                No encontramos resultados para “{query}”.
                                 <span
-                                    className="block mt-1 text-gray-800 cursor-pointer hover:underline"
+                                    className="block mt-2 font-medium text-gray-900 dark:text-gray-100 cursor-pointer hover:underline"
                                     onMouseDown={(e) => {
                                         e.preventDefault();
                                         setIsOpen(false);

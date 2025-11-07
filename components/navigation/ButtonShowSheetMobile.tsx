@@ -9,9 +9,7 @@ import {
 } from "@/components/ui/sheet";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
-import { FaUser } from "react-icons/fa";
-import { PiCaretRightBold } from "react-icons/pi";
+import { Menu, X, User, ChevronRight } from "lucide-react"; // Usamos Lucide
 import ButtonSearchFormStore from "../ui/ButtonSearchFormStore";
 import { ScrollArea } from "../ui/scroll-area";
 import Logo from "../ui/Logo";
@@ -26,94 +24,75 @@ export default function ButtonShowSheetMobile({
     categories,
 }: ButtonShowSheetMobileProps) {
     const [open, setOpen] = useState(false);
-    const pathname = usePathname(); // Detect route changes
+    const pathname = usePathname();
 
+    // Cierra el menú al cambiar de ruta
     useEffect(() => {
         setOpen(false);
     }, [pathname]);
 
+    // ... (la lógica de grouped se mantiene igual)
     const grouped = categories.reduce((acc, category) => {
         const parentId =
             category.parent && typeof category.parent !== "string"
                 ? category.parent._id
                 : null;
-
         if (!acc[parentId ?? "root"]) {
             acc[parentId ?? "root"] = [];
         }
-
         acc[parentId ?? "root"].push(category);
         return acc;
     }, {} as Record<string, CategoryListResponse>);
-
     const rootCategories = grouped["root"] || [];
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-                <button className="p-2 text-gray-700 hover:text-indigo-600 transition">
+                <button className="p-2 text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
                     {open ? <X size={22} /> : <Menu size={22} />}
                 </button>
             </SheetTrigger>
 
+            {/* Layout de Flexbox para el contenido */}
             <SheetContent
                 side="left"
-                className="w-[320px] px-4 py-5 bg-white shadow-xl border-r border-gray-200"
+                className="p-0 bg-white dark:bg-neutral-900 shadow-xl border-r border-gray-200 dark:border-neutral-800 flex flex-col h-full"
             >
-                {/* Encabezado con Logo y subtítulo */}
-                <div className="pb-4 border-b border-gray-200 mb-2">
+                {/* 1. Cabecera Fija (Logo + Buscador) */}
+                <div className="p-4 border-b border-gray-200 dark:border-neutral-800 space-y-4">
                     <SheetHeader>
-                        <SheetTitle className="text-xl font-bold text-gray-900 flex flex-col gap-2">
+                        <SheetTitle className="text-xl font-bold text-gray-900 dark:text-white">
                             <Logo />
-                            <p className="text-start text-sm font-normal text-gray-500">
-                                Explora por{" "}
-                                <span className="text-black uppercase font-bold">
-                                    categorías
-                                </span>
-                            </p>
                         </SheetTitle>
                     </SheetHeader>
+                    <ButtonSearchFormStore />
                 </div>
 
-                {/* Scrollable Area */}
-                <ScrollArea className="h-[calc(100vh-120px)] pr-2">
-                    {/* Buscador */}
-                    <div className="py-4 border-b border-gray-200">
-                        <ButtonSearchFormStore />
-                    </div>
-
-                    {/* Login */}
-                    <div className="py-4 border-b border-gray-200">
-                        <Link
-                            href="/auth/registro"
-                            className="flex items-center gap-2 text-sm text-gray-950 hover:text-indigo-600 transition"
-                        >
-                            <FaUser className="h-4 w-4" />
-                            Iniciar sesión
-                        </Link>
-                    </div>
-
-                    {/* Categorías con acordeón */}
-                    <div className="pt-4 space-y-5">
+                {/* 2. Área de Scroll (Categorías) */}
+                <ScrollArea className="flex-1">
+                    <div className="p-4 space-y-4">
+                        <h3 className="text-sm font-medium text-gray-800 dark:text-gray-200 px-2">
+                            Explora por categorías
+                        </h3>
                         {rootCategories.map((parent) => {
                             const subcategories = grouped[parent._id] || [];
                             return (
                                 <div key={parent._id}>
                                     <details className="group">
-                                        <summary className="cursor-pointer list-none flex items-center justify-between text-base font-semibold px-2 py-2 rounded-lg transition-colors duration-200 hover:text-indigo-600 hover:bg-indigo-50">
+                                        <summary className="cursor-pointer list-none flex items-center justify-between text-base font-semibold px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-neutral-800">
                                             <span className="flex items-center gap-2">
-                                                <span className="text-gray-700 font-medium">
+                                                <span className="text-gray-800 dark:text-gray-200 font-medium">
                                                     {parent.nombre}
                                                 </span>
                                             </span>
-                                            <PiCaretRightBold className="h-4 w-4 text-gray-400 group-open:rotate-90 transition-transform" />
+                                            <ChevronRight className="h-4 w-4 text-gray-400 group-open:rotate-90 transition-transform" />
                                         </summary>
-                                        <div className="pl-6 space-y-2">
+                                        <div className="pl-8 pt-2 space-y-2">
                                             {subcategories.map((subcategory) => (
                                                 <Link
                                                     key={subcategory._id}
                                                     href={`/categoria/${subcategory.slug}`}
-                                                    className="block text-sm text-gray-600 hover:text-indigo-600 transition"
+                                                    className="block text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition"
                                                 >
                                                     {subcategory.nombre}
                                                 </Link>
@@ -125,6 +104,17 @@ export default function ButtonShowSheetMobile({
                         })}
                     </div>
                 </ScrollArea>
+
+                {/* 3. Pie de Página Fijo (Login) */}
+                <div className="p-4 border-t border-gray-200 dark:border-neutral-800">
+                    <Link
+                        href="/auth/registro"
+                        className="flex items-center gap-3 p-2 -m-2 rounded-lg text-base font-medium text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-neutral-800 transition-colors"
+                    >
+                        <User className="h-5 w-5" />
+                        Iniciar sesión
+                    </Link>
+                </div>
             </SheetContent>
         </Sheet>
     );

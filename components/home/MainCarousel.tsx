@@ -70,7 +70,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                         {/* Imagen del producto */}
                         <div className="relative w-full md:w-1/2 h-[300px] sm:h-[350px] md:h-full z-10 flex justify-center items-center mt-6 md:mt-0">
                             <Image
-                                src={product.imagenes?.[0] || "/placeholder.jpg"}
+                                src={product.imagenes?.[0] || "/logoapp.png"}
                                 alt={product.nombre}
                                 fill
                                 className="absolute inset-0 object-contain object-center transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0"

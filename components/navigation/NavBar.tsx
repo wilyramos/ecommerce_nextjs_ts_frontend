@@ -14,7 +14,7 @@ export default function NavBar() {
             <header className="sticky top-0 z-50 border-b border-gray-200 bg-white">
                 <div className="max-w-7xl mx-auto flex justify-between items-center px-4 md:px-6 py-1">
                     {/* Mobile: Menú lateral */}
-                    <div className="md:hidden flex items-center gap-2">
+                    <div className="md:hidden flex items-center ">
                         <ServerSheetMobile />
                     </div>
 
