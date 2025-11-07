@@ -41,6 +41,7 @@ export default function AddProductToCart({ product, variant }: Props) {
             toast.warning(`Solo hay ${stock} unidades disponibles`);
             return;
         }
+        console.log("Añadiendo al carrito:", product, activeVariant);
 
         addToCart(product, activeVariant);
         toast.success("Producto añadido al carrito");

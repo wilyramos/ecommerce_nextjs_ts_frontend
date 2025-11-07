@@ -79,7 +79,11 @@ export const useCartStore = create<Store>()(
 
                     const stock = variant?.stock ?? item.stock ?? 0;
                     const precio = variant?.precio ?? item.precio ?? 0;
-                    const imagenes = variant?.imagenes ?? item.imagenes ?? [];
+                    console.log("Añadiendo al carrito:", { item, variant });
+                    const imagenes =
+                        variant?.imagenes && variant.imagenes.length > 0
+                            ? variant.imagenes
+                            : item.imagenes ?? [];
 
                     if (productInCart) {
                         if (productInCart.cantidad >= stock) return;
@@ -114,7 +118,10 @@ export const useCartStore = create<Store>()(
                                             precio: variant.precio,
                                             atributos: variant.atributos ?? {},
                                             stock: variant.stock,
-                                            imagenes: variant.imagenes ?? [],
+                                            imagenes: 
+                                                variant.imagenes && variant.imagenes.length > 0
+                                                    ? variant.imagenes
+                                                    : undefined,
                                         }
                                         : undefined,
                                 },
