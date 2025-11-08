@@ -14,9 +14,6 @@ type ActionStateType = {
 
 export async function createProduct(prevState: ActionStateType, formData: FormData) {
 
-
-    console.log("formData entries:", Array.from(formData.entries()));
-
     // parsear los atributos del formulario
     const atributosString = formData.get('atributos') as string;
     let atributos: Record<string, string> = {};
@@ -75,10 +72,8 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         especificaciones: especificaciones,
         brand: formData.get('brand') || undefined,
         diasEnvio: formData.get('diasEnvio') ? Number(formData.get('diasEnvio')) : undefined,
+        isFrontPage: formData.get('isFrontPage') === 'true',
     }
-
-    console.log("productData", productData)
-
 
     // Validar con zod 
     const result = createProductSchema.safeParse(productData)

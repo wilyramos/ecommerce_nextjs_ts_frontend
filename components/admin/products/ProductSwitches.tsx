@@ -8,6 +8,7 @@ export default function ProductSwitches({ product }: { product?: ProductWithCate
     const [isActive, setIsActive] = useState(product?.isActive ?? true)
     const [esDestacado, setEsDestacado] = useState(product?.esDestacado ?? false)
     const [esNuevo, setEsNuevo] = useState(product?.esNuevo ?? false)
+    const [isFrontPage, setIsFrontPage] = useState(product?.isFrontPage ?? false)
 
     const switches = [
         {
@@ -28,6 +29,12 @@ export default function ProductSwitches({ product }: { product?: ProductWithCate
             state: esNuevo,
             setter: setEsNuevo,
         },
+        {
+            id: "isFrontPage",
+            label: "¿Aparece en la página principal?",
+            state: isFrontPage,
+            setter: setIsFrontPage,
+        }
     ]
 
     return (

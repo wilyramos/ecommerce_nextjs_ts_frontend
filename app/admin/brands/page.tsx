@@ -8,8 +8,6 @@ import AdminPageWrapper from "@/components/admin/AdminPageWrapper";
 export default async function BrandsPage() {
     const brands = await getBrands();
 
-    console.log("Brands:", brands);
-
     return (
         <AdminPageWrapper
             title="Marcas"
