@@ -19,7 +19,6 @@ const responsive = {
 
 export default function MainCarousel({ products }: { products: ProductResponse[] }) {
     return (
-        // CAMBIO: Fondo gris muy sutil, bordes redondeados y overflow hidden
         <div className="w-full mx-auto relative bg-white rounded-lg overflow-hidden">
             <Carousel
                 responsive={responsive}
@@ -39,11 +38,11 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                     <div
                         key={product._id}
                         // CAMBIO: Aumentada la altura en desktop para más "aire"
-                        className="relative w-full flex flex-col md:flex-row items-center overflow-hidden group h-auto md:h-[450px] px-6 sm:px-10 md:px-16 py-8 sm:py-10 md:py-16"
+                        className="relative w-full flex flex-col md:flex-row items-center overflow-hidden group h-auto md:h-[400px] px-6 sm:px-10 md:px-16 py-8 sm:py-10 md:py-16"
                     >
                         {/* Texto */}
                         {/* CAMBIO: Aumentado el gap y centrado el contenido */}
-                        <div className="z-10 w-full md:w-1/2 flex flex-col justify-center items-start gap-4">
+                        <div className="z-10 w-full md:w-1/2 flex flex-col justify-center items-start gap-2">
                             
                             {/* CAMBIO: "Kicker" o Sobretítulo para jerarquía */}
                             <span className="text-sm font-semibold uppercase tracking-wider text-blue-600">
@@ -51,20 +50,21 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                             </span>
 
                             {/* CAMBIO: Tipografía más pesada y color más sutil */}
-                            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight text-zinc-900">
+                            <h2 className="text-xl sm:text-2xl md:text-
+                            3xl font-extrabold leading-tight text-zinc-900">
                                 {product.nombre}
                             </h2>
 
                             {/* CAMBIO: Ajuste de espaciado y colores */}
                             <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-4 mt-2">
                                 {/* Precio principal */}
-                                <p className="text-2xl sm:text-3xl md:text-4xl font-semibold text-zinc-800">
+                                <p className="text-xl sm:text-3xl md:text-4xl font-semibold text-zinc-800">
                                     {product.precio ? `S/. ${product.precio.toFixed(2)}` : "-"}
                                 </p>
 
                                 {/* Precio comparativo */}
                                 {product.precioComparativo && product.precioComparativo > product.precio && (
-                                    <span className="text-lg sm:text-xl text-zinc-500 line-through">
+                                    <span className="text-md sm:text-xl text-zinc-500 line-through">
                                         S/. {product.precioComparativo.toFixed(2)}
                                     </span>
                                 )}
@@ -73,7 +73,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                             {/* CAMBIO: Botón sólido para un CTA más fuerte */}
                             <Link
                                 href={`/productos/${product.slug}`}
-                                className="mt-6 inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 text-white rounded-full hover:bg-zinc-700 transition-colors duration-300 text-sm font-bold"
+                                className="mt-6 inline-flex items-center gap-2 px-6 py-2 bg-zinc-900 text-white rounded-full hover:bg-zinc-700 transition-colors duration-300 text-sm font-bold"
                             >
                                 <ShoppingBag className="w-4 h-4" />
                                 Ver producto
@@ -81,7 +81,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                         </div>
 
                         {/* Imagen del producto */}
-                        <div className="relative w-full md:w-1/2 h-[300px] sm:h-[350px] md:h-full z-10 flex justify-center items-center mt-6 md:mt-0">
+                        <div className="relative w-full md:w-1/2 h-[200px] sm:h-[350px] md:h-full z-10 flex justify-center items-center mt-6 md:mt-0">
                             <Image
                                 src={product.imagenes?.[0] || "/logoapp.png"}
                                 alt={product.nombre}
