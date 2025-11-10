@@ -53,7 +53,7 @@ export default function AddProductToCart({ product, variant }: Props) {
         <div className="flex w-full">
             <button
                 type="button"
-                className="w-full px-6 py-2 rounded bg-black text-white font-medium flex items-center justify-center gap-2 transition-transform duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-6 py-2 rounded bg-black text-white font-medium flex items-center justify-center gap-2 transition-transform duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 onClick={handleClick}
                 disabled={product.variants?.length ? !selectedVariant || stock <= 0 : stock <= 0}
             >
