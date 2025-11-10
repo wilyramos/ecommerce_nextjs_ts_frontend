@@ -109,9 +109,11 @@ export default function ProductDetails({ producto }: Props) {
     // Datos visibles según variante seleccionada
     const precio = selectedVariant?.precio ?? producto.precio ?? 0;
     const precioComparativo = selectedVariant?.precioComparativo ?? producto.precioComparativo ?? null;
-    const stock = selectedVariant?.stock ?? producto.stock ?? 0;
-
-    // Validar si todas las variantes han sido seleccionadas
+    const stock =
+    Object.keys(selectedAttributes).length === 0 || !selectedVariant
+        ? producto.stock ?? 0
+        : selectedVariant.stock ?? 0;
+        
     const allAttributesSelected = Object.keys(allAttributes).every(key => selectedAttributes[key]);
 
     const isOptionOutOfStock = (attrKey: string, attrValue: string) => {

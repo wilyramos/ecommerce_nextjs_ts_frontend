@@ -70,21 +70,33 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                 {/* Imagen */}
                 <div className="relative w-full aspect-square bg-white overflow-hidden rounded-t">
                     {imagenes.length > 0 ? (
-                        <div className="relative w-full h-full bg-white">
-                            <Image
-                                src={imagenes[currentIndex]}
-                                alt={product.nombre}
-                                fill
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" // Tamaños optimizados
-                                priority={currentIndex === 0}
-                                className="object-cover transition-opacity duration-300"
-                                quality={70}
-                            />
+                        <div className="relative w-full h-full bg-white overflow-hidden">
+                            {/* Contenedor de todas las imágenes deslizables */}
+                            <div
+                                className="flex w-full h-full transition-transform duration-500 ease-in-out"
+                                style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+                            >
+                                {imagenes.map((img, idx) => (
+                                    <div key={idx} className="min-w-full h-full relative">
+                                        <Image
+                                            src={img}
+                                            alt={`${product.nombre} ${idx + 1}`}
+                                            fill
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                            className="object-cover"
+                                            quality={70}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
 
                             {imagenes.length > 1 && (
                                 <>
                                     <button
-                                        onClick={(e) => { e.preventDefault(); prevImage(); }}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            prevImage();
+                                        }}
                                         className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white p-1.5 rounded-full opacity-0 md:group-hover:opacity-100 transition"
                                         aria-label="Imagen anterior"
                                     >
@@ -92,7 +104,10 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                                     </button>
 
                                     <button
-                                        onClick={(e) => { e.preventDefault(); nextImage(); }}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            nextImage();
+                                        }}
                                         className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white p-1.5 rounded-full opacity-0 md:group-hover:opacity-100 transition"
                                         aria-label="Siguiente imagen"
                                     >
@@ -103,7 +118,8 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                                         {imagenes.map((_, idx) => (
                                             <span
                                                 key={idx}
-                                                className={`h-1 w-2 rounded-full transition-colors duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100 ${idx === currentIndex ? "bg-black" : "bg-black/40"}`}
+                                                className={`h-1.5 w-2 rounded-full transition-colors duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100 ${idx === currentIndex ? "bg-black" : "bg-black/40"
+                                                    }`}
                                             />
                                         ))}
                                     </div>
@@ -115,23 +131,8 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                             Sin imagen
                         </div>
                     )}
-
-                    {/* Labels */}
-                    {(product.esNuevo || product.precioComparativo) && (
-                        <div className="absolute top-4 left-2 right-2 flex justify-between items-start text-[13px] font-semibold">
-                            {product.esNuevo && (
-                                <span className="px-2 py-0.5 bg-black text-white rounded text-xs shadow-sm">
-                                    Nuevo
-                                </span>
-                            )}
-                            {product.precioComparativo && (
-                                <span className="px-2 py-0.5 bg-black text-white rounded text-xs shadow-sm ml-auto">
-                                    -{Math.round(((product.precioComparativo - precio) / product.precioComparativo) * 100)}%
-                                </span>
-                            )}
-                        </div>
-                    )}
                 </div>
+
 
                 {/* --- SECCIÓN DE INFO CORREGIDA --- */}
                 {/* 1. flex-1 y flex-col para que este div ocupe todo el espacio vertical disponible */}
