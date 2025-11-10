@@ -54,11 +54,11 @@ export default function ClientCategorias({ categories }: { categories: CategoryR
                 {/* Encabezado */}
                 <div className="pb-4 border-b border-gray-200 mb-4">
                     <SheetHeader>
-                        <SheetTitle className="text-lg font-semibold  bg-amber-400 p-2 flex flex-col gap-2">
+                        <SheetTitle className="text-lg font-semibold flex justify-between items-center">
                             <div className="items-center text-center">
                                 <Logo />
                             </div>
-                            <span className=" uppercase font-bold text-end justify-end">categorías</span>
+                            <span className="uppercase font-bold text-end justify-end">categorías</span>
                         </SheetTitle>
                     </SheetHeader>
                 </div>
@@ -83,7 +83,7 @@ export default function ClientCategorias({ categories }: { categories: CategoryR
                                             {subcategories.map((sub) => (
                                                 <li key={sub._id}>
                                                     <Link
-                                                        href={`/categoria/${sub.slug}`}
+                                                        href={`/productos?category=${sub.slug}`}
                                                         className="block px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-black transition-all duration-200"
                                                         onClick={handleToggle}
                                                     >

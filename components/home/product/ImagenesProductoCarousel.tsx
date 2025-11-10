@@ -34,7 +34,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
     return (
         <div className="w-full max-w-xl mx-auto">
             <div
-                className={`relative aspect-square overflow-hidden bg-white rounded-xl shadow-xs
+                className={`relative aspect-square overflow-hidden bg-white 
         ${zoom ? "cursor-zoom-out" : "cursor-zoom-in"}`}
                 onMouseMove={handleMouseMove}
                 onClick={toggleZoom}

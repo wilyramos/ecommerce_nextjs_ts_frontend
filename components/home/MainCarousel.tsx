@@ -51,7 +51,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
 
                             {/* CAMBIO: Tipografía más pesada y color más sutil */}
                             <h2 className="text-xl sm:text-2xl md:text-
-                            3xl font-extrabold leading-tight text-zinc-900">
+                            3xl font-medium leading-tight text-zinc-900">
                                 {product.nombre}
                             </h2>
 

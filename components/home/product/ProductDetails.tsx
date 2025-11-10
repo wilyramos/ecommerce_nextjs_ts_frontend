@@ -141,7 +141,7 @@ export default function ProductDetails({ producto }: Props) {
 
                 {/* Detalles */}
                 <div>
-                    <div className="space-y-6 bg-white rounded-xl p-4 shadow-sm">
+                    <div className="space-y-6 bg-white p-4 ">
                         {/* Título, SKU, Barcode */}
                         <header className="space-y-2">
                             <div className='flex justify-between uppercase'>
@@ -283,20 +283,20 @@ export default function ProductDetails({ producto }: Props) {
                     </div>
 
                     {/* Información adicional */}
-                    <div className="space-y-2 items-center mt-4">
-                        <div className="flex items-center gap-2 bg-white rounded-lg px-6 py-3 shadow-sm text-gray-600">
+                    <div className="space-y-1 items-center mt-4">
+                        <div className="flex items-center gap-2 bg-white px-6 py-3  text-gray-600">
                             <Truck className="w-5 h-5 text-gray-600" />
                             <span className="text-sm">
                                 Envío gratis en Cañete. Envíos a todo el Perú a través de <span className='bg-rose-600 text-white uppercase font-bold italic px-1'>Shalom</span>
                             </span>
                         </div>
 
-                        <div className="flex items-center gap-2 bg-white rounded-lg px-6 py-3 shadow-sm text-gray-600">
+                        <div className="flex items-center gap-2 bg-white px-6 py-3  text-gray-600">
                             <ShieldCheck className="w-5 h-5 text-gray-600" />
                             <span className="text-sm">Compra segura.</span>
                         </div>
 
-                        <div className="flex items-center gap-2 bg-white rounded-lg px-6 py-3 shadow-sm text-gray-600">
+                        <div className="flex items-center gap-2 bg-white px-6 py-3  text-gray-600">
                             <span className="text-sm">
                                 {producto.diasEnvio
                                     ? `Entrega estimada: ${getDeliveryRange(producto.diasEnvio)}`

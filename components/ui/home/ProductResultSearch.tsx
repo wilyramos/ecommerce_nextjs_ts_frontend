@@ -21,17 +21,17 @@ export default function ProductResultSearch({ item }: Props) {
                         alt={item.nombre}
                         width={56}
                         height={56}
-                        className="w-16 h-16 rounded-lg object-cover "
+                        className="w-12 h-12 object-cover "
                     />
                 ) : (
-                    <div className="w-16 h-16 bg-gray-200 rounded-lg" />
+                    <div className="w-12 h-12 bg-gray-200 rounded-lg" />
                 )}
 
                 <div className="flex flex-col flex-1 min-w-0">
-                    <span className="text-gray-800 text-sm font-medium truncate">
+                    <span className="text-gray-800 text-xs md:text-sm font-medium truncate">
                         {item.nombre}
                     </span>
-                    <span className="text-gray-800 font-bold text-sm">
+                    <span className="text-gray-800 text-sm">
                         S/. {item.precio?.toFixed(2)}
                     </span>
                 </div>

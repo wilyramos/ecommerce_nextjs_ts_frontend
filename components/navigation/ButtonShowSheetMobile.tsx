@@ -91,7 +91,7 @@ export default function ButtonShowSheetMobile({
                                             {subcategories.map((subcategory) => (
                                                 <Link
                                                     key={subcategory._id}
-                                                    href={`/categoria/${subcategory.slug}`}
+                                                    href={`/productos?category=${subcategory.slug}`}
                                                     className="block text-sm text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition"
                                                 >
                                                     {subcategory.nombre}
