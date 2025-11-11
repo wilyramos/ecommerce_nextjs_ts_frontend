@@ -163,11 +163,11 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                                 <>
                                     <div>
                                         {(product.precioComparativo ?? 0) > 0 && (
-                                            <span className="text-gray-400 text-xs line-through px-2">
+                                            <span className="text-gray-400 text-xs line-through px-2 font-light">
                                                 s/ {product.precioComparativo!.toFixed(2)}
                                             </span>
                                         )}
-                                        <span className="text-black text-base">
+                                        <span className="text-black text-sm">
                                             s/ {precio.toFixed(2)}
                                         </span>
                                     </div>

@@ -19,6 +19,7 @@ import { Button } from '@/components/ui/button';
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useMemo } from "react";
+import PaymentMethods from '../PaymentMethods';
 
 type Props = {
     producto: ProductWithCategoryResponse;
@@ -110,10 +111,10 @@ export default function ProductDetails({ producto }: Props) {
     const precio = selectedVariant?.precio ?? producto.precio ?? 0;
     const precioComparativo = selectedVariant?.precioComparativo ?? producto.precioComparativo ?? null;
     const stock =
-    Object.keys(selectedAttributes).length === 0 || !selectedVariant
-        ? producto.stock ?? 0
-        : selectedVariant.stock ?? 0;
-        
+        Object.keys(selectedAttributes).length === 0 || !selectedVariant
+            ? producto.stock ?? 0
+            : selectedVariant.stock ?? 0;
+
     const allAttributesSelected = Object.keys(allAttributes).every(key => selectedAttributes[key]);
 
     const isOptionOutOfStock = (attrKey: string, attrValue: string) => {
@@ -285,27 +286,55 @@ export default function ProductDetails({ producto }: Props) {
                     </div>
 
                     {/* Información adicional */}
-                    <div className="space-y-1 items-center mt-4">
-                        <div className="flex items-center gap-2 bg-white px-6 py-3  text-gray-600">
-                            <Truck className="w-5 h-5 text-gray-600" />
-                            <span className="text-sm">
-                                Envío gratis en Cañete. Envíos a todo el Perú a través de <span className='bg-rose-600 text-white uppercase font-bold italic px-1'>Shalom</span>
-                            </span>
+                    <div className="space-y-3 mt-6 text-gray-700 text-xs">
+                        {/* ENVÍO */}
+                        <div className="bg-white p-4 flex items-start gap-3">
+                            <Truck className="w-5 h-5 text-gray-500 mt-0.5" />
+                            <div>
+                                <p className="font-medium text-gray-800">Entrega</p>
+                                <p>Gratis en Cañete y a todo el Perú mediante <span className="font-semibold italic bg-red-600 text-white px-1">SHALOM</span>.</p>
+                                <p className="mt-1">
+                                    {producto.diasEnvio
+                                        ? `Estimado: ${getDeliveryRange(producto.diasEnvio)}`
+                                        : "Estimado: 1–3 días hábiles."}
+                                </p>
+                            </div>
                         </div>
 
-                        <div className="flex items-center gap-2 bg-white px-6 py-3  text-gray-600">
-                            <ShieldCheck className="w-5 h-5 text-gray-600" />
-                            <span className="text-sm">Compra segura.</span>
+
+                        {/* SEGURIDAD */}
+                        <div className="bg-white  p-4 flex items-start gap-3">
+                            <ShieldCheck className="w-5 h-5 text-gray-500 mt-0.5" />
+                            <div>
+                                <p className="font-medium text-gray-800">Compra segura</p>
+                                <p>Protección de tus datos y pagos.</p>
+                            </div>
                         </div>
 
-                        <div className="flex items-center gap-2 bg-white px-6 py-3  text-gray-600">
-                            <span className="text-sm">
-                                {producto.diasEnvio
-                                    ? `Entrega estimada: ${getDeliveryRange(producto.diasEnvio)}`
-                                    : "Entrega estimada: 1-3 días hábiles."}
-                            </span>
+                        {/* PAGO */}
+                        <div className="bg-white  p-4">
+                            <p className="font-medium text-gray-800 mb-2">Medios de pago</p>
+                            <div className="flex items-center flex-wrap gap-3">
+                                <PaymentMethods />
+                            </div>
+                        </div>
+
+                        {/* SOPORTE */}
+                        <div className="bg-white  p-4">
+                            <p>
+                                ¿Tienes dudas? Contáctanos por{" "}
+                                <a
+                                    href={`https://wa.me/51925054636?text=Hola%2C%20queria%20consultar%20sobre%20${encodeURIComponent(producto.nombre)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="underline"
+                                >
+                                    WhatsApp
+                                </a>.
+                            </p>
                         </div>
                     </div>
+
                 </div>
             </article>
 
@@ -314,7 +343,7 @@ export default function ProductDetails({ producto }: Props) {
             </section>
 
             {/* Botón fijo mobile */}
-            <div className="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 px-4 py-3 shadow z-50">
+            <div className="md:hidden fixed bottom-0 left-0 w-full bg-white -t -gray-200 px-4 py-3 shadow z-50">
                 <div className="max-w-7xl mx-auto flex items-center justify-center w-full">
                     <AddProductToCart
                         product={producto}

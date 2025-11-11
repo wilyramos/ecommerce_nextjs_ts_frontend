@@ -4,9 +4,6 @@ export default function PaymentMethods() {
     return (
         <section className="py-2">
             <div className="max-w-7xl mx-auto px-4">
-                <h3 className="text-gray-800 mb-2">
-                    Métodos de pago:
-                </h3>
                 <div className="flex items-center gap-8 text-5xl">
 
                     <div className="relative w-10 h-6 ">
