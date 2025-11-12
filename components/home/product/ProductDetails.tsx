@@ -123,7 +123,7 @@ export default function ProductDetails({ producto }: Props) {
 
     return (
         <>
-            <article className="mx-auto grid gap-4 md:grid-cols-2 items-start max-w-7xl pb-4">
+            <article className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-7xl mx-auto px-4 py-4">
                 {/* Imágenes */}
                 <div>
                     <ImagenesProductoCarousel
@@ -159,7 +159,6 @@ export default function ProductDetails({ producto }: Props) {
                             {/* Mostrar color solo si NO hay variantes */}
                             {!producto.variants?.length && colorAtributo && (
                                 <div className="flex items-center gap-2 text-xs text-gray-700">
-                                    <span>Color:</span>
                                     {Array.isArray(colorAtributo)
                                         ? colorAtributo.map((c: string) => (
                                             <ColorCircle key={c} color={c} />
@@ -221,7 +220,7 @@ export default function ProductDetails({ producto }: Props) {
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
                                                         title={val}
-                                                        className={`p-1 rounded-full border-2 transition cursor-pointer ${selected ? 'border-gray-800' : 'border-transparent'
+                                                        className={` px-2 py-1 rounded-md border-2 transition cursor-pointer ${selected ? 'border-gray-800' : 'border-gray-200 hover:border-gray-500'
                                                             } ${outOfStock ? 'opacity-40 cursor-not-allowed' : ''}`}
                                                     >
                                                         <ColorCircle color={val} />
@@ -358,7 +357,7 @@ export default function ProductDetails({ producto }: Props) {
                 <ProductExpandableSections producto={producto} />
             </section>
 
-            <div className="md:hidden fixed bottom-0 left-0 w-full bg-white -t -gray-200 px-4 py-3 shadow z-50">
+            <div className="md:hidden fixed bottom-0 left-0 w-full bg-white p-4 border-t shadow-md z-50">
                 <div className="max-w-7xl mx-auto flex items-center justify-center w-full">
                     <AddProductToCart
                         product={producto}

@@ -19,7 +19,7 @@ export default function ProductExpandableSections({ producto }: Props) {
     return (
         <Accordion
             type="multiple"
-            className="w-full px-4 py-2 bg-white"
+            className="w-full px-4 py-2"
         >
             {producto.descripcion && (
                 <AccordionItem value="descripcion">

@@ -32,7 +32,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
     const toggleZoom = () => setZoom((prev) => !prev);
 
     return (
-        <div className="w-full max-w-3xl mx-auto">
+        <div className="w-full max-w-sm md:max-w-3xl mx-auto">
             <div
                 className={`relative aspect-square overflow-hidden bg-white 
         ${zoom ? "cursor-zoom-out" : "cursor-zoom-in"}`}
