@@ -56,6 +56,11 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
         setStartX(null);
     };
 
+    // Discounted price calculation in percentage
+    const discountedPrice = product.precioComparativo
+        ? ((product.precioComparativo - precio) / product.precioComparativo) * 100
+        : 0;
+
     return (
         <div
             className="group relative flex flex-col transform transition-transform duration-500 hover:scale-[1.01] overflow-visible bg-white"
@@ -129,6 +134,21 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                     ) : (
                         <div className="flex items-center justify-center w-full h-full text-gray-400 text-sm">
                             Sin imagen
+                        </div>
+                    )}
+
+                    {(product.esNuevo || product.precioComparativo) && (
+                        <div className="absolute top-4 left-2 right-2 flex justify-between items-start text-[13px] font-semibold">
+                            {product.esNuevo && (
+                                <span className="px-2 py-0.5 bg-black text-white rounded text-xs shadow-sm">
+                                    Nuevo
+                                </span>
+                            )}
+                            {product.precioComparativo && (
+                                <span className="px-2 py-0.5 bg-black text-white rounded text-xs shadow-sm ml-auto">
+                                    -{Math.round(discountedPrice)}%
+                                </span>
+                            )}
                         </div>
                     )}
                 </div>
