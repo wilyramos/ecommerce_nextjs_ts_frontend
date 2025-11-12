@@ -148,7 +148,7 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
 
                         {/* Fila 2, 3, 4: Nombre del Producto */}
                         <h3
-                            className=" text-xs md:text-sm text-gray-900 font-medium leading-snug line-clamp-3 h-[4.5rem] md:h-[5rem]" // 2. Altura fija
+                            className=" text-xs md:text-sm text-gray-900 font-normal leading-snug line-clamp-3 h-[4.5rem] md:h-[5rem]" // 2. Altura fija
                         >
                             {product.nombre}
                         </h3>

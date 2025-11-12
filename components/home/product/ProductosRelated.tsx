@@ -18,6 +18,9 @@ export default async function ProductosRelated({ slug }: { slug: string }) {
             <h2 className="text-lg font-medium">
                 PRODUCTOS RELACIONADOS
             </h2>
+            <div>
+                <div className="border-b border-2 border-black w-14 md:w-20 mb-4"></div>
+            </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3 text-start">
                 {productsRelated.map((product) => (
                     <ProductCard key={product.slug} product={product} />

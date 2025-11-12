@@ -60,8 +60,8 @@ export function getDeliveryRange(days: number): string {
 
     const format = (date: Date) =>
         date.toLocaleDateString("es-ES", {
-            day: "numeric",
-            month: "short"
+            day: "2-digit",
+            month: "long",
         });
 
     return `${format(startDate)} – ${format(endDate)}`;

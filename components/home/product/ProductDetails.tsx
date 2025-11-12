@@ -19,6 +19,7 @@ import { Button } from '@/components/ui/button';
 import { useSearchParams } from 'next/navigation';
 import PaymentMethods from '../PaymentMethods';
 import ColorCircle from '@/components/ui/ColorCircle';
+import Link from 'next/link';
 
 type Props = {
     producto: ProductWithCategoryResponse;
@@ -40,6 +41,8 @@ export default function ProductDetails({ producto }: Props) {
         });
         return attrs;
     }, [producto.variants]);
+
+    console.log('El producto', producto);
 
     useEffect(() => {
         const initialAttrs: Record<string, string> = {};
@@ -123,7 +126,7 @@ export default function ProductDetails({ producto }: Props) {
 
     return (
         <>
-            <article className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-7xl mx-auto px-4 py-4">
+            <article className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-7xl mx-auto px-4 py-2">
                 {/* Imágenes */}
                 <div>
                     <ImagenesProductoCarousel
@@ -139,22 +142,36 @@ export default function ProductDetails({ producto }: Props) {
                 <div>
                     <div className="space-y-6 bg-white p-4">
                         <header className="space-y-2">
-                            <div className="flex justify-between uppercase">
-                                {(selectedVariant?.sku || producto.sku) && (
-                                    <span className="text-xs text-gray-400">
-                                        SKU: {selectedVariant?.sku ?? producto.sku}
-                                    </span>
+                            {(selectedVariant?.sku || producto.sku || selectedVariant?.barcode || producto.barcode) && (
+                                <div className="flex justify-between uppercase">
+                                    {selectedVariant?.sku?.trim() || producto.sku?.trim() ? (
+                                        <span className="text-xs text-gray-400 font-light">
+                                            SKU: {selectedVariant?.sku ?? producto.sku}
+                                        </span>
+                                    ) : null}
+
+                                    {selectedVariant?.barcode?.trim() || producto.barcode?.trim() ? (
+                                        <span className="text-xs text-gray-400 font-light">
+                                            Código: {selectedVariant?.barcode ?? producto.barcode}
+                                        </span>
+                                    ) : null}
+                                </div>
+                            )}
+
+                            <div>
+                                {producto.brand && (
+                                    <Link
+                                        href={`/productos?brand=${producto.brand.slug}`}
+                                        className="text-xs font-semibold text-gray-400 uppercase hover:text-gray-700"
+                                    >
+                                        {producto.brand.nombre}
+                                    </Link>
                                 )}
-                                {(selectedVariant?.barcode || producto.barcode) && (
-                                    <span className="text-xs text-gray-400">
-                                        Código: {selectedVariant?.barcode ?? producto.barcode}
-                                    </span>
-                                )}
+                                <h1 className="text-lg md:text-2xl font-medium leading-snug text-gray-800">
+                                    {producto.nombre}
+                                </h1>
                             </div>
 
-                            <h1 className="text-lg md:text-2xl font-semibold leading-tight break-words whitespace-normal">
-                                {producto.nombre}
-                            </h1>
 
                             {/* Mostrar color solo si NO hay variantes */}
                             {!producto.variants?.length && colorAtributo && (
@@ -312,52 +329,55 @@ export default function ProductDetails({ producto }: Props) {
                     </div>
 
                     {/* Información adicional */}
-                    <div className="space-y-3 mt-6 text-gray-700 text-xs">
-                        <div className="bg-white p-4 flex items-start gap-3">
-                            <Truck className="w-5 h-5 text-gray-500 mt-0.5" />
-                            <div>
-                                <p className="font-medium text-gray-800">Entrega</p>
+                    <div className="space-y-4 mt-2 text-gray-700 text-xs">
+                        {/* Envío */}
+                        <div className="bg-white p-4 flex items-start gap-4 ">
+                            <Truck className="w-6 h-6 text-gray-500 mt-0.5" />
+                            <div className="space-y-1">
+                                <p className="font-semibold text-gray-800">Entrega</p>
                                 <p>
-                                    Gratis en Cañete y a todo el Perú mediante{" "}
-                                    <span className="font-semibold italic bg-red-600 text-white px-1">SHALOM</span>.
+                                    Envíos <span className="font-semibold">gratuitos y contraentrega</span> en todo Cañete.
                                 </p>
-                                <p className="mt-1">
+                                <p>
+                                    Envíos al resto del Perú mediante{" "}
+                                    <span className="font-semibold italic bg-red-600 text-white px-1 rounded">SHALOM</span>.
+                                </p>
+                                <p className="mt-2 inline-block bg-gray-100 border border-gray-200 rounded-full px-3 py-1 text-gray-600">
                                     {producto.diasEnvio
-                                        ? `Estimado: ${getDeliveryRange(producto.diasEnvio)}`
-                                        : "Estimado: 1–3 días hábiles."}
+                                        ? `Recíbelo entre: ${getDeliveryRange(producto.diasEnvio)}`
+                                        : "Recíbelo en 1–3 días hábiles"}
                                 </p>
                             </div>
                         </div>
 
-                        <div className="bg-white  p-4 flex items-start gap-3">
-                            <ShieldCheck className="w-5 h-5 text-gray-500 mt-0.5" />
-                            <div>
-                                <p className="font-medium text-gray-800">Compra segura</p>
-                                <p>Protección de tus datos y pagos.</p>
+                        {/* Compra segura */}
+                        <div className="bg-white p-4 flex items-start gap-4">
+                            <ShieldCheck className="w-6 h-6 text-gray-500 mt-0.5" />
+                            <div className="space-y-1 w-full">
+                                <p className="font-semibold text-gray-800">Compra segura</p>
+                                <p className="text-gray-600">Aceptamos los siguientes medios de pago:</p>
+                                <div className="flex items-center flex-wrap gap-3 mt-2">
+                                    <PaymentMethods />
+                                </div>
                             </div>
                         </div>
 
-                        <div className="bg-white  p-4">
-                            <p className="font-medium text-gray-800 mb-2">Medios de pago</p>
-                            <div className="flex items-center flex-wrap gap-3">
-                                <PaymentMethods />
-                            </div>
-                        </div>
-
-                        <div className="bg-white  p-4">
+                        {/* Contacto */}
+                        <div className="bg-white p-4 text-center">
                             <p>
-                                ¿Tienes dudas? Contáctanos por{" "}
+                                ¿Tienes dudas?{" "}
                                 <a
-                                    href={`https://wa.me/51925054636?text=Hola%2C%20queria%20consultar%20sobre%20${encodeURIComponent(producto.nombre)}`}
+                                    href={`https://wa.me/51925054636?text=Hola%2C%20quería%20consultar%20sobre%20${encodeURIComponent(producto.nombre)}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="underline"
+                                    className="text-green-600 font-medium underline"
                                 >
-                                    WhatsApp
+                                    Contáctanos por WhatsApp
                                 </a>.
                             </p>
                         </div>
                     </div>
+
                 </div>
             </article>
 

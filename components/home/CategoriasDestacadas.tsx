@@ -29,10 +29,13 @@ export default function CategoriasDestacadas({
     return (
         <section className="w-full max-w-7xl mx-auto px-4 py-5 bg-white rounded-md my-2 relative">
             <header className="text-center md:text-left">
-                <h2 className="text-xl md:text-2xl font-semibold text-gray-500">
+                <h2 className="text-xl md:text-2xl font-semibold">
                     Categorías{" "}
-                    
+
                 </h2>
+                <div className="border-b border-2 border-black w-14 md:w-20 mx-auto md:mx-0 mb-4">
+
+                </div>
             </header>
 
             {/* Contenedor principal */}
