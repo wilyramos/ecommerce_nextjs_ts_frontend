@@ -4,7 +4,7 @@ import { useCheckoutStore } from '@/src/store/checkoutStore'
 import { useCartStore } from '@/src/store/cartStore'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 import { createOrderAction } from '@/actions/order/create-order-action'
 import { locations } from '@/src/data/locations'
 import ErrorMessage from '@/components/ui/ErrorMessage'
@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select"
 import { Button } from '../ui/button'
 import type { TCreateOrder } from '@/src/schemas'
+import { Input } from '../ui/input'
 
 type ShippingData = {
     departamento: string
@@ -33,57 +34,32 @@ export default function ShippingForm() {
     const { shipping, setShipping } = useCheckoutStore()
     const { cart } = useCartStore()
 
-    const { register, handleSubmit, watch, reset, setValue, trigger, formState: { errors } } = useForm<ShippingData>({
-        defaultValues: {
-            departamento: shipping?.departamento || '',
-            provincia: shipping?.provincia || '',
-            distrito: shipping?.distrito || '',
-            direccion: shipping?.direccion || '',
-            numero: shipping?.numero || '',
-            pisoDpto: shipping?.pisoDpto || '',
-            referencia: shipping?.referencia || '',
-        },
+    const { register, handleSubmit, watch, setValue, trigger, formState: { errors } } = useForm<ShippingData>({
+        defaultValues: shipping || {},
     })
 
     const selectedDepartamento = watch('departamento')
     const selectedProvincia = watch('provincia')
-    const [provincias, setProvincias] = useState<string[]>([])
-    const [distritos, setDistritos] = useState<string[]>([])
 
-    useEffect(() => {
-        console.log('Shipping data loaded:', shipping)
-        if (shipping) reset(shipping)
-    }, [shipping, reset])
+    // Derivar provincias y distritos automáticamente
+    const provincias = useMemo(
+        () => (selectedDepartamento ? Object.keys(locations[selectedDepartamento] || {}) : []),
+        [selectedDepartamento]
+    )
 
-    // Actualizar provincias al cambiar departamento
-    useEffect(() => {
-        console.log('Departamento changed:', selectedDepartamento)
-        const dept = locations.find(d => d.departamento === selectedDepartamento)
-        setProvincias(dept ? dept.provincias.map(p => p.nombre) : [])
-        setDistritos([])
-        setValue('provincia', '')
-        setValue('distrito', '')
-    }, [selectedDepartamento, setValue])
-
-    // Actualizar distritos al cambiar provincia
-    useEffect(() => {
-        const dept = locations.find(d => d.departamento === selectedDepartamento)
-        const prov = dept?.provincias.find(p => p.nombre === selectedProvincia)
-        setDistritos(prov ? prov.distritos : [])
-        setValue('distrito', '')
-    }, [selectedProvincia, selectedDepartamento, setValue])
+    const distritos = useMemo(
+        () => (selectedDepartamento && selectedProvincia
+            ? locations[selectedDepartamento]?.[selectedProvincia] || []
+            : []),
+        [selectedDepartamento, selectedProvincia]
+    )
 
     const onSubmit = async (data: ShippingData) => {
-        console.log('Shipping data submitted:', data)
         setShipping(data)
 
-        // Totals
         const subtotal = cart.reduce((t, i) => t + i.precio * i.cantidad, 0)
         const shippingCost = 0
-        const totalPrice = subtotal + shippingCost;
-
-        // items for order
-
+        const totalPrice = subtotal + shippingCost
 
         const orderPayload: TCreateOrder = {
             items: cart.map(item => ({
@@ -95,9 +71,9 @@ export default function ShippingForm() {
                 nombre: item.nombre,
                 imagen: item.imagenes?.[0],
             })),
-            subtotal: subtotal,
-            shippingCost: shippingCost,
-            totalPrice: totalPrice,
+            subtotal,
+            shippingCost,
+            totalPrice,
             shippingAddress: data,
             currency: 'PEN',
             payment: { provider: 'IZIPAY', status: 'pending' },
@@ -117,26 +93,22 @@ export default function ShippingForm() {
                 <div>
                     <label className="text-xs font-bold">Departamento <span className="text-red-500">*</span></label>
                     <Select
+                        value={selectedDepartamento || ""}
                         onValueChange={(val) => {
                             setValue('departamento', val)
+                            setValue('provincia', '')
+                            setValue('distrito', '')
                             trigger('departamento')
                         }}
                     >
-                        <SelectTrigger className="w-full">
-                            <SelectValue placeholder="--Seleccione--" />
-                        </SelectTrigger>
+                        <SelectTrigger><SelectValue placeholder="--Seleccione--" /></SelectTrigger>
                         <SelectContent>
-                            {locations.map(d => (
-                                <SelectItem key={d.departamento} value={d.departamento}>
-                                    {d.departamento}
-                                </SelectItem>
+                            {Object.keys(locations).map(dep => (
+                                <SelectItem key={dep} value={dep}>{dep}</SelectItem>
                             ))}
                         </SelectContent>
                     </Select>
-                    <input
-                        type="hidden"
-                        {...register('departamento', { required: 'El departamento es obligatorio' })}
-                    />
+                    <input type="hidden" {...register('departamento', { required: 'El departamento es obligatorio' })} />
                     {errors.departamento && <ErrorMessage>{errors.departamento.message}</ErrorMessage>}
                 </div>
 
@@ -144,25 +116,22 @@ export default function ShippingForm() {
                 <div>
                     <label className="text-xs font-bold">Provincia <span className="text-red-500">*</span></label>
                     <Select
+                        value={selectedProvincia || ""}
                         onValueChange={(val) => {
                             setValue('provincia', val)
+                            setValue('distrito', '')
                             trigger('provincia')
                         }}
                         disabled={!provincias.length}
                     >
-                        <SelectTrigger className="w-full">
-                            <SelectValue placeholder="--Seleccione--" />
-                        </SelectTrigger>
+                        <SelectTrigger><SelectValue placeholder="--Seleccione--" /></SelectTrigger>
                         <SelectContent>
                             {provincias.map(p => (
                                 <SelectItem key={p} value={p}>{p}</SelectItem>
                             ))}
                         </SelectContent>
                     </Select>
-                    <input
-                        type="hidden"
-                        {...register('provincia', { required: 'La provincia es obligatoria' })}
-                    />
+                    <input type="hidden" {...register('provincia', { required: 'La provincia es obligatoria' })} />
                     {errors.provincia && <ErrorMessage>{errors.provincia.message}</ErrorMessage>}
                 </div>
 
@@ -176,55 +145,40 @@ export default function ShippingForm() {
                         }}
                         disabled={!distritos.length}
                     >
-                        <SelectTrigger className="w-full">
-                            <SelectValue placeholder="--Seleccione--" />
-                        </SelectTrigger>
+                        <SelectTrigger><SelectValue placeholder="--Seleccione--" /></SelectTrigger>
                         <SelectContent>
                             {distritos.map(d => (
                                 <SelectItem key={d} value={d}>{d}</SelectItem>
                             ))}
                         </SelectContent>
                     </Select>
-                    <input
-                        type="hidden"
-                        {...register('distrito', { required: 'El distrito es obligatorio' })}
-                    />
+                    <input type="hidden" {...register('distrito', { required: 'El distrito es obligatorio' })} />
                     {errors.distrito && <ErrorMessage>{errors.distrito.message}</ErrorMessage>}
                 </div>
             </div>
 
             {/* Dirección */}
             <div>
-                <label className="text-xs font-bold">Dirección *</label>
-                <input
+                <label className="text-xs font-bold">Dirección 
+                    <span className="text-red-500">*</span>
+                </label>
+                <Input
                     type="text"
                     {...register('direccion', { required: 'La dirección es obligatoria' })}
-                    placeholder="Av. Siempre Viva 123"
-                    className="w-full px-3 py-2 border rounded-lg"
+                    placeholder="Av. abc 123"
                 />
                 {errors.direccion && <ErrorMessage>{errors.direccion.message}</ErrorMessage>}
             </div>
 
-            {/* Número y Piso/Dpto */}
+            {/* Número / Piso / Dpto */}
             <div className="grid grid-cols-2 gap-4">
                 <div>
                     <label className="text-xs font-bold">Número</label>
-                    <input
-                        type="text"
-                        {...register('numero')}
-                        placeholder="Ej. 202"
-                        className="w-full px-3 py-2 border rounded-lg"
-                    />
+                    <Input type="text" {...register('numero')} />
                 </div>
-
                 <div>
                     <label className="text-xs font-bold">Piso / Dpto</label>
-                    <input
-                        type="text"
-                        {...register('pisoDpto')}
-                        placeholder="Ej. 2do piso / 307"
-                        className="w-full px-3 py-2 border rounded-lg"
-                    />
+                    <Input type="text" {...register('pisoDpto')} />
                 </div>
             </div>
 
@@ -240,13 +194,7 @@ export default function ShippingForm() {
                 {errors.referencia && <ErrorMessage>{errors.referencia.message}</ErrorMessage>}
             </div>
 
-            {/* Botón */}
-            <Button
-                type="submit"
-                className="w-full mt-2 disabled:opacity-50 cursor-pointer"
-            >
-                Ir a pagar
-            </Button>
+            <Button type="submit" className="w-full mt-2 disabled:opacity-50 cursor-pointer">Ir a pagar</Button>
         </form>
     )
 }
