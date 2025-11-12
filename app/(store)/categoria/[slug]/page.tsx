@@ -54,9 +54,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
             images: ["https://gophone.pe/logomini.svg"],
         },
         icons: {
-            icon: "/favicon.svg",
-            shortcut: "/favicon.svg",
-            apple: "/favicon.svg"
+            shortcut: "/logobw.jpg",
+            apple: "/logobw.jpg"
         }
     };
 }

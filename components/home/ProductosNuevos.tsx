@@ -17,11 +17,11 @@ export default async function ProductosNuevos() {
             <div className="max-w-7xl mx-auto p-4 ">
                  <header className="text-center md:text-left">
                     <h2 className="text-xl md:text-2xl font-semibold text-gray-500">
-                        <span className="bg-gray-200 px-2 text-gray-900">
+                        <span className=" px-2 text-gray-900">
                             Novedades
                         </span>
 
-                        <p className="text-sm md:text-base text-gray-400">
+                        <p className="text-sm md:text-base text-gray-400 font-light">
                             Explora nuestras novedades y encuentra lo que necesitas.
                         </p>
                     </h2>

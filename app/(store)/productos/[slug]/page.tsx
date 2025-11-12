@@ -72,8 +72,8 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
             creator: '@GoPhone', // opcional si tienes cuenta de Twitter
         },
         icons: {
-            icon: "/logoapp.png",
-            apple: "/logomini.svg",
+            icon: "/logobw.jpg",
+            apple: "/logobw.jpg",
         },
         alternates: {
             canonical: url,

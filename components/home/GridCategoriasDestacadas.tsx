@@ -10,17 +10,7 @@ export default function GridCategoriasDestacadas({
     if (!categorias?.length) return null;
 
     return (
-        <section className="container mx-auto px-4 max-w-7xl">
-            <header className="text-center md:text-left">
-                    <h2 className="text-xl md:text-2xl font-semibold text-gray-500">
-                        Categorías{" "}
-                        <span className="text-white bg-gray-950 px-2">
-                            Destacadas
-                        </span>
-                    </h2>
-                    
-                </header>
-
+        <section className="container mx-auto px-4 max-w-7xl border-y py-6 my-6">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                 {/* Secundarias */}
                 {categorias.slice(1, 5).map((cat) => (
