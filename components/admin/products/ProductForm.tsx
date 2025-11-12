@@ -1,6 +1,5 @@
 import type { ProductWithCategoryResponse } from "@/src/schemas";
 import type { CategoryListResponse } from "@/src/schemas";
-import UploadProductImage from "./UploadProductImage";
 import ClientCategoryAttributes from "./ClientCategoryAttributes";
 import ProductSwitches from "./ProductSwitches";
 import SpecificationsSection from "./SpecificationsSection";
@@ -10,6 +9,7 @@ import BrandCombobox from "./BrandCombobox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import ProductVariantsForm from "./ProductVariantsForm";
+import UploadProductImageDialog from "./UploadProductImageDialog";
 
 export default function ProductForm({
     product,
@@ -139,7 +139,10 @@ export default function ProductForm({
                 />
 
                 {/* Imagenes */}
-                <UploadProductImage CurrentImagenes={product?.imagenes} />
+                {/* <UploadProductImage CurrentImagenes={product?.imagenes} /> */}
+
+                <UploadProductImageDialog CurrentImagenes={product?.imagenes} />
+
 
                 {/* Especificaciones */}
                 <SpecificationsSection initial={product?.especificaciones} />
