@@ -71,7 +71,7 @@ export default function CategoriasDestacadas({
                                             />
                                         </div>
                                     ) : (
-                                        <div className="w-16 h-16 sm:w-22 sm:h-22 flex items-center justify-center bg-gray-100 rounded-full">
+                                        <div className="w-14 h-14 sm:w-18 sm:h-18 flex items-center justify-center bg-gray-100 rounded-full">
                                             <span className="text-gray-400 text-xs sm:text-sm">
                                                 Sin imagen
                                             </span>
