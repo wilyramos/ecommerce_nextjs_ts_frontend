@@ -54,9 +54,11 @@ export default function ProductDetails({ producto }: Props) {
 
         setSelectedAttributes(initialAttrs);
 
-        const matched = producto.variants?.find(v =>
-            Object.keys(initialAttrs).every(k => initialAttrs[k] === v.atributos[k])
-        ) ?? null;
+        const matched = Object.keys(initialAttrs).length > 0
+            ? producto.variants?.find(v =>
+                Object.keys(initialAttrs).every(k => initialAttrs[k] === v.atributos[k])
+            ) ?? null
+            : null;
 
         setSelectedVariant(matched);
     }, [allAttributes, searchParams, producto.variants]);
@@ -140,23 +142,33 @@ export default function ProductDetails({ producto }: Props) {
 
                 {/* Detalles */}
                 <div>
-                    <div className="space-y-6 bg-white p-4">
-                        <header className="space-y-2">
-                            {(selectedVariant?.sku || producto.sku || selectedVariant?.barcode || producto.barcode) && (
+                    <div className="space-y-2 bg-white p-4">
+                        <header className="pt-1 border-b pb-4 space-y-2">
+                            {/* SKU y código solo si hay variante seleccionada o SKU principal */}
+                            {(selectedVariant || producto.sku || producto.barcode) && (
                                 <div className="flex justify-between uppercase">
-                                    {selectedVariant?.sku?.trim() || producto.sku?.trim() ? (
-                                        <span className="text-xs text-gray-400 font-light">
-                                            SKU: {selectedVariant?.sku ?? producto.sku}
-                                        </span>
-                                    ) : null}
+                                    {/* Mostrar SKU de la variante solo si hay variante seleccionada; si no, mostrar el principal */}
+                                    {(
+                                        (selectedVariant && selectedVariant.sku?.trim()) ||
+                                        (!selectedVariant && producto.sku?.trim())
+                                    ) && (
+                                            <span className="text-xs text-gray-400 font-light">
+                                                SKU: {selectedVariant ? selectedVariant.sku : producto.sku}
+                                            </span>
+                                        )}
 
-                                    {selectedVariant?.barcode?.trim() || producto.barcode?.trim() ? (
-                                        <span className="text-xs text-gray-400 font-light">
-                                            Código: {selectedVariant?.barcode ?? producto.barcode}
-                                        </span>
-                                    ) : null}
+                                    {/* Mostrar código de barras solo si existe */}
+                                    {(
+                                        (selectedVariant && selectedVariant.barcode?.trim()) ||
+                                        (!selectedVariant && producto.barcode?.trim())
+                                    ) && (
+                                            <span className="text-xs text-gray-400 font-light">
+                                                Código: {selectedVariant ? selectedVariant.barcode : producto.barcode}
+                                            </span>
+                                        )}
                                 </div>
                             )}
+
 
                             <div>
                                 {producto.brand && (
