@@ -220,10 +220,18 @@ export default function ProductDetails({ producto }: Props) {
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
                                                         title={val}
-                                                        className={` px-2 py-1 rounded-md border-2 transition cursor-pointer ${selected ? 'border-gray-800' : 'border-gray-200 hover:border-gray-500'
-                                                            } ${outOfStock ? 'opacity-40 cursor-not-allowed' : ''}`}
+                                                        className={`relative px-2 py-1 rounded-md border-2 transition cursor-pointer
+    ${selected ? 'border-gray-800 bg-black' : 'border-gray-200 hover:border-gray-500'}
+    ${outOfStock ? 'opacity-40 cursor-not-allowed' : ''}`}
                                                     >
                                                         <ColorCircle color={val} />
+
+                                                        {outOfStock && (
+                                                            <span
+                                                                className="absolute left-0 top-1/2 w-full border-t-2 border-gray-500 border-dashed rotate-[-45deg]"
+                                                                style={{ transformOrigin: 'center' }}
+                                                            />
+                                                        )}
                                                     </button>
                                                 );
                                             })}
@@ -239,7 +247,7 @@ export default function ProductDetails({ producto }: Props) {
                                                         size="sm"
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
-                                                        className={outOfStock ? "opacity-40 cursor-not-allowed" : ""}
+                                                        className={outOfStock ? "opacity-40 cursor-not-allowed line-through" : ""}
                                                     >
                                                         {val}
                                                     </Button>
@@ -262,7 +270,7 @@ export default function ProductDetails({ producto }: Props) {
                                                             key={val}
                                                             value={val}
                                                             disabled={outOfStock}
-                                                            className={outOfStock ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}
+                                                            className={outOfStock ? "opacity-40 cursor-not-allowed line-through" : "cursor-pointer"}
                                                         >
                                                             {val}
                                                         </SelectItem>

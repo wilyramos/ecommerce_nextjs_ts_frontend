@@ -15,7 +15,7 @@ export default async function ProductosRelated({ slug }: { slug: string }) {
 
     return (
         <section className="my-8 flex flex-col  mx-auto ">
-            <h2 className="text-lg">
+            <h2 className="text-lg font-medium">
                 PRODUCTOS RELACIONADOS
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3 text-start">
