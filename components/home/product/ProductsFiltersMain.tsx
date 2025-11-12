@@ -84,7 +84,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
     };
 
     return (
-        <aside className="w-full  shadow-xs rounded-md bg-white">
+        <aside className="w-full  shadow-xs rounded-xs bg-white">
             <div className="flex justify-between items-center mb-3 bg-black rounded-t-lg">
                 <h2 className="text-lg flex items-center gap-2 px-4 py-2 font-semibold text-white">
                     <LuListFilter className="" />
@@ -101,6 +101,33 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
             </div>
 
             <Accordion type="multiple" className="w-full text-sm px-4">
+
+                {/* Categorías */}
+
+                {filters[0].categories && filters[0].categories.length > 0 && (
+                    <AccordionItem value="categories">
+                        <AccordionTrigger className="text-sm">Categorías</AccordionTrigger>
+                        <AccordionContent>
+                            <ul className="space-y-1">
+                                {filters[0].categories.map((category) => (
+                                    <li key={category.slug}>
+                                        <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-600">
+                                            <input
+                                                type="checkbox"
+                                                checked={searchParams.getAll("category").includes(category.slug)}
+                                                onChange={() =>
+                                                    handleFilterChange("category", category.slug)
+                                                }
+                                            />
+                                            {category.nombre}
+                                        </label>
+                                    </li>
+                                ))}
+                            </ul>
+                        </AccordionContent>
+                    </AccordionItem>
+                )}
+
                 {/* Marcas */}
                 {brands.length > 0 && (
                     <AccordionItem value="brands">

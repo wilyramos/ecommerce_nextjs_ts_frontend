@@ -319,6 +319,11 @@ const filterAttributeSchema = z.object({
 
 const filterSchema = z.object({
     brands: z.array(brandSchema).optional(),
+    categories: z.array(z.object({
+        id: z.string(),
+        nombre: z.string(),
+        slug: z.string(),
+    })).optional(),
     atributos: z.array(filterAttributeSchema).optional(),
     price: z.array(z.object({ min: z.number().nullable(), max: z.number().nullable() })).optional(),
 });

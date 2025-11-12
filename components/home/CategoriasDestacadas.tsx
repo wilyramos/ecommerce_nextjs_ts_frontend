@@ -21,6 +21,7 @@ export default function CategoriasDestacadas({
         },
         [Autoplay({ delay: 4000, stopOnInteraction: false })]
     );
+    console.log(categorias);
 
     const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
     const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);

@@ -35,7 +35,6 @@ export default async function ProductResults({
         ...rest,
     });
 
-
     return (
         <main className="flex flex-col gap-3">
             {/* GRID principal: sidebar (filtros) + contenido */}
