@@ -11,7 +11,6 @@ type CreateOrderResponse = {
 
 export async function createOrderAction(order: TCreateOrder): Promise<CreateOrderResponse> {
     
-    console.log("Creating order with data:", order);
     const token = await getToken();
     const url = `${process.env.API_URL}/orders`;
 

@@ -1,10 +1,10 @@
 'use client'
 
+import { useState, useMemo } from 'react'
 import { useCheckoutStore } from '@/src/store/checkoutStore'
 import { useCartStore } from '@/src/store/cartStore'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
-import { useMemo } from 'react'
 import { createOrderAction } from '@/actions/order/create-order-action'
 import { locations } from '@/src/data/locations'
 import ErrorMessage from '@/components/ui/ErrorMessage'
@@ -33,6 +33,7 @@ export default function ShippingForm() {
     const router = useRouter()
     const { shipping, setShipping } = useCheckoutStore()
     const { cart } = useCartStore()
+    const [loading, setLoading] = useState(false)
 
     const { register, handleSubmit, watch, setValue, trigger, formState: { errors } } = useForm<ShippingData>({
         defaultValues: shipping || {},
@@ -41,7 +42,6 @@ export default function ShippingForm() {
     const selectedDepartamento = watch('departamento')
     const selectedProvincia = watch('provincia')
 
-    // Derivar provincias y distritos automáticamente
     const provincias = useMemo(
         () => (selectedDepartamento ? Object.keys(locations[selectedDepartamento] || {}) : []),
         [selectedDepartamento]
@@ -55,41 +55,46 @@ export default function ShippingForm() {
     )
 
     const onSubmit = async (data: ShippingData) => {
-        setShipping(data)
+        try {
+            setLoading(true)
+            setShipping(data)
 
-        const subtotal = cart.reduce((t, i) => t + i.precio * i.cantidad, 0)
-        const shippingCost = 0
-        const totalPrice = subtotal + shippingCost
+            const subtotal = cart.reduce((t, i) => t + i.precio * i.cantidad, 0)
+            const shippingCost = 0
+            const totalPrice = subtotal + shippingCost
 
-        const orderPayload: TCreateOrder = {
-            items: cart.map(item => ({
-                productId: item._id,
-                quantity: item.cantidad,
-                price: item.precio,
-                variantId: item.variant?._id,
-                variantAttributes: item.variant?.atributos || {},
-                nombre: item.nombre,
-                imagen: item.imagenes?.[0],
-            })),
-            subtotal,
-            shippingCost,
-            totalPrice,
-            shippingAddress: data,
-            currency: 'PEN',
-            payment: { provider: 'IZIPAY', status: 'pending' },
+            const orderPayload: TCreateOrder = {
+                items: cart.map(item => ({
+                    productId: item._id,
+                    quantity: item.cantidad,
+                    price: item.precio,
+                    variantId: item.variant?._id,
+                    variantAttributes: item.variant?.atributos || {},
+                    nombre: item.nombre,
+                    imagen: item.imagenes?.[0],
+                })),
+                subtotal,
+                shippingCost,
+                totalPrice,
+                shippingAddress: data,
+                currency: 'PEN',
+                payment: { provider: 'IZIPAY', status: 'pending' },
+            }
+
+            const order = await createOrderAction(orderPayload)
+            localStorage.setItem('currentOrderId', order.order._id || '')
+            router.push(`/checkout/payment?orderId=${order.order._id}`)
+        } catch (err) {
+            console.error(err)
+        } finally {
+            setLoading(false)
         }
-
-        const order = await createOrderAction(orderPayload)
-        localStorage.setItem('currentOrderId', order.order._id || '')
-        router.push(`/checkout/payment?orderId=${order.order._id}`)
     }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto space-y-3">
             {/* Departamento / Provincia / Distrito */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-
-                {/* Departamento */}
                 <div>
                     <label className="text-xs font-bold">Departamento <span className="text-red-500">*</span></label>
                     <Select
@@ -112,7 +117,6 @@ export default function ShippingForm() {
                     {errors.departamento && <ErrorMessage>{errors.departamento.message}</ErrorMessage>}
                 </div>
 
-                {/* Provincia */}
                 <div>
                     <label className="text-xs font-bold">Provincia <span className="text-red-500">*</span></label>
                     <Select
@@ -135,7 +139,6 @@ export default function ShippingForm() {
                     {errors.provincia && <ErrorMessage>{errors.provincia.message}</ErrorMessage>}
                 </div>
 
-                {/* Distrito */}
                 <div>
                     <label className="text-xs font-bold">Distrito <span className="text-red-500">*</span></label>
                     <Select
@@ -157,11 +160,8 @@ export default function ShippingForm() {
                 </div>
             </div>
 
-            {/* Dirección */}
             <div>
-                <label className="text-xs font-bold">Dirección 
-                    <span className="text-red-500">*</span>
-                </label>
+                <label className="text-xs font-bold">Dirección <span className="text-red-500">*</span></label>
                 <Input
                     type="text"
                     {...register('direccion', { required: 'La dirección es obligatoria' })}
@@ -170,7 +170,6 @@ export default function ShippingForm() {
                 {errors.direccion && <ErrorMessage>{errors.direccion.message}</ErrorMessage>}
             </div>
 
-            {/* Número / Piso / Dpto */}
             <div className="grid grid-cols-2 gap-4">
                 <div>
                     <label className="text-xs font-bold">Número</label>
@@ -182,7 +181,6 @@ export default function ShippingForm() {
                 </div>
             </div>
 
-            {/* Referencia */}
             <div>
                 <label className="text-xs font-bold">Referencia *</label>
                 <input
@@ -194,7 +192,13 @@ export default function ShippingForm() {
                 {errors.referencia && <ErrorMessage>{errors.referencia.message}</ErrorMessage>}
             </div>
 
-            <Button type="submit" className="w-full mt-2 disabled:opacity-50 cursor-pointer">Ir a pagar</Button>
+            <Button
+                type="submit"
+                disabled={loading}
+                className="w-full mt-2 disabled:opacity-50 cursor-pointer"
+            >
+                {loading ? 'Creando orden...' : 'Ir a pagar'}
+            </Button>
         </form>
     )
 }

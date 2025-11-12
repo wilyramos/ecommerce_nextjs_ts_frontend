@@ -177,7 +177,7 @@ export const useCartStore = create<Store>()(
                 clearDni: () => set({ dni: undefined }),
                 clearComprobante: () => set({ comprobante: 'TICKET' }),
             }),
-            { name: 'cart-storage-ecomm' }
+            { name: 'cart-storage-gophone' }
         )
     )
 );
