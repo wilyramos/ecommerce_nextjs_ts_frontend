@@ -137,7 +137,7 @@ export default function ProductDetails({ producto }: Props) {
 
                 {/* Detalles */}
                 <div>
-                    <div className="space-y-6 bg-white p-4 ">
+                    <div className="space-y-6 bg-white ">
                         <header className="space-y-2">
                             <div className="flex justify-between uppercase">
                                 {(selectedVariant?.sku || producto.sku) && (

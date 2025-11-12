@@ -30,7 +30,7 @@ export default function CategoriasDestacadas({
             <header className="text-center md:text-left">
                 <h2 className="text-xl md:text-2xl font-semibold text-gray-500">
                     Categorías{" "}
-                  
+                    
                 </h2>
             </header>
 
@@ -61,7 +61,7 @@ export default function CategoriasDestacadas({
                             >
                                 <div className="flex items-center justify-center">
                                     {categoria.image ? (
-                                        <div className="w-16 h-16 sm:w-22 sm:h-22">
+                                        <div className="w-14 h-14 sm:w-18 sm:h-18">
                                             <Image
                                                 src={categoria.image}
                                                 alt={categoria.nombre}
@@ -79,7 +79,7 @@ export default function CategoriasDestacadas({
                                     )}
                                 </div>
                                 {/* tener espaciado entre las letras */}
-                                <p className="font-medium text-xs sm:text-base text-gray-600 mt-2 tracking-wide group-hover/item:text-primary transition
+                                <p className="font-medium text-xs sm:text-sm mt-2 tracking-wide group-hover/item:text-primary transition
                                 ">
                                     {categoria.nombre}
                                 </p>
