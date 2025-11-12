@@ -60,7 +60,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                         </span>
                     )}
 
-                    <h3 className="text-sm text-gray-900 font-medium leading-snug line-clamp-2">
+                    <h3 className="text-sm text-gray-900 leading-snug line-clamp-2">
                         {product.nombre}
                     </h3>
 

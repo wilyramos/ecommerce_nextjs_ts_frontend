@@ -25,7 +25,6 @@ export default function Footer() {
     return (
         <footer className="bg-neutral-100 text-gray-700 text-sm py-4">
 
-            <PaymentMethods />
             {/* Contenido principal */}
             <div className="max-w-7xl mx-auto px-6 py-2 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
                 {/* Branding */}
@@ -42,7 +41,7 @@ export default function Footer() {
 
                 {/* Navegación */}
                 <nav>
-                    <h3 className="mb-4 font-semibold text-gray-900 text-lg relative after:block after:w-8 after:h-1 after:bg-black after:mt-1">
+                    <h3 className="mb-4 font-semibold text-gray-900 text-sm relative after:block after:w-8 after:h-1 after:bg-black after:mt-1">
                         Explora
                     </h3>
                     <ul className="space-y-2">
@@ -61,7 +60,7 @@ export default function Footer() {
 
                 {/* Contacto */}
                 <div>
-                    <h3 className="mb-4 font-semibold text-gray-900 text-lg relative after:block after:w-8 after:h-1 after:bg-black after:mt-1">
+                    <h3 className="mb-4 font-semibold text-gray-900 text-sm relative after:block after:w-8 after:h-1 after:bg-black after:mt-1">
                         Contacto
                     </h3>
                     <ul className="space-y-2 text-gray-600">
@@ -89,7 +88,7 @@ export default function Footer() {
 
                 {/* Redes sociales */}
                 <div>
-                    <h3 className="mb-4 font-semibold text-gray-900 text-lg relative after:block after:w-8 after:h-1 after:bg-black after:mt-1">
+                    <h3 className="mb-4 font-semibold text-gray-900 text-sm relative after:block after:w-8 after:h-1 after:bg-black after:mt-1">
                         Síguenos
                     </h3>
                     <div className="flex gap-4">
@@ -106,6 +105,14 @@ export default function Footer() {
                             </a>
                         ))}
                     </div>
+                </div>
+
+                <div>
+                    <h3 className="mb-4 font-semibold text-gray-900 text-sm relative after:block after:w-8 after:h-1 after:bg-black after:mt-1">
+                        Métodos de Pago
+                    </h3>
+                    <PaymentMethods />
+
                 </div>
             </div>
 

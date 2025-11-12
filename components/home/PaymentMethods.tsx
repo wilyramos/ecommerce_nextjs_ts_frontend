@@ -3,8 +3,8 @@ import Image from "next/image";
 export default function PaymentMethods() {
     return (
         <section className="py-2">
-            <div className="max-w-7xl mx-auto px-4">
-                <div className="flex items-center gap-8 max-w-md mx-auto">
+            <div className="">
+                <div className="flex items-center gap-3 max-w-md mx-auto">
 
                     <div className="relative w-10 h-6 ">
                         <Image src="/payments/visa.png" alt="Visa" fill className="object-contain" />
