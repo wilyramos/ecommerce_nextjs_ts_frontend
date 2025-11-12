@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import AddProductToCart from './AddProductToCart';
 import ImagenesProductoCarousel from './ImagenesProductoCarousel';
 import type { ProductWithCategoryResponse, TApiVariant } from '@/src/schemas';
@@ -16,22 +16,20 @@ import {
     SelectValue
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
-import { useMemo } from "react";
+import { useSearchParams } from 'next/navigation';
 import PaymentMethods from '../PaymentMethods';
+import ColorCircle from '@/components/ui/ColorCircle';
 
 type Props = {
     producto: ProductWithCategoryResponse;
 };
 
 export default function ProductDetails({ producto }: Props) {
-    // Sin preselección
     const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
     const [selectedVariant, setSelectedVariant] = useState<TApiVariant | null>(null);
     const searchParams = useSearchParams();
 
-    // Lista de atributos posibles
+    // Recolectar todos los atributos de las variantes
     const allAttributes = useMemo(() => {
         const attrs: Record<string, string[]> = {};
         producto.variants?.forEach(v => {
@@ -42,12 +40,6 @@ export default function ProductDetails({ producto }: Props) {
         });
         return attrs;
     }, [producto.variants]);
-    producto.variants?.forEach(v => {
-        Object.entries(v.atributos).forEach(([key, value]) => {
-            if (!allAttributes[key]) allAttributes[key] = [];
-            if (!allAttributes[key].includes(value)) allAttributes[key].push(value);
-        });
-    });
 
     useEffect(() => {
         const initialAttrs: Record<string, string> = {};
@@ -66,8 +58,6 @@ export default function ProductDetails({ producto }: Props) {
         setSelectedVariant(matched);
     }, [allAttributes, searchParams, producto.variants]);
 
-
-    // Actualizar selección y variante
     const updateSelectedVariant = (attrKey: string, attrValue: string | null) => {
         const newAttributes = { ...selectedAttributes };
 
@@ -79,7 +69,6 @@ export default function ProductDetails({ producto }: Props) {
 
         setSelectedAttributes(newAttributes);
 
-        // Buscar variante coincidente
         const matchedVariant = producto.variants?.find(v =>
             Object.keys(v.atributos).every(k => newAttributes[k] === v.atributos[k])
         ) ?? null;
@@ -87,7 +76,6 @@ export default function ProductDetails({ producto }: Props) {
         setSelectedVariant(matchedVariant);
 
         const params = new URLSearchParams();
-
         Object.entries(newAttributes).forEach(([k, v]) => {
             if (v) params.set(k, v);
         });
@@ -96,7 +84,6 @@ export default function ProductDetails({ producto }: Props) {
         window.history.replaceState(null, "", newUrl);
     };
 
-    // Valores disponibles según selección
     const getAvailableValues = (attrKey: string): string[] => {
         const values = new Set<string>();
         producto.variants?.forEach(variant => {
@@ -107,7 +94,6 @@ export default function ProductDetails({ producto }: Props) {
         return Array.from(values);
     };
 
-    // Datos visibles según variante seleccionada
     const precio = selectedVariant?.precio ?? producto.precio ?? 0;
     const precioComparativo = selectedVariant?.precioComparativo ?? producto.precioComparativo ?? null;
     const stock =
@@ -127,6 +113,13 @@ export default function ProductDetails({ producto }: Props) {
         return variant?.stock === 0;
     };
 
+    // Color del producto sin variantes
+    const colorAtributo =
+        !producto.variants?.length &&
+        (producto.atributos?.color ||
+            producto.atributos?.Color ||
+            producto.atributos?.COLOR ||
+            null);
 
     return (
         <>
@@ -145,9 +138,8 @@ export default function ProductDetails({ producto }: Props) {
                 {/* Detalles */}
                 <div>
                     <div className="space-y-6 bg-white p-4 ">
-                        {/* Título, SKU, Barcode */}
                         <header className="space-y-2">
-                            <div className='flex justify-between uppercase'>
+                            <div className="flex justify-between uppercase">
                                 {(selectedVariant?.sku || producto.sku) && (
                                     <span className="text-xs text-gray-400">
                                         SKU: {selectedVariant?.sku ?? producto.sku}
@@ -163,6 +155,18 @@ export default function ProductDetails({ producto }: Props) {
                             <h1 className="text-lg md:text-2xl font-semibold leading-tight break-words whitespace-normal">
                                 {producto.nombre}
                             </h1>
+
+                            {/* Mostrar color solo si NO hay variantes */}
+                            {!producto.variants?.length && colorAtributo && (
+                                <div className="flex items-center gap-2 text-xs text-gray-700">
+                                    <span>Color:</span>
+                                    {Array.isArray(colorAtributo)
+                                        ? colorAtributo.map((c: string) => (
+                                            <ColorCircle key={c} color={c} />
+                                        ))
+                                        : <ColorCircle color={colorAtributo} />}
+                                </div>
+                            )}
 
                             {/* Precio y descuento */}
                             <div className="space-y-1">
@@ -202,14 +206,33 @@ export default function ProductDetails({ producto }: Props) {
                             const availableValues = getAvailableValues(key);
 
                             return (
-                                <section key={key} className="flex flex-col gap-1">
+                                <section key={key} className="flex flex-col gap-1 mt-2">
                                     <label className="text-sm font-medium">{key}:</label>
 
-                                    {availableValues.length <= 5 ? (
+                                    {/* Si el atributo es Color, mostrar círculos */}
+                                    {key.toLowerCase() === "color" ? (
+                                        <div className="flex items-center gap-3 flex-wrap mt-1">
+                                            {availableValues.map(val => {
+                                                const outOfStock = isOptionOutOfStock(key, val);
+                                                const selected = selectedAttributes[key] === val;
+                                                return (
+                                                    <button
+                                                        key={val}
+                                                        onClick={() => !outOfStock && updateSelectedVariant(key, val)}
+                                                        disabled={outOfStock}
+                                                        title={val}
+                                                        className={`p-1 rounded-full border-2 transition cursor-pointer ${selected ? 'border-gray-800' : 'border-transparent'
+                                                            } ${outOfStock ? 'opacity-40 cursor-not-allowed' : ''}`}
+                                                    >
+                                                        <ColorCircle color={val} />
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
+                                    ) : availableValues.length <= 5 ? (
                                         <div className="flex flex-wrap gap-2">
                                             {availableValues.map(val => {
                                                 const outOfStock = isOptionOutOfStock(key, val);
-
                                                 return (
                                                     <Button
                                                         key={val}
@@ -219,11 +242,10 @@ export default function ProductDetails({ producto }: Props) {
                                                         disabled={outOfStock}
                                                         className={outOfStock ? "opacity-40 cursor-not-allowed" : ""}
                                                     >
-                                                        {val} {outOfStock}
+                                                        {val}
                                                     </Button>
                                                 );
                                             })}
-
                                         </div>
                                     ) : (
                                         <Select
@@ -233,7 +255,6 @@ export default function ProductDetails({ producto }: Props) {
                                             <SelectTrigger>
                                                 <SelectValue placeholder={`-- Elige ${key} --`} />
                                             </SelectTrigger>
-
                                             <SelectContent>
                                                 {availableValues.map(val => {
                                                     const outOfStock = isOptionOutOfStock(key, val);
@@ -242,22 +263,20 @@ export default function ProductDetails({ producto }: Props) {
                                                             key={val}
                                                             value={val}
                                                             disabled={outOfStock}
-                                                            className={outOfStock ? "opacity-40 cursor-not-allowed" : ""}
+                                                            className={outOfStock ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}
                                                         >
-                                                            {val} {outOfStock}
+                                                            {val}
                                                         </SelectItem>
                                                     );
                                                 })}
                                             </SelectContent>
                                         </Select>
-
                                     )}
                                 </section>
                             );
                         })}
 
-
-                        {/* Nombre variante */}
+                        {/* Variante seleccionada */}
                         {selectedVariant && (
                             <p className="text-xs mt-2 font-medium text-gray-600">
                                 Variante Seleccionada: {selectedVariant.nombre} - S/ {selectedVariant.precio ?? producto.precio}
@@ -287,12 +306,14 @@ export default function ProductDetails({ producto }: Props) {
 
                     {/* Información adicional */}
                     <div className="space-y-3 mt-6 text-gray-700 text-xs">
-                        {/* ENVÍO */}
                         <div className="bg-white p-4 flex items-start gap-3">
                             <Truck className="w-5 h-5 text-gray-500 mt-0.5" />
                             <div>
                                 <p className="font-medium text-gray-800">Entrega</p>
-                                <p>Gratis en Cañete y a todo el Perú mediante <span className="font-semibold italic bg-red-600 text-white px-1">SHALOM</span>.</p>
+                                <p>
+                                    Gratis en Cañete y a todo el Perú mediante{" "}
+                                    <span className="font-semibold italic bg-red-600 text-white px-1">SHALOM</span>.
+                                </p>
                                 <p className="mt-1">
                                     {producto.diasEnvio
                                         ? `Estimado: ${getDeliveryRange(producto.diasEnvio)}`
@@ -301,8 +322,6 @@ export default function ProductDetails({ producto }: Props) {
                             </div>
                         </div>
 
-
-                        {/* SEGURIDAD */}
                         <div className="bg-white  p-4 flex items-start gap-3">
                             <ShieldCheck className="w-5 h-5 text-gray-500 mt-0.5" />
                             <div>
@@ -311,7 +330,6 @@ export default function ProductDetails({ producto }: Props) {
                             </div>
                         </div>
 
-                        {/* PAGO */}
                         <div className="bg-white  p-4">
                             <p className="font-medium text-gray-800 mb-2">Medios de pago</p>
                             <div className="flex items-center flex-wrap gap-3">
@@ -319,7 +337,6 @@ export default function ProductDetails({ producto }: Props) {
                             </div>
                         </div>
 
-                        {/* SOPORTE */}
                         <div className="bg-white  p-4">
                             <p>
                                 ¿Tienes dudas? Contáctanos por{" "}
@@ -334,7 +351,6 @@ export default function ProductDetails({ producto }: Props) {
                             </p>
                         </div>
                     </div>
-
                 </div>
             </article>
 
@@ -342,7 +358,6 @@ export default function ProductDetails({ producto }: Props) {
                 <ProductExpandableSections producto={producto} />
             </section>
 
-            {/* Botón fijo mobile */}
             <div className="md:hidden fixed bottom-0 left-0 w-full bg-white -t -gray-200 px-4 py-3 shadow z-50">
                 <div className="max-w-7xl mx-auto flex items-center justify-center w-full">
                     <AddProductToCart

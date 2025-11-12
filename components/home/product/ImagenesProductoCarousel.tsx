@@ -32,7 +32,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
     const toggleZoom = () => setZoom((prev) => !prev);
 
     return (
-        <div className="w-full max-w-xl mx-auto">
+        <div className="w-full">
             <div
                 className={`relative aspect-square overflow-hidden bg-white 
         ${zoom ? "cursor-zoom-out" : "cursor-zoom-in"}`}
@@ -45,7 +45,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                         src={images[selectedIndex]}
                         alt={`Imagen ${selectedIndex + 1}`}
                         fill
-                        sizes="(max-width: 768px) 100vw, 50vw"
+                        sizes=""
                         className={`object-contain transition duration-300
               ${zoom ? "scale-150" : "scale-100"}`}
                         style={{ transformOrigin: `${position.x}% ${position.y}%` }}
