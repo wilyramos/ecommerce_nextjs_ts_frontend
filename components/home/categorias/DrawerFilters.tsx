@@ -116,7 +116,7 @@ export default function DrawerFilters({ categorySlug, attributes }: Props) {
                 <ScrollArea className="h-auto pr-2 mt-2 overflow-y-auto">
                     {/* ----- Filtro por Precio ----- */}
                     <div className="mb-6">
-                        <h2 className="text-sm font-medium text-black mb-1">Precio</h2>
+                        <h2 className="text-sm font-medium text-black mb-1 uppercase">Precio</h2>
                         <div className="flex flex-nowrap items-center gap-4 sm:gap-2 pt-2">
                             <div className="flex flex-col text-xs text-black w-full sm:w-auto">
                                 <label htmlFor="min" className="mb-1">Mín</label>

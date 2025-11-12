@@ -136,7 +136,7 @@ export default function DrawerFiltersMain({ filters }: Props) {
                     {/* ----- Filtro por Precio ----- */}
                     {priceFilter && (
                         <div className="mb-6">
-                            <h2 className="text-sm font-medium text-black mb-1">Precio</h2>
+                            <h2 className="text-sm font-medium text-black mb-1 uppercase">Precio</h2>
                             <div className="flex flex-nowrap items-center gap-4 pt-2">
                                 <div className="flex flex-col text-xs text-black w-full sm:w-auto">
                                     <label htmlFor="min" className="mb-1">Mín</label>
@@ -172,7 +172,7 @@ export default function DrawerFiltersMain({ filters }: Props) {
                         <Disclosure>
                             {({ open }) => (
                                 <div>
-                                    <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-black border-b py-2 hover:bg-gray-100">
+                                    <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-black border-b py-2 hover:bg-gray-100 uppercase">
                                         <span>Marcas</span>
                                         <ChevronUpIcon
                                             className={`w-5 h-5 transform transition-transform ${open ? "rotate-180" : ""}`}
@@ -208,7 +208,7 @@ export default function DrawerFiltersMain({ filters }: Props) {
                             <Disclosure key={attr.name}>
                                 {({ open }) => (
                                     <div>
-                                        <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-black border-b py-2 hover:bg-gray-100">
+                                        <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-black border-b py-2 hover:bg-gray-100 uppercase">
                                             <span>{attr.name}</span>
                                             <ChevronUpIcon
                                                 className={`w-5 h-5 transform transition-transform ${open ? "rotate-180" : ""}`}
