@@ -12,7 +12,6 @@ type ActionStateType = {
 
 export async function DeleteCategoryAction(categoryId: string, prevState: ActionStateType) {
 
-
     const token = await getToken();
     const url = `${process.env.API_URL}/category/${categoryId}`;
     const req = await fetch(url, {

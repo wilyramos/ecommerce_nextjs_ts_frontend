@@ -83,7 +83,7 @@ export default function CategoriasDestacadas({
                                     )}
                                 </div>
                                 {/* tener espaciado entre las letras */}
-                                <p className="font-medium text-xs sm:text-sm mt-2 tracking-wide group-hover/item:text-primary transition
+                                <p className=" text-xs sm:text-sm mt-2 tracking-wide group-hover/item:text-primary transition
                                 ">
                                     {categoria.nombre}
                                 </p>

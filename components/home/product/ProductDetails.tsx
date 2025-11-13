@@ -230,7 +230,8 @@ export default function ProductDetails({ producto }: Props) {
                         </header>
 
                         {Object.entries(allAttributes).length > 0 && (
-                            <p className="text-sm mb-3">
+                            <p className="text-xs font-semibold mb-2 text-gray-600 ">
+                        
                                 Seleccionar opciones:
                             </p>
                         )}
@@ -243,7 +244,7 @@ export default function ProductDetails({ producto }: Props) {
                                 <section key={key} className="flex flex-col gap-1 mt-2 ">
 
 
-                                    <label className="text-sm font-semibold">{key}:</label>
+                                    <label className="text-sm uppercase">{key}:</label>
 
                                     {/* Si el atributo es Color, mostrar círculos */}
                                     {key.toLowerCase() === "color" ? (
@@ -354,7 +355,6 @@ export default function ProductDetails({ producto }: Props) {
                         <div className="bg-white p-4 flex items-start gap-4 ">
                             <Truck className="w-6 h-6 text-gray-500 mt-0.5" />
                             <div className="space-y-1">
-                                <p className="font-semibold text-gray-800">Entrega</p>
                                 <p>
                                     Envíos <span className="font-semibold">gratuitos y contraentrega</span> en todo Cañete.
                                 </p>
@@ -374,7 +374,6 @@ export default function ProductDetails({ producto }: Props) {
                         <div className="bg-white p-4 flex items-start gap-4">
                             <ShieldCheck className="w-6 h-6 text-gray-500 mt-0.5" />
                             <div className="space-y-1 w-full">
-                                <p className="font-semibold text-gray-800">Compra segura</p>
                                 <p className="text-gray-600">Aceptamos los siguientes medios de pago:</p>
                                 <div className="flex items-center flex-wrap gap-3 mt-2">
                                     <PaymentMethods />

@@ -1,9 +1,16 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import type { Attributes } from "@/src/schemas";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
-export default function AttributeFields({ defaultAttributes }: { defaultAttributes?: Attributes }) {
+export default function AttributeFields({
+    defaultAttributes,
+}: {
+    defaultAttributes?: Attributes;
+}) {
     const [attributes, setAttributes] = useState<Attributes>(defaultAttributes || []);
 
     const handleAttrNameChange = (index: number, value: string) => {
@@ -41,80 +48,86 @@ export default function AttributeFields({ defaultAttributes }: { defaultAttribut
     };
 
     return (
-        <div className="space-y-4 mt-2 ">
-            <h3 className="text-sm font-semibold text-gray-700">Atributos</h3>
+        <div className="space-y-4 mt-4">
+            <h3 className="text-sm font-semibold text-gray-800">Atributos</h3>
 
-            {/* Campo oculto que será enviado al servidor */}
+            {/* Campo oculto para enviar al servidor */}
             <input type="hidden" name="attributes" value={JSON.stringify(attributes)} />
 
-            {/* Mostrar formulario solo si hay atributos */}
-
-            <div className="grid grid-cols-2 gap-4">
-
-
-                {attributes.length > 0 && attributes.map((attr, i) => (
-                    <div key={i} className="border border-gray-300 rounded-md p-4 space-y-4 bg-white shadow-sm">
-                        <div>
-                            <label className="block mb-1">Nombre del atributo</label>
-                            <input
-                                type="text"
+            <div className="grid gap-4 sm:grid-cols-2">
+                {attributes.map((attr, i) => (
+                    <div
+                        key={i}
+                        className="rounded-xl border border-gray-200 p-4 bg-white shadow-sm space-y-4"
+                    >
+                        <div className="space-y-1">
+                            <Label htmlFor={`attr-name-${i}`}>Nombre del atributo</Label>
+                            <Input
+                                id={`attr-name-${i}`}
                                 value={attr.name}
                                 onChange={(e) => handleAttrNameChange(i, e.target.value)}
-                                placeholder="Ej: Color, Talla, Material, etc."
-                                className="w-full border border-gray-300 rounded-2xl px-3 py-2 text-sm"
+                                placeholder="Ej: Color, Talla, Material..."
                             />
                         </div>
 
-                        <div>
-                            <label className="block mb-1">Valores</label>
-                            <div className="space-y-2">
-                                {attr.values.map((val, j) => (
-                                    <div key={j} className="flex items-center gap-2">
-                                        <input
-                                            type="text"
-                                            value={val}
-                                            onChange={(e) => handleAttrValueChange(i, j, e.target.value)}
-                                            className="flex-1 border border-gray-300 rounded-full px-3 py-1 text-sm"
-                                            placeholder="Ej: Rojo, M, Algodón, etc."
-                                        />
-                                        {attr.values.length > 1 && (
-                                            <button
-                                                type="button"
-                                                onClick={() => removeValue(i, j)}
-                                                className="text-red-500 text-xs hover:underline"
-                                            >
-                                                Eliminar
-                                            </button>
-                                        )}
-                                    </div>
-                                ))}
-                                <button
-                                    type="button"
-                                    onClick={() => addValue(i)}
-                                    className="text-blue-600 text-xs hover:underline"
-                                >
-                                    + Añadir valor
-                                </button>
-                            </div>
+                        <div className="space-y-2">
+                            <Label>Valores</Label>
+                            {attr.values.map((val, j) => (
+                                <div key={j} className="flex items-center gap-2">
+                                    <Input
+                                        value={val}
+                                        onChange={(e) => handleAttrValueChange(i, j, e.target.value)}
+                                        placeholder="Ej: Rojo, M, Algodón..."
+                                    />
+                                    {attr.values.length > 1 && (
+                                        <Button
+                                            type="button"
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => removeValue(i, j)}
+                                            className="text-red-500 hover:text-red-600"
+                                        >
+                                            Eliminar
+                                        </Button>
+                                    )}
+                                </div>
+                            ))}
+
+                            <Button
+                                type="button"
+                                variant="link"
+                                size="sm"
+                                onClick={() => addValue(i)}
+                                className="text-blue-600 hover:text-blue-700"
+                            >
+                                + Añadir valor
+                            </Button>
                         </div>
 
-                        <button
-                            type="button"
-                            onClick={() => removeAttribute(i)}
-                            className="text-red-600 text-xs hover:underline"
-                        >
-                            Eliminar atributo
-                        </button>
+                        <div className="pt-2">
+                            <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => removeAttribute(i)}
+                                className="text-red-600 hover:text-red-700"
+                            >
+                                Eliminar atributo
+                            </Button>
+                        </div>
                     </div>
                 ))}
             </div>
-            <button
+
+            <Button
                 type="button"
+                variant="secondary"
+                size="sm"
                 onClick={addAttribute}
-                className="text-blue-600 text-sm hover:underline"
+                className="text-blue-700"
             >
                 + Añadir atributo
-            </button>
+            </Button>
         </div>
     );
 }

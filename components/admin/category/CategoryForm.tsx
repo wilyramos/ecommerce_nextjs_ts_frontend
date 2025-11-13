@@ -1,8 +1,19 @@
+"use client";
+
 import * as React from "react";
 import type { CategoryResponse } from "@/src/schemas";
 import AttributeFields from "./AttributeFileds";
 import { ImageUploadDialog } from "./ImageUploadDialog";
 import CategorySwitches from "./CategorySwitches";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 
 type Props = {
     category?: CategoryResponse;
@@ -13,65 +24,68 @@ export default function CategoryForm({ category, categories }: Props) {
     const imageInputRef = React.useRef<HTMLInputElement>(null);
 
     return (
-        <div className="text-xs text-gray-500 space-y-4">
-            <div>
-                <label htmlFor="name" className="block text-sm text-black font-semibold">
-                    Nombre de la categoría
-                </label>
-                <input
-                    type="text"
+        <div className="space-y-6 text-sm text-gray-700">
+            {/* Nombre */}
+            <div className="space-y-1">
+                <Label htmlFor="name">Nombre de la categoría</Label>
+                <Input
                     id="name"
                     name="name"
                     defaultValue={category?.nombre}
-                    className="w-full border border-gray-300 rounded-lg p-2"
+                    placeholder="Ej. Electrónica"
                 />
             </div>
 
-            <div>
-                <label htmlFor="description" className="block text-sm text-black font-semibold">
-                    Descripción
-                </label>
-                <textarea
+            {/* Descripción */}
+            <div className="space-y-1">
+                <Label htmlFor="description">Descripción</Label>
+                <Input
                     id="description"
                     name="description"
                     defaultValue={category?.descripcion}
-                    className="w-full border border-gray-300 rounded-lg p-2"
+                    placeholder="Describe la categoría"
+                    className="min-h-[100px]"
                 />
             </div>
 
-            <div>
-                <label htmlFor="parent" className="block text-sm text-black font-semibold">
-                    Categoría padre
-                </label>
-                <select
-                    id="parent"
+            {/* Categoría padre */}
+            <div className="space-y-1 ">
+                <Label htmlFor="parent">Categoría padre</Label>
+                <Select
+                    defaultValue={
+                        typeof category?.parent === "object"
+                            ? category.parent?._id
+                            : "none"
+                    }
                     name="parent"
-                    defaultValue={typeof category?.parent === "object" ? category.parent?._id : ""}
-                    className="w-full border border-gray-300 rounded-lg p-2"
                 >
-                    <option value="">Sin categoría padre</option>
-                    {categories.map(cat => (
-                        <option key={cat._id} value={cat._id}>
-                            {cat.nombre}
-                        </option>
-                    ))}
-                </select>
+                    <SelectTrigger id="parent" className="min-w-xs">
+                        <SelectValue placeholder="Sin categoría padre" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="none">Sin categoría padre</SelectItem>
+                        {categories.map((cat) => (
+                            <SelectItem key={cat._id} value={cat._id}>
+                                {cat.nombre}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+
                 {category?._id && (
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-muted-foreground mt-1">
                         No puedes seleccionar la misma categoría como padre.
                     </p>
                 )}
             </div>
 
+            {/* Atributos */}
             <AttributeFields defaultAttributes={category?.attributes} />
 
-            <div>
-                <label className="block text-sm text-black font-semibold mb-1">
-                    Imagen de la categoría
-                </label>
-                {/* Pasamos la referencia del input a ImageUploadDialog */}
+            {/* Imagen */}
+            <div className="space-y-1">
+                <Label>Imagen de la categoría</Label>
                 <ImageUploadDialog image={category?.image} inputRef={imageInputRef} />
-                {/* Hidden input dentro del form */}
                 <input
                     ref={imageInputRef}
                     type="hidden"
@@ -79,12 +93,7 @@ export default function CategoryForm({ category, categories }: Props) {
                     defaultValue={category?.image || ""}
                 />
             </div>
-
-            <CategorySwitches 
-                isActive={category?.isActive}
-            />
-
-
+            <CategorySwitches isActive={category?.isActive} />
         </div>
     );
 }

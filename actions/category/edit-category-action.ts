@@ -28,7 +28,10 @@ export async function EditCategory(id: string, prevState: ActionStateType, formD
                 success: ""
             }
         }
-        attributesData = result.data;
+        attributesData = result.data.map(attr => ({
+            name: attr.name.toLowerCase(),
+            values: attr.values.map(v => v.toLowerCase())
+        }));
 
     } catch (error) {
         console.error("Error parsing attributes:", error);

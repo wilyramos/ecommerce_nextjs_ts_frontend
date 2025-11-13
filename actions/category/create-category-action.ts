@@ -24,14 +24,21 @@ export async function createCategoryAction(prevState: ActionStateType, formData:
                 return {
                     errors: result.error.errors.map(error => error.message),
                     success: ""
-                }
+                };
             }
-            attributesData = result.data;
+
+            // Normalizar a minúscula las claves y valores
+            attributesData = result.data.map(attr => ({
+                name: attr.name.toLowerCase(),
+                values: attr.values.map(v => v.toLowerCase())
+            }));
+
         } catch (error) {
+            console.log("Error parsing attributes:", error);
             return {
                 errors: ["Los atributos tienen un formato inválido."],
                 success: ""
-            }
+            };
         }
     } else {
         attributesData = undefined;

@@ -7,11 +7,12 @@ import {
     AccordionContent,
 } from "@/components/ui/accordion";
 import type { ProductWithCategoryResponse } from "@/src/schemas";
+import { getDeliveryRange } from "@/lib/utils";
+import Link from "next/link";
 
 type Props = { producto: ProductWithCategoryResponse };
 
 export default function ProductExpandableSections({ producto }: Props) {
-
     if (!producto.descripcion && !producto.especificaciones?.length) {
         return null;
     }
@@ -23,10 +24,10 @@ export default function ProductExpandableSections({ producto }: Props) {
         >
             {producto.descripcion && (
                 <AccordionItem value="descripcion">
-                    <AccordionTrigger className=" ">
+                    <AccordionTrigger>
                         Descripción
                     </AccordionTrigger>
-                    <AccordionContent className=" text-gray-700">
+                    <AccordionContent className="text-gray-700">
                         <div dangerouslySetInnerHTML={{ __html: producto.descripcion }} />
                     </AccordionContent>
                 </AccordionItem>
@@ -34,7 +35,7 @@ export default function ProductExpandableSections({ producto }: Props) {
 
             {producto.especificaciones?.length ? (
                 <AccordionItem value="especificaciones">
-                    <AccordionTrigger className="">
+                    <AccordionTrigger>
                         Especificaciones
                     </AccordionTrigger>
                     <AccordionContent>
@@ -53,6 +54,40 @@ export default function ProductExpandableSections({ producto }: Props) {
                     </AccordionContent>
                 </AccordionItem>
             ) : null}
+
+            <AccordionItem value="cambios-devoluciones-vendedores">
+                <AccordionTrigger>
+                    Envíos, devoluciones y vendedores
+                </AccordionTrigger>
+                <AccordionContent className="text-gray-700 text-sm space-y-1">
+                    <p><strong>En GoPhone lo hacemos fácil</strong></p>
+
+                    <ul className="list-disc list-inside space-y-1">
+                        <li>Envío con tarifa única.</li>
+                        <li>
+                            <Link href="/politicas-devolucion" className="underline">
+                                Política de devoluciones
+                            </Link>
+                        </li>
+                    </ul>
+
+                    <p>
+                        Puedes solicitar un cambio o devolución dentro de los <strong>3 días hábiles</strong> si el producto tiene falla o llega dañado.
+                        Debe estar nuevo, sin uso y con empaque original.
+                    </p>
+
+                    <p>
+                        Reembolsos se procesan en un máximo de <strong>72 horas hábiles</strong> tras validar el producto.
+                    </p>
+
+                    <p>
+                        <strong>Entrega estimada:</strong> {getDeliveryRange(producto.diasEnvio || 0)}
+                    </p>
+
+                    <p>Precios con impuestos incluidos. Producto con garantía oficial del fabricante.</p>
+                </AccordionContent>
+
+            </AccordionItem>
         </Accordion>
     );
 }

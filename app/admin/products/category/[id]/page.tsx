@@ -12,12 +12,9 @@ export default async function CategoryPageDetails({ params }: { params: params }
     const { id } = await params;
     const category = await getCategory(id);
     const patternCategories = await getPatternCategories();
-
-    console.log("category", category);
-
     return (
 
-        <div className="h-screen overflow-y-auto p-6 bg-white">
+        <div className="">
             <div className="flex flex-col md:flex-row justify-between items-center border-b pb-4 gap-2">
                 <h1 className="text-xl font-semibold text-gray-800">{category.nombre}</h1>
                 <div className="flex gap-2">
@@ -30,12 +27,10 @@ export default async function CategoryPageDetails({ params }: { params: params }
                     <DeleteCategoryButton categoryId={category._id} />
                 </div>
             </div>
-
             <EditCategoryForm 
                 category={category}
                 categories={patternCategories}
             />
         </div>
-
     );
 }
