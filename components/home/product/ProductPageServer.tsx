@@ -1,17 +1,15 @@
 // app/productos/[slug]/ProductPageServer.tsx
-import { GetProductsBySlug } from '@/src/services/products';
 import ProductDetails from '@/components/home/product/ProductDetails';
 import ProductosRelated from '@/components/home/product/ProductosRelated';
 import Breadcrumb from '@/components/home/products/Breadcrumbs';
+import type { ProductWithCategoryResponse } from '@/src/schemas';
 
 type Props = {
-    slug: string;
+    producto: ProductWithCategoryResponse;
 };
 
-export default async function ProductPageServer({ slug }: Props) {
-    const [producto] = await Promise.all([
-        GetProductsBySlug(slug),
-    ]);
+
+export default async function ProductPageServer({ producto }: Props) {
 
     if (!producto) {
         return (
@@ -42,7 +40,7 @@ export default async function ProductPageServer({ slug }: Props) {
             </section>
 
             <section className="max-w-7xl mx-auto py-4 px-2">
-                <ProductosRelated slug={slug} />
+                <ProductosRelated slug={producto.slug} />
             </section>
         </>
     );

@@ -93,13 +93,13 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
 export default async function pageProduct({ params }: { params: Params }) {
     const { slug } = await params;
-    const producto = await GetProductsBySlug(slug)
+    const producto = await GetProductsBySlug(slug);
 
     return (
-        <main className="">
+        <main>
             <ProductJsonLd producto={producto} />
             <Suspense fallback={<SpinnerLoading />}>
-                <ProductPageServer slug={slug} />
+                <ProductPageServer producto={producto} />
             </Suspense>
         </main>
     );

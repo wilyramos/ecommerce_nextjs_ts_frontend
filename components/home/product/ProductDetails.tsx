@@ -42,8 +42,6 @@ export default function ProductDetails({ producto }: Props) {
         return attrs;
     }, [producto.variants]);
 
-    console.log('El producto', producto);
-
     useEffect(() => {
         const initialAttrs: Record<string, string> = {};
 
@@ -230,25 +228,20 @@ export default function ProductDetails({ producto }: Props) {
                         </header>
 
                         {Object.entries(allAttributes).length > 0 && (
-                            <p className="text-xs font-semibold mb-2 text-gray-600 ">
-                        
+                            <p className="text-sm mb-3 text-gray-700 font-medium">
                                 Seleccionar opciones:
                             </p>
                         )}
 
-                        {/* Selects de atributos */}
                         {Object.entries(allAttributes).map(([key]) => {
                             const availableValues = getAvailableValues(key);
 
                             return (
-                                <section key={key} className="flex flex-col gap-1 mt-2 ">
+                                <fieldset key={key} className="mb-4">
+                                    <legend className="text-xs font-bold text-gray-600 uppercase tracking-wide mb-2">{key}:</legend>
 
-
-                                    <label className="text-sm uppercase">{key}:</label>
-
-                                    {/* Si el atributo es Color, mostrar círculos */}
                                     {key.toLowerCase() === "color" ? (
-                                        <div className="flex items-center gap-3 flex-wrap mt-1">
+                                        <div className="flex flex-wrap items-center gap-3">
                                             {availableValues.map(val => {
                                                 const outOfStock = isOptionOutOfStock(key, val);
                                                 const selected = selectedAttributes[key] === val;
@@ -258,17 +251,13 @@ export default function ProductDetails({ producto }: Props) {
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
                                                         title={val}
-                                                        className={`relative px-2 py-1 rounded-md border-2 transition cursor-pointer
-    ${selected ? 'border-gray-800 bg-black' : 'border-gray-200 hover:border-gray-500'}
-    ${outOfStock ? 'opacity-40 cursor-not-allowed' : ''}`}
+                                                        className={`relative w-8 h-8 rounded-full border-2 transition-all flex items-center justify-center
+                  ${selected ? 'border-gray-800 ring-2 ring-gray-800' : 'border-gray-300 hover:border-gray-500'}
+                  ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}`}
                                                     >
                                                         <ColorCircle color={val} />
-
                                                         {outOfStock && (
-                                                            <span
-                                                                className="absolute left-0 top-1/2 w-full border-t-2 border-gray-500 border-dashed rotate-[-45deg]"
-                                                                style={{ transformOrigin: 'center' }}
-                                                            />
+                                                            <span className="absolute inset-0 border-t-2 border-gray-500 border-dashed rotate-[-45deg]" />
                                                         )}
                                                     </button>
                                                 );
@@ -278,14 +267,15 @@ export default function ProductDetails({ producto }: Props) {
                                         <div className="flex flex-wrap gap-2">
                                             {availableValues.map(val => {
                                                 const outOfStock = isOptionOutOfStock(key, val);
+                                                const selected = selectedAttributes[key] === val;
                                                 return (
                                                     <Button
                                                         key={val}
-                                                        variant={selectedAttributes[key] === val ? "default" : "outline"}
+                                                        variant={selected ? "default" : "outline"}
                                                         size="sm"
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
-                                                        className={outOfStock ? "opacity-40 cursor-not-allowed line-through" : ""}
+                                                        className={`${outOfStock ? "opacity-40 cursor-not-allowed line-through" : "cursor-pointer hover:bg-gray-100"}`}
                                                     >
                                                         {val}
                                                     </Button>
@@ -297,7 +287,7 @@ export default function ProductDetails({ producto }: Props) {
                                             value={selectedAttributes[key] || ""}
                                             onValueChange={(value) => updateSelectedVariant(key, value)}
                                         >
-                                            <SelectTrigger>
+                                            <SelectTrigger className="w-full">
                                                 <SelectValue placeholder={`-- Elige ${key} --`} />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -308,7 +298,7 @@ export default function ProductDetails({ producto }: Props) {
                                                             key={val}
                                                             value={val}
                                                             disabled={outOfStock}
-                                                            className={outOfStock ? "opacity-40 cursor-not-allowed line-through" : "cursor-pointer"}
+                                                            className={`${outOfStock ? "opacity-40 cursor-not-allowed line-through" : "cursor-pointer"}`}
                                                         >
                                                             {val}
                                                         </SelectItem>
@@ -317,9 +307,10 @@ export default function ProductDetails({ producto }: Props) {
                                             </SelectContent>
                                         </Select>
                                     )}
-                                </section>
+                                </fieldset>
                             );
                         })}
+
 
                         {/* Variante seleccionada */}
                         {selectedVariant && (
