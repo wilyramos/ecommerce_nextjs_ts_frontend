@@ -287,7 +287,7 @@ export default function ProductDetails({ producto }: Props) {
                                             value={selectedAttributes[key] || ""}
                                             onValueChange={(value) => updateSelectedVariant(key, value)}
                                         >
-                                            <SelectTrigger className="w-full">
+                                            <SelectTrigger className="w-full max-w-md">
                                                 <SelectValue placeholder={`-- Elige ${key} --`} />
                                             </SelectTrigger>
                                             <SelectContent>
