@@ -32,14 +32,11 @@ export default function ClientCategoryAttributes({
         const validAttributes = selected.attributes || [];
         setCategoryAttributes(validAttributes);
 
-        // Solo conservar los atributos válidos
         const filteredAttributes: Record<string, string> = {};
         if (currentAttributes) {
             for (const attr of validAttributes) {
                 const value = currentAttributes[attr.name];
-                if (value) {
-                    filteredAttributes[attr.name] = value;
-                }
+                if (value) filteredAttributes[attr.name] = value;
             }
         }
 
@@ -47,10 +44,12 @@ export default function ClientCategoryAttributes({
     }, [selectedCategoryId, categorias, currentAttributes]);
 
     const handleAttributeChange = (name: string, value: string) => {
-        setSelectedAttributes((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
+        setSelectedAttributes((prev) => {
+            const updated = { ...prev };
+            if (value === "") delete updated[name]; // permite deseleccionar
+            else updated[name] = value;
+            return updated;
+        });
     };
 
     const selectedCategory = categorias.find((c) => c._id === selectedCategoryId);
@@ -58,8 +57,8 @@ export default function ClientCategoryAttributes({
     return (
         <div className="space-y-4">
             <div className="py-1">
-                <label className="block font-semibold text-gray-700 mb-1">Categoría
-                    <span className="text-red-500">*</span>
+                <label className="block font-semibold text-gray-700 mb-1">
+                    Categoría<span className="text-red-500">*</span>
                 </label>
                 <input type="hidden" name="categoria" value={selectedCategoryId} />
                 <Listbox value={selectedCategoryId} onChange={setSelectedCategoryId}>
@@ -72,13 +71,28 @@ export default function ClientCategoryAttributes({
                         </Listbox.Button>
                         <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
                             <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white shadow-lg border border-gray-200 z-50">
+                                {/* Opción vacía */}
+                                <Listbox.Option
+                                    key="none"
+                                    value=""
+                                    className={({ active }) =>
+                                        `cursor-pointer select-none relative p-2 ${active ? "bg-blue-100 text-blue-900" : "text-gray-900"}`
+                                    }
+                                >
+                                    {({ selected }) => (
+                                        <span className={`flex items-center ${selected ? "font-semibold" : "font-normal"}`}>
+                                            — Ninguna —
+                                            {selected && <CheckIcon className="h-4 w-4 ml-auto text-blue-600" />}
+                                        </span>
+                                    )}
+                                </Listbox.Option>
+
                                 {categorias.map((cat) => (
                                     <Listbox.Option
                                         key={cat._id}
                                         value={cat._id}
                                         className={({ active }) =>
-                                            `cursor-pointer select-none relative p-2 ${active ? "bg-blue-100 text-blue-900" : "text-gray-900"
-                                            }`
+                                            `cursor-pointer select-none relative p-2 ${active ? "bg-blue-100 text-blue-900" : "text-gray-900"}`
                                         }
                                     >
                                         {({ selected }) => (
@@ -111,20 +125,33 @@ export default function ClientCategoryAttributes({
                                 >
                                     <div className="relative">
                                         <Listbox.Button className="w-full border border-gray-300 rounded-lg p-2 text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                            <span>
-                                                {selectedAttributes[attr.name] || "Selecciona un valor"}
-                                            </span>
+                                            <span>{selectedAttributes[attr.name] || "Selecciona un valor"}</span>
                                             <ChevronUpDownIcon className="h-5 w-5 text-gray-400" />
                                         </Listbox.Button>
                                         <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
                                             <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white shadow-lg border border-gray-200 z-50">
+                                                {/* Opción vacía */}
+                                                <Listbox.Option
+                                                    key="none"
+                                                    value=""
+                                                    className={({ active }) =>
+                                                        `cursor-pointer select-none relative p-2 ${active ? "bg-blue-100 text-blue-900" : "text-gray-900"}`
+                                                    }
+                                                >
+                                                    {({ selected }) => (
+                                                        <span className={`flex items-center ${selected ? "font-semibold" : "font-normal"}`}>
+                                                            — Ninguno —
+                                                            {selected && <CheckIcon className="h-4 w-4 ml-auto text-blue-600" />}
+                                                        </span>
+                                                    )}
+                                                </Listbox.Option>
+
                                                 {attr.values.map((val) => (
                                                     <Listbox.Option
                                                         key={val}
                                                         value={val}
                                                         className={({ active }) =>
-                                                            `cursor-pointer select-none relative p-2 ${active ? "bg-blue-100 text-blue-900" : "text-gray-900"
-                                                            }`
+                                                            `cursor-pointer select-none relative p-2 ${active ? "bg-blue-100 text-blue-900" : "text-gray-900"}`
                                                         }
                                                     >
                                                         {({ selected }) => (

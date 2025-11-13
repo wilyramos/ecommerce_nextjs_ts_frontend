@@ -229,13 +229,21 @@ export default function ProductDetails({ producto }: Props) {
                             </span>
                         </header>
 
+                        {Object.entries(allAttributes).length > 0 && (
+                            <p className="text-sm mb-3">
+                                Seleccionar opciones:
+                            </p>
+                        )}
+
                         {/* Selects de atributos */}
                         {Object.entries(allAttributes).map(([key]) => {
                             const availableValues = getAvailableValues(key);
 
                             return (
-                                <section key={key} className="flex flex-col gap-1 mt-2">
-                                    <label className="text-sm font-medium">{key}:</label>
+                                <section key={key} className="flex flex-col gap-1 mt-2 ">
+
+
+                                    <label className="text-sm font-semibold">{key}:</label>
 
                                     {/* Si el atributo es Color, mostrar círculos */}
                                     {key.toLowerCase() === "color" ? (
