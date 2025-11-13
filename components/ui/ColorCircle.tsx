@@ -66,6 +66,7 @@ export default function ColorCircle({ color }: { color: string }) {
         "verde menta": "#98FB98",
         "verde oliva": "#808000",
         "verde agua": "#00FA9A",
+        "verde noche": "#013220",
         "vino": "#8B0000",
         "violeta": "#8A2BE2",
         "azul pacífico": "#5F9EA0",
