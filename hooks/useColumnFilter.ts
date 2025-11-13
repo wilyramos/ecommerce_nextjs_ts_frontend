@@ -12,9 +12,14 @@ export function useColumnFilter(key: string, defaultValue = "") {
   const update = useDebouncedCallback((val: string) => {
     const newParams = new URLSearchParams(params.toString());
 
+    // Actualizar el filtro
     if (val) newParams.set(key, val);
     else newParams.delete(key);
 
+    // Reiniciar paginación a la página 1
+    newParams.set("page", "1");
+
+    // Reemplazar la URL actual sin recargar
     router.replace(`?${newParams.toString()}`);
   }, 400);
 
@@ -28,6 +33,6 @@ export function useColumnFilter(key: string, defaultValue = "") {
       setValue(v);
       update(v);
     },
-    reset
+    reset,
   };
 }

@@ -272,6 +272,8 @@ type GetProductsByAdminParams = {
     esNuevo?: string;
     esDestacado?: string;
     query?: string;
+    category?: string;
+    brand?: string;
 };
 
 export const getProductsByAdmin = async (filters: GetProductsByAdminParams = {}) => {

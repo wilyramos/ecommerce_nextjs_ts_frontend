@@ -1,6 +1,8 @@
 import { getProductsByAdmin } from '@/src/services/products';
 import ProductsTable from '@/components/admin/products/ProductsTable';
 import Pagination from '@/components/ui/Pagination';
+import { getAllSubcategories } from '@/src/services/categorys';
+import { getBrands } from '@/src/services/brands';
 
 
 type ProductsResultProps = {
@@ -24,11 +26,19 @@ export default async function ProductsResultsAdmin({
         ...params
     });
 
+    // traer todas las categorías para el filtro y las marcas
+    const categories = await getAllSubcategories();
+    const brands = await getBrands();
+
     // console.log("Products data:", productsData);
 
     return (
         <>
-            <ProductsTable products={productsData} />
+            <ProductsTable 
+                products={productsData} 
+                categories={categories} 
+                brands={brands}
+            />
             <div className="py-2">
 
                 <Pagination
