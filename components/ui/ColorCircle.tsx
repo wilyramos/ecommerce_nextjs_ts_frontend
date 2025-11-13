@@ -45,6 +45,7 @@ export default function ColorCircle({ color }: { color: string }) {
         "naranja": "#FFA500",
         "naranja oscuro": "#FF8C00",
         "negro": "#000000",
+        "grafito": "#474A51",
         "ocre": "#CC7722",
         "oro": "#DAA520",
         "púrpura": "#800080",
