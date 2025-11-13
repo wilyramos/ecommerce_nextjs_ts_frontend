@@ -124,6 +124,8 @@ export default function ProductDetails({ producto }: Props) {
             producto.atributos?.COLOR ||
             null);
 
+    //TODO: REVIEW VARIANTS KEY IN PRODUCTS WITH VARIANTS
+
     return (
         <>
             <article className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-7xl mx-auto px-4 py-2">
@@ -287,7 +289,7 @@ export default function ProductDetails({ producto }: Props) {
                                             value={selectedAttributes[key] || ""}
                                             onValueChange={(value) => updateSelectedVariant(key, value)}
                                         >
-                                            <SelectTrigger className="w-full max-w-md">
+                                            <SelectTrigger className="w-full max-w-sm">
                                                 <SelectValue placeholder={`-- Elige ${key} --`} />
                                             </SelectTrigger>
                                             <SelectContent>
