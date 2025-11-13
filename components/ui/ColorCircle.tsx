@@ -67,7 +67,12 @@ export default function ColorCircle({ color }: { color: string }) {
         "verde oliva": "#808000",
         "verde agua": "#00FA9A",
         "vino": "#8B0000",
-        "violeta": "#8A2BE2"
+        "violeta": "#8A2BE2",
+        "azul pacífico": "#5F9EA0",
+        "verde alpino": "#0B6623",
+        "azul sierra": "#4682B4",
+        "titanio natural": "#B0B0B0",
+        "gris titanio": "#4B4B4B",
     };
 
     const colorKey = color.trim().toLowerCase();
