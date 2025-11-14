@@ -10,7 +10,7 @@ import Link from "next/link";
 const responsive = {
     desktop: { breakpoint: { max: 3000, min: 1024 }, items: 8 },
     tablet: { breakpoint: { max: 1024, min: 640 }, items: 4 },
-    mobile: { breakpoint: { max: 640, min: 0 }, items: 2 },
+    mobile: { breakpoint: { max: 640, min: 0 }, items: 4 },
 };
 
 export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {

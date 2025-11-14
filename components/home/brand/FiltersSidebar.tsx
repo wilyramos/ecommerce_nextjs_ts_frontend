@@ -58,14 +58,14 @@ export default function FiltersSidebar(
     }, [searchParams]);
 
     return (
-        <div className="w-64 p-4 rounded space-y-6">
+        <div className="w-full md:w-64 p-2 rounded space-y-6">
             <h2 className="text-md font-bold mb-2">Filtros de {brand.nombre}</h2>
-            <div className="flex items-center justify-center gap-3 ">
+            <div className="flex items-center justify-center gap-2">
                 <Image
                     src={brand.logo || '/minilogo.svg'}
                     alt={brand.nombre}
-                    width={50}
-                    height={50}
+                    width={40}
+                    height={40}
                     className="object-contain max-h-12"
                 />
             </div>

@@ -187,7 +187,8 @@ export default function ProductDetails({ producto }: Props) {
 
                             {/* Mostrar color solo si NO hay variantes */}
                             {!producto.variants?.length && colorAtributo && (
-                                <div className="flex items-center gap-2 text-xs text-gray-700">
+                                <div className="flex items-center gap-2 text-xs text-gray-700 border rounded-2xl px-3 py-1 w-max">
+                                    <span>Color:</span>
                                     {Array.isArray(colorAtributo)
                                         ? colorAtributo.map((c: string) => (
                                             <ColorCircle key={c} color={c} />
@@ -259,7 +260,7 @@ export default function ProductDetails({ producto }: Props) {
                                                     >
                                                         <ColorCircle color={val} />
                                                         {outOfStock && (
-                                                            <span className="absolute inset-0 border-t-2 border-gray-500 border-dashed rotate-[-45deg]" />
+                                                            <span className="absolute left-1 inset-0 border-t-2 border-gray-500 border-dashed rotate-[-45deg]" />
                                                         )}
                                                     </button>
                                                 );
@@ -343,7 +344,7 @@ export default function ProductDetails({ producto }: Props) {
                     </div>
 
                     {/* Información adicional */}
-                    <div className="space-y-4 mt-2 text-gray-700 text-xs">
+                    <div className="space-y-2 mt-2 text-gray-700 text-xs">
                         {/* Envío */}
                         <div className="bg-white p-4 flex items-start gap-4 ">
                             <Truck className="w-6 h-6 text-gray-500 mt-0.5" />
@@ -355,7 +356,7 @@ export default function ProductDetails({ producto }: Props) {
                                     Envíos al resto del Perú mediante{" "}
                                     <span className="font-semibold italic bg-red-600 text-white px-1 rounded">SHALOM</span>.
                                 </p>
-                                <p className="mt-2 inline-block bg-gray-100 border border-gray-200 rounded-full px-3 py-1 text-gray-600">
+                                <p className="mt-2 inline-block border border-gray-200 rounded-full px-3 py-1 text-gray-600">
                                     {producto.diasEnvio
                                         ? `Recíbelo entre: ${getDeliveryRange(producto.diasEnvio)}`
                                         : "Recíbelo en 1–3 días hábiles"}
