@@ -68,7 +68,7 @@ export default function Advertisement() {
                 additionalTransfrom={0}
                 arrows={false}
                 autoPlay
-                autoPlaySpeed={3000}
+                autoPlaySpeed={2500}
                 infinite
                 keyBoardControl
                 showDots={false}

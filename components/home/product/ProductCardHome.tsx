@@ -10,7 +10,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
     const hoverImage = product.imagenes?.[1] ?? primaryImage;
     const precio = product.precio ?? 0;
     const stock = product.stock ?? 0;
-    const color = product.atributos?.Color ?? null;
+    const color = product.atributos?.Color || product.atributos?.color || null;
     const brand = typeof product.brand === "string" ? product.brand : product.brand?.nombre;
 
     return (
@@ -65,8 +65,9 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                     </h3>
 
                     {color && (
-                        <div className="pt-1">
-                            <ColorCircle color={color} />
+                        <div className="border px-2 py-1 rounded-2xl w-max mt-1 flex items-center gap-1">
+                            <span className="text-[10px]">Color:</span>
+                            <ColorCircle color={color} size={12} />
                         </div>
                     )}
                 </div>
