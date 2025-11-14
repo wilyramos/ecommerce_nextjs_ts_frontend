@@ -21,8 +21,7 @@ export default async function ProductosNuevos() {
                             Novedades
                         </span>
 
-                        <p className="text-sm md:text-base text-gray-400 font-light">
-                            Explora nuestras novedades y encuentra lo que necesitas.
+                        <p className="border-b-2 border-gray-700 w-24 mx-auto md:mx-0 mt-2 mb-4">
                         </p>
                     </h2>
                     

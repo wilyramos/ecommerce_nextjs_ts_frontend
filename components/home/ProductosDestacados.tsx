@@ -18,8 +18,8 @@ export default async function ProductosDestacados() {
                             GoPhone
                         </span>
                     </h2>
-                    <p className="text-sm md:text-base text-gray-400">
-                        Nuestros productos más populares y recomendados.
+                    <p className="border-b-2 border-gray-700 w-24 mx-auto md:mx-0 mt-2 mb-4">
+                        
                     </p>
                 </header>
 

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
     Accordion,
@@ -13,9 +13,7 @@ import Link from "next/link";
 type Props = { producto: ProductWithCategoryResponse };
 
 export default function ProductExpandableSections({ producto }: Props) {
-    if (!producto.descripcion && !producto.especificaciones?.length) {
-        return null;
-    }
+    if (!producto.descripcion && !producto.especificaciones?.length) return null;
 
     return (
         <Accordion
@@ -24,69 +22,79 @@ export default function ProductExpandableSections({ producto }: Props) {
         >
             {producto.descripcion && (
                 <AccordionItem value="descripcion">
-                    <AccordionTrigger>
-                        Descripción
-                    </AccordionTrigger>
-                    <AccordionContent className="text-gray-700 max-w-3xl mx-auto">
-                        <div dangerouslySetInnerHTML={{ __html: producto.descripcion }} />
+                    <AccordionTrigger>Descripción</AccordionTrigger>
+                    <AccordionContent>
+                        <div className="text-gray-700 max-w-4xl mx-auto lg:grid lg:grid-cols-2 lg:gap-6">
+                            <div
+                                className="col-span-2 lg:col-span-2"
+                                dangerouslySetInnerHTML={{ __html: producto.descripcion }}
+                            />
+                        </div>
                     </AccordionContent>
                 </AccordionItem>
             )}
 
             {producto.especificaciones?.length ? (
                 <AccordionItem value="especificaciones">
-                    <AccordionTrigger>
-                        Especificaciones
-                    </AccordionTrigger>
+                    <AccordionTrigger>Especificaciones</AccordionTrigger>
                     <AccordionContent>
-                        <table className="w-full text-xs max-w-3xl mx-auto" >
-                            <tbody>
-                                {producto.especificaciones.map((spec) => (
-                                    <tr key={spec.key} className="even:bg-gray-100 border-b">
-                                        <td className="px-3 py-2 w-1/3">
-                                            {spec.key}
-                                        </td>
-                                        <td className="px-3 py-2">{spec.value}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                        <div className="max-w-4xl mx-auto lg:grid lg:grid-cols-2 lg:gap-6">
+                            <table className="w-full text-xs col-span-2">
+                                <tbody>
+                                    {producto.especificaciones.map((spec) => (
+                                        <tr
+                                            key={spec.key}
+                                            className="even:bg-gray-100 border-b"
+                                        >
+                                            <td className="px-3 py-2 w-1/3">{spec.key}</td>
+                                            <td className="px-3 py-2">{spec.value}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </AccordionContent>
                 </AccordionItem>
             ) : null}
 
             <AccordionItem value="cambios-devoluciones-vendedores">
-                <AccordionTrigger>
-                    Envíos, devoluciones y vendedores
-                </AccordionTrigger>
-                <AccordionContent className="text-gray-700 text-sm space-y-1 max-w-3xl mx-auto">
-                    <p><strong>En GoPhone lo hacemos fácil</strong></p>
+                <AccordionTrigger>Envíos, devoluciones y vendedores</AccordionTrigger>
+                <AccordionContent>
+                    <div className="text-gray-700 text-sm space-y-4 max-w-4xl mx-auto lg:grid lg:grid-cols-2 lg:gap-6 lg:space-y-0">
+                        <div className="space-y-3">
+                            <p><strong>En GoPhone lo hacemos fácil</strong></p>
 
-                    <ul className="list-disc list-inside space-y-1">
-                        <li>Envío con tarifa única.</li>
-                        <li>
-                            <Link href="/politicas-devolucion" className="underline">
-                                Política de devoluciones
-                            </Link>
-                        </li>
-                    </ul>
+                            <ul className="list-disc list-inside space-y-1">
+                                <li>Envío con tarifa única.</li>
+                                <li>
+                                    <Link href="/politicas-devolucion" className="underline">
+                                        Política de devoluciones
+                                    </Link>
+                                </li>
+                            </ul>
 
-                    <p>
-                        Puedes solicitar un cambio o devolución dentro de los <strong>3 días hábiles</strong> si el producto tiene falla o llega dañado.
-                        Debe estar nuevo, sin uso y con empaque original.
-                    </p>
+                            <p>
+                                Puedes solicitar un cambio o devolución dentro de los{" "}
+                                <strong>3 días hábiles</strong> si el producto tiene falla o llega dañado.
+                                Debe estar nuevo, sin uso y con empaque original.
+                            </p>
+                        </div>
 
-                    <p>
-                        Reembolsos se procesan en un máximo de <strong>72 horas hábiles</strong> tras validar el producto.
-                    </p>
+                        <div className="space-y-3">
+                            <p>
+                                Reembolsos se procesan en un máximo de{" "}
+                                <strong>72 horas hábiles</strong> tras validar el producto.
+                            </p>
 
-                    <p>
-                        <strong>Entrega estimada:</strong> {getDeliveryRange(producto.diasEnvio || 0)}
-                    </p>
+                            <p>
+                                <strong>Entrega estimada:</strong>{" "}
+                                {getDeliveryRange(producto.diasEnvio || 0)}
+                            </p>
 
-                    <p>Precios con impuestos incluidos. Producto con garantía oficial del fabricante.</p>
+                            <p>Precios con impuestos incluidos. Producto con garantía oficial del fabricante.</p>
+                        </div>
+                    </div>
                 </AccordionContent>
-
             </AccordionItem>
         </Accordion>
     );

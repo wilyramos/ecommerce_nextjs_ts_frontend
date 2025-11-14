@@ -12,7 +12,7 @@ export default async function BrandsList() {
                 <h2 className="text-xl md:text-2xl font-semibold text-gray-800">
                     Marcas
                     <div>
-                <div className="border-b border-2 border-gray-300 w-14 md:w-46 mb-4"></div>
+                <div className="border-b-2 border-gray-700 w-24 mx-auto md:mx-0 mt-2 mb-4"></div>
                     </div>
                 </h2>
             </header>
