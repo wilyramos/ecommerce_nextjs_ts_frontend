@@ -7,7 +7,7 @@ import SpinnerLoading from "@/components/ui/SpinnerLoading";
 
 export const metadata: Metadata = {
     metadataBase: new URL("https://gophone.pe"),
-    title: "Productos | GoPhone Perú",
+    title: "CatáloGo de Productos",
     description:
         "Catálogo completo de productos GoPhone: iPhones, accesorios, cargadores, audífonos, fundas, cables, repuestos y más tecnología disponible con envío rápido en Perú.",
     keywords: [
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     authors: [{ name: "GoPhone" }],
     creator: "GoPhone",
     openGraph: {
-        title: "Productos | GoPhone Perú",
+        title: "Productos GoPhone | Tecnología y Accesorios",
         description:
             "Explora todos los productos disponibles: iPhones, accesorios, cargadores, fundas y más tecnología de calidad con garantía y envíos rápidos.",
         url: "https://gophone.pe/productos",
