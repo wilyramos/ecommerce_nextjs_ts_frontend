@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     // Limpiar EL HTML y solo mostrar texto plano
     const description = product.descripcion
         ? product.descripcion.replace(/<[^>]+>/g, '').slice(0, 160)
-        : 'Descubre nuestros productos en GoPhone Cañete. Calidad y tecnología a tu alcance.';
+        : 'Descubre nuestros productos en GoPhone. Calidad y tecnología a tu alcance.';
     const categoryName = product.categoria?.nombre || 'General';
     const image = product.imagenes?.[0] || 'https://www.gophone.pe/logomini.svg';
     const url = `https://www.gophone.pe/productos/${product.slug}`;

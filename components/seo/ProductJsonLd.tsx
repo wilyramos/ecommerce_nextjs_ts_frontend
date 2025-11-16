@@ -40,7 +40,7 @@ export default function ProductJsonLd({ producto }: { producto: ProductWithCateg
             availability,
             seller: {
                 '@type': 'Organization',
-                name: 'GoPhone Cañete',
+                name: 'GoPhone',
             },
             shippingDetails: {
                 '@type': 'OfferShippingDetails',

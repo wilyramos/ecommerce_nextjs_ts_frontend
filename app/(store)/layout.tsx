@@ -12,12 +12,38 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
     ...globalMetadata,
     title: {
-        default: "Tienda | GoPhone Cañete",
-        template: "%s | GoPhone Cañete",
+        default: "GoPhone | Tienda",
+        template: "%s | GoPhone"
     },
     description:
-        "Explora nuestra tienda GoPhone: celulares, accesorios y tecnología al mejor precio en Cañete.",
+        "Sección principal de la tienda GoPhone: productos, compras, cuenta y soporte.",
+    openGraph: {
+        ...globalMetadata.openGraph,
+        title: "GoPhone | Tienda",
+        description:
+            "Productos, compras, cuenta y soporte dentro de la tienda GoPhone.",
+        url: "https://gophone.pe/store",
+        images: [
+            {
+                url: "https://gophone.pe/logob.svg",
+                width: 1200,
+                height: 630,
+                alt: "GoPhone Tienda"
+            }
+        ]
+    },
+    twitter: {
+        ...globalMetadata.twitter,
+        title: "GoPhone | Tienda",
+        description:
+            "Explora productos, compras y soporte en la tienda GoPhone.",
+        images: ["https://gophone.pe/logoapp.svg"]
+    },
+    alternates: {
+        canonical: "https://gophone.pe/store"
+    }
 };
+
 
 export default function layout({ children }: { children: React.ReactNode }) {
     return (

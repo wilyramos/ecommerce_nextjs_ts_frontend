@@ -14,13 +14,13 @@ import NovedadesCategorias from "@/components/home/NovedadesCategorias";
 export const metadata: Metadata = {
     ...globalMetadata,
     title: {
-        default: "GoPhone | Tecnología y productos a tu alcance",
-        template: "%s | GoPhone Cañete",
+        default: "GoPhone | Tu tienda de tecnología",
+        template: "%s | GoPhone",
     },
     description:
         "GoPhone es tu tienda de confianza en Cañete para la compra de celulares, accesorios y más. Ofrecemos productos de calidad, envío rápido y atención personalizada.",
     keywords: [
-        "GoPhone Cañete",
+        "GoPhone",
         "tienda iPhone Cañete",
         "venta de celulares Cañete",
         "accesorios para celulares",

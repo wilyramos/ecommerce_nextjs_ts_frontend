@@ -6,48 +6,59 @@ import ProductResults from "@/components/home/product/ProductResults";
 import SpinnerLoading from "@/components/ui/SpinnerLoading";
 
 export const metadata: Metadata = {
-    title: "Productos - GoPhone | Accesorios y Tecnología",
+    metadataBase: new URL("https://gophone.pe"),
+    title: "Productos | GoPhone Perú",
     description:
-        "Explora nuestra amplia selección de productos en GoPhone Cañete. Encuentra iPhones, accesorios para celulares, audífonos, cargadores y más tecnología de calidad.",
+        "Catálogo completo de productos GoPhone: iPhones, accesorios, cargadores, audífonos, fundas, cables, repuestos y más tecnología disponible con envío rápido en Perú.",
     keywords: [
-        "productos GoPhone",
-        "iPhone Cañete",
-        "comprar accesorios celulares",
-        "gadgets en Cañete",
-        "tecnología móvil",
-        "audífonos, cargadores, fundas",
-        "accesorios iPhone Perú",
-        "tienda online tecnología Cañete",
-        "airpods y audífonos Cañete",
-        "cargadores y cables Cañete",
-        "fundas y cases iPhone Cañete",
-        "repuestos celulares Cañete",
-        "smartphones en Cañete",
-        "tienda de tecnología en Cañete"
+        "GoPhone productos",
+        "iPhone Perú",
+        "accesorios iPhone",
+        "tienda tecnología Perú",
+        "cargadores originales",
+        "audífonos y AirPods",
+        "fundas y protectores",
+        "repuestos iPhone",
+        "smartphones Perú",
+        "gadgets tecnológicos",
+        "cables y adaptadores",
+        "tienda online de tecnología"
     ],
     authors: [{ name: "GoPhone" }],
     creator: "GoPhone",
     openGraph: {
-        title: "Productos - GoPhone Cañete",
+        title: "Productos | GoPhone Perú",
         description:
-            "Encuentra productos tecnológicos como iPhones, accesorios, cargadores y más en GoPhone, tu tienda de confianza en Cañete.",
+            "Explora todos los productos disponibles: iPhones, accesorios, cargadores, fundas y más tecnología de calidad con garantía y envíos rápidos.",
         url: "https://gophone.pe/productos",
         siteName: "GoPhone",
         locale: "es_PE",
         type: "website",
+        images: [
+            {
+                url: "https://gophone.pe/logob.svg",
+                width: 1200,
+                height: 630,
+                alt: "Productos GoPhone Perú"
+            }
+        ]
     },
     twitter: {
         card: "summary_large_image",
-        title: "GoPhone Cañete - Productos y Accesorios Tecnológicos",
+        title: "Productos GoPhone | Tecnología y Accesorios",
         description:
-            "Revisa nuestra selección de productos tecnológicos disponibles en GoPhone Cañete. ¡Envíos rápidos y precios increíbles!",
+            "Encuentra iPhones, accesorios, cargadores, cables, audífonos y más tecnología con garantía en GoPhone Perú.",
+        images: ["https://gophone.pe/logomini.svg"]
     },
-    metadataBase: new URL("https://gophone.pe"),
+    alternates: {
+        canonical: "https://gophone.pe/productos"
+    },
     icons: {
         icon: "/logoapp.png",
-        apple: "/logoapp.png",
+        apple: "/logoapp.png"
     }
 };
+
 
 type SearchParams = Promise<{
     category?: string;
