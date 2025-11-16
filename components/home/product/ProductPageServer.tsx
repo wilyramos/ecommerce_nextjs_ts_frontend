@@ -21,7 +21,7 @@ export default async function ProductPageServer({ producto }: Props) {
 
     return (
         <>
-            <h1 className="text-xl text-center my-6 hidden">
+            <h1 className="text-xl text-center hidden">
                 {producto.nombre}
             </h1>
 

@@ -11,31 +11,37 @@ type Props = {
 
 export default function Breadcrumb({ categoryName, categorySlug, productName }: Props) {
     return (
-        <nav className="text-xs px-2 py-1">
-           
-            {/* 🧭 Rastro de navegación */}
+        <nav className="text-xs px-4 py-1">
             <ol className="flex items-center flex-wrap gap-1 text-gray-600">
+
                 <li>
-                    <Link href="/" className="hover:text-blue-600 transition-colors">Inicio</Link>
+                    <Link
+                        href="/"
+                        className="hover:text-gray-800 transition-colors text-gray-600"
+                    >
+                        Inicio
+                    </Link>
                 </li>
 
-                <LuChevronRight size={14} />
+                <LuChevronRight size={14} className="text-gray-500" />
 
                 <li>
                     <Link
                         href={`/categoria/${categorySlug}`}
-                        className="hover:text-blue-600 transition-colors"
+                        className="hover:text-gray-800 transition-colors text-gray-600"
                     >
                         {categoryName}
                     </Link>
                 </li>
 
-                <LuChevronRight size={14} />
+                <LuChevronRight size={14} className="text-gray-500" />
 
-                <li className="text-gray-700 font-semibold truncate max-w-[250px]">
+                <li className="text-gray-800 font-semibold truncate max-w-[250px]">
                     {productName}
                 </li>
+
             </ol>
         </nav>
+
     );
 }

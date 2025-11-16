@@ -4,6 +4,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MdClear } from "react-icons/md";
 import type { Attribute } from "@/src/schemas";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 import {
     Accordion,
@@ -101,48 +103,38 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
                 </button>
             </div>
             {/* ----- Filtro por Precio con inputs ----- */}
-            <div className="mb-6">
-                <h2 className="text-sm font-medium text-black mb-1">Precio</h2>
+            <div className="mb-4">
+                <h2 className="text-sm font-medium text-gray-600 mb-1">Precio</h2>
                 <div
-                    className="flex items-center gap-2 flex-wrap"
+                    className="flex flex-row gap-2 "
                 >
                     {/* Input Mín */}
-                    <div className="flex flex-col text-sm text-black w-full sm:w-auto">
-                        <label htmlFor="min" className="mb-1">
+                    <div className="flex flex-col text-sm text-gray-600 w-full sm:w-auto px-4">
+                        <Label htmlFor="min" className="mb-1 text-xs font-semibold">
                             Mín
-                        </label>
-                        <input
+                        </Label>
+                        <Input
                             id="min"
                             type="number"
                             min={0}
                             value={minPrice}
                             onChange={(e) => handlePriceChange("min", e.target.value)}
-                            className="w-full sm:w-24
-          border border-gray-300 rounded 
-          px-2 py-1
-          focus:outline-none focus:ring-1 focus:ring-gray-400"
                         />
                     </div>
 
                     <span className="text-gray-500 md:mt-5">-</span>
 
                     {/* Input Máx */}
-                    <div className="flex flex-col text-sm text-black w-full sm:w-auto">
-                        <label htmlFor="max" className="mb-1">
+                    <div className="flex flex-col text-sm text-gray-600 w-full sm:w-auto">
+                        <Label htmlFor="max" className="mb-1 text-xs font-semibold">
                             Máx
-                        </label>
-                        <input
+                        </Label>
+                        <Input
                             id="max"
                             type="number"
                             min={0}
                             value={maxPrice}
                             onChange={(e) => handlePriceChange("max", e.target.value)}
-                            className="
-          w-full sm:w-24
-          border border-gray-300 rounded 
-          px-2 py-1
-          focus:outline-none focus:ring-1 focus:ring-gray-400
-        "
                         />
                     </div>
                 </div>
@@ -153,8 +145,10 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
             <Accordion type="multiple" className="space-y-4">
                 {attributes.map((attr) => (
                     <AccordionItem key={attr.name} value={attr.name}>
-                        <AccordionTrigger className="text-sm font-medium text-black hover:bg-gray-100 py-2 px-2 rounded-md">
-                            {attr.name}
+                        <AccordionTrigger
+                            className="text-sm font-normal text-gray-600 hover:bg-gray-100 py-2 px-2 rounded-md"
+                        >
+                            {attr.name.charAt(0).toUpperCase() + attr.name.slice(1).toLowerCase()}
                         </AccordionTrigger>
                         <AccordionContent className="pl-2 pt-2 text-sm text-gray-600">
                             <ul className="space-y-1">

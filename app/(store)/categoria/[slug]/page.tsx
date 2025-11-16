@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     const categoryName = decodeURIComponent(slug).replace(/-/g, " ");
 
     return {
-        title: `${categoryName} | GoPhone`,
+        title: `${categoryName}`,
         description: `Descubre la mejor selección de ${categoryName} en GoPhone. Ofertas exclusivas, precios competitivos y envío rápido.`,
         keywords: [
             categoryName,
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
         ],
         openGraph: {
             ...globalMetadata.openGraph,
-            title: `${categoryName} | GoPhone`,
+            title: `${categoryName}`,
             description: `Explora nuestra colección de ${categoryName}. Encuentra productos de calidad, con garantía y envío rápido en GoPhone.`,
             url: `https://gophone.pe/categoria/${slug}`,
             images: [
