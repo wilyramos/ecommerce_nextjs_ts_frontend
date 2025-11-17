@@ -9,7 +9,7 @@ export default async function ProfilePageCheckout() {
     if (!user) redirect("/auth/login?redirect=/checkout/profile");
 
     return (
-        <div className="max-w-xl mx-auto">
+        <div className="max-w-xl mx-auto bg-white p-6 rounded-md">
             <p className="flex items-center gap-2 text-sm text-black mb-4">
                 <FiUser /> Mi información personal:
             </p>

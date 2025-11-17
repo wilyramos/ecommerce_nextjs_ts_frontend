@@ -29,6 +29,8 @@ type ShippingData = {
     referencia: string
 }
 
+//TODO: Retornar en caso exista errores en la creación de la orden
+
 export default function ShippingForm() {
     const router = useRouter()
     const { shipping, setShipping } = useCheckoutStore()

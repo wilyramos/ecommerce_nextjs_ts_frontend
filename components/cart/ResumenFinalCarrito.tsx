@@ -21,7 +21,6 @@ export default function ResumenFinalCarrito() {
 
   return (
     <section className="p-5 border-l md:border-l-2 border-gray-100 bg-white md:rounded-l-2xl">
-      {/* Header con toggle */}
       <button
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between text-gray-900 font-semibold text-base md:text-lg transition-colors hover:text-black"
@@ -38,47 +37,60 @@ export default function ResumenFinalCarrito() {
 
       {open && (
         <div className="mt-5">
-          {/* Lista de productos */}
           <ul className="space-y-4 max-h-80 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-            {cart.map((item) => (
-              <li
-                key={item._id}
-                className="flex justify-between items-center border-b border-gray-100 pb-3"
-              >
-                <div className="flex gap-3 items-center min-w-0">
-                  {item.imagenes?.[0] ? (
-                    <Image
-                      src={item.imagenes[0]}
-                      alt={item.nombre}
-                      width={48}
-                      height={48}
-                      quality={70}
-                      className="w-12 h-12 object-cover rounded-lg border border-gray-100"
-                    />
-                  ) : (
-                    <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-lg text-[10px] text-gray-400">
-                      Sin imagen
+            {cart.map((item) => {
+              const img = item.variant?.imagenes?.[0] ?? item.imagenes?.[0];
+              const price = item.variant?.precio ?? item.precio;
+              const attrs = item.variant?.atributos ?? null;
+
+              return (
+                <li
+                  key={item._id + (item.variant?._id ?? "")}
+                  className="flex justify-between items-center border-b border-gray-100 pb-3"
+                >
+                  <div className="flex gap-3 items-center min-w-0">
+                    {img ? (
+                      <Image
+                        src={img}
+                        alt={item.variant?.nombre ?? item.nombre}
+                        width={48}
+                        height={48}
+                        quality={70}
+                        className="w-12 h-12 object-cover rounded-lg border border-gray-100"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-lg text-[10px] text-gray-400">
+                        Sin imagen
+                      </div>
+                    )}
+
+                    <div className="flex flex-col min-w-0">
+                      <p className="font-medium text-gray-800 text-sm break-words max-w-[150px]">
+                        {item.nombre}
+                      </p>
+
+                      {attrs && (
+                        <p className="text-[11px] text-gray-500 break-words max-w-[150px]">
+                          {Object.entries(attrs)
+                            .map(([k, v]) => `${k}: ${v}`)
+                            .join(" • ")}
+                        </p>
+                      )}
+
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        x{item.cantidad} • S/ {price.toFixed(2)}
+                      </p>
                     </div>
-                  )}
-
-                  <div className="flex flex-col min-w-0">
-                    <p className="font-medium text-gray-800 text-sm truncate">
-                      {item.nombre}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      x{item.cantidad} • S/ {item.precio.toFixed(2)}
-                    </p>
                   </div>
-                </div>
 
-                <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
-                  S/ {item.subtotal.toFixed(2)}
-                </span>
-              </li>
-            ))}
+                  <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
+                    S/ {item.subtotal.toFixed(2)}
+                  </span>
+                </li>
+              );
+            })}
           </ul>
 
-          {/* Totales */}
           <div className="border-t border-gray-200 mt-6 pt-4 text-sm text-gray-700 space-y-2">
             <div className="flex justify-between">
               <span>Subtotal</span>

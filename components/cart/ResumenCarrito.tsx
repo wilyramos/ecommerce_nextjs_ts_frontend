@@ -40,7 +40,7 @@ export default function ResumenCarrito() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {/* Lista de productos */}
-                <div className="md:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-4 md:p-6">
+                <div className="md:col-span-2 bg-white rounded-2xl p-4 md:p-4">
                     <ul className="divide-y divide-gray-100">
                         {cart.map((item) => (
                             <ItemCarrito key={item._id} item={item} />
@@ -49,7 +49,7 @@ export default function ResumenCarrito() {
                 </div>
 
                 {/* Resumen */}
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col gap-5">
+                <div className="bg-white rounded-2xl p-6 flex flex-col gap-5">
                     <h2 className="font-semibold text-lg text-gray-900">Resumen</h2>
 
                     <ul className="text-sm text-gray-600 space-y-3">
