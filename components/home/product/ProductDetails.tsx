@@ -266,7 +266,7 @@ export default function ProductDetails({ producto }: Props) {
                                                 );
                                             })}
                                         </div>
-                                    ) : availableValues.length <= 5 ? (
+                                    ) : availableValues.length <= 6 ? (
                                         <div className="flex flex-wrap gap-2">
                                             {availableValues.map(val => {
                                                 const outOfStock = isOptionOutOfStock(key, val);
@@ -290,7 +290,7 @@ export default function ProductDetails({ producto }: Props) {
                                             value={selectedAttributes[key] || ""}
                                             onValueChange={(value) => updateSelectedVariant(key, value)}
                                         >
-                                            <SelectTrigger className="w-full max-w-sm">
+                                            <SelectTrigger>
                                                 <SelectValue placeholder={`-- Elige ${key} --`} />
                                             </SelectTrigger>
                                             <SelectContent>
