@@ -43,7 +43,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                 {product.brand?.nombre || (product.esNuevo ? "Nuevo Lanzamiento" : "Destacado")}
                             </span>
 
-                            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-zinc-900">
+                            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-zinc-900">
                                 {product.nombre}
                             </h2>
 
