@@ -90,7 +90,7 @@ export default function DrawerFilters({ categorySlug, attributes }: Props) {
     return (
         <Drawer open={open} onOpenChange={setOpen}>
             <DrawerTrigger asChild>
-                <button className="w-full cursor-pointer bg-white rounded-md shadow-xs px-2 py-2 flex items-center gap-2 justify-center sm:hidden">
+                <button className="w-full cursor-pointer bg-white rounded-lg shadow-sm px-2 py-2 flex items-center gap-2 justify-center sm:hidden">
                     <VscSettings size={20} />
                     Filtros
                 </button>
