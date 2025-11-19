@@ -24,7 +24,7 @@ export default function ProductExpandableSections({ producto }: Props) {
                 <AccordionItem value="descripcion">
                     <AccordionTrigger>Descripción</AccordionTrigger>
                     <AccordionContent>
-                        <div className="text-gray-700 max-w-4xl mx-auto lg:grid lg:grid-cols-2 lg:gap-6">
+                        <div className="text-gray-700  mx-auto lg:grid lg:grid-cols-2 lg:gap-6">
                             <div
                                 className="col-span-2 lg:col-span-2"
                                 dangerouslySetInnerHTML={{ __html: producto.descripcion }}
@@ -38,7 +38,7 @@ export default function ProductExpandableSections({ producto }: Props) {
                 <AccordionItem value="especificaciones">
                     <AccordionTrigger>Especificaciones</AccordionTrigger>
                     <AccordionContent>
-                        <div className="max-w-4xl mx-auto lg:grid lg:grid-cols-2 lg:gap-6">
+                        <div className=" mx-auto lg:grid lg:grid-cols-2 lg:gap-6">
                             <table className="w-full text-xs col-span-2">
                                 <tbody>
                                     {producto.especificaciones.map((spec) => (
@@ -60,7 +60,7 @@ export default function ProductExpandableSections({ producto }: Props) {
             <AccordionItem value="cambios-devoluciones-vendedores">
                 <AccordionTrigger>Envíos, devoluciones y vendedores</AccordionTrigger>
                 <AccordionContent>
-                    <div className="text-gray-700 text-sm space-y-4 max-w-4xl mx-auto lg:grid lg:grid-cols-2 lg:gap-6 lg:space-y-0">
+                    <div className="text-gray-700 text-sm space-y-4  mx-auto lg:grid lg:grid-cols-2 lg:gap-6 lg:space-y-0">
                         <div className="space-y-3">
                             <p><strong>En GoPhone lo hacemos fácil</strong></p>
 
