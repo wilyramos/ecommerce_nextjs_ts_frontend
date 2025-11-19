@@ -20,19 +20,19 @@ export default function NavBar() {
                     </div>
 
                     <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-10">
-                        <Link href="/" className="flex items-center hover:bg-gray-100 rounded-md p-1">
+                        <Link href="/" className="flex items-center  p-1">
                             <Logo />
                         </Link>
                     </div>
 
                     <Link
                         href="/"
-                        className="hidden md:flex items-center hover:bg-gray-100 rounded-md p-1"
+                        className="hidden md:flex items-center p-1"
                     >
                         <Logo />
                     </Link>
 
-                    <div className="hidden md:flex px-6 lg:px-10">
+                    <div className="hidden md:flex px- lg:px-10">
                         <ServerCategorias />
                     </div>
 

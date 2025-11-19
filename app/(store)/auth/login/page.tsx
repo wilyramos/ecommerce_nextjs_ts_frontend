@@ -3,8 +3,8 @@ import LoginForm from '@/components/auth/LoginForm'
 
 export const metadata: Metadata = {
     title: 'GoPhone - Iniciar Sesión',
-    description: 'GoPhone - Iniciar Sesión',
-    keywords: 'iniciar sesión, GoPhone Cañete, cuenta',
+    description: 'Inicia sesión en tu cuenta de GoPhone para acceder a tus pedidos, favoritos y más.',
+    keywords: 'iniciar sesión, GoPhone , cuenta',
 }
 
 export default function PageLogin() {

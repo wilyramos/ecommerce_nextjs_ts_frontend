@@ -14,7 +14,7 @@ import NovedadesCategorias from "@/components/home/NovedadesCategorias";
 export const metadata: Metadata = {
     ...globalMetadata,
     title: {
-        default: "GoPhone | Tu tienda de tecnología",
+        default: "GoPhone - Venta de accesorios y tecnologia premium",
         template: "%s | GoPhone",
     },
     description:
@@ -79,10 +79,6 @@ export default function HomePage() {
             </section>
 
 
-            <section className="my-5">
-                <NovedadesCategorias />
-            </section>
-
             <section>
                 <ProductosNuevos />
             </section>
@@ -91,6 +87,12 @@ export default function HomePage() {
 
             <section className="my-5">
                 <BrandsList />
+            </section>
+
+
+
+            <section className="my-5">
+                <NovedadesCategorias />
             </section>
 
             <section>
