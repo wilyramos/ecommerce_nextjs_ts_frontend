@@ -12,7 +12,7 @@ export default async function ProductosDestacados() {
             <div className="max-w-7xl mx-auto space-y-6">
                 {/* Texto superior */}
                 <header className="text-center md:text-left">
-                    <h2 className="text-xl md:text-2xl font-semibold text-gray-500">
+                    <h2 className="text-xl font-semibold text-gray-500">
                         Lo mejor de{" "}
                         <span className="text-white bg-gray-950 px-2">
                             GoPhone

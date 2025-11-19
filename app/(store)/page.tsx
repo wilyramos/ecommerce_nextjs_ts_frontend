@@ -67,16 +67,17 @@ export const metadata: Metadata = {
 export default function HomePage() {
     return (
         <>
+
             <section className="container mx-auto">
                 <CarruselPrincipal />
-            </section>
-
-            <section className="bg-white">
-                <CategoriasDestacadasWrapper />
             </section>
             <section>
                 <ProductosDestacados />
             </section>
+            <section className="bg-white">
+                <CategoriasDestacadasWrapper />
+            </section>
+
 
             <section className="my-5">
                 <NovedadesCategorias />

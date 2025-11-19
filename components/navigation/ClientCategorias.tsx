@@ -24,24 +24,20 @@ export default function ClientCategorias({ categories }: { categories: CategoryR
                 ? category.parent._id
                 : null;
 
-        if (!acc[parentId ?? "root"]) {
-            acc[parentId ?? "root"] = [];
-        }
-
-        acc[parentId ?? "root"].push(category);
+        const key = parentId ?? "root";
+        if (!acc[key]) acc[key] = [];
+        acc[key].push(category);
         return acc;
     }, {} as Record<string, CategoryListResponse>);
 
     const rootCategories = grouped["root"] || [];
 
-    const handleToggle = () => {
-        setOpen(!open);
-    };
+    const handleToggle = () => setOpen(!open);
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-                <button className="flex items-center gap-2 text-gray-700 hover:text-black transition-colors font-medium cursor-pointer">
+                <button className="flex items-center gap-2 text-gray-700 hover:bg-gray-100 hover:text-black px-3 py-1 rounded-md transition">
                     <RiMenu2Line size={22} />
                     Categorías
                 </button>
@@ -49,29 +45,28 @@ export default function ClientCategorias({ categories }: { categories: CategoryR
 
             <SheetContent
                 side="left"
-                className="w-[340px] px-5 py-6 bg-white shadow-xl border-r border-gray-200 rounded-r-2xl"
+                className="w-[340px] px-5 py-6 bg-white shadow-xl border-r rounded-r-2xl"
             >
-                {/* Encabezado */}
-                <div className="pb-4 border-b border-gray-200 mb-4">
+                <div className="pb-4 border-b mb-4">
                     <SheetHeader>
                         <SheetTitle className="text-lg font-semibold flex justify-between items-center">
-                            <div className="items-center text-center">
+                            <div className="text-center">
                                 <Logo />
                             </div>
-                            <span className="uppercase font-bold text-end justify-end">categorías</span>
+                            <span className="uppercase font-bold">categorías</span>
                         </SheetTitle>
                     </SheetHeader>
                 </div>
 
-                {/* Lista de categorías */}
                 <ScrollArea className="h-[calc(100vh-140px)] pr-2">
                     <div className="space-y-4">
                         {rootCategories.map((cat) => {
                             const subcategories = grouped[cat._id] || [];
+
                             return (
                                 <div key={cat._id}>
                                     <details className="group">
-                                        <summary className="cursor-pointer list-none flex items-center justify-between px-3 py-2 rounded-lg font-medium text-gray-800 transition-all duration-200 hover:bg-gray-100 hover:text-black">
+                                        <summary className="cursor-pointer list-none flex items-center justify-between px-3 py-2 rounded-lg font-medium text-gray-800 transition hover:bg-gray-100">
                                             <span>{cat.nombre}</span>
                                             <PiCaretRightBold
                                                 size={18}
@@ -84,7 +79,7 @@ export default function ClientCategorias({ categories }: { categories: CategoryR
                                                 <li key={sub._id}>
                                                     <Link
                                                         href={`/productos?category=${sub.slug}`}
-                                                        className="block px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-black transition-all duration-200"
+                                                        className="block px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-black transition"
                                                         onClick={handleToggle}
                                                     >
                                                         {sub.nombre}
