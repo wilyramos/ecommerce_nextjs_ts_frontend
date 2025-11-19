@@ -278,7 +278,7 @@ export default function ProductDetails({ producto }: Props) {
                                                         size="sm"
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
-                                                        className={`${outOfStock ? "opacity-40 cursor-not-allowed line-through" : "cursor-pointer hover:bg-gray-100"}`}
+                                                        className={`${outOfStock ? "opacity-40 cursor-not-allowed line-through" : "text-xs font-normal uppercase cursor-pointer hover:border-gray-600"}`}
                                                     >
                                                         {val}
                                                     </Button>
@@ -354,7 +354,7 @@ export default function ProductDetails({ producto }: Props) {
                                 </p>
                                 <p>
                                     Envíos al resto del Perú mediante{" "}
-                                    <span className="font-semibold italic bg-red-600 text-white px-1 rounded">SHALOM</span>.
+                                    <span className="font-semibold italic bg-red-600 text-white px-1">SHALOM</span>.
                                 </p>
                                 <p className="mt-2 inline-block border border-gray-200 rounded-full px-3 py-1 text-gray-600">
                                     {producto.diasEnvio
