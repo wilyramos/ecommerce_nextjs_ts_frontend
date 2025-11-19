@@ -10,17 +10,6 @@ import { AiOutlineUser } from "react-icons/ai";
 
 export default function NavBar() {
 
-    const categories = [
-        { name: "Android", slug: "android" },
-        { name: "Power banks", slug: "power-banks" },
-        { name: "Protectores de pantalla", slug: "protectores-de-pantalla" },
-        { name: "Auriculares y audífonos", slug: "auriculares-y-audifonos" },
-        { name: "Cargadores y cables", slug: "cargadores-y-cables" },
-        { name: "Iphone", slug: "iphone" },
-        { name: "Fundas y carcasas", slug: "fundas-y-carcasas" },
-    ];
-
-
     return (
         <NavBarClient>
             <header className="sticky top-0 z-50 border-b bg-white">
@@ -60,7 +49,7 @@ export default function NavBar() {
                             aria-label="Cuenta"
                         >
                             <AiOutlineUser className="h-6 w-6" />
-                            <span className="hidden lg:inline text-sm font-medium">Cuenta</span>
+                            <span className="hidden lg:inline text-sm font-semibold">Cuenta</span>
                         </Link>
 
                         <div className="hover:bg-gray-100 rounded-md px-2 py-1">
@@ -73,31 +62,6 @@ export default function NavBar() {
                     </div>
                 </div>
             </header>
-
-            <div className="hidden md:flex max-w-7xl mx-auto bg-black">
-                <ul className="flex flex-wrap gap-2 md:gap-3 px-4 md:px-6 py-2 border-b">
-                    {categories.map((category) => (
-                        <li key={category.slug}>
-                            <Link
-                                href={`/productos?category=${category.slug}`}
-                                className="
-                        px-4 py-2
-                        rounded
-                        text-sm
-                        font-medium
-                        transition-all
-                        hover:bg-gray-800
-                        active:scale-[0.97]
-                        text-white
-                    "
-                            >
-                                {category.name}
-                            </Link>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-
         </NavBarClient>
     );
 }
