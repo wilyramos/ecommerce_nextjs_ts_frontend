@@ -50,7 +50,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                 </span>
                             </div>
 
-                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-neutral-900 leading-[1.1]">
+                            <h2 className="text-4xl md:text-4xl lg:text-5xl font-bold tracking-tight text-neutral-900 leading-[1.1]">
                                 {product.nombre}
                             </h2>
 
