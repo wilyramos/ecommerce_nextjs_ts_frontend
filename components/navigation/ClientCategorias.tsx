@@ -53,7 +53,7 @@ export default function ClientCategorias({ categories }: { categories: CategoryR
                             <div className="text-center">
                                 <Logo />
                             </div>
-                            <span className="uppercase font-bold">categorías</span>
+                            {/* <span className="uppercase font-bold">categorías</span> */}
                         </SheetTitle>
                     </SheetHeader>
                 </div>
