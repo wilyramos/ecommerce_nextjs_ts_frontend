@@ -33,9 +33,12 @@ export default function Footer() {
                         <Logo />
                     </div>
                     <p className="text-gray-600 leading-relaxed text-sm">
-                        Tecnología móvil, accesorios originales y atención personalizada.
+                        Calidad a tu alcance.
                         <br />
+                        <span className="text-xs">
+                            Ubicanos en
                         Jr. O Higgins 120, San Vicente de Cañete.
+                        </span>
                     </p>
                 </div>
 
@@ -76,10 +79,10 @@ export default function Footer() {
                         <li>
                             Email:{" "}
                             <a
-                                href="mailto:ventas@gophone.pe"
+                                href="mailto:contacto@gophone.pe"
                                 className="hover:text-black transition-colors duration-200"
                             >
-                                ventas@gophone.pe
+                                contacto@gophone.pe
                             </a>
                         </li>
                         <li>Horario: Lun-Sáb 10am - 7pm</li>

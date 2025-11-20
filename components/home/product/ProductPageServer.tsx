@@ -3,6 +3,7 @@ import ProductDetails from '@/components/home/product/ProductDetails';
 import ProductosRelated from '@/components/home/product/ProductosRelated';
 import Breadcrumb from '@/components/home/products/Breadcrumbs';
 import type { ProductWithCategoryResponse } from '@/src/schemas';
+import RecentViewedClient from './RecentViewedClient';
 
 type Props = {
     producto: ProductWithCategoryResponse;
@@ -41,6 +42,10 @@ export default async function ProductPageServer({ producto }: Props) {
 
             <section className="max-w-7xl mx-auto py-4 px-2">
                 <ProductosRelated slug={producto.slug} />
+            </section>
+
+            <section className="max-w-7xl mx-auto py-4 px-2">
+                <RecentViewedClient producto={producto} />
             </section>
         </>
     );

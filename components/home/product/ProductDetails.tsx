@@ -94,7 +94,10 @@ export default function ProductDetails({ producto }: Props) {
                 .every(([key, value]) => key === attrKey || variant.atributos[key] === value);
             if (matchesOtherAttrs) values.add(variant.atributos[attrKey]);
         });
-        return Array.from(values);
+
+        return Array.from(values).sort((a, b) =>
+            a.localeCompare(b, undefined, { sensitivity: "base" })
+        );
     };
 
     const precio = selectedVariant?.precio ?? producto.precio ?? 0;
@@ -240,7 +243,7 @@ export default function ProductDetails({ producto }: Props) {
                             const availableValues = getAvailableValues(key);
 
                             return (
-                                <fieldset key={key} className="mb-4">
+                                <fieldset key={key} className="mb-4 border rounded-md p-1.5">
                                     <legend className="text-xs font-bold text-gray-600 uppercase tracking-wide mb-2">{key}:</legend>
 
                                     {key.toLowerCase() === "color" ? (
@@ -278,7 +281,7 @@ export default function ProductDetails({ producto }: Props) {
                                                         size="sm"
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
-                                                        className={`${outOfStock ? "opacity-40 cursor-not-allowed line-through" : "cursor-pointer hover:bg-gray-100"}`}
+                                                        className={`${outOfStock ? "opacity-40 cursor-not-allowed line-through" : "cursor-pointer font-bold uppercase"}`}
                                                     >
                                                         {val}
                                                     </Button>

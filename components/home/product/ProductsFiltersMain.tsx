@@ -21,11 +21,35 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    // inicializa datos aunque filters sea null
     const { brands = [], atributos = [], price = [] } = filters?.[0] ?? {};
     const priceFilter = price?.[0] ?? null;
 
-    // hooks SIEMPRE al inicio
+    // --- ordenamiento seguro ---
+    const sortedCategories =
+        filters?.[0]?.categories
+            ?.slice()
+            .sort((a, b) => a.nombre.localeCompare(b.nombre, undefined, { sensitivity: "base" })) ?? [];
+
+    const sortedBrands =
+        brands
+            .slice()
+            .sort((a, b) => a.nombre.localeCompare(b.nombre, undefined, { sensitivity: "base" }));
+
+    const sortedAtributos = atributos
+        .slice()
+        .map((attr) => ({
+            ...attr,
+            values: attr.values
+                .slice()
+                .sort((a, b) =>
+                    a.localeCompare(b, undefined, { sensitivity: "base" })
+                ),
+        }))
+        .sort((a, b) =>
+            a.name.localeCompare(b.name, undefined, { sensitivity: "base" })
+        );
+
+    // --- price range ---
     const [priceRange, setPriceRange] = useState<[number, number]>([
         priceFilter?.min ?? 0,
         priceFilter?.max ?? 0,
@@ -44,15 +68,6 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
             setPriceRange([priceFilter.min ?? 0, priceFilter.max ?? 0]);
         }
     }, [searchParams, priceFilter]);
-
-    // Ordena alfabéticamente los atributos y valores
-    useEffect(() => {
-        if (!atributos?.length) return;
-        atributos.forEach((attr) => {
-            attr.values.sort((a, b) => a.localeCompare(b));
-        });
-        price.sort((a, b) => (a.min ?? 0) - (b.min ?? 0));
-    }, [atributos, price, searchParams]);
 
     if (!filters || filters.length === 0) return null;
 
@@ -77,17 +92,15 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
     const clearFilters = () => {
         const params = new URLSearchParams();
         const query = searchParams.get("query");
-        if (query) {
-            params.set("query", query);
-        }
+        if (query) params.set("query", query);
         router.push(`/productos?${params.toString()}`);
     };
 
     return (
-        <aside className="w-full  shadow-xs rounded-xs bg-white">
+        <aside className="w-full shadow-xs rounded-xs bg-white">
             <div className="flex justify-between items-center mb-3 bg-black rounded-t-lg">
                 <h2 className="text-lg flex items-center gap-2 px-4 py-2 font-semibold text-white">
-                    <LuListFilter className="" />
+                    <LuListFilter />
                     Filtros
                 </h2>
                 <Button
@@ -103,13 +116,12 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
             <Accordion type="multiple" className="w-full text-sm px-4">
 
                 {/* Categorías */}
-
-                {filters[0].categories && filters[0].categories.length > 0 && (
+                {sortedCategories.length > 0 && (
                     <AccordionItem value="categories">
                         <AccordionTrigger className="text-sm">Categorías</AccordionTrigger>
                         <AccordionContent>
                             <ul className="space-y-1">
-                                {filters[0].categories.map((category) => (
+                                {sortedCategories.map((category) => (
                                     <li key={category.slug}>
                                         <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-600">
                                             <input
@@ -129,12 +141,12 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                 )}
 
                 {/* Marcas */}
-                {brands.length > 0 && (
+                {sortedBrands.length > 0 && (
                     <AccordionItem value="brands">
                         <AccordionTrigger className="text-sm">Marcas</AccordionTrigger>
                         <AccordionContent>
                             <ul className="space-y-1">
-                                {brands.map((brand) => (
+                                {sortedBrands.map((brand) => (
                                     <li key={brand.slug}>
                                         <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-600">
                                             <input
@@ -154,7 +166,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                 )}
 
                 {/* Atributos dinámicos */}
-                {atributos.map((attr) => (
+                {sortedAtributos.map((attr) => (
                     <AccordionItem key={attr.name} value={attr.name}>
                         <AccordionTrigger className="capitalize text-sm">
                             {attr.name}
@@ -182,7 +194,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                     </AccordionItem>
                 ))}
 
-                {/* Precio dinámico */}
+                {/* Precio */}
                 {priceFilter && (
                     <AccordionItem value="price">
                         <AccordionTrigger className="text-sm">

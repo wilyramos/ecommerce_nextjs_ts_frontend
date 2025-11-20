@@ -24,7 +24,7 @@ export default function ProductExpandableSections({ producto }: Props) {
                 <AccordionItem value="descripcion">
                     <AccordionTrigger>Descripción</AccordionTrigger>
                     <AccordionContent>
-                        <div className="text-gray-700  mx-auto lg:grid lg:grid-cols-2 lg:gap-6">
+                        <div className="text-gray-700  mx-auto lg:grid lg:grid-cols-2 lg:gap-6 text-sm">
                             <div
                                 className="col-span-2 lg:col-span-2"
                                 dangerouslySetInnerHTML={{ __html: producto.descripcion }}
