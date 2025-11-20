@@ -278,7 +278,7 @@ export default function ProductDetails({ producto }: Props) {
                                                         size="sm"
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
-                                                        className={`${outOfStock ? "opacity-40 cursor-not-allowed line-through" : "text-xs font-normal uppercase cursor-pointer hover:border-gray-600"}`}
+                                                        className={`${outOfStock ? "opacity-40 cursor-not-allowed line-through" : "cursor-pointer hover:bg-gray-100"}`}
                                                     >
                                                         {val}
                                                     </Button>

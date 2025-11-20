@@ -5,7 +5,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import type { ProductResponse } from "@/src/schemas";
 import Link from "next/link";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, Sparkle, Tag } from "lucide-react";
 import { CustomDot } from "../ui/CustomDot";
 import { CustomArrow } from "../ui/CustomArrows";
 
@@ -38,24 +38,36 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                         className="group relative flex flex-col md:flex-row items-center justify-between px-6 md:px-16 py-10 md:py-16 h-auto md:h-[400px]"
                     >
                         {/* Text Section */}
-                        <article className="z-10 w-full md:w-1/2 flex flex-col justify-center space-y-3">
-                            <span className="text-xs sm:text-sm font-medium uppercase tracking-wider text-zinc-600">
-                                {product.brand?.nombre || (product.esNuevo ? "Nuevo Lanzamiento" : "Destacado")}
-                            </span>
+                        <article className="z-10 w-full md:w-1/2  space-y-3">
+                            <div className="w-fit flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-neutral-200 shadow-sm">
+                                {product.esNuevo ? (
+                                    <Sparkle className="w-3 h-3 text-blue-600" />
+                                ) : (
+                                    <Tag className="w-3 h-3 text-neutral-500" />
+                                )}
+                                <span className="text-xs font-bold uppercase tracking-widest text-neutral-800">
+                                    {product.brand?.nombre || "TECNOLOGÍA"}
+                                </span>
+                            </div>
 
-                            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-zinc-900">
+                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-neutral-900 leading-[1.1]">
                                 {product.nombre}
                             </h2>
 
-                            <div className="flex items-baseline gap-4">
-                                <p className="text-2xl sm:text-3xl font-semibold text-zinc-900">
-                                    S/. {product.precio?.toFixed(2) ?? "-"}
-                                </p>
 
+                            <div className="flex items-end gap-4">
+                                <p className="text-3xl md:text-4xl font-bold text-neutral-900">
+                                    S/. {product.precio?.toFixed(2) ?? "0.00"}
+                                </p>
                                 {product.precioComparativo && product.precioComparativo > product.precio && (
-                                    <p className="text-sm sm:text-base text-zinc-500 line-through">
-                                        S/. {product.precioComparativo.toFixed(2)}
-                                    </p>
+                                    <div className="flex flex-col justify-end pb-1">
+                                        <span className="text-sm font-medium text-red-500 bg-red-50 px-2 py-0.5 rounded mb-1 w-fit">
+                                            -{Math.round(((product.precioComparativo - product.precio) / product.precioComparativo) * 100)}% OFF
+                                        </span>
+                                        <span className="text-lg text-neutral-400 line-through decoration-neutral-400">
+                                            S/. {product.precioComparativo.toFixed(2)}
+                                        </span>
+                                    </div>
                                 )}
                             </div>
 
@@ -73,7 +85,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                         </article>
 
                         {/* Image Section */}
-                        <div className="relative w-full md:w-1/2 h-[220px] md:h-full flex justify-center mt-6 md:mt-0">
+                        <div className="relative w-full md:w-1/2 h-[250px] md:h-full flex justify-center mt-6 md:mt-0">
                             <div className="relative w-full h-full">
                                 <Image
                                     src={product.imagenes?.[0] || "/logoapp.png"}
