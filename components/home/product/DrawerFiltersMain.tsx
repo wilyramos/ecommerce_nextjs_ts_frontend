@@ -27,8 +27,7 @@ export default function DrawerFiltersMain({ filters }: Props) {
     const searchParams = useSearchParams();
     const [open, setOpen] = useState(false);
 
-    // inicializa datos aunque filters sea null
-    const { brands = [], atributos = [], price = [] } = filters?.[0] ?? {};
+    const { categories = [], brands = [], atributos = [], price = [] } = filters?.[0] ?? {};
     const priceFilter = price?.[0] ?? null;
 
     const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
@@ -39,14 +38,20 @@ export default function DrawerFiltersMain({ filters }: Props) {
         if (!filters) return;
 
         const parsed: Record<string, string[]> = {};
-        // load attributes filters
+
+        // load category filters
+        const categoryVals = searchParams.getAll("category");
+        if (categoryVals.length > 0) parsed["category"] = categoryVals;
+
+        // load brands
+        const brandsVals = searchParams.getAll("brand");
+        if (brandsVals.length > 0) parsed["brand"] = brandsVals;
+
+        // load dynamic attributes
         atributos.forEach((attr) => {
             const vals = searchParams.getAll(attr.name);
             if (vals.length > 0) parsed[attr.name] = vals;
         });
-        // load brands
-        const brandsVals = searchParams.getAll("brand");
-        if (brandsVals.length > 0) parsed["brand"] = brandsVals;
 
         setSelectedFilters(parsed);
 
@@ -60,7 +65,7 @@ export default function DrawerFiltersMain({ filters }: Props) {
             setMinPrice(min);
             setMaxPrice(max);
         }
-    }, [searchParams, filters, atributos, brands, priceFilter]);
+    }, [searchParams, filters, atributos, brands, categories, priceFilter]);
 
     if (!filters || filters.length === 0) return null;
 
@@ -98,6 +103,7 @@ export default function DrawerFiltersMain({ filters }: Props) {
 
     const clearFilters = () => {
         const cleared: Record<string, null> = {};
+        categories.forEach(() => (cleared["category"] = null));
         atributos.forEach((attr) => (cleared[attr.name] = null));
         cleared["brand"] = null;
         setSelectedFilters({});
@@ -131,11 +137,134 @@ export default function DrawerFiltersMain({ filters }: Props) {
                     </button>
                 </DrawerHeader>
 
-                {/* Contenido scrolleable */}
                 <ScrollArea className="h-[70vh] pr-2 mt-2 overflow-y-auto">
-                    {/* ----- Filtro por Precio ----- */}
+
+                    {/* ----- Categorías ----- */}
+                    {categories.length > 0 && (
+                        <Disclosure>
+                            {({ open }) => (
+                                <div>
+                                    <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-black border-b py-2 hover:bg-gray-100 uppercase">
+                                        <span>Categorías</span>
+                                        <ChevronUpIcon
+                                            className={`w-5 h-5 transform transition-transform ${open ? "rotate-180" : ""}`}
+                                        />
+                                    </Disclosure.Button>
+                                    <Disclosure.Panel className="pt-2 pl-1 text-sm text-gray-600">
+                                        <ul className="space-y-1">
+                                            {categories
+                                                .slice()
+                                                .sort((a, b) =>
+                                                    a.nombre.localeCompare(b.nombre, undefined, { sensitivity: "base" })
+                                                )
+                                                .map((category) => (
+                                                    <li
+                                                        key={category.slug}
+                                                        onClick={() => toggleCheckboxValue("category", category.slug)}
+                                                        className="flex items-center gap-2 hover:bg-gray-100 cursor-pointer py-1 rounded-md select-none"
+                                                    >
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={!!selectedFilters["category"]?.includes(category.slug)}
+                                                            readOnly
+                                                            className="accent-blue-600 pointer-events-none"
+                                                        />
+                                                        <span className="text-sm text-gray-600">{category.nombre}</span>
+                                                    </li>
+                                                ))}
+                                        </ul>
+                                    </Disclosure.Panel>
+                                </div>
+                            )}
+                        </Disclosure>
+                    )}
+
+                    {/* ----- Marcas ----- */}
+                    {brands.length > 0 && (
+                        <Disclosure>
+                            {({ open }) => (
+                                <div>
+                                    <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-black border-b py-2 hover:bg-gray-100 uppercase">
+                                        <span>Marcas</span>
+                                        <ChevronUpIcon
+                                            className={`w-5 h-5 transform transition-transform ${open ? "rotate-180" : ""}`}
+                                        />
+                                    </Disclosure.Button>
+                                    <Disclosure.Panel className="pt-2 pl-1 text-sm text-gray-600">
+                                        <ul className="space-y-1">
+                                            {brands
+                                                .slice()
+                                                .sort((a, b) =>
+                                                    a.nombre.localeCompare(b.nombre, undefined, { sensitivity: "base" })
+                                                )
+                                                .map((brand) => (
+                                                    <li
+                                                        key={brand.slug}
+                                                        onClick={() => toggleCheckboxValue("brand", brand.slug)}
+                                                        className="flex items-center gap-2 hover:bg-gray-100 cursor-pointer py-1 rounded-md select-none"
+                                                    >
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={!!selectedFilters["brand"]?.includes(brand.slug)}
+                                                            readOnly
+                                                            className="accent-blue-600 pointer-events-none"
+                                                        />
+                                                        <span className="text-sm text-gray-600">{brand.nombre}</span>
+                                                    </li>
+                                                ))}
+                                        </ul>
+                                    </Disclosure.Panel>
+                                </div>
+                            )}
+                        </Disclosure>
+                    )}
+
+                    {/* ----- Atributos dinámicos ----- */}
+                    <div className="space-y-4 mt-4">
+                        {atributos
+                            .slice()
+                            .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }))
+                            .map((attr) => (
+                                <Disclosure key={attr.name}>
+                                    {({ open }) => (
+                                        <div>
+                                            <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-black border-b py-2 hover:bg-gray-100 uppercase">
+                                                <span>{attr.name}</span>
+                                                <ChevronUpIcon
+                                                    className={`w-5 h-5 transform transition-transform ${open ? "rotate-180" : ""}`}
+                                                />
+                                            </Disclosure.Button>
+                                            <Disclosure.Panel className="pt-2 pl-1 text-sm text-gray-600">
+                                                <ul className="space-y-1">
+                                                    {attr.values
+                                                        .slice()
+                                                        .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }))
+                                                        .map((value) => (
+                                                            <li
+                                                                key={value}
+                                                                onClick={() => toggleCheckboxValue(attr.name, value)}
+                                                                className="flex items-center gap-2 hover:bg-gray-100 cursor-pointer py-1 rounded-md select-none"
+                                                            >
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={!!selectedFilters[attr.name]?.includes(value)}
+                                                                    readOnly
+                                                                    className="accent-blue-600 pointer-events-none"
+                                                                />
+                                                                <span className="text-sm text-gray-600">{value}</span>
+                                                            </li>
+                                                        ))}
+                                                </ul>
+                                            </Disclosure.Panel>
+                                        </div>
+                                    )}
+                                </Disclosure>
+                            ))}
+                    </div>
+
+                    {/* ----- Precio ----- */}
                     {priceFilter && (
-                        <div className="mb-6">
+                        <div className="mb-6 mt-4">
                             <h2 className="text-sm font-medium text-black mb-1 uppercase">Precio</h2>
                             <div className="flex flex-nowrap items-center gap-4 pt-2">
                                 <div className="flex flex-col text-xs text-black w-full sm:w-auto">
@@ -167,77 +296,6 @@ export default function DrawerFiltersMain({ filters }: Props) {
                         </div>
                     )}
 
-                    {/* ----- Filtros de marcas ----- */}
-                    {brands.length > 0 && (
-                        <Disclosure>
-                            {({ open }) => (
-                                <div>
-                                    <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-black border-b py-2 hover:bg-gray-100 uppercase">
-                                        <span>Marcas</span>
-                                        <ChevronUpIcon
-                                            className={`w-5 h-5 transform transition-transform ${open ? "rotate-180" : ""}`}
-                                        />
-                                    </Disclosure.Button>
-                                    <Disclosure.Panel className="pt-2 pl-1 text-sm text-gray-600">
-                                        <ul className="space-y-1">
-                                            {brands.map((brand) => (
-                                                <li
-                                                    key={brand.slug}
-                                                    onClick={() => toggleCheckboxValue("brand", brand.slug)}
-                                                    className="flex items-center gap-2 hover:bg-gray-100 cursor-pointer py-1 rounded-md select-none"
-                                                >
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={!!selectedFilters["brand"]?.includes(brand.slug)}
-                                                        readOnly
-                                                        className="accent-blue-600 pointer-events-none"
-                                                    />
-                                                    <span className="text-sm text-gray-600">{brand.nombre}</span>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </Disclosure.Panel>
-                                </div>
-                            )}
-                        </Disclosure>
-                    )}
-
-                    {/* ----- Filtros por atributos dinámicos ----- */}
-                    <div className="space-y-4 mt-4">
-                        {atributos.map((attr) => (
-                            <Disclosure key={attr.name}>
-                                {({ open }) => (
-                                    <div>
-                                        <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-black border-b py-2 hover:bg-gray-100 uppercase">
-                                            <span>{attr.name}</span>
-                                            <ChevronUpIcon
-                                                className={`w-5 h-5 transform transition-transform ${open ? "rotate-180" : ""}`}
-                                            />
-                                        </Disclosure.Button>
-                                        <Disclosure.Panel className="pt-2 pl-1 text-sm text-gray-600">
-                                            <ul className="space-y-1">
-                                                {attr.values.map((value) => (
-                                                    <li
-                                                        key={value}
-                                                        onClick={() => toggleCheckboxValue(attr.name, value)}
-                                                        className="flex items-center gap-2 hover:bg-gray-100 cursor-pointer py-1 rounded-md select-none"
-                                                    >
-                                                        <input
-                                                            type="checkbox"
-                                                            checked={!!selectedFilters[attr.name]?.includes(value)}
-                                                            readOnly
-                                                            className="accent-blue-600 pointer-events-none"
-                                                        />
-                                                        <span className="text-sm text-gray-600">{value}</span>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </Disclosure.Panel>
-                                    </div>
-                                )}
-                            </Disclosure>
-                        ))}
-                    </div>
                 </ScrollArea>
             </DrawerContent>
         </Drawer>
