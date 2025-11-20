@@ -32,7 +32,7 @@ export default function AddProductToCart({ product, variant }: Props) {
 
         const activeVariant = selectedVariant ?? undefined;
 
-        //TODO: Mejorar esta lógica para productos con variantes y evitar duplicados en el carrito, ahora mismo solo permite 1 variante por producto
+        //TODO: Mejorar esta lógica para productos con variantes y evitar duplicados en el carrito, ahora mismo solo permite 1 variante por producto. Ademas motrar toast si se supera el stock
         const productInCart = cart.find((item) => {
             if (activeVariant) return item._id === product._id && item.variant?._id === activeVariant._id;
             return item._id === product._id && !item.variant;

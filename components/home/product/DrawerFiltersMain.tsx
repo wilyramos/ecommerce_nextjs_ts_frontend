@@ -137,14 +137,14 @@ export default function DrawerFiltersMain({ filters }: Props) {
                     </button>
                 </DrawerHeader>
 
-                <ScrollArea className="h-[70vh] pr-2 mt-2 overflow-y-auto">
+                <ScrollArea className="h-[70vh] pr-2 mt-2 overflow-y-auto ">
 
                     {/* ----- Categorías ----- */}
                     {categories.length > 0 && (
                         <Disclosure>
                             {({ open }) => (
                                 <div>
-                                    <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-black border-b py-2 hover:bg-gray-100 uppercase">
+                                    <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-gray-700 border-b py-3 hover:bg-gray-100 first-letter:uppercase ">
                                         <span>Categorías</span>
                                         <ChevronUpIcon
                                             className={`w-5 h-5 transform transition-transform ${open ? "rotate-180" : ""}`}
@@ -161,7 +161,7 @@ export default function DrawerFiltersMain({ filters }: Props) {
                                                     <li
                                                         key={category.slug}
                                                         onClick={() => toggleCheckboxValue("category", category.slug)}
-                                                        className="flex items-center gap-2 hover:bg-gray-100 cursor-pointer py-1 rounded-md select-none"
+                                                        className="flex items-center gap-2 hover:bg-gray-100 cursor-pointer py-1 rounded-md select-none "
                                                     >
                                                         <input
                                                             type="checkbox"
@@ -184,7 +184,7 @@ export default function DrawerFiltersMain({ filters }: Props) {
                         <Disclosure>
                             {({ open }) => (
                                 <div>
-                                    <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-black border-b py-2 hover:bg-gray-100 uppercase">
+                                    <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-gray-700 border-b py-2 hover:bg-gray-100 first-letter:uppercase">
                                         <span>Marcas</span>
                                         <ChevronUpIcon
                                             className={`w-5 h-5 transform transition-transform ${open ? "rotate-180" : ""}`}
@@ -228,7 +228,7 @@ export default function DrawerFiltersMain({ filters }: Props) {
                                 <Disclosure key={attr.name}>
                                     {({ open }) => (
                                         <div>
-                                            <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-black border-b py-2 hover:bg-gray-100 uppercase">
+                                            <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-gray-700 border-b py-2 hover:bg-gray-100 uppercase">
                                                 <span>{attr.name}</span>
                                                 <ChevronUpIcon
                                                     className={`w-5 h-5 transform transition-transform ${open ? "rotate-180" : ""}`}
@@ -265,9 +265,9 @@ export default function DrawerFiltersMain({ filters }: Props) {
                     {/* ----- Precio ----- */}
                     {priceFilter && (
                         <div className="mb-6 mt-4">
-                            <h2 className="text-sm font-medium text-black mb-1 uppercase">Precio</h2>
+                            <h2 className="text-sm font-medium text-gray-700 mb-1 uppercase">Precio</h2>
                             <div className="flex flex-nowrap items-center gap-4 pt-2">
-                                <div className="flex flex-col text-xs text-black w-full sm:w-auto">
+                                <div className="flex flex-col text-xs text-gray-700 w-full sm:w-auto">
                                     <label htmlFor="min" className="mb-1">Mín</label>
                                     <input
                                         id="min"
@@ -281,7 +281,7 @@ export default function DrawerFiltersMain({ filters }: Props) {
 
                                 <span className="text-gray-500 mt-5">-</span>
 
-                                <div className="flex flex-col text-xs text-black w-full sm:w-auto">
+                                <div className="flex flex-col text-xs text-gray-700 w-full sm:w-auto">
                                     <label htmlFor="max" className="mb-1">Máx</label>
                                     <input
                                         id="max"

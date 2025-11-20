@@ -74,6 +74,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
     const updatePriceRange = (range: [number, number]) => {
         const params = new URLSearchParams(searchParams.toString());
         params.set("priceRange", `${range[0]}-${range[1]}`);
+        params.set("page", "1"); // reset page on filter change
         router.push(`/productos?${params.toString()}`);
     };
 
@@ -86,6 +87,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
         } else {
             params.append(key, value);
         }
+        params.set("page", "1"); // reset page on filter change
         router.push(`/productos?${params.toString()}`);
     };
 
