@@ -4,11 +4,11 @@ export default function Logo() {
 
     return (
         <Image
-            src="/logo.svg"
+            src="/logogophone.png"
             alt="Logo"
-            width={120}
-            height={120}
-            quality={100}
+            width={140}
+            height={140}
+            quality={70}
             className="h-10 w-auto"
         />
     );

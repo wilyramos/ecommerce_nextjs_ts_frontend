@@ -36,49 +36,53 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                 {products.map((product) => (
                     <div
                         key={product._id}
-                        className="group relative flex flex-col md:flex-row items-center justify-between px-8 md:px-20 py-12 md:py-20 h-auto md:h-[420px]"
+                        className="group relative flex flex-col md:flex-row items-center justify-between 
+    px-4 md:px-20 py-5  
+    h-auto md:h-[420px]"
                     >
+
                         {/* Text Section */}
-                        <article className="z-10 w-full md:w-1/3 space-y-4">
-                            <div className="w-fit flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-neutral-200 shadow-sm">
+                        <article className="z-10 w-full md:w-1/3 space-y-3 max-[639px]:space-y-2">
+
+                            <div className="w-fit flex items-center gap-1.5 px-3 py-1 
+    rounded-full bg-white border border-neutral-200 shadow-sm
+    max-[639px]:text-[10px]">
                                 {product.esNuevo ? (
-                                    <Sparkle className="w-3.5 h-3.5 text-blue-600" />
+                                    <Sparkle className="w-3 h-3 text-blue-600" />
                                 ) : (
-                                    <Tag className="w-3.5 h-3.5 text-neutral-500" />
+                                    <Tag className="w-3 h-3 text-neutral-500" />
                                 )}
-                                <span className="text-xs font-semibold uppercase tracking-wider text-neutral-800">
+                                <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-800">
                                     {product.brand?.nombre || "TECNOLOGÍA"}
                                 </span>
                             </div>
 
-                            <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-neutral-900 leading-[1.1] drop-shadow-sm">
+                            <h2 className="text-xl md:text-3xl font-extrabold tracking-tight text-neutral-900 leading-[1.1] drop-shadow-sm">
                                 {product.nombre}
                             </h2>
 
-                            <div className="flex items-end gap-4">
-                                <p className="text-3xl md:text-4xl font-bold text-neutral-900">
+                            <div className="flex items-end gap-3">
+                                <p className="text-2xl md:text-4xl font-bold text-neutral-900">
                                     S/. {product.precio?.toFixed(2) ?? "0.00"}
                                 </p>
 
                                 {product.precioComparativo && product.precioComparativo > product.precio && (
                                     <div className="flex flex-col justify-end pb-1">
-                                        <span className="text-sm font-semibold text-red-600 bg-red-100 px-2 py-0.5 rounded w-fit">
+                                        <span className="text-xs font-semibold text-red-600 bg-red-100 px-1.5 py-0.5 rounded w-fit">
                                             -{Math.round(((product.precioComparativo - product.precio) / product.precioComparativo) * 100)}% OFF
                                         </span>
-                                        <span className="text-lg text-neutral-400 line-through decoration-neutral-400">
+                                        <span className="text-sm text-neutral-400 line-through decoration-neutral-400">
                                             S/. {product.precioComparativo.toFixed(2)}
                                         </span>
                                     </div>
                                 )}
                             </div>
 
-                            <div className="mt-4 flex items-center gap-2">
-                                <ShoppingBag className="w-4 h-4 text-gray-800" />
-
+                            <div className="mt-3 flex items-center gap-2">
+                                <ShoppingBag className="w-3.5 h-3.5 text-gray-800" />
                                 <Link
                                     href={`/productos/${product.slug}`}
-                                    aria-label={`Ver detalles del producto ${product.nombre}`}
-                                    className="text-sm font-semibold text-gray-800 hover:text-gray-600 transition-colors duration-200 underline underline-offset-4"
+                                    className="text-xs font-semibold text-gray-800 hover:text-gray-600 transition-colors duration-200 underline underline-offset-4"
                                 >
                                     Ver producto
                                 </Link>
@@ -86,7 +90,9 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                         </article>
 
                         {/* Image Section */}
-                        <div className="relative w-full md:w-2/3 h-[260px] md:h-full flex justify-center mt-8 md:mt-0">
+                        <div className="relative w-full md:w-2/3 
+h-[320px] md:h-[500px] 
+py-10 md:py-20 max-[639px]:py-6">
                             <div className="relative w-full h-full">
                                 <Image
                                     src={product.imagenes?.[0] || "/logoapp.png"}
@@ -95,7 +101,6 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                     priority
                                     className="object-contain transition-all duration-700 ease-out group-hover:scale-110 group-hover:opacity-0"
                                 />
-
                                 {product.imagenes?.[1] && (
                                     <Image
                                         src={product.imagenes[1]}
