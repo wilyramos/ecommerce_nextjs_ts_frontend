@@ -71,6 +71,7 @@ export default function DrawerFiltersMain({ filters }: Props) {
 
     const updateParams = (updates: Record<string, string[] | null>) => {
         const params = new URLSearchParams(searchParams.toString());
+        params.set("page", "1"); // reset to first page on filter change
         for (const [key, val] of Object.entries(updates)) {
             if (!val || val.length === 0) params.delete(key);
             else {
