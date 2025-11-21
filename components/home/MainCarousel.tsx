@@ -5,7 +5,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import type { ProductResponse } from "@/src/schemas";
 import Link from "next/link";
-import { ShoppingBag, Sparkle, Tag } from "lucide-react";
+import { Sparkle, Tag } from "lucide-react";
 import { CustomDot } from "../ui/CustomDot";
 import { CustomArrow } from "../ui/CustomArrows";
 
