@@ -81,13 +81,6 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                         </div>
                                     )}
                             </div>
-
-                            <div className="mt-3 flex items-center gap-2">
-                                <ShoppingBag className="w-3.5 h-3.5 text-gray-800" />
-                                <span className="text-xs font-semibold text-gray-800 underline underline-offset-4">
-                                    Ver producto
-                                </span>
-                            </div>
                         </article>
 
                         {/* Image Section */}
