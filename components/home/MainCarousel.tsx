@@ -73,7 +73,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                                     ((product.precioComparativo - product.precio) /
                                                         product.precioComparativo) *
                                                     100
-                                                )}% OFF
+                                                )}% DESCUENTO
                                             </span>
                                             <span className="text-sm text-neutral-400 line-through decoration-neutral-400">
                                                 S/. {product.precioComparativo.toFixed(2)}
