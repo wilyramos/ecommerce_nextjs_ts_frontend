@@ -148,40 +148,33 @@ export default function ProductDetails({ producto }: Props) {
                     <div className="space-y-2 bg-white p-4">
                         <header className="pt-1 border-b pb-4 space-y-2">
                             {/* SKU y código solo si hay variante seleccionada o SKU principal */}
-                            {(selectedVariant || producto.sku || producto.barcode) && (
-                                <div className="flex justify-between uppercase">
-                                    {/* Mostrar SKU de la variante solo si hay variante seleccionada; si no, mostrar el principal */}
-                                    {(
-                                        (selectedVariant && selectedVariant.sku?.trim()) ||
-                                        (!selectedVariant && producto.sku?.trim())
-                                    ) && (
-                                            <span className="text-xs text-gray-400 font-light">
-                                                SKU: {selectedVariant ? selectedVariant.sku : producto.sku}
-                                            </span>
-                                        )}
-
-                                    {/* Mostrar código de barras solo si existe */}
-                                    {(
-                                        (selectedVariant && selectedVariant.barcode?.trim()) ||
-                                        (!selectedVariant && producto.barcode?.trim())
-                                    ) && (
-                                            <span className="text-xs text-gray-400 font-light">
-                                                Código: {selectedVariant ? selectedVariant.barcode : producto.barcode}
-                                            </span>
-                                        )}
-                                </div>
-                            )}
-
-
-                            <div>
+                            <div className="flex items-start justify-between w-full">
                                 {producto.brand && (
                                     <Link
                                         href={`/productos?brand=${producto.brand.slug}`}
-                                        className="text-xs font-semibold text-gray-400 uppercase hover:text-gray-700"
+                                        className="text-xs font-bold text-gray-600 uppercase hover:text-gray-700"
                                     >
                                         {producto.brand.nombre}
                                     </Link>
                                 )}
+
+                                {(selectedVariant || producto.sku || producto.barcode) && (
+                                    <div className="text-[8px] md:text-[12px] text-gray-400 uppercase flex flex-row items-end leading-tight gap-1">
+                                        {(selectedVariant?.sku || producto.sku) && (
+                                            <span>SKU: {selectedVariant ? selectedVariant.sku : producto.sku} |</span>
+                                        )}
+
+                                        {(selectedVariant?.barcode || producto.barcode) && (
+                                            <span>{selectedVariant ? selectedVariant.barcode : producto.barcode}</span>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+
+
+
+                            <div>
+
                                 <h1 className="text-lg md:text-2xl font-medium leading-snug text-gray-800">
                                     {producto.nombre}
                                 </h1>
@@ -243,7 +236,7 @@ export default function ProductDetails({ producto }: Props) {
                             const availableValues = getAvailableValues(key);
 
                             return (
-                                <fieldset key={key} className="mb-4 border rounded-md p-1.5">
+                                <fieldset key={key} className="mb-2 border shadow-xs rounded-lg p-1.5">
                                     <legend className="text-xs font-bold text-gray-600 uppercase tracking-wide mb-2">{key}:</legend>
 
                                     {key.toLowerCase() === "color" ? (

@@ -46,7 +46,7 @@ export default function ColorCircle({
         magenta: "bg-[#FF00FF]",
         malva: "bg-[#B57EDC]",
         marfil: "bg-[#FFFFF0]",
-        marrón: "bg-[#8B4513]",
+        marron: "bg-[#8B4513]",
         melocotón: "bg-[#FFDAB9]",
         menta: "bg-[#98FF98]",
         mostaza: "bg-[#FFDB58]",
@@ -83,6 +83,91 @@ export default function ColorCircle({
         "azul sierra": "bg-[#4682B4]",
         "titanio natural": "bg-[#B0B0B0]",
         "gris titanio": "bg-[#4B4B4B]",
+                morado: "bg-[#6A0DAD]",
+        "morado claro": "bg-[#B19CD9]",
+        "morado oscuro": "bg-[#4B0082]",
+        "morado pastel": "bg-[#C8A2C8]",
+
+        "violeta oscuro": "bg-[#5D3FD3]",
+        "violeta claro": "bg-[#D2B7FF]",
+
+        "uva": "bg-[#580F41]",
+        "ciruela": "bg-[#8E4585]",
+        "berenjena": "bg-[#311432]",
+
+        "azul petróleo": "bg-[#084C61]",
+        "azul acero": "bg-[#4682B4]",
+        "azul índigo": "bg-[#3F00FF]",
+        "azul eléctrico": "bg-[#7DF9FF]",
+        "azul zafiro": "bg-[#0F52BA]",
+        "azul glacial": "bg-[#E0F7FA]",
+
+        "verde bosque": "bg-[#228B22]",
+        "verde esmeralda": "bg-[#50C878]",
+        "verde militar": "bg-[#556B2F]",
+        "verde pistacho": "bg-[#93C572]",
+        "verde hierba": "bg-[#3CB043]",
+        "verde botella": "bg-[#0F3B2F]",
+
+        "rojo carmesí": "bg-[#DC143C]",
+        "rojo frambuesa": "bg-[#C72C48]",
+        "rojo coral": "bg-[#FF4040]",
+        "rojo ladrillo": "bg-[#B22222]",
+
+        "rosado pastel": "bg-[#F4C2C2]",
+        "rosado viejo": "bg-[#C08081]",
+        "rosado nude": "bg-[#F2D3D3]",
+
+        "naranja pastel": "bg-[#FFD1A9]",
+        "naranja coral": "bg-[#FF8856]",
+        "naranja quemado": "bg-[#CC5500]",
+
+        "amarillo pastel": "bg-[#FFF9A6]",
+        "amarillo crema": "bg-[#FFFDD0]",
+        "amarillo neón": "bg-[#FFFF33]",
+
+        "café claro": "bg-[#A67B5B]",
+        "café oscuro": "bg-[#4B3621]",
+        "caramelo": "bg-[#AF6E4D]",
+        "moca": "bg-[#967969]",
+        "tabaco": "bg-[#8F6C53]",
+
+        "terracota oscuro": "bg-[#CB6843]",
+        "arcilla": "bg-[#B66A50]",
+        "barro": "bg-[#A0522D]",
+
+        "gris humo": "bg-[#708090]",
+        "gris carbón": "bg-[#36454F]",
+        "gris cemento": "bg-[#7E7E7E]",
+        "gris nube": "bg-[#E0E0E0]",
+        "gris topo": "bg-[#918C80]",
+
+        "plata viejo": "bg-[#AFAFAF]",
+        "plata oscuro": "bg-[#7A7A7A]",
+        "acero": "bg-[#B0C4DE]",
+        "acero oscuro": "bg-[#43464B]",
+
+        "cobre": "bg-[#B87333]",
+        "cobre viejo": "bg-[#7F462C]",
+        "latón": "bg-[#B5A642]",
+        "estaño": "bg-[#8E8E8E]",
+
+        "perla": "bg-[#F8F8FF]",
+        "perla rosada": "bg-[#F2E8E8]",
+        "marfil oscuro": "bg-[#F2E2C4]",
+
+        "hueso": "bg-[#E3DAC9]",
+        "crema suave": "bg-[#FFF5E1]",
+
+        "chocolate claro": "bg-[#D2691E]",
+        "chocolate oscuro": "bg-[#3C1F0F]",
+
+        "turquesa oscuro": "bg-[#01796F]",
+        "turquesa claro": "bg-[#AFEEEE]",
+
+        "salmón pálido": "bg-[#FADADD]",
+        "coral pálido": "bg-[#F88379]",
+
     };
 
     const hexClass = diccionarioColores[color.trim().toLowerCase()] ?? "bg-[#CCCCCC]";
