@@ -12,6 +12,7 @@ import {
     InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
+import { Smartphone } from "lucide-react";
 
 export { };
 
@@ -117,20 +118,7 @@ export default function CheckoutYape({ order }: { order: TOrderPopulated }) {
                     />
                     {/* Icono de celular */}
                     <div className="absolute inset-y-0 right-4 flex items-center pointer-events-none text-gray-400">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
-                            />
-                        </svg>
+                        <Smartphone className="h-5 w-5" />
                     </div>
                 </div>
             </div>
@@ -152,18 +140,18 @@ export default function CheckoutYape({ order }: { order: TOrderPopulated }) {
                     onChange={(value) => setOtp(value)}
                     pattern={REGEXP_ONLY_DIGITS}
                 >
-                    <InputOTPGroup className="gap-2"> {/* gap-2 separa cada cajita individualmente */}
+                    <InputOTPGroup className="gap-2 space-x-2"> {/* gap-2 separa cada cajita individualmente */}
                         <InputOTPSlot
                             index={0}
-                            className="h-12 w-10 sm:h-14 sm:w-12 text-lg border-gray-300 rounded-md focus:ring-[#742284] focus:border-[#742284] data-[active=true]:border-[#742284] data-[active=true]:ring-2 data-[active=true]:ring-[#742284]/20"
+                            className="h-10 w-8 sm:h-12 sm:w-10 text-lg border-gray-300 border-2 rounded-md focus:ring-[#742284] focus:border-[#742284] data-[active=true]:border-[#742284] data-[active=true]:ring-2 data-[active=true]:ring-[#742284]/20"
                         />
                         <InputOTPSlot
                             index={1}
-                            className="h-12 w-10 sm:h-14 sm:w-12 text-lg border-gray-300 rounded-md data-[active=true]:border-[#742284] data-[active=true]:ring-2 data-[active=true]:ring-[#742284]/20"
+                            className="h-10 w-8 sm:h-12 sm:w-10 text-lg border-gray-300 border-2 rounded-md data-[active=true]:border-[#742284] data-[active=true]:ring-2 data-[active=true]:ring-[#742284]/20"
                         />
                         <InputOTPSlot
                             index={2}
-                            className="h-12 w-10 sm:h-14 sm:w-12 text-lg border-gray-300 rounded-md data-[active=true]:border-[#742284] data-[active=true]:ring-2 data-[active=true]:ring-[#742284]/20"
+                            className="h-10 w-8 sm:h-12 sm:w-10 text-lg border-gray-300 border-2 rounded-md data-[active=true]:border-[#742284] data-[active=true]:ring-2 data-[active=true]:ring-[#742284]/20"
                         />
                     </InputOTPGroup>
 
@@ -173,15 +161,15 @@ export default function CheckoutYape({ order }: { order: TOrderPopulated }) {
                     <InputOTPGroup className="gap-2">
                         <InputOTPSlot
                             index={3}
-                            className="h-12 w-10 sm:h-14 sm:w-12 text-lg border-gray-300 rounded-md data-[active=true]:border-[#742284] data-[active=true]:ring-2 data-[active=true]:ring-[#742284]/20"
+                            className="h-10 w-8 sm:h-12 sm:w-10 text-lg border-gray-300 border-2 rounded-md data-[active=true]:border-[#742284] data-[active=true]:ring-2 data-[active=true]:ring-[#742284]/20"
                         />
                         <InputOTPSlot
                             index={4}
-                            className="h-12 w-10 sm:h-14 sm:w-12 text-lg border-gray-300 rounded-md data-[active=true]:border-[#742284] data-[active=true]:ring-2 data-[active=true]:ring-[#742284]/20"
+                            className="h-10 w-8 sm:h-12 sm:w-10 text-lg border-gray-300 border-2 rounded-md data-[active=true]:border-[#742284] data-[active=true]:ring-2 data-[active=true]:ring-[#742284]/20"
                         />
                         <InputOTPSlot
                             index={5}
-                            className="h-12 w-10 sm:h-14 sm:w-12 text-lg border-gray-300 rounded-md data-[active=true]:border-[#742284] data-[active=true]:ring-2 data-[active=true]:ring-[#742284]/20"
+                            className="h-10 w-8 sm:h-12 sm:w-10 text-lg border-gray-300 border-2 rounded-md data-[active=true]:border-[#742284] data-[active=true]:ring-2 data-[active=true]:ring-[#742284]/20"
                         />
                     </InputOTPGroup>
                 </InputOTP>
@@ -195,7 +183,7 @@ export default function CheckoutYape({ order }: { order: TOrderPopulated }) {
             <button
                 onClick={handleYapePayment}
                 disabled={loading || otp.length < 6 || phone.length < 9}
-                className={`w-full bg-[#742284] text-white font-semibold py-3 rounded-lg hover:bg-[#5a1866] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center
+                className={`w-full bg-[#742284] text-white font-semibold py-3 rounded-lg hover:bg-[#5a1866] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center cursor-pointer
         `}
             >
                 {loading ? (

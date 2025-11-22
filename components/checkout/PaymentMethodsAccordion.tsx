@@ -18,16 +18,16 @@ export default function PaymentMethodsAccordion({ order }: { order: TOrderPopula
 
             </p>
 
-            <Accordion type="single" collapsible className="space-y-3">
+            <Accordion type="single" collapsible className="space-y-4">
                 {/* Izipay */}
-                <AccordionItem value="izipay">
-                    <AccordionTrigger className="flex gap-2 justify-between bg-white p-3 rounded-lg shadow-sm">
+                <AccordionItem value="izipay" className="border rounded-lg bg-white">
+                    <AccordionTrigger className="flex gap-2 justify-between bg-white p-3 rounded-lg ">
                         <div className="flex items-center gap-2">
                             <Image
                                 src="/payments/izipay.png"
                                 alt="IZIPAY"
                                 width={60}
-                                height={24}
+                                height={30}
                                 className="object-contain"
                             />
                         </div>
@@ -54,8 +54,8 @@ export default function PaymentMethodsAccordion({ order }: { order: TOrderPopula
 
                 {/* Yape directo */}
 
-                <AccordionItem value="yape">
-                    <AccordionTrigger className="flex items-center justify-between bg-white p-3 rounded-lg shadow-sm">
+                <AccordionItem value="yape" className="border rounded-lg">
+                    <AccordionTrigger className="flex items-center justify-between bg-white p-3 rounded-lg ">
                         <div className="flex items-center gap-2">
                             <Image
                                 src="/payments/yape.png"
@@ -75,8 +75,8 @@ export default function PaymentMethodsAccordion({ order }: { order: TOrderPopula
                 </AccordionItem>
 
                 {/* Mercado Pago */}
-                <AccordionItem value="mercadopago">
-                    <AccordionTrigger className="flex items-center justify-between bg-white p-3 rounded-lg shadow-sm">
+                <AccordionItem value="mercadopago" className="border rounded-lg">
+                    <AccordionTrigger className="flex items-center justify-between bg-white p-3 rounded-lg ">
                         <div className="flex items-center gap-2">
                             <Image
                                 src="/payments/mercadopago.png"
@@ -94,8 +94,8 @@ export default function PaymentMethodsAccordion({ order }: { order: TOrderPopula
                             <div className="border rounded p-1">
                                 <Image src="/payments/mastercard.png" alt="Mastercard" width={24} height={16} className="object-contain" />
                             </div>
-                            <div className="">
-                                <Image src="/payments/yape.png" alt="Yape" width={48} height={16} className="object-contain" />
+                            <div className="border rounded p-1">
+                                <Image src="/payments/yape.png" alt="Yape" width={24} height={16} className="object-contain" />
                             </div>
                         </div>
 
