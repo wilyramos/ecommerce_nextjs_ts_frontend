@@ -183,7 +183,7 @@ export default function ProductDetails({ producto }: Props) {
 
                             {/* Mostrar color solo si NO hay variantes */}
                             {!producto.variants?.length && colorAtributo && (
-                                <div className="flex items-center gap-2 text-xs text-gray-700 border rounded-2xl px-3 py-1 w-max">
+                                <div className="flex items-center gap-2 text-xs text-gray-700 border-l-2 px-2 w-max">
                                     <span>Color:</span>
                                     {Array.isArray(colorAtributo)
                                         ? colorAtributo.map((c: string) => (
@@ -194,7 +194,7 @@ export default function ProductDetails({ producto }: Props) {
                             )}
 
                             {/* Precio y descuento */}
-                            <div className="space-y-1">
+                            <div className="flex items-center gap-3">
                                 <div className="flex items-center gap-2">
                                     <p className="text-3xl flex items-baseline">
                                         <span className="text-sm mr-1">S/</span>
@@ -203,9 +203,10 @@ export default function ProductDetails({ producto }: Props) {
 
                                     {precioComparativo !== null &&
                                         precioComparativo > precio && (
-                                            <span className="bg-black text-white text-xs font-bold px-2 rounded-l-xl">
+                                            <span className="bg-black text-white text-xs font-bold px-2 py-0.5 rounded-full inline-block shadow-sm">
                                                 -{Math.round(((precioComparativo - precio) / precioComparativo) * 100)}%
                                             </span>
+
                                         )}
                                 </div>
 
@@ -219,11 +220,43 @@ export default function ProductDetails({ producto }: Props) {
                             </div>
 
                             {/* Stock */}
-                            <span
-                                className={`text-xs px-2 py-1 ${stock > 0 ? 'text-green-900 bg-green-100' : 'text-red-600 bg-red-100'}`}
-                            >
-                                {stock > 0 ? `${stock} disponible` : 'Agotado'}
-                            </span>
+                           {/* Stock - Diseño Minimalista (B&W) */}
+{/* Stock con Colores Bajos/Elegantes */}
+                            <div className="flex items-center gap-2 mt-1">
+                                <span
+                                    className={`text-xs font-medium px-2.5 py-1 flex items-center gap-1.5 w-fit transition-colors
+                                    ${stock === 0
+                                            ? 'bg-gray-50 text-gray-400 border-gray-100' // Agotado: Gris muy pálido, casi invisible.
+                                            : stock <= 3
+                                                ? 'bg-orange-50/80 text-orange-800/90'
+                                                : 'bg-emerald-50/80 text-emerald-800/90' // Disponible: Verde esmeralda pastel suave.
+                                        }`}
+                                >
+                                    {/* Punto indicador con opacidad reducida para que sea un color "bajo" */}
+                                    <span className={`h-2 w-2 rounded-full ${
+                                        stock === 0 
+                                            ? 'bg-gray-300' 
+                                            : stock <= 3 
+                                                ? 'bg-orange-500/70' // Naranja medio con transparencia
+                                                : 'bg-emerald-500/70' // Verde esmeralda medio con transparencia
+                                    }`} />
+                                    
+                                    {/* Mensaje Dinámico */}
+                                    {stock === 0 
+                                        ? 'Agotado' 
+                                        : stock <= 3 
+                                            ? `¡Solo quedan ${stock}!` 
+                                            : `En Stock`
+                                    }
+                                </span>
+
+                                {/* Texto de refuerzo: Usamos un tono naranja oscuro desaturado en lugar de rojo chillón */}
+                                {stock > 0 && stock <= 3 && (
+                                    <span className="text-[10px] font-bold text-orange-900/80 uppercase tracking-wide">
+                                        ¡Pídelo antes que se acabe!
+                                    </span>
+                                )}
+                            </div>
                         </header>
 
                         {Object.entries(allAttributes).length > 0 && (
@@ -236,7 +269,7 @@ export default function ProductDetails({ producto }: Props) {
                             const availableValues = getAvailableValues(key);
 
                             return (
-                                <fieldset key={key} className="mb-2 border shadow-xs rounded-lg p-1.5">
+                                <fieldset key={key} className="mb-2 p-1.5">
                                     <legend className="text-xs font-bold text-gray-600 uppercase tracking-wide mb-2">{key}:</legend>
 
                                     {key.toLowerCase() === "color" ? (

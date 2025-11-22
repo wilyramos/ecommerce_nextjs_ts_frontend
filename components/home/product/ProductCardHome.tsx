@@ -65,7 +65,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                     </h3>
 
                     {color && (
-                        <div className="border px-2 py-1 rounded w-max mt-1 flex items-center gap-1">
+                        <div className="flex items-center gap-1 mt-1">
                             <span className="text-[10px] font-semibold">Color:</span>
                             <ColorCircle color={color} size={12} />
                         </div>
