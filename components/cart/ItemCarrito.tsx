@@ -12,8 +12,6 @@ export default function ItemCarrito({ item }: { item: CartItem }) {
     const imageSrc = item.variant?.imagenes?.[0] ?? item.imagenes?.[0];
     const price = item.variant?.precio ?? item.precio ?? 0;
     const subtotal = price * item.cantidad;
-
-    console.log("Renderizando ItemCarrito para:", item);
     return (
         <li className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4 border-b border-gray-200 last:border-none">
             {/* Imagen + información del producto */}

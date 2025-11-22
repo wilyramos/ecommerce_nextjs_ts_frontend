@@ -94,14 +94,14 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                     alt={product.nombre}
                                     fill
                                     priority
-                                    className="object-contain transition-all duration-700 ease-out group-hover:scale-110 group-hover:opacity-0"
+                                    className="object-contain transition-all duration-700 ease-out group-hover:scale-105 group-hover:opacity-0"
                                 />
                                 {product.imagenes?.[1] && (
                                     <Image
                                         src={product.imagenes[1]}
                                         alt={`${product.nombre} alternate view`}
                                         fill
-                                        className="absolute inset-0 object-contain transition-all duration-700 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-110"
+                                        className="absolute inset-0 object-contain transition-all duration-700 ease-out opacity-0 group-hover:opacity-100 group-hover:scale-105"
                                     />
                                 )}
                             </div>
