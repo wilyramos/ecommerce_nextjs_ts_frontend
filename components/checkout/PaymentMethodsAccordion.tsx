@@ -6,6 +6,7 @@ import CheckoutIzipay from "@/components/checkout/izipay/CheckoutIzipay";
 import type { TOrderPopulated } from "@/src/schemas";
 import Image from "next/image";
 import CheckoutProMP from "./mercadopago/CheckoutProMP";
+import CheckoutYape from "./mercadopago/CheckoutYape";
 
 export default function PaymentMethodsAccordion({ order }: { order: TOrderPopulated }) {
     return (
@@ -48,6 +49,28 @@ export default function PaymentMethodsAccordion({ order }: { order: TOrderPopula
                     </AccordionTrigger>
                     <AccordionContent className="mt-2 p-4 items-center justify-center flex rounded-lg">
                         <CheckoutIzipay order={order} />
+                    </AccordionContent>
+                </AccordionItem>
+
+                {/* Yape directo */}
+
+                <AccordionItem value="yape">
+                    <AccordionTrigger className="flex items-center justify-between bg-white p-3 rounded-lg shadow-sm">
+                        <div className="flex items-center gap-2">
+                            <Image
+                                src="/payments/yape.png"
+                                alt="Yape"
+                                width={50}
+                                height={50}
+                                className="object-contain rounded"
+                            />
+                        </div>
+                    </AccordionTrigger>
+
+                    <AccordionContent className="mt-0 p-4 bg-white rounded-b-2xl mb-4">
+                        <CheckoutYape
+                            order={order}
+                        />
                     </AccordionContent>
                 </AccordionItem>
 
