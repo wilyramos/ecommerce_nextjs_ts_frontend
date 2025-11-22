@@ -86,7 +86,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                         {/* Image Section */}
                         <div className="relative w-full md:w-2/3 
                             h-[320px] md:h-[500px] 
-                            py-10 md:py-20 max-[639px]:py-6"
+                            py-5 md:py-10 max-[639px]:py-6"
                         >
                             <div className="relative w-full h-full">
                                 <Image
