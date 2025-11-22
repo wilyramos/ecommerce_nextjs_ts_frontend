@@ -94,9 +94,9 @@ export default function ShippingForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto space-y-3">
+        <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto space-y-1 md:space-y-3">
             {/* Departamento / Provincia / Distrito */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:gap-4">
                 <div>
                     <label className="text-xs font-bold">Departamento <span className="text-red-500">*</span></label>
                     <Select

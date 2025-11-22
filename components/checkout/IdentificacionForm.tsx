@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useTransition } from 'react'
+import { useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { useCheckoutStore } from '@/src/store/checkoutStore'
@@ -58,7 +58,7 @@ export default function IdentificacionForm({ user }: Props) {
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="max-w-md mx-auto space-y-3"
+            className="max-w-md mx-auto space-y-1 md:space-y-3"
         >
             {/* Email */}
             <div>

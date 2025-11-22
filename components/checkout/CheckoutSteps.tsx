@@ -14,14 +14,14 @@ export default function CheckoutSteps() {
     const pathname = usePathname();
 
     return (
-        <div className="flex md:items-center md:justify-between md:pl-20 pl-6 py-4">
+        <div className="flex md:items-center md:justify-between mx-auto w-full py-2">
             {steps.map((step, index) => {
                 const isActive = pathname.startsWith(step.path);
                 const currentStepIndex = steps.findIndex((s) => s.path === pathname);
                 const isCompleted = currentStepIndex > index;
 
                 const StepContent = (
-                    <div className="flex-1 flex items-center gap-2 pb-10">
+                    <div className="flex-1 flex items-center gap-2 md:pb-10">
                         <div
                             className={cn(
                                 "w-5 h-5 rounded-full flex items-center justify-center text-sm font-bold transition-colors",
