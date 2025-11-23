@@ -104,13 +104,13 @@ export default function CheckoutYape({ order }: { order: TOrderPopulated }) {
         <div className="space-y-6">
             {/* Input Celular - Estilo Yape */}
             <div className="flex flex-col gap-2">
-                <label className="text-sm font-bold text-gray-700 ml-1">
+                <label className="text-xs md:text-sm font-semibold text-gray-700 ml-1">
                     Número de celular
                 </label>
                 <div className="relative">
                     <input
                         type="tel"
-                        className="w-full pl-4 pr-10 py-3 text-lg font-medium text-gray-900 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#742284] focus:border-transparent transition-all placeholder:text-gray-400"
+                        className="w-full pl-4 pr-10 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#742284] focus:border-transparent text-gray-900 placeholder-gray-400"
                         placeholder="Ej: 987 654 321"
                         maxLength={9}
                         value={phone}
@@ -126,7 +126,7 @@ export default function CheckoutYape({ order }: { order: TOrderPopulated }) {
             {/* Input OTP (Shadcn UI) */}
             <div className="flex flex-col gap-3 items-center">
                 <div className="flex w-full justify-between items-center px-1">
-                    <label className="text-sm font-bold text-gray-700">
+                    <label className="text-xs md:text-sm font-semibold text-gray-700">
                         Código de aprobación
                     </label>
                     <span className="text-[10px] font-bold text-[#742284] bg-purple-100 px-2 py-1 rounded-full uppercase tracking-wider">
@@ -143,8 +143,8 @@ export default function CheckoutYape({ order }: { order: TOrderPopulated }) {
                     <InputOTPGroup className="gap-2 space-x-2"> {/* gap-2 separa cada cajita individualmente */}
                         <InputOTPSlot
                             index={0}
-                            className="h-10 w-8 sm:h-12 sm:w-10 text-lg border-gray-300 border-2 rounded-md focus:ring-[#742284] focus:border-[#742284] data-[active=true]:border-[#742284] data-[active=true]:ring-2 data-[active=true]:ring-[#742284]/20"
-                        />
+                            className="h-10 w-8 sm:h-12 sm:w-10 text-lg border-gray-300 border-2 rounded-md data-[active=true]:border-[#742284] data-[active=true]:ring-2 data-[active=true]:ring-[#742284]/20"
+/>
                         <InputOTPSlot
                             index={1}
                             className="h-10 w-8 sm:h-12 sm:w-10 text-lg border-gray-300 border-2 rounded-md data-[active=true]:border-[#742284] data-[active=true]:ring-2 data-[active=true]:ring-[#742284]/20"
