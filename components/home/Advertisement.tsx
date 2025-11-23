@@ -1,93 +1,107 @@
 "use client";
-
-import { TbTruckDelivery } from "react-icons/tb";
-import { FaRegCreditCard } from "react-icons/fa";
-import { MdLocalShipping } from "react-icons/md"; // nuevo icono para envíos
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
 import { useState } from "react";
-import { IoClose } from "react-icons/io5";
+import { Truck, CreditCard, Store, X } from "lucide-react";
+
+const useHover = () => {
+    const [isHovered, setIsHovered] = useState(false);
+    return {
+        isHovered,
+        onMouseEnter: () => setIsHovered(true),
+        onMouseLeave: () => setIsHovered(false),
+    };
+};
 
 const ads = [
     {
         id: 1,
-        icon: <TbTruckDelivery />,
+        icon: <Truck className="w-4 h-4 text-white" />,
         text: (
-            <>
-                Envíos en <span className="font-semibold">Cañete</span>
-                <span className="hidden sm:inline bg-red-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full ml-2">
-                    GRATIS
+            <span className="flex items-center gap-2">
+                Envíos en <span className="font-bold text-white">Cañete</span>
+                <span className="bg-red-600 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full tracking-wider">
+                    Gratis
                 </span>
-            </>
+            </span>
         ),
     },
     {
         id: 2,
-        icon: <MdLocalShipping />,
+        // icon: <Globe className="w-4 h-4 text-white" />,
         text: (
-            <>
-                Envíos a <span className="font-semibold">todo el Perú</span>
-            </>
+            <span>
+                Envíos a <span className="font-bold text-white">todo el Perú</span>
+            </span>
         ),
     },
     {
         id: 3,
-        icon: <FaRegCreditCard />,
+        icon: <CreditCard className="w-4 h-4 text-white" />,
         text: (
-            <>
-                Paga con <span className="font-semibold">tarjeta o Yape</span>
-            </>
+            <span>
+                Paga con <span className="font-bold text-white">tarjeta o Yape</span>
+            </span>
         ),
     },
-    // Extra opcional
     {
         id: 4,
-        icon: <TbTruckDelivery />,
+        icon: <Store className="w-4 h-4 text-white" />,
         text: (
-            <>
-                Recoge en <span className="font-semibold">tienda física</span> sin costo
-            </>
+            <span>
+                Recoge en <span className="font-bold text-white">tienda física</span> sin costo
+            </span>
         ),
     },
 ];
 
-export default function Advertisement() {
+export default function App() {
+    const [isVisible, setIsVisible] = useState(true);
+    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
-    const [showBanner, setShowBanner] = useState(true);
-    if (!showBanner) return null;
+    if (!isVisible) return null;
 
     return (
-        <section className="relative bg-black text-white py-2 px-4 shadow-md">
-            <button
-                onClick={() => setShowBanner(false)}
-                className="absolute top-2 right-2 text-white hover:text-gray-300 focus:outline-none"
+        <div className="w-full relative overflow-hidden bg-black text-white border-b border-white/10">
+
+            <style>{`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+          animation: marquee 28s linear infinite;
+        }
+        .paused {
+          animation-play-state: paused;
+        }
+      `}</style>
+
+            <div
+                className=" relative flex items-center h-8 overflow-hidden "
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
             >
-                <IoClose className="text-xl" aria-label="Cerrar anuncio" />
-            </button>
-            <Carousel
-                additionalTransfrom={0}
-                arrows={false}
-                autoPlay
-                autoPlaySpeed={2500}
-                infinite
-                keyBoardControl
-                showDots={false}
-                responsive={{
-                    desktop: { breakpoint: { max: 3000, min: 1024 }, items: 1 },
-                    tablet: { breakpoint: { max: 1024, min: 464 }, items: 1 },
-                    mobile: { breakpoint: { max: 464, min: 0 }, items: 1 },
-                }}
-            >
-                {ads.map((ad) => (
-                    <div
-                        key={ad.id}
-                        className="flex items-center justify-center gap-2 text-sm md:text-base font-medium"
-                    >
-                        {ad.icon}
-                        <span>{ad.text}</span>
-                    </div>
-                ))}
-            </Carousel>
-        </section>
+                <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none"></div>
+                <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none"></div>
+
+                <button
+                    onClick={() => setIsVisible(false)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 z-20 p-1 text-gray-400 hover:text-white hover:bg-white/10 rounded-full transition"
+                >
+                    <X size={16} />
+                </button>
+
+                <div
+                    className={`flex items-center whitespace-nowrap w-max px-40 ${isHovered ? "paused" : ""
+                        } animate-marquee`}
+                >
+                    {[...ads, ...ads, ...ads].map((ad, index) => (
+                        <div key={`${ad.id}-${index}`} className="flex items-center mx-12 md:mx-20">
+                            <div className="mr-2">{ad.icon}</div>
+                            <div className="text-sm md:text-base font-medium">{ad.text}</div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
     );
 }

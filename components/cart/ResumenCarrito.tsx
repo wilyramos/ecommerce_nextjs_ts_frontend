@@ -49,12 +49,18 @@ export default function ResumenCarrito() {
                 </div>
 
                 <div className="bg-white rounded-xl px-4 py-2 md:p-6 flex flex-col gap-4 md:gap-5">
-                    <h2 className="font-semibold text-base md:text-lg text-gray-900">Resumen</h2>
+                    {/* <h2 className="font-semibold text-base md:text-lg text-gray-900">Resumen</h2> */}
 
                     <ul className="text-xs md:text-sm text-gray-600 space-y-2 md:space-y-3">
                         <li className="flex justify-between">
                             <span>Subtotal</span>
                             <span className="font-medium text-gray-800">S/ {total.toFixed(2)}</span>
+                        </li>
+                        <li>
+                            <div className="flex justify-between">
+                                <span>Tarifa de envio</span>
+                                <span className="text-xs font-bold uppercase text-gray-800 bg-gray-200 rounded-2xl px-2 py-1">Gratis</span>
+                            </div>
                         </li>
                         <li className="flex justify-between border-t pt-2 md:pt-3 text-base md:text-lg font-semibold">
                             <span>Total</span>
@@ -81,7 +87,7 @@ export default function ResumenCarrito() {
                         Verifica tus productos antes de continuar.
                     </p>
 
-                    <Button onClick={handleContinuar} className="w-full text-sm md:text-base">
+                    <Button onClick={handleContinuar} className="w-full text-sm md:text-base cursor-pointer">
                         Realizar pedido
                     </Button>
                 </div>

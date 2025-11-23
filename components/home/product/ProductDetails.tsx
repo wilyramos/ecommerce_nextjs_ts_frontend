@@ -375,7 +375,7 @@ export default function ProductDetails({ producto }: Props) {
                     {/* Información adicional */}
                     <div className="space-y-2 mt-2 text-gray-700 text-xs">
                         {/* Envío */}
-                        <div className="bg-white p-4 flex items-start gap-4 ">
+                        <div className="bg-white py-2 md:p-4 flex items-start gap-4 ">
                             <Truck className="w-6 h-6 text-gray-500 mt-0.5" />
                             <div className="space-y-1">
                                 <p>
@@ -394,7 +394,7 @@ export default function ProductDetails({ producto }: Props) {
                         </div>
 
                         {/* Compra segura */}
-                        <div className="bg-white p-4 flex items-start gap-4">
+                        <div className="bg-white py-2 md:p-4 flex items-start gap-4">
                             <ShieldCheck className="w-6 h-6 text-gray-500 mt-0.5" />
                             <div className="space-y-1 w-full">
                                 <p className="text-gray-600">Aceptamos los siguientes medios de pago:</p>

@@ -12,10 +12,10 @@ export default function NavBar() {
 
     return (
         <NavBarClient>
-            <header className="sticky top-0 z-50 border-b bg-white">
-                <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 py-1">
+            <header className="sticky top-0 z-50 bg-white">
+                <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 ">
 
-                    <div className="md:hidden flex items-center hover:bg-gray-100 rounded-md p-1">
+                    <div className="md:hidden flex items-center hover:bg-gray-100 ">
                         <ServerSheetMobile />
                     </div>
 
@@ -27,7 +27,7 @@ export default function NavBar() {
 
                     <Link
                         href="/"
-                        className="hidden md:flex items-center p-1"
+                        className="hidden md:flex items-center"
                     >
                         <Logo />
                     </Link>
@@ -42,22 +42,22 @@ export default function NavBar() {
                         </div>
                     </nav>
 
-                    <div className="hidden md:flex items-center gap-6">
+                    <div className="hidden md:flex items-center justify-center gap-4 lg:gap-6">
                         <Link
                             href="/auth/registro"
-                            className="flex items-center gap-1 transition hover:bg-gray-100 rounded-md px-2 py-1"
+                            className="flex items-center gap-1 transition hover:bg-gray-100 px-2 py-1"
                             aria-label="Cuenta"
                         >
                             <AiOutlineUser className="h-6 w-6" />
                             <span className="hidden lg:inline text-sm font-semibold">Cuenta</span>
                         </Link>
 
-                        <div className="hover:bg-gray-100 rounded-md px-2 py-1">
+                        <div className="hover:bg-gray-100 px-2 my-2 py-1">
                             <ButtonShowCart />
                         </div>
                     </div>
 
-                    <div className="md:hidden hover:bg-gray-100 rounded-md p-1">
+                    <div className="md:hidden hover:bg-gray-100 m-1">
                         <ButtonShowCart />
                     </div>
                 </div>

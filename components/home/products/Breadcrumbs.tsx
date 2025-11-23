@@ -11,7 +11,7 @@ type Props = {
 
 export default function Breadcrumb({ categoryName, categorySlug, productName }: Props) {
     return (
-        <nav className="text-xs px-4 py-1">
+        <nav className="text-xs px-4 md:py-1">
             <ol className="flex items-center flex-wrap gap-1 text-gray-600">
 
                 <li>

@@ -81,7 +81,7 @@ export default function ButtonSearchFormStore() {
     return (
         <form ref={containerRef} className="relative" onSubmit={handleSubmit}>
             {/* Input con tonos neutros */}
-            <div className="flex items-center bg-gray-100 dark:bg-neutral-800 rounded-lg transition-all duration-200 focus-within:ring-2 focus-within:ring-gray-400 focus-within:bg-white dark:focus-within:bg-neutral-900">
+            <div className="flex items-center bg-gray-100 dark:bg-neutral-800 rounded-lg transition-all duration-200 focus-within:ring-2 focus-within:ring-gray-400 focus-within:bg-white dark:focus-within:bg-neutral-900 my-1">
                 <input
                     type="text"
                     value={query}
