@@ -2,9 +2,9 @@ name: Next.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "github-actions-ecom" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "github-actions-ecom" ]
 
 jobs:
   build:
