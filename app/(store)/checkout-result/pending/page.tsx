@@ -1,3 +1,5 @@
+//File: frontend/app/%28store%29/checkout-result/pending/page.tsx
+
 import { getOrder } from "@/src/services/orders";
 import PendingClient from "@/components/checkout/PendingClient";
 

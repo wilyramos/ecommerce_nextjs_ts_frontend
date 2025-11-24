@@ -51,6 +51,10 @@ export const getOrders = async ({ page = 1, limit = 25, ...filters }: GetOrdersP
 }
 
 export const getOrder = async (id: string) => {
+    console.log("API_URL:", process.env.API_URL);
+    if (!process.env.API_URL) {
+        throw new Error("API_URL is not defined");
+    }
     const token = await getToken();
 
     const url = `${process.env.API_URL}/orders/${id}`;
