@@ -1,38 +1,25 @@
 "use client";
 
-import Carousel, { ButtonGroupProps } from "react-multi-carousel";
+import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import type { ButtonGroupProps } from "react-multi-carousel";
 import ProductCard from "@/components/home/product/ProductCard";
 import type { ProductResponse } from "@/src/schemas";
+import HeaderConTituloConControles from "../ui/HeaderConTituloConControles";
 
 interface Props {
     products: ProductResponse[];
 }
 
-// Header personalizado que incluye Título + Botones de navegación
-const HeaderConControles = ({ next, previous }: ButtonGroupProps) => {
+// Wrapper que recibirá next/previous y posicionará el header arriba (absolute)
+const AbsoluteHeaderWrapper = (props: ButtonGroupProps) => {
     return (
-        <div className="flex items-start justify-between mb-8 md:mb-10">
-            {/* Título */}
-
-            {/* Botones de control */}
-            <div className="flex gap-3">
-                <button
-                    onClick={() => previous?.()}
-                    className="p-3 rounded-full border border-neutral-200 hover:bg-black hover:border-black group transition-all duration-300"
-                    aria-label="Anterior"
-                >
-                    <ArrowLeft className="w-5 h-5 text-neutral-600 group-hover:text-white transition-colors" strokeWidth={1.5} />
-                </button>
-                <button
-                    onClick={() => next?.()}
-                    className="p-3 rounded-full border border-neutral-200 hover:bg-black hover:border-black group transition-all duration-300"
-                    aria-label="Siguiente"
-                >
-                    <ArrowRight className="w-5 h-5 text-neutral-600 group-hover:text-white transition-colors" strokeWidth={1.5} />
-                </button>
-            </div>
+        <div className="absolute top-0 left-0 right-0 z-20 px-4 md:px-0">
+            <HeaderConTituloConControles
+                {...props}
+                title="Novedades"
+                subtitle="Últimos lanzamientos"
+            />
         </div>
     );
 };
@@ -42,36 +29,34 @@ export default function ClientCarouselProductosNuevos({ products }: Props) {
         desktop: { breakpoint: { max: 3000, min: 1280 }, items: 4 },
         laptop: { breakpoint: { max: 1280, min: 1024 }, items: 3 },
         tablet: { breakpoint: { max: 1024, min: 640 }, items: 2 },
-        mobile: { breakpoint: { max: 640, min: 0 }, items: 2, partialVisibilityGutter: 30 }, // Muestra un poco del siguiente slide
+        mobile: { breakpoint: { max: 640, min: 0 }, items: 2, partialVisibilityGutter: 30 },
     };
 
     return (
-        <div className="w-full">
-            <div>
-                <h2 className="text-3xl md:text-4xl font-medium mb-2">
-                    Novedades
-                </h2>
-                <p className="text-neutral-500 text-sm uppercase">
-                    Últimos lanzamientos
-                </p>
-            </div>
+        <section
+            className="
+        w-full max-w-7xl mx-auto relative
+        pt-24 md:pt-28
+        px-4 md:px-0
+      "
+        >
             <Carousel
                 responsive={responsive}
-                infinite={true}
-                autoPlay={true}
+                infinite
+                autoPlay
                 autoPlaySpeed={4000}
-                pauseOnHover={true}
-                arrows={false} // Quitamos las flechas por defecto
-                renderButtonGroupOutside={true} // Renderizamos los botones fuera
-                customButtonGroup={<HeaderConControles />} // Usamos nuestro header personalizado
-                containerClass="-mx-3" // Compensación negativa para el padding de los items
-                itemClass="px-3 py-2" // Espaciado entre tarjetas
-                partialVisible={true}
+                pauseOnHover
+                arrows={false}
+                renderButtonGroupOutside
+                customButtonGroup={<AbsoluteHeaderWrapper />}
+                containerClass="-mx-3"
+                itemClass="px-3 py-4"
+                partialVisible
             >
                 {products.map((product) => (
                     <ProductCard key={product._id} product={product} />
                 ))}
             </Carousel>
-        </div>
+        </section>
     );
 }

@@ -71,7 +71,7 @@ export default function HomePage() {
             <section className="container mx-auto">
                 <CarruselPrincipal />
             </section>
-            <section className="bg-white">
+            <section className="my-10">
                 <CategoriasDestacadasWrapper />
             </section>
 

@@ -8,22 +8,13 @@ export default async function ProductosDestacados() {
     if (!productos.length) return null;
 
     return (
-        <section className="mx-auto py-8 px-4">
-            <div className="max-w-7xl mx-auto space-y-6">
-                {/* Texto superior */}
-                <header className="text-center md:text-left">
-                    <h2 className="text-xl font-semibold text-gray-500">
-                        Lo mejor de{" "}
-                        <span className="text-white bg-gray-950 px-2">
-                            GoPhone
-                        </span>
-                    </h2>
-                    <p className="border-b-2 border-gray-700 w-24 mx-auto md:mx-0 mt-2 mb-4">
-                        
-                    </p>
-                </header>
+        <section className="mx-auto py-5 px-4 border-b max-w-7xl">
+            <div className=" mx-auto space-y-5 ">
 
-                {/* Grilla de productos responsive */}
+                <h2 className="text-3xl md:text-4xl font-medium mb-2 tracking-tight">
+                    Lo mejor de GoPhone
+                </h2>
+
                 <div
                     className="
                         grid
@@ -32,7 +23,7 @@ export default async function ProductosDestacados() {
                         md:grid-cols-3
                         lg:grid-cols-4
                         xl:grid-cols-5
-                        gap-2
+                        gap-4
                     "
                 >
                     {productos.slice(0, 10).map((product) => (
