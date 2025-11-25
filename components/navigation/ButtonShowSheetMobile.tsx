@@ -10,7 +10,6 @@ import {
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, User, ChevronRight } from "lucide-react"; // Usamos Lucide
-import ButtonSearchFormStore from "../ui/ButtonSearchFormStore";
 import { ScrollArea } from "../ui/scroll-area";
 import Logo from "../ui/Logo";
 import type { CategoryListResponse, CategoryResponse } from "@/src/schemas";
@@ -65,7 +64,7 @@ export default function ButtonShowSheetMobile({
                             <Logo />
                         </SheetTitle>
                     </SheetHeader>
-                    <ButtonSearchFormStore />
+                    {/* <ButtonSearchFormStore /> */}
                 </div>
 
                 {/* 2. Área de Scroll (Categorías) */}
