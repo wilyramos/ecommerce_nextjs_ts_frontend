@@ -191,7 +191,7 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
 
                         {/* RESULTADOS */}
                         {!loading && results.length > 0 && (
-                            <div className="space-y-4">
+                            <div className="space-y-2">
 
                                 <div className="flex items-center justify-between border-b border-gray-100 pb-2 mb-2">
                                     <h3 className="font-semibold text-sm text-gray-900">Resultados</h3>

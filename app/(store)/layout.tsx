@@ -1,6 +1,5 @@
 //File: frontend/app/(store)/layout.tsx
 
-import Advertisement from "@/components/home/Advertisement";
 import Footer from "@/components/home/Footer";
 import NavBar from "@/components/navigation/NavBar";
 import Link from "next/link";
@@ -48,15 +47,15 @@ export const metadata: Metadata = {
 export default function layout({ children }: { children: React.ReactNode }) {
     return (
         <>
-            <div className="flex flex-col min-h-screen">
+            <section className="flex flex-col min-h-screen">
                 {/* Aviso mejorado */}
-                <header id="global-header" className="w-full sticky top-0 z-[10000]">
-                    <Advertisement />
+                <header>
                     <NavBar />
                 </header>
-                <main className="min-h-screen">{children}</main>
-                <Footer />
-            </div>
+                <main className="pt-10 min-h-screen">
+                    {children}
+                </main>                <Footer />
+            </section>
 
             <Link
                 href="https://wa.me/51925054636?text=Hola%2C%20queria%20consultar%20sobre%20"

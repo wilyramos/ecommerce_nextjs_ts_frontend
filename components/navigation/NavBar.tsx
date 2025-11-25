@@ -12,7 +12,7 @@ export default function NavBar() {
     return (
         <NavBarClient>
             {/* Agregamos ID para referencia de altura */}
-            <header id="global-header" className="sticky top-0 z-50 bg-white transition-all duration-200 border-b">
+            <header className=" transition-all duration-200 border-b">
                 <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6">
 
                     {/* Mobile menu button */}

@@ -11,8 +11,7 @@ const useHover = () => {
     };
 };
 
-
-export default function App() {
+export default function Advertisement() {
     const [isVisible, setIsVisible] = useState(true);
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
@@ -31,7 +30,6 @@ export default function App() {
         },
         {
             id: 2,
-            // icon: <Globe className="w-3 h-3 text-white" />,
             text: (
                 <span>
                     Envíos a <span className="font-bold text-white">todo el Perú</span>
@@ -61,23 +59,19 @@ export default function App() {
     if (!isVisible) return null;
 
     return (
-        <div className="w-full relative overflow-hidden bg-black text-white">
+        <div className="w-full relative overflow-hidden bg-black text-white h-6">
 
             <style>{`
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-marquee {
-          animation: marquee 80s linear infinite;
-        }
-        .paused {
-          animation-play-state: paused;
-        }
-      `}</style>
+                @keyframes marquee {
+                    0% { transform: translateX(0); }
+                    100% { transform: translateX(-50%); }
+                }
+                .animate-marquee { animation: marquee 80s linear infinite; }
+                .paused { animation-play-state: paused; }
+            `}</style>
 
             <div
-                className=" relative flex items-center h-6 overflow-hidden "
+                className="relative flex items-center h-6 overflow-hidden"
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
             >
