@@ -52,12 +52,12 @@ export default function ClientCategoriasDesktop({
 
               {sub.length > 0 && (
                 <NavigationMenuContent>
-                  <ul className="grid gap-4 md:w-[520px] lg:w-[650px] lg:grid-cols-[.8fr_1fr]">
+                  <ul className="grid gap-2 md:w-[520px] lg:w-[650px] lg:grid-cols-[.8fr_1fr]">
                     {/* Panel descriptivo */} 
                     <li className="p-4">
                       <NavigationMenuLink asChild>
                         <div>
-                          <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                          <h3 className="text-lg font-semibold text-gray-800 mb-1">
                             {cat.nombre}
                           </h3>
                           <p className="text-muted-foreground text-sm leading-relaxed">
@@ -125,11 +125,11 @@ function ListItem({
       <NavigationMenuLink asChild>
         <Link
           href={href}
-          className="flex items-center flex-row gap-3 p-2 rounded-md hover:bg-gray-100 transition"
+          className="flex items-center flex-row gap-3 hover:bg-gray-100 transition"
         >
           {/* Miniatura */}
           {image && (
-            <div className="relative w-11 h-11 flex-shrink-0 rounded-md overflow-hidden">
+            <div className="relative w-11 h-11 flex-shrink-0  overflow-hidden">
               <Image
                 src={image}
                 alt={title || "Imagen de categoría"}

@@ -52,9 +52,10 @@ export default function layout({ children }: { children: React.ReactNode }) {
                 <header>
                     <NavBar />
                 </header>
-                <main className="pt-6 md:pt-20 min-h-screen">
+                <main className="pt-10 md:pt-20 min-h-screen">
                     {children}
-                </main>                <Footer />
+                </main>
+                <Footer />
             </section>
 
             <Link

@@ -101,7 +101,7 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                         >
                             <h3
                                 className="
-                                    text-sm md:text-base 
+                                    text-xs md:text-base 
                                     font-medium text-neutral-900 
                                     tracking-wide
                                 "
