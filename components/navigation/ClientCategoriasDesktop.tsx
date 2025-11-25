@@ -7,13 +7,13 @@ import Image from "next/image";
 import type { CategoryResponse, CategoryListResponse } from "@/src/schemas";
 
 import {
-    NavigationMenu,
-    NavigationMenuContent,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-    NavigationMenuTrigger,
-    navigationMenuTriggerStyle,
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
 export default function ClientCategoriasDesktop({
@@ -144,7 +144,7 @@ function ListItem({
 
           {/* Texto */}
           <div>
-            <div className="text-sm font-medium text-gray-800">{title}</div>
+            <div className="text-xs font-medium text-gray-700">{title}</div>
             <p className="text-muted-foreground text-xs line-clamp-2 leading-snug">
               {children}
             </p>

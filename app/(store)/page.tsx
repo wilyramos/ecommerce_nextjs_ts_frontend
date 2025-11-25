@@ -71,10 +71,7 @@ export default function HomePage() {
             <section className="container mx-auto">
                 <CarruselPrincipal />
             </section>
-            <section className="my-10">
-                <CategoriasDestacadasWrapper />
-            </section>
-
+           
             <section>
                 <ProductosDestacados />
             </section>
@@ -90,6 +87,11 @@ export default function HomePage() {
             <section>
                 <FeaturesList />
             </section>
+
+             <section className="my-10">
+                <CategoriasDestacadasWrapper />
+            </section>
+
 
         </>
     );
