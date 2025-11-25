@@ -18,7 +18,7 @@ const AbsoluteHeaderWrapper = (props: ButtonGroupProps) => {
             <HeaderConTituloConControles
                 {...props}
                 title="Novedades"
-                subtitle="Últimos lanzamientos"
+                // subtitle="Últimos lanzamientos"
             />
         </div>
     );

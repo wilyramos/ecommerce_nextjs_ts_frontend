@@ -4,12 +4,10 @@ import {
     Sheet,
     SheetContent,
     SheetHeader,
-    SheetTitle,
-    SheetDescription,
-    SheetTrigger,
+    SheetTitle, SheetTrigger
 } from "@/components/ui/sheet";
 
-import { RiShoppingCartLine } from "react-icons/ri";
+import { GrShop } from "react-icons/gr";
 import { useCartStore } from "@/src/store/cartStore";
 import ItemCarrito from "../cart/ItemCarrito";
 import { useRouter } from "next/navigation";
@@ -35,23 +33,20 @@ export default function ButtonShowCart() {
 
     return (
         <Sheet open={isCartOpen} onOpenChange={setCartOpen}>
-            <SheetTrigger className="relative cursor-pointer hover:text-gray-800 transition">
-                <RiShoppingCartLine className="h-6 w-6" />
-                {carrito.length > 0 && (
-                    <span className="absolute -top-1 -right-3 bg-red-600 text-white text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center shadow-md">
-                        {carrito.reduce((sum, item) => sum + item.cantidad, 0)}
+            <SheetTrigger className="relative cursor-pointer">
+                <div className="hover:bg-gray-100 rounded-full p-2">
+                    <GrShop className="h-5 w-5" />
+                    <span className="absolute -top-1 -right-1 bg-black text-white font-bold text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                        {carrito.length}
                     </span>
-                )}
+                </div>
             </SheetTrigger>
 
             <SheetContent className="sm:max-w-[450px] px-6 py-5 bg-gray-50 border-l border-gray-200 shadow-2xl rounded-lg">
                 <SheetHeader>
-                    <SheetTitle className="text-xl font-semibold text-gray-900">
+                    <SheetTitle className="text-xl font-semibold text-gray-700">
                         Carrito de Compras
                     </SheetTitle>
-                    <SheetDescription className="text-xs text-gray-500">
-                        Aquí puedes revisar los productos seleccionados.
-                    </SheetDescription>
                 </SheetHeader>
 
                 <div className="mt-6 space-y-5 max-h-[65vh] overflow-y-auto pr-2">

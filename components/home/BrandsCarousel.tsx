@@ -13,7 +13,6 @@ const AbsoluteHeaderWrapper = (props: ButtonGroupProps) => {
             <HeaderConTituloConControles
                 {...props}
                 title="Marcas"
-                subtitle="Nuestras marcas destacadas"
             />
         </div>
     );

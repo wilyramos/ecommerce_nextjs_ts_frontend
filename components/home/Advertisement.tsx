@@ -11,56 +11,57 @@ const useHover = () => {
     };
 };
 
-const ads = [
-    {
-        id: 1,
-        icon: <Truck className="w-4 h-4 text-white" />,
-        text: (
-            <span className="flex items-center gap-2">
-                Envíos en <span className="font-bold text-white">Cañete</span>
-                <span className="bg-red-600 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full tracking-wider">
-                    Gratis
-                </span>
-            </span>
-        ),
-    },
-    {
-        id: 2,
-        // icon: <Globe className="w-4 h-4 text-white" />,
-        text: (
-            <span>
-                Envíos a <span className="font-bold text-white">todo el Perú</span>
-            </span>
-        ),
-    },
-    {
-        id: 3,
-        icon: <CreditCard className="w-4 h-4 text-white" />,
-        text: (
-            <span>
-                Paga con <span className="font-bold text-white">tarjeta o Yape</span>
-            </span>
-        ),
-    },
-    {
-        id: 4,
-        icon: <Store className="w-4 h-4 text-white" />,
-        text: (
-            <span>
-                Recoge en <span className="font-bold text-white">tienda física</span> sin costo
-            </span>
-        ),
-    },
-];
 
 export default function App() {
     const [isVisible, setIsVisible] = useState(true);
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
+    const ads = [
+        {
+            id: 1,
+            icon: <Truck className="w-3 h-3 text-white" />,
+            text: (
+                <span className="flex items-center gap-2">
+                    Envíos en <span className="font-bold text-white">Cañete</span>
+                    <span className="bg-red-600 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full tracking-wider">
+                        Gratis
+                    </span>
+                </span>
+            ),
+        },
+        {
+            id: 2,
+            // icon: <Globe className="w-3 h-3 text-white" />,
+            text: (
+                <span>
+                    Envíos a <span className="font-bold text-white">todo el Perú</span>
+                </span>
+            ),
+        },
+        {
+            id: 3,
+            icon: <CreditCard className="w-3 h-3 text-white" />,
+            text: (
+                <span>
+                    Paga con <span className="font-bold text-white">tarjeta o Yape</span>
+                </span>
+            ),
+        },
+        {
+            id: 4,
+            icon: <Store className="w-3 h-3 text-white" />,
+            text: (
+                <span>
+                    Recoge en <span className="font-bold text-white">tienda física</span> sin costo
+                </span>
+            ),
+        },
+    ];
+
     if (!isVisible) return null;
 
     return (
-        <div className="w-full relative overflow-hidden bg-black text-white border-b border-white/10">
+        <div className="w-full relative overflow-hidden bg-black text-white">
 
             <style>{`
         @keyframes marquee {
@@ -68,7 +69,7 @@ export default function App() {
           100% { transform: translateX(-50%); }
         }
         .animate-marquee {
-          animation: marquee 28s linear infinite;
+          animation: marquee 80s linear infinite;
         }
         .paused {
           animation-play-state: paused;
@@ -76,7 +77,7 @@ export default function App() {
       `}</style>
 
             <div
-                className=" relative flex items-center h-8 overflow-hidden "
+                className=" relative flex items-center h-6 overflow-hidden "
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
             >
@@ -97,7 +98,7 @@ export default function App() {
                     {[...ads, ...ads, ...ads].map((ad, index) => (
                         <div key={`${ad.id}-${index}`} className="flex items-center mx-12 md:mx-20">
                             <div className="mr-2">{ad.icon}</div>
-                            <div className="text-sm md:text-base font-medium">{ad.text}</div>
+                            <div className="text-sm font-light">{ad.text}</div>
                         </div>
                     ))}
                 </div>

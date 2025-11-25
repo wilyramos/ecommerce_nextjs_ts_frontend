@@ -50,7 +50,7 @@ export default async function ProductResults({
                 {/* Contenido principal */}
                 <section className="col-span-1 md:col-span-4 flex flex-col gap-2">
                     {/* Barra superior (mobile + desktop) */}
-                    <div className="flex justify-between md:justify-end items-center gap-2 text-sm py-2 border-b md:border-none sticky md:static top-11 bg-white md:bg-transparent z-10">
+                    <div className="flex justify-between md:justify-end items-center gap-2 text-sm  border-b md:border-none sticky md:static top-15 bg-white md:bg-transparent z-10">
                         {/* Drawer solo en mobile */}
                         <div className="md:hidden">
                             <DrawerFiltersMain filters={products?.filters || null} />

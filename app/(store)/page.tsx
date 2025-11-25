@@ -79,7 +79,6 @@ export default function HomePage() {
                 <ProductosDestacados />
             </section>
 
-
             <section className="border-y max-w-7xl mx-auto">
                 <ProductosNuevos />
             </section>

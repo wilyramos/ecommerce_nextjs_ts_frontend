@@ -50,9 +50,10 @@ export default function layout({ children }: { children: React.ReactNode }) {
         <>
             <div className="flex flex-col min-h-screen">
                 {/* Aviso mejorado */}
-                <Advertisement />
-
-                <NavBar />
+                <header id="global-header" className="w-full sticky top-0 z-[10000]">
+                    <Advertisement />
+                    <NavBar />
+                </header>
                 <main className="min-h-screen">{children}</main>
                 <Footer />
             </div>

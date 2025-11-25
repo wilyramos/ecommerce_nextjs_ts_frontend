@@ -15,7 +15,6 @@ const AbsoluteHeaderWrapper = (props: ButtonGroupProps) => {
             <HeaderConControles
                 {...props}
                 title="Categorías"
-                subtitle="Explora nuestras colecciones"
             />
         </div>
     );

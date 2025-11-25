@@ -12,7 +12,7 @@ export default function HeaderConTituloConControles({ title, subtitle, next, pre
     return (
         <div className="flex items-start justify-between mb-10 md:mb-12">
             <div>
-                <h2 className="text-3xl md:text-4xl font-medium mb-2 tracking-tight">
+                <h2 className="text-xl md:text-2xl font-semibold mb-2 text-gray-800">
                     {title}
                 </h2>
 

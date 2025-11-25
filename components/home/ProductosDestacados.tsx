@@ -11,7 +11,7 @@ export default async function ProductosDestacados() {
         <section className="mx-auto py-5 px-4 border-b max-w-7xl">
             <div className=" mx-auto space-y-5 ">
 
-                <h2 className="text-3xl md:text-4xl font-medium mb-2 tracking-tight">
+                <h2 className="text-xl md:text-2xl font-medium mb-2 tracking-tight">
                     Lo mejor de GoPhone
                 </h2>
 
