@@ -26,10 +26,10 @@ interface Props {
 
 export default function ClientCarouselCategorias({ categorias }: Props) {
     const responsive = {
-        desktop: { breakpoint: { max: 3000, min: 1280 }, items: 6 },
-        laptop: { breakpoint: { max: 1280, min: 1024 }, items: 5 },
-        tablet: { breakpoint: { max: 1024, min: 640 }, items: 3 },
-        mobile: { breakpoint: { max: 640, min: 0 }, items: 2, partialVisibilityGutter: 30 },
+        desktop: { breakpoint: { max: 3000, min: 1280 }, items: 8 },
+        laptop: { breakpoint: { max: 1280, min: 1024 }, items: 6 },
+        tablet: { breakpoint: { max: 1024, min: 640 }, items: 4 },
+        mobile: { breakpoint: { max: 640, min: 0 }, items: 3, partialVisibilityGutter: 30 },
     };
 
     return (
@@ -38,8 +38,8 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                 relative 
                 w-full max-w-7xl mx-auto
                 px-6 
-                pt-24 md:pt-28     /* espacio para header */
-                pb-10 md:pb-14 border-b
+                pt-12     /* espacio para header */
+                pb-5  border-b
             "
         >
             <Carousel

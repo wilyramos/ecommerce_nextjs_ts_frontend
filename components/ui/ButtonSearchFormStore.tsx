@@ -101,9 +101,7 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
                 <div
                     className={`
                         relative flex items-center transition-all duration-300
-                        bg-gray-100 border border-transparent
-                        focus-within:bg-white 
-                        focus-within:border-gray-300
+                        border border-gray-200 bg-white
                         focus-within:shadow-sm h-10
                         ${isMobile ? "rounded-md" : "rounded-full"}
                     `}

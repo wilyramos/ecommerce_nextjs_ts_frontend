@@ -1,3 +1,5 @@
+// frontend/components/navigation/NavBar.tsx
+
 import Link from "next/link";
 import Logo from "../ui/Logo";
 import ButtonShowCart from "../ui/ButtonShowCart";
@@ -11,9 +13,9 @@ import ButtonSearchMobile from "./ButtonSearchMobile";
 export default function NavBar() {
     return (
         <NavBarClient>
-            {/* Agregamos ID para referencia de altura */}
-            <header className=" transition-all duration-200 border-b">
-                <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6">
+            {/* HEADER FIJO */}
+            <header className="sticky top-0 z-50 bg-white border-b ">
+                <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 ">
 
                     {/* Mobile menu button */}
                     <div className="md:hidden flex items-center">
@@ -32,11 +34,6 @@ export default function NavBar() {
                         <Logo />
                     </Link>
 
-                    {/* Desktop categories */}
-                    <div className="hidden md:flex lg:px-10">
-                        <ServerCategorias />
-                    </div>
-
                     {/* Desktop search */}
                     <nav className="hidden md:flex flex-1 justify-center px-4">
                         <div className="max-w-xl w-full">
@@ -45,7 +42,7 @@ export default function NavBar() {
                     </nav>
 
                     {/* Desktop actions */}
-                    <div className="hidden md:flex items-center gap-4">
+                    <div className="hidden md:flex items-center gap-1">
                         <Link
                             href="/auth/registro"
                             className="flex items-center gap-1 transition px-2 py-1"
@@ -59,13 +56,20 @@ export default function NavBar() {
                         <ButtonShowCart />
                     </div>
 
-                    {/* Mobile cart */}
                     <div className="md:hidden flex items-center gap-2">
                         <ButtonSearchMobile />
                         <ButtonShowCart />
                     </div>
                 </div>
             </header>
+
+            {/* CATEGORÍAS FIJAS EN DESKTOP */}
+            <div className="hidden md:block sticky top-16 z-40">
+                <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center">
+                    <ServerCategorias />
+                </div>
+            </div>
+
         </NavBarClient>
     );
 }
