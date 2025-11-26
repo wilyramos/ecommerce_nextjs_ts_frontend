@@ -8,12 +8,15 @@ export default async function ProductosDestacados() {
     if (!productos.length) return null;
 
     return (
-        <section className="mx-auto py-5 px-4 border-b max-w-7xl">
-            <div className=" mx-auto space-y-4">
+        <section className="mx-auto p-4 md:p-8 border-b max-w-7xl">
+            <div className=" mx-auto space-y-2">
 
-                <h2 className="text-lg md:text-xl font-semibold tracking-tight text-gray-800">
+                <h2 className="text-lg md:text-xl font-semibold tracking-tighter text-gray-800">
                     Lo mejor de GoPhone
                 </h2>
+                <div className='border-2 border-b border-gray-300 mb-2 w-20 md:w-24'>
+
+                </div>
 
                 <div
                     className="

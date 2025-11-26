@@ -13,10 +13,9 @@ export default async function ProductosNuevos() {
     }
 
     return (
-        <section className="">
-            <div className="max-w-7xl mx-auto p-4 ">
-                
-                <ClientCarouselProductosNuevos products={newProducts.products}  />
+        <section className="mx-auto p-4 md:p-8 border-b max-w-7xl">
+            <div className=" mx-auto space-y-2">
+                <ClientCarouselProductosNuevos products={newProducts.products} />
             </div>
         </section>
     );

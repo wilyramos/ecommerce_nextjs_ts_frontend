@@ -19,7 +19,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
             className="group flex flex-col bg-white"
         >
             {/* Imagen */}
-            <div className="relative aspect-[3/4] bg-white overflow-hidden">
+            <div className="relative aspect-[4/4] bg-white overflow-hidden">
                 {primaryImage && (
                     <Image
                         src={primaryImage}

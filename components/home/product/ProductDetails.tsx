@@ -127,6 +127,7 @@ export default function ProductDetails({ producto }: Props) {
             producto.atributos?.COLOR ||
             null);
 
+
     //TODO: REVIEW VARIANTS KEY IN PRODUCTS WITH VARIANTS
 
     return (
@@ -220,8 +221,8 @@ export default function ProductDetails({ producto }: Props) {
                             </div>
 
                             {/* Stock */}
-                           {/* Stock - Diseño Minimalista (B&W) */}
-{/* Stock con Colores Bajos/Elegantes */}
+                            {/* Stock - Diseño Minimalista (B&W) */}
+                            {/* Stock con Colores Bajos/Elegantes */}
                             <div className="flex items-center gap-2 mt-1">
                                 <span
                                     className={`text-xs font-medium px-2.5 py-1 flex items-center gap-1.5 w-fit transition-colors
@@ -233,19 +234,18 @@ export default function ProductDetails({ producto }: Props) {
                                         }`}
                                 >
                                     {/* Punto indicador con opacidad reducida para que sea un color "bajo" */}
-                                    <span className={`h-2 w-2 rounded-full ${
-                                        stock === 0 
-                                            ? 'bg-gray-300' 
-                                            : stock <= 3 
-                                                ? 'bg-orange-500/70' // Naranja medio con transparencia
-                                                : 'bg-emerald-500/70' // Verde esmeralda medio con transparencia
-                                    }`} />
-                                    
+                                    <span className={`h-2 w-2 rounded-full ${stock === 0
+                                        ? 'bg-gray-300'
+                                        : stock <= 3
+                                            ? 'bg-orange-500/70' // Naranja medio con transparencia
+                                            : 'bg-emerald-500/70' // Verde esmeralda medio con transparencia
+                                        }`} />
+
                                     {/* Mensaje Dinámico */}
-                                    {stock === 0 
-                                        ? 'Agotado' 
-                                        : stock <= 3 
-                                            ? `¡Solo quedan ${stock}!` 
+                                    {stock === 0
+                                        ? 'Agotado'
+                                        : stock <= 3
+                                            ? `¡Solo quedan ${stock}!`
                                             : `En Stock`
                                     }
                                 </span>
@@ -260,7 +260,7 @@ export default function ProductDetails({ producto }: Props) {
                         </header>
 
                         {Object.entries(allAttributes).length > 0 && (
-                            <p className="text-sm mb-3 text-gray-700 font-medium">
+                            <p className="text-xs mb-3 text-gray-600 font- ">
                                 Seleccionar opciones:
                             </p>
                         )}
@@ -269,7 +269,7 @@ export default function ProductDetails({ producto }: Props) {
                             const availableValues = getAvailableValues(key);
 
                             return (
-                                <fieldset key={key} className="mb-2 p-1.5">
+                                <fieldset key={key} className="mb-2 p-1 px-4 ">
                                     <legend className="text-xs font-bold text-gray-600 uppercase tracking-wide mb-2">{key}:</legend>
 
                                     {key.toLowerCase() === "color" ? (
@@ -277,23 +277,48 @@ export default function ProductDetails({ producto }: Props) {
                                             {availableValues.map(val => {
                                                 const outOfStock = isOptionOutOfStock(key, val);
                                                 const selected = selectedAttributes[key] === val;
+
+                                                // ENCONTRAR VARIANTE PARA ESTE VALOR
+                                                const variantForValue = producto.variants?.find(
+                                                    v =>
+                                                        v.atributos[key] === val &&
+                                                        Object.entries(selectedAttributes).every(
+                                                            ([k, v2]) => k === key || v.atributos[k] === v2
+                                                        )
+                                                );
+
                                                 return (
                                                     <button
                                                         key={val}
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
                                                         title={val}
-                                                        className={`relative w-8 h-8 rounded-full border-2 transition-all flex items-center justify-center
-                  ${selected ? 'border-gray-800 ring-2 ring-gray-800' : 'border-gray-300 hover:border-gray-500'}
-                  ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}`}
+                                                        className={`relative w-12 h-14 rounded border transition-all flex flex-col items-center justify-center
+                ${selected ? 'border-gray-800 ring-1 ring-gray-800' : 'border-gray-300 hover:border-gray-500'}
+                ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
+            `}
                                                     >
+                                                        {/* Color */}
                                                         <ColorCircle color={val} />
+
+                                                        {/* Nombre */}
+                                                        <span className="text-[10px] font-light mt-1">{val}</span>
+
+                                                        {/* PRECIO DE LA VARIANTE */}
+                                                        {variantForValue?.precio && (
+                                                            <span className="text-[8px] font-semibold text-gray-700">
+                                                                S/ {variantForValue.precio.toFixed(2)}
+                                                            </span>
+                                                        )}
+
+                                                        {/* Tachado si está sin stock */}
                                                         {outOfStock && (
-                                                            <span className="absolute left-1 inset-0 border-t-2 border-gray-500 border-dashed rotate-[-45deg]" />
+                                                            <span className="absolute inset-0 border-t-2 border-gray-500 border-dashed rotate-[-45deg]" />
                                                         )}
                                                     </button>
                                                 );
                                             })}
+
                                         </div>
                                     ) : availableValues.length <= 6 ? (
                                         <div className="flex flex-wrap gap-2">

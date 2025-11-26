@@ -109,7 +109,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                     variant="ghost"
                     size="sm"
                     onClick={clearFilters}
-                    className="text-xs cursor-pointer"
+                    className="text-xs cursor-pointer text-white"
                 >
                     Limpiar
                 </Button>
@@ -120,12 +120,12 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                 {/* Categorías */}
                 {sortedCategories.length > 0 && (
                     <AccordionItem value="categories">
-                        <AccordionTrigger className="text-sm">Categorías</AccordionTrigger>
+                        <AccordionTrigger className="text-sm font-light">Categorías</AccordionTrigger>
                         <AccordionContent>
                             <ul className="space-y-1">
                                 {sortedCategories.map((category) => (
                                     <li key={category.slug}>
-                                        <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-600">
+                                        <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-500">
                                             <input
                                                 type="checkbox"
                                                 checked={searchParams.getAll("category").includes(category.slug)}
@@ -145,12 +145,12 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                 {/* Marcas */}
                 {sortedBrands.length > 0 && (
                     <AccordionItem value="brands">
-                        <AccordionTrigger className="text-sm">Marcas</AccordionTrigger>
+                        <AccordionTrigger className="text-sm font-light ">Marcas</AccordionTrigger>
                         <AccordionContent>
                             <ul className="space-y-1">
                                 {sortedBrands.map((brand) => (
                                     <li key={brand.slug}>
-                                        <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-600">
+                                        <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-500">
                                             <input
                                                 type="checkbox"
                                                 checked={searchParams.getAll("brand").includes(brand.slug)}
@@ -170,14 +170,14 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                 {/* Atributos dinámicos */}
                 {sortedAtributos.map((attr) => (
                     <AccordionItem key={attr.name} value={attr.name}>
-                        <AccordionTrigger className="capitalize text-sm">
+                        <AccordionTrigger className="text-sm font-light capitalize">
                             {attr.name}
                         </AccordionTrigger>
                         <AccordionContent>
                             <ul className="space-y-1">
                                 {attr.values.map((value) => (
                                     <li key={value}>
-                                        <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-600">
+                                        <label className="flex items-center gap-2 cursor-pointer text-sm text-gray-500">
                                             <input
                                                 type="checkbox"
                                                 checked={searchParams
@@ -199,7 +199,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                 {/* Precio */}
                 {priceFilter && (
                     <AccordionItem value="price">
-                        <AccordionTrigger className="text-sm">
+                        <AccordionTrigger className="text-sm font-light">
                             Precio
                         </AccordionTrigger>
                         <AccordionContent>
@@ -214,7 +214,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                                         updatePriceRange(val as [number, number])
                                     }
                                 />
-                                <div className="flex justify-between text-gray-600">
+                                <div className="flex justify-between text-gray-500">
                                     <span>S/. {priceRange[0]}</span>
                                     <span>S/. {priceRange[1]}</span>
                                 </div>

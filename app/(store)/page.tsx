@@ -68,20 +68,19 @@ export default function HomePage() {
     return (
         <>
 
-
-            <section className="container mx-auto">
-                <CarruselPrincipal />
-            </section>
-
             <section className="max-w-7xl mx-auto">
                 <Advertisement />
             </section>
            
+            <section className="container mx-auto">
+                <CarruselPrincipal />
+            </section>
+            
             <section>
                 <ProductosDestacados />
             </section>
 
-            <section className="border-y max-w-7xl mx-auto">
+            <section>
                 <ProductosNuevos />
             </section>
 

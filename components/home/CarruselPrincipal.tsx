@@ -10,9 +10,7 @@ export default async function CarruselPrincipal() {
 
     if (!products || products.products.length === 0) {
         return (
-            <div className="text-center py-10 text-gray-500">
-                No hay productos en la página principal disponibles en este momento.
-            </div>
+            null
         );
     }
     

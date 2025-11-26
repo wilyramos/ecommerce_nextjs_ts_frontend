@@ -73,9 +73,9 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                                     <Image
                                         src={categoria.image}
                                         alt={categoria.nombre}
-                                        width={200}
-                                        height={200}
-                                        quality={100}
+                                        width={100}
+                                        height={100}
+                                        quality={50}
                                         className="
                                             object-contain 
                                             transition-transform duration-500 ease-out
@@ -83,7 +83,7 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                                         "
                                     />
                                 ) : (
-                                    <span className="text-neutral-300 text-xs uppercase tracking-widest">
+                                    <span className="text-gray-200 text-xs uppercase tracking-widest">
                                         N/A
                                     </span>
                                 )}
@@ -101,8 +101,8 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                         >
                             <h3
                                 className="
-                                    text-xs md:text-base 
-                                    font-medium text-neutral-900 
+                                    text-xs md:text-sm 
+                                    font-medium text-gray-800 
                                     tracking-wide
                                 "
                             >

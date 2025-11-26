@@ -41,53 +41,49 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                     >
 
                         {/* Text Section */}
-                        <article className="z-10 w-full md:w-1/3 space-y-3 max-[639px]:space-y-2">
-
-                            <div className="w-fit flex items-center gap-1.5 px-3 py-1 
-                                rounded-full bg-white border border-neutral-200 shadow-sm
-                                max-[639px]:text-[10px]">
+                        <article className="z-10 w-full md:w-1/3 space-y-3 sm:space-y-2 text-center md:text-left order-2 md:order-1">
+                            <div
+                                className="w-fit mx-auto md:mx-0 flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border text-[10px]"
+                            >
                                 {product.esNuevo ? (
                                     <Sparkle className="w-3 h-3 text-blue-600" />
                                 ) : (
                                     <Tag className="w-3 h-3 text-neutral-500" />
                                 )}
-                                <span className="text-[10px] font-semibold uppercase tracking-wider text-neutral-800">
+                                <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-800">
                                     {product.brand?.nombre || "TECNOLOGÍA"}
                                 </span>
                             </div>
 
-                            <h2 className="text-xl md:text-3xl font-extrabold tracking-tight text-neutral-900 leading-[1.1] drop-shadow-sm">
+                            <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-gray-800 leading-tight">
                                 {product.nombre}
                             </h2>
 
-                            <div className="flex items-end gap-3">
-                                <p className="text-2xl md:text-4xl font-bold text-neutral-900">
+                            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-center md:justify-start gap-2 sm:gap-3">
+                                <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800">
                                     S/. {product.precio?.toFixed(2) ?? "0.00"}
                                 </p>
 
-                                {product.precioComparativo &&
-                                    product.precioComparativo > product.precio && (
-                                        <div className="flex flex-col justify-end pb-1">
-                                            <span className="text-xs font-semibold text-red-600 bg-red-100 px-1.5 py-0.5 rounded w-fit">
-                                                -{Math.round(
-                                                    ((product.precioComparativo - product.precio) /
-                                                        product.precioComparativo) *
-                                                    100
-                                                )}% DESCUENTO
-                                            </span>
-                                            <span className="text-sm text-neutral-400 line-through decoration-neutral-400">
-                                                S/. {product.precioComparativo.toFixed(2)}
-                                            </span>
-                                        </div>
-                                    )}
+                                {product.precioComparativo && product.precioComparativo > product.precio && (
+                                    <div className="flex flex-col justify-end sm:pb-1 items-center sm:items-start">
+                                        <span className="text-[10px] sm:text-xs font-semibold text-gray-600 bg-cyan-100 px-1.5 py-0.5 rounded w-fit">
+                                            -
+                                            {Math.round(
+                                                ((product.precioComparativo - product.precio) /
+                                                    product.precioComparativo) *
+                                                100
+                                            )}% DESCUENTO
+                                        </span>
+                                        <span className="text-xs sm:text-sm text-neutral-400 line-through decoration-neutral-400">
+                                            S/. {product.precioComparativo.toFixed(2)}
+                                        </span>
+                                    </div>
+                                )}
                             </div>
                         </article>
-
                         {/* Image Section */}
-                        <div className="relative w-full md:w-2/3 
-                            h-[320px] md:h-[500px] 
-                            py-5 md:py-10 max-[639px]:py-6"
-                        >
+                        <div className="relative w-full md:w-2/3 h-[260px] sm:h-[300px] md:h-[350px] order-1 md:order-2">
+
                             <div className="relative w-full h-full">
                                 <Image
                                     src={product.imagenes?.[0] || "/logoapp.png"}

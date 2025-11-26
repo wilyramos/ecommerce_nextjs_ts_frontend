@@ -7,7 +7,7 @@ export default async function BrandsList() {
     if (brands.length === 0) return null;
 
     return (
-        <section className="max-w-7xl mx-auto px-4">
+        <section className="mx-auto p-4 md:p-8 max-w-7xl">
             <BrandsCarousel brands={brands} />
         </section>
     )

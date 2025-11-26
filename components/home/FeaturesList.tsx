@@ -19,7 +19,7 @@ const features: Feature[] = [
 export default function MinimalFeatures() {
   return (
     <section className=" py-10 ">
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 sm:grid-cols-4 gap-6 border-y border-gray-200 py-6">
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 sm:grid-cols-4 gap-6 py-6">
         {features.map((feature) => {
           const Content = (
             <div

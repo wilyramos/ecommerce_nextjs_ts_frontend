@@ -80,9 +80,14 @@ export default async function ProductResults({
                             />
                         </>
                     ) : (
-                        <div className="text-center py-10 text-gray-500">
-                            No se encontraron productos.
+                        <div>
+
+                            <div className="text-center py-10 text-gray-400">
+                            No se encontraron productos
+                             </div>
                         </div>
+
+
                     )}
                 </section>
 

@@ -52,7 +52,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
                 <header>
                     <NavBar />
                 </header>
-                <main className="pt-10 md:pt-20 min-h-screen">
+                <main className="pt-12 md:pt-24 min-h-screen">
                     {children}
                 </main>
                 <Footer />
