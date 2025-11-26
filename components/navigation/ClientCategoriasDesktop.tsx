@@ -12,8 +12,7 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
+  NavigationMenuTrigger
 } from "@/components/ui/navigation-menu";
 
 export default function ClientCategoriasDesktop({
@@ -46,13 +45,13 @@ export default function ClientCategoriasDesktop({
 
           return (
             <NavigationMenuItem key={cat._id}>
-              <NavigationMenuTrigger className={navigationMenuTriggerStyle()}>
+              <NavigationMenuTrigger className="bg-white rounded-none hover:bg-gray-100">
                 {cat.nombre}
               </NavigationMenuTrigger>
 
               {sub.length > 0 && (
                 <NavigationMenuContent>
-                  <ul className="grid gap-2 md:w-[520px] lg:w-[650px] lg:grid-cols-[.8fr_1fr]">
+                  <ul className="grid gap-2 md:w-[520px] lg:w-[750px] lg:grid-cols-[.8fr_1fr]">
                     {/* Panel descriptivo */} 
                     <li className="p-4">
                       <NavigationMenuLink asChild>
@@ -60,10 +59,7 @@ export default function ClientCategoriasDesktop({
                           <h3 className="text-lg font-semibold text-gray-800 mb-1">
                             {cat.nombre}
                           </h3>
-                          <p className="text-muted-foreground text-sm leading-relaxed">
-                            Explora todas las subcategorías disponibles dentro de{" "}
-                            <strong>{cat.nombre}</strong>.
-                          </p>
+                          
                         </div>
                       </NavigationMenuLink>
                     </li>
@@ -125,7 +121,7 @@ function ListItem({
       <NavigationMenuLink asChild>
         <Link
           href={href}
-          className="flex items-center flex-row gap-3 hover:bg-gray-100 transition"
+          className="flex items-center flex-row gap-3 "
         >
           {/* Miniatura */}
           {image && (

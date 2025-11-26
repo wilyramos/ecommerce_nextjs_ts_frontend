@@ -9,9 +9,9 @@ export default async function ProductosDestacados() {
 
     return (
         <section className="mx-auto py-5 px-4 border-b max-w-7xl">
-            <div className=" mx-auto space-y-5 ">
+            <div className=" mx-auto space-y-4">
 
-                <h2 className="text-xl md:text-2xl font-medium mb-2 tracking-tight">
+                <h2 className="text-lg md:text-xl font-semibold tracking-tight text-gray-800">
                     Lo mejor de GoPhone
                 </h2>
 
@@ -23,10 +23,10 @@ export default async function ProductosDestacados() {
                         md:grid-cols-3
                         lg:grid-cols-4
                         xl:grid-cols-5
-                        gap-4
+                        gap-2
                     "
                 >
-                    {productos.slice(0, 10).map((product) => (
+                    {productos.slice(0, 8).map((product) => (
                         <ProductCardHome key={product._id} product={product} />
                     ))}
                 </div>

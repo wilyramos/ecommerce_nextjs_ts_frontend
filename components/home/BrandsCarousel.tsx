@@ -31,9 +31,9 @@ export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {
         <section
             className="
                 relative
-                pt-24 md:pt-28   /* espacio para el header */
+                pt-12 md:pt-18   /* espacio para el header */
                 w-full max-w-7xl mx-auto
-                px-4 md:px-0
+                px-2 md:px-0
             "
         >
             <Carousel
@@ -44,7 +44,7 @@ export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {
                 renderButtonGroupOutside
                 arrows={false}
                 customButtonGroup={<AbsoluteHeaderWrapper />}
-                itemClass="px-4"
+                itemClass="px-2"
                 containerClass="pb-6"
             >
                 {brands.map((brand) => (

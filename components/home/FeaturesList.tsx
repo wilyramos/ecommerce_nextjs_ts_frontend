@@ -13,13 +13,13 @@ const features: Feature[] = [
   { title: "Ofertas exclusivas", icon: FaTags },
   { title: "Envíos rápidos", icon: FaTruck },
   { title: "Pago 100% seguro", icon: FaLock },
-  { title: "Cambios y devoluciones", icon: FaExchangeAlt, url: "/cambios-y-devoluciones" }, // <-- añadí url aquí
+  { title: "Cambios y devoluciones", icon: FaExchangeAlt, url: "/cambios-y-devoluciones" },
 ];
 
 export default function MinimalFeatures() {
   return (
-    <section className="bg-white py-10">
-      <div className="max-w-6xl mx-auto px-4 grid grid-cols-2 sm:grid-cols-4 gap-6">
+    <section className=" py-10 ">
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 sm:grid-cols-4 gap-6 border-y border-gray-200 py-6">
         {features.map((feature) => {
           const Content = (
             <div

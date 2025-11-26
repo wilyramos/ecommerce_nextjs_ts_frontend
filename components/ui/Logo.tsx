@@ -6,10 +6,10 @@ export default function Logo() {
         <Image
             src="/logogophone.png"
             alt="Logo"
-            width={80}
-            height={40}
-            quality={40}
-            className="h-10 w-auto"
+            width={100}
+            height={100}
+            quality={50}
+            className="w-auto"
         />
     );
 }

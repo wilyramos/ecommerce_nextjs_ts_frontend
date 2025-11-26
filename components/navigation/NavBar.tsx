@@ -14,8 +14,8 @@ export default function NavBar() {
     return (
         <NavBarClient>
             {/* HEADER FIJO */}
-            <header className="sticky top-0 z-50 bg-white border-b ">
-                <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 ">
+            <header className="sticky top-0 z-50 bg-white  ">
+                <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 py-1 ">
 
                     {/* Mobile menu button */}
                     <div className="md:hidden flex items-center">
@@ -24,7 +24,7 @@ export default function NavBar() {
 
                     {/* Mobile logo centered */}
                     <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-10">
-                        <Link href="/" className="flex items-center p-1">
+                        <Link href="/" className="flex items-center ">
                             <Logo />
                         </Link>
                     </div>

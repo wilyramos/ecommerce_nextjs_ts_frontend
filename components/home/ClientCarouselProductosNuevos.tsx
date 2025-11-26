@@ -26,9 +26,9 @@ const AbsoluteHeaderWrapper = (props: ButtonGroupProps) => {
 
 export default function ClientCarouselProductosNuevos({ products }: Props) {
     const responsive = {
-        desktop: { breakpoint: { max: 3000, min: 1280 }, items: 4 },
-        laptop: { breakpoint: { max: 1280, min: 1024 }, items: 3 },
-        tablet: { breakpoint: { max: 1024, min: 640 }, items: 2 },
+        desktop: { breakpoint: { max: 3000, min: 1280 }, items: 6 },
+        laptop: { breakpoint: { max: 1280, min: 1024 }, items: 4 },
+        tablet: { breakpoint: { max: 1024, min: 640 }, items: 3 },
         mobile: { breakpoint: { max: 640, min: 0 }, items: 2, partialVisibilityGutter: 30 },
     };
 
@@ -36,7 +36,7 @@ export default function ClientCarouselProductosNuevos({ products }: Props) {
         <section
             className="
         w-full max-w-7xl mx-auto relative
-        pt-24 md:pt-28
+        pt-12 md:pt-18
         px-4 md:px-0
       "
         >
@@ -50,7 +50,7 @@ export default function ClientCarouselProductosNuevos({ products }: Props) {
                 renderButtonGroupOutside
                 customButtonGroup={<AbsoluteHeaderWrapper />}
                 containerClass="-mx-3"
-                itemClass="px-3 py-4"
+                itemClass="px-1 py-4"
                 partialVisible
             >
                 {products.map((product) => (

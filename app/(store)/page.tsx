@@ -8,6 +8,7 @@ import ProductosDestacados from "@/components/home/ProductosDestacados";
 import CategoriasDestacadasWrapper from "@/components/home/CategoriasDestacadasWrapper";
 import FeaturesList from "@/components/home/FeaturesList";
 import BrandsList from "@/components/home/BrandsList";
+import Advertisement from "@/components/home/Advertisement";
 
 // Metadata de la página principal de la tienda, extendiendo la global
 export const metadata: Metadata = {
@@ -70,6 +71,10 @@ export default function HomePage() {
 
             <section className="container mx-auto">
                 <CarruselPrincipal />
+            </section>
+
+            <section className="max-w-7xl mx-auto">
+                <Advertisement />
             </section>
            
             <section>
