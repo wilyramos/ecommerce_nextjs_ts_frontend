@@ -26,7 +26,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                 autoPlaySpeed={7000}
                 showDots
                 renderDotsOutside
-                dotListClass="flex justify-center gap-3 mt-6"
+                dotListClass="flex justify-center"
                 customDot={<CustomDot />}
                 customLeftArrow={<CustomArrow direction="left" />}
                 customRightArrow={<CustomArrow direction="right" />}

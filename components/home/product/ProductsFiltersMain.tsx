@@ -11,7 +11,6 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { LuListFilter } from "react-icons/lu";
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
 
 type ProductsFiltersProps = {
     filters: TFilter[] | null;
@@ -100,19 +99,17 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
 
     return (
         <aside className="w-full shadow-xs rounded-xs bg-white">
-            <div className="flex justify-between items-center mb-3 bg-black rounded-t-lg">
+            <div className="flex justify-between items-center mb-3 bg-black rounded-t-md">
                 <h2 className="text-lg flex items-center gap-2 px-4 py-2 font-semibold text-white">
                     <LuListFilter />
                     Filtros
                 </h2>
-                <Button
-                    variant="ghost"
-                    size="sm"
+                <button
                     onClick={clearFilters}
-                    className="text-xs cursor-pointer text-white"
+                    className="text-sm text-gray-200 underline px-4 cursor-pointer hover:text-white transition-colors"
                 >
                     Limpiar
-                </Button>
+                </button>
             </div>
 
             <Accordion type="multiple" className="w-full text-sm px-4">

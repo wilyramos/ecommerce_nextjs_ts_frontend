@@ -21,10 +21,10 @@ export const metadata: Metadata = {
         title: "GoPhone | Tienda",
         description:
             "Productos, compras, cuenta y soporte dentro de la tienda GoPhone.",
-        url: "https://gophone.pe/store",
+        url: "https://gophone.pe/productos",
         images: [
             {
-                url: "https://gophone.pe/logob.svg",
+                url: "https://gophone.pe/favicon.ico",
                 width: 1200,
                 height: 630,
                 alt: "GoPhone Tienda"
@@ -36,10 +36,10 @@ export const metadata: Metadata = {
         title: "GoPhone | Tienda",
         description:
             "Explora productos, compras y soporte en la tienda GoPhone.",
-        images: ["https://gophone.pe/logoapp.svg"]
+        images: ["https://gophone.pe/favicon.ico"]
     },
     alternates: {
-        canonical: "https://gophone.pe/store"
+        canonical: "https://gophone.pe/productos"
     }
 };
 

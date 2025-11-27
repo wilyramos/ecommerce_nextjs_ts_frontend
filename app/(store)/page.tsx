@@ -48,7 +48,7 @@ export const metadata: Metadata = {
         url: "https://gophone.pe",
         images: [
             {
-                url: "https://gophone.pe/logomini.svg",
+                url: "https://gophone.pe/favicon.ico",
                 width: 1200,
                 height: 630,
                 alt: "GoPhone Home - Accesorios y Tecnología",
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
         title: "GoPhone - Venta de accesorios y tecnología en Cañete",
         description:
             "Compra iPhones, accesorios y más en GoPhone, tu tienda online de confianza en Cañete.",
-        images: ["https://gophone.pe/logomini.svg"],
+        images: ["https://gophone.pe/favicon.ico"],
     }
 };
 
@@ -88,12 +88,14 @@ export default function HomePage() {
                 <BrandsList />
             </section>
 
-            <section>
-                <FeaturesList />
-            </section>
-
+            
              <section className="my-10">
                 <CategoriasDestacadasWrapper />
+            </section>
+
+
+            <section>
+                <FeaturesList />
             </section>
 
 

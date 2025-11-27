@@ -66,7 +66,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
 
                     {color && (
                         <div className="flex items-center gap-1 mt-1">
-                            <span className="text-[10px] font-semibold">Color:</span>
+                            <span className="text-[10px] font-light">Color:</span>
                             <ColorCircle color={color} size={12} />
                         </div>
                     )}

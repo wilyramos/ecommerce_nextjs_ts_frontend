@@ -10,9 +10,8 @@ export default function HeaderConControles({ next, previous }: ButtonGroupProps)
                 <button
                     onClick={() => previous?.()}
                     className="
-                        p-3 rounded-full 
-                        border border-neutral-300/70 
-                        bg-white 
+                        p-1 rounded-full 
+                        border  
                         hover:bg-black hover:border-black 
                         shadow-sm
                         group transition-all duration-300
@@ -28,11 +27,10 @@ export default function HeaderConControles({ next, previous }: ButtonGroupProps)
                 <button
                     onClick={() => next?.()}
                     className="
-                        p-3 rounded-full 
-                        border border-neutral-300/70 
-                        bg-white 
+                        p-1 rounded-full 
+                        border  
                         hover:bg-black hover:border-black 
-                        shadow-sm 
+                         
                         group transition-all duration-300
                     "
                     aria-label="Siguiente"

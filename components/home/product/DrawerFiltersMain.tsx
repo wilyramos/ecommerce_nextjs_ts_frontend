@@ -27,10 +27,13 @@ export default function DrawerFiltersMain({ filters }: Props) {
     const searchParams = useSearchParams();
     const [open, setOpen] = useState(false);
 
-    const { categories = [], brands = [], atributos = [], price = [] } = filters?.[0] ?? {};
+    const { categories = [], brands = [], atributos = [], price = [] } =
+        filters?.[0] ?? {};
+
     const priceFilter = price?.[0] ?? null;
 
-    const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
+    const [selectedFilters, setSelectedFilters] =
+        useState<Record<string, string[]>>();
     const [minPrice, setMinPrice] = useState<number>(priceFilter?.min ?? 0);
     const [maxPrice, setMaxPrice] = useState<number>(priceFilter?.max ?? 0);
 
@@ -39,60 +42,57 @@ export default function DrawerFiltersMain({ filters }: Props) {
 
         const parsed: Record<string, string[]> = {};
 
-        // load category filters
         const categoryVals = searchParams.getAll("category");
-        if (categoryVals.length > 0) parsed["category"] = categoryVals;
+        if (categoryVals.length) parsed["category"] = categoryVals;
 
-        // load brands
         const brandsVals = searchParams.getAll("brand");
-        if (brandsVals.length > 0) parsed["brand"] = brandsVals;
+        if (brandsVals.length) parsed["brand"] = brandsVals;
 
-        // load dynamic attributes
         atributos.forEach((attr) => {
             const vals = searchParams.getAll(attr.name);
-            if (vals.length > 0) parsed[attr.name] = vals;
+            if (vals.length) parsed[attr.name] = vals;
         });
 
         setSelectedFilters(parsed);
 
-        // load price
         if (priceFilter) {
             const range = searchParams.get("priceRange");
-            const [min, max] = range?.split("-").map(Number) || [
-                priceFilter.min ?? 0,
-                priceFilter.max ?? 0,
-            ];
+            const [min, max] =
+                range?.split("-").map(Number) ?? [
+                    priceFilter.min ?? 0,
+                    priceFilter.max ?? 0,
+                ];
             setMinPrice(min);
             setMaxPrice(max);
         }
     }, [searchParams, filters, atributos, brands, categories, priceFilter]);
 
-    if (!filters || filters.length === 0) return null;
+    if (!filters?.length) return null;
 
     const updateParams = (updates: Record<string, string[] | null>) => {
         const params = new URLSearchParams(searchParams.toString());
-        params.set("page", "1"); // reset to first page on filter change
-        for (const [key, val] of Object.entries(updates)) {
-            if (!val || val.length === 0) params.delete(key);
-            else {
-                params.delete(key);
-                val.forEach((v) => params.append(key, v));
-            }
-        }
+        params.set("page", "1");
+
+        Object.entries(updates).forEach(([key, val]) => {
+            params.delete(key);
+            if (val?.length) val.forEach((v) => params.append(key, v));
+        });
+
         router.push(`/productos?${params.toString()}`);
     };
 
-    const toggleCheckboxValue = (attrName: string, value: string) => {
-        const prevValues = selectedFilters[attrName] || [];
-        const updatedValues = prevValues.includes(value)
-            ? prevValues.filter((v) => v !== value)
-            : [...prevValues, value];
-        setSelectedFilters({ ...selectedFilters, [attrName]: updatedValues });
-        updateParams({ [attrName]: updatedValues });
+    const toggleCheckboxValue = (attr: string, val: string) => {
+        const prev = selectedFilters?.[attr] ?? [];
+        const upd = prev.includes(val)
+            ? prev.filter((v) => v !== val)
+            : [...prev, val];
+
+        setSelectedFilters({ ...selectedFilters, [attr]: upd });
+        updateParams({ [attr]: upd });
     };
 
-    const handlePriceChange = (type: "min" | "max", value: string) => {
-        const num = Math.max(0, Number(value) || 0);
+    const handlePriceChange = (type: "min" | "max", val: string) => {
+        const num = Math.max(0, Number(val) || 0);
         if (type === "min") {
             setMinPrice(num);
             updateParams({ priceRange: [`${num}-${maxPrice}`] });
@@ -105,198 +105,231 @@ export default function DrawerFiltersMain({ filters }: Props) {
     const clearFilters = () => {
         const cleared: Record<string, null> = {};
         categories.forEach(() => (cleared["category"] = null));
-        atributos.forEach((attr) => (cleared[attr.name] = null));
+        atributos.forEach((a) => (cleared[a.name] = null));
         cleared["brand"] = null;
+
         setSelectedFilters({});
         if (priceFilter) {
             setMinPrice(priceFilter.min ?? 0);
             setMaxPrice(priceFilter.max ?? 0);
         }
+
         updateParams({ ...cleared, priceRange: null, sort: null });
         setOpen(false);
     };
 
+    const SectionTitle = ({ title }: { title: string }) => (
+        <span className="uppercase tracking-wide text-[13px] font-light text-gray-700">
+            {title}
+        </span>
+    );
+
+    const Item = ({
+        label,
+        checked,
+        onClick,
+    }: {
+        label: string;
+        checked: boolean;
+        onClick: () => void;
+    }) => (
+        <li
+            onClick={onClick}
+            className="
+        flex items-center gap-3 py-2 px-2 rounded-md cursor-pointer select-none
+        hover:bg-gray-50 transition
+      "
+        >
+            <input
+                type="checkbox"
+                checked={checked}
+                readOnly
+                className="accent-black pointer-events-none"
+            />
+            <span className="text-[13px] text-gray-700">{label}</span>
+        </li>
+    );
+
+    const SectionWrapper = ({
+        title,
+        children,
+    }: {
+        title: string;
+        children: React.ReactNode;
+    }) => (
+        <Disclosure>
+            {({ open }) => (
+                <div className="border-b">
+                    <Disclosure.Button
+                        className="
+              w-full flex justify-between items-center py-3
+              hover:bg-gray-50 transition px-1
+            "
+                    >
+                        <SectionTitle title={title} />
+                        <ChevronUpIcon
+                            className={`w-5 h-5 transition-transform ${open ? "rotate-180" : ""
+                                }`}
+                        />
+                    </Disclosure.Button>
+
+                    <Disclosure.Panel className="py-2">{children}</Disclosure.Panel>
+                </div>
+            )}
+        </Disclosure>
+    );
+
     return (
         <Drawer open={open} onOpenChange={setOpen}>
             <DrawerTrigger asChild>
-                <button className="w-full cursor-pointer bg-white rounded-md shadow-xs px-3 py-2 flex items-center gap-2 justify-center sm:hidden">
-                    <VscSettings size={20} />
-                    Filtros
+                <button
+                    className="
+            w-full sm:hidden bg-white px-3 py-2
+            flex items-center gap-2 justify-center 
+          "
+                >
+                    <VscSettings size={18} />
+                    <span className="text-sm">Filtros</span>
                 </button>
             </DrawerTrigger>
 
-            <DrawerContent className="p-4">
-                <DrawerHeader className="flex justify-between">
-                    <DrawerTitle className="text-lg font-medium text-gray-700">Filtros</DrawerTitle>
+            <DrawerContent className="p-0 rounded-t-xl">
+                <DrawerHeader className="p-4 border-b">
+                    <div className="flex w-full justify-between items-center">
+                        <DrawerTitle className="text-lg font-medium text-gray-800">
+                            Filtros
+                        </DrawerTitle>
 
-                    <button
-                        onClick={clearFilters}
-                        className="flex justify-end gap-1 text-xs text-red-600 hover:text-red-500 transition"
-                    >
-                        <MdClear size={18} />
-                        Limpiar
-                    </button>
+                        <button
+                            onClick={clearFilters}
+                            className="flex items-center gap-1 text-sm text-red-600 hover:text-red-500"
+                        >
+                            <MdClear size={17} />
+                            Limpiar
+                        </button>
+                    </div>
                 </DrawerHeader>
 
-                <ScrollArea className="h-[70vh] pr-2 mt-2 overflow-y-auto ">
 
-                    {/* ----- Categorías ----- */}
+                <ScrollArea className="h-[72vh] px-4">
                     {categories.length > 0 && (
-                        <Disclosure>
-                            {({ open }) => (
-                                <div>
-                                    <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-gray-700 border-b py-3 hover:bg-gray-100 first-letter:uppercase ">
-                                        <span>Categorías</span>
-                                        <ChevronUpIcon
-                                            className={`w-5 h-5 transform transition-transform ${open ? "rotate-180" : ""}`}
+                        <SectionWrapper title="Categorías">
+                            <ul>
+                                {categories
+                                    .slice()
+                                    .sort((a, b) =>
+                                        a.nombre.localeCompare(b.nombre, undefined, {
+                                            sensitivity: "base",
+                                        })
+                                    )
+                                    .map((c) => (
+                                        <Item
+                                            key={c.slug}
+                                            label={c.nombre}
+                                            checked={!!selectedFilters?.category?.includes(c.slug)}
+                                            onClick={() => toggleCheckboxValue("category", c.slug)}
                                         />
-                                    </Disclosure.Button>
-                                    <Disclosure.Panel className="pt-2 pl-1 text-sm text-gray-600">
-                                        <ul className="space-y-1">
-                                            {categories
-                                                .slice()
-                                                .sort((a, b) =>
-                                                    a.nombre.localeCompare(b.nombre, undefined, { sensitivity: "base" })
-                                                )
-                                                .map((category) => (
-                                                    <li
-                                                        key={category.slug}
-                                                        onClick={() => toggleCheckboxValue("category", category.slug)}
-                                                        className="flex items-center gap-2 hover:bg-gray-100 cursor-pointer py-1 rounded-md select-none "
-                                                    >
-                                                        <input
-                                                            type="checkbox"
-                                                            checked={!!selectedFilters["category"]?.includes(category.slug)}
-                                                            readOnly
-                                                            className="accent-blue-600 pointer-events-none"
-                                                        />
-                                                        <span className="text-sm text-gray-600">{category.nombre}</span>
-                                                    </li>
-                                                ))}
-                                        </ul>
-                                    </Disclosure.Panel>
-                                </div>
-                            )}
-                        </Disclosure>
+                                    ))}
+                            </ul>
+                        </SectionWrapper>
                     )}
 
-                    {/* ----- Marcas ----- */}
                     {brands.length > 0 && (
-                        <Disclosure>
-                            {({ open }) => (
-                                <div>
-                                    <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-gray-700 border-b py-2 hover:bg-gray-100 first-letter:uppercase">
-                                        <span>Marcas</span>
-                                        <ChevronUpIcon
-                                            className={`w-5 h-5 transform transition-transform ${open ? "rotate-180" : ""}`}
+                        <SectionWrapper title="Marcas">
+                            <ul>
+                                {brands
+                                    .slice()
+                                    .sort((a, b) =>
+                                        a.nombre.localeCompare(b.nombre, undefined, {
+                                            sensitivity: "base",
+                                        })
+                                    )
+                                    .map((m) => (
+                                        <Item
+                                            key={m.slug}
+                                            label={m.nombre}
+                                            checked={!!selectedFilters?.brand?.includes(m.slug)}
+                                            onClick={() => toggleCheckboxValue("brand", m.slug)}
                                         />
-                                    </Disclosure.Button>
-                                    <Disclosure.Panel className="pt-2 pl-1 text-sm text-gray-600">
-                                        <ul className="space-y-1">
-                                            {brands
-                                                .slice()
-                                                .sort((a, b) =>
-                                                    a.nombre.localeCompare(b.nombre, undefined, { sensitivity: "base" })
-                                                )
-                                                .map((brand) => (
-                                                    <li
-                                                        key={brand.slug}
-                                                        onClick={() => toggleCheckboxValue("brand", brand.slug)}
-                                                        className="flex items-center gap-2 hover:bg-gray-100 cursor-pointer py-1 rounded-md select-none"
-                                                    >
-                                                        <input
-                                                            type="checkbox"
-                                                            checked={!!selectedFilters["brand"]?.includes(brand.slug)}
-                                                            readOnly
-                                                            className="accent-blue-600 pointer-events-none"
-                                                        />
-                                                        <span className="text-sm text-gray-600">{brand.nombre}</span>
-                                                    </li>
-                                                ))}
-                                        </ul>
-                                    </Disclosure.Panel>
-                                </div>
-                            )}
-                        </Disclosure>
+                                    ))}
+                            </ul>
+                        </SectionWrapper>
                     )}
 
-                    {/* ----- Atributos dinámicos ----- */}
-                    <div className="space-y-4 mt-4">
-                        {atributos
-                            .slice()
-                            .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }))
-                            .map((attr) => (
-                                <Disclosure key={attr.name}>
-                                    {({ open }) => (
-                                        <div>
-                                            <Disclosure.Button className="flex justify-between w-full text-sm font-medium text-gray-700 border-b py-2 hover:bg-gray-100 uppercase">
-                                                <span>{attr.name}</span>
-                                                <ChevronUpIcon
-                                                    className={`w-5 h-5 transform transition-transform ${open ? "rotate-180" : ""}`}
-                                                />
-                                            </Disclosure.Button>
-                                            <Disclosure.Panel className="pt-2 pl-1 text-sm text-gray-600">
-                                                <ul className="space-y-1">
-                                                    {attr.values
-                                                        .slice()
-                                                        .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }))
-                                                        .map((value) => (
-                                                            <li
-                                                                key={value}
-                                                                onClick={() => toggleCheckboxValue(attr.name, value)}
-                                                                className="flex items-center gap-2 hover:bg-gray-100 cursor-pointer py-1 rounded-md select-none"
-                                                            >
-                                                                <input
-                                                                    type="checkbox"
-                                                                    checked={!!selectedFilters[attr.name]?.includes(value)}
-                                                                    readOnly
-                                                                    className="accent-blue-600 pointer-events-none"
-                                                                />
-                                                                <span className="text-sm text-gray-600">{value}</span>
-                                                            </li>
-                                                        ))}
-                                                </ul>
-                                            </Disclosure.Panel>
-                                        </div>
-                                    )}
-                                </Disclosure>
-                            ))}
-                    </div>
+                    {atributos.length > 0 && (
+                        <div className="mt-3 space-y-2">
+                            {atributos
+                                .slice()
+                                .sort((a, b) =>
+                                    a.name.localeCompare(b.name, undefined, {
+                                        sensitivity: "base",
+                                    })
+                                )
+                                .map((attr) => (
+                                    <SectionWrapper key={attr.name} title={attr.name}>
+                                        <ul>
+                                            {attr.values
+                                                .slice()
+                                                .sort((a, b) =>
+                                                    a.localeCompare(b, undefined, {
+                                                        sensitivity: "base",
+                                                    })
+                                                )
+                                                .map((v) => (
+                                                    <Item
+                                                        key={v}
+                                                        label={v}
+                                                        checked={!!selectedFilters?.[attr.name]?.includes(v)}
+                                                        onClick={() => toggleCheckboxValue(attr.name, v)}
+                                                    />
+                                                ))}
+                                        </ul>
+                                    </SectionWrapper>
+                                ))}
+                        </div>
+                    )}
 
-                    {/* ----- Precio ----- */}
                     {priceFilter && (
-                        <div className="mb-6 mt-4">
-                            <h2 className="text-sm font-medium text-gray-700 mb-1 uppercase">Precio</h2>
-                            <div className="flex flex-nowrap items-center gap-4 pt-2">
-                                <div className="flex flex-col text-xs text-gray-700 w-full sm:w-auto">
-                                    <label htmlFor="min" className="mb-1">Mín</label>
+                        <div className="py-4">
+                            <SectionTitle title="Precio" />
+
+                            <div className="flex items-center gap-4 mt-3">
+                                <div className="flex flex-col text-xs text-gray-700 w-full">
+                                    <label className="mb-1">Mín</label>
                                     <input
-                                        id="min"
                                         type="number"
                                         min={0}
                                         value={minPrice}
-                                        onChange={(e) => handlePriceChange("min", e.target.value)}
-                                        className="w-full sm:w-24 border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-gray-400"
+                                        onChange={(e) =>
+                                            handlePriceChange("min", e.target.value)
+                                        }
+                                        className="
+                      w-full border rounded px-2 py-1
+                      focus:outline-none focus:ring-1 focus:ring-gray-400
+                    "
                                     />
                                 </div>
 
-                                <span className="text-gray-500 mt-5">-</span>
+                                <span className="mt-6 text-gray-500">–</span>
 
-                                <div className="flex flex-col text-xs text-gray-700 w-full sm:w-auto">
-                                    <label htmlFor="max" className="mb-1">Máx</label>
+                                <div className="flex flex-col text-xs text-gray-700 w-full">
+                                    <label className="mb-1">Máx</label>
                                     <input
-                                        id="max"
                                         type="number"
                                         min={0}
                                         value={maxPrice}
-                                        onChange={(e) => handlePriceChange("max", e.target.value)}
-                                        className="w-full sm:w-24 border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-gray-400"
+                                        onChange={(e) =>
+                                            handlePriceChange("max", e.target.value)
+                                        }
+                                        className="
+                      w-full border rounded px-2 py-1
+                      focus:outline-none focus:ring-1 focus:ring-gray-400
+                    "
                                     />
                                 </div>
                             </div>
                         </div>
                     )}
-
                 </ScrollArea>
             </DrawerContent>
         </Drawer>
