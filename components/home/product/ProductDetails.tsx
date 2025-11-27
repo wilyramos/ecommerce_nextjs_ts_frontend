@@ -221,8 +221,6 @@ export default function ProductDetails({ producto }: Props) {
                             </div>
 
                             {/* Stock */}
-                            {/* Stock - Diseño Minimalista (B&W) */}
-                            {/* Stock con Colores Bajos/Elegantes */}
                             <div className="flex items-center gap-2 mt-1">
                                 <span
                                     className={`text-xs font-medium px-2.5 py-1 flex items-center gap-1.5 w-fit transition-colors
@@ -293,7 +291,7 @@ export default function ProductDetails({ producto }: Props) {
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
                                                         title={val}
-                                                        className={`relative w-12 h-14 rounded border transition-all flex flex-col items-center justify-center
+                                                        className={`relative w-14 h-16 rounded border transition-all flex flex-col items-center justify-center
                 ${selected ? 'border-gray-800 ring-1 ring-gray-800' : 'border-gray-300 hover:border-gray-500'}
                 ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
             `}
