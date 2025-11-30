@@ -343,7 +343,7 @@ export default function ProductDetails({ producto }: Props) {
                                             onValueChange={(value) => updateSelectedVariant(key, value)}
                                         >
                                             <SelectTrigger>
-                                                <SelectValue placeholder={`-- Elige ${key} --`} />
+                                                <SelectValue placeholder={`Seleccionar ${key}`} />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {availableValues.map(val => {

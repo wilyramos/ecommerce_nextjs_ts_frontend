@@ -88,17 +88,12 @@ export default function HomePage() {
                 <BrandsList />
             </section>
 
-            
              <section className="my-10">
                 <CategoriasDestacadasWrapper />
             </section>
-
-
             <section>
                 <FeaturesList />
             </section>
-
-
         </>
     );
 }

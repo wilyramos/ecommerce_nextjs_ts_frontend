@@ -1,3 +1,5 @@
+//File: frontend/components/admin/products/ProductForm.tsx
+
 import type { ProductWithCategoryResponse } from "@/src/schemas";
 import type { CategoryListResponse } from "@/src/schemas";
 import ClientCategoryAttributes from "./ClientCategoryAttributes";
@@ -22,10 +24,8 @@ export default function ProductForm({
 }) {
 
 
-    console.log('categorias y sus atributos:', categorias);
     const selectedCategory = categorias.find((c) => c._id === product?.categoria?._id);
     const categoryAttributes = selectedCategory?.attributes || [];
-    console.log('atributos de la categoría seleccionada:', categoryAttributes);
     return (
         <div className="text-xs grid grid-cols-1 sm:grid-cols-4 gap-4 p-4 space-y-1">
             <div className="col-span-1 sm:col-span-3">
