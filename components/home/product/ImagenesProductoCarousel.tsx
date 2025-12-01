@@ -103,7 +103,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                                 className={`relative h-8 w-8 md:h-12 md:w-12 rounded-md overflow-hidden border-2 transition-all duration-300
                   ${selectedIndex === idx ? "border-gray-500 hover:border-gray-700" : "border-gray-200 hover:border-gray-400"}`}
                             >
-                                <Image src={img} alt={`Miniatura ${idx + 1}`} fill className="object-cover" quality={1} unoptimized />
+                                <Image src={img} alt={`Miniatura ${idx + 1}`} fill className="object-cover" quality={5} unoptimized />
                             </button>
                         ))}
                     </div>
