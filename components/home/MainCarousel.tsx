@@ -64,7 +64,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                             <article className="z-10 w-full md:w-1/3 space-y-3 sm:space-y-2 text-center md:text-left order-2 md:order-1">
                                 
                                 {/* Etiqueta de Marca / Nuevo con animación Hover */}
-                                <div className="w-fit mx-auto md:mx-0 flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border text-[10px] shadow-sm transition-all duration-300 hover:scale-105 hover:shadow-md hover:border-blue-200">
+                                <div className="w-fit mx-auto md:mx-0 flex items-center gap-1.5 px-3 py-1 bg-white border text-[10px]  transition-all duration-300 hover:scale-105 hover:shadow-md hover:border-blue-200">
                                     {product.esNuevo ? (
                                         // Animación: Pulso + Spin lento
                                         <Sparkle className="w-3 h-3 text-blue-600 animate-[pulse_2s_ease-in-out_infinite]" />
@@ -77,7 +77,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                 </div>
 
                                 {/* Título con transición de color */}
-                                <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-gray-800 leading-tight transition-colors duration-300 group-hover:text-blue-700">
+                                <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-gray-800 leading-tight transition-colors duration-300 group-hover:text-gray-900">
                                     {product.nombre}
                                 </h2>
 
@@ -91,7 +91,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                         <div className="flex flex-col justify-end sm:pb-1 items-center sm:items-start">
                                             
                                             {/* Descuento Dinámico en Loop (Aparece/Desaparece) */}
-                                            <div className="relative h-5 w-36 overflow-hidden bg-yellow-100  flex items-center justify-center mb-0.5  group-hover:bg-yellow-200 transition-colors">
+                                            <div className="relative h-8 w-42 overflow-hidden bg-yellow-200  flex items-center justify-center mb-0.5  group-hover:bg-yellow-300 transition-colors">
                                                 <span 
                                                     className={`absolute w-full text-center text-[10px] sm:text-xs font-semibold text-gray-600 transition-all duration-500 ease-in-out transform
                                                     ${showDiscount ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}
@@ -99,7 +99,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                                     -{discountPercentage}% OFF
                                                 </span>
                                                 <span 
-                                                    className={`absolute w-full text-center text-[10px] sm:text-xs font-semibold text-gray-600 transition-all duration-500 ease-in-out transform
+                                                    className={`absolute w-full text-center text-xs font-semibold text-gray-600 transition-all duration-500 ease-in-out transform
                                                     ${!showDiscount ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}`}
                                                 >
                                                     Ahorras S/. {(product.precioComparativo - product.precio).toFixed(2)}
@@ -129,7 +129,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                             src={product.imagenes[1]}
                                             alt={`${product.nombre} alternate view`}
                                             fill
-                                            className="absolute inset-0 object-contain transition-all duration-700 ease-in-out transform opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-105 group-hover:-rotate-2"
+                                            className="absolute inset-0 object-contain transition-all duration-700 ease-in-out transform opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-105 group-hover:rotate-3"
                                         />
                                     )}
                                 </div>
