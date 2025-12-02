@@ -18,6 +18,7 @@ export default function ProductExpandableSections({ producto }: Props) {
     return (
         <Accordion
             type="multiple"
+            defaultValue={["descripcion-especificaciones"]}
             className="w-full px-4 py-2 mb-6 bg-white"
         >
             {(producto.descripcion || producto.especificaciones?.length) && (
