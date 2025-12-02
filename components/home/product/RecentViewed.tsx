@@ -12,7 +12,7 @@ export default function RecentViewed({ products }: Props) {
     if (!products.length) return null;
 
     return (
-        <section className="max-w-7xl mx-auto py-6 px-2">
+        <section className="max-w-7xl mx-auto py-6 ">
             <h3 className="text-lg uppercase font-normal mb-3 text-neutral-900">Vistos recientemente</h3>
             <div className="">
                 <div className="border-b border-2 border-black w-14 md:w-20 mb-4"></div>
