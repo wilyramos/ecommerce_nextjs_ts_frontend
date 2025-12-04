@@ -176,7 +176,7 @@ export default function ProductDetails({ producto }: Props) {
 
                             <div>
 
-                                <h1 className="text-lg md:text-2xl font-medium leading-snug text-gray-800">
+                                <h1 className="text-md md:text-xl leading-snug text-gray-800">
                                     {producto.nombre}
                                 </h1>
                             </div>
@@ -197,14 +197,14 @@ export default function ProductDetails({ producto }: Props) {
                             {/* Precio y descuento */}
                             <div className="flex items-center gap-3">
                                 <div className="flex items-center gap-2">
-                                    <p className="text-3xl flex items-baseline">
-                                        <span className="text-sm mr-1">S/</span>
+                                    <p className="text-2xl flex items-baseline">
+                                        <span className="text-xs mr-1">S/</span>
                                         <span>{precio.toFixed(2)}</span>
                                     </p>
 
                                     {precioComparativo !== null &&
                                         precioComparativo > precio && (
-                                            <span className="bg-black text-white text-xs font-bold px-2 py-0.5 rounded-full inline-block shadow-sm">
+                                            <span className="bg-black text-white text-xs font-bold px-2 py-0.5 inline-block">
                                                 -{Math.round(((precioComparativo - precio) / precioComparativo) * 100)}%
                                             </span>
 

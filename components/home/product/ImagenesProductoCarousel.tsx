@@ -34,7 +34,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
     const showThumbnails = images.length > 1;
 
     return (
-        <div className="w-full max-w-sm md:max-w-3xl mx-auto flex flex-col md:flex-row gap-3">
+        <div className="w-full max-w-sm md:max-w-3xl mx-auto flex flex-col md:flex-row gap-2 bg-white">
 
             {showThumbnails && (
                 <div className="hidden md:flex flex-col gap-2 overflow-y-auto no-scrollbar w-20">
