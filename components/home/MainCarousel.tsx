@@ -20,7 +20,6 @@ const responsive = {
 export default function MainCarousel({ products }: { products: ProductResponse[] }) {
     const [showDiscount, setShowDiscount] = useState(true);
 
-    // Efecto para alternar el texto cada 3 segundos
     useEffect(() => {
         const interval = setInterval(() => {
             setShowDiscount((prev) => !prev);
