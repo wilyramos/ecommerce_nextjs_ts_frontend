@@ -18,7 +18,6 @@ const responsive = {
 };
 
 export default function MainCarousel({ products }: { products: ProductResponse[] }) {
-    // Estado para el loop del texto de descuento
     const [showDiscount, setShowDiscount] = useState(true);
 
     // Efecto para alternar el texto cada 3 segundos
