@@ -16,7 +16,7 @@ export default async function CarruselPrincipal() {
     
 
     return (
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto md:px-8">
 
             {/* <ClientCarouselMain
                 products={products.products}

@@ -25,7 +25,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
     useEffect(() => {
         const interval = setInterval(() => {
             setShowDiscount((prev) => !prev);
-        }, 3000);
+        }, 2000);
         return () => clearInterval(interval);
     }, []);
 
@@ -58,7 +58,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                             key={product._id}
                             href={`/productos/${product.slug}`}
                             className="group relative flex flex-col md:flex-row items-center justify-between 
-                        px-4 md:px-20 py-5 h-auto md:h-[420px] w-full transition-all duration-300"
+                        px-4 md:px-20 py-5 h-auto md:h-[360px] w-full transition-all duration-300"
                         >
                             {/* Text Section */}
                             <article className="z-10 w-full md:w-1/3 space-y-3 sm:space-y-2 text-center md:text-left order-2 md:order-1">
@@ -77,7 +77,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                 </div>
 
                                 {/* Título con transición de color */}
-                                <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-gray-800 leading-tight transition-colors duration-300 group-hover:text-gray-900">
+                                <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-black leading-tight transition-colors duration-300 group-hover:text-gray-800">
                                     {product.nombre}
                                 </h2>
 
@@ -91,9 +91,9 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                         <div className="flex flex-col justify-end sm:pb-1 items-center sm:items-start">
                                             
                                             {/* Descuento Dinámico en Loop (Aparece/Desaparece) */}
-                                            <div className="relative h-8 w-42 overflow-hidden bg-yellow-200  flex items-center justify-center mb-0.5  group-hover:bg-yellow-300 transition-colors">
+                                            <div className="relative h-8 w-42 overflow-hidden bg-yellow-300  flex items-center justify-center mb-0.5  group-hover:bg-yellow-200 transition-colors">
                                                 <span 
-                                                    className={`absolute w-full text-center text-[10px] sm:text-xs font-semibold text-gray-600 transition-all duration-500 ease-in-out transform
+                                                    className={`absolute w-full text-center text-[10px] sm:text-xs font-semibold text-gray-800 transition-all duration-500 ease-in-out transform
                                                     ${showDiscount ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}
                                                 >
                                                     -{discountPercentage}% OFF

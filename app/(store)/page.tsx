@@ -68,7 +68,7 @@ export default function HomePage() {
     return (
         <>
 
-            <section className="max-w-7xl mx-auto">
+            <section className="">
                 <Advertisement />
             </section>
            
