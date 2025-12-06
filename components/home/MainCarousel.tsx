@@ -82,7 +82,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                 <div className="flex flex-col sm:flex-row sm:items-end sm:justify-center md:justify-start gap-2 sm:gap-3">
                                     {/* Precio con escala suave */}
                                     <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 transition-transform duration-300 origin-left group-hover:scale-105">
-                                        S/. {product.precio?.toFixed(2) ?? "0.00"}
+                                        <span className="text-xs font-semibold">S/.</span> {product.precio?.toFixed(2) ?? "0.00"}
                                     </p>
 
                                     {product.precioComparativo && product.precioComparativo > product.precio && (
