@@ -17,6 +17,7 @@ export async function EditCategory(id: string, prevState: ActionStateType, formD
     // parsear los atributos del formData
     const rawAttributes = formData.get("attributes");
     let attributesData;
+    console.log("Raw Attributes:", rawAttributes);
 
     try {
         const parsed = JSON.parse(rawAttributes as string);
@@ -30,7 +31,8 @@ export async function EditCategory(id: string, prevState: ActionStateType, formD
         }
         attributesData = result.data.map(attr => ({
             name: attr.name.toLowerCase(),
-            values: attr.values.map(v => v.toLowerCase())
+            values: attr.values.map(v => v.toLowerCase()),
+            isVariant: attr.isVariant || false,
         }));
 
     } catch (error) {

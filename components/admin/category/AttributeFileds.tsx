@@ -1,64 +1,75 @@
 "use client";
 
 import { useState } from "react";
-import type { Attributes } from "@/src/schemas";
+import type { CategoryAttribute } from "@/src/schemas";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 
 export default function AttributeFields({
     defaultAttributes,
 }: {
-    defaultAttributes?: Attributes;
+    defaultAttributes?: CategoryAttribute[];
 }) {
-    const [attributes, setAttributes] = useState<Attributes>(defaultAttributes || []);
+    const [attributes, setAttributes] = useState<CategoryAttribute[]>(
+        defaultAttributes || []
+    );
 
-    const handleAttrNameChange = (index: number, value: string) => {
-        const updated = [...attributes];
-        updated[index].name = value;
-        setAttributes(updated);
+    const update = (fn: (draft: CategoryAttribute[]) => void) => {
+        const draft = [...attributes];
+        fn(draft);
+        setAttributes(draft);
     };
 
-    const handleAttrValueChange = (attrIndex: number, valIndex: number, value: string) => {
-        const updated = [...attributes];
-        updated[attrIndex].values[valIndex] = value;
-        setAttributes(updated);
-    };
+    const handleAttrNameChange = (index: number, value: string) =>
+        update((d) => {
+            d[index].name = value;
+        });
 
-    const addAttribute = () => {
+    const handleAttrValueChange = (
+        attrIndex: number,
+        valIndex: number,
+        value: string
+    ) =>
+        update((d) => {
+            d[attrIndex].values[valIndex] = value;
+        });
+
+    const addAttribute = () =>
         setAttributes([...attributes, { name: "", values: [""] }]);
-    };
 
-    const removeAttribute = (index: number) => {
-        const updated = [...attributes];
-        updated.splice(index, 1);
-        setAttributes(updated);
-    };
+    const removeAttribute = (index: number) =>
+        update((d) => {
+            d.splice(index, 1);
+        });
 
-    const addValue = (attrIndex: number) => {
-        const updated = [...attributes];
-        updated[attrIndex].values.push("");
-        setAttributes(updated);
-    };
+    const addValue = (attrIndex: number) =>
+        update((d) => {
+            d[attrIndex].values.push("");
+        });
 
-    const removeValue = (attrIndex: number, valIndex: number) => {
-        const updated = [...attributes];
-        updated[attrIndex].values.splice(valIndex, 1);
-        setAttributes(updated);
-    };
+    const removeValue = (attrIndex: number, valIndex: number) =>
+        update((d) => {
+            d[attrIndex].values.splice(valIndex, 1);
+        });
+
+    const handleIsVariantChange = (index: number, value: boolean) =>
+        update((d) => {
+            d[index].isVariant = value;
+        });
 
     return (
-        <div className="space-y-4 mt-4">
+        <div className="mt-4 space-y-4">
             <h3 className="text-sm font-semibold text-gray-800">Atributos</h3>
 
-            {/* Campo oculto para enviar al servidor */}
             <input type="hidden" name="attributes" value={JSON.stringify(attributes)} />
 
             <div className="grid gap-4 sm:grid-cols-2">
                 {attributes.map((attr, i) => (
                     <div
                         key={i}
-                        className="rounded-xl border border-gray-200 p-4 bg-white shadow-sm space-y-4"
+                        className="space-y-4 rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
                     >
                         <div className="space-y-1">
                             <Label htmlFor={`attr-name-${i}`}>Nombre del atributo</Label>
@@ -72,11 +83,14 @@ export default function AttributeFields({
 
                         <div className="space-y-2">
                             <Label>Valores</Label>
+
                             {attr.values.map((val, j) => (
                                 <div key={j} className="flex items-center gap-2">
                                     <Input
                                         value={val}
-                                        onChange={(e) => handleAttrValueChange(i, j, e.target.value)}
+                                        onChange={(e) =>
+                                            handleAttrValueChange(i, j, e.target.value)
+                                        }
                                         placeholder="Ej: Rojo, M, Algodón..."
                                     />
                                     {attr.values.length > 1 && (
@@ -92,6 +106,14 @@ export default function AttributeFields({
                                     )}
                                 </div>
                             ))}
+
+                            <div className="flex items-center space-x-3 pt-2">
+                                <Switch
+                                    checked={attr.isVariant ?? false}
+                                    onCheckedChange={(v) => handleIsVariantChange(i, v)}
+                                />
+                                <Label className="text-xs">Usar como variante</Label>
+                            </div>
 
                             <Button
                                 type="button"

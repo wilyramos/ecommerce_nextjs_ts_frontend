@@ -14,6 +14,7 @@ export async function createCategoryAction(prevState: ActionStateType, formData:
 
     // parsear los atributos del formData
     const rawAttributes = formData.get("attributes");
+    console.log("Raw Attributes:", rawAttributes);
 
     let attributesData;
     if (rawAttributes) {
@@ -30,7 +31,8 @@ export async function createCategoryAction(prevState: ActionStateType, formData:
             // Normalizar a minúscula las claves y valores
             attributesData = result.data.map(attr => ({
                 name: attr.name.toLowerCase(),
-                values: attr.values.map(v => v.toLowerCase())
+                values: attr.values.map(v => v.toLowerCase()),
+                isVariant: attr.isVariant || false,
             }));
 
         } catch (error) {

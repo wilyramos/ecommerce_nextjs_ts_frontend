@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { ApiBrandSchema } from './brands';
 
 /* ============================================================
-   🧩 AUTENTICACIÓN Y USUARIOS
+    AUTENTICACIÓN Y USUARIOS
 ============================================================ */
 
 // ---------- Registro ----------
@@ -124,7 +124,7 @@ export type UsersAPIResponse = z.infer<typeof UsersAPIResponse>;
 
 
 /* ============================================================
-   🏷️ CATEGORÍAS
+   CATEGORÍAS
 ============================================================ */
 
 // ---------- Atributos ----------
@@ -135,7 +135,10 @@ export const categoryAttributeSchema = z.object({
             (vals) => new Set(vals.map(v => v.toLowerCase())).size === vals.length,
             { message: 'No se permiten valores duplicados dentro del mismo atributo' }
         ),
+    isVariant: z.boolean().optional(),
 });
+
+export type CategoryAttribute = z.infer<typeof categoryAttributeSchema>;
 
 export const categoryAttributesArraySchema = z.array(categoryAttributeSchema)
     .refine(
@@ -173,6 +176,7 @@ export const apiCategorySchema = categoryBaseSchema.extend({
     updatedAt: z.string().datetime().optional(),
     __v: z.number().optional(),
     parent: z.union([z.string(), categoryParentSchema]).nullable().optional(),
+    
 });
 
 export const apiCategoryListSchema = z.array(apiCategorySchema);

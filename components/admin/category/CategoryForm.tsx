@@ -52,10 +52,11 @@ export default function CategoryForm({ category, categories }: Props) {
             <div className="space-y-1 ">
                 <Label htmlFor="parent">Categoría padre</Label>
                 <Select
-                    defaultValue={
-                        typeof category?.parent === "object"
-                            ? category.parent?._id
-                            : "none"
+                    defaultValue={category?.parent && typeof category.parent === "object"
+                        ? category.parent._id
+                        : typeof category?.parent === "string"
+                            ? category.parent
+                            : "null"
                     }
                     name="parent"
                 >
@@ -63,7 +64,7 @@ export default function CategoryForm({ category, categories }: Props) {
                         <SelectValue placeholder="Sin categoría padre" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="none">Sin categoría padre</SelectItem>
+                        <SelectItem value="null">Sin categoría padre</SelectItem>
                         {categories.map((cat) => (
                             <SelectItem key={cat._id} value={cat._id}>
                                 {cat.nombre}

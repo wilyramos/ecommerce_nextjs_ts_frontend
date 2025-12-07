@@ -1,5 +1,6 @@
-//File: frontend/components/admin/products/ProductForm.tsx
+"use client"; // Necesario para usar useState
 
+import { useState } from "react";
 import type { ProductWithCategoryResponse } from "@/src/schemas";
 import type { CategoryListResponse } from "@/src/schemas";
 import ClientCategoryAttributes from "./ClientCategoryAttributes";
@@ -22,10 +23,17 @@ export default function ProductForm({
     categorias: CategoryListResponse;
     brands: TBrand[];
 }) {
+    // 1. Estado para controlar la categoría seleccionada dinámicamente
+    const [selectedCategoryId, setSelectedCategoryId] = useState<string | undefined>(
+        product?.categoria?._id
+    );
 
+    // 2. Buscar la categoría completa basada en el estado actual (no solo la inicial)
+    const currentCategory = categorias.find((c) => c._id === selectedCategoryId);
+    
+    // 3. Obtener los atributos de la categoría actual
+    const dynamicCategoryAttributes = currentCategory?.attributes || [];
 
-    const selectedCategory = categorias.find((c) => c._id === product?.categoria?._id);
-    const categoryAttributes = selectedCategory?.attributes || [];
     return (
         <div className="text-xs grid grid-cols-1 sm:grid-cols-4 gap-4 p-4 space-y-1">
             <div className="col-span-1 sm:col-span-3">
@@ -136,20 +144,21 @@ export default function ProductForm({
                     categorias={categorias}
                     initialCategoryId={product?.categoria?._id}
                     currentAttributes={product?.atributos}
+                    // 4. Pasamos la función para actualizar el estado en el padre
+                    onCategoryChange={setSelectedCategoryId}
                 />
 
                 {/* Imagenes */}
-                {/* <UploadProductImage CurrentImagenes={product?.imagenes} /> */}
-
                 <UploadProductImageDialog CurrentImagenes={product?.imagenes} />
-
 
                 {/* Especificaciones */}
                 <SpecificationsSection initial={product?.especificaciones} />
 
+                {/* Variantes */}
                 <ProductVariantsForm
                     product={product}
-                    categoryAttributes={categoryAttributes}
+                    // 5. Pasamos los atributos calculados dinámicamente
+                    categoryAttributes={dynamicCategoryAttributes}
                 />
             </div>
 

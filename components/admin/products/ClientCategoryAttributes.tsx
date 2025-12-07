@@ -8,45 +8,69 @@ import type { CategoryListResponse } from "@/src/schemas";
 type Props = {
     categorias: CategoryListResponse;
     initialCategoryId?: string;
-    currentAttributes?: Record<string, string>;
+    currentAttributes?: Record<string, string>; // Atributos guardados en DB
+    onCategoryChange?: (categoryId: string) => void;
 };
 
 export default function ClientCategoryAttributes({
     categorias,
     initialCategoryId,
-    currentAttributes,
+    currentAttributes, // Datos originales del producto (DB)
+    onCategoryChange,
 }: Props) {
     const [selectedCategoryId, setSelectedCategoryId] = useState(initialCategoryId || "");
-    const [categoryAttributes, setCategoryAttributes] = useState<{ name: string; values: string[] }[]>([]);
-    const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
+    
+    // Lista de DEFINICIONES de atributos (qué inputs mostrar)
+    const [categoryDefinitions, setCategoryDefinitions] = useState<{ name: string; values: string[] }[]>([]);
+    
+    // Estado de VALORES seleccionados. 
+    // Truco: Inicializamos con lo que viene de la DB y NUNCA lo borramos automáticamente al cambiar categoría.
+    const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>(currentAttributes || {});
+
+    const handleCategorySelect = (id: string) => {
+        setSelectedCategoryId(id);
+        if (onCategoryChange) {
+            onCategoryChange(id);
+        }
+    };
 
     useEffect(() => {
         const selected = categorias.find((cat) => cat._id === selectedCategoryId);
 
         if (!selected) {
-            setCategoryAttributes([]);
-            setSelectedAttributes({});
+            setCategoryDefinitions([]);
             return;
         }
 
-        const validAttributes = selected.attributes || [];
-        setCategoryAttributes(validAttributes);
+        const validDefinitions = selected.attributes || [];
+        setCategoryDefinitions(validDefinitions);
 
-        const filteredAttributes: Record<string, string> = {};
-        if (currentAttributes) {
-            for (const attr of validAttributes) {
-                const value = currentAttributes[attr.name];
-                if (value) filteredAttributes[attr.name] = value;
+        // Lógica de Mezcla (Merge):
+        // Al cambiar de categoría, aseguramos que si existen datos originales (DB) 
+        // para los nuevos campos, se recuperen si el usuario aún no los ha sobrescrito manualmente.
+        setSelectedAttributes((prev) => {
+            const merged = { ...prev };
+            
+            // Si hay atributos originales en la DB, asegurarnos de que estén en el estado 
+            // si el usuario no ha definido ya un valor para esa clave.
+            if (currentAttributes) {
+                validDefinitions.forEach((def) => {
+                    // Si el usuario no tiene un valor en memoria (prev), pero la DB sí (current), lo restauramos.
+                    // Esto sirve si cambias de categoría A -> B -> A.
+                    if (prev[def.name] === undefined && currentAttributes[def.name]) {
+                        merged[def.name] = currentAttributes[def.name];
+                    }
+                });
             }
-        }
+            return merged;
+        });
 
-        setSelectedAttributes(filteredAttributes);
     }, [selectedCategoryId, categorias, currentAttributes]);
 
     const handleAttributeChange = (name: string, value: string) => {
         setSelectedAttributes((prev) => {
             const updated = { ...prev };
-            if (value === "") delete updated[name]; // permite deseleccionar
+            if (value === "") delete updated[name];
             else updated[name] = value;
             return updated;
         });
@@ -61,7 +85,7 @@ export default function ClientCategoryAttributes({
                     Categoría<span className="text-red-500">*</span>
                 </label>
                 <input type="hidden" name="categoria" value={selectedCategoryId} />
-                <Listbox value={selectedCategoryId} onChange={setSelectedCategoryId}>
+                <Listbox value={selectedCategoryId} onChange={handleCategorySelect}>
                     <div className="relative">
                         <Listbox.Button className="w-full border border-gray-300 rounded-lg p-3 text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <span>
@@ -71,14 +95,7 @@ export default function ClientCategoryAttributes({
                         </Listbox.Button>
                         <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
                             <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white shadow-lg border border-gray-200 z-50">
-                                {/* Opción vacía */}
-                                <Listbox.Option
-                                    key="none"
-                                    value=""
-                                    className={({ active }) =>
-                                        `cursor-pointer select-none relative p-2 ${active ? "bg-blue-100 text-blue-900" : "text-gray-900"}`
-                                    }
-                                >
+                                <Listbox.Option key="none" value="" className={({ active }) => `cursor-pointer select-none relative p-2 ${active ? "bg-blue-100 text-blue-900" : "text-gray-900"}`}>
                                     {({ selected }) => (
                                         <span className={`flex items-center ${selected ? "font-semibold" : "font-normal"}`}>
                                             — Ninguna —
@@ -86,15 +103,8 @@ export default function ClientCategoryAttributes({
                                         </span>
                                     )}
                                 </Listbox.Option>
-
                                 {categorias.map((cat) => (
-                                    <Listbox.Option
-                                        key={cat._id}
-                                        value={cat._id}
-                                        className={({ active }) =>
-                                            `cursor-pointer select-none relative p-2 ${active ? "bg-blue-100 text-blue-900" : "text-gray-900"}`
-                                        }
-                                    >
+                                    <Listbox.Option key={cat._id} value={cat._id} className={({ active }) => `cursor-pointer select-none relative p-2 ${active ? "bg-blue-100 text-blue-900" : "text-gray-900"}`}>
                                         {({ selected }) => (
                                             <span className={`flex items-center ${selected ? "font-semibold" : "font-normal"}`}>
                                                 {cat.nombre}
@@ -109,17 +119,29 @@ export default function ClientCategoryAttributes({
                 </Listbox>
             </div>
 
-            {categoryAttributes.length > 0 && (
+            {categoryDefinitions.length > 0 && (
                 <div>
-                    <input type="hidden" name="atributos" value={JSON.stringify(selectedAttributes)} />
+                    {/* Enviamos al backend solo los atributos que son válidos para la categoría actual */}
+                    <input 
+                        type="hidden" 
+                        name="atributos" 
+                        value={JSON.stringify(
+                            Object.fromEntries(
+                                Object.entries(selectedAttributes).filter(([key]) => 
+                                    categoryDefinitions.some(def => def.name === key)
+                                )
+                            )
+                        )} 
+                    />
 
                     <h4 className="font-semibold text-gray-700 mb-2">Atributos de la categoría</h4>
 
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        {categoryAttributes.map((attr) => (
+                        {categoryDefinitions.map((attr) => (
                             <div key={attr.name} className="space-y-1">
                                 <label className="block font-medium text-gray-600">{attr.name}</label>
                                 <Listbox
+                                    // Aquí ocurre la magia: si 'Color' ya estaba seleccionado en otra categoría, se muestra aquí.
                                     value={selectedAttributes[attr.name] || ""}
                                     onChange={(val) => handleAttributeChange(attr.name, val)}
                                 >
@@ -130,30 +152,11 @@ export default function ClientCategoryAttributes({
                                         </Listbox.Button>
                                         <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
                                             <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-lg bg-white shadow-lg border border-gray-200 z-50">
-                                                {/* Opción vacía */}
-                                                <Listbox.Option
-                                                    key="none"
-                                                    value=""
-                                                    className={({ active }) =>
-                                                        `cursor-pointer select-none relative p-2 ${active ? "bg-blue-100 text-blue-900" : "text-gray-900"}`
-                                                    }
-                                                >
-                                                    {({ selected }) => (
-                                                        <span className={`flex items-center ${selected ? "font-semibold" : "font-normal"}`}>
-                                                            — Ninguno —
-                                                            {selected && <CheckIcon className="h-4 w-4 ml-auto text-blue-600" />}
-                                                        </span>
-                                                    )}
+                                                <Listbox.Option key="none" value="" className={({ active }) => `cursor-pointer select-none relative p-2 ${active ? "bg-blue-100 text-blue-900" : "text-gray-900"}`}>
+                                                    <span className="font-normal">— Ninguno —</span>
                                                 </Listbox.Option>
-
                                                 {attr.values.map((val) => (
-                                                    <Listbox.Option
-                                                        key={val}
-                                                        value={val}
-                                                        className={({ active }) =>
-                                                            `cursor-pointer select-none relative p-2 ${active ? "bg-blue-100 text-blue-900" : "text-gray-900"}`
-                                                        }
-                                                    >
+                                                    <Listbox.Option key={val} value={val} className={({ active }) => `cursor-pointer select-none relative p-2 ${active ? "bg-blue-100 text-blue-900" : "text-gray-900"}`}>
                                                         {({ selected }) => (
                                                             <span className={`flex items-center ${selected ? "font-semibold" : "font-normal"}`}>
                                                                 {val}
