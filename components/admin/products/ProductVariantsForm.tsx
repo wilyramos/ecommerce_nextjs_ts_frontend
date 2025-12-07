@@ -34,15 +34,42 @@ export default function ProductVariantsForm({ product, categoryAttributes }: Pro
     // Función auxiliar pura para obtener errores de una lista de variantes
     const getValidationErrors = (currentVariants: TApiVariant[]) => {
         const newErrors: string[] = [];
-        currentVariants.forEach((variant, index) => {
-            variantAttributes.forEach((attr) => {
-                if (!variant.atributos[attr.name]) {
-                    newErrors.push(`La variante #${index + 1} requiere un valor para "${attr.name}".`);
+
+        if (!variantAttributes.length) return newErrors;
+
+        // Obtener qué atributos se están usando en cada variante (los que tengan valor)
+        const usedAttrsPerVariant = currentVariants.map((variant) => {
+            return Object.entries(variant.atributos)
+                .filter(([, val]) => val && val.trim() !== "")
+                .map(([key]) => key);
+        });
+
+        // Referencia: los atributos usados por la primera variante que tenga al menos uno
+        const referenceAttrs = usedAttrsPerVariant.find(attrs => attrs.length > 0) ?? [];
+
+        // Validar que cada variante tenga al menos un valor por cada atributo que esté en referencia
+        usedAttrsPerVariant.forEach((attrs, index) => {
+            referenceAttrs.forEach((refAttr) => {
+                if (!attrs.includes(refAttr)) {
+                    newErrors.push(
+                        `La variante #${index + 1} requiere un valor para "${refAttr}".`
+                    );
                 }
             });
+
+            // Validación extra: no permitir atributos adicionales que no estén en referencia
+            const extraAttrs = attrs.filter(a => !referenceAttrs.includes(a));
+            if (extraAttrs.length) {
+                newErrors.push(
+                    `La variante #${index + 1} tiene atributos extra: ${extraAttrs.join(", ")}. Debe usar solo los mismos que las demás.`
+                );
+            }
         });
+
         return newErrors;
     };
+
+
 
     const addVariant = (event: React.FormEvent) => {
         event.preventDefault();
@@ -70,7 +97,7 @@ export default function ProductVariantsForm({ product, categoryAttributes }: Pro
     const updateVariant = <K extends keyof TApiVariant>(index: number, key: K, value: TApiVariant[K]) => {
         const nextVariants = [...variants];
         nextVariants[index] = { ...nextVariants[index], [key]: value };
-        
+
         setVariants(nextVariants);
         setErrors(getValidationErrors(nextVariants)); // Validación automática en tiempo real
     };
@@ -81,7 +108,7 @@ export default function ProductVariantsForm({ product, categoryAttributes }: Pro
             ...nextVariants[index],
             atributos: { ...nextVariants[index].atributos, [attrName]: value },
         };
-        
+
         setVariants(nextVariants);
         setErrors(getValidationErrors(nextVariants)); // Validación automática en tiempo real
     };
@@ -136,9 +163,8 @@ export default function ProductVariantsForm({ product, categoryAttributes }: Pro
                     return (
                         <div
                             key={variant._id}
-                            className={`border rounded-xl p-4 bg-card shadow-sm space-y-4 ${
-                                isRowIncomplete ? "border-red-300 bg-red-50/10" : "border-gray-200"
-                            }`}
+                            className={`border rounded-xl p-4 bg-card shadow-sm space-y-4 ${isRowIncomplete ? "border-red-300 bg-red-50/10" : "border-gray-200"
+                                }`}
                         >
                             <div className="flex flex-wrap gap-4 bg-gray-50/50 p-3 rounded-lg">
                                 {variantAttributes.map((attr) => {
@@ -150,12 +176,16 @@ export default function ProductVariantsForm({ product, categoryAttributes }: Pro
                                             </label>
                                             <Select
                                                 value={variant.atributos[attr.name] ?? ""}
-                                                onValueChange={(val) => updateAttribute(index, attr.name, val)}
+                                                onValueChange={(val) =>
+                                                    updateAttribute(index, attr.name, val === "__none__" ? "" : val)
+                                                }
                                             >
                                                 <SelectTrigger className={`h-9 bg-white ${isEmpty ? "border-red-400 ring-1 ring-red-100" : ""}`}>
                                                     <SelectValue placeholder="— Seleccionar —" />
                                                 </SelectTrigger>
                                                 <SelectContent>
+                                                    {/* Opción “ninguno” con valor especial */}
+                                                    <SelectItem key="none" value="__none__">— Ninguno —</SelectItem>
                                                     {attr.values.map((val) => (
                                                         <SelectItem key={val} value={val}>
                                                             {val}
@@ -163,6 +193,7 @@ export default function ProductVariantsForm({ product, categoryAttributes }: Pro
                                                     ))}
                                                 </SelectContent>
                                             </Select>
+
                                         </div>
                                     );
                                 })}
