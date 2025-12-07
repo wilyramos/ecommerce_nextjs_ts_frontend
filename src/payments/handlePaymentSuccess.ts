@@ -1,4 +1,4 @@
-import { createOrderAction } from "@/actions/order/create-order-action";
+// import { createOrderAction } from "@/actions/order/create-order-action";
 import { useCartStore } from "@/src/store/cartStore";
 import type { TCreateOrder } from "../schemas";
 // import { OrderStatusEnum } from "../schemas";
@@ -55,14 +55,14 @@ export async function handlePaymentSuccess(paymentResponse: PaymentResponse, shi
     
 
         // 3. Crear orden en backend
-        const { order } = await createOrderAction(orderData);
+        // const { order } = await createOrderAction(orderData);
 
         // 4. Limpiar carrito
         clearCart();
 
         // 5. Redirigir a confirmación
 
-        window.location.href = `/checkout-result/success?orderId=${order._id}`;
+        // window.location.href = `/checkout-result/success?orderId=${order._id}`;
 
     } catch (error) {
         console.error("Error creando la orden:", error);

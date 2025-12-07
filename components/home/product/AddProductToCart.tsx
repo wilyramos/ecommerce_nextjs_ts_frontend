@@ -54,14 +54,21 @@ export default function AddProductToCart({ product, variant }: Props) {
         <div className="flex w-full">
             <button
                 type="button"
-                className="w-full px-6 py-2 rounded bg-black text-white font-medium flex items-center justify-center gap-2 transition-transform duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 onClick={handleClick}
                 disabled={product.variants?.length ? !selectedVariant || stock <= 0 : stock <= 0}
+                className={`
+        w-full px-6 py-2 rounded font-medium flex items-center justify-center gap-2 text-sm
+        transition duration-200 transform
+        ${!selectedVariant || stock <= 0
+                        ? 'bg-gray-300 text-gray-600 cursor-not-allowed opacity-70'
+                        : 'bg-black text-white hover:bg-gray-800 hover:scale-105 cursor-pointer'}
+    `}
             >
                 <FaShoppingCart size={18} className="shrink-0" />
-                <span className="inline">Añadir al carrito</span>
+                Añadir al carrito
                 <FaPlus size={12} />
             </button>
+
         </div>
     );
 }

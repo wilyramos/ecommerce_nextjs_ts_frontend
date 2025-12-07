@@ -18,6 +18,7 @@ import {
 import { Button } from '../ui/button'
 import type { TCreateOrder } from '@/src/schemas'
 import { Input } from '../ui/input'
+import { toast } from 'sonner'
 
 type ShippingData = {
     departamento: string
@@ -57,41 +58,45 @@ export default function ShippingForm() {
     )
 
     const onSubmit = async (data: ShippingData) => {
-        try {
-            setLoading(true)
-            setShipping(data)
+        setLoading(true);
+        setShipping(data);
 
-            const subtotal = cart.reduce((t, i) => t + i.precio * i.cantidad, 0)
-            const shippingCost = 0
-            const totalPrice = subtotal + shippingCost
+        const subtotal = cart.reduce((t, i) => t + i.precio * i.cantidad, 0);
+        const shippingCost = 0;
+        const totalPrice = subtotal + shippingCost;
 
-            const orderPayload: TCreateOrder = {
-                items: cart.map(item => ({
-                    productId: item._id,
-                    quantity: item.cantidad,
-                    price: item.precio,
-                    variantId: item.variant?._id,
-                    variantAttributes: item.variant?.atributos || {},
-                    nombre: item.nombre,
-                    imagen: item.imagenes?.[0],
-                })),
-                subtotal,
-                shippingCost,
-                totalPrice,
-                shippingAddress: data,
-                currency: 'PEN',
-                payment: { provider: 'IZIPAY', status: 'pending' },
-            }
+        const payload: TCreateOrder = {
+            items: cart.map(item => ({
+                productId: item._id,
+                quantity: item.cantidad,
+                price: item.precio,
+                variantId: item.variant?._id,
+                variantAttributes: item.variant?.atributos || {},
+                nombre: item.nombre,
+                imagen: item.imagenes?.[0],
+            })),
+            subtotal,
+            shippingCost,
+            totalPrice,
+            shippingAddress: data,
+            currency: 'PEN',
+            payment: { provider: 'IZIPAY', status: 'pending' }
+        };
 
-            const order = await createOrderAction(orderPayload)
-            localStorage.setItem('currentOrderId', order.order._id || '')
-            router.push(`/checkout/payment?orderId=${order.order._id}`)
-        } catch (err) {
-            console.error(err)
-        } finally {
-            setLoading(false)
+        const result = await createOrderAction(payload);
+
+        if (!result.ok) {
+            toast.error(result.message);
+            setLoading(false);
+            return;
         }
-    }
+
+        // Orden creada correctamente
+        localStorage.setItem("currentOrderId", result.order._id);
+        router.push(`/checkout/payment?orderId=${result.order._id}`);
+        setLoading(false);
+    };
+
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto space-y-1 md:space-y-3">
@@ -105,7 +110,7 @@ export default function ShippingForm() {
                             setValue('departamento', val)
                             setValue('provincia', '')
                             setValue('distrito', '')
-                            trigger('departamento')
+                            trigger(['departamento', 'provincia', 'distrito'])
                         }}
                     >
                         <SelectTrigger><SelectValue placeholder="--Seleccione--" /></SelectTrigger>
@@ -126,7 +131,7 @@ export default function ShippingForm() {
                         onValueChange={(val) => {
                             setValue('provincia', val)
                             setValue('distrito', '')
-                            trigger('provincia')
+                            trigger(['provincia', 'distrito'])
                         }}
                         disabled={!provincias.length}
                     >
@@ -144,6 +149,7 @@ export default function ShippingForm() {
                 <div>
                     <label className="text-xs font-bold">Distrito <span className="text-red-500">*</span></label>
                     <Select
+                        value={watch('distrito') || ""}
                         onValueChange={(val) => {
                             setValue('distrito', val)
                             trigger('distrito')

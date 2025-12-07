@@ -140,12 +140,12 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                     {(product.esNuevo || product.precioComparativo) && (
                         <div className="absolute top-4 left-2 right-2 flex justify-between items-start text-[13px] font-semibold">
                             {product.esNuevo && (
-                                <span className="px-2 py-0.5 bg-black text-white rounded text-xs shadow-sm">
+                                <span className="px-2 py-0.5 bg-black text-white text-[10px] md:text-xs">
                                     Nuevo
                                 </span>
                             )}
                             {product.precioComparativo && (
-                                <span className="px-2 py-0.5 bg-black text-white rounded text-xs shadow-sm ml-auto">
+                                <span className="px-2 py-0.5 bg-black text-white text-[10px] md:text-xs ml-auto">
                                     -{Math.round(discountedPrice)}%
                                 </span>
                             )}
@@ -168,7 +168,7 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
 
                         {/* Fila 2, 3, 4: Nombre del Producto */}
                         <h3
-                            className=" text-xs md:text-sm text-gray-900 font-normal leading-snug line-clamp-3 h-[4.5rem] md:h-[5rem]" // 2. Altura fija
+                            className=" text-xs md:text-sm text-gray-800 font-normal leading-snug line-clamp-3 h-[4.5rem] md:h-[5rem]" // 2. Altura fija
                         >
                             {product.nombre}
                         </h3>

@@ -65,11 +65,8 @@ export default function ProductVariantsForm({ product, categoryAttributes }: Pro
                 );
             }
         });
-
         return newErrors;
     };
-
-
 
     const addVariant = (event: React.FormEvent) => {
         event.preventDefault();

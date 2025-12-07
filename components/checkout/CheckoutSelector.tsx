@@ -2,7 +2,7 @@
 
 import { useCartStore } from '@/src/store/cartStore';
 import { useCheckoutStore } from '@/src/store/checkoutStore';
-import { iniciarCheckoutMP } from '@/src/payments/mercadopago';
+// import { iniciarCheckoutMP } from '@/src/payments/mercadopago';
 
 import { SiMercadopago } from 'react-icons/si';
 import { FaCcVisa, FaCcMastercard } from 'react-icons/fa';
@@ -39,7 +39,7 @@ export default function CheckoutSelector() {
             <div className="grid grid-cols-1 gap-6 w-full max-w-md">
                 {/* MERCADO PAGO */}
                 <button
-                    onClick={() => iniciarCheckoutMP(cart, shipping, profile)}
+                    // onClick={() => iniciarCheckoutMP(cart, shipping, profile)}
                     className="group w-full p-5 border border-gray-200 rounded-2xl bg-white hover:bg-gray-50 hover:ring-2 hover:ring-blue-100 transition-all duration-200 shadow-sm cursor-pointer"
                 >
                     <div className="flex items-center gap-4">

@@ -267,7 +267,7 @@ export default function ProductDetails({ producto }: Props) {
                             const availableValues = getAvailableValues(key);
 
                             return (
-                                <fieldset key={key} className="mb-2 p-1 px-4 ">
+                                <fieldset key={key} className="mb-2 p-1 border-b ">
                                     <legend className="text-xs font-bold text-gray-600 uppercase tracking-wide mb-2">{key}:</legend>
 
                                     {key.toLowerCase() === "color" ? (
@@ -309,10 +309,13 @@ export default function ProductDetails({ producto }: Props) {
                                                             </span>
                                                         )}
 
-                                                        {/* Tachado si está sin stock */}
                                                         {outOfStock && (
-                                                            <span className="absolute inset-0 border-t-2 border-gray-500 border-dashed rotate-[-45deg]" />
+                                                            <span
+                                                                className="absolute top-1/2 left-1/2 w-full border-t-2 border-gray-500 border-dashed"
+                                                                style={{ transform: 'translate(-50%, -50%) rotate(-45deg)' }}
+                                                            />
                                                         )}
+
                                                     </button>
                                                 );
                                             })}
@@ -330,13 +333,22 @@ export default function ProductDetails({ producto }: Props) {
                                                         size="sm"
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
-                                                        className={`${outOfStock ? "opacity-40 cursor-not-allowed line-through" : "cursor-pointer font-bold uppercase"}`}
+                                                        className={`relative ${outOfStock ? "opacity-40 cursor-not-allowed font-bold uppercase" : "cursor-pointer border rounded uppercase"}`}
                                                     >
                                                         {val}
+
+                                                        {/* Línea dashed diagonal centrada */}
+                                                        {outOfStock && (
+                                                            <span
+                                                                className="absolute top-1/2 left-1/2 w-full border-t-2 border-gray-500 border-dashed"
+                                                                style={{ transform: 'translate(-50%, -50%) rotate(-45deg)' }}
+                                                            />
+                                                        )}
                                                     </Button>
                                                 );
                                             })}
                                         </div>
+
                                     ) : (
                                         <Select
                                             value={selectedAttributes[key] || ""}
