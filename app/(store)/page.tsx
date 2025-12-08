@@ -10,7 +10,7 @@ import FeaturesList from "@/components/home/FeaturesList";
 import BrandsList from "@/components/home/BrandsList";
 import Advertisement from "@/components/home/Advertisement";
 
-// Metadata de la página principal de la tienda, extendiendo la global
+// Metadata for SEO and social sharing
 export const metadata: Metadata = {
     ...globalMetadata,
     title: {
@@ -67,15 +67,14 @@ export const metadata: Metadata = {
 export default function HomePage() {
     return (
         <>
-
             <section className="">
                 <Advertisement />
             </section>
-           
+
             <section className="container mx-auto">
                 <CarruselPrincipal />
             </section>
-            
+
             <section>
                 <ProductosDestacados />
             </section>
@@ -88,7 +87,7 @@ export default function HomePage() {
                 <BrandsList />
             </section>
 
-             <section className="my-10">
+            <section className="my-10">
                 <CategoriasDestacadasWrapper />
             </section>
             <section>

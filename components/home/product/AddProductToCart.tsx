@@ -22,32 +22,48 @@ export default function AddProductToCart({ product, variant }: Props) {
         setSelectedVariant(variant ?? null);
     }, [variant]);
 
+    // Calcular el stock disponible según si es variante o producto simple
     const stock = selectedVariant?.stock ?? product.stock ?? 0;
 
+    // Verificar si visualmente debería parecer deshabilitado
+    const hasVariants = product.variants && product.variants.length > 0;
+    const isSelectionIncomplete = hasVariants && !selectedVariant;
+    const isOutOfStock = stock <= 0;
+
+    // Esta variable controla solo el ESTILO visual, no la funcionalidad del click
+    const isVisuallyDisabled = isSelectionIncomplete || isOutOfStock;
+
     const handleClick = () => {
-        if (stock <= 0) {
-            toast.error("Este producto no tiene stock disponible");
+        // 1. Validar si faltan seleccionar variantes
+        if (isSelectionIncomplete) {
+            toast.error("Por favor, selecciona una variante antes de añadir al carrito.");
             return;
         }
 
+        // 2. Validar si no hay stock
+        if (isOutOfStock) {
+            toast.error("Lo sentimos, este producto no tiene stock disponible.");
+            return;
+        }
+
+        // 3. Lógica normal de añadir al carrito
         const activeVariant = selectedVariant ?? undefined;
 
-        //TODO: Mejorar esta lógica para productos con variantes y evitar duplicados en el carrito, ahora mismo solo permite 1 variante por producto. Ademas motrar toast si se supera el stock
         const productInCart = cart.find((item) => {
             if (activeVariant) return item._id === product._id && item.variant?._id === activeVariant._id;
             return item._id === product._id && !item.variant;
         });
 
         if (productInCart && productInCart.cantidad >= stock) {
-            toast.warning(`Solo hay ${stock} unidades disponibles`);
+            toast.warning(`Solo hay ${stock} unidades disponibles. Ya tienes todo el stock en tu carrito.`);
             return;
         }
+
         console.log("Añadiendo al carrito:", product, activeVariant);
 
         addToCart(product, activeVariant);
         toast.success("Producto añadido al carrito");
         setCartOpen(true);
-        console.log("Items en el carrito:", cart);
     };
 
     return (
@@ -55,20 +71,18 @@ export default function AddProductToCart({ product, variant }: Props) {
             <button
                 type="button"
                 onClick={handleClick}
-                disabled={product.variants?.length ? !selectedVariant || stock <= 0 : stock <= 0}
                 className={`
-        w-full px-6 py-2 rounded font-medium flex items-center justify-center gap-2 text-sm
-        transition duration-200 transform
-        ${!selectedVariant || stock <= 0
-                        ? 'bg-gray-300 text-gray-600 cursor-not-allowed opacity-70'
+                    w-full px-6 py-2 rounded font-medium flex items-center justify-center gap-2 text-sm
+                    transition duration-200 transform
+                    ${isVisuallyDisabled
+                        ? 'bg-gray-300 text-gray-600 cursor-not-allowed opacity-90'
                         : 'bg-black text-white hover:bg-gray-800 hover:scale-105 cursor-pointer'}
-    `}
+                `}
             >
                 <FaShoppingCart size={18} className="shrink-0" />
                 Añadir al carrito
                 <FaPlus size={12} />
             </button>
-
         </div>
     );
 }
