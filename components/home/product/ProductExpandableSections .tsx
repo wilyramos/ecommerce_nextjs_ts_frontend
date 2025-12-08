@@ -63,7 +63,7 @@ export default function ProductExpandableSections({ producto }: Props) {
                             <ul className="list-disc list-inside space-y-1">
                                 <li>Envío con tarifa única.</li>
                                 <li>
-                                    <Link href="/politicas-devolucion" className="underline">
+                                    <Link href="/hc/garantias-y-devoluciones" className="underline">
                                         Política de devoluciones
                                     </Link>
                                 </li>
@@ -73,6 +73,7 @@ export default function ProductExpandableSections({ producto }: Props) {
                                 Puedes solicitar un cambio o devolución dentro de los {" "}
                                 <strong>3 días hábiles</strong> si el producto tiene falla o llega dañado.
                                 Debe estar nuevo, sin uso y con empaque original.
+                                
                             </p>
                         </div>
 

@@ -12,6 +12,14 @@ export default function Footer() {
         { label: "Categorías", href: "/categorias" },
     ];
 
+    const helpCenterLinks = [
+        { label: "Contacto y soporte", href: "/hc/contacto-y-soporte" },
+        { label: "Proceso de compra", href: "/hc/proceso-de-compra" },
+        { label: "Garantías y devoluciones", href: "/hc/garantias-y-devoluciones" },
+        { label: "Preguntas frecuentes", href: "/hc/preguntas-frecuentes" },
+        { label: "Políticas de privacidad", href: "/hc/politicas-de-privacidad" },
+    ];
+
     const social = [
         { icon: <FaFacebookF />, href: "https://www.facebook.com/gophone.pe", name: "Facebook" },
         { icon: <FaInstagram />, href: "https://www.instagram.com/gophone.pe", name: "Instagram" },
@@ -26,7 +34,8 @@ export default function Footer() {
         <footer className="bg-neutral-100 text-gray-700 text-sm py-4">
 
             {/* Contenido principal */}
-            <div className="max-w-7xl mx-auto px-6 py-2 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="max-w-7xl mx-auto px-6 py-2 grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
+
                 {/* Branding */}
                 <div>
                     <div className="flex items-center gap-2 mb-4">
@@ -36,8 +45,7 @@ export default function Footer() {
                         Calidad a tu alcance.
                         <br />
                         <span className="text-xs">
-                            Ubicanos en
-                        Jr. O Higgins 120, San Vicente de Cañete.
+                            Ubícanos en Jr. O Higgins 120, San Vicente de Cañete.
                         </span>
                     </p>
                 </div>
@@ -49,6 +57,25 @@ export default function Footer() {
                     </h3>
                     <ul className="space-y-2">
                         {links.map(({ label, href }) => (
+                            <li key={href}>
+                                <Link
+                                    href={href}
+                                    className="hover:text-black transition-colors duration-200"
+                                >
+                                    {label}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
+
+                {/* Centro de Ayuda */}
+                <nav>
+                    <h3 className="mb-4 font-semibold text-gray-900 text-sm relative after:block after:w-8 after:h-1 after:bg-black after:mt-1">
+                        Centro de Ayuda
+                    </h3>
+                    <ul className="space-y-2">
+                        {helpCenterLinks.map(({ label, href }) => (
                             <li key={href}>
                                 <Link
                                     href={href}
@@ -89,12 +116,12 @@ export default function Footer() {
                     </ul>
                 </div>
 
-                {/* Redes sociales */}
+                {/* Redes sociales + Métodos de pago */}
                 <div>
                     <h3 className="mb-4 font-semibold text-gray-900 text-sm relative after:block after:w-8 after:h-1 after:bg-black after:mt-1">
                         Síguenos
                     </h3>
-                    <div className="flex gap-4">
+                    <div className="flex gap-4 mb-6">
                         {social.map(({ icon, href, name }) => (
                             <a
                                 key={name}
@@ -108,14 +135,11 @@ export default function Footer() {
                             </a>
                         ))}
                     </div>
-                </div>
 
-                <div>
-                    <h3 className="mb-4 font-semibold text-gray-900 text-sm relative after:block after:w-8 after:h-1 after:bg-black after:mt-1">
+                    <h3 className="mb-4 font-semibold text-gray-900 text-sm">
                         Métodos de Pago
                     </h3>
                     <PaymentMethods />
-
                 </div>
             </div>
 

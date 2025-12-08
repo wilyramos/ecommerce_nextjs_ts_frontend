@@ -1,15 +1,63 @@
+//File: frontend/app/%28store%29/hc/garantias-y-devoluciones/page.tsx
+
 
 import { ShieldCheck, Undo2 } from "lucide-react";
 import { FaWhatsapp, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 import Link from "next/link";
+import type { Metadata } from "next";
 
-export default function CambiosDevolucionesPage() {
+
+export const metadata: Metadata = {
+    title: "Garantías y Devoluciones | Gophone",
+    description:
+        "Consulta las políticas de garantías y devoluciones de Gophone. Conoce los plazos, requisitos y proceso para cambios, reembolsos y productos con fallas de fábrica.",
+    keywords: [
+        "garantías",
+        "política de devoluciones",
+        "cambios de producto",
+        "reembolsos",
+        "fallas de fábrica",
+        "Gophone",
+        "soporte técnico",
+        "devolución de productos",
+        "compras online"
+    ],
+    openGraph: {
+        title: "Garantías y Devoluciones | Gophone",
+        description:
+            "Revisa nuestras políticas de garantías, devoluciones y reembolsos. Información clara para asegurar tu satisfacción al comprar en Gophone.",
+        url: "https://gophone.pe/hc/garantias-y-devoluciones",
+        siteName: "Gophone",
+        type: "article",
+        images: [
+            {
+                url: "https://gophone.pe/logoapp.svg", // Si quieres, te genero esta imagen también
+                width: 1200,
+                height: 630,
+                alt: "Garantías y Devoluciones - Gophone",
+            },
+        ],
+    },
+    robots: {
+        index: true,
+        follow: true,
+    },
+    alternates: {
+        canonical: "https://gophone.pe/hc/garantias-y-devoluciones",
+    },
+    authors: [{ name: "Gophone" }],
+    creator: "Gophone",
+    publisher: "Gophone",
+};
+
+
+export default function GarantiasDevolucionesPage() {
     return (
-        <section className="max-w-5xl mx-auto px-4 py-10 space-y-8">
+        <section className="max-w-5xl mx-auto px-4 space-y-8">
 
             {/* Título */}
             <h1 className="text-xl md:text-3xl font-bold text-gray-900">
-                Política de Cambios y Devoluciones
+                Política de Garantías y Devoluciones
             </h1>
 
             {/* Introducción */}

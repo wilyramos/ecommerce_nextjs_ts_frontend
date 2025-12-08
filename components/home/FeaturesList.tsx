@@ -13,7 +13,7 @@ const features: Feature[] = [
   { title: "Ofertas exclusivas", icon: FaTags },
   { title: "Envíos rápidos", icon: FaTruck },
   { title: "Pago 100% seguro", icon: FaLock },
-  { title: "Cambios y devoluciones", icon: FaExchangeAlt, url: "/cambios-y-devoluciones" },
+  { title: "Cambios y devoluciones", icon: FaExchangeAlt, url: "/hc/garantias-y-devoluciones" },
 ];
 
 export default function MinimalFeatures() {
