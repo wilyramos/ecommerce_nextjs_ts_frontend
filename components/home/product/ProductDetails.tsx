@@ -5,7 +5,6 @@ import AddProductToCart from './AddProductToCart';
 import ImagenesProductoCarousel from './ImagenesProductoCarousel';
 import type { ProductWithCategoryResponse, TApiVariant } from '@/src/schemas';
 import ShopNowButton from './ShopNowButton';
-import { Truck, ShieldCheck } from 'lucide-react';
 import ProductExpandableSections from './ProductExpandableSections ';
 import { getDeliveryRange } from '@/lib/utils';
 import {
@@ -132,20 +131,30 @@ export default function ProductDetails({ producto }: Props) {
 
     return (
         <>
-            <article className="grid grid-cols-1 md:grid-cols-5 gap-2 md:gap-6 max-w-7xl mx-auto py-2">
+            <article className="grid grid-cols-1 md:grid-cols-6 gap-2 md:gap-6 max-w-7xl mx-auto py-2">
                 {/* Imágenes */}
                 <div className='md:col-span-3'>
                     <ImagenesProductoCarousel
                         images={
-                            selectedVariant?.imagenes && selectedVariant.imagenes.length > 0
-                                ? selectedVariant.imagenes
-                                : producto.imagenes ?? []
+                            selectedVariant?.imagenes ??
+                            (
+                                [
+                                    ...(producto.imagenes ?? []),
+                                    ...(
+                                        producto.variants
+                                            ?.flatMap(v => v.imagenes ?? [])
+                                        ?? []
+                                    ),
+                                ]
+                                    .filter((img, idx, arr) => arr.indexOf(img) === idx)
+                            )
                         }
                     />
                 </div>
 
+
                 {/* Detalles */}
-                <section className='md:col-span-2'>
+                <section className='md:col-span-3'>
                     <div className="space-y-2 bg-white p-4">
                         <header className="pt-1 border-b pb-4 space-y-2">
                             {/* SKU y código solo si hay variante seleccionada o SKU principal */}
@@ -173,10 +182,9 @@ export default function ProductDetails({ producto }: Props) {
                             </div>
 
 
-
                             <div>
 
-                                <h1 className="text-md md:text-xl leading-snug text-gray-800">
+                                <h1 className="text-md md:text-lg leading-snug text-gray-600">
                                     {producto.nombre}
                                 </h1>
                             </div>
@@ -267,7 +275,7 @@ export default function ProductDetails({ producto }: Props) {
                             const availableValues = getAvailableValues(key);
 
                             return (
-                                <fieldset key={key} className="mb-2 p-1 border-b ">
+                                <fieldset key={key} className="mb-2 p-1 ">
                                     <legend className="text-xs font-bold text-gray-600 uppercase tracking-wide mb-2">{key}:</legend>
 
                                     {key.toLowerCase() === "color" ? (
@@ -333,7 +341,7 @@ export default function ProductDetails({ producto }: Props) {
                                                         size="sm"
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
-                                                        className={`relative ${outOfStock ? "opacity-40 cursor-not-allowed font-bold uppercase" : "cursor-pointer border rounded uppercase"}`}
+                                                        className={`relative ${outOfStock ? "opacity-40 cursor-not-allowed font-bold uppercase" : "cursor-pointer  uppercase"}`}
                                                     >
                                                         {val}
 
@@ -387,7 +395,7 @@ export default function ProductDetails({ producto }: Props) {
                         )}
 
                         {/* Acciones */}
-                        <section className="flex justify-between items-center gap-4 mt-4">
+                        <section className="flex justify-between items-center gap-4 mt-4 md:pt-4">
                             <div className="hidden md:flex flex-1">
                                 <AddProductToCart
                                     product={producto}
@@ -411,16 +419,19 @@ export default function ProductDetails({ producto }: Props) {
                     <div className="space-y-2 mt-2 text-gray-700 text-xs">
                         {/* Envío */}
                         <div className="bg-white py-2 md:p-4 flex items-start gap-4 px-4">
-                            <Truck className="w-6 h-6 text-gray-500 mt-0.5" />
-                            <div className="space-y-1">
+                            {/* <Truck className="w-6 h-6 text-gray-500 mt-0.5" /> */}
+
+                            <div className="flex flex-wrap gap-x-2 gap-y-1">
                                 <p>
                                     Envíos <span className="font-semibold">gratuitos y contraentrega</span> en todo Cañete.
                                 </p>
+
                                 <p>
                                     Envíos al resto del Perú mediante{" "}
                                     <span className="font-semibold italic bg-red-600 text-white px-1">SHALOM</span>.
                                 </p>
-                                <p className="mt-2 inline-block border border-gray-200 rounded-full px-3 py-1 text-gray-600">
+
+                                <p className="border border-gray-200 px-3 py-1 text-gray-600 bg-gray-200/50">
                                     {producto.diasEnvio
                                         ? `Recíbelo entre: ${getDeliveryRange(producto.diasEnvio)}`
                                         : "Recíbelo en 1–3 días hábiles"}
@@ -428,16 +439,18 @@ export default function ProductDetails({ producto }: Props) {
                             </div>
                         </div>
 
+
                         {/* Compra segura */}
-                        <div className="bg-white py-2 md:p-4 flex items-start gap-4 px-4">
-                            <ShieldCheck className="w-6 h-6 text-gray-500 mt-0.5" />
-                            <div className="space-y-1 w-full">
-                                <p className="text-gray-600">Aceptamos los siguientes medios de pago:</p>
-                                <div className="flex items-center flex-wrap gap-3 mt-2">
+                        <div className="bg-white py-2 md:p-4 flex items-center gap-4 px-4">
+                            <div className="flex flex-col md:flex-row md:items-center md:justify-between w-full gap-2">
+                                <p className="text-gray-600 whitespace-nowrap">Aceptamos los siguientes medios de pago:</p>
+
+                                <div className="flex items-center flex-wrap gap-3 ">
                                     <PaymentMethods />
                                 </div>
                             </div>
                         </div>
+
 
                         {/* Contacto */}
                         <div className="bg-white p-4 text-center">

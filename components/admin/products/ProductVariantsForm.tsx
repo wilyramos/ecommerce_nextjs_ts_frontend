@@ -12,6 +12,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Trash2, Plus, AlertCircle } from "lucide-react";
+import UploadVariantImageDialog from "./UploadVariantImageDialog";
 
 interface CategoryAttr {
     name: string;
@@ -123,7 +124,8 @@ export default function ProductVariantsForm({ product, categoryAttributes }: Pro
             Object.entries(v.atributos).filter(([key]) =>
                 variantAttributes.some(c => c.name === key)
             )
-        )
+        ),
+        imagenes: v.imagenes ?? [],
     }));
 
     if (!variantAttributes?.length) {
@@ -160,16 +162,16 @@ export default function ProductVariantsForm({ product, categoryAttributes }: Pro
                     return (
                         <div
                             key={variant._id}
-                            className={`border rounded-xl p-4 bg-card shadow-sm space-y-4 ${isRowIncomplete ? "border-red-300 bg-red-50/10" : "border-gray-200"
+                            className={`border rounded-xl p-2 md:p-4 bg-card shadow-sm space-y-4 ${isRowIncomplete ? "border-red-300 bg-red-50/10" : "border-gray-200"
                                 }`}
                         >
-                            <div className="flex flex-wrap gap-4 bg-gray-50/50 p-3 rounded-lg">
+                            <div className="flex flex-wrap gap-4 bg-gray-50/50 rounded-lg">
                                 {variantAttributes.map((attr) => {
                                     const isEmpty = !variant.atributos[attr.name];
                                     return (
                                         <div key={attr.name} className="space-y-1 min-w-[120px]">
                                             <label className={`text-xs font-medium uppercase tracking-wide ${isEmpty ? "text-red-500" : "text-gray-500"}`}>
-                                                {attr.name} *
+                                                {attr.name}: 
                                             </label>
                                             <Select
                                                 value={variant.atributos[attr.name] ?? ""}
@@ -196,7 +198,7 @@ export default function ProductVariantsForm({ product, categoryAttributes }: Pro
                                 })}
                             </div>
 
-                            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 items-end">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 items-end">
                                 <div className="space-y-1">
                                     <label className="text-xs font-medium">Precio</label>
                                     <Input
@@ -234,16 +236,32 @@ export default function ProductVariantsForm({ product, categoryAttributes }: Pro
                                         onChange={(e) => updateVariant(index, "sku", e.target.value)}
                                     />
                                 </div>
-                                <div className="flex justify-end pb-0.5">
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        onClick={() => removeVariant(index)}
-                                        className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                                    >
-                                        <Trash2 className="h-5 w-5" />
-                                    </Button>
-                                </div>
+
+
+
+                            </div>
+                            <div className="space-y-1 col-span-2 md:col-span-1">
+                                {/* <label className="text-xs font-medium">Imágenes</label> */}
+
+                                <UploadVariantImageDialog
+                                    images={variant.imagenes ?? []}
+                                    setImages={(fn) => {
+                                        const next = [...variants];
+                                        next[index].imagenes = fn(next[index].imagenes ?? []);
+                                        setVariants(next);
+                                    }}
+                                />
+                            </div>
+
+                            <div className="flex justify-end pb-0.5">
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => removeVariant(index)}
+                                    className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                                >
+                                    <Trash2 className="h-5 w-5" />
+                                </Button>
                             </div>
                         </div>
                     );

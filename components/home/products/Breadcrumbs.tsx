@@ -36,7 +36,7 @@ export default function Breadcrumb({ categoryName, categorySlug, productName }: 
 
                 <LuChevronRight size={14} className="text-gray-500" />
 
-                <li className="text-gray-800 font-semibold truncate max-w-[150px] md:max-w-[300px]">
+                <li className="text-gray-800 font-semibold truncate max-w-[120px] md:max-w-[300px]">
                     {productName}
                 </li>
 

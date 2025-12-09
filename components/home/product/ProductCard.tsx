@@ -155,7 +155,6 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
 
 
                 {/* --- SECCIÓN DE INFO CORREGIDA --- */}
-                {/* 1. flex-1 y flex-col para que este div ocupe todo el espacio vertical disponible */}
                 <div className="flex flex-col flex-1 p-2">
                     {/* Contenedor para marca y nombre */}
                     <div>

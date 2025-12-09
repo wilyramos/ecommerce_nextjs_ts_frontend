@@ -4,19 +4,21 @@ import { useState } from "react";
 import Image from "next/image";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
+
 export default function ImagenesProductoCarousel({ images }: { images: string[] }) {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [zoom, setZoom] = useState(false);
     const [position, setPosition] = useState({ x: 50, y: 50 });
 
-    const nextImage = (e: React.MouseEvent) => {
-        e.stopPropagation();
+    const [dragStart, setDragStart] = useState<number | null>(null);
+    const [dragEnd, setDragEnd] = useState<number | null>(null);
+
+    const nextImage = () => {
         setSelectedIndex((prev) => (prev + 1) % images.length);
         setZoom(false);
     };
 
-    const prevImage = (e: React.MouseEvent) => {
-        e.stopPropagation();
+    const prevImage = () => {
         setSelectedIndex((prev) => (prev - 1 + images.length) % images.length);
         setZoom(false);
     };
@@ -31,13 +33,40 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
 
     const toggleZoom = () => setZoom((prev) => !prev);
 
+    const onDragStart = (e: React.TouchEvent | React.MouseEvent) => {
+        const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+        setDragStart(clientX);
+    };
+
+    const onDragMove = (e: React.TouchEvent | React.MouseEvent) => {
+        if (dragStart === null) return;
+        const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+        setDragEnd(clientX);
+    };
+
+    const onDragEnd = () => {
+        if (dragStart === null || dragEnd === null) {
+            setDragStart(null);
+            setDragEnd(null);
+            return;
+        }
+
+        const diff = dragStart - dragEnd;
+
+        if (diff > 50) nextImage();
+        if (diff < -50) prevImage();
+
+        setDragStart(null);
+        setDragEnd(null);
+    };
+
     const showThumbnails = images.length > 1;
 
     return (
         <div className="w-full max-w-sm md:max-w-3xl mx-auto flex flex-col md:flex-row gap-2 bg-white">
 
             {showThumbnails && (
-                <div className="hidden md:flex flex-col gap-2 overflow-y-auto no-scrollbar w-20">
+                <div className="hidden md:flex flex-col gap-2 overflow-y-auto no-scrollbar w-20 md:p-2 sticky top-30 h-full">
                     {images.map((img, idx) => (
                         <button
                             key={idx}
@@ -57,6 +86,12 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
             ${zoom ? "cursor-zoom-out" : "cursor-zoom-in"}`}
                     onMouseMove={handleMouseMove}
                     onClick={toggleZoom}
+                    onMouseDown={onDragStart}
+                    onMouseMoveCapture={onDragMove}
+                    onMouseUp={onDragEnd}
+                    onTouchStart={onDragStart}
+                    onTouchMove={onDragMove}
+                    onTouchEnd={onDragEnd}
                 >
                     {images.length > 0 ? (
                         <Image
@@ -77,7 +112,10 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
 
                     {images.length > 1 && (
                         <button
-                            onClick={prevImage}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                prevImage();
+                            }}
                             className="absolute top-1/2 left-2 -translate-y-1/2 backdrop-blur-sm text-gray-700 p-3 rounded-full shadow-md"
                         >
                             <FaChevronLeft size={18} />
@@ -86,7 +124,10 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
 
                     {images.length > 1 && (
                         <button
-                            onClick={nextImage}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                nextImage();
+                            }}
                             className="absolute top-1/2 right-4 -translate-y-1/2 backdrop-blur-sm text-gray-700 p-3 rounded-full shadow-md"
                         >
                             <FaChevronRight size={18} />
