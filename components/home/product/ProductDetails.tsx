@@ -126,6 +126,16 @@ export default function ProductDetails({ producto }: Props) {
             producto.atributos?.COLOR ||
             null);
 
+    const variantImages =
+        selectedVariant?.imagenes && selectedVariant.imagenes.length > 0
+            ? selectedVariant.imagenes
+            : [
+                ...(producto.imagenes ?? []),
+                ...(
+                    producto.variants?.flatMap(v => v.imagenes ?? []) ?? []
+                )
+            ].filter((img, idx, arr) => arr.indexOf(img) === idx);
+
 
     //TODO: REVIEW VARIANTS KEY IN PRODUCTS WITH VARIANTS
 
@@ -134,22 +144,8 @@ export default function ProductDetails({ producto }: Props) {
             <article className="grid grid-cols-1 md:grid-cols-6 gap-2 md:gap-6 max-w-7xl mx-auto py-2">
                 {/* Imágenes */}
                 <div className='md:col-span-3'>
-                    <ImagenesProductoCarousel
-                        images={
-                            selectedVariant?.imagenes ??
-                            (
-                                [
-                                    ...(producto.imagenes ?? []),
-                                    ...(
-                                        producto.variants
-                                            ?.flatMap(v => v.imagenes ?? [])
-                                        ?? []
-                                    ),
-                                ]
-                                    .filter((img, idx, arr) => arr.indexOf(img) === idx)
-                            )
-                        }
-                    />
+                    <ImagenesProductoCarousel images={variantImages} />
+
                 </div>
 
 
