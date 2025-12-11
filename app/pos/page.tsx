@@ -7,7 +7,7 @@ type SearchParams = Promise<{ page?: string; limit?: string; query?: string }>;
 
 export default async function POSpage({ searchParams }: { searchParams: SearchParams }) {
     const params = await searchParams;
-    const { page = "1", limit = "9", query = "" } = params || {};
+    const { page = "1", limit = "12", query = "" } = params || {};
 
     const productos = query
         ? await searchProducts({
@@ -18,48 +18,49 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
         : { products: [] };
 
     return (
-        <div className="grid md:grid-cols-[1.2fr_0.8fr] h-full w-full gap-2 relative bg-white">
+        <div className="flex h-full flex-col md:flex-row">
 
-            {/* COLUMNA IZQUIERDA */}
-            <main className="flex flex-col h-full overflow-hidden">
-
+            {/* SECCIÓN IZQUIERDA: PRODUCTOS */}
+            <section className="flex flex-1 flex-col overflow-hidden">
+                
                 {/* Buscador */}
-                <div className="p-2 border-b border-gray-200 bg-gray-50 z-10 shrink-0">
+                <div className="shrink-0 border-b bg-gray-50 p-2">
                     <ProductSearchForm />
                 </div>
 
-                {/* Resultados con scroll */}
-                <section className="flex-1 overflow-y-auto p-2 bg-white">
-                    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 pb-20 md:pb-0">
+                {/* Lista de Productos Scrollable */}
+                <div className="flex-1 overflow-y-auto p-2 scrollbar-thin">
+                    {/* pb-[42vh] en móvil es CRUCIAL: 
+                       Crea espacio al final para que el carrito (fixed bottom) 
+                       no tape los últimos productos.
+                    */}
+                    <div className="grid grid-cols-2 gap-2 pb-[42vh] sm:grid-cols-3 md:grid-cols-3 md:pb-4 lg:grid-cols-4 xl:grid-cols-5">
                         {productos?.products?.length ? (
                             productos.products.map((p) => (
                                 <ProductCardPOS key={p._id} product={p} />
                             ))
                         ) : (
-                            <div className="col-span-full flex flex-col items-center justify-center py-10 text-gray-400">
-                                <span className="text-sm">No se encontraron productos</span>
+                            <div className="col-span-full py-10 text-center text-gray-400">
+                                No se encontraron productos
                             </div>
                         )}
                     </div>
-                </section>
-            </main>
+                </div>
+            </section>
 
-            {/* COLUMNA DERECHA - CARRITO POS */}
-            <aside
-                className="
-                /* Escritorio */
-                md:static md:h-full 
-
-                /* Móvil (deslizable) */
-                fixed bottom-0 inset-x-0 z-30
-                h-auto max-h-[55vh] overflow-y-auto
-                bg-gray-50 border-t border-gray-300 shadow-[0_-4px_8px_-1px_rgba(0,0,0,0.10)]
-            "
-            >
-                <div className="h-dvh  p-3">
+            {/* SECCIÓN DERECHA: CARRITO */}
+            <aside className="
+                /* MÓVIL: Panel fijo abajo (40% altura) */
+                fixed bottom-0 left-0 right-0 z-20 h-[40vh] w-full border-t bg-white shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]
+                
+                /* DESKTOP: Columna lateral (Ancho fijo, Altura completa) */
+                md:static md:h-full md:w-[380px] md:border-l md:shadow-none lg:w-[420px]
+            ">
+                <div className="h-full w-full overflow-hidden p-2">
                     <VentaCart />
                 </div>
             </aside>
+            
         </div>
     );
 }

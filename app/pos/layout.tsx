@@ -10,31 +10,26 @@ export default async function POSlayout({ children }: { children: React.ReactNod
     if (user.rol !== "administrador" && user.rol !== "vendedor") redirect("/profile");
 
     return (
-        <>
-            <div className="md:hidden px-2 border-b flex items-center justify-between bg-white sticky top-0 z-40 ">
-                <div className="flex items-center">
-                    <MobileSidebarPOS user={user} />
-                </div>
+        <div className="flex h-dvh flex-col overflow-hidden bg-white md:flex-row">
+            
+            {/* HEADER MÓVIL (Solo visible en < md) */}
+            <header className="flex h-14 shrink-0 items-center justify-between border-b px-2 md:hidden">
+                <MobileSidebarPOS user={user} />
+                <Logo />
+                <div className="w-6" /> {/* Espaciador para centrar logo */}
+            </header>
 
-                <div className="flex-1 flex justify-center">
-                    <Logo />
-                </div>
-
-                <div className="w-6" />
-            </div>
-
-            {/* DESKTOP LAYOUT */}
-            <div className="hidden md:grid h-screen grid-cols-[auto_1fr] overflow-hidden">
+            {/* SIDEBAR DESKTOP (Solo visible en md+) */}
+            <aside className="hidden h-full shrink-0 border-r md:block">
                 <SidebarPOS user={user} />
-                <main className="overflow-auto p-4">{children}</main>
-            </div>
+            </aside>
 
-            {/* MOBILE CONTENT */}
-            <div className="md:hidden h-[calc(100vh-56px)] overflow-hidden p-4">
+            {/* CONTENEDOR PRINCIPAL */}
+            <main className="flex min-w-0 flex-1 flex-col overflow-hidden">
                 {children}
-            </div>
+            </main>
 
             <ToastNotification />
-        </>
+        </div>
     );
 }
