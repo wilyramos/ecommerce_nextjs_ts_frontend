@@ -1,3 +1,4 @@
+// Neutral palette applied version of ProductsTable
 "use client";
 
 import Link from "next/link";
@@ -30,11 +31,7 @@ import {
     SelectItem,
 } from "@/components/ui/select";
 
-export default function ProductsTable({
-    products,
-    categories,
-    brands,
-}: {
+export default function ProductsTable({ products, categories, brands }: {
     products: ProductsAPIResponse | null;
     categories: CategoryListResponse;
     brands: Brand[];
@@ -70,21 +67,19 @@ export default function ProductsTable({
     };
 
     return (
-        <div className="w-full overflow-x-auto pb-2">
+        <div className="w-full overflow-x-auto pb-2 text-xs text-zinc-600 bg-gray-50">
             <div className="flex justify-end my-1 pr-1">
                 <button
                     onClick={clearFilters}
-                    className="text-[11px] font-semibold hover:underline cursor-pointer"
+                    className="text-[11px] font-semibold text-zinc-600 hover:text-black"
                 >
                     Limpiar filtros
                 </button>
             </div>
 
-            <Table className="min-w-full table-auto border-separate border-spacing-0">
-                <TableHeader>
-                    <TableRow className="">
-
-                        {/* === HEADER — FILTROS === */}
+            <Table className="min-w-full table-auto border-separate border-spacing-0 text-zinc-600">
+                <TableHeader className="bg-gray-50 border-b sticky top-0 shadow-sm">
+                    <TableRow>
                         {[
                             nameFilter,
                             skuFilter,
@@ -98,40 +93,22 @@ export default function ProductsTable({
                         ].map((filter, i) => (
                             <TableHead
                                 key={i}
-                                className={`
-                                    p-1 text-center
-                                    ${
-                                        i === 0 ? "w-[230px]" :
-                                        i === 1 ? "w-[120px]" :
-                                        i === 2 ? "w-[90px]"  :
-                                        i === 3 ? "w-[90px]"  :
-                                        i === 4 ? "w-[130px]" :
-                                        i === 5 ? "w-[130px]" :
-                                        i === 6 ? "w-[60px]"  :
-                                        i === 7 ? "w-[60px]"  :
-                                        i === 8 ? "w-[60px]"  :
-                                        ""
-                                    }
-                                `}
+                                className="p-1 text-center bg-gray-50 text-zinc-600"
                             >
                                 {i === 0 && (
                                     <Input
                                         placeholder="Nombre"
                                         value={nameFilter.value}
-                                        onChange={(e) =>
-                                            nameFilter.setValue(e.target.value)
-                                        }
-                                        className="h-8 text-xs"
+                                        onChange={(e) => nameFilter.setValue(e.target.value)}
+                                        className="h-8 text-xs focus:border-black bg-gray-50 text-black placeholder:text-zinc-400"
                                     />
                                 )}
                                 {i === 1 && (
                                     <Input
                                         placeholder="SKU"
                                         value={skuFilter.value}
-                                        onChange={(e) =>
-                                            skuFilter.setValue(e.target.value)
-                                        }
-                                        className="h-8 text-xs"
+                                        onChange={(e) => skuFilter.setValue(e.target.value)}
+                                        className="h-8 text-xs focus:border-black bg-gray-50 text-black placeholder:text-zinc-400"
                                     />
                                 )}
                                 {i === 2 && (
@@ -139,10 +116,10 @@ export default function ProductsTable({
                                         value={priceSort.value || undefined}
                                         onValueChange={priceSort.setValue}
                                     >
-                                        <SelectTrigger className="h-8 text-xs">
+                                        <SelectTrigger className="h-8 text-xs bg-gray-50 text-black">
                                             <SelectValue placeholder="Precio" />
                                         </SelectTrigger>
-                                        <SelectContent>
+                                        <SelectContent className="bg-gray-50 text-black">
                                             <SelectItem value="asc">Asc</SelectItem>
                                             <SelectItem value="desc">Desc</SelectItem>
                                         </SelectContent>
@@ -153,10 +130,10 @@ export default function ProductsTable({
                                         value={stockSort.value || undefined}
                                         onValueChange={stockSort.setValue}
                                     >
-                                        <SelectTrigger className="h-8 text-xs">
+                                        <SelectTrigger className="h-8 text-xs bg-gray-50 text-black">
                                             <SelectValue placeholder="Stock" />
                                         </SelectTrigger>
-                                        <SelectContent>
+                                        <SelectContent className="bg-gray-50 text-black">
                                             <SelectItem value="asc">Asc</SelectItem>
                                             <SelectItem value="desc">Desc</SelectItem>
                                         </SelectContent>
@@ -167,10 +144,10 @@ export default function ProductsTable({
                                         value={brandFilter.value || undefined}
                                         onValueChange={brandFilter.setValue}
                                     >
-                                        <SelectTrigger className="h-8 text-xs">
+                                        <SelectTrigger className="h-8 text-xs bg-gray-50 text-black">
                                             <SelectValue placeholder="Marca" />
                                         </SelectTrigger>
-                                        <SelectContent className="max-h-60 overflow-auto">
+                                        <SelectContent className="max-h-60 overflow-auto bg-gray-50 text-black">
                                             {brands.map((b) => (
                                                 <SelectItem key={b._id} value={b._id}>
                                                     {b.nombre}
@@ -184,10 +161,10 @@ export default function ProductsTable({
                                         value={categoryFilter.value || undefined}
                                         onValueChange={categoryFilter.setValue}
                                     >
-                                        <SelectTrigger className="h-8 text-xs">
+                                        <SelectTrigger className="h-8 text-xs bg-gray-50 text-black">
                                             <SelectValue placeholder="Categoría" />
                                         </SelectTrigger>
-                                        <SelectContent className="max-h-60 overflow-auto">
+                                        <SelectContent className="max-h-60 overflow-auto bg-gray-50 text-black">
                                             {categories.map((c) => (
                                                 <SelectItem key={c._id} value={c._id}>
                                                     {c.nombre}
@@ -201,10 +178,10 @@ export default function ProductsTable({
                                         value={activeFilter.value || undefined}
                                         onValueChange={activeFilter.setValue}
                                     >
-                                        <SelectTrigger className="h-8 text-xs">
+                                        <SelectTrigger className="h-8 text-xs bg-gray-50 text-black">
                                             <SelectValue placeholder="Estado" />
                                         </SelectTrigger>
-                                        <SelectContent>
+                                        <SelectContent className="bg-gray-50 text-black">
                                             <SelectItem value="true">Activos</SelectItem>
                                             <SelectItem value="false">Inactivos</SelectItem>
                                         </SelectContent>
@@ -215,10 +192,10 @@ export default function ProductsTable({
                                         value={nuevoFilter.value || undefined}
                                         onValueChange={nuevoFilter.setValue}
                                     >
-                                        <SelectTrigger className="h-8 text-xs">
+                                        <SelectTrigger className="h-8 text-xs bg-gray-50 text-black">
                                             <SelectValue placeholder="Nuevo" />
                                         </SelectTrigger>
-                                        <SelectContent>
+                                        <SelectContent className="bg-gray-50 text-black">
                                             <SelectItem value="true">Sí</SelectItem>
                                             <SelectItem value="false">No</SelectItem>
                                         </SelectContent>
@@ -229,10 +206,10 @@ export default function ProductsTable({
                                         value={destacadoFilter.value || undefined}
                                         onValueChange={destacadoFilter.setValue}
                                     >
-                                        <SelectTrigger className="h-8 text-xs">
+                                        <SelectTrigger className="h-8 text-xs bg-gray-50 text-black">
                                             <SelectValue placeholder="Destacado" />
                                         </SelectTrigger>
-                                        <SelectContent>
+                                        <SelectContent className="bg-gray-50 text-black">
                                             <SelectItem value="true">Sí</SelectItem>
                                             <SelectItem value="false">No</SelectItem>
                                         </SelectContent>
@@ -241,19 +218,18 @@ export default function ProductsTable({
                             </TableHead>
                         ))}
 
-                        <TableHead className="p-1 text-center w-[80px]">
+                        <TableHead className="p-1 text-xs w-[80px] text-zinc-600 bg-gray-50">
                             Acciones
                         </TableHead>
                     </TableRow>
                 </TableHeader>
 
-                {/* === BODY === */}
                 <TableBody>
                     {noProducts ? (
                         <TableRow>
                             <TableCell
                                 colSpan={10}
-                                className="text-center py-6 text-sm text-muted-foreground"
+                                className="text-center py-6 text-sm text-zinc-600"
                             >
                                 No se encontraron productos.
                             </TableCell>
@@ -262,50 +238,52 @@ export default function ProductsTable({
                         products.products.map((p) => (
                             <TableRow
                                 key={p._id}
-                                className="text-xs border-b hover:bg-muted/30 transition-colors"
+                                className="text-xs border-b hover:bg-gray-50"
                             >
-                                <TableCell className="p-2 w-[230px]">
+                                <TableCell className="p-2 w-[230px] text-black">
                                     <Link
                                         href={`/admin/products/${p._id}`}
-                                        className="flex flex-col md:flex-row  gap-1"
+                                        className="flex flex-col md:flex-row gap-1"
                                     >
                                         {p.imagenes?.[0] ? (
-                                            <Image
-                                                src={p.imagenes[0]}
-                                                alt={p.nombre}
-                                                width={30}
-                                                height={30}
-                                                className="rounded border bg-muted object-cover"
-                                                quality={1}
-                                            />
+                                            <div className="h-8 w-8">
+                                                <Image
+                                                    src={p.imagenes[0]}
+                                                    alt={p.nombre}
+                                                    width={30}
+                                                    height={30}
+                                                    className="rounded border bg-gray-50 object-cover"
+                                                    quality={1}
+                                                />
+                                            </div>
                                         ) : (
-                                            <div className="w-8 h-8 bg-muted rounded border flex items-center justify-center">
-
+                                            <div className="
+                                                h-8 w-8 flex items-center justify-center rounded border bg-gray-100 text-zinc-400 text-[10px]
+                                            ">
+                                                no image
                                             </div>
                                         )}
-                                        <span className="line-clamp-2 max-w-[180px]">
-                                            {p.nombre}
-                                        </span>
+                                        <span className="line-clamp-3 max-w-[180px] text-black">{p.nombre}</span>
                                     </Link>
                                 </TableCell>
 
-                                <TableCell className="p-2 text-center w-[120px]">
+                                <TableCell className="p-2 text-center w-[120px] text-zinc-600">
                                     {p.sku}
                                 </TableCell>
 
-                                <TableCell className="p-2 text-center w-[90px]">
+                                <TableCell className="p-2 text-center w-[90px] text-black">
                                     S/{p.precio?.toFixed(2)}
                                 </TableCell>
 
-                                <TableCell className="p-2 text-center w-[90px]">
+                                <TableCell className="p-2 text-center w-[90px] text-black">
                                     {p.stock}
                                 </TableCell>
 
-                                <TableCell className="p-2 text-center w-[130px]">
+                                <TableCell className="p-2 text-center w-[130px] text-zinc-600">
                                     {p.brand?.nombre || "-"}
                                 </TableCell>
 
-                                <TableCell className="p-2 text-center w-[130px]">
+                                <TableCell className="p-2 text-center w-[130px] text-zinc-600">
                                     -
                                 </TableCell>
 

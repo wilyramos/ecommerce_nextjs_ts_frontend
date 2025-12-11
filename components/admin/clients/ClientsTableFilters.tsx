@@ -36,7 +36,7 @@ export default function ClientsTableFilters() {
     };        
 
     return (
-        <tr className="bg-gray-200 py-4 font-bold ">
+        <tr className="bg-gray-50 py-4 font-bold ">
             <td className="px-2 py-1">
                 <div className="relative">
                     <input

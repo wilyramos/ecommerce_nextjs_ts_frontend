@@ -7,8 +7,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import AdminMenu from "./AdminMenu";
 import Logo from "../ui/Logo";
-
-// Íconos
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
     Package,
     Users,
@@ -18,12 +17,8 @@ import {
     ShoppingCart,
     ChevronDown,
     ChevronRight,
+    LayoutDashboard,
 } from "lucide-react";
-import {
-    TbLayoutSidebarLeftCollapse,
-    TbLayoutSidebarLeftExpand,
-} from "react-icons/tb";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 type Props = { user: User };
 
@@ -34,22 +29,25 @@ type NavLink = {
     children?: { href: string; label: string }[];
 };
 
+// Only neutral palette: gray-50, black, zinc-400, zinc-600
+
 const links: NavLink[] = [
+    { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
     { href: "/admin/products", icon: Package, label: "Productos" },
     { href: "/admin/clients", icon: Users, label: "Clientes" },
-    { href: "/admin/products/category", icon: Tag, label: "Categorías" },
     { href: "/admin/orders", icon: Receipt, label: "Órdenes" },
-    { href: "/admin/reports", icon: BarChart3, label: "Reportes" },
     { href: "/admin/brands", icon: Tag, label: "Marcas" },
+    { href: "/admin/products/category", icon: Tag, label: "Categorías" },
+    { href: "/admin/reports", icon: BarChart3, label: "Reportes" },
     {
         icon: Users,
         label: "Usuarios",
         children: [
-            { href: "/admin/clients", label: "Lista de usuarios" },
+            { href: "/admin/users", label: "Lista de usuarios" },
             { href: "/admin/users/roles", label: "Roles y permisos" },
         ],
     },
-    { href: "/pos", icon: ShoppingCart, label: "POS" },
+    { href: "/pos", icon: ShoppingCart, label: "Punto de Venta" },
 ];
 
 export default function AdminSidebar({ user }: Props) {
@@ -57,109 +55,138 @@ export default function AdminSidebar({ user }: Props) {
     const [expanded, setExpanded] = useState(true);
     const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
 
-    const toggleMenu = (label: string) =>
-        setOpenMenus((prev) => ({ ...prev, [label]: !prev[label] }));
-
-    const linkClasses = (active: boolean) =>
-        cn(
-            "relative flex items-center gap-2 rounded-md px-3 py-2 text-base transition-colors",
-            active
-                ? "text-black bg-gray-200 font-semibold"
-                : "text-gray-600 hover:text-black hover:bg-gray-200"
-        );
+    const toggleMenu = (label: string) => {
+        if (!expanded) {
+            setExpanded(true);
+            setTimeout(() => setOpenMenus((p) => ({ ...p, [label]: true })), 150);
+        } else setOpenMenus((p) => ({ ...p, [label]: !p[label] }));
+    };
 
     return (
-        <aside
-            className={cn(
-        "hidden md:flex relative h-screen flex-col border-r border-gray-200 bg-white py-4 transition-all duration-300 overflow-y-auto",
-                expanded ? "w-48" : "w-14"
-            )}
-        >
-            {/* HEADER */}
-            <div className="flex items-center justify-between px-3 h-16 border-b border-gray-200">
-                {expanded && <Logo />}
-                <button
-                    onClick={() => setExpanded((e) => !e)}
-                    className="p-2 rounded-md hover:bg-gray-200"
-                >
-                    {expanded ? (
-                        <TbLayoutSidebarLeftCollapse className="h-5 w-5 text-gray-600" />
-                    ) : (
-                        <TbLayoutSidebarLeftExpand className="h-5 w-5 text-gray-600" />
-                    )}
-                </button>
-            </div>
-
-            {/* NAV */}
-            <nav className="flex-1 mt-2 px-2 space-y-4 overflow-auto">
-                {links.map(({ href, icon: Icon, label, children }) => {
-                    const active = href && pathname === href;
-
-                    if (children) {
-                        const isOpen = openMenus[label];
-                        return (
-                            <div key={label}>
-                                <button
-                                    onClick={() => toggleMenu(label)}
-                                    className={linkClasses(isOpen)}
-                                >
-                                    <Icon className="h-5 w-5 shrink-0" />
-                                    {expanded && <span className="flex-1">{label}</span>}
-                                    {expanded &&
-                                        (isOpen ? (
-                                            <ChevronDown className="h-4 w-4 text-gray-600" />
-                                        ) : (
-                                            <ChevronRight className="h-4 w-4 text-gray-600" />
-                                        ))}
-                                </button>
-
-                                {isOpen && expanded && (
-                                    <div className="ml-8 mt-1 space-y-1">
-                                        {children.map((sub) => {
-                                            const subActive = pathname === sub.href;
-                                            return (
-                                                <Link
-                                                    key={sub.href}
-                                                    href={sub.href}
-                                                    className={linkClasses(subActive)}
-                                                >
-                                                    {sub.label}
-                                                </Link>
-                                            );
-                                        })}
-                                    </div>
-                                )}
-                            </div>
-                        );
-                    }
-
-                    return (
-                        <Tooltip key={label} delayDuration={300}>
-                            <TooltipTrigger asChild>
-                                <Link href={href!} className={linkClasses(!!active)}>
-                                    {active && (
-                                        <span className="absolute left-0 top-0 h-full w-[3px] bg-black rounded-r" />
-                                    )}
-                                    <Icon className="h-4 w-4 shrink-0" />
-                                    {expanded && <span>{label}</span>}
-                                </Link>
-                            </TooltipTrigger>
-                            {!expanded && <TooltipContent side="right">{label}</TooltipContent>}
-                        </Tooltip>
-                    );
-                })}
-            </nav>
-
-            {/* FOOTER */}
-            <div className="border-t border-gray-200 p-3 flex items-center gap-3 bg-gray-100">
-                {expanded && (
-                    <div className="flex-1 overflow-hidden">
-                        <p className="text-sm truncate uppercase font-bold">{user?.nombre}</p>
-                        <p className="text-xs text-gray-600 truncate">{user?.email}</p>
-                    </div>
+        <TooltipProvider>
+            <aside
+                className={cn(
+                    "hidden md:flex relative h-screen flex-col  border-zinc-600 bg-gray-50 text-black transition-all duration-300 shadow-md",
+                    expanded ? "w-54" : "w-[80px]"
                 )}
-                <AdminMenu user={user} />
-            </div>
-        </aside>
+            >
+                <button
+                    onClick={() => {
+                        setExpanded((c) => !c);
+                        setOpenMenus({});
+                    }}
+                    className="absolute -right-3 top-9 flex h-6 w-6 items-center justify-center rounded-full border border-zinc-400 bg-gray-50 text-zinc-600 hover:bg-gray-50 hover:text-black"
+                >
+                    <ChevronRight className={cn("h-3 w-3 transition-transform", expanded && "rotate-180")} />
+                </button>
+
+                <div className={cn("flex h-20 items-center px-6", expanded ? "justify-start" : "justify-center")}>
+                    <div className={cn(expanded ? "opacity-100" : "opacity-100 w-8")}> <Logo /> </div>
+                </div>
+
+                <nav className="flex-1 space-y-2 overflow-y-auto px-4 py-4 scrollbar-thin scrollbar-thumb-zinc-400">
+                    {links.map((item) => {
+                        const { href, icon: Icon, label, children } = item;
+
+                        if (children) {
+                            const isOpen = openMenus[label];
+                            const isChildActive = children.some((c) => c.href === pathname);
+
+                            return (
+                                <div key={label} className="space-y-1">
+                                    <Tooltip delayDuration={0}>
+                                        <TooltipTrigger asChild>
+                                            <button
+                                                onClick={() => toggleMenu(label)}
+                                                className={cn(
+                                                    "group flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-sm font-medium hover:bg-gray-50",
+                                                    isChildActive ? "text-black bg-gray-50" : "text-zinc-600"
+                                                )}
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <Icon className={cn("h-5 w-5 text-zinc-600 group-hover:text-black", isChildActive && "text-black")} />
+                                                    <span className={cn(expanded ? "opacity-100" : "opacity-0 hidden")}>{label}</span>
+                                                </div>
+                                                {expanded && (
+                                                    <ChevronDown className={cn("h-4 w-4 text-zinc-600 transition-transform", isOpen && "rotate-180")} />
+                                                )}
+                                            </button>
+                                        </TooltipTrigger>
+                                        {!expanded && <TooltipContent side="right" className="bg-black text-gray-50">{label}</TooltipContent>}
+                                    </Tooltip>
+
+                                    <div
+                                        className={cn(
+                                            "grid overflow-hidden transition-all",
+                                            isOpen && expanded ? "grid-rows-[1fr] mt-1" : "grid-rows-[0fr]"
+                                        )}
+                                    >
+                                        <div className="min-h-0 space-y-1 pl-10 pr-2">
+                                            <div className="relative border-l border-zinc-400 pl-3 space-y-1">
+                                                {children.map((sub) => {
+                                                    const isActive = pathname === sub.href;
+                                                    return (
+                                                        <Link
+                                                            key={sub.href}
+                                                            href={sub.href}
+                                                            className={cn(
+                                                                "block rounded-lg px-3 py-2 text-sm",
+                                                                isActive ? "bg-gray-50 text-black font-semibold" : "text-zinc-600 hover:text-black hover:bg-gray-50"
+                                                            )}
+                                                        >
+                                                            {sub.label}
+                                                        </Link>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        }
+
+                        const isActive = href && pathname === href;
+
+                        return (
+                            <Tooltip key={label} delayDuration={0}>
+                                <TooltipTrigger asChild>
+                                    <Link
+                                        href={href!}
+                                        className={cn(
+                                            "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium",
+                                            isActive ? "bg-black text-gray-50" : "text-zinc-600 hover:text-black hover:bg-gray-50"
+                                        )}
+                                    >
+                                        <Icon className={cn("h-5 w-5", isActive ? "text-gray-50" : "text-zinc-600 group-hover:text-black")} />
+                                        <span className={cn(expanded ? "opacity-100" : "opacity-0 hidden")}>{label}</span>
+                                    </Link>
+                                </TooltipTrigger>
+                                {!expanded && <TooltipContent side="right" className="bg-black text-gray-50">{label}</TooltipContent>}
+                            </Tooltip>
+                        );
+                    })}
+                </nav>
+
+                <div className="border-zinc-400 p-4 bg-gray-50">
+                    <div className={cn("flex items-center gap-3 rounded-xl bg-gray-50 p-2", expanded ? "justify-between" : "justify-center")}>
+                        {expanded ? (
+                            <div className="flex items-center gap-3 overflow-hidden">
+                                <div className="h-8 w-8 rounded-full bg-zinc-400 flex items-center justify-center text-xs font-bold text-black">
+                                    {user?.nombre?.charAt(0).toUpperCase()}
+                                </div>
+                                <div className="flex flex-col truncate">
+                                    <span className="text-xs font-bold text-black truncate">{user?.nombre}</span>
+                                    <span className="text-[10px] text-zinc-600 truncate">{user?.email}</span>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="h-8 w-8 rounded-full bg-zinc-400 flex items-center justify-center text-xs font-bold text-black">{user?.nombre?.charAt(0).toUpperCase()}</div>
+                        )}
+
+                        {expanded && <AdminMenu user={user} />}
+                    </div>
+                </div>
+            </aside>
+        </TooltipProvider>
     );
 }

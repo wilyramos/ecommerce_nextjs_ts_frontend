@@ -1,3 +1,5 @@
+//File: frontend/app/admin/products/category/page.tsx
+
 import Link from "next/link";
 import { getCategories } from "@/src/services/categorys";
 import Pagination from "@/components/ui/Pagination";

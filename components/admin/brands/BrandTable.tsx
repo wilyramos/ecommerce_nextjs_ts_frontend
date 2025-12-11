@@ -7,54 +7,68 @@ import { Button } from "@/components/ui/button";
 import BrandDialog from "./BrandDialog";
 import Image from "next/image";
 
-export default function BrandTable({
-    brands,
-}: {
-    brands: Brand[];
-}) {
+export default function BrandTable({ brands }: { brands: Brand[] }) {
     return (
-        <Table>
-            <TableHeader>
-                <TableRow>
-                    <TableHead>Logo</TableHead>
-                    <TableHead>Nombre</TableHead>
-                    <TableHead>Slug</TableHead>
-                    <TableHead>Estado</TableHead>
-                    <TableHead>Acciones</TableHead>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                {brands.map((b) => (
-                    <TableRow key={b._id}>
-                        <TableCell>
-                            {b.logo ? (
-                               <Image
-                                   src={b.logo}
-                                   alt={b.nombre}
-                                   width={100}
-                                   height={100}
-                                   className="h-10 w-10 object-contain"
-                               />
-                            ) : (
-                                <span className="text-gray-400">—</span>
-                            )}
-                        </TableCell>
-                        <TableCell>{b.nombre}</TableCell>
-                        <TableCell>{b.slug}</TableCell>
-                        <TableCell>
-                            <Badge variant={b.isActive ? "default" : "destructive"}>
-                                {b.isActive ? "Activo" : "Inactivo"}
-                            </Badge>
-                        </TableCell>
-                        <TableCell>
-                            <BrandDialog
-                                brand={b}
-                                trigger={<Button size="sm" variant="outline">Editar</Button>}
-                            />
-                        </TableCell>
+        <div className="w-full overflow-x-auto pb-2">
+            <Table className="min-w-full table-auto border-separate border-spacing-0">
+                <TableHeader>
+                    <TableRow>
+                        <TableHead className="p-1 text-center w-[80px] text-xs font-medium">Logo</TableHead>
+                        <TableHead className="p-1 text-center w-[180px] text-xs font-medium">Nombre</TableHead>
+                        <TableHead className="p-1 text-center w-[180px] text-xs font-medium">Slug</TableHead>
+                        <TableHead className="p-1 text-center w-[90px] text-xs font-medium">Estado</TableHead>
+                        <TableHead className="p-1 text-center w-[90px] text-xs font-medium">Acciones</TableHead>
                     </TableRow>
-                ))}
-            </TableBody>
-        </Table>
+                </TableHeader>
+
+                <TableBody>
+                    {brands.map((b) => (
+                        <TableRow
+                            key={b._id}
+                            className="text-xs border-b hover:bg-muted/30 transition-colors"
+                        >
+                            <TableCell className="p-2 text-center">
+                                {b.logo ? (
+                                    <Image
+                                        src={b.logo}
+                                        alt={b.nombre}
+                                        width={40}
+                                        height={40}
+                                        className="h-8 w-8 object-contain rounded bg-muted border"
+                                    />
+                                ) : (
+                                    <span className="text-muted-foreground">—</span>
+                                )}
+                            </TableCell>
+
+                            <TableCell className="p-2 text-center">
+                                {b.nombre}
+                            </TableCell>
+
+                            <TableCell className="p-2 text-center text-muted-foreground">
+                                {b.slug}
+                            </TableCell>
+
+                            <TableCell className="p-2 text-center">
+                                <Badge variant={b.isActive ? "default" : "destructive"}>
+                                    {b.isActive ? "Activo" : "Inactivo"}
+                                </Badge>
+                            </TableCell>
+
+                            <TableCell className="p-2 text-center">
+                                <BrandDialog
+                                    brand={b}
+                                    trigger={
+                                        <Button size="sm" variant="outline" className="text-xs">
+                                            Editar
+                                        </Button>
+                                    }
+                                />
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </div>
     );
 }

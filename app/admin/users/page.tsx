@@ -41,28 +41,28 @@ export default async function AdminClientsPage({ searchParams }: { searchParams:
                 actions={<AddClientButton />}
             >
 
-            <div className="mt-4">
-                <Suspense fallback={<SpinnerLoading />}>
+                <div className="mt-4">
+                    <Suspense fallback={<SpinnerLoading />}>
 
-                    {clients && clients.users ? (
+                        {clients && clients.users ? (
 
-                        <>
-                            <ClientsTable clients={clients} />
-                            <Pagination
-                                currentPage={currentPage}
-                                totalPages={Math.ceil(clients.totalUsers / itemsPerPage)}
-                                limit={itemsPerPage}
-                                pathname="/admin/clients"
-                            />
-                        </>
+                            <>
+                                <ClientsTable clients={clients} />
+                                <Pagination
+                                    currentPage={currentPage}
+                                    totalPages={Math.ceil(clients.totalUsers / itemsPerPage)}
+                                    limit={itemsPerPage}
+                                    pathname="/admin/clients"
+                                />
+                            </>
 
-                    ) : (
-                        <div className="text-center py-12">
-                            <p className="text-gray-500 text-sm">No se encontraron clientes.</p>
-                        </div>
-                    )}
-                </Suspense>
-            </div>
+                        ) : (
+                            <div className="text-center py-12">
+                                <p className="text-gray-500 text-sm">No se encontraron clientes.</p>
+                            </div>
+                        )}
+                    </Suspense>
+                </div>
             </AdminPageWrapper>
         </main>
     )

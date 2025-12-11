@@ -2,8 +2,9 @@ import { getOrders } from "@/src/services/orders";
 import OrdersTable from "@/components/admin/orders/OrdersTable";
 import Pagination from "@/components/ui/Pagination";
 import AddOrderButton from "@/components/admin/orders/AddOrderButton";
-import { HeadingH1 } from "@/components/ui/Heading";
 import OrdersTableFilters from "@/components/admin/orders/OrdersTableFilters";
+import AdminPageWrapper from "@/components/admin/AdminPageWrapper";
+
 
 type PageOrdersProps = {
     searchParams: Promise<{
@@ -37,42 +38,47 @@ export default async function pageOrders({ searchParams }: PageOrdersProps) {
     const orders = data?.orders;
 
     return (
-        <div className="">
-            <div className="flex justify-between ">
-                <HeadingH1>Pedidos</HeadingH1>
-                <div className="flex gap-2">
-                    <AddOrderButton />
-                </div>
+        <AdminPageWrapper
+            title="Pedidos"
+            showBackButton={false}
+            actions={
+                <AddOrderButton />
+            }
+        >
+
+            <div className="">
+
+
+                <OrdersTableFilters />
+
+
+                {!orders ? (
+                    <div className="flex flex-col ">
+                        <h2 className="text-lg sm:text-xl text-gray-600 py-10">
+                            No hay pedidos disponibles.
+                        </h2>
+                    </div>
+                ) : orders.length === 0 ? (
+                    <div className="flex justify-center">
+                        <h2 className="text-base sm:text-lg text-gray-500">
+                            No se encontraron pedidos en esta página.
+                        </h2>
+                    </div>
+                ) : (
+                    <>
+
+                        {/* <OrdersTableFilters /> */}
+                        <OrdersTable orders={orders} />
+                        <Pagination
+                            currentPage={page}
+                            totalPages={Math.ceil(data.totalOrders / limit)}
+                            limit={limit}
+                            pathname="/admin/orders"
+                        />
+                    </>
+                )}
             </div>
+        </AdminPageWrapper>
 
-            <OrdersTableFilters />
-
-
-            {!orders ? (
-                <div className="flex flex-col ">
-                    <h2 className="text-lg sm:text-xl text-gray-600 py-10">
-                        No hay pedidos disponibles.
-                    </h2>
-                </div>
-            ) : orders.length === 0 ? (
-                <div className="flex justify-center">
-                    <h2 className="text-base sm:text-lg text-gray-500">
-                        No se encontraron pedidos en esta página.
-                    </h2>
-                </div>
-            ) : (
-                <>
-
-                    {/* <OrdersTableFilters /> */}
-                    <OrdersTable orders={orders} />
-                    <Pagination
-                        currentPage={page}
-                        totalPages={Math.ceil(data.totalOrders / limit)}
-                        limit={limit}
-                        pathname="/admin/orders"
-                    />
-                </>
-            )}
-        </div>
     );
 }
