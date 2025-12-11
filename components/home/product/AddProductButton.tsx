@@ -10,15 +10,24 @@ export default function AddProductButton({ product }: { product: ProductWithCate
     return (
         <button
             type="button"
-            className="flex items-center gap-1 px-3 py-2 bg-rose-600 text-white rounded-full hover:bg-rose-700 transition-colors cursor-pointer"
+            className="
+        flex items-center justify-center
+        w-7 h-7 md:w-10 md:h-10
+        rounded-full
+        bg-blue-600
+        text-white
+        shadow-sm
+        hover:bg-blue-700
+        active:bg-blue-800
+        transition
+    "
             onClick={() => {
                 addToCart(product);
                 toast.success("Producto añadido al carrito");
             }}
         >
-            <FaPlus className="w-3 h-3 md:w-6 md:h-6" />
-
-            {/* <FaShoppingCart className="w-4 h-4 md:w-5 md:h-5" /> */}
+            <FaPlus className="w-3 h-3 md:w-4 md:h-4" />
         </button>
+
     );
 }

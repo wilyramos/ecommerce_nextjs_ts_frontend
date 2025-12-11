@@ -13,49 +13,56 @@ export default function VentaCart() {
     const dni = useCartStore((s) => s.dni);
     const total = cart.reduce((acc, item) => acc + item.subtotal, 0);
 
-
     if (saleCompleted && saleId) {
-        return (
-            <VentaCompletada />
-        );
+        return <VentaCompletada />;
     }
-
 
     if (cart.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center py-12 text-center text-gray-500">
-                <FaShoppingCart size={56} className="mb-4" />
+            <div className="flex flex-col items-center justify-center text-center text-gray-400 h-full">
+                <FaShoppingCart size={48} className="mb-3 text-gray-300" />
                 <p className="text-sm">Tu carrito está vacío.</p>
             </div>
         );
     }
 
     return (
-        <div className="space-y-4 ">
-            {/* Lista de productos */}
-            <CartItemsList />
+        <div className="min-h-screen flex flex-col">
 
-            {/* DNI del cliente :TODO:: implementar lógica para manejar el DNI */}
-            <div className="space-y-1 rounded-full">
-                <CustomerDniInput />
-                {dni && (
-                    <p className="text-xs text-gray-500">DNI del cliente: <span className="font-semibold">{dni}</span></p>
-                )}
+            {/* LISTA DE PRODUCTOS → 2/3 altura */}
+            <div className="h-[66vh] overflow-y-auto">
+                <CartItemsList />
             </div>
 
-            <div className="flex items-center gap-2">
-                <ProofPayment
-                />
-            </div>
+            {/* FOOTER FIJO → 1/3 altura */}
+            <div className="h-[34vh] bg-white border-t border-gray-200 flex flex-col justify-between ">
 
-            {/* Total y botón */}
-            <div className="flex flex-col items-end space-y-2">
+                {/* DNI */}
                 <div>
-                    <p className="text-sm text-gray-500">Total:</p>
-                    <p className="text-2xl font-bold text-gray-900">S/. {total.toFixed(2)}</p>
+                    <CustomerDniInput />
+                    {dni && (
+                        <p className="text-xs text-gray-600 mt-1">
+                            DNI: <span className="font-semibold">{dni}</span>
+                        </p>
+                    )}
                 </div>
-                <SubmitSaleButton
-                />
+
+                {/* Método de pago */}
+                <div className="flex items-center gap-2 bg-white p-3 rounded-lg border border-gray-200">
+                    <ProofPayment />
+                </div>
+
+                {/* Total y botón */}
+                <div className="flex items-center justify-between bg-white rounded-lg p-4 border border-gray-200">
+                    <div>
+                        <p className="text-sm text-gray-600">Total</p>
+                        <p className="text-2xl font-semibold text-gray-800">
+                            S/. {total.toFixed(2)}
+                        </p>
+                    </div>
+
+                    <SubmitSaleButton />
+                </div>
             </div>
         </div>
     );

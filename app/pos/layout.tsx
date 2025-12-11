@@ -11,7 +11,7 @@ export default async function POSlayout({ children }: { children: React.ReactNod
 
     return (
         <>
-            <div className="md:hidden px-2 border-b flex items-center justify-between bg-white">
+            <div className="md:hidden px-2 border-b flex items-center justify-between bg-white sticky top-0 z-40 ">
                 <div className="flex items-center">
                     <MobileSidebarPOS user={user} />
                 </div>
@@ -23,7 +23,6 @@ export default async function POSlayout({ children }: { children: React.ReactNod
                 <div className="w-6" />
             </div>
 
-
             {/* DESKTOP LAYOUT */}
             <div className="hidden md:grid h-screen grid-cols-[auto_1fr] overflow-hidden">
                 <SidebarPOS user={user} />
@@ -31,7 +30,9 @@ export default async function POSlayout({ children }: { children: React.ReactNod
             </div>
 
             {/* MOBILE CONTENT */}
-            <div className="md:hidden p-4">{children}</div>
+            <div className="md:hidden h-[calc(100vh-56px)] overflow-hidden p-4">
+                {children}
+            </div>
 
             <ToastNotification />
         </>

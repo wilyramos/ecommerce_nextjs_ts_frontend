@@ -1,3 +1,5 @@
+//File: 
+
 "use client";
 
 import { useCartStore } from "@/src/store/cartStore";
@@ -24,8 +26,11 @@ export default function SubmitSaleButton() {
     const sale: CreateSaleInput = {
         items: cart.map((item) => ({
             product: item._id,
+            // AQUÍ LA CORRECCIÓN CLAVE:
+            // Si el item tiene variante, enviamos su ID como 'variantId'
+            variantId: item.variant ? item.variant._id : undefined,
             quantity: item.cantidad,
-            price: item.precio,
+            price: item.precio, // El store ya tiene el precio correcto (variante o base)
         })),
         totalPrice: total,
         totalDiscountAmount: 0,
@@ -54,7 +59,7 @@ export default function SubmitSaleButton() {
             clearComprobante();
             setSaleCompleted(true);
         }
-    }, [state, router, clearCart, clearDni, clearComprobante, setSaleCompleted, setSaleIdStore, ]);
+    }, [state, router, clearCart, clearDni, clearComprobante, setSaleCompleted, setSaleIdStore,]);
 
     return (
         <div className="space-y-4">

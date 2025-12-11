@@ -1,50 +1,102 @@
+"use client"; // Necesario para usar estado
+
 import { ProductWithCategoryResponse } from "@/src/schemas";
 import Image from "next/image";
-import AddProductButton from "../home/product/AddProductButton";
+import { useState } from "react";
+import { useCartStore } from "@/src/store/cartStore";
+import { toast } from "sonner";
+import { FaPlus } from "react-icons/fa";
+import VariantSelectorModal from "./VariantSelectorModal";
 
 export default function ProductCardPOS({ product }: { product: ProductWithCategoryResponse }) {
-    const { nombre, precio, imagenes, stock, barcode } = product;
+    const { nombre, precio, imagenes, stock, barcode, variants } = product;
+    const addToCart = useCartStore((s) => s.addToCart);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const agotado = !stock || stock <= 0;
+    // Lógica para determinar stock total visual (suma de variantes o stock base)
+    const totalStock = variants && variants.length > 0 
+        ? variants.reduce((acc, v) => acc + v.stock, 0) 
+        : stock;
+
+    const agotado = !totalStock || totalStock <= 0;
+    const hasVariants = variants && variants.length > 0;
+
+    const stockColor = agotado ? "text-red-600" : totalStock <= 5 ? "text-amber-600" : "text-green-600";
+
+    const handleAddClick = () => {
+        if (hasVariants) {
+            setIsModalOpen(true);
+        } else {
+            addToCart(product);
+            toast.success(`Agregado: ${nombre}`);
+        }
+    };
 
     return (
-        <div className="flex items-center gap-3 px-3 py-2 border-2xl my-2 hover:bg-gray-100 transition-colors">
-            {/* Imagen */}
-            <div className="w-12 h-12 flex-shrink-0 bg-gray-100 rounded overflow-hidden">
-                {imagenes?.[0] ? (
-                    <Image
-                        src={imagenes[0]}
-                        alt={nombre}
-                        width={48}
-                        height={48}
-                        loading="lazy"
-                        className="w-full h-full object-cover"
-                    />
-                ) : (
-                    <div className="flex items-center justify-center h-full text-[10px] text-gray-400">
-                        Sin imagen
-                    </div>
+        <>
+            <div 
+                onClick={!agotado ? handleAddClick : undefined}
+                className={`
+                    bg-white rounded-xl border border-slate-200 shadow-sm
+                    p-2 sm:p-3 flex flex-col gap-2 relative
+                    transition cursor-pointer group
+                    ${!agotado ? 'hover:border-blue-400 hover:shadow-md' : 'opacity-70 cursor-not-allowed'}
+                `}
+            >
+                {/* Badge de Variantes */}
+                {hasVariants && (
+                    <span className="absolute top-2 left-2 z-10 bg-slate-800 text-white text-[10px] px-1.5 py-0.5 rounded">
+                        Variantes
+                    </span>
                 )}
-            </div>
 
-            {/* Información */}
-            <div className="flex flex-col flex-1 overflow-hidden">
-                <span className="text-sm truncate">{nombre}</span>
-                <div className="text-xs text-gray-500 mt-0.5 flex gap-2">
-                    <span>S/ {precio?.toFixed(2)}</span>
-                    <span>Cód: {barcode}</span>
-                    {stock !== undefined && !agotado && <span>{stock} uds</span>}
+                <div className="relative w-full h-20 sm:h-20 bg-slate-100 rounded-lg overflow-hidden flex items-center justify-center">
+                    
+                    {/* Botón Flotante "Add" (Visual) */}
+                    {!agotado && (
+                        <div className="absolute top-1 right-1 bg-white/90 p-1.5 rounded-full shadow-sm text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                           <FaPlus size={12}/>
+                        </div>
+                    )}
+
+                    {imagenes?.[0] ? (
+                        <Image
+                            src={imagenes[0]}
+                            alt={nombre}
+                            width={80}
+                            height={80}
+                            className="w-20 h-20 object-cover"
+                            loading="lazy"
+                            quality={50}
+                        />
+                    ) : (
+                        <span className="text-[10px] sm:text-xs text-slate-400">Sin imagen</span>
+                    )}
+                </div>
+
+                <span className="font-medium text-slate-900 text-xs sm:text-sm line-clamp-2 min-h-[32px] leading-tight">
+                    {nombre}
+                </span>
+
+                <div className="text-[10px] sm:text-xs text-slate-500 space-y-0.5 mt-auto">
+                    <div>Cód: {barcode || '---'}</div>
+                    <div className={stockColor}>
+                        {agotado ? "Agotado" : `${totalStock} uds`}
+                    </div>
+                    <div className="text-blue-600 font-semibold text-xs sm:text-sm">
+                        {hasVariants ? "Desde " : ""} S/ {precio.toFixed(2)}
+                    </div>
                 </div>
             </div>
 
-            {/* Acción */}
-            <div>
-                {agotado ? (
-                    <span className="text-xs text-gray-400">Agotado</span>
-                ) : (
-                    <AddProductButton product={product} />
-                )}
-            </div>
-        </div>
+            {/* Modal de Selección (Renderizado Condicional) */}
+            {hasVariants && (
+                <VariantSelectorModal 
+                    product={product} 
+                    isOpen={isModalOpen} 
+                    onClose={() => setIsModalOpen(false)} 
+                />
+            )}
+        </>
     );
 }
