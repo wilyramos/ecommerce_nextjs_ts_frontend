@@ -1,27 +1,39 @@
 import { verifySession } from '@/src/auth/dal';
 import AdminSidebar from "@/components/admin/AdminSidebar";
+import MobileSidebar from '@/components/admin/MobileSidebar';
 import ToastNotification from "@/components/ui/ToastNotification";
 import { redirect } from 'next/navigation';
-
+import Logo from '@/components/ui/Logo';
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
     const { user } = await verifySession();
-    if (user.rol !== 'administrador') {
-        redirect("/profile");
-    }
+    if (user.rol !== 'administrador') redirect("/profile");
 
     return (
         <>
-            <div className="flex min-h-screen">
-                <aside className="block">
-                    <AdminSidebar user={user} />
-                </aside>
+            {/* MOBILE TOPBAR */}
+            <div className="md:hidden px-2 border-b flex items-center justify-between bg-white">
+                <div className="flex items-center">
+                    <MobileSidebar user={user} />
+                </div>
 
-                {/* Contenido principal */}
-                <main className="flex-1 overflow-y-auto p-1 md:p-4 ml-14 md:ml-44">
-                    {children}
-                </main>
+                <div className="flex-1 flex justify-center">
+                    <Logo />
+                </div>
+
+                <div className="w-6" />
             </div>
+
+
+            {/* DESKTOP LAYOUT */}
+            <div className="hidden md:grid h-screen grid-cols-[auto_1fr] overflow-hidden">
+                <AdminSidebar user={user} />
+                <main className="overflow-auto p-4">{children}</main>
+            </div>
+
+            {/* MOBILE CONTENT */}
+            <div className="md:hidden p-4">{children}</div>
+
             <ToastNotification />
         </>
     );

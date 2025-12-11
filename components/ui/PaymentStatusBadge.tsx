@@ -44,7 +44,7 @@ export default function PaymentStatusBadge({ status }: Props) {
             )}
         >
             {icon}
-            <span className="capitalize">{status.toLowerCase()}</span>
+            <span className="hidden md:block capitalize">{status.toLowerCase()}</span>
         </span>
     );
 }

@@ -7,7 +7,10 @@ import { Check, X } from "lucide-react";
 
 import ProductMenuAction from "./ProductMenuActionts";
 import { useColumnFilter } from "@/hooks/useColumnFilter";
+
 import type { ProductsAPIResponse } from "@/src/schemas";
+import type { CategoryListResponse } from "@/src/schemas";
+import { Brand } from "@/src/services/brands";
 
 import {
     Table,
@@ -17,6 +20,7 @@ import {
     TableHead,
     TableCell,
 } from "@/components/ui/table";
+
 import { Input } from "@/components/ui/input";
 import {
     Select,
@@ -25,9 +29,6 @@ import {
     SelectContent,
     SelectItem,
 } from "@/components/ui/select";
-import { Brand } from "@/src/services/brands";
-import type { CategoryListResponse } from "@/src/schemas";
-
 
 export default function ProductsTable({
     products,
@@ -36,7 +37,7 @@ export default function ProductsTable({
 }: {
     products: ProductsAPIResponse | null;
     categories: CategoryListResponse;
-    brands: Brand[]; // Replace BrandType with the actual type
+    brands: Brand[];
 }) {
     const router = useRouter();
 
@@ -69,236 +70,275 @@ export default function ProductsTable({
     };
 
     return (
-        <div className="w-full overflow-x-auto">
-            <div className="flex justify-start my-2">
+        <div className="w-full overflow-x-auto pb-2">
+            <div className="flex justify-end my-1 pr-1">
                 <button
                     onClick={clearFilters}
-                    className="ml-2 text-xs hover:underline cursor-pointer"
+                    className="text-[11px] font-semibold hover:underline cursor-pointer"
                 >
                     Limpiar filtros
                 </button>
             </div>
 
-            <Table>
+            <Table className="min-w-full table-auto border-separate border-spacing-0">
                 <TableHeader>
-                    <TableRow className="text-xs">
-                        {/* Nombre */}
-                        <TableHead className="min-w-[180px] p-0">
-                            <Input
-                                placeholder="Nombre"
-                                value={nameFilter.value}
-                                onChange={(e) => nameFilter.setValue(e.target.value)}
-                                className="h-8 text-xs rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 w-full"
-                            />
-                        </TableHead>
+                    <TableRow className="">
 
-                        {/* SKU */}
-                        <TableHead className="hidden md:table-cell min-w-[120px] p-0">
-                            <Input
-                                placeholder="SKU"
-                                value={skuFilter.value}
-                                onChange={(e) => skuFilter.setValue(e.target.value)}
-                                className="h-8 text-xs rounded-none border border-border border-r-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-                            />
-                        </TableHead>
-
-                        {/* Precio */}
-                        <TableHead className="text-center min-w-[100px] p-0">
-                            <Select
-                                value={priceSort.value || undefined}
-                                onValueChange={priceSort.setValue}
+                        {/* === HEADER — FILTROS === */}
+                        {[
+                            nameFilter,
+                            skuFilter,
+                            priceSort,
+                            stockSort,
+                            brandFilter,
+                            categoryFilter,
+                            activeFilter,
+                            nuevoFilter,
+                            destacadoFilter,
+                        ].map((filter, i) => (
+                            <TableHead
+                                key={i}
+                                className={`
+                                    p-1 text-center
+                                    ${
+                                        i === 0 ? "w-[230px]" :
+                                        i === 1 ? "w-[120px]" :
+                                        i === 2 ? "w-[90px]"  :
+                                        i === 3 ? "w-[90px]"  :
+                                        i === 4 ? "w-[130px]" :
+                                        i === 5 ? "w-[130px]" :
+                                        i === 6 ? "w-[60px]"  :
+                                        i === 7 ? "w-[60px]"  :
+                                        i === 8 ? "w-[60px]"  :
+                                        ""
+                                    }
+                                `}
                             >
-                                <SelectTrigger className=" text-xs  focus-visible:ring-0 focus-visible:ring-offset-0 w-full h-8 rounded-none">
-                                    <SelectValue placeholder="Precio" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="asc">Asc</SelectItem>
-                                    <SelectItem value="desc">Desc</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </TableHead>
+                                {i === 0 && (
+                                    <Input
+                                        placeholder="Nombre"
+                                        value={nameFilter.value}
+                                        onChange={(e) =>
+                                            nameFilter.setValue(e.target.value)
+                                        }
+                                        className="h-8 text-xs"
+                                    />
+                                )}
+                                {i === 1 && (
+                                    <Input
+                                        placeholder="SKU"
+                                        value={skuFilter.value}
+                                        onChange={(e) =>
+                                            skuFilter.setValue(e.target.value)
+                                        }
+                                        className="h-8 text-xs"
+                                    />
+                                )}
+                                {i === 2 && (
+                                    <Select
+                                        value={priceSort.value || undefined}
+                                        onValueChange={priceSort.setValue}
+                                    >
+                                        <SelectTrigger className="h-8 text-xs">
+                                            <SelectValue placeholder="Precio" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="asc">Asc</SelectItem>
+                                            <SelectItem value="desc">Desc</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                                {i === 3 && (
+                                    <Select
+                                        value={stockSort.value || undefined}
+                                        onValueChange={stockSort.setValue}
+                                    >
+                                        <SelectTrigger className="h-8 text-xs">
+                                            <SelectValue placeholder="Stock" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="asc">Asc</SelectItem>
+                                            <SelectItem value="desc">Desc</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                                {i === 4 && (
+                                    <Select
+                                        value={brandFilter.value || undefined}
+                                        onValueChange={brandFilter.setValue}
+                                    >
+                                        <SelectTrigger className="h-8 text-xs">
+                                            <SelectValue placeholder="Marca" />
+                                        </SelectTrigger>
+                                        <SelectContent className="max-h-60 overflow-auto">
+                                            {brands.map((b) => (
+                                                <SelectItem key={b._id} value={b._id}>
+                                                    {b.nombre}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                                {i === 5 && (
+                                    <Select
+                                        value={categoryFilter.value || undefined}
+                                        onValueChange={categoryFilter.setValue}
+                                    >
+                                        <SelectTrigger className="h-8 text-xs">
+                                            <SelectValue placeholder="Categoría" />
+                                        </SelectTrigger>
+                                        <SelectContent className="max-h-60 overflow-auto">
+                                            {categories.map((c) => (
+                                                <SelectItem key={c._id} value={c._id}>
+                                                    {c.nombre}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                                {i === 6 && (
+                                    <Select
+                                        value={activeFilter.value || undefined}
+                                        onValueChange={activeFilter.setValue}
+                                    >
+                                        <SelectTrigger className="h-8 text-xs">
+                                            <SelectValue placeholder="Estado" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="true">Activos</SelectItem>
+                                            <SelectItem value="false">Inactivos</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                                {i === 7 && (
+                                    <Select
+                                        value={nuevoFilter.value || undefined}
+                                        onValueChange={nuevoFilter.setValue}
+                                    >
+                                        <SelectTrigger className="h-8 text-xs">
+                                            <SelectValue placeholder="Nuevo" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="true">Sí</SelectItem>
+                                            <SelectItem value="false">No</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                                {i === 8 && (
+                                    <Select
+                                        value={destacadoFilter.value || undefined}
+                                        onValueChange={destacadoFilter.setValue}
+                                    >
+                                        <SelectTrigger className="h-8 text-xs">
+                                            <SelectValue placeholder="Destacado" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="true">Sí</SelectItem>
+                                            <SelectItem value="false">No</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                            </TableHead>
+                        ))}
 
-                        {/* Stock */}
-                        <TableHead className="text-center min-w-[90px] p-0">
-                            <Select
-                                value={stockSort.value || undefined}
-                                onValueChange={stockSort.setValue}
-                            >
-                                <SelectTrigger className="h-8 text-xs rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 w-full">
-                                    <SelectValue placeholder="Stock" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="asc">Asc</SelectItem>
-                                    <SelectItem value="desc">Desc</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </TableHead>
-
-                        {/* Marca */}
-                        <TableHead className="text-center min-w-[130px] p-0">
-                            <Select
-                                value={brandFilter.value || undefined}
-                                onValueChange={brandFilter.setValue}
-                            >
-                                <SelectTrigger className="h-8 text-xs rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 w-full">
-                                    <SelectValue placeholder="Marca" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {brands.map((brand) => (
-                                        <SelectItem key={brand._id} value={brand._id}>
-                                            {brand.nombre}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </TableHead>
-
-                        <TableHead className="text-center min-w-[130px] p-0">
-                            <Select
-                                value={categoryFilter.value || undefined}
-                                onValueChange={categoryFilter.setValue}
-                            >
-                                <SelectTrigger className="h-8 text-xs rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 w-full">
-                                    <SelectValue placeholder="Categoría" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {categories.map((category) => (
-                                        <SelectItem key={category._id} value={category._id}>
-                                            {category.nombre}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </TableHead>
-
-                        {/* Estado */}
-                        <TableHead className="text-center hidden sm:table-cell min-w-[110px] p-0">
-                            <Select
-                                value={activeFilter.value || undefined}
-                                onValueChange={activeFilter.setValue}
-                            >
-                                <SelectTrigger className="h-8 text-xs rounded-none border border-border border-r-0 focus-visible:ring-0 focus-visible:ring-offset-0 w-full">
-                                    <SelectValue placeholder="Estado" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="true">Activos</SelectItem>
-                                    <SelectItem value="false">Inactivos</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </TableHead>
-
-                        {/* Nuevo */}
-                        <TableHead className="text-center hidden sm:table-cell min-w-[100px] p-0">
-                            <Select
-                                value={nuevoFilter.value || undefined}
-                                onValueChange={nuevoFilter.setValue}
-                            >
-                                <SelectTrigger className="h-8 text-xs rounded-none border border-border border-r-0 focus-visible:ring-0 focus-visible:ring-offset-0">
-                                    <SelectValue placeholder="Nuevo" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="true">Sí</SelectItem>
-                                    <SelectItem value="false">No</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </TableHead>
-
-                        {/* Destacado */}
-                        <TableHead className="text-center hidden md:table-cell min-w-[120px] p-0">
-                            <Select
-                                value={destacadoFilter.value || undefined}
-                                onValueChange={destacadoFilter.setValue}
-                            >
-                                <SelectTrigger className="h-8 text-xs rounded-none border border-border border-r-0 focus-visible:ring-0 focus-visible:ring-offset-0">
-                                    <SelectValue placeholder="Destacado" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="true">Sí</SelectItem>
-                                    <SelectItem value="false">No</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </TableHead>
-
-                        {/* Acciones */}
-                        <TableHead className="text-right text-xs min-w-[80px] border border-border">
+                        <TableHead className="p-1 text-center w-[80px]">
                             Acciones
                         </TableHead>
                     </TableRow>
                 </TableHeader>
 
+                {/* === BODY === */}
                 <TableBody>
                     {noProducts ? (
                         <TableRow>
-                            <TableCell colSpan={9} className="text-center py-6">
+                            <TableCell
+                                colSpan={10}
+                                className="text-center py-6 text-sm text-muted-foreground"
+                            >
                                 No se encontraron productos.
                             </TableCell>
                         </TableRow>
                     ) : (
-                        products.products.map((product) => (
-                            <TableRow key={product._id} className="text-xs">
-                                <TableCell className="whitespace-nowrap">
+                        products.products.map((p) => (
+                            <TableRow
+                                key={p._id}
+                                className="text-xs border-b hover:bg-muted/30 transition-colors"
+                            >
+                                <TableCell className="p-2 w-[230px]">
                                     <Link
-                                        href={`/admin/products/${product._id}`}
-                                        className="flex items-center gap-2"
+                                        href={`/admin/products/${p._id}`}
+                                        className="flex flex-col md:flex-row  gap-1"
                                     >
-                                        {product.imagenes?.[0] ? (
+                                        {p.imagenes?.[0] ? (
                                             <Image
-                                                src={product.imagenes[0]}
-                                                alt={product.nombre}
-                                                width={36}
-                                                height={36}
+                                                src={p.imagenes[0]}
+                                                alt={p.nombre}
+                                                width={30}
+                                                height={30}
                                                 className="rounded border bg-muted object-cover"
+                                                quality={1}
                                             />
                                         ) : (
-                                            <div className="w-9 h-9 bg-muted rounded" />
+                                            <div className="w-8 h-8 bg-muted rounded border flex items-center justify-center">
+
+                                            </div>
                                         )}
-                                        <div className="flex flex-col">
-                                            <span className="truncate md:max-w-[300px]">
-                                                {product.nombre}
-                                            </span>
-                                            <span className="md:hidden text-muted-foreground text-[11px]">
-                                                S/ {product.precio?.toFixed(2)} · Stock: {product.stock}
-                                            </span>
-                                        </div>
+                                        <span className="line-clamp-2 max-w-[180px]">
+                                            {p.nombre}
+                                        </span>
                                     </Link>
                                 </TableCell>
 
-                                <TableCell className="hidden md:table-cell text-muted-foreground">
-                                    {product.sku}
+                                <TableCell className="p-2 text-center w-[120px]">
+                                    {p.sku}
                                 </TableCell>
-                                <TableCell className="hidden md:table-cell">
-                                    S/{product.precio?.toFixed(2)}
-                                </TableCell>
-                                <TableCell>{product.stock}</TableCell>
-                                <TableCell>{product.brand?.nombre || "-"}</TableCell>
-                                <TableCell>{ "-"}</TableCell>
 
-                                <TableCell className="hidden sm:table-cell text-center">
-                                    {product.isActive ? (
+                                <TableCell className="p-2 text-center w-[90px]">
+                                    S/{p.precio?.toFixed(2)}
+                                </TableCell>
+
+                                <TableCell className="p-2 text-center w-[90px]">
+                                    {p.stock}
+                                </TableCell>
+
+                                <TableCell className="p-2 text-center w-[130px]">
+                                    {p.brand?.nombre || "-"}
+                                </TableCell>
+
+                                <TableCell className="p-2 text-center w-[130px]">
+                                    -
+                                </TableCell>
+
+                                {/* Estado */}
+                                <TableCell className="p-2 text-center w-[60px]">
+                                    {p.isActive ? (
                                         <Check className="w-4 h-4 text-green-600" />
                                     ) : (
                                         <X className="w-4 h-4 text-red-600" />
                                     )}
                                 </TableCell>
 
-                                <TableCell className="hidden sm:table-cell text-center">
-                                    {product.esNuevo ? (
+                                {/* Nuevo */}
+                                <TableCell className="p-2 text-center w-[60px]">
+                                    {p.esNuevo ? (
                                         <Check className="w-4 h-4 text-green-600" />
                                     ) : (
                                         <X className="w-4 h-4 text-red-600" />
                                     )}
                                 </TableCell>
 
-                                <TableCell className="hidden md:table-cell text-center">
-                                    {product.esDestacado ? (
+                                {/* Destacado */}
+                                <TableCell className="p-2 text-center w-[60px]">
+                                    {p.esDestacado ? (
                                         <Check className="w-4 h-4 text-green-600" />
                                     ) : (
                                         <X className="w-4 h-4 text-red-600" />
                                     )}
                                 </TableCell>
 
-                                <TableCell className="text-right">
-                                    <ProductMenuAction productId={product._id} />
+                                {/* Acciones */}
+                                <TableCell className="p-2 text-center w-[80px]">
+                                    <ProductMenuAction productId={p._id} />
                                 </TableCell>
                             </TableRow>
                         ))

@@ -37,8 +37,8 @@ export default async function pageOrders({ searchParams }: PageOrdersProps) {
     const orders = data?.orders;
 
     return (
-        <div className="max-w-7xl mx-auto">
-            <div className="flex justify-between mb-6">
+        <div className="">
+            <div className="flex justify-between ">
                 <HeadingH1>Pedidos</HeadingH1>
                 <div className="flex gap-2">
                     <AddOrderButton />

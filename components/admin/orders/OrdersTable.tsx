@@ -1,16 +1,21 @@
-'use client';
+"use client";
 
-import type { TOrder } from '@/src/schemas';
-import { formatDate } from '@/lib/utils';
-import Link from 'next/link';
+import type { TOrder } from "@/src/schemas";
+import { formatDate } from "@/lib/utils";
+import Link from "next/link";
 import OrderStatusBadge from "@/components/ui/OrderStatusBadge";
-// import PaymentStatusBadge from "@/components/ui/PaymentStatusBadge";
-
+import PaymentStatusBadge from "@/components/ui/PaymentStatusBadge";
 
 import {
-    FaEye
-} from 'react-icons/fa';
-import PaymentStatusBadge from '@/components/ui/PaymentStatusBadge';
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
+
+import { FaEye } from "react-icons/fa";
 
 interface OrdersTableProps {
     orders: TOrder[];
@@ -19,80 +24,76 @@ interface OrdersTableProps {
 export default function OrdersTable({ orders }: OrdersTableProps) {
     if (!orders || orders.length === 0) {
         return (
-            <div className="flex justify-center items-center">
-                <h2 className="text-lg font-medium text-gray-500">No hay pedidos disponibles.</h2>
+            <div className="flex justify-center items-center py-10">
+                <h2 className="text-lg font-medium text-gray-500">
+                    No hay pedidos disponibles.
+                </h2>
             </div>
         );
     }
 
     return (
-        <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 text-sm">
-                <thead className="bg-white">
-                    <tr className="text-gray-50 bg-blue-800">
-                        <th className="px-6 py-1 text-left font-light">Pedido</th>
-                        <th className="px-6 py-1 hidden md:table-cell font-light">Fecha</th>
-                        <th className="px-6 py-1 hidden md:table-cell font-light">Pago</th>
-                        <th className="px-6 py-1 hidden lg:table-cell font-light">Envío</th>
-                        <th className="px-6 py-1 font-light">Estado</th>
-                        <th className="px-6 py-1 text-center font-light">Opciones</th>
-                    </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100 text-gray-800">
+        <div className="w-full">
+            <Table className="w-full table-fixed">
+                <TableHeader>
+                    <TableRow className="text-gray-100 bg-blue-100">
+                        <TableHead className="px-4 py-2 w-[90px] font-medium text-xs sm:text-sm">Pedido</TableHead>
+                        <TableHead className="px-4 py-2 w-[110px] font-medium text-xs sm:text-sm">Fecha</TableHead>
+                        <TableHead className="px-4 py-2 w-[120px] font-medium text-xs sm:text-sm">Pago</TableHead>
+                        <TableHead className="px-4 py-2  w-[200px] font-medium text-xs sm:text-sm">Envío</TableHead>
+                        <TableHead className="px-4 py-2 w-[90px] font-medium text-xs sm:text-sm">Estado</TableHead>
+                        <TableHead className="px-4 py-2 text-center w-[70px] font-medium text-xs sm:text-sm">Opciones</TableHead>
+                    </TableRow>
+                </TableHeader>
+
+                <TableBody>
                     {orders.map((order) => (
-                        <tr
+                        <TableRow
                             key={order._id}
-                            className="hover:bg-gray-200 transition-colors border-b border-gray-200"
+                            className="hover:bg-gray-100 border-b border-gray-200 transition-colors text-[11px] sm:text-sm"
                         >
-                            <td className="px-6 py-4 max-w-[160px] truncate">
+                            <TableCell className="px-4 py-3 truncate font-semibold">
                                 <Link
                                     href={`/admin/orders/${order._id}`}
-                                    className="text-black hover:underline font-semibold"
+                                    className="text-gray-900 hover:underline"
                                 >
                                     {order.orderNumber || order._id.slice(0, 8)}
                                 </Link>
-                            </td>
+                            </TableCell>
 
-                            <td className="px-6 py-4 hidden md:table-cell text-gray-500">
+                            <TableCell className="px-4 py-3 text-gray-500 truncate">
                                 {formatDate(order.createdAt)}
-                            </td>
+                            </TableCell>
 
-                            <td className=" text-xs  md:table-cell text-gray-800 ">
-                                <div className='flex justify-between items-center gap-2'>
-                                    <div>
-                                        S/. {order.totalPrice.toFixed(2)}
-                                    </div>
-                                    <span>
-                                        <PaymentStatusBadge status={order.payment.status} />
-                                    </span>
-
+                            <TableCell className="px-4 py-3 text-gray-800">
+                                <div className="flex flex-col items-start gap-1">
+                                    <span className="font-medium">S/. {order.totalPrice.toFixed(2)}</span>
+                                    <PaymentStatusBadge status={order.payment.status} />
                                 </div>
-                            </td>
+                            </TableCell>
 
+                            <TableCell className="px-4 py-3  text-gray-500 truncate">
+                                {order.shippingAddress?.direccion},
+                                {" "}
+                                {order.shippingAddress?.distrito}
+                            </TableCell>
 
-
-                            <td className="px-6 py-4 hidden lg:table-cell text-gray-500">
-                                {order.shippingAddress?.direccion}, {order.shippingAddress?.distrito}
-                            </td>
-
-                            <td className="px-6 py-4">
-
+                            <TableCell className="px-4 py-3">
                                 <OrderStatusBadge status={order.status} />
-                            </td>
+                            </TableCell>
 
-                            <td className="px-6 py-4 text-center">
+                            <TableCell className="px-4 py-3 text-center">
                                 <Link
                                     href={`/admin/orders/${order._id}`}
-                                    title="Ver detalles"
-                                    className="text-gray-500 hover:text-blue-600"
+                                    className="text-gray-600 hover:text-blue-600"
                                 >
                                     <FaEye className="w-4 h-4" />
                                 </Link>
-                            </td>
-                        </tr>
+                            </TableCell>
+                        </TableRow>
                     ))}
-                </tbody>
-            </table>
+                </TableBody>
+            </Table>
         </div>
     );
 }

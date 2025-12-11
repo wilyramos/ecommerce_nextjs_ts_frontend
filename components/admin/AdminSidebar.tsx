@@ -70,11 +70,11 @@ export default function AdminSidebar({ user }: Props) {
 
     return (
         <aside
-  className={cn(
-    "fixed top-0 left-0 h-screen flex flex-col border-r border-gray-200 bg-white py-4 transition-all duration-300 overflow-y-auto",
-    expanded ? "w-44" : "w-14"
-  )}
->
+            className={cn(
+        "hidden md:flex relative h-screen flex-col border-r border-gray-200 bg-white py-4 transition-all duration-300 overflow-y-auto",
+                expanded ? "w-48" : "w-14"
+            )}
+        >
             {/* HEADER */}
             <div className="flex items-center justify-between px-3 h-16 border-b border-gray-200">
                 {expanded && <Logo />}

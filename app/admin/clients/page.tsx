@@ -4,7 +4,7 @@ import AddClientButton from "@/components/admin/clients/AddClientButton";
 import ClientsTable from "@/components/admin/clients/ClientsTable";
 import { getUsers } from "@/src/services/users";
 import Pagination from "@/components/ui/Pagination";
-import { HeadingH1 } from "@/components/ui/Heading";
+import AdminPageWrapper from "@/components/admin/AdminPageWrapper";
 
 
 type SearchParams = Promise<{
@@ -33,17 +33,13 @@ export default async function AdminClientsPage({ searchParams }: { searchParams:
     });
 
     return (
-        <main className="">
+        <main >
 
-            <header className="flex justify-between md:flex-row gap-2 items-center">
-                {/* Search */}
-                <HeadingH1>Clientes / usuarios</HeadingH1>
-                <div className="flex items-center gap-2">
-                    <AddClientButton />
-                    {/* <ExportClientsButton /> */}
-                </div>
-
-            </header>
+            <AdminPageWrapper
+                title="Clientes"
+                showBackButton={false}
+                actions={<AddClientButton />}
+            >
 
             <div className="mt-4">
                 <Suspense fallback={<SpinnerLoading />}>
@@ -67,6 +63,7 @@ export default async function AdminClientsPage({ searchParams }: { searchParams:
                     )}
                 </Suspense>
             </div>
+            </AdminPageWrapper>
         </main>
     )
 }

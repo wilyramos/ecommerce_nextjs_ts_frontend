@@ -19,7 +19,7 @@ export default async function SalesReportsCards() {
     });
 
     return (
-        <section className="border border-slate-100 rounded-2xl p-2">
+        <section className="p-2">
             {/* Header */}
             <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-2">
                 <HeadingH3>Resumen de Ventas</HeadingH3>
@@ -33,7 +33,7 @@ export default async function SalesReportsCards() {
                     </Link>
 
                     {/* Tooltip */}
-                    <span className="absolute right-0 top-full mt-1 w-max px-2 py-1 text-xs text-white bg-gray-800 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span className="absolute right-0 top-full mt-1 w-max px-2 py-1 text-sm text-white bg-gray-800 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity">
                         Ir a la vista general de ventas
                     </span>
                 </div>

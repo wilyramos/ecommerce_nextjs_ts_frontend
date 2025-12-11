@@ -72,7 +72,10 @@ export default function OrderStatusBadge({ status }: Props) {
             )}
         >
             {icon}
+            <div className="hidden md:block">
             {label}
+
+            </div>
         </span>
     );
 }

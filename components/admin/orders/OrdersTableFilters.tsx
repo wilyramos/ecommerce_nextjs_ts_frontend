@@ -20,35 +20,27 @@ export default function OrdersTableFilters() {
         const params = new URLSearchParams();
 
         Object.entries(filters).forEach(([key, value]) => {
-            if (value.trim()) {
-                params.set(key, value);
-            }
+            if (value.trim()) params.set(key, value);
         });
 
         router.push(`/admin/orders?${params.toString()}`);
     }, 400);
 
-    const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-    ) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFilters((prev) => ({ ...prev, [name]: value }));
         handleFilterChange();
     };
 
     const handleClearFilters = () => {
-        setFilters({
-            pedido: "",
-            fecha: "",
-            estadoPago: "",
-            estadoEnvio: "",
-        });
+        setFilters({ pedido: "", fecha: "", estadoPago: "", estadoEnvio: "" });
         router.push("/admin/orders");
     };
 
     return (
-        <div className="overflow-x-auto">
-            <div className="mb-2">
+        <div className="w-full p-3 ">
+            {/* Botón limpiar */}
+            <div className="mb-3 flex justify-end">
                 <button
                     onClick={handleClearFilters}
                     className="text-sm text-red-600 hover:underline"
@@ -56,87 +48,70 @@ export default function OrdersTableFilters() {
                     Limpiar Filtros
                 </button>
             </div>
-            <table className="min-w-full text-md">
-                <thead>
-                    <tr className="text-gray-700">
-                        {/* Pedido */}
-                        <th className="px-6 py-2 text-left">
-                            <div className="relative">
-                                <FiSearch className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400" />
-                                <input
-                                    type="text"
-                                    name="pedido"
-                                    placeholder="Pedido"
-                                    value={filters.pedido}
-                                    onChange={handleChange}
-                                    className="w-full pl-8 pr-2 py-1 border-b-2 bg-white focus:outline-none focus:border-gray-800"
-                                />
-                            </div>
-                        </th>
 
-                        {/* Fecha */}
-                        <th className="px-6 py-2 text-left hidden md:table-cell">
-                            <div className="relative">
-                                <FiCalendar className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400" />
-                                <input
-                                    type="date"
-                                    name="fecha"
-                                    value={filters.fecha}
-                                    onChange={handleChange}
-                                    className="w-full pl-8 pr-2 py-1 border-b-2 bg-white focus:outline-none focus:border-gray-800"
-                                />
-                            </div>
-                        </th>
+            {/* Filtros Responsive */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                {/* Pedido */}
+                <div className="relative">
+                    <FiSearch className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <input
+                        type="text"
+                        name="pedido"
+                        placeholder="Pedido"
+                        value={filters.pedido}
+                        onChange={handleChange}
+                        className="w-full pl-8 pr-2 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
 
-                        {/* Estado de Pago */}
-                        <th className="px-6 py-2 text-left hidden md:table-cell">
-                            <div className="relative">
-                                <FiCreditCard className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400" />
-                                <select
-                                    name="estadoPago"
-                                    value={filters.estadoPago}
-                                    onChange={handleChange}
-                                    className="w-full pl-8 pr-2 py-1 border-b-2 bg-white focus:outline-none focus:border-gray-800"
-                                >
-                                    <option value="">Estado de Pago</option>
-                                    <option value="pending">Pendiente</option>
-                                    <option value="approved">Aprobado</option>
-                                    <option value="rejected">Rechazado</option>
-                                    <option value="refunded">Reembolsado</option>
-                                </select>
-                            </div>
-                        </th>
+                {/* Fecha */}
+                <div className="relative">
+                    <FiCalendar className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <input
+                        type="date"
+                        name="fecha"
+                        value={filters.fecha}
+                        onChange={handleChange}
+                        className="w-full pl-8 pr-2 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
 
-                        {/* Estado de Envío */}
-                        <th className="px-6 py-2 text-left hidden lg:table-cell">
-                            <div className="relative">
-                                <FiTruck className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400" />
-                                <select
-                                    name="estadoEnvio"
-                                    value={filters.estadoEnvio}
-                                    onChange={handleChange}
-                                    className="w-full pl-8 pr-2 py-1 border-b-2 bg-white focus:outline-none focus:border-gray-800"
-                                >
-                                    <option value="">Estado de Envío</option>
-                                    
-                                    <option value="PENDIENTE">Pendiente</option>
-                                    <option value="PROCESANDO">
-                                        Procesando
-                                    </option>
-                                    <option value="ENVIADO">Enviado</option>
-                                    <option value="ENTREGADO">Entregado</option>
-                                    <option value="CANCELADO">Cancelado</option>
+                {/* Estado de Pago */}
+                <div className="relative">
+                    <FiCreditCard className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <select
+                        name="estadoPago"
+                        value={filters.estadoPago}
+                        onChange={handleChange}
+                        className="w-full pl-8 pr-2 py-2 border rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                        <option value="">Estado de Pago</option>
+                        <option value="pending">Pendiente</option>
+                        <option value="approved">Aprobado</option>
+                        <option value="rejected">Rechazado</option>
+                        <option value="refunded">Reembolsado</option>
+                    </select>
+                </div>
 
-                                </select>
-                            </div>
-                        </th>
-
-                        {/* Columnas vacías para alinear */}
-                        <th className="px-6 py-2" />
-                        <th className="px-6 py-2" />
-                    </tr>
-                </thead>
-            </table>
+                {/* Estado de Envío */}
+                <div className="relative">
+                    <FiTruck className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400" />
+                    <select
+                        name="estadoEnvio"
+                        value={filters.estadoEnvio}
+                        onChange={handleChange}
+                        className="w-full pl-8 pr-2 py-2 border rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                        <option value="">Estado de Envío</option>
+                        <option value="awaiting_payment">Pendiente</option>
+                        <option value="processing">Procesando</option>
+                        <option value="shipped">Enviado</option>
+                        <option value="delivered">Entregado</option>
+                        <option value="canceled">Cancelado</option>
+                        <option value="paid_but_out_of_stock">Sin stock</option>
+                    </select>
+                </div>
+            </div>
         </div>
     );
 }

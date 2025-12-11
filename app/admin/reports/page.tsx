@@ -11,7 +11,8 @@ export default function ReportsAdminPage() {
         <>
             <HeadingH2>Reportes</HeadingH2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 p-2">
+            <div className="grid grid-cols-1 
+             gap-6 mt-6 p-2">
 
                 <Suspense fallback={<SpinnerLoading />}>
                     <SalesReportsCards />

@@ -16,7 +16,7 @@ export default function ClientsTable({ clients }: Props) {
     const clientes = clients.users;
 
     return (
-        <div className="w-full overflow-auto">
+        <div className="w-full overflow-auto text-xs">
             <Table>
                 <TableHeader>
                     {/* filtros en la cabecera */}
