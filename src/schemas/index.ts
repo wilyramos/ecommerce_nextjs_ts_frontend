@@ -176,7 +176,7 @@ export const apiCategorySchema = categoryBaseSchema.extend({
     updatedAt: z.string().datetime().optional(),
     __v: z.number().optional(),
     parent: z.union([z.string(), categoryParentSchema]).nullable().optional(),
-    
+
 });
 
 export const apiCategoryListSchema = z.array(apiCategorySchema);
@@ -737,6 +737,7 @@ export const SalePaymentStatusEnum = z.enum(['pending', 'approved', 'rejected', 
 
 export const SaleItemSchema = z.object({
     product: z.string(), // para envío solo se usa el id
+    variantId: z.string().optional(),
     quantity: z.number().min(1, { message: 'La cantidad debe ser al menos 1' }),
     price: z.number().min(0, { message: 'El precio debe ser al menos 0' }),
 });

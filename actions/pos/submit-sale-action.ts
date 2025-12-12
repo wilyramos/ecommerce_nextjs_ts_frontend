@@ -17,7 +17,7 @@ type ActionStateType = {
 export async function submitSaleAction(orderData: CreateSaleInput, prevState: ActionStateType) {
 
     //TODO: - validate orderData with zod schema
-    
+
     console.log("data recibida", orderData)
     const token = await getToken();
     const { user } = await verifySession();

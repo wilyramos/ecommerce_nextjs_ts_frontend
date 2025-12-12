@@ -36,14 +36,14 @@ export default function ProductsTablePOS({ products }: { products?: ProductsAPIR
                                     className="flex items-center gap-3 text-slate-700 hover:text-blue-600 transition-colors"
                                 >
                                     <Image
-                                        src={product.imagenes?.[0] || "/logob.svg"}
+                                        src={product.imagenes?.[0] || "/logo.png"}
                                         alt={product.nombre}
                                         width={40}
                                         height={40}
                                         className="rounded border object-cover"
                                     />
                                     <div>
-                                        <p className="font-medium">{product.nombre}</p>
+                                        <p className="font-medium truncate max-w-xs">{product.nombre}</p>
                                         <p className="text-xs text-slate-400">ID: {product._id.slice(-6)}</p>
                                     </div>
                                 </Link>

@@ -118,11 +118,12 @@ export default async function PageVenta({ params }: { params: Params }) {
                                 <div className="flex items-center gap-3">
                                     {isPopulated && (
                                         <Image
-                                            src={item.product.imagenes[0]}
+                                            src={item.product.imagenes[0] || "/logo.svg"}
                                             alt={item.product.nombre}
                                             width={45}
                                             height={45}
                                             className="rounded border"
+                                            quality={2}
                                         />
                                     )}
                                     <div>

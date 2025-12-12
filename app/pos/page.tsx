@@ -7,7 +7,7 @@ type SearchParams = Promise<{ page?: string; limit?: string; query?: string }>;
 
 export default async function POSpage({ searchParams }: { searchParams: SearchParams }) {
     const params = await searchParams;
-    const { page = "1", limit = "12", query = "" } = params || {};
+    const { page = "1", limit = "8", query = "" } = params || {};
 
     const productos = query
         ? await searchProducts({
@@ -34,7 +34,7 @@ export default async function POSpage({ searchParams }: { searchParams: SearchPa
                        Crea espacio al final para que el carrito (fixed bottom) 
                        no tape los últimos productos.
                     */}
-                    <div className="grid grid-cols-2 gap-2 pb-[42vh] sm:grid-cols-3 md:grid-cols-3 md:pb-4 lg:grid-cols-4 xl:grid-cols-5">
+                    <div className="grid grid-cols-2 gap-2 pb-[42vh] sm:grid-cols-2 md:grid-cols-2 md:pb-4 lg:grid-cols-3 xl:grid-cols-4">
                         {productos?.products?.length ? (
                             productos.products.map((p) => (
                                 <ProductCardPOS key={p._id} product={p} />
