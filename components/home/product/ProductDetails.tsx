@@ -106,6 +106,8 @@ export default function ProductDetails({ producto }: Props) {
             ? producto.stock ?? 0
             : selectedVariant.stock ?? 0;
 
+    const hasDiscount = precioComparativo !== null && precioComparativo > precio;
+
     const allAttributesSelected = Object.keys(allAttributes).every(key => selectedAttributes[key]);
 
     const isOptionOutOfStock = (attrKey: string, attrValue: string) => {
@@ -137,28 +139,24 @@ export default function ProductDetails({ producto }: Props) {
             ].filter((img, idx, arr) => arr.indexOf(img) === idx);
 
 
-    //TODO: REVIEW VARIANTS KEY IN PRODUCTS WITH VARIANTS
-
     return (
         <>
             <article className="grid grid-cols-1 md:grid-cols-6 gap-2 md:gap-6 max-w-7xl mx-auto py-2">
                 {/* Imágenes */}
                 <div className='md:col-span-3'>
                     <ImagenesProductoCarousel images={variantImages} />
-
                 </div>
-
 
                 {/* Detalles */}
                 <section className='md:col-span-3'>
-                    <div className="space-y-2 bg-white p-4">
-                        <header className="pt-1 border-b pb-4 space-y-2">
-                            {/* SKU y código solo si hay variante seleccionada o SKU principal */}
+                    <div className="space-y-0 bg-white p-4">
+                        <header className="pt-1 border-b pb-4 space-y-1">
+                            {/* SKU y código */}
                             <div className="flex items-start justify-between w-full">
                                 {producto.brand && (
                                     <Link
                                         href={`/productos?brand=${producto.brand.slug}`}
-                                        className="text-xs font-bold text-gray-600 uppercase hover:text-gray-700"
+                                        className="text-xs font-bold text-zinc-400 uppercase hover:text-gray-700"
                                     >
                                         {producto.brand.nombre}
                                     </Link>
@@ -177,14 +175,11 @@ export default function ProductDetails({ producto }: Props) {
                                 )}
                             </div>
 
-
                             <div>
-
-                                <h1 className="text-md md:text-lg leading-snug text-gray-600">
+                                <h1 className="text-md md:text-lg leading-snug text-gray-800 font-semibold">
                                     {producto.nombre}
                                 </h1>
                             </div>
-
 
                             {/* Mostrar color solo si NO hay variantes */}
                             {!producto.variants?.length && colorAtributo && (
@@ -198,71 +193,58 @@ export default function ProductDetails({ producto }: Props) {
                                 </div>
                             )}
 
-                            {/* Precio y descuento */}
-                            <div className="flex items-center gap-3">
+                            {/* Precio y descuento - MODIFICADO CON blue */}
+                            <div className={`flex items-center gap-3 w-fit transition-colors duration-300 ${hasDiscount ? 'bg-blue-50 px-3' : 'mt-2'}`}>
                                 <div className="flex items-center gap-2">
-                                    <p className="text-2xl flex items-baseline">
+                                    <p className="text-2xl flex items-baseline font-medium text-gray-900">
                                         <span className="text-xs mr-1">S/</span>
                                         <span>{precio.toFixed(2)}</span>
                                     </p>
 
-                                    {precioComparativo !== null &&
-                                        precioComparativo > precio && (
-                                            <span className="bg-black text-white text-xs font-bold px-2 py-0.5 inline-block">
-                                                -{Math.round(((precioComparativo - precio) / precioComparativo) * 100)}%
-                                            </span>
-
-                                        )}
+                                    {hasDiscount && (
+                                        <span className="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 inline-block ">
+                                            -{Math.round(((precioComparativo - precio) / precioComparativo) * 100)}%
+                                        </span>
+                                    )}
                                 </div>
 
-                                {precioComparativo !== null &&
-                                    precioComparativo > precio && (
-                                        <div className="text-gray-400 text-sm">
-                                            <span className="line-through">S/ {precioComparativo.toFixed(2)}</span>{" "}
-                                            <span>Antes</span>
-                                        </div>
-                                    )}
+                                {hasDiscount && (
+                                    <div className="text-gray-400 text-sm flex flex-col leading-none">
+                                        <span className="line-through text-xs">S/ {precioComparativo.toFixed(2)}</span>
+                                        <span className="text-[10px] uppercase font-semibold text-blue-800/60">Oferta</span>
+                                    </div>
+                                )}
                             </div>
 
                             {/* Stock */}
-                            <div className="flex items-center gap-2 mt-1">
-                                <span
-                                    className={`text-xs font-medium px-2.5 py-1 flex items-center gap-1.5 w-fit transition-colors
-                                    ${stock === 0
-                                            ? 'bg-gray-50 text-gray-400 border-gray-100' // Agotado: Gris muy pálido, casi invisible.
-                                            : stock <= 3
-                                                ? 'bg-orange-50/80 text-orange-800/90'
-                                                : 'bg-emerald-50/80 text-emerald-800/90' // Disponible: Verde esmeralda pastel suave.
-                                        }`}
-                                >
-                                    {/* Punto indicador con opacidad reducida para que sea un color "bajo" */}
-                                    <span className={`h-2 w-2 rounded-full ${stock === 0
-                                        ? 'bg-gray-300'
-                                        : stock <= 3
-                                            ? 'bg-orange-500/70' // Naranja medio con transparencia
-                                            : 'bg-emerald-500/70' // Verde esmeralda medio con transparencia
-                                        }`} />
-
-                                    {/* Mensaje Dinámico */}
-                                    {stock === 0
-                                        ? 'Agotado'
-                                        : stock <= 3
-                                            ? `¡Solo quedan ${stock}!`
-                                            : `En Stock`
-                                    }
-                                </span>
-
-                                {/* Texto de refuerzo: Usamos un tono naranja oscuro desaturado en lugar de rojo chillón */}
-                                {stock > 0 && stock <= 3 && (
-                                    <span className="text-[10px] font-bold text-orange-900/80 uppercase tracking-wide">
-                                        ¡Pídelo antes que se acabe!
+                            {stock <= 3 && (
+                                <div className="flex items-center gap-2 mt-2">
+                                    <span
+                                        className={`text-xs font-medium px-2.5 py-1 flex items-center gap-1.5 w-fit transition-colors
+                                        ${stock === 0
+                                                ? "bg-gray-50 text-gray-400 border-gray-100"
+                                                : "bg-orange-50/80 text-orange-800/90"
+                                            }`}
+                                    >
+                                        <span
+                                            className={`h-2 w-2 rounded-full ${stock === 0 ? "bg-gray-300" : "bg-orange-500/70"
+                                                }`}
+                                        />
+                                        {stock === 0 ? "Agotado" : `¡Solo quedan ${stock}!`}
                                     </span>
-                                )}
-                            </div>
+
+                                    {stock > 0 && (
+                                        <span className="text-[10px] font-bold text-orange-900/80 uppercase tracking-wide">
+                                            ¡Pídelo antes que se acabe!
+                                        </span>
+                                    )}
+                                </div>
+                            )}
+
                         </header>
 
                         {Object.entries(allAttributes).length > 0 && (
-                            <p className="text-xs mb-3 text-gray-600 font- ">
+                            <p className="text-xs mb-3 text-gray-600 mt-4">
                                 Seleccionar opciones:
                             </p>
                         )}
@@ -271,7 +253,7 @@ export default function ProductDetails({ producto }: Props) {
                             const availableValues = getAvailableValues(key);
 
                             return (
-                                <fieldset key={key} className="mb-2 p-1 ">
+                                <fieldset key={key} className="mb-2 p-1">
                                     <legend className="text-xs font-bold text-gray-600 uppercase tracking-wide mb-2">{key}:</legend>
 
                                     {key.toLowerCase() === "color" ? (
@@ -280,7 +262,6 @@ export default function ProductDetails({ producto }: Props) {
                                                 const outOfStock = isOptionOutOfStock(key, val);
                                                 const selected = selectedAttributes[key] === val;
 
-                                                // ENCONTRAR VARIANTE PARA ESTE VALOR
                                                 const variantForValue = producto.variants?.find(
                                                     v =>
                                                         v.atributos[key] === val &&
@@ -296,34 +277,33 @@ export default function ProductDetails({ producto }: Props) {
                                                         disabled={outOfStock}
                                                         title={val}
                                                         className={`relative w-14 h-16 rounded border transition-all flex flex-col items-center justify-center
-                ${selected ? 'border-gray-800 ring-1 ring-gray-800' : 'border-gray-300 hover:border-gray-500'}
-                ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
-            `}
+                                                            ${selected ? 'border-gray-800 ring-1 ring-gray-800' : 'border-gray-300 hover:border-gray-500'}
+                                                            ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
+                                                        `}
                                                     >
-                                                        {/* Color */}
-                                                        <ColorCircle color={val} />
+                                                        <div className="transform scale-90 group-hover:scale-100 transition-transform">
+                                                            <ColorCircle color={val} />
+                                                        </div>
 
-                                                        {/* Nombre */}
-                                                        <span className="text-[10px] font-light mt-1">{val}</span>
+                                                        <span className={`text-[10px] leading-tight px-1 text-center truncate w-full ${selected ? 'font-semibold text-gray-900' : 'font-medium text-gray-600'}`}>
+                                                            {val}
+                                                        </span>
 
-                                                        {/* PRECIO DE LA VARIANTE */}
+                                                        {/* PRECIO EN VARIANTE - MODIFICADO CON blue */}
                                                         {variantForValue?.precio && (
-                                                            <span className="text-[8px] font-semibold text-gray-700">
-                                                                S/ {variantForValue.precio.toFixed(2)}
+                                                            <span className="text-[9px] font-bold px-1.5  mt-0.5">
+                                                                S/ {variantForValue.precio.toFixed(0)}
                                                             </span>
                                                         )}
 
                                                         {outOfStock && (
-                                                            <span
-                                                                className="absolute top-1/2 left-1/2 w-full border-t-2 border-gray-500 border-dashed"
-                                                                style={{ transform: 'translate(-50%, -50%) rotate(-45deg)' }}
-                                                            />
+                                                            <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                                                <div className="w-full border-t border-gray-400 opacity-60 -rotate-45"></div>
+                                                            </span>
                                                         )}
-
                                                     </button>
                                                 );
                                             })}
-
                                         </div>
                                     ) : availableValues.length <= 6 ? (
                                         <div className="flex flex-wrap gap-2">
@@ -337,14 +317,12 @@ export default function ProductDetails({ producto }: Props) {
                                                         size="sm"
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
-                                                        className={`relative ${outOfStock ? "opacity-40 cursor-not-allowed font-bold uppercase" : "cursor-pointer  uppercase"}`}
+                                                        className={`relative ${outOfStock ? "opacity-40 cursor-not-allowed font-bold uppercase rounded-none" : "cursor-pointer rounded-none font-medium"}`}
                                                     >
                                                         {val}
-
-                                                        {/* Línea dashed diagonal centrada */}
                                                         {outOfStock && (
                                                             <span
-                                                                className="absolute top-1/2 left-1/2 w-full border-t-2 border-gray-500 border-dashed"
+                                                                className="absolute top-1/3 left-1/3 w-full border-t-2 border-gray-500 border-dashed"
                                                                 style={{ transform: 'translate(-50%, -50%) rotate(-45deg)' }}
                                                             />
                                                         )}
@@ -382,7 +360,6 @@ export default function ProductDetails({ producto }: Props) {
                             );
                         })}
 
-
                         {/* Variante seleccionada */}
                         {selectedVariant && (
                             <p className="text-xs mt-2 font-medium text-gray-600">
@@ -415,18 +392,14 @@ export default function ProductDetails({ producto }: Props) {
                     <div className="space-y-2 mt-2 text-gray-700 text-xs">
                         {/* Envío */}
                         <div className="bg-white py-2 md:p-4 flex items-start gap-4 px-4">
-                            {/* <Truck className="w-6 h-6 text-gray-500 mt-0.5" /> */}
-
                             <div className="flex flex-wrap gap-x-2 gap-y-1">
                                 <p>
                                     Envíos <span className="font-semibold">gratuitos y contraentrega</span> en todo Cañete.
                                 </p>
-
                                 <p>
                                     Envíos al resto del Perú mediante{" "}
                                     <span className="font-semibold italic bg-red-600 text-white px-1">SHALOM</span>.
                                 </p>
-
                                 <p className="border border-gray-200 px-3 py-1 text-gray-600 bg-gray-200/50">
                                     {producto.diasEnvio
                                         ? `Recíbelo entre: ${getDeliveryRange(producto.diasEnvio)}`
@@ -435,18 +408,15 @@ export default function ProductDetails({ producto }: Props) {
                             </div>
                         </div>
 
-
                         {/* Compra segura */}
                         <div className="bg-white py-2 md:p-4 flex items-center gap-4 px-4">
                             <div className="flex flex-col md:flex-row md:items-center md:justify-between w-full gap-2">
                                 <p className="text-gray-600 whitespace-nowrap">Aceptamos los siguientes medios de pago:</p>
-
                                 <div className="flex items-center flex-wrap gap-3 ">
                                     <PaymentMethods />
                                 </div>
                             </div>
                         </div>
-
 
                         {/* Contacto */}
                         <div className="bg-white p-4 text-center">
