@@ -22,6 +22,7 @@ export default function ClientsTable({ clients }: Props) {
                             <TableCell className="text-zinc-600">{client.email}</TableCell>
                             <TableCell className="text-zinc-600">{client.telefono}</TableCell>
                             <TableCell className="text-zinc-600">{client.numeroDocumento}</TableCell>
+                            <TableCell className="text-zinc-600">{client.rol}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

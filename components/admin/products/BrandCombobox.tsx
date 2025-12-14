@@ -33,7 +33,7 @@ export default function BrandCombobox({ brands, value: defaultValue }: BrandComb
                         variant="outline"
                         role="combobox"
                         aria-expanded={open}
-                        className="w-full border border-gray-300 rounded-lg p-3 justify-between text-left font-normal focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full justify-between text-left font-normal "
                     >
                         {value
                             ? brands.find((b) => b._id === value)?.nombre

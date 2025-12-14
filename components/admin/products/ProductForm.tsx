@@ -1,18 +1,20 @@
-"use client"; // Necesario para usar useState
+"use client";
 
 import { useState } from "react";
 import type { ProductWithCategoryResponse } from "@/src/schemas";
 import type { CategoryListResponse } from "@/src/schemas";
+import type { TBrand } from "@/src/schemas/brands";
+
 import ClientCategoryAttributes from "./ClientCategoryAttributes";
 import ProductSwitches from "./ProductSwitches";
 import SpecificationsSection from "./SpecificationsSection";
 import ProductDescriptionEditor from "./ProductDescriptionEditor";
-import type { TBrand } from "@/src/schemas/brands";
 import BrandCombobox from "./BrandCombobox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import ProductVariantsForm from "./ProductVariantsForm";
 import UploadProductImageDialog from "./UploadProductImageDialog";
+
+import { Input } from "@/components/ui/input";
+import { LabelWithTooltip } from "@/components/utils/LabelWithTooltip";
 
 export default function ProductForm({
     product,
@@ -23,27 +25,29 @@ export default function ProductForm({
     categorias: CategoryListResponse;
     brands: TBrand[];
 }) {
-    // 1. Estado para controlar la categoría seleccionada dinámicamente
-    const [selectedCategoryId, setSelectedCategoryId] = useState<string | undefined>(
-        product?.categoria?._id
+    const [selectedCategoryId, setSelectedCategoryId] = useState<
+        string | undefined
+    >(product?.categoria?._id);
+
+    const currentCategory = categorias.find(
+        (c) => c._id === selectedCategoryId
     );
 
-    // 2. Buscar la categoría completa basada en el estado actual (no solo la inicial)
-    const currentCategory = categorias.find((c) => c._id === selectedCategoryId);
-    
-    // 3. Obtener los atributos de la categoría actual
     const dynamicCategoryAttributes = currentCategory?.attributes || [];
 
     return (
         <div className="text-xs grid grid-cols-1 sm:grid-cols-4 gap-4 p-4 space-y-1">
-            <div className="col-span-1 sm:col-span-3">
+            {/* =================== FORM =================== */}
+            <div className="col-span-1 sm:col-span-3 space-y-4">
                 {/* Nombre */}
-                <div className="py-1 space-y-1">
-                    <Label htmlFor="nombre">Nombre
-                        <span className="text-red-500">*</span>
-                    </Label>
+                <div className="space-y-1">
+                    <LabelWithTooltip
+                        htmlFor="nombre"
+                        label="Nombre"
+                        required
+                        tooltip="Nombre público del producto que verá el cliente."
+                    />
                     <Input
-                        type="text"
                         id="nombre"
                         name="nombre"
                         defaultValue={product?.nombre}
@@ -52,15 +56,25 @@ export default function ProductForm({
                 </div>
 
                 {/* Descripción */}
-                <div className="py-1 space-y-1">
-                    <Label htmlFor="descripcion">Descripción</Label>
-                    <ProductDescriptionEditor initialHTML={product?.descripcion || ""} />
+                <div className="space-y-1">
+                    <LabelWithTooltip
+                        htmlFor="descripcion"
+                        label="Descripción"
+                        tooltip="Descripción detallada del producto. Aparece en la página del producto."
+                    />
+                    <ProductDescriptionEditor
+                        initialHTML={product?.descripcion || ""}
+                    />
                 </div>
 
                 {/* Precios y stock */}
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    <div className="py-1 space-y-1">
-                        <Label htmlFor="precio">Precio</Label>
+                    <div className="space-y-1">
+                        <LabelWithTooltip
+                            htmlFor="precio"
+                            label="Precio"
+                            tooltip="Precio final de venta al público."
+                        />
                         <Input
                             type="number"
                             id="precio"
@@ -69,8 +83,12 @@ export default function ProductForm({
                         />
                     </div>
 
-                    <div className="py-1 space-y-1">
-                        <Label htmlFor="costo">Costo</Label>
+                    <div className="space-y-1">
+                        <LabelWithTooltip
+                            htmlFor="costo"
+                            label="Costo"
+                            tooltip="Costo interno del producto (solo para administración)."
+                        />
                         <Input
                             type="number"
                             id="costo"
@@ -79,8 +97,12 @@ export default function ProductForm({
                         />
                     </div>
 
-                    <div className="py-1 space-y-1">
-                        <Label htmlFor="precioComparativo">Precio comparativo</Label>
+                    <div className="space-y-1">
+                        <LabelWithTooltip
+                            htmlFor="precioComparativo"
+                            label="Precio comparativo"
+                            tooltip="Precio anterior para mostrar descuentos o promociones."
+                        />
                         <Input
                             type="number"
                             id="precioComparativo"
@@ -89,8 +111,12 @@ export default function ProductForm({
                         />
                     </div>
 
-                    <div className="py-1 space-y-1">
-                        <Label htmlFor="stock">Stock</Label>
+                    <div className="space-y-1">
+                        <LabelWithTooltip
+                            htmlFor="stock"
+                            label="Stock"
+                            tooltip="Cantidad disponible del producto sin considerar variantes."
+                        />
                         <Input
                             type="number"
                             id="stock"
@@ -98,8 +124,13 @@ export default function ProductForm({
                             defaultValue={product?.stock}
                         />
                     </div>
-                    <div className="py-1 space-y-1">
-                        <Label htmlFor="diasEnvio">Días de envío</Label>
+
+                    <div className="space-y-1">
+                        <LabelWithTooltip
+                            htmlFor="diasEnvio"
+                            label="Días de envío"
+                            tooltip="Tiempo estimado de despacho en días hábiles."
+                        />
                         <Input
                             type="number"
                             id="diasEnvio"
@@ -110,22 +141,28 @@ export default function ProductForm({
                     </div>
                 </div>
 
-                {/* SKU y Código de barras */}
+                {/* SKU y Barcode */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="py-1 space-y-1">
-                        <Label htmlFor="sku">SKU (opcional)</Label>
+                    <div className="space-y-1">
+                        <LabelWithTooltip
+                            htmlFor="sku"
+                            label="SKU"
+                            tooltip="Código interno para la gestión de inventario (opcional)."
+                        />
                         <Input
-                            type="text"
                             id="sku"
                             name="sku"
                             defaultValue={product?.sku}
                         />
                     </div>
 
-                    <div className="py-1 space-y-1">
-                        <Label htmlFor="barcode">Código de barras (opcional)</Label>
+                    <div className="space-y-1">
+                        <LabelWithTooltip
+                            htmlFor="barcode"
+                            label="Código de barras"
+                            tooltip="Código EAN, UPC u otro identificador del producto (opcional)."
+                        />
                         <Input
-                            type="text"
                             id="barcode"
                             name="barcode"
                             defaultValue={product?.barcode}
@@ -134,9 +171,16 @@ export default function ProductForm({
                 </div>
 
                 {/* Marca */}
-                <div className="py-1 space-y-1">
-                    <Label htmlFor="brand">Marca</Label>
-                    <BrandCombobox brands={brands} value={product?.brand?._id} />
+                <div className="space-y-1">
+                    <LabelWithTooltip
+                        htmlFor="brand"
+                        label="Marca"
+                        tooltip="Marca asociada al producto."
+                    />
+                    <BrandCombobox
+                        brands={brands}
+                        value={product?.brand?._id}
+                    />
                 </div>
 
                 {/* Categoría + atributos dinámicos */}
@@ -144,25 +188,27 @@ export default function ProductForm({
                     categorias={categorias}
                     initialCategoryId={product?.categoria?._id}
                     currentAttributes={product?.atributos}
-                    // 4. Pasamos la función para actualizar el estado en el padre
                     onCategoryChange={setSelectedCategoryId}
                 />
 
-                {/* Imagenes */}
-                <UploadProductImageDialog CurrentImagenes={product?.imagenes} />
+                {/* Imágenes */}
+                <UploadProductImageDialog
+                    CurrentImagenes={product?.imagenes}
+                />
 
                 {/* Especificaciones */}
-                <SpecificationsSection initial={product?.especificaciones} />
+                <SpecificationsSection
+                    initial={product?.especificaciones}
+                />
 
                 {/* Variantes */}
                 <ProductVariantsForm
                     product={product}
-                    // 5. Pasamos los atributos calculados dinámicamente
                     categoryAttributes={dynamicCategoryAttributes}
                 />
             </div>
 
-            {/* Switches */}
+            {/* =================== SWITCHES =================== */}
             <div>
                 <ProductSwitches product={product} />
             </div>

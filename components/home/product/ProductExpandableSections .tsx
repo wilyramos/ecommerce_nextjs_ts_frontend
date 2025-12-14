@@ -32,7 +32,11 @@ export default function ProductExpandableSections({ producto }: Props) {
                             />
 
                             {producto.especificaciones?.length ? (
+
                                 <div className="col-span-1">
+                                    <h2 className="font-semibold text-base border-b">
+                                        Especificaciones:
+                                    </h2>
                                     <table className="w-full text-xs">
                                         <tbody>
                                             {producto.especificaciones.map((spec) => (
@@ -56,7 +60,7 @@ export default function ProductExpandableSections({ producto }: Props) {
             <AccordionItem value="cambios-devoluciones-vendedores">
                 <AccordionTrigger>Envíos, devoluciones y vendedores</AccordionTrigger>
                 <AccordionContent>
-                    <div className="text-gray-700 text-sm space-y-4 mx-auto lg:grid lg:grid-cols-2 lg:gap-6 lg:space-y-0">
+                    <div className=" text-sm space-y-4 mx-auto lg:grid lg:grid-cols-2 lg:gap-6 lg:space-y-0">
                         <div className="space-y-3">
                             <p><strong>En GoPhone lo hacemos fácil</strong></p>
 
@@ -73,7 +77,7 @@ export default function ProductExpandableSections({ producto }: Props) {
                                 Puedes solicitar un cambio o devolución dentro de los {" "}
                                 <strong>3 días hábiles</strong> si el producto tiene falla o llega dañado.
                                 Debe estar nuevo, sin uso y con empaque original.
-                                
+
                             </p>
                         </div>
 

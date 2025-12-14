@@ -19,6 +19,7 @@ import { useSearchParams } from 'next/navigation';
 import PaymentMethods from '../PaymentMethods';
 import ColorCircle from '@/components/ui/ColorCircle';
 import Link from 'next/link';
+import Image from 'next/image';
 
 type Props = {
     producto: ProductWithCategoryResponse;
@@ -276,32 +277,60 @@ export default function ProductDetails({ producto }: Props) {
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
                                                         title={val}
-                                                        className={`relative w-14 h-16 rounded border transition-all flex flex-col items-center justify-center
-                                                            ${selected ? 'border-gray-800 ring-1 ring-gray-800' : 'border-gray-300 hover:border-gray-500'}
-                                                            ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
-                                                        `}
+                                                        className={`relative w-20 h-24 rounded-md border transition-colors
+    flex flex-col items-center justify-between p-1
+    ${selected ? 'border-gray-800 ring-1 ring-gray-800' : 'border-gray-300 hover:border-gray-500'}
+    ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
+  `}
                                                     >
-                                                        <div className="transform scale-90 group-hover:scale-100 transition-transform">
+                                                        {/* Color (como Amazon: pequeño, arriba) */}
+                                                        <div className="h-4 flex items-center justify-center">
                                                             <ColorCircle color={val} />
                                                         </div>
 
-                                                        <span className={`text-[10px] leading-tight px-1 text-center truncate w-full ${selected ? 'font-semibold text-gray-900' : 'font-medium text-gray-600'}`}>
-                                                            {val}
-                                                        </span>
+                                                        {/* Imagen (zona principal, centrada y consistente) */}
+                                                        <div className="h-10 w-10 flex items-center justify-center bg-gray-100 rounded-md overflow-hidden">
+                                                            {variantForValue?.imagenes?.[0] ? (
+                                                                <Image
+                                                                    src={variantForValue.imagenes[0]}
+                                                                    alt={`Variante ${val}`}
+                                                                    width={36}
+                                                                    height={36}
+                                                                    className="object-contain"
+                                                                    quality={2}
+                                                                />
+                                                            ) : (
+                                                                <div className="w-9 h-9 bg-gray-100 rounded" />
+                                                            )}
+                                                        </div>
 
-                                                        {/* PRECIO EN VARIANTE - MODIFICADO CON blue */}
-                                                        {variantForValue?.precio && (
-                                                            <span className="text-[9px] font-bold px-1.5  mt-0.5">
-                                                                S/ {variantForValue.precio.toFixed(0)}
+                                                        {/* Nombre / etiqueta */}
+                                                        <div className="h-5 w-full flex items-center justify-center px-1">
+                                                            <span
+                                                                className={`text-[11px] text-center truncate leading-tight
+        ${selected ? 'font-semibold text-gray-900' : 'font-medium text-gray-600'}`}
+                                                            >
+                                                                {val}
                                                             </span>
-                                                        )}
+                                                        </div>
+
+                                                        {/* Precio (opcional, muy sutil como Amazon) */}
+                                                        <div className="h-4 flex items-center justify-center">
+                                                            {variantForValue?.precio && (
+                                                                <span className="text-[9px] font-semibold text-gray-700">
+                                                                    S/ {variantForValue.precio.toFixed(0)}
+                                                                </span>
+                                                            )}
+                                                        </div>
 
                                                         {outOfStock && (
                                                             <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                                                <div className="w-full border-t border-gray-400 opacity-60 -rotate-45"></div>
+                                                                <div className="w-full border-t border-gray-400 opacity-60 -rotate-45" />
                                                             </span>
                                                         )}
                                                     </button>
+
+
                                                 );
                                             })}
                                         </div>
@@ -360,12 +389,21 @@ export default function ProductDetails({ producto }: Props) {
                             );
                         })}
 
-                        {/* Variante seleccionada */}
-                        {selectedVariant && (
-                            <p className="text-xs mt-2 font-medium text-gray-600">
-                                Variante Seleccionada: {selectedVariant.nombre} - S/ {selectedVariant.precio ?? producto.precio}
+                        {/* Asi haya variante seleccionada o no, separar el espacio */}
+                        {/* Separador siempre visible */}
+                        <div className="mt-1">
+                            <div className="border-t" />
+
+                            {/* Línea reservada: nunca empuja el contenido inferior */}
+                            <p className="mt-1 h-2 text-xs font-medium text-gray-600 leading-4">
+                                {selectedVariant
+                                    ? `Variante seleccionada: ${selectedVariant.nombre} - S/ ${selectedVariant.precio ?? producto.precio
+                                    }`
+                                    : "\u00A0"}
                             </p>
-                        )}
+                        </div>
+
+
 
                         {/* Acciones */}
                         <section className="flex justify-between items-center gap-4 mt-4 md:pt-4">
@@ -391,8 +429,8 @@ export default function ProductDetails({ producto }: Props) {
                     {/* Información adicional */}
                     <div className="space-y-2 mt-2 text-gray-700 text-xs">
                         {/* Envío */}
-                        <div className="bg-white py-2 md:p-4 flex items-start gap-4 px-4">
-                            <div className="flex flex-wrap gap-x-2 gap-y-1">
+                        <div className="bg-white py-2 md:px-4 flex items-start gap-4 px-4">
+                            <div className="flex flex-wrap gap-x-2">
                                 <p>
                                     Envíos <span className="font-semibold">gratuitos y contraentrega</span> en todo Cañete.
                                 </p>
@@ -400,7 +438,7 @@ export default function ProductDetails({ producto }: Props) {
                                     Envíos al resto del Perú mediante{" "}
                                     <span className="font-semibold italic bg-red-600 text-white px-1">SHALOM</span>.
                                 </p>
-                                <p className="border border-gray-200 px-3 py-1 text-gray-600 bg-gray-200/50">
+                                <p className="border border-gray-200 p-1 text-gray-600 bg-gray-100/50">
                                     {producto.diasEnvio
                                         ? `Recíbelo entre: ${getDeliveryRange(producto.diasEnvio)}`
                                         : "Recíbelo en 1–3 días hábiles"}
@@ -409,7 +447,7 @@ export default function ProductDetails({ producto }: Props) {
                         </div>
 
                         {/* Compra segura */}
-                        <div className="bg-white py-2 md:p-4 flex items-center gap-4 px-4">
+                        <div className="bg-white md:px-4 flex items-center gap-4 px-4">
                             <div className="flex flex-col md:flex-row md:items-center md:justify-between w-full gap-2">
                                 <p className="text-gray-600 whitespace-nowrap">Aceptamos los siguientes medios de pago:</p>
                                 <div className="flex items-center flex-wrap gap-3 ">

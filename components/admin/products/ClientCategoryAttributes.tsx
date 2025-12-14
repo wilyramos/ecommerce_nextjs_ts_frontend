@@ -19,10 +19,10 @@ export default function ClientCategoryAttributes({
     onCategoryChange,
 }: Props) {
     const [selectedCategoryId, setSelectedCategoryId] = useState(initialCategoryId || "");
-    
+
     // Lista de DEFINICIONES de atributos (qué inputs mostrar)
     const [categoryDefinitions, setCategoryDefinitions] = useState<{ name: string; values: string[] }[]>([]);
-    
+
     // Estado de VALORES seleccionados. 
     // Truco: Inicializamos con lo que viene de la DB y NUNCA lo borramos automáticamente al cambiar categoría.
     const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>(currentAttributes || {});
@@ -50,7 +50,7 @@ export default function ClientCategoryAttributes({
         // para los nuevos campos, se recuperen si el usuario aún no los ha sobrescrito manualmente.
         setSelectedAttributes((prev) => {
             const merged = { ...prev };
-            
+
             // Si hay atributos originales en la DB, asegurarnos de que estén en el estado 
             // si el usuario no ha definido ya un valor para esa clave.
             if (currentAttributes) {
@@ -79,7 +79,7 @@ export default function ClientCategoryAttributes({
     const selectedCategory = categorias.find((c) => c._id === selectedCategoryId);
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-4 border-2 rounded-2xl p-4">
             <div className="py-1">
                 <label className="block font-semibold text-gray-700 mb-1">
                     Categoría<span className="text-red-500">*</span>
@@ -122,21 +122,21 @@ export default function ClientCategoryAttributes({
             {categoryDefinitions.length > 0 && (
                 <div>
                     {/* Enviamos al backend solo los atributos que son válidos para la categoría actual */}
-                    <input 
-                        type="hidden" 
-                        name="atributos" 
+                    <input
+                        type="hidden"
+                        name="atributos"
                         value={JSON.stringify(
                             Object.fromEntries(
-                                Object.entries(selectedAttributes).filter(([key]) => 
+                                Object.entries(selectedAttributes).filter(([key]) =>
                                     categoryDefinitions.some(def => def.name === key)
                                 )
                             )
-                        )} 
+                        )}
                     />
 
-                    <h4 className="font-semibold text-gray-700 mb-2">Atributos de la categoría</h4>
+                    <h4 className="font-semibold text-gray-700 mb-2">Atributos de la categoría:</h4>
 
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 px-8">
                         {categoryDefinitions.map((attr) => (
                             <div key={attr.name} className="space-y-1">
                                 <label className="block font-medium text-gray-600">{attr.name}</label>

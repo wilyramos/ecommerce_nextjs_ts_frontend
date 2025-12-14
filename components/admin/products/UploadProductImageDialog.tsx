@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Images } from "lucide-react" // Ícono de react-icons/lucide-react
+import { Label } from "@/components/ui/label"
 
 interface UploadProductImageDialogProps {
     CurrentImagenes?: string[]
@@ -49,9 +50,9 @@ export default function UploadProductImageDialog({
         setSelected(prev => prev.includes(img) ? prev.filter(i => i !== img) : [...prev, img])
 
     return (
-        <>
-            <div className="border rounded-2xl p-2 m-5">
-                <label className="block text-gray-700 font-semibold mb-2">Imágenes Seleccionadas:</label>
+        <div className="border-2 rounded-2xl p-4 space-y-4">
+            <div className="space-y-2">
+                <Label className="mb-1">Imágenes seleccionadas:</Label>
                 <div className="flex flex-wrap gap-2">
                     {!selected.length && <p className="text-gray-500">No hay imágenes seleccionadas.</p>}
                     {selected.map((img, i) => (
@@ -129,6 +130,6 @@ export default function UploadProductImageDialog({
             {selected.map((img, i) => (
                 <input key={i} type="hidden" name="imagenes[]" value={img} />
             ))}
-        </>
+        </div>
     )
 }

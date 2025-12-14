@@ -13,6 +13,13 @@ import {
 } from "@/components/ui/select";
 import { Trash2, Plus, AlertCircle } from "lucide-react";
 import UploadVariantImageDialog from "./UploadVariantImageDialog";
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion";
+
 
 interface CategoryAttr {
     name: string;
@@ -31,6 +38,8 @@ export default function ProductVariantsForm({ product, categoryAttributes }: Pro
 
     const [variants, setVariants] = useState<TApiVariant[]>(product?.variants ?? []);
     const [errors, setErrors] = useState<string[]>([]);
+    const [openItems, setOpenItems] = useState<string[]>([]);
+
 
     // Función auxiliar pura para obtener errores de una lista de variantes
     const getValidationErrors = (currentVariants: TApiVariant[]) => {
@@ -90,6 +99,7 @@ export default function ProductVariantsForm({ product, categoryAttributes }: Pro
         setVariants(nextVariants);
         // Validamos automáticamente al agregar (bloqueará el submit hasta que se llene)
         setErrors(getValidationErrors(nextVariants));
+        setOpenItems((prev) => [...prev, newVariant._id!]);
     };
 
     const updateVariant = <K extends keyof TApiVariant>(index: number, key: K, value: TApiVariant[K]) => {
@@ -137,9 +147,9 @@ export default function ProductVariantsForm({ product, categoryAttributes }: Pro
     }
 
     return (
-        <div className="space-y-4 mt-6">
+        <div className="space-y-4 my-4 border-2 p-4 rounded-lg bg-white">
             <div className="flex justify-between items-center">
-                <h3 className="text-base font-semibold">Variantes</h3>
+                <h3 className="text-base font-semibold">Variantes del producto:</h3>
             </div>
 
             {/* Mostramos errores de validación automáticamente */}
@@ -155,117 +165,159 @@ export default function ProductVariantsForm({ product, categoryAttributes }: Pro
                 </div>
             )}
 
-            <div className="space-y-4">
-                {variants.map((variant, index) => {
-                    const isRowIncomplete = variantAttributes.some(attr => !variant.atributos[attr.name]);
+            <div className="space-y-4 ">
+                <Accordion
+                    type="multiple"
+                    value={openItems}
+                    onValueChange={setOpenItems}
+                    className="space-y-2">
+                    {variants.map((variant, index) => {
+                        const isIncomplete = variantAttributes.some(
+                            (attr) => !variant.atributos[attr.name]
+                        );
 
-                    return (
-                        <div
-                            key={variant._id}
-                            className={`border rounded-xl p-2 md:p-4 bg-card shadow-sm space-y-4 ${isRowIncomplete ? "border-red-300 bg-red-50/10" : "border-gray-200"
-                                }`}
-                        >
-                            <div className="flex flex-wrap gap-4 bg-gray-50/50 rounded-lg">
-                                {variantAttributes.map((attr) => {
-                                    const isEmpty = !variant.atributos[attr.name];
-                                    return (
-                                        <div key={attr.name} className="space-y-1 min-w-[120px]">
-                                            <label className={`text-xs font-medium uppercase tracking-wide ${isEmpty ? "text-red-500" : "text-gray-500"}`}>
-                                                {attr.name}: 
-                                            </label>
-                                            <Select
-                                                value={variant.atributos[attr.name] ?? ""}
-                                                onValueChange={(val) =>
-                                                    updateAttribute(index, attr.name, val === "__none__" ? "" : val)
-                                                }
-                                            >
-                                                <SelectTrigger className={`h-9 bg-white ${isEmpty ? "border-red-400 ring-1 ring-red-100" : ""}`}>
-                                                    <SelectValue placeholder="— Seleccionar —" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {/* Opción “ninguno” con valor especial */}
-                                                    <SelectItem key="none" value="__none__">— Ninguno —</SelectItem>
-                                                    {attr.values.map((val) => (
-                                                        <SelectItem key={val} value={val}>
-                                                            {val}
-                                                        </SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
+                        const summary = variantAttributes
+                            .map((attr) => variant.atributos[attr.name])
+                            .filter(Boolean)
+                            .join(" / ");
 
+                        return (
+                            <AccordionItem
+                                key={variant._id}
+                                value={variant._id!}
+                                className={` border-2 border-gray-400 ${isIncomplete ? "border-red-300" : "border-gray-400"
+                                    }`}
+                            >
+                                {/* Header compacto */}
+                                <AccordionTrigger className="px-3 py-2 text-sm hover:no-underline">
+                                    <div className="flex w-full items-center justify-between gap-3">
+                                        <div className="truncate uppercase font-medium text-xs ">
+                                            {summary || "Variante sin atributos"}
                                         </div>
-                                    );
-                                })}
-                            </div>
 
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 items-end">
-                                <div className="space-y-1">
-                                    <label className="text-xs font-medium">Precio</label>
-                                    <Input
-                                        className="h-9"
-                                        type="number"
-                                        value={variant.precio}
-                                        onChange={(e) => updateVariant(index, "precio", Number(e.target.value))}
-                                        placeholder="0.00"
+                                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                                            <span>s/{variant.precio || 0}</span>
+                                            <span>Stock: {variant.stock}</span>
+                                        </div>
+                                    </div>
+                                </AccordionTrigger>
+
+                                {/* Contenido completo */}
+                                <AccordionContent className="px-3 pb-4 pt-2 space-y-4">
+                                    {/* ATRIBUTOS */}
+                                    <div className="flex flex-wrap gap-3">
+                                        {variantAttributes.map((attr) => {
+                                            const isEmpty = !variant.atributos[attr.name];
+                                            return (
+                                                <div key={attr.name} className="w-[140px] space-y-1">
+
+                                                    <label
+                                                        className={`text-xs font-medium ${isEmpty ? "text-red-500" : "text-muted-foreground"
+                                                            }`}
+                                                    >
+                                                        {attr.name}
+                                                    </label>
+                                                    <Select
+                                                        value={variant.atributos[attr.name] || ""}
+                                                        onValueChange={(val) =>
+                                                            updateAttribute(
+                                                                index,
+                                                                attr.name,
+                                                                val === "__none__" ? "" : val
+                                                            )
+                                                        }
+                                                    >
+                                                        <SelectTrigger className="h-8">
+                                                            <SelectValue placeholder="—" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="__none__">— Ninguno —</SelectItem>
+                                                            {attr.values.map((val) => (
+                                                                <SelectItem key={val} value={val}>
+                                                                    {val}
+                                                                </SelectItem>
+                                                            ))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+
+                                    {/* DATOS NUMÉRICOS */}
+
+
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 items-end">
+                                        <div className="space-y-1">
+                                            <label className="text-xs font-medium">Precio</label>
+                                            <Input
+                                                type="number"
+                                                placeholder="Precio"
+                                                value={variant.precio}
+                                                onChange={(e) =>
+                                                    updateVariant(index, "precio", Number(e.target.value))
+                                                }
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-xs font-medium">Precio Comp.</label>
+                                            <Input
+                                                type="number"
+                                                value={variant.precioComparativo}
+                                                onChange={(e) => updateVariant(index, "precioComparativo", Number(e.target.value))}
+                                                placeholder="0.00"
+                                            />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-xs font-medium">Stock</label>
+                                            <Input
+                                                className="h-9"
+                                                value={variant.stock}
+                                                onChange={(e) => updateVariant(index, "stock", Number(e.target.value))}
+                                            />
+                                        </div>
+                                        <div className="space-y-1 col-span-2 md:col-span-1">
+                                            <label className="text-xs font-medium">SKU</label>
+                                            <Input
+                                                className="h-9"
+                                                value={variant.sku}
+                                                onChange={(e) => updateVariant(index, "sku", e.target.value)}
+
+                                            />
+                                        </div>
+
+
+
+                                    </div>
+
+                                    {/* IMÁGENES */}
+                                    <UploadVariantImageDialog
+                                        images={variant.imagenes ?? []}
+                                        setImages={(fn) => {
+                                            const next = [...variants];
+                                            next[index].imagenes = fn(next[index].imagenes ?? []);
+                                            setVariants(next);
+                                        }}
                                     />
-                                </div>
-                                <div className="space-y-1">
-                                    <label className="text-xs font-medium">Precio Comp.</label>
-                                    <Input
-                                        className="h-9"
-                                        type="number"
-                                        value={variant.precioComparativo}
-                                        onChange={(e) => updateVariant(index, "precioComparativo", Number(e.target.value))}
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                                <div className="space-y-1">
-                                    <label className="text-xs font-medium">Stock</label>
-                                    <Input
-                                        className="h-9"
-                                        type="number"
-                                        value={variant.stock}
-                                        onChange={(e) => updateVariant(index, "stock", Number(e.target.value))}
-                                    />
-                                </div>
-                                <div className="space-y-1 col-span-2 md:col-span-1">
-                                    <label className="text-xs font-medium">SKU</label>
-                                    <Input
-                                        className="h-9"
-                                        value={variant.sku}
-                                        onChange={(e) => updateVariant(index, "sku", e.target.value)}
-                                    />
-                                </div>
 
+                                    {/* DELETE */}
+                                    <div className="flex justify-end">
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => removeVariant(index)}
+                                            className="text-destructive"
+                                        >
+                                            <Trash2 className="w-4 h-4 mr-2" />
+                                            Eliminar variante
+                                        </Button>
+                                    </div>
+                                </AccordionContent>
+                            </AccordionItem>
+                        );
+                    })}
+                </Accordion>
 
-
-                            </div>
-                            <div className="space-y-1 col-span-2 md:col-span-1">
-                                {/* <label className="text-xs font-medium">Imágenes</label> */}
-
-                                <UploadVariantImageDialog
-                                    images={variant.imagenes ?? []}
-                                    setImages={(fn) => {
-                                        const next = [...variants];
-                                        next[index].imagenes = fn(next[index].imagenes ?? []);
-                                        setVariants(next);
-                                    }}
-                                />
-                            </div>
-
-                            <div className="flex justify-end pb-0.5">
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    onClick={() => removeVariant(index)}
-                                    className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                                >
-                                    <Trash2 className="h-5 w-5" />
-                                </Button>
-                            </div>
-                        </div>
-                    );
-                })}
             </div>
 
             {/* Input oculto: Se vacía si hay errores, impidiendo el envío del formulario padre */}
@@ -275,7 +327,7 @@ export default function ProductVariantsForm({ product, categoryAttributes }: Pro
                 value={errors.length === 0 && variants.length > 0 ? JSON.stringify(variantsToSubmit) : ""}
             />
 
-            <div className="flex gap-3">
+            <div className="flex gap-2">
                 <Button onClick={addVariant} size="sm" variant="outline" className="gap-2 border-dashed border-2">
                     <Plus className="w-4 h-4" /> Añadir variante
                 </Button>
