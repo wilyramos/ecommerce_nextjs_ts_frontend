@@ -390,18 +390,19 @@ export default function ProductDetails({ producto }: Props) {
                         })}
 
                         {/* Asi haya variante seleccionada o no, separar el espacio */}
-                        {/* Separador siempre visible */}
-                        <div className="mt-1">
-                            <div className="border-t" />
+                        {/* Separador invisible SOLO si existen variantes */}
+                        {(producto.variants?.length ?? 0) > 0 && (
+                            <div className="mt-1">
+                                {/* Línea reservada: nunca empuja el contenido inferior */}
+                                <p className="mt-1 h-2 text-xs font-medium text-gray-600 leading-4">
+                                    {selectedVariant
+                                        ? `Variante seleccionada: ${selectedVariant.nombre} - S/ ${selectedVariant.precio ?? producto.precio
+                                        }`
+                                        : "\u00A0"}
+                                </p>
+                            </div>
+                        )}
 
-                            {/* Línea reservada: nunca empuja el contenido inferior */}
-                            <p className="mt-1 h-2 text-xs font-medium text-gray-600 leading-4">
-                                {selectedVariant
-                                    ? `Variante seleccionada: ${selectedVariant.nombre} - S/ ${selectedVariant.precio ?? producto.precio
-                                    }`
-                                    : "\u00A0"}
-                            </p>
-                        </div>
 
 
 

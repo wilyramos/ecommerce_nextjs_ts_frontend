@@ -93,10 +93,7 @@ export default function RootLayout({
                     <MercadoPagoProvider />
                     {children}
                     <Toaster
-                        richColors
-                        toastOptions={{
-                            className: "bg-gray-800 text-white",
-                        }}
+                        theme="dark"
                         expand
                         duration={5000}
                     />
