@@ -263,7 +263,9 @@ export default function ProductsTable({ products, categories, brands }: {
                                                 no image
                                             </div>
                                         )}
-                                        <span className="line-clamp-3 max-w-[180px] text-black">{p.nombre}</span>
+                                        <span className="line-clamp-3 max-w-[180px] text-black">
+                                            {p.isFrontPage && (<span className="italic mr-1 text-orange-400 font-bold">[FrontPage]</span>)}{p.nombre}
+                                        </span>
                                     </Link>
                                 </TableCell>
 
