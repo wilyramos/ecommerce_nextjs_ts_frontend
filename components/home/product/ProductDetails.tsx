@@ -140,6 +140,31 @@ export default function ProductDetails({ producto }: Props) {
             ].filter((img, idx, arr) => arr.indexOf(img) === idx);
 
 
+    // Palabras dinamicas para mostrar descuento 
+    const discountList = [
+        '¡Oferta!',
+        '¡Descuento!',
+        '¡Ahorra ahora!',
+        '¡Promoción!',
+        '¡Precio especial!'
+    ];
+
+    const [discountIndex, setDiscountIndex] = useState(0);
+    const [visible, setVisible] = useState(true);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setVisible(false);
+
+            setTimeout(() => {
+                setDiscountIndex((prev) => (prev + 1) % discountList.length);
+                setVisible(true);
+            }, 300); // duración de salida
+        }, 2000);
+
+        return () => clearInterval(interval);
+    }, [discountList.length]);
+
     return (
         <>
             <article className="grid grid-cols-1 md:grid-cols-6 gap-2 md:gap-6 max-w-7xl mx-auto py-2">
@@ -184,35 +209,54 @@ export default function ProductDetails({ producto }: Props) {
 
                             {/* Mostrar color solo si NO hay variantes */}
                             {!producto.variants?.length && colorAtributo && (
-                                <div className="flex items-center gap-2 text-xs text-gray-700 border-l-2 px-2 w-max">
-                                    <span>Color:</span>
-                                    {Array.isArray(colorAtributo)
-                                        ? colorAtributo.map((c: string) => (
-                                            <ColorCircle key={c} color={c} />
-                                        ))
-                                        : <ColorCircle color={colorAtributo} />}
+                                <div className="flex items-center gap-3">
+                                    {/* Etiqueta sutil estilo metadata */}
+                                    <span className="text-xs font-medium text-gray-500">
+                                        Color
+                                    </span>
+
+                                    {/* Contenedor de círculos */}
+                                    <div className="flex items-center gap-1.5">
+                                        {(Array.isArray(colorAtributo) ? colorAtributo : [colorAtributo]).map((c) => (
+                                            <ColorCircle
+                                                key={c}
+                                                color={c}
+                                                size={14}
+                                            />
+                                        ))}
+                                    </div>
                                 </div>
                             )}
-
-                            {/* Precio y descuento - MODIFICADO CON blue */}
-                            <div className={`flex items-center gap-3 w-fit transition-colors duration-300 ${hasDiscount ? 'bg-blue-50 px-3' : 'mt-2'}`}>
-                                <div className="flex items-center gap-2">
-                                    <p className="text-2xl flex items-baseline font-medium text-gray-900">
-                                        <span className="text-xs mr-1">S/</span>
-                                        <span>{precio.toFixed(2)}</span>
-                                    </p>
+                            <div className="flex flex-row items-center gap-1 md:gap-3">
+                                {/* Price Block: Always grouped together */}
+                                <div className="flex items-baseline gap-2">
+                                    <div className="flex items-baseline text-gray-900">
+                                        <span className="text-sm font-medium mr-0.5">S/</span>
+                                        <span className="text-2xl font-semibold tracking-tight">{precio.toFixed(2)}</span>
+                                    </div>
 
                                     {hasDiscount && (
-                                        <span className="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 inline-block ">
-                                            -{Math.round(((precioComparativo - precio) / precioComparativo) * 100)}%
+                                        <span className="text-xs md:text-sm text-gray-400 line-through decoration-gray-400">
+                                            S/ {precioComparativo.toFixed(2)}
                                         </span>
                                     )}
                                 </div>
 
+                                {/* Discount Info: New line on mobile, Same line on desktop */}
                                 {hasDiscount && (
-                                    <div className="text-gray-400 text-sm flex flex-col leading-none">
-                                        <span className="line-through text-xs">S/ {precioComparativo.toFixed(2)}</span>
-                                        <span className="text-[10px] uppercase font-semibold text-blue-800/60">Oferta</span>
+                                    <div className="flex items-center gap-2">
+                                        <span className="bg-gray-900 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
+                                            -{Math.round(((precioComparativo - precio) / precioComparativo) * 100)}%
+                                        </span>
+
+                                        <span
+                                            className={`text-xs font-medium text-red-700 uppercase tracking-wide
+                    transition-all duration-300 ease-in-out
+                    ${visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'}
+                `}
+                                        >
+                                            {discountList[discountIndex]}
+                                        </span>
                                     </div>
                                 )}
                             </div>
@@ -224,18 +268,15 @@ export default function ProductDetails({ producto }: Props) {
                                         className={`text-xs font-medium px-2.5 py-1 flex items-center gap-1.5 w-fit transition-colors
                                         ${stock === 0
                                                 ? "bg-gray-50 text-gray-400 border-gray-100"
-                                                : "bg-orange-50/80 text-orange-800/90"
+                                                : "bg-orange-100 text-gray-900 border-orange-200"
                                             }`}
                                     >
-                                        <span
-                                            className={`h-2 w-2 rounded-full ${stock === 0 ? "bg-gray-300" : "bg-orange-500/70"
-                                                }`}
-                                        />
+
                                         {stock === 0 ? "Agotado" : `¡Solo quedan ${stock}!`}
                                     </span>
 
                                     {stock > 0 && (
-                                        <span className="text-[10px] font-bold text-orange-900/80 uppercase tracking-wide">
+                                        <span className="text-[10px] font-bold text-gray-600 uppercase tracking-wide">
                                             ¡Pídelo antes que se acabe!
                                         </span>
                                     )}
@@ -289,7 +330,7 @@ export default function ProductDetails({ producto }: Props) {
                                                         </div>
 
                                                         {/* Imagen (zona principal, centrada y consistente) */}
-                                                        <div className="h-10 w-10 flex items-center justify-center bg-gray-100 rounded-md overflow-hidden">
+                                                        <div className="h-10 w-10 my-2 flex items-center justify-center bg-gray-100 rounded-md overflow-hidden">
                                                             {variantForValue?.imagenes?.[0] ? (
                                                                 <Image
                                                                     src={variantForValue.imagenes[0]}
@@ -439,7 +480,7 @@ export default function ProductDetails({ producto }: Props) {
                                     Envíos al resto del Perú mediante{" "}
                                     <span className="font-semibold italic bg-red-600 text-white px-1">SHALOM</span>.
                                 </p>
-                                <p className="border border-gray-200 p-1 text-gray-600 bg-gray-100/50">
+                                <p className="border border-gray-200 py-2 px-1 text-gray-800 bg-zinc-50 rounded-md mt-1">
                                     {producto.diasEnvio
                                         ? `Recíbelo entre: ${getDeliveryRange(producto.diasEnvio)}`
                                         : "Recíbelo en 1–3 días hábiles"}
@@ -448,10 +489,10 @@ export default function ProductDetails({ producto }: Props) {
                         </div>
 
                         {/* Compra segura */}
-                        <div className="bg-white md:px-4 flex items-center gap-4 px-4">
-                            <div className="flex flex-col md:flex-row md:items-center md:justify-between w-full gap-2">
+                        <div className="bg-white md:px-4 flex items-center gap-4 px-4 py-2">
+                            <div className="flex flex-col lg:flex-row lg:items-center md:justify-between w-full gap-2">
                                 <p className="text-gray-600 whitespace-nowrap">Aceptamos los siguientes medios de pago:</p>
-                                <div className="flex items-center flex-wrap gap-3 ">
+                                <div className="flex items-center flex-wrap gap-1 ">
                                     <PaymentMethods />
                                 </div>
                             </div>

@@ -1,3 +1,5 @@
+//File: frontend/components/utils/LabelWithTooltip.tsx
+
 import { Label } from "@/components/ui/label";
 import {
     Tooltip,

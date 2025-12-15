@@ -1,3 +1,5 @@
+//File: frontend/actions/product/upload-image-action.ts
+
 "use server"
 
 import getToken from "@/src/auth/token"

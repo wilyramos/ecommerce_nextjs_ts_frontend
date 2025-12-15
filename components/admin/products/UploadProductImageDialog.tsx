@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import { useDropzone } from "react-dropzone"
+import { useDropzone, FileRejection, ErrorCode } from "react-dropzone"
 import Image from "next/image"
 import { uploadImage } from "@/actions/product/upload-image-action"
 import DeleteImageButton from "./DeleteImageButton"
@@ -10,18 +10,23 @@ import {
     DialogTitle, DialogDescription, DialogFooter, DialogClose
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { Images } from "lucide-react" // Ícono de react-icons/lucide-react
+import { Images } from "lucide-react"
 import { Label } from "@/components/ui/label"
+import { toast } from "sonner"
 
 interface UploadProductImageDialogProps {
     CurrentImagenes?: string[]
     triggerLabel?: string
 }
 
+const MAX_SIZE = 5 * 1024 * 1024 // 5MB
+const MAX_FILES = 5
+
 export default function UploadProductImageDialog({
     CurrentImagenes = [],
     triggerLabel = "Gestionar Imágenes",
 }: UploadProductImageDialogProps) {
+
     const [imagenes, setImagenes] = useState<string[]>([])
     const [selected, setSelected] = useState<string[]>([])
 
@@ -32,35 +37,79 @@ export default function UploadProductImageDialog({
         }
     }, [CurrentImagenes, imagenes])
 
-    const onDrop = useCallback(async (files: File[]) => {
-        const formData = new FormData()
-        files.forEach(file => formData.append("images", file))
-        const result = await uploadImage(formData)
-        setImagenes(prev => [...prev, ...result.images])
-        setSelected(prev => [...prev, ...result.images])
+    const toggleSelect = useCallback((img: string) => {
+        setSelected(prev =>
+            prev.includes(img)
+                ? prev.filter(i => i !== img)
+                : [...prev, img]
+        )
     }, [])
 
-    const { getRootProps, getInputProps, isDragActive, isDragReject, isDragAccept } = useDropzone({
-        accept: { "image/*": [".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg"] },
-        onDrop,
-        maxFiles: 5,
-    })
+    const onDropRejected = useCallback((rejections: FileRejection[]) => {
+        rejections.forEach(({ file, errors }) => {
+            errors.forEach(error => {
+                switch (error.code as ErrorCode) {
+                    case "file-too-large":
+                        toast.error(`"${file.name}" supera los 5MB`)
+                        break
+                    case "file-invalid-type":
+                        toast.error(`"${file.name}" no es un formato permitido`)
+                        break
+                    case "too-many-files":
+                        toast.error(`Máximo ${MAX_FILES} imágenes`)
+                        break
+                    default:
+                        toast.error(`Error al subir "${file.name}"`)
+                }
+            })
+        })
+    }, [])
 
-    const toggleSelect = (img: string) =>
-        setSelected(prev => prev.includes(img) ? prev.filter(i => i !== img) : [...prev, img])
+    const onDrop = useCallback(async (files: File[]) => {
+        try {
+            const formData = new FormData()
+            files.forEach(file => formData.append("images", file))
+
+            const result = await uploadImage(formData)
+
+            setImagenes(prev => [...prev, ...result.images])
+            setSelected(prev => [...prev, ...result.images])
+
+            toast.success("Imágenes subidas correctamente")
+
+        } catch {
+            toast.error("Error al subir las imágenes")
+        }
+    }, [])
+
+    const { getRootProps, getInputProps, isDragActive, isDragReject, isDragAccept } =
+        useDropzone({
+            onDrop,
+            onDropRejected,
+            maxFiles: MAX_FILES,
+            maxSize: MAX_SIZE,
+            accept: {
+                "image/*": [".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg"],
+            },
+        })
 
     return (
         <div className="border-2 rounded-2xl p-4 space-y-4">
-            <div className="space-y-2">
-                <Label className="mb-1">Imágenes seleccionadas:</Label>
-                <div className="flex flex-wrap gap-2">
-                    {!selected.length && <p className="text-gray-500">No hay imágenes seleccionadas.</p>}
-                    {selected.map((img, i) => (
-                        <div key={i} className="relative w-24 h-24 rounded-lg overflow-hidden border">
-                            <Image src={img} alt={`Imagen ${i + 1}`} fill className="object-cover" />
-                        </div>
-                    ))}
-                </div>
+
+            <Label>Imágenes seleccionadas</Label>
+            <div className="flex flex-wrap gap-2">
+                {!selected.length && (
+                    <p className="text-gray-500">No hay imágenes seleccionadas.</p>
+                )}
+                {selected.map((img) => (
+                    <div
+                        key={img}
+                        onClick={() => toggleSelect(img)}
+                        className="relative w-24 h-24 border rounded-lg overflow-hidden cursor-pointer"
+                    >
+                        <Image src={img} alt="" fill className="object-cover" />
+                    </div>
+                ))}
             </div>
 
             <Dialog>
@@ -75,47 +124,46 @@ export default function UploadProductImageDialog({
                     <DialogHeader>
                         <DialogTitle>Gestión de Imágenes</DialogTitle>
                         <DialogDescription>
-                            Sube imágenes o selecciona las que deseas usar para el producto.
+                            Arrastra imágenes o selecciónalas
                         </DialogDescription>
                     </DialogHeader>
 
                     <div
                         {...getRootProps({
                             className: `
-                flex items-center justify-center text-center 
-                border-2 border-dashed rounded-lg transition-colors py-12
-                ${isDragActive ? "border-gray-900 bg-gray-100 text-gray-900" : "border-gray-300 bg-white text-gray-400"}
-                ${isDragReject ? "border-red-500" : "cursor-pointer"}
+                flex items-center justify-center text-center
+                border-2 border-dashed rounded-lg py-12 transition
+                ${isDragAccept && "border-green-500 bg-green-50"}
+                ${isDragReject && "border-red-500 bg-red-50"}
+                ${!isDragActive && "border-gray-300"}
               `,
                         })}
                     >
                         <input {...getInputProps()} />
                         {isDragAccept && <p>Suelta las imágenes aquí</p>}
                         {isDragReject && <p>Archivo no válido</p>}
-                        {!isDragActive && <p>Arrastra y suelta imágenes, o haz clic para seleccionar</p>}
+                        {!isDragActive && <p>Arrastra o haz clic para seleccionar</p>}
                     </div>
 
                     {!!imagenes.length && (
-                        <div className="mt-3 space-y-2">
-                            <p className="font-semibold">Imágenes subidas:</p>
-                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                                {imagenes.map((img, i) => {
-                                    const selectedImg = selected.includes(img)
-                                    return (
-                                        <div
-                                            key={i}
-                                            onClick={() => toggleSelect(img)}
-                                            className={`relative w-full h-32 rounded-lg overflow-hidden border-2 transition-all cursor-pointer
-                        ${selectedImg ? "border-blue-500" : "border-transparent"}`}
-                                        >
-                                            <Image src={img} alt={`Imagen ${i + 1}`} fill className="object-cover" />
-                                            <div className="absolute top-1 right-1">
-                                                <DeleteImageButton image={img} setImagenes={setImagenes} />
-                                            </div>
+                        <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                            {imagenes.map(img => {
+                                const isSelected = selected.includes(img)
+                                return (
+                                    <div
+                                        key={img}
+                                        onClick={() => toggleSelect(img)}
+                                        className={`relative h-32 rounded-lg overflow-hidden border-2 cursor-pointer
+                      ${isSelected ? "border-blue-500" : "border-transparent"}
+                    `}
+                                    >
+                                        <Image src={img} alt="" fill className="object-cover" />
+                                        <div className="absolute top-1 right-1">
+                                            <DeleteImageButton image={img} setImagenes={setImagenes} />
                                         </div>
-                                    )
-                                })}
-                            </div>
+                                    </div>
+                                )
+                            })}
                         </div>
                     )}
 
@@ -127,8 +175,8 @@ export default function UploadProductImageDialog({
                 </DialogContent>
             </Dialog>
 
-            {selected.map((img, i) => (
-                <input key={i} type="hidden" name="imagenes[]" value={img} />
+            {selected.map(img => (
+                <input key={img} type="hidden" name="imagenes[]" value={img} />
             ))}
         </div>
     )

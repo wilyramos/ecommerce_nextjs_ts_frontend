@@ -60,7 +60,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                         >
                             {/* Text Section */}
                             <article className="z-10 w-full md:w-1/3 space-y-3 sm:space-y-2 text-center md:text-left order-2 md:order-1">
-                                
+
                                 {/* Etiqueta de Marca / Nuevo con animación Hover */}
                                 <div className="w-fit mx-auto md:mx-0 flex items-center gap-1.5 px-3 py-1 bg-white border text-[10px]  transition-all duration-300 hover:scale-105 hover:shadow-md hover:border-blue-200">
                                     {product.esNuevo ? (
@@ -87,16 +87,16 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
 
                                     {product.precioComparativo && product.precioComparativo > product.precio && (
                                         <div className="flex flex-col justify-end sm:pb-1 items-center sm:items-start">
-                                            
+
                                             {/* Descuento Dinámico en Loop (Aparece/Desaparece) */}
                                             <div className="relative h-8 w-42 overflow-hidden bg-yellow-300  flex items-center justify-center mb-0.5  group-hover:bg-yellow-200 transition-colors">
-                                                <span 
+                                                <span
                                                     className={`absolute w-full text-center text-[10px] sm:text-xs font-semibold text-gray-800 transition-all duration-500 ease-in-out transform
                                                     ${showDiscount ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}
                                                 >
                                                     -{discountPercentage}% OFF
                                                 </span>
-                                                <span 
+                                                <span
                                                     className={`absolute w-full text-center text-xs font-semibold text-gray-600 transition-all duration-500 ease-in-out transform
                                                     ${!showDiscount ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}`}
                                                 >

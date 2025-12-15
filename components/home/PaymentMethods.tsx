@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function PaymentMethods() {
     return (
-        <section className="py-2">
+        <section className="">
             <div className="">
                 <div className="flex items-center gap-3 max-w-md mx-auto">
 
