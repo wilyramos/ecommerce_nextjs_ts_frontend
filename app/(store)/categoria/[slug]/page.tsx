@@ -96,7 +96,7 @@ export default async function pageCategoria({
             <section className="grid grid-cols-1 sm:grid-cols-8 gap-4 px-4">
 
                 {/* Filtros en sidebar solo en escritorio */}
-                <div className="hidden sm:block sm:col-span-2 bg-black px-2 rounded-2xl m-4">
+                <div className="hidden sm:block sm:col-span-2 px-2 m-4">
                     <div className="sticky top-20 px-2 rounded">
                         <FiltrosPorCategoria categorySlug={slug} />
                     </div>
@@ -106,7 +106,7 @@ export default async function pageCategoria({
                 <section className="sm:col-span-6 space-y-2">
 
                     {/* Barra responsive arriba en mobile */}
-                    <div className="flex items-center justify-between gap-2 sm:hidden">
+                    <div className="flex items-center justify-between gap-2 sm:hidden bg-sky-300">
                         {/* DrawerFilters ya está dentro de FiltrosPorCategoria */}
                         {/* <Suspense fallback={<SpinnerLoading />}> */}
                         <FiltrosPorCategoria categorySlug={slug} />
