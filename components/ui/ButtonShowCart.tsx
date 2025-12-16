@@ -34,9 +34,9 @@ export default function ButtonShowCart() {
     return (
         <Sheet open={isCartOpen} onOpenChange={setCartOpen}>
             <SheetTrigger className="relative cursor-pointer">
-                <div className="hover:bg-gray-100 rounded-full p-2">
+                <div className="hover:bg-white hover:text-black rounded-full p-2">
                     <GrShop className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 bg-black text-white font-bold text-xs w-5 h-5 rounded-full flex items-center justify-center border-2 border-white">
+                <span className="absolute -top-1 -right-1 bg-red-600 text-white font-bold text-xs w-5 h-5 rounded-full flex items-center justify-center border-2 border-white">
                         {carrito.length}
                     </span>
                 </div>

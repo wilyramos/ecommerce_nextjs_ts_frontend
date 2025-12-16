@@ -59,7 +59,7 @@ export default function Advertisement() {
     if (!isVisible) return null;
 
     return (
-        <div className="w-full relative overflow-hidden bg-black text-white h-6">
+        <div className="w-full relative overflow-hidden bg-black text-white h-7 py-1">
 
             <style>{`
                 @keyframes marquee {

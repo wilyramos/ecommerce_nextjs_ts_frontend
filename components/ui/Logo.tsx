@@ -1,14 +1,19 @@
 import Image from "next/image";
 
-export default function Logo() {
+type LogoProps = {
+    color?: "black" | "white";
+};
+
+export default function Logo({ color = "black" }: LogoProps) {
+    const src = color === "black" ? "/logogophone.png" : "/logow.svg";
 
     return (
         <Image
-            src="/logogophone.png"
+            src={src}
             alt="Logo"
-            width={100}
-            height={100}
-            quality={50}
+            width={40}
+            height={40}
+            quality={10}
             className="w-auto"
         />
     );
