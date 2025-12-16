@@ -18,7 +18,6 @@ export const searchProductsIndex = async (query: string) => {
         const json = await req.json();
         console.log("json", json)
         const products = ProductsListSchema.parse(json);
-        console.log("Parsed products:", products);
         return products;
     } catch (error) {
         console.error("Error searching products:", error);

@@ -23,11 +23,11 @@ export default async function ProductResults({
     query,
     ...rest
 }: ProductResultsProps) {
-    const currentPage = page ? parseInt(page) : 1;
+    const currentPage = page ? parseInt(page, 10) : 1;
 
     const products = await getProductsMainPage({
         page: currentPage,
-        limit: limit,
+        limit,
         category: category || "",
         priceRange: priceRange || "",
         query: query || "",
@@ -35,63 +35,90 @@ export default async function ProductResults({
         ...rest,
     });
 
+    if (!products) {
+        return (
+            <div className="py-20 text-center text-gray-400">
+                Error al cargar productos
+            </div>
+        );
+    }
+
+    const isFallback = products.totalProducts === 0;
+    const hasProducts = products.products.length > 0;
+
     return (
-        <main className="flex flex-col gap-3">
-            {/* GRID principal: sidebar (filtros) + contenido */}
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <main className="flex flex-col gap-4">
+            {/* ===== NORMAL MODE ===== */}
+            {!isFallback && (
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
 
-                {/* Sidebar de filtros (desktop) */}
-                <aside className="hidden md:block md:col-span-1">
-                    <div className="sticky top-24">
-                        <ProductsFiltersMain filters={products?.filters || null} />
-                    </div>
-                </aside>
-
-                {/* Contenido principal */}
-                <section className="col-span-1 md:col-span-4 flex flex-col gap-2">
-                    {/* Barra superior (mobile + desktop) */}
-                    <div className="flex justify-between md:justify-end items-center gap-2 text-sm  border-b md:border-none sticky md:static top-10 py-1 bg-white md:bg-transparent z-10">
-                        {/* Drawer solo en mobile */}
-                        <div className="md:hidden">
-                            <DrawerFiltersMain filters={products?.filters || null} />
-                        </div>
-
-                        <OrdenarPor pathname="/productos" />
-                    </div>
-
-                    {/* Lista de productos */}
-                    {products && products.products.length > 0 ? (
-                        <>
-                            <ProductosList products={products.products} />
-
-                            {/* Paginación */}
-                            <Pagination
-                                currentPage={products.currentPage}
-                                totalPages={products.totalPages}
-                                limit={limit}
-                                pathname="/productos"
-                                queryParams={{
-                                    category,
-                                    priceRange,
-                                    sort,
-                                    query,
-                                    ...rest,
-                                }}
+                    {/* Sidebar filtros */}
+                    <aside className="hidden md:block md:col-span-1">
+                        <div className="sticky top-24">
+                            <ProductsFiltersMain
+                                filters={products.filters || null}
                             />
-                        </>
-                    ) : (
-                        <div>
+                        </div>
+                    </aside>
 
-                            <div className="text-center py-10 text-gray-400">
-                            No se encontraron productos
-                             </div>
+                    {/* Contenido principal */}
+                    <section className="col-span-1 md:col-span-4 flex flex-col gap-3">
+
+                        {/* Barra superior */}
+                        <div className="flex justify-between md:justify-end items-center gap-2 text-sm border-b md:border-none sticky md:static top-10 py-1 bg-white md:bg-transparent z-10">
+                            <div className="md:hidden">
+                                <DrawerFiltersMain filters={products?.filters || null} />
+                            </div>
+
+                            <OrdenarPor pathname="/productos" />
                         </div>
 
+                        {/* Lista productos */}
+                        {hasProducts && (
+                            <>
+                                <ProductosList products={products.products} />
 
+                                <Pagination
+                                    currentPage={products.currentPage}
+                                    totalPages={products.totalPages}
+                                    limit={limit}
+                                    pathname="/productos"
+                                    queryParams={{
+                                        category,
+                                        priceRange,
+                                        sort,
+                                        query,
+                                        ...rest,
+                                    }}
+                                />
+                            </>
+                        )}
+                    </section>
+                </div>
+            )}
+
+            {/* ===== FALLBACK MODE ===== */}
+            {isFallback && (
+                <section className="flex flex-col gap-6">
+
+                    {/* Mensaje */}
+                    <div className="text-center py-4 text-gray-500 text-sm">
+                        No se encontraron productos con los filtros seleccionados.
+                        <br />
+                        Te recomendamos estos productos.
+                    </div>
+
+                    {/* Productos ocupan todo el ancho */}
+                    {hasProducts && (
+                        <div className="w-full">
+                            <ProductosList
+                                products={products.products}
+
+                            />
+                        </div>
                     )}
                 </section>
-
-            </div>
+            )}
         </main>
     );
 }
