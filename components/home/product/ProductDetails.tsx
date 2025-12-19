@@ -318,35 +318,37 @@ export default function ProductDetails({ producto }: Props) {
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
                                                         title={val}
-                                                        className={`relative w-20 h-24 rounded-md border transition-colors
-    flex flex-col items-center justify-between p-1
-    ${selected ? 'border-gray-800 ring-1 ring-gray-800' : 'border-gray-300 hover:border-gray-500'}
-    ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
-  `}
+                                                        className={`relative w-20 h-24 rounded border transition-colors
+flex flex-col items-center justify-center p-1
+${selected ? 'border-gray-800 ring-1 ring-gray-800' : 'border-gray-300 hover:border-gray-500'}
+${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
+`}
+
                                                     >
                                                         {/* Color (como Amazon: pequeño, arriba) */}
-                                                        <div className="h-4 flex items-center justify-center">
+                                                        <div className="flex items-center justify-center">
                                                             <ColorCircle color={val} />
                                                         </div>
 
                                                         {/* Imagen (zona principal, centrada y consistente) */}
-                                                        <div className="h-10 w-10 my-2 flex items-center justify-center bg-gray-100 rounded-md overflow-hidden">
-                                                            {variantForValue?.imagenes?.[0] ? (
-                                                                <Image
-                                                                    src={variantForValue.imagenes[0]}
-                                                                    alt={`Variante ${val}`}
-                                                                    width={36}
-                                                                    height={36}
-                                                                    className="object-contain"
-                                                                    quality={2}
-                                                                />
-                                                            ) : (
-                                                                <div className="w-9 h-9 bg-gray-100 rounded" />
+                                                        <div className="my-2 flex items-center justify-center bg-gray-100 ">
+                                                            {variantForValue?.imagenes?.[0] && (
+                                                                <div className="flex items-center justify-center bg-gray-100">
+                                                                    <Image
+                                                                        src={variantForValue.imagenes[0]}
+                                                                        alt={`Variante ${val}`}
+                                                                        width={36}
+                                                                        height={36}
+                                                                        className="object-cover h-7 w-7"
+                                                                        quality={2}
+                                                                    />
+                                                                </div>
                                                             )}
+
                                                         </div>
 
                                                         {/* Nombre / etiqueta */}
-                                                        <div className="h-5 w-full flex items-center justify-center px-1">
+                                                        <div className="flex w-full items-center justify-center px-1">
                                                             <span
                                                                 className={`text-[11px] text-center truncate leading-tight
         ${selected ? 'font-semibold text-gray-900' : 'font-medium text-gray-600'}`}
@@ -366,7 +368,7 @@ export default function ProductDetails({ producto }: Props) {
 
                                                         {outOfStock && (
                                                             <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                                                <div className="w-full border-t border-gray-400 opacity-60 -rotate-45" />
+                                                                <div className="w-[80%] border-t-2 border-gray-500 border-dashed -rotate-45" />
                                                             </span>
                                                         )}
                                                     </button>
@@ -392,7 +394,7 @@ export default function ProductDetails({ producto }: Props) {
                                                         {val}
                                                         {outOfStock && (
                                                             <span
-                                                                className="absolute top-1/3 left-1/3 w-full border-t-2 border-gray-500 border-dashed"
+                                                                className="absolute top-1/2 left-1/2 w-[80%] border-t-2 border-gray-500 border-dashed"
                                                                 style={{ transform: 'translate(-50%, -50%) rotate(-45deg)' }}
                                                             />
                                                         )}
