@@ -205,13 +205,24 @@ export default function ProductForm({
                 <ProductVariantsForm
                     product={product}
                     categoryAttributes={dynamicCategoryAttributes}
+                    // Si usas estado: globalImages={globalImages}
+                    // Si usas solo data inicial: 
+                    globalImages={product?.imagenes || []}
                 />
             </div>
 
             {/* =================== SWITCHES =================== */}
             <div>
-                <ProductSwitches product={product} />
+                <div>
+                    <ProductSwitches product={product} />
+
+                </div>
+
             </div>
+
+
+
+
         </div>
     );
 }

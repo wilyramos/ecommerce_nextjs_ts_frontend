@@ -9,15 +9,17 @@ import AdminMenu from "./AdminMenu";
 import Logo from "../ui/Logo";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
-    Package,
-    Users,
-    Tag,
-    Receipt,
-    BarChart3,
-    ShoppingCart,
+    LayoutDashboard, // Dashboard
+    ShoppingBag,     // Productos (Más retail que Package)
+    Users,           // Clientes
+    ClipboardList,   // Órdenes (Mejor que Receipt para gestión)
+    Briefcase,       // Marcas (Ideal para tienda de cuero/negocios)
+    Layers,          // Categorías (Estándar para jerarquías)
+    LineChart,       // Reportes (Visualmente más limpio)
+    UserCog,         // Usuarios Sistema (Diferente a clientes)
+    Store,           // Punto de Venta (Tienda física)
     ChevronDown,
     ChevronRight,
-    LayoutDashboard,
 } from "lucide-react";
 
 type Props = { user: User };
@@ -33,21 +35,21 @@ type NavLink = {
 
 const links: NavLink[] = [
     { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
-    { href: "/admin/products", icon: Package, label: "Productos" },
+    { href: "/admin/products", icon: ShoppingBag, label: "Productos" },
     { href: "/admin/clients", icon: Users, label: "Clientes" },
-    { href: "/admin/orders", icon: Receipt, label: "Órdenes" },
-    { href: "/admin/brands", icon: Tag, label: "Marcas" },
-    { href: "/admin/products/category", icon: Tag, label: "Categorías" },
-    { href: "/admin/reports", icon: BarChart3, label: "Reportes" },
+    { href: "/admin/orders", icon: ClipboardList, label: "Órdenes" },
+    { href: "/admin/brands", icon: Briefcase, label: "Marcas" },
+    { href: "/admin/products/category", icon: Layers, label: "Categorías" },
+    { href: "/admin/reports", icon: LineChart, label: "Reportes" },
     {
-        icon: Users,
+        icon: UserCog,
         label: "Usuarios",
         children: [
             { href: "/admin/users", label: "Lista de usuarios" },
             { href: "/admin/users/roles", label: "Roles y permisos" },
         ],
     },
-    { href: "/pos", icon: ShoppingCart, label: "Punto de Venta" },
+    { href: "/pos", icon: Store, label: "Punto de Venta" },
 ];
 
 export default function AdminSidebar({ user }: Props) {

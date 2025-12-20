@@ -182,7 +182,7 @@ export default function ProductDetails({ producto }: Props) {
                                 {producto.brand && (
                                     <Link
                                         href={`/productos?brand=${producto.brand.slug}`}
-                                        className="text-xs font-bold text-zinc-400 uppercase hover:text-gray-700"
+                                        className="text-xs font-semibold text-zinc-400 uppercase hover:text-gray-700"
                                     >
                                         {producto.brand.nombre}
                                     </Link>
@@ -482,7 +482,7 @@ ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
                                     Envíos al resto del Perú mediante{" "}
                                     <span className="font-semibold italic bg-red-600 text-white px-1">SHALOM</span>.
                                 </p>
-                                <p className="border border-gray-200 py-2 px-1 text-gray-800 bg-zinc-50 rounded-md mt-1">
+                                <p className="border border-gray-200 py-2 px-1 text-gray-800 bg-zinc-50  mt-1">
                                     {producto.diasEnvio
                                         ? `Recíbelo entre: ${getDeliveryRange(producto.diasEnvio)}`
                                         : "Recíbelo en 1–3 días hábiles"}
@@ -501,7 +501,7 @@ ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
                         </div>
 
                         {/* Contacto */}
-                        <div className="bg-white p-4 text-center">
+                        <div className="bg-white px-4 py-2 text-center">
                             <p>
                                 ¿Tienes dudas?{" "}
                                 <a

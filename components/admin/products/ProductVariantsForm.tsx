@@ -30,9 +30,10 @@ interface CategoryAttr {
 interface Props {
     product?: ProductWithCategoryResponse;
     categoryAttributes: CategoryAttr[];
+    globalImages: string[]; // <--- NUEVA PROP
 }
 
-export default function ProductVariantsForm({ product, categoryAttributes }: Props) {
+export default function ProductVariantsForm({ product, categoryAttributes, globalImages }: Props) {
     // 1. Filtramos atributos obligatorios para variantes
     const variantAttributes = categoryAttributes.filter((attr) => attr.isVariant);
 
@@ -185,7 +186,7 @@ export default function ProductVariantsForm({ product, categoryAttributes }: Pro
                             <AccordionItem
                                 key={variant._id}
                                 value={variant._id!}
-                                className={` border-2 border-gray-400 ${isIncomplete ? "border-red-300" : "border-gray-400"
+                                className={` border-2  ${isIncomplete ? "border-red-300" : ""
                                     }`}
                             >
                                 {/* Header compacto */}
@@ -291,14 +292,17 @@ export default function ProductVariantsForm({ product, categoryAttributes }: Pro
                                     </div>
 
                                     {/* IMÁGENES */}
-                                    <UploadVariantImageDialog
-                                        images={variant.imagenes ?? []}
-                                        setImages={(fn) => {
-                                            const next = [...variants];
-                                            next[index].imagenes = fn(next[index].imagenes ?? []);
-                                            setVariants(next);
-                                        }}
-                                    />
+                                    {/* Dentro del mapeo de variants en AccordionContent */}
+<UploadVariantImageDialog
+                 images={variant.imagenes ?? []}
+                 globalImages={globalImages} // <--- Pasamos las globales al dialog
+                 setImages={(fn) => {
+                     const next = [...variants];
+                     next[index].imagenes = fn(next[index].imagenes ?? []);
+                     setVariants(next);
+                     // Si tienes validación en tiempo real, llámala aquí también
+                 }}
+             />
 
                                     {/* DELETE */}
                                     <div className="flex justify-end">

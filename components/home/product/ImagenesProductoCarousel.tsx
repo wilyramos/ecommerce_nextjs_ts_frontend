@@ -1,11 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-
 export default function ImagenesProductoCarousel({ images }: { images: string[] }) {
+
+    // 1. Lógica de deduplicación: Crea un array de URLs únicas
+    const uniqueImages = useMemo(() => {
+        if (!images) return [];
+        return Array.from(new Set(images));
+    }, [images]);
+
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [zoom, setZoom] = useState(false);
     const [position, setPosition] = useState({ x: 50, y: 50 });
@@ -13,13 +19,22 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
     const [dragStart, setDragStart] = useState<number | null>(null);
     const [dragEnd, setDragEnd] = useState<number | null>(null);
 
+    // 2. Resetear el índice si las imágenes cambian drásticamente 
+    // (opcional, pero recomendado al cambiar de variante)
+    useEffect(() => {
+        if (selectedIndex >= uniqueImages.length) {
+            setSelectedIndex(0);
+        }
+    }, [uniqueImages, selectedIndex]);
+
+    // Usamos uniqueImages en lugar de images en todas las funciones
     const nextImage = () => {
-        setSelectedIndex((prev) => (prev + 1) % images.length);
+        setSelectedIndex((prev) => (prev + 1) % uniqueImages.length);
         setZoom(false);
     };
 
     const prevImage = () => {
-        setSelectedIndex((prev) => (prev - 1 + images.length) % images.length);
+        setSelectedIndex((prev) => (prev - 1 + uniqueImages.length) % uniqueImages.length);
         setZoom(false);
     };
 
@@ -53,6 +68,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
 
         const diff = dragStart - dragEnd;
 
+        // Sensibilidad del swipe
         if (diff > 50) nextImage();
         if (diff < -50) prevImage();
 
@@ -60,91 +76,107 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
         setDragEnd(null);
     };
 
-    const showThumbnails = images.length > 1;
+    const showThumbnails = uniqueImages.length > 1;
+
+    // Si no hay imágenes únicas, no renderizamos nada o un placeholder
+    if (uniqueImages.length === 0) {
+        return (
+            <div className="w-full max-w-sm md:max-w-3xl mx-auto aspect-square bg-gray-100 flex items-center justify-center text-gray-400">
+                Sin imágenes
+            </div>
+        );
+    }
 
     return (
         <div className="w-full max-w-sm md:max-w-3xl mx-auto flex flex-col md:flex-row gap-2 bg-white">
 
             {showThumbnails && (
-                <div className="hidden md:flex flex-col gap-2 overflow-y-auto no-scrollbar w-20 md:p-2 sticky top-30 h-full">
-                    {images.map((img, idx) => (
+                <div className="hidden md:flex flex-col gap-2 overflow-y-auto no-scrollbar w-20 md:p-2 sticky top-30 h-full max-h-[500px]">
+                    {uniqueImages.map((img, idx) => (
                         <button
-                            key={idx}
+                            key={img} // Usar la URL como key es seguro aquí porque son únicas
                             onClick={() => setSelectedIndex(idx)}
-                            className={`relative h-16 w-16 rounded-md overflow-hidden border-2 transition-all duration-300
-                ${selectedIndex === idx ? "border-gray-500 hover:border-gray-700" : "border-gray-200 hover:border-gray-400"}`}
+                            className={`relative h-16 w-16 rounded-md overflow-hidden border-2 transition-all duration-300 flex-shrink-0
+                                ${selectedIndex === idx ? "border-gray-800 opacity-100 ring-1 ring-gray-800" : "border-gray-200 opacity-70 hover:opacity-100 hover:border-gray-400"}
+                            `}
                         >
-                            <Image src={img} alt={`Miniatura ${idx + 1}`} fill className="object-cover" quality={1} unoptimized />
+                            <Image
+                                src={img}
+                                alt={`Vista ${idx + 1}`}
+                                fill
+                                className="object-cover"
+                                sizes="80px"
+                            />
                         </button>
                     ))}
                 </div>
             )}
 
-            <div className="flex-1">
+            <div className="flex-1 relative">
                 <div
-                    className={`relative aspect-square overflow-hidden bg-white
-            ${zoom ? "cursor-zoom-out" : "cursor-zoom-in"}`}
+                    className={`relative aspect-square overflow-hidden bg-gray-50 rounded-lg select-none
+                        ${zoom ? "cursor-zoom-out" : "cursor-zoom-in"}`}
                     onMouseMove={handleMouseMove}
                     onClick={toggleZoom}
                     onMouseDown={onDragStart}
                     onMouseMoveCapture={onDragMove}
                     onMouseUp={onDragEnd}
+                    onMouseLeave={onDragEnd} // Importante para cancelar drag si sale
                     onTouchStart={onDragStart}
                     onTouchMove={onDragMove}
                     onTouchEnd={onDragEnd}
                 >
-                    {images.length > 0 ? (
-                        <Image
-                            key={selectedIndex}
-                            src={images[selectedIndex]}
-                            alt={`Imagen ${selectedIndex + 1}`}
-                            fill
-                            className={`object-contain transition duration-300 ${zoom ? "scale-150" : "scale-100"}`}
-                            style={{ transformOrigin: `${position.x}% ${position.y}%` }}
-                            quality={100}
-                            unoptimized
-                        />
-                    ) : (
-                        <div className="flex items-center justify-center w-full h-full text-gray-400 text-sm">
-                            Sin imagen
-                        </div>
-                    )}
+                    <Image
+                        key={uniqueImages[selectedIndex]} // Key para forzar re-render suave al cambiar
+                        src={uniqueImages[selectedIndex]}
+                        alt="Producto principal"
+                        fill
+                        className={`object-contain transition-transform duration-200 ease-out 
+                            ${zoom ? "scale-[2]" : "scale-100"}`} // Zoom aumentado a 2x
+                        style={zoom ? { transformOrigin: `${position.x}% ${position.y}%` } : undefined}
+                        quality={90}
+                        priority // Carga prioritaria para la imagen principal
+                    />
 
-                    {images.length > 1 && (
-                        <button
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                prevImage();
-                            }}
-                            className="absolute top-1/2 left-2 -translate-y-1/2 backdrop-blur-sm text-gray-700 p-3 rounded-full shadow-md"
-                        >
-                            <FaChevronLeft size={18} />
-                        </button>
-                    )}
+                    {/* Botones de navegación (solo si hay más de 1 imagen) */}
+                    {uniqueImages.length > 1 && !zoom && (
+                        <>
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    prevImage();
+                                }}
+                                className="absolute top-1/2 left-2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all z-10"
+                                aria-label="Imagen anterior"
+                            >
+                                <FaChevronLeft size={16} />
+                            </button>
 
-                    {images.length > 1 && (
-                        <button
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                nextImage();
-                            }}
-                            className="absolute top-1/2 right-4 -translate-y-1/2 backdrop-blur-sm text-gray-700 p-3 rounded-full shadow-md"
-                        >
-                            <FaChevronRight size={18} />
-                        </button>
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    nextImage();
+                                }}
+                                className="absolute top-1/2 right-2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all z-10"
+                                aria-label="Siguiente imagen"
+                            >
+                                <FaChevronRight size={16} />
+                            </button>
+                        </>
                     )}
                 </div>
 
+                {/* Miniaturas Móviles (Debajo) */}
                 {showThumbnails && (
-                    <div className="mt-2 flex md:hidden justify-center gap-2 overflow-x-auto no-scrollbar">
-                        {images.map((img, idx) => (
+                    <div className="mt-3 flex md:hidden justify-center gap-2 overflow-x-auto no-scrollbar py-2">
+                        {uniqueImages.map((img, idx) => (
                             <button
-                                key={idx}
+                                key={img}
                                 onClick={() => setSelectedIndex(idx)}
-                                className={`relative h-8 w-8 md:h-12 md:w-12 rounded-md overflow-hidden border-2 transition-all duration-300
-                  ${selectedIndex === idx ? "border-gray-500 hover:border-gray-700" : "border-gray-200 hover:border-gray-400"}`}
+                                className={`relative h-12 w-12 rounded-md overflow-hidden border-2 transition-all flex-shrink-0
+                                    ${selectedIndex === idx ? "border-gray-800 ring-1 ring-gray-800" : "border-gray-200 opacity-70"}`}
                             >
-                                <Image src={img} alt={`Miniatura ${idx + 1}`} fill className="object-cover" quality={5} unoptimized />
+                                <Image src={img} alt="Thumb" fill className="object-cover" sizes="48px" />
                             </button>
                         ))}
                     </div>
