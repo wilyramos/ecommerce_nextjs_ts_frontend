@@ -8,7 +8,7 @@ export default function Logo({ color = "black" }: LogoProps) {
     const logoSrc = color === "black" ? "/logogophone.png" : "/logow.svg";
 
     return (
-        <div className="relative inline-block">
+        <div className="abolute flex items-center gap-0 md:gap-1">
             {/* Logo */}
             <Image
                 src={logoSrc}
@@ -16,23 +16,16 @@ export default function Logo({ color = "black" }: LogoProps) {
                 width={40}
                 height={40}
                 quality={10}
-                className="w-auto"
+                className="w-auto "
             />
 
             {/* Gorrito navideño */}
             <Image
                 src="/hat.png" // gorrito moderno en SVG o PNG con fondo transparente
                 alt=""
-                width={36}
-                height={36}
-                className="
-          pointer-events-none
-          absolute
-          -top-1 md:-top-3
-          -right-5
-          rotate-14
-          drop-shadow-sm
-        "
+                width={26}
+                height={26}
+                className="relative -top-2 -left-1 md:-top-2 md:-left-2 w-auto rotate-45"
             />
         </div>
     );

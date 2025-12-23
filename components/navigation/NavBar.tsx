@@ -15,7 +15,7 @@ export default function NavBar() {
         <NavBarClient>
             {/* HEADER FIJO */}
             <header className="sticky top-0 z-50 bg-black text-white">
-                <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 h-12 md:h-16">
+                <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 h-12">
 
                     {/* Mobile menu button */}
                     <div className="md:hidden flex items-center">
@@ -68,7 +68,7 @@ export default function NavBar() {
             </header>
 
             {/* CATEGORÍAS FIJAS EN DESKTOP */}
-            <div className="hidden md:block sticky top-16 z-40 bg-white w-full border-b">
+            <div className="hidden md:block sticky z-40 bg-white w-full border-b">
                 <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center">
                     <ServerCategorias />
                 </div>

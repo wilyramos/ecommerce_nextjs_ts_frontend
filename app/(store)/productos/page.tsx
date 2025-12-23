@@ -1,64 +1,93 @@
-//File: frontend/app/%28store%29/productos/page.tsx
+// File: frontend/app/(store)/productos/page.tsx
 
 import type { Metadata } from "next";
 import { Suspense } from "react";
+
 import ProductResults from "@/components/home/product/ProductResults";
 import SpinnerLoading from "@/components/ui/SpinnerLoading";
 
 export const metadata: Metadata = {
     metadataBase: new URL("https://gophone.pe"),
-    title: "CatáloGo de Productos",
+
+    title: {
+        default: "Productos GoPhone | iPhone y Accesorios en Perú",
+        template: "%s | GoPhone Perú"
+    },
+
     description:
-        "Catálogo completo de productos GoPhone: iPhones, accesorios, cargadores, audífonos, fundas, cables, repuestos y más tecnología disponible con envío rápido en Perú.",
+        "Compra iPhones, accesorios originales, cargadores, audífonos, fundas, cables y repuestos. Tecnología garantizada con envío rápido a todo el Perú.",
+
     keywords: [
-        "GoPhone productos",
-        "iPhone Perú",
-        "accesorios iPhone",
-        "tienda tecnología Perú",
-        "cargadores originales",
-        "audífonos y AirPods",
-        "fundas y protectores",
-        "repuestos iPhone",
-        "smartphones Perú",
-        "gadgets tecnológicos",
-        "cables y adaptadores",
-        "tienda online de tecnología"
+        "comprar iPhone Perú",
+        "tienda Apple Perú",
+        "accesorios iPhone originales",
+        "cargadores iPhone originales",
+        "AirPods Perú",
+        "fundas iPhone",
+        "repuestos iPhone Perú",
+        "tienda tecnología online Perú",
+        "gadgets tecnológicos Perú",
+        "GoPhone Perú"
     ],
-    authors: [{ name: "GoPhone" }],
+
+    applicationName: "GoPhone",
+    authors: [{ name: "GoPhone", url: "https://gophone.pe" }],
     creator: "GoPhone",
+    publisher: "GoPhone",
+
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+            "max-video-preview": -1
+        }
+    },
+
     openGraph: {
-        title: "Productos GoPhone | Tecnología y Accesorios",
+        title: "Productos GoPhone | iPhone y Accesorios",
         description:
-            "Explora todos los productos disponibles: iPhones, accesorios, cargadores, fundas y más tecnología de calidad con garantía y envíos rápidos.",
+            "Explora iPhones, accesorios Apple, cargadores, audífonos y más tecnología con garantía y envíos rápidos en Perú.",
         url: "https://gophone.pe/productos",
         siteName: "GoPhone",
         locale: "es_PE",
         type: "website",
         images: [
             {
-                url: "https://gophone.pe/logob.svg",
+                url: "https://gophone.pe/logobw.jpg",
                 width: 1200,
                 height: 630,
                 alt: "Productos GoPhone Perú"
             }
         ]
     },
+
     twitter: {
         card: "summary_large_image",
-        title: "Productos GoPhone | Tecnología y Accesorios",
+        title: "Productos GoPhone | iPhone y Accesorios en Perú",
         description:
-            "Encuentra iPhones, accesorios, cargadores, cables, audífonos y más tecnología con garantía en GoPhone Perú.",
-        images: ["https://gophone.pe/logomini.svg"]
+            "iPhones, accesorios y tecnología original con garantía. Compra online en GoPhone Perú.",
+        images: ["https://gophone.pe/logobw.jpg"],
+        creator: "@gophone"
     },
+
     alternates: {
         canonical: "https://gophone.pe/productos"
     },
+
+    category: "technology",
+
     icons: {
-        icon: "/logoapp.png",
-        apple: "/logoapp.png"
+        icon: [
+            { url: "/favicon.ico", sizes: "32x32", type: "image/x-icon" },
+            { url: "/favicon.ico", sizes: "16x16", type: "image/x-icon" }
+        ],
+        apple: "/favicon.ico"
     }
 };
-
 
 type SearchParams = Promise<{
     category?: string;
@@ -70,13 +99,18 @@ type SearchParams = Promise<{
     [key: string]: string | string[] | undefined;
 }>;
 
-export default async function PageProducts({ searchParams }: { searchParams: SearchParams }) {
-    const { category, priceRange, page, limit, sort, query, ...rest } = await searchParams;
+export default async function PageProducts({
+    searchParams
+}: {
+    searchParams: SearchParams;
+}) {
+    const { category, priceRange, page, limit, sort, query, ...rest } =
+        await searchParams;
+
     const limitNumber = limit ? parseInt(limit) : 24;
 
     return (
         <main className="md:max-w-screen-2xl mx-auto px-4 md:px-8">
-
             <Suspense fallback={<SpinnerLoading />}>
                 <ProductResults
                     category={category}

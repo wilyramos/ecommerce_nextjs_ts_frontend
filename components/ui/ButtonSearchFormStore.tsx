@@ -103,7 +103,7 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
                         relative flex items-center transition-all duration-300
                          bg-gray-100
                          h-10
-                        ${isMobile ? "rounded-md" : "rounded-full"}
+                        ${isMobile ? "rounded" : "rounded"}
                     `}
                 >
                     <div className="pl-3 text-gray-400">
@@ -143,7 +143,7 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
                 <div
                     ref={dropdownRef}
                     className={`
-                        bg-white border-b shadow-xs border-gray-200 z-[1000000] overflow-hidden 
+                        bg-white border-b border-gray-200 z-[1000000] overflow-hidden 
                         ${isMobile
                             ? "absolute top-[calc(100%+1px)] left-0 w-full  h-[calc(100vh-300px)]"
                             : "absolute top-full left-0 w-full max-h-[calc(100vh-200px)]"

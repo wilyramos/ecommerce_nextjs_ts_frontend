@@ -2,10 +2,9 @@
 
 import Footer from "@/components/home/Footer";
 import NavBar from "@/components/navigation/NavBar";
-import Link from "next/link";
-import { FaWhatsapp } from "react-icons/fa"; // Ícono oficial de WhatsApp
 import { metadata as globalMetadata } from "@/app/layout";
 import type { Metadata } from "next";
+import WhatsappButton from "@/components/home/WhatsappButton";
 
 // Extendemos metadata global para esta sección
 export const metadata: Metadata = {
@@ -52,31 +51,13 @@ export default function layout({ children }: { children: React.ReactNode }) {
                 <header>
                     <NavBar />
                 </header>
-                <main className="pt-12 md:pt-24 min-h-screen">
+                <main className="pt-12 md:pt-20 min-h-screen">
                     {children}
                 </main>
                 <Footer />
             </section>
 
-            <Link
-                href="https://wa.me/51925054636?text=Hola%2C%20queria%20consultar%20sobre%20"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-        fixed bottom-6 right-6 z-50
-        flex items-center justify-center
-        w-14 h-14 rounded-full
-        bg-green-500/90 backdrop-blur-md
-        shadow-[0_4px_12px_rgba(0,0,0,0.25)]
-        hover:bg-green-500 hover:shadow-[0_0_15px_rgba(34,197,94,0.8)]
-        transition-all
-        animate-bounce-slow
-        group
-    "
-                aria-label="Chat en WhatsApp"
-            >
-                <FaWhatsapp className="w-8 h-8 text-white group-hover:scale-110 transition-transform" />
-            </Link>
+            <WhatsappButton />
 
         </>
     );

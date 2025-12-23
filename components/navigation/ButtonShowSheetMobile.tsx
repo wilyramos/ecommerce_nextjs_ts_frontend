@@ -56,21 +56,20 @@ export default function ButtonShowSheetMobile({
                 {/* Header */}
                 <div className="p-4 border-b border-gray-200 space-y-4">
                     <SheetHeader>
-                        <SheetTitle className="text-xl font-bold">
-                            <>
-                                <Logo />
-                             <h3 className="text-sm font-medium text-gray-700 px-2">
-                            Explora por categorías
-                        </h3>
-                            </>
+                        <SheetTitle className="text-xl font-bold flex flex-col gap-1">
+                            <Logo />
+                            <span className="text-sm font-medium text-gray-700 px-2">
+                                Explora por categorías
+                            </span>
                         </SheetTitle>
                     </SheetHeader>
+
                 </div>
 
                 {/* Scroll */}
                 <ScrollArea className="flex-1">
                     <div className="p-4 space-y-4">
-                       
+
 
                         {rootCategories.map((parent) => {
                             const subcategories = grouped[parent._id] || [];

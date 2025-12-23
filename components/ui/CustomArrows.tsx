@@ -9,7 +9,7 @@ type ArrowProps = {
 
 export function CustomArrow({ onClick, direction }: ArrowProps) {
     const baseClasses =
-        "absolute top-1/2 -translate-y-1/2 z-20 bg-white/90 hover:bg-black hover:text-white shadow-md transition p-3";
+        "absolute top-1/2 -translate-y-1/2 z-20 bg-white/90 hover:bg-black hover:text-white shadow-md transition p-2 cursor-pointer";
 
     const positionClasses =
         direction === "left"
@@ -19,9 +19,9 @@ export function CustomArrow({ onClick, direction }: ArrowProps) {
     return (
         <button onClick={onClick} className={`${baseClasses} ${positionClasses}`}>
             {direction === "left" ? (
-                <ChevronLeft className="w-6 h-6" />
+                <ChevronLeft className="w-5 h-5" />
             ) : (
-                <ChevronRight className="w-6 h-6" />
+                <ChevronRight className="w-5 h-5" />
             )}
         </button>
     );

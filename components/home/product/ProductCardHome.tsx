@@ -17,7 +17,7 @@ export default function ProductCardHome({
     return (
         <Link href={`/productos/${product.slug}`} className="block w-full">
             {/* CONTENEDOR DE IMAGEN */}
-            <div className="relative aspect-[3/4] w-full overflow-hidden rounded-md bg-gray-100 group">
+            <div className="relative aspect-[4/4] w-full overflow-hidden rounded-md bg-white group">
                 {primaryImage ? (
                     <>
                         <Image
@@ -37,7 +37,7 @@ export default function ProductCardHome({
                                 src={hoverImage}
                                 alt=""
                                 fill
-                                className="absolute inset-0 object-cover opacity-0 transition-all duration-700 ease-out group-hover:opacity-100 group-hover:scale-105"
+                                className="absolute inset-0 object-contain opacity-0 transition-all duration-700 ease-out group-hover:opacity-100 group-hover:scale-105"
                             />
                         )}
                     </>
@@ -51,12 +51,12 @@ export default function ProductCardHome({
             </div>
 
             {/* TEXTO FUERA DE LA IMAGEN */}
-            <div className="mt-3 px-1 text-gray-500 flex justify-between items-center text-xs">
+            <div className="mt-3 px-1 text-gray-400 flex justify-between items-center text-xs">
                 <h3 className="mb-1 line-clamp-2 text-xs font-medium leading-tight">
                     {product.nombre}
                 </h3>
 
-                <span className="">
+                <span className="text-gray-800 font-medium">
                     S/ {precio.toFixed(2)}
                 </span>
             </div>

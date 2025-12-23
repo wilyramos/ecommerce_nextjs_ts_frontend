@@ -51,7 +51,7 @@ export default function ButtonSearchMobile() {
                 <div
                     ref={containerRef}
                     className="
-                        fixed left-0 w-full bg-white border-b border-gray-200 shadow-md
+                        fixed left-0 w-full bg-white border-b border-gray-200
                         z-[45] px-4 py-3 md:hidden
                         animate-in fade-in slide-in-from-top-2 duration-200
                     "
