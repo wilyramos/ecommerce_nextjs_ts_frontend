@@ -182,7 +182,7 @@ export default function ProductDetails({ producto }: Props) {
                                 {producto.brand && (
                                     <Link
                                         href={`/productos?brand=${producto.brand.slug}`}
-                                        className="text-xs font-semibold text-zinc-400 uppercase hover:text-gray-700"
+                                        className="text-xs font-semibold text-zinc-400 uppercase hover:text-gray-400"
                                     >
                                         {producto.brand.nombre}
                                     </Link>
@@ -250,7 +250,7 @@ export default function ProductDetails({ producto }: Props) {
                                         </span>
 
                                         <span
-                                            className={`text-xs font-medium text-red-700 uppercase tracking-wide
+                                            className={`text-xs font-medium text-blue-900 uppercase tracking-wide
                     transition-all duration-300 ease-in-out
                     ${visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'}
                 `}
@@ -268,7 +268,7 @@ export default function ProductDetails({ producto }: Props) {
                                         className={`text-xs font-medium px-2.5 py-1 flex items-center gap-1.5 w-fit transition-colors
                                         ${stock === 0
                                                 ? "bg-gray-50 text-gray-400 border-gray-100"
-                                                : "bg-orange-100 text-gray-900 border-orange-200"
+                                                : "bg-yellow-100 text-gray-900 border-yellow-200"
                                             }`}
                                     >
 

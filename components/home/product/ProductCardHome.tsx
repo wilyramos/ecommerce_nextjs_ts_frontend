@@ -5,27 +5,27 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import type { ProductResponse } from "@/src/schemas"
 
-export default function ProductCardHome({
-    product,
-}: {
-    product: ProductResponse
-}) {
+export default function ProductCardHome({ product }: { product: ProductResponse }) {
     const primaryImage = product.imagenes?.[0]
     const hoverImage = product.imagenes?.[1] ?? primaryImage
-    const precio = product.precio ?? 0
+    const price = Number(product.precio) || 0
 
     return (
-        <Link href={`/productos/${product.slug}`} className="block w-full">
-            {/* CONTENEDOR DE IMAGEN */}
-            <div className="relative aspect-[4/4] w-full overflow-hidden rounded-md bg-white group">
+        <Link
+            href={`/productos/${product.slug}`}
+            className="block w-full group focus:outline-none focus-visible:ring-2 focus-visible:ring-black"
+        >
+            <div className="relative aspect-square w-full overflow-hidden rounded-md bg-white">
                 {primaryImage ? (
                     <>
                         <Image
                             src={primaryImage}
-                            alt={product.nombre}
+                            alt={product.nombre || "Producto"}
                             fill
+                            sizes="(max-width:768px) 50vw, 25vw"
+                            priority={false}
                             className={cn(
-                                "object-contain transition-transform duration-700 ease-out",
+                                "object-contain transition duration-700 ease-out",
                                 hoverImage !== primaryImage
                                     ? "group-hover:opacity-0"
                                     : "group-hover:scale-110"
@@ -37,27 +37,26 @@ export default function ProductCardHome({
                                 src={hoverImage}
                                 alt=""
                                 fill
-                                className="absolute inset-0 object-contain opacity-0 transition-all duration-700 ease-out group-hover:opacity-100 group-hover:scale-105"
+                                sizes="(max-width:768px) 50vw, 25vw"
+                                priority={false}
+                                className="absolute inset-0 object-contain opacity-0 transition duration-700 ease-out group-hover:opacity-100 group-hover:scale-105"
                             />
                         )}
                     </>
                 ) : (
-                    <div className="flex h-full w-full items-center justify-center">
-                        <span className="text-xs uppercase tracking-widest text-white/50">
-                            Sin imagen
-                        </span>
+                    <div className="flex h-full w-full items-center justify-center text-gray-400 text-xs">
+                        Sin imagen
                     </div>
                 )}
             </div>
 
-            {/* TEXTO FUERA DE LA IMAGEN */}
-            <div className="mt-3 px-1 text-gray-400 flex justify-between items-center text-xs">
-                <h3 className="mb-1 line-clamp-2 text-xs font-medium leading-tight">
+            <div className="mt-3 px-1 flex justify-between items-start gap-2">
+                <h3 className="line-clamp-2 text-xs font-medium text-gray-800 leading-tight">
                     {product.nombre}
                 </h3>
 
-                <span className="text-gray-800 font-medium">
-                    S/ {precio.toFixed(2)}
+                <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
+                    S/ {price.toLocaleString("es-PE", { minimumFractionDigits: 2 })}
                 </span>
             </div>
         </Link>

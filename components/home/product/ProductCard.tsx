@@ -123,7 +123,7 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                                         {imagenes.map((_, idx) => (
                                             <span
                                                 key={idx}
-                                                className={`h-1.5 w-2 rounded-full transition-colors duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100 ${idx === currentIndex ? "bg-black" : "bg-black/40"
+                                                className={`h-1.5 w-2 rounded transition-colors duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100 ${idx === currentIndex ? "bg-black" : "bg-black/40"
                                                     }`}
                                             />
                                         ))}
@@ -132,8 +132,8 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                             )}
                         </div>
                     ) : (
-                        <div className="flex items-center justify-center w-full h-full text-gray-400 text-sm">
-                            Sin imagen
+                        <div className="flex items-center justify-center w-full h-full text-gray-400 text-xs">
+                            no image
                         </div>
                     )}
 
@@ -192,7 +192,7 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                                     </div>
                                 </>
                             ) : (
-                                <span className="text-gray-400 text-sm">Sin stock</span>
+                                <span className="text-gray-600 text-sm bg-gray-100 px-1 rounded">Sin stock</span>
                             )}
                         </div>
                     </div>

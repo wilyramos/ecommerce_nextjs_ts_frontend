@@ -15,7 +15,7 @@ export default function HeaderConTituloConControles({ title, subtitle, next, pre
                 <h2 className="text-lg md:text-xl font-semibold mb-2 text-gray-800">
                     {title}
                 </h2>
-                <div className='border-2 border-b border-blue-200 mb-2 w-20 md:w-24'>
+                <div className='border-2 border-b border-blue-900 mb-2 w-20 md:w-24'>
                 </div>
 
                 {subtitle && (

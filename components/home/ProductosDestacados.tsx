@@ -14,7 +14,7 @@ export default async function ProductosDestacados() {
                 <h2 className="text-lg md:text-xl font-semibold tracking-tighter text-gray-800">
                     Lo mejor de GoPhone
                 </h2>
-                <div className='border-2 border-b border-blue-200 mb-2 w-20 md:w-32'>
+                <div className='border-2 border-b border-blue-900 mb-2 w-20 md:w-32'>
 
                 </div>
 
