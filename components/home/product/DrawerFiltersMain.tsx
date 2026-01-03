@@ -119,7 +119,7 @@ export default function DrawerFiltersMain({ filters }: Props) {
     };
 
     const SectionTitle = ({ title }: { title: string }) => (
-        <span className="uppercase tracking-wide text-[13px] font-light text-gray-700">
+        <span className="uppercase tracking-wide text-sm font-semibold text-gray-600">
             {title}
         </span>
     );
@@ -159,7 +159,7 @@ export default function DrawerFiltersMain({ filters }: Props) {
     }) => (
         <Disclosure>
             {({ open }) => (
-                <div className="border-b">
+                <div className="border-b border-gray-200 pb-2">
                     <Disclosure.Button
                         className="
               w-full flex justify-between items-center py-3

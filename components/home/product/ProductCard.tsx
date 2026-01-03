@@ -176,6 +176,7 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                     {/* Fila 5: Precios y color (empujado hacia abajo) */}
                     {/* 3. mt-auto empuja este div hasta el final del contenedor flex-col */}
                     <div className="flex items-center gap-2 mt-auto pt-1">
+                        {/* <span className="text-gray-400 text-xs">Color </span> */}
                         {color && <ColorCircle color={color} size={12} />}
                         <div className="ml-auto flex flex-col items-end leading-tight">
                             {stock > 0 ? (

@@ -168,12 +168,12 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
 
                 {/* Miniaturas Móviles (Debajo) */}
                 {showThumbnails && (
-                    <div className="mt-3 flex md:hidden justify-center gap-2 overflow-x-auto no-scrollbar py-2">
+                    <div className="mt-3 flex md:hidden justify-center gap-2 overflow-x-auto no-scrollbar py-2 w-7 h-7">
                         {uniqueImages.map((img, idx) => (
                             <button
                                 key={img}
                                 onClick={() => setSelectedIndex(idx)}
-                                className={`relative h-12 w-12 rounded-md overflow-hidden border-2 transition-all flex-shrink-0
+                                className={`relative h-7 w-7 rounded-md overflow-hidden border-2 transition-all flex-shrink-0
                                     ${selectedIndex === idx ? "border-gray-800 ring-1 ring-gray-800" : "border-gray-200 opacity-70"}`}
                             >
                                 <Image src={img} alt="Thumb" fill className="object-cover" sizes="48px" />

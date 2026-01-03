@@ -296,7 +296,7 @@ export default function ProductDetails({ producto }: Props) {
 
                             return (
                                 <fieldset key={key} className="mb-2 p-1">
-                                    <legend className="text-xs font-bold text-gray-600 uppercase tracking-wide mb-2">{key}:</legend>
+                                    <legend className="text-sm font-bold text-gray-400 uppercase tracking-wide mb-2">{key}:</legend>
 
                                     {key.toLowerCase() === "color" ? (
                                         <div className="flex flex-wrap items-center gap-3">
@@ -471,7 +471,7 @@ ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
                     </div>
 
                     {/* Información adicional */}
-                    <div className="space-y-2 mt-2 text-gray-700 text-xs">
+                    <div className="space-y-2 mt-2 text-gray-700 text-sm">
                         {/* Envío */}
                         <div className="bg-white py-2 md:px-4 flex items-start gap-4 px-4">
                             <div className="flex flex-wrap gap-x-2">
@@ -482,7 +482,8 @@ ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
                                     Envíos al resto del Perú mediante{" "}
                                     <span className="font-semibold italic bg-red-600 text-white px-1">SHALOM</span>.
                                 </p>
-                                <p className="border border-gray-200 py-2 px-1 text-gray-800 bg-zinc-50  mt-1">
+                                <br/>
+                                <p className="border-l-2 border-gray-600 py-2 px-1 text-gray-600 bg-zinc-50  mt-1">
                                     {producto.diasEnvio
                                         ? `Recíbelo entre: ${getDeliveryRange(producto.diasEnvio)}`
                                         : "Recíbelo en 1–3 días hábiles"}

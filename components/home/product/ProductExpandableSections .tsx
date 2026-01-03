@@ -33,7 +33,7 @@ export default function ProductExpandableSections({ producto }: Props) {
             <AccordionItem value="descripcion-especificaciones">
                 <AccordionTrigger>Información del producto</AccordionTrigger>
                 <AccordionContent>
-                    <div className="mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 text-xs">
+                    <div className="mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6">
                         {hasDescripcion && (
                             <div className={descripcionColSpan}>
                                 <div
@@ -51,7 +51,7 @@ export default function ProductExpandableSections({ producto }: Props) {
                                     Especificaciones
                                 </h2>
 
-                                <table className="w-full text-xs border-collapse">
+                                <table className="w-full text-sm border-collapse">
                                     <tbody>
                                         {producto.especificaciones!.map((spec) => (
                                             <tr
@@ -114,6 +114,34 @@ export default function ProductExpandableSections({ producto }: Props) {
                             <p>
                                 Precios con impuestos incluidos. Producto con garantía oficial
                                 del fabricante.
+                            </p>
+                        </div>
+                    </div>
+                </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="Sobre nuestra garantía">
+                <AccordionTrigger>Sobre nuestra garantía</AccordionTrigger>
+                <AccordionContent>
+                    <div className="mx-auto text-sm grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div className="space-y-3">
+                            <p>
+                                Todos nuestros productos cuentan con{" "}
+                                <strong>garantía oficial del fabricante</strong>.
+                            </p>
+                            <p>
+                                En caso de presentar fallas, te ayudamos a gestionar la
+                                garantía directamente con el fabricante.
+                            </p>
+                        </div>
+                        <div className="space-y-3">
+                            <p>
+                                La cobertura y duración de la garantía dependen del fabricante
+                                y del producto.
+                            </p>
+                            <p>
+                                Para más información, revisa los términos de garantía en la
+                                página del fabricante.
                             </p>
                         </div>
                     </div>

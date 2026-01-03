@@ -132,6 +132,7 @@ function ListItem({
                 fill
                 className="object-cover"
                 sizes="48px"
+                quality={5}
               />
             </div>
           )
@@ -140,7 +141,7 @@ function ListItem({
 
           {/* Texto */}
           <div>
-            <div className="text-xs font-medium text-gray-700">{title}</div>
+            <div className="font-medium text-gray-700">{title}</div>
             <p className="text-muted-foreground text-xs line-clamp-2 leading-snug">
               {children}
             </p>

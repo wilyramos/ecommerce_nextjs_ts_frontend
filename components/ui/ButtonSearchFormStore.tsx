@@ -103,7 +103,7 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
                         relative flex items-center transition-all duration-300
                          bg-gray-100
                          h-10
-                        ${isMobile ? "rounded" : "rounded"}
+                        ${isMobile ? "rounded-full" : "rounded-full bg-gray-100 hover:bg-white shadow-md"}
                     `}
                 >
                     <div className="pl-3 text-gray-400">
