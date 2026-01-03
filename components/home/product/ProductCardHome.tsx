@@ -51,7 +51,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
             </div>
 
             <div className="mt-3 px-1 flex justify-between items-start gap-2">
-                <h3 className="line-clamp-2 text-xs font-medium text-gray-800 leading-tight">
+                <h3 className="line-clamp-2 text-base font-medium text-gray-600 leading-tight">
                     {product.nombre}
                 </h3>
 
