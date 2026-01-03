@@ -114,7 +114,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
 
             <div className="flex-1 relative">
                 <div
-                    className={`relative aspect-square overflow-hidden bg-gray-50 rounded-lg select-none
+                    className={`relative aspect-square overflow-hidden bg-white rounded-lg select-none
                         ${zoom ? "cursor-zoom-out" : "cursor-zoom-in"}`}
                     onMouseMove={handleMouseMove}
                     onClick={toggleZoom}
@@ -146,7 +146,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                                     e.stopPropagation();
                                     prevImage();
                                 }}
-                                className="absolute top-1/2 left-2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all z-10"
+                                className="absolute top-1/2 left-1 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all z-10 cursor-pointer"
                                 aria-label="Imagen anterior"
                             >
                                 <FaChevronLeft size={16} />
@@ -157,7 +157,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                                     e.stopPropagation();
                                     nextImage();
                                 }}
-                                className="absolute top-1/2 right-2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all z-10"
+                                className="absolute top-1/2 right-1 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all z-10 cursor-pointer"
                                 aria-label="Siguiente imagen"
                             >
                                 <FaChevronRight size={16} />
@@ -168,15 +168,15 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
 
                 {/* Miniaturas Móviles (Debajo) */}
                 {showThumbnails && (
-                    <div className="mt-3 flex md:hidden justify-center gap-2 overflow-x-auto no-scrollbar py-2 w-7 h-7">
+                    <div className="mt-3 flex md:hidden justify-center gap-2 overflow-x-auto no-scrollbar px-2">
                         {uniqueImages.map((img, idx) => (
                             <button
                                 key={img}
                                 onClick={() => setSelectedIndex(idx)}
-                                className={`relative h-7 w-7 rounded-md overflow-hidden border-2 transition-all flex-shrink-0
+                                className={`relative h-10 w-10 rounded-md overflow-hidden border-2 transition-all flex-shrink-0
                                     ${selectedIndex === idx ? "border-gray-800 ring-1 ring-gray-800" : "border-gray-200 opacity-70"}`}
                             >
-                                <Image src={img} alt="Thumb" fill className="object-cover" sizes="48px" />
+                                <Image src={img} alt="Thumb" fill className="object-cover" sizes="48px" quality={5} />
                             </button>
                         ))}
                     </div>
