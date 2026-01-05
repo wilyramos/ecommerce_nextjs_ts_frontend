@@ -2,7 +2,6 @@
 
 import Carousel, { ButtonGroupProps } from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import type { CategoryListResponse } from "@/src/schemas";
@@ -26,8 +25,8 @@ interface Props {
 
 export default function ClientCarouselCategorias({ categorias }: Props) {
     const responsive = {
-        desktop: { breakpoint: { max: 3000, min: 1280 }, items: 8 },
-        laptop: { breakpoint: { max: 1280, min: 1024 }, items: 6 },
+        desktop: { breakpoint: { max: 3000, min: 1280 }, items: 4 },
+        laptop: { breakpoint: { max: 1280, min: 1024 }, items: 4 },
         tablet: { breakpoint: { max: 1024, min: 640 }, items: 4 },
         mobile: { breakpoint: { max: 640, min: 0 }, items: 3, partialVisibilityGutter: 30 },
     };
@@ -39,7 +38,7 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                 w-full max-w-7xl mx-auto
                 px-6 
                 pt-12     /* espacio para header */
-                pb-5  border-b
+                pb-5  border-b  
             "
         >
             <Carousel
@@ -58,24 +57,25 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                     <Link
                         key={categoria._id}
                         href={`/categoria/${categoria.slug}`}
-                        className="group block cursor-pointer"
+                        className="group cursor-pointer bg-white items-center justify-center flex flex-col"
                     >
                         <div
                             className="
-                                relative aspect-square w-full mb-4 
+                                relative aspect-square w-full 
                                 bg-white rounded-md 
                                 overflow-hidden 
                                 flex items-center justify-center
                             "
                         >
                             <div className="absolute inset-0 flex items-center justify-center">
+
                                 {categoria.image ? (
                                     <Image
                                         src={categoria.image}
                                         alt={categoria.nombre}
-                                        width={100}
-                                        height={100}
-                                        quality={50}
+                                        width={200}
+                                        height={200}
+                                        quality={40}
                                         className="
                                             object-contain 
                                             transition-transform duration-500 ease-out
@@ -91,33 +91,19 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                         </div>
 
                         <div
-                            className="
-                                flex items-center justify-between 
-                                border-t border-neutral-200/0 
-                                group-hover:border-neutral-200/80 
-                                pt-3 
-                                transition-all duration-300
-                            "
+
                         >
                             <h3
                                 className="
-                                    text-xs md:text-sm 
-                                    font-medium text-gray-800 
-                                    tracking-wide
+                                    text-xs md:text-base 
+                                    font- text-gray-600 
+                                    tracking-wide uppercase
                                 "
                             >
                                 {categoria.nombre}
                             </h3>
 
-                            <ArrowRight
-                                className="
-                                    w-4 h-4 text-neutral-400 
-                                    -translate-x-2 opacity-0 
-                                    group-hover:translate-x-0 
-                                    group-hover:opacity-100 
-                                    transition-all duration-300
-                                "
-                            />
+
                         </div>
                     </Link>
                 ))}

@@ -1,7 +1,8 @@
 // File: frontend/components/home/products/Breadcrumb.tsx
-
 import Link from "next/link";
-import { LuChevronRight } from "react-icons/lu";
+import { LuChevronRight, LuHouse } from "react-icons/lu";
+import { BiCategory } from "react-icons/bi";
+
 
 type Props = {
     categoryName: string;
@@ -12,36 +13,38 @@ type Props = {
 export default function Breadcrumb({ categoryName, categorySlug, productName }: Props) {
     return (
         <nav className="text-xs px-4 md:py-1">
-            <ol className="flex items-center flex-wrap gap-1 text-gray-600">
-
+            <ol className="flex items-center flex-wrap gap-2 text-xs md:text-sm text-slate-500 font-medium">
+                {/* Inicio */}
                 <li>
                     <Link
                         href="/"
-                        className="hover:text-gray-800 transition-colors text-gray-600"
+                        className="flex items-center gap-1.5 hover:text-blue-800 transition-colors duration-200"
                     >
-                        Inicio
+                        <LuHouse size={15} className="mb-[1px]" />
+                        <span>Inicio</span>
                     </Link>
                 </li>
 
-                <LuChevronRight size={14} className="text-gray-500" />
+                <LuChevronRight size={14} className="text-slate-400" />
 
+                {/* Categoría */}
                 <li>
                     <Link
                         href={`/categoria/${categorySlug}`}
-                        className="hover:text-gray-800 transition-colors text-gray-600"
+                        className="flex items-center gap-1.5 hover:text-blue-800 transition-colors duration-200"
                     >
-                        {categoryName}
+                        <BiCategory size={15} className="mb-[1px]" />
+                        <span>{categoryName}</span>
                     </Link>
                 </li>
 
-                <LuChevronRight size={14} className="text-gray-500" />
+                <LuChevronRight size={14} className="text-slate-400" />
 
-                <li className="text-gray-800 font-semibold truncate max-w-[120px] md:max-w-[300px]">
-                    {productName}
+                {/* Producto */}
+                <li className="flex items-center gap-1.5 text-slate-900 truncate max-w-[150px] md:max-w-md pointer-events-none">
+                    <span className="truncate font-semibold">{productName}</span>
                 </li>
-
             </ol>
         </nav>
-
     );
 }

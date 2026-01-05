@@ -20,6 +20,7 @@ import PaymentMethods from '../PaymentMethods';
 import ColorCircle from '@/components/ui/ColorCircle';
 import Link from 'next/link';
 import Image from 'next/image';
+import { LuTruck } from 'react-icons/lu';
 
 type Props = {
     producto: ProductWithCategoryResponse;
@@ -475,6 +476,9 @@ ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
                         {/* Envío */}
                         <div className="bg-white py-2 md:px-4 flex items-start gap-4 px-4">
                             <div className="flex flex-wrap gap-x-2">
+                                <div className=" bg-white rounded-full  text-slate-700">
+                                    <LuTruck size={18} />
+                                </div>
                                 <p>
                                     Envíos <span className="font-semibold">gratuitos y contraentrega</span> en todo Cañete.
                                 </p>
@@ -482,8 +486,8 @@ ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
                                     Envíos al resto del Perú mediante{" "}
                                     <span className="font-semibold italic bg-red-600 text-white px-1">SHALOM</span>.
                                 </p>
-                                <br/>
-                                <p className="border-l-2 border-gray-600 py-2 px-1 text-gray-600 bg-zinc-50  mt-1">
+                                <br />
+                                <p className="border-l-2 border-blue-900 py-2 px-1 text-gray-600 bg-zinc-50  mt-1">
                                     {producto.diasEnvio
                                         ? `Recíbelo entre: ${getDeliveryRange(producto.diasEnvio)}`
                                         : "Recíbelo en 1–3 días hábiles"}

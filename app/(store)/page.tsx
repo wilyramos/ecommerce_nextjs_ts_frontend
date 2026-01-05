@@ -14,7 +14,7 @@ import Advertisement from "@/components/home/Advertisement";
 export const metadata: Metadata = {
     ...globalMetadata,
     title: {
-        default: "GoPhone - Venta de accesorios y tecnologia premium",
+        default: "GoPhone - Calidad a tu alcance",
         template: "%s | GoPhone",
     },
     description:
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     ],
     openGraph: {
         ...globalMetadata.openGraph,
-        title: "GoPhone - Venta de accesorios y tecnología en Cañete",
+        title: "GoPhone - Calidad a tu alcance",
         description:
             "En GoPhone encontrarás una amplia variedad de accesorios y productos tecnológicos en Cañete. ¡Visítanos y descubre nuestras ofertas!",
         url: "https://gophone.pe",
@@ -83,13 +83,15 @@ export default function HomePage() {
                 <ProductosNuevos />
             </section>
 
+             <section className="my-10">
+                <CategoriasDestacadasWrapper />
+            </section>
+
             <section className="my-5">
                 <BrandsList />
             </section>
 
-            <section className="my-10">
-                <CategoriasDestacadasWrapper />
-            </section>
+           
             <section>
                 <FeaturesList />
             </section>

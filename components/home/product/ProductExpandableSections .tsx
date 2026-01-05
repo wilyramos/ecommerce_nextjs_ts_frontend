@@ -31,7 +31,7 @@ export default function ProductExpandableSections({ producto }: Props) {
             className="w-full px-4 py-2 mb-6 bg-white"
         >
             <AccordionItem value="descripcion-especificaciones">
-                <AccordionTrigger>Información del producto</AccordionTrigger>
+                <AccordionTrigger className="font-semibold text-gray-600">Información del producto</AccordionTrigger>
                 <AccordionContent>
                     <div className="mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6">
                         {hasDescripcion && (
@@ -73,7 +73,7 @@ export default function ProductExpandableSections({ producto }: Props) {
             </AccordionItem>
 
             <AccordionItem value="cambios-devoluciones-vendedores">
-                <AccordionTrigger>Envíos, devoluciones y vendedores</AccordionTrigger>
+                <AccordionTrigger className="font-semibold text-gray-600">Envíos, devoluciones y vendedores</AccordionTrigger>
                 <AccordionContent>
                     <div className="mx-auto text-sm grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div className="space-y-3">
@@ -121,7 +121,7 @@ export default function ProductExpandableSections({ producto }: Props) {
             </AccordionItem>
 
             <AccordionItem value="Sobre nuestra garantía">
-                <AccordionTrigger>Sobre nuestra garantía</AccordionTrigger>
+                <AccordionTrigger className="font-semibold text-gray-600">Sobre nuestra garantía</AccordionTrigger>
                 <AccordionContent>
                     <div className="mx-auto text-sm grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div className="space-y-3">

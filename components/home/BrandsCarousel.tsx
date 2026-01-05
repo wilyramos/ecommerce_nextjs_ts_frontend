@@ -15,8 +15,8 @@ const AbsoluteHeaderWrapper = (props: ButtonGroupProps) => (
 
 export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {
     const responsive = {
-        desktop: { breakpoint: { max: 3000, min: 1280 }, items: 8 },
-        laptop: { breakpoint: { max: 1280, min: 1024 }, items: 6 },
+        desktop: { breakpoint: { max: 3000, min: 1280 }, items: 6 },
+        laptop: { breakpoint: { max: 1280, min: 1024 }, items: 4 },
         tablet: { breakpoint: { max: 1024, min: 640 }, items: 4 },
         mobile: {
             breakpoint: { max: 640, min: 0 },

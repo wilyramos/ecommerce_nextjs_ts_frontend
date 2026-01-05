@@ -13,7 +13,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
     return (
         <Link
             href={`/productos/${product.slug}`}
-            className="block w-full group focus:outline-none focus-visible:ring-2 focus-visible:ring-black"
+            className="block w-full group bg-white p-2"
         >
             <div className="relative aspect-square w-full overflow-hidden rounded-md bg-white">
                 {primaryImage ? (
@@ -55,7 +55,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                     {product.nombre}
                 </h3>
 
-                <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
+                <span className="text- font-medium text-gray-700 whitespace-nowrap">
                     S/ {price.toLocaleString("es-PE", { minimumFractionDigits: 2 })}
                 </span>
             </div>

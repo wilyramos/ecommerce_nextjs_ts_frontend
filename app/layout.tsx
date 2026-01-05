@@ -14,7 +14,7 @@ const inter = Inter({
 export const metadata: Metadata = {
     metadataBase: new URL("https://gophone.pe"),
     title: {
-        default: "GoPhone | iPhones, Accesorios y Tecnología en Perú",
+        default: "GoPhone | Calidad a tu alcance",
         template: "%s | GoPhone"
     },
     description:
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     authors: [{ name: "GoPhone", url: "https://gophone.pe" }],
     creator: "GoPhone",
     openGraph: {
-        title: "GoPhone | Tu tienda de iPhones y Tecnología en Perú",
+        title: "GoPhone | Calidad a tu alcance",
         description:
             "Compra iPhones, accesorios y repuestos con garantía y envío rápido. GoPhone: tecnología confiable desde Cañete para todo el Perú.",
         url: "https://gophone.pe",
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "GoPhone Perú | iPhones y Tecnología",
+        title: "GoPhone | Calidad a tu alcance",
         description:
             "Tecnología con garantía, precios competitivos y atención personalizada. Compra iPhones y accesorios con envío rápido.",
         images: ["https://gophone.pe/logomini.svg"]
