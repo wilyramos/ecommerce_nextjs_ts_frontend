@@ -33,7 +33,7 @@ export default function ProductExpandableSections({ producto }: Props) {
             <AccordionItem value="descripcion-especificaciones">
                 <AccordionTrigger className="font-semibold text-gray-600">Información del producto</AccordionTrigger>
                 <AccordionContent>
-                    <div className="mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div className="mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 text-gray-600">
                         {hasDescripcion && (
                             <div className={descripcionColSpan}>
                                 <div

@@ -20,7 +20,6 @@ import PaymentMethods from '../PaymentMethods';
 import ColorCircle from '@/components/ui/ColorCircle';
 import Link from 'next/link';
 import Image from 'next/image';
-import { LuTruck } from 'react-icons/lu';
 
 type Props = {
     producto: ProductWithCategoryResponse;
@@ -269,7 +268,7 @@ export default function ProductDetails({ producto }: Props) {
                                         className={`text-xs font-medium px-2.5 py-1 flex items-center gap-1.5 w-fit transition-colors
                                         ${stock === 0
                                                 ? "bg-gray-50 text-gray-400 border-gray-100"
-                                                : "bg-yellow-100 text-gray-900 border-yellow-200"
+                                                : "bg-yellow-300 text-gray-900 border-yellow-600"
                                             }`}
                                     >
 
@@ -475,18 +474,18 @@ ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
                     <div className="space-y-2 mt-2 text-gray-700 text-sm">
                         {/* Envío */}
                         <div className="bg-white py-2 md:px-4 flex items-start gap-4 px-4">
-                            <div className="flex flex-wrap gap-x-2">
-                                <div className=" bg-white rounded-full  text-slate-700">
-                                    <LuTruck size={18} />
+                            <div className="flex flex-wrap gap-x-2 flex-col">
+                                <div className=" bg-white rounded-full  text-slate-700 flex flex-col">
+                                    <p>
+                                        Envíos <span className="font-semibold">gratuitos y contraentrega</span> en todo Cañete
+                                    </p>
+                                    <p>
+                                        Envíos al resto del Perú mediante{" "}
+                                        <span className="font-semibold italic bg-red-600 text-white px-1">SHALOM</span>
+                                    </p>
                                 </div>
-                                <p>
-                                    Envíos <span className="font-semibold">gratuitos y contraentrega</span> en todo Cañete.
-                                </p>
-                                <p>
-                                    Envíos al resto del Perú mediante{" "}
-                                    <span className="font-semibold italic bg-red-600 text-white px-1">SHALOM</span>.
-                                </p>
-                                <br />
+
+
                                 <p className="border-l-2 border-blue-900 py-2 px-1 text-gray-600 bg-zinc-50  mt-1">
                                     {producto.diasEnvio
                                         ? `Recíbelo entre: ${getDeliveryRange(producto.diasEnvio)}`

@@ -44,56 +44,59 @@ export default function ButtonShowSheetMobile({
     return (
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-                <button className="p-2 text-white hover:text-gray-300 transition">
-                    {open ? <X size={22} /> : <Menu size={22} />}
+                <button className="p-2 text-white hover:text-gray-300 transition focus:outline-none">
+                    {open ? <X size={24} /> : <Menu size={24} />}
                 </button>
             </SheetTrigger>
 
             <SheetContent
                 side="left"
-                className="p-0 bg-white shadow-xl border-r border-gray-200 flex flex-col h-full"
+                className="flex flex-col h-full w-[85vw] sm:w-[350px] p-0 bg-white shadow-2xl border-r border-gray-200 outline-none gap-0"
             >
                 {/* Header */}
-                <div className="p-4 border-b border-gray-200 space-y-4">
-                    <SheetHeader>
-                        <SheetTitle className="text-xl font-bold flex flex-col gap-1">
-                            <Logo />
-                            <span className="text-sm font-medium text-gray-700 px-2">
+                <div className="px-6 py-5 border-b border-gray-100">
+                    <SheetHeader className="text-left">
+                        <SheetTitle className="flex flex-col gap-2">
+                            <div className="w-32">
+                                <Logo />
+                            </div>
+                            <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
                                 Explora por categorías
                             </span>
                         </SheetTitle>
                     </SheetHeader>
-
                 </div>
 
-                {/* Scroll */}
-                <ScrollArea className="flex-1">
-                    <div className="p-4 space-y-4">
-
-
+                {/* Scrollable Content */}
+                <ScrollArea className="flex-1 px-6 py-4">
+                    <div className="space-y-1 pb-4">
                         {rootCategories.map((parent) => {
                             const subcategories = grouped[parent._id] || [];
+                            const hasSub = subcategories.length > 0;
+
                             return (
-                                <div key={parent._id}>
+                                <div key={parent._id} className="border-b border-gray-50 last:border-0 py-1">
                                     <details className="group">
-                                        <summary className="cursor-pointer list-none flex items-center justify-between text-base font-medium px-3 py-2 rounded-lg hover:bg-gray-100 transition">
-                                            <span className="text-gray-800">
-                                                {parent.nombre}
-                                            </span>
-                                            <ChevronRight className="h-4 w-4 text-gray-400 group-open:rotate-90 transition-transform" />
+                                        <summary className="cursor-pointer list-none flex items-center justify-between text-[15px] font-medium text-gray-800 py-3 px-2 rounded-md hover:bg-gray-50 transition-colors select-none">
+                                            <span>{parent.nombre}</span>
+                                            {hasSub && (
+                                                <ChevronRight className="h-4 w-4 text-gray-400 group-open:rotate-90 transition-transform duration-200" />
+                                            )}
                                         </summary>
 
-                                        <div className="pl-8 pt-2 space-y-2">
-                                            {subcategories.map((subcategory) => (
-                                                <Link
-                                                    key={subcategory._id}
-                                                    href={`/productos?category=${subcategory.slug}`}
-                                                    className="block text-sm text-gray-600 hover:text-black transition"
-                                                >
-                                                    {subcategory.nombre}
-                                                </Link>
-                                            ))}
-                                        </div>
+                                        {hasSub && (
+                                            <div className="pl-4 pr-2 pb-2 space-y-1 animate-in slide-in-from-top-2 duration-200">
+                                                {subcategories.map((subcategory) => (
+                                                    <Link
+                                                        key={subcategory._id}
+                                                        href={`/productos?category=${subcategory.slug}`}
+                                                        className="block text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 rounded-md transition-colors"
+                                                    >
+                                                        {subcategory.nombre}
+                                                    </Link>
+                                                ))}
+                                            </div>
+                                        )}
                                     </details>
                                 </div>
                             );
@@ -102,12 +105,12 @@ export default function ButtonShowSheetMobile({
                 </ScrollArea>
 
                 {/* Footer */}
-                <div className="p-4 border-t border-gray-200">
+                <div className="mt-auto border-t border-gray-100 bg-gray-50 p-6">
                     <Link
                         href="/auth/registro"
-                        className="flex items-center gap-3 p-2 -m-2 rounded-lg text-base font-medium text-gray-800 hover:bg-gray-100 transition"
+                        className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition shadow-sm"
                     >
-                        <User className="h-5 w-5" />
+                        <User className="h-4 w-4" />
                         Iniciar sesión
                     </Link>
                 </div>

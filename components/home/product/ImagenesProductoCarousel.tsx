@@ -88,29 +88,57 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
     }
 
     return (
-        <div className="w-full max-w-sm md:max-w-3xl mx-auto flex flex-col md:flex-row gap-2 bg-white">
+        <div className="w-full max-w-sm md:max-w-3xl mx-auto flex flex-col md:flex-row gap-3 bg-white">
 
             {showThumbnails && (
-                <div className="hidden md:flex flex-col gap-2 overflow-y-auto no-scrollbar w-20 md:p-2 sticky top-30 h-full max-h-[500px]">
+                <div
+                    className="
+      hidden md:flex 
+      flex-col 
+      gap-2 
+      overflow-y-auto 
+      overflow-x-hidden 
+      no-scrollbar 
+      w-20 
+      md:p-2 
+      sticky 
+      top-30 
+      h-full 
+      max-h-[500px]
+    "
+                >
                     {uniqueImages.map((img, idx) => (
                         <button
-                            key={img} // Usar la URL como key es seguro aquí porque son únicas
+                            key={img}
                             onClick={() => setSelectedIndex(idx)}
-                            className={`relative h-16 w-16 rounded-md overflow-hidden border-2 transition-all duration-300 flex-shrink-0
-                                ${selectedIndex === idx ? "border-gray-800 opacity-100 ring-1 ring-gray-800" : "border-gray-200 opacity-70 hover:opacity-100 hover:border-gray-400"}
-                            `}
+                            className={`
+          relative 
+          h-16 
+          w-16 
+          flex-none
+          rounded-md 
+          overflow-hidden 
+          border-2 
+          transition-all 
+          duration-300
+          ${selectedIndex === idx
+                                    ? "border-gray-800 opacity-100 ring-1 ring-gray-800"
+                                    : "border-gray-200 opacity-70 hover:opacity-100 hover:border-gray-400"}
+        `}
                         >
                             <Image
                                 src={img}
                                 alt={`Vista ${idx + 1}`}
                                 fill
                                 className="object-cover"
-                                sizes="80px"
+                                sizes="64px"
+                                quality={20}
                             />
                         </button>
                     ))}
                 </div>
             )}
+
 
             <div className="flex-1 relative">
                 <div

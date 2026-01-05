@@ -41,7 +41,7 @@ export default function Breadcrumb({ categoryName, categorySlug, productName }: 
                 <LuChevronRight size={14} className="text-slate-400" />
 
                 {/* Producto */}
-                <li className="flex items-center gap-1.5 text-slate-900 truncate max-w-[150px] md:max-w-md pointer-events-none">
+                <li className="flex items-center gap-1 text-slate-900 truncate max-w-[100px] md:max-w-lg pointer-events-none">
                     <span className="truncate font-semibold">{productName}</span>
                 </li>
             </ol>
