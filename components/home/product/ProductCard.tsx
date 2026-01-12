@@ -155,19 +155,19 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
 
 
                 {/* --- SECCIÓN DE INFO CORREGIDA --- */}
-                <div className="flex flex-col flex-1 p-2">
+                <div className="flex flex-col flex-1 p-2 md:p-4">
                     {/* Contenedor para marca y nombre */}
                     <div>
                         {/* Fila 1: Marca */}
                         <div className="h-5"> {/* Altura fija para la marca */}
-                            <span className="text-xs font-medium text-gray-400 uppercase">
+                            <span className="text-[10px] md:text-xs font-medium text-muted uppercase">
                                 {product.brand?.nombre}
                             </span>
                         </div>
 
                         {/* Fila 2, 3, 4: Nombre del Producto */}
                         <h3
-                            className=" text-xs md:text-sm text-gray-800 font-normal leading-snug line-clamp-3 h-[4.5rem] md:h-[5rem]" // 2. Altura fija
+                            className=" text-xs md:text-sm text-foreground font-normal leading-snug line-clamp-3 h-[4.5rem] md:h-[5rem] " // 2. Altura fija
                         >
                             {product.nombre}
                         </h3>

@@ -119,8 +119,8 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                     type="checkbox"
                     className={cn(
                         "w-4 h-4 rounded border-gray-300 transition-all focus:ring-0 focus:ring-offset-0 cursor-pointer",
-                        // Aquí aplicamos el blue-900 solo al estado checked del input
-                        "checked:bg-blue-900 checked:border-blue-900 checked:hover:bg-blue-900"
+                        // Aquí aplicamos el gray-900 solo al estado checked del input
+                        "checked:bg-gray-900 checked:border-gray-900 checked:hover:bg-gray-900"
                     )}
                     checked={checked}
                     onChange={onChange}
@@ -139,14 +139,14 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
         <aside className="w-full h-fit lg:sticky lg:top-24 space-y-6 pt-2 select-none scroll-auto">
             {/* Header */}
             <div className="flex justify-between items-center px-1 pb-3 border-b border-gray-200">
-                <h2 className="text-sm font-bold uppercase tracking-widest flex items-center gap-2 text-gray-900">
+                <h2 className="text-sm  uppercase tracking-widest flex items-center gap-2 text-gray-900">
                     <LuListFilter className="w-4 h-4" />
                     Filtros
                 </h2>
                 {hasActiveFilters && (
                     <button
                         onClick={clearFilters}
-                        className="text-xs flex items-center gap-1.5 text-gray-500 hover:text-black transition-colors font-medium hover:underline underline-offset-2"
+                        className="text-xs flex items-center gap-1.5 text-gray-500 hover:text-black transition-colors  hover:underline underline-offset-2"
                     >
                         Limpiar <LuX className="w-3.5 h-3.5" />
                     </button>
@@ -161,7 +161,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                 {/* Categorías */}
                 {sortedCategories.length > 0 && (
                     <AccordionItem value="categories" className="border-none">
-                        <AccordionTrigger className="text-base font-bold text-gray-800 hover:text-black hover:no-underline py-3">
+                        <AccordionTrigger className="text-base  text-gray-800 hover:text-black hover:no-underline py-3">
                             Categorías
                         </AccordionTrigger>
                         <AccordionContent className="pt-0 pb-2">
@@ -182,11 +182,11 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                 {/* Precio */}
                 {priceFilter && (
                     <AccordionItem value="price" className="border-none">
-                        <AccordionTrigger className="text-base font-bold text-gray-800 hover:text-black hover:no-underline py-3">
+                        <AccordionTrigger className="text-base  text-gray-800 hover:text-black hover:no-underline py-3">
                             Precio
                         </AccordionTrigger>
                         <AccordionContent className="pt-6 pb-2 px-1">
-                            {/* El slider mantiene el blue-900 solo para la barra activa */}
+                            {/* El slider mantiene el gray-900 solo para la barra activa */}
                             <Slider
                                 min={priceFilter.min ?? 0}
                                 max={priceFilter.max ?? 1000}
@@ -194,14 +194,14 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                                 value={priceRange}
                                 onValueChange={(val) => setPriceRange(val as [number, number])}
                                 onValueCommit={(val) => updatePriceRange(val as [number, number])}
-                                className="my-4 [&_.relative]:bg-gray-200 [&_.absolute]:bg-blue-900 [&_span]:border-blue-900 [&_span]:focus:ring-blue-900/20"
+                                className="my-4 [&_.relative]:bg-gray-200 [&_.absolute]:bg-gray-900 [&_span]:border-gray-900 [&_span]:focus:ring-gray-900/20"
                             />
                             <div className="flex justify-between items-center mt-5">
-                                <div className="border border-gray-300 rounded px-3 py-1.5 bg-white text-sm text-gray-900 font-medium shadow-sm">
+                                <div className="border border-gray-300 rounded px-3 py-1.5 bg-white text-sm text-gray-900  shadow-sm">
                                     S/. {priceRange[0]}
                                 </div>
                                 <div className="h-px w-4 bg-gray-300"></div>
-                                <div className="border border-gray-300 rounded px-3 py-1.5 bg-white text-sm text-gray-900 font-medium shadow-sm">
+                                <div className="border border-gray-300 rounded px-3 py-1.5 bg-white text-sm text-gray-900  shadow-sm">
                                     S/. {priceRange[1]}
                                 </div>
                             </div>
@@ -212,7 +212,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                 {/* Marcas */}
                 {sortedBrands.length > 0 && (
                     <AccordionItem value="brands" className="border-none">
-                        <AccordionTrigger className="text-base font-bold text-gray-800 hover:text-black hover:no-underline py-3">
+                        <AccordionTrigger className="text-base  text-gray-800 hover:text-black hover:no-underline py-3">
                             Marcas
                         </AccordionTrigger>
                         <AccordionContent className="pt-0 pb-2">
@@ -233,7 +233,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                 {/* Atributos dinámicos */}
                 {sortedAtributos.map((attr) => (
                     <AccordionItem key={attr.name} value={attr.name} className="border-none">
-                        <AccordionTrigger className="text-base font-bold text-gray-800 hover:text-black hover:no-underline py-3 capitalize">
+                        <AccordionTrigger className="text-base  text-gray-800 hover:text-black hover:no-underline py-3 capitalize">
                             {attr.name}
                         </AccordionTrigger>
                         <AccordionContent className="pt-0 pb-2">
