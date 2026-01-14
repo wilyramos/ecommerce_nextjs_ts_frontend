@@ -20,18 +20,23 @@ export default function Breadcrumb({
         px-4
         text-xs md:text-sm
         bg-[var(--store-bg)]
+        overflow-hidden
       "
             aria-label="Breadcrumb"
         >
             <ol
                 className="
-          flex flex-wrap items-center gap-2
+          flex
+          items-center
+          gap-2
           font-medium
           text-[var(--store-text-muted)]
+          whitespace-nowrap
+          overflow-hidden
         "
             >
                 {/* Inicio */}
-                <li>
+                <li className="shrink-0">
                     <Link
                         href="/"
                         className="
@@ -47,11 +52,11 @@ export default function Breadcrumb({
 
                 <LuChevronRight
                     size={14}
-                    className="text-[var(--store-text-muted)] opacity-70"
+                    className="shrink-0 text-[var(--store-text-muted)] opacity-70"
                 />
 
                 {/* Categoría */}
-                <li>
+                <li className="shrink-0">
                     <Link
                         href={`/categoria/${categorySlug}`}
                         className="
@@ -67,15 +72,14 @@ export default function Breadcrumb({
 
                 <LuChevronRight
                     size={14}
-                    className="text-[var(--store-text-muted)] opacity-70"
+                    className="shrink-0 text-[var(--store-text-muted)] opacity-70"
                 />
 
                 {/* Producto actual */}
                 <li
                     className="
             flex items-center gap-1
-            truncate
-            max-w-[140px] md:max-w-lg
+            min-w-0
             text-[var(--store-text)]
             pointer-events-none
           "

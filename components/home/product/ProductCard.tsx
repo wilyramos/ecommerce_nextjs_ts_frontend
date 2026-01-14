@@ -140,12 +140,12 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                     {(product.esNuevo || product.precioComparativo) && (
                         <div className="absolute top-4 left-2 right-2 flex justify-between items-start text-[13px] font-semibold">
                             {product.esNuevo && (
-                                <span className="px-2 py-0.5 bg-[var(--store-primary)] text-white text-[10px] md:text-xs">
+                                <span className="px-2 py-0.5 bg-[var(--store-primary)] text-white text-[8px] md:text-xs">
                                     Nuevo
                                 </span>
                             )}
                             {product.precioComparativo && (
-                                <span className="px-2 py-0.5 bg-[var(--store-primary)] text-white text-[10px] md:text-xs ml-auto">
+                                <span className="px-2 py-0.5 bg-[var(--store-primary)] text-white text-[8px] md:text-xs ml-auto">
                                     -{Math.round(discountedPrice)}%
                                 </span>
                             )}
@@ -167,7 +167,7 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
 
                         {/* Fila 2, 3, 4: Nombre del Producto */}
                         <h3
-                            className=" text-xs md:text-sm text-[var(--store-text)] leading-snug line-clamp-3 h-[4.5rem] md:h-[5rem] " // 2. Altura fija
+                            className=" text-xs md:text-sm text-[var(--store-text)] md:leading-snug line-clamp-3 h-[5rem] md:h-[5rem] " // 2. Altura fija
                         >
                             {product.nombre}
                         </h3>
@@ -178,16 +178,16 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                     <div className="flex items-center gap-2 mt-auto pt-1">
                         {/* <span className="text-gray-400 text-xs">Color </span> */}
                         {color && <ColorCircle color={color} size={12} />}
-                        <div className="ml-auto flex flex-col items-end leading-tight">
+                        <div className="ml-auto flex flex-col items-end md:leading-tight">
                             {stock > 0 ? (
                                 <>
                                     <div className="space-x-2">
                                         {(product.precioComparativo ?? 0) > 0 && (
-                                            <span className="text-[var(--store-text-muted)] text-xs line-through px-1 font-light">
+                                            <span className="text-[var(--store-text-muted)] text-[10px] md:text-xs line-through px-1 font-light">
                                                 s/ {product.precioComparativo!.toFixed(2)}
                                             </span>
                                         )}
-                                        <span className="text-[var(--store-text)] text-base">
+                                        <span className="text-[var(--store-text)] text-xs md:text-base">
                                             s/ {precio.toFixed(2)}
                                         </span>
                                     </div>

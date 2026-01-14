@@ -37,7 +37,7 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
             className="
         relative
         w-full max-w-7xl mx-auto
-        px-6
+        px-4
         pt-14          /* espacio real para header */
         pb-8
         border-b border-[var(--store-border)]
@@ -53,7 +53,7 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                 renderButtonGroupOutside
                 customButtonGroup={<AbsoluteHeaderWrapper />}
                 containerClass="-mx-3"
-                itemClass="px-3"
+                itemClass="px-2"
                 partialVisible
             >
                 {categorias.map((categoria) => (
@@ -63,8 +63,8 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                         className="
               group
               flex flex-col items-center
-              gap-3
-              p-3
+              gap-2
+              p-2
               rounded-lg
               bg-[var(--store-surface)]
               hover:bg-[var(--store-surface-hover)]
@@ -109,7 +109,7 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                 font-medium
                 tracking-wide uppercase
                 text-center
-                text-[var(--store-text)]
+                text-[var(--store-text-muted)]
               "
                         >
                             {categoria.nombre}

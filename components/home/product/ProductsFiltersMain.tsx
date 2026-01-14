@@ -136,7 +136,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
     );
 
     return (
-        <aside className="w-full h-fit lg:sticky lg:top-24 space-y-6 pt-2 select-none scroll-auto bg-[var(--store-surface)] p-4 ">
+        <aside className="w-full h-fit lg:sticky lg:top-24 space-y-6 pt-2 select-none scroll-auto bg-[var(--store-surface)] p-4 rounded-lg">
             {/* Header */}
             <div className="flex justify-between items-center px-1 pb-3 border-b border-[var(--store-border)]">
                 <h2 className="text-sm uppercase flex items-center gap-2 text-[var(--store-text)]">
@@ -165,7 +165,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                             Categorías
                         </AccordionTrigger>
                         <AccordionContent className="pt-0 pb-2">
-                            <ul className="space-y-0.5 max-h-[260px] overflow-y-auto pr-2 custom-scrollbar">
+                            <ul className=" max-h-[260px] overflow-y-auto pr-2 custom-scrollbar">
                                 {sortedCategories.map((category) => (
                                     <FilterCheckboxItem
                                         key={category.slug}
@@ -221,7 +221,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                             Marcas
                         </AccordionTrigger>
                         <AccordionContent className="pt-0 pb-2">
-                            <ul className="space-y-0.5 max-h-[260px] overflow-y-auto pr-2 custom-scrollbar">
+                            <ul className=" max-h-[260px] overflow-y-auto pr-2 custom-scrollbar">
                                 {sortedBrands.map((brand) => (
                                     <FilterCheckboxItem
                                         key={brand.slug}
@@ -242,7 +242,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                             {attr.name}
                         </AccordionTrigger>
                         <AccordionContent className="pt-0 pb-2">
-                            <ul className="space-y-0.5 max-h-[200px] overflow-y-auto pr-2 custom-scrollbar">
+                            <ul className=" max-h-[200px] overflow-y-auto pr-2 custom-scrollbar">
                                 {attr.values.map((value) => (
                                     <FilterCheckboxItem
                                         key={value}

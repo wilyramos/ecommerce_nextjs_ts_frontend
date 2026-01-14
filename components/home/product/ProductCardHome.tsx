@@ -74,7 +74,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                 <h3
                     className="
             truncate
-            text-sm
+            text-xs md:text-sm
             font-normal
             text-[var(--store-text-muted)]
             transition-colors
