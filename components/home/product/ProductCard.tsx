@@ -155,27 +155,29 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
 
 
                 {/* --- SECCIÓN DE INFO CORREGIDA --- */}
-                <div className="flex flex-col flex-1 p-2 md:p-4">
+                <div className="flex flex-col flex-1 p-2 ">
                     {/* Contenedor para marca y nombre */}
-                    <div className="flex flex-col gap-1">
-                        {/* Fila 1: Marca */}
-                        <div className="h-5"> {/* Altura fija para la marca */}
-                            <span className="text-[10px] md:text-xs font-medium text-[var(--store-text-muted)] uppercase ">
+                    <div className="flex flex-col gap-1 h-[4rem] md:h-[4.5rem]">
+                        {/* Marca (1 línea fija) */}
+                        <div className="h-5 shrink-0">
+                            <span className="text-[10px] md:text-xs font-medium text-[var(--store-text-muted)] uppercase">
                                 {product.brand?.nombre}
                             </span>
                         </div>
 
-                        {/* Fila 2, 3, 4: Nombre del Producto */}
+                        {/* Nombre (reserva 3 líneas aunque tenga menos texto) */}
                         <h3
-                            className=" text-xs md:text-sm text-[var(--store-text)] md:leading-snug line-clamp-3 h-[5rem] md:h-[5rem] " // 2. Altura fija
+                            className="text-xs md:text-sm text-[var(--store-text)] md:leading-snug
+               line-clamp-3 min-h-[3.2rem] md:min-h-[3.6rem]"
                         >
                             {product.nombre}
                         </h3>
                     </div>
 
+
                     {/* Fila 5: Precios y color (empujado hacia abajo) */}
                     {/* 3. mt-auto empuja este div hasta el final del contenedor flex-col */}
-                    <div className="flex items-center gap-2 mt-auto pt-1">
+                    <div className="flex items-center gap-2 mt-auto pt-4">
                         {/* <span className="text-gray-400 text-xs">Color </span> */}
                         {color && <ColorCircle color={color} size={12} />}
                         <div className="ml-auto flex flex-col items-end md:leading-tight">

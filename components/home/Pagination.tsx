@@ -1,4 +1,5 @@
-// Pagination.tsx
+// Pagination.tsx — diseño moderno + responsive (solo UI)
+
 import Link from "next/link";
 
 type PaginationProps = {
@@ -18,39 +19,56 @@ export default function Pagination({
 }: PaginationProps) {
     const getQuery = (page: number) => ({ ...queryParams, page, limit });
 
-    if (totalPages <= 1) return null; // Ocultar paginación si solo hay 1 página
+    if (totalPages <= 1) return null;
+
+    const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
     return (
-        <div className="flex justify-end mt-8">
-            <nav className="inline-flex items-center space-x-2">
+        <div className="flex justify-center md:justify-end mt-8">
+            <nav className="flex items-center gap-1 rounded-full bg-white/70 backdrop-blur
+                      px-2 py-1 shadow-sm border border-gray-200">
+
+                {/* Prev */}
                 {currentPage > 1 && (
                     <Link
                         href={{ pathname, query: getQuery(currentPage - 1) }}
-                        className="px-3 py-2 text-sm text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-100 transition"
+                        className="flex h-8 w-8 md:h-9 md:w-9 items-center justify-center
+                       rounded-full text-gray-500 hover:bg-gray-100
+                       hover:text-black transition"
                     >
-                        &lt;
+                        ‹
                     </Link>
                 )}
 
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                    <Link
-                        key={page}
-                        href={{ pathname, query: getQuery(page) }}
-                        className={`px-3 py-2 text-sm border rounded-lg ${currentPage === page
-                            ? "bg-black text-white"
-                            : "text-gray-600 border-gray-300 hover:bg-gray-100 transition"
-                            }`}
-                    >
-                        {page}
-                    </Link>
-                ))}
+                {/* Pages */}
+                {pages.map((page) => {
+                    const isActive = currentPage === page;
 
+                    return (
+                        <Link
+                            key={page}
+                            href={{ pathname, query: getQuery(page) }}
+                            className={`flex items-center justify-center rounded-full font-medium transition
+                h-8 w-8 text-xs md:h-9 md:w-9 md:text-sm
+                ${isActive
+                                    ? "bg-black text-white shadow"
+                                    : "text-gray-500 hover:bg-gray-100 hover:text-black"
+                                }`}
+                        >
+                            {page}
+                        </Link>
+                    );
+                })}
+
+                {/* Next */}
                 {currentPage < totalPages && (
                     <Link
                         href={{ pathname, query: getQuery(currentPage + 1) }}
-                        className="px-3 py-2 text-sm text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-100 transition"
+                        className="flex h-8 w-8 md:h-9 md:w-9 items-center justify-center
+                       rounded-full text-gray-500 hover:bg-gray-100
+                       hover:text-black transition"
                     >
-                        &gt;
+                        ›
                     </Link>
                 )}
             </nav>

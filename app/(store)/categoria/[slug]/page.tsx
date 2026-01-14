@@ -106,7 +106,7 @@ export default async function pageCategoria({
                 <section className="sm:col-span-6 space-y-2">
 
                     {/* Barra responsive arriba en mobile */}
-                    <div className="flex items-center justify-between gap-2 sm:hidden bg-sky-300">
+                    <div className="flex items-center justify-between gap-2 sm:hidden ">
                         {/* DrawerFilters ya está dentro de FiltrosPorCategoria */}
                         {/* <Suspense fallback={<SpinnerLoading />}> */}
                         <FiltrosPorCategoria categorySlug={slug} />

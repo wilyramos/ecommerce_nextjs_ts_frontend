@@ -51,7 +51,7 @@ export default function Footer() {
                         </div>
 
                         <p className="text-sm leading-relaxed max-w-xs text-[var(--store-text-muted)]">
-                            Calidad premium a tu alcance. Especialistas en tecnología y estilo de vida.
+                            {/* Calidad premium a tu alcance. Especialistas en tecnología y estilo de vida. */}
                         </p>
 
                         <div className="text-xs text-[var(--store-text-muted)] opacity-80">
@@ -204,7 +204,7 @@ export default function Footer() {
 
                     <div className="text-xs text-center md:text-left opacity-70">
                         © {new Date().getFullYear()} Gophone. Todos los derechos reservados.
-                       
+
                     </div>
 
                     <div className="opacity-80 hover:opacity-100 transition-opacity">
