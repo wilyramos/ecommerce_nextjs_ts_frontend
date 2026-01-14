@@ -28,7 +28,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
     }, []);
 
     return (
-        <section className="relative w-full mx-auto bg-white overflow-hidden">
+        <section className="relative w-full bg-[var(--store-surface)] overflow-hidden">
             <Carousel
                 responsive={responsive}
                 autoPlay
@@ -36,18 +36,17 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                 autoPlaySpeed={7000}
                 showDots
                 renderDotsOutside
-                dotListClass="flex justify-center"
+                dotListClass="mt-4 flex justify-center gap-2"
                 customDot={<CustomDot />}
                 customLeftArrow={<CustomArrow direction="left" />}
                 customRightArrow={<CustomArrow direction="right" />}
-                itemClass="px-2 md:px-4"
             >
                 {products.map((product) => {
-                    // Cálculo del porcentaje de descuento
                     const discountPercentage = product.precioComparativo
                         ? Math.round(
                             ((product.precioComparativo - product.precio) /
-                                product.precioComparativo) * 100
+                                product.precioComparativo) *
+                            100
                         )
                         : 0;
 
@@ -55,65 +54,109 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                         <Link
                             key={product._id}
                             href={`/productos/${product.slug}`}
-                            className="group relative flex flex-col md:flex-row items-center justify-between 
-                        px-4 md:px-20 py-5 h-auto md:h-[360px] w-full transition-all duration-300"
+                            className="
+                group
+                relative
+                flex flex-col md:flex-row
+                items-center justify-between
+                max-w-7xl mx-auto
+                px-6 md:px-20
+                py-10 md:py-16
+                gap-10
+              "
                         >
-                            {/* Text Section */}
-                            <article className="z-10 w-full md:w-1/3 space-y-3 sm:space-y-2 text-center md:text-left order-2 md:order-1">
-
-                                {/* Etiqueta de Marca / Nuevo con animación Hover */}
-                                <div className="w-fit mx-auto md:mx-0 flex items-center gap-1.5 px-3 py-1 bg-white border text-[10px]  transition-all duration-300 hover:scale-105 hover:shadow-md hover:border-blue-200">
+                            {/* ===== TEXTO ===== */}
+                            <article className="z-10 w-full md:w-1/3 space-y-4 text-center md:text-left order-2 md:order-1">
+                                {/* Badge marca / nuevo */}
+                                <div
+                                    className="
+                    inline-flex items-center gap-2
+                    px-3 py-1
+                    text-[10px] uppercase tracking-wider
+                    border border-[var(--store-border)]
+                    bg-[var(--store-surface)]
+                    text-[var(--store-text-muted)]
+                  "
+                                >
                                     {product.esNuevo ? (
-                                        // Animación: Pulso + Spin lento
-                                        <Sparkle className="w-3 h-3 text-blue-600 animate-[pulse_2s_ease-in-out_infinite]" />
+                                        <Sparkle className="w-3 h-3 text-[var(--store-primary)] animate-pulse" />
                                     ) : (
-                                        <Tag className="w-3 h-3 text-neutral-500" />
+                                        <Tag className="w-3 h-3" />
                                     )}
-                                    <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-800">
-                                        {product.brand?.nombre || "TECNOLOGÍA"}
-                                    </span>
+                                    {product.brand?.nombre || "Tecnología"}
                                 </div>
 
-                                {/* Título con transición de color */}
-                                <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-black leading-tight transition-colors duration-300 group-hover:text-gray-800">
+                                {/* Título */}
+                                <h2
+                                    className="
+                    text-xl sm:text-2xl md:text-3xl
+                    font-semibold
+                    leading-tight
+                    text-[var(--store-text)]
+                  "
+                                >
                                     {product.nombre}
                                 </h2>
 
-                                <div className="flex flex-col sm:flex-row sm:items-end sm:justify-center md:justify-start gap-2 sm:gap-3">
-                                    {/* Precio con escala suave */}
-                                    <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 transition-transform duration-300 origin-left group-hover:scale-105">
-                                        <span className="text-xs font-semibold">S/.</span> {product.precio?.toFixed(2) ?? "0.00"}
+                                {/* Precio */}
+                                <div className="flex flex-col sm:flex-row sm:items-end gap-3 justify-center md:justify-start">
+                                    <p
+                                        className="
+                      text-3xl md:text-4xl
+                      font-bold
+                      text-[var(--store-text)]
+                    "
+                                    >
+                                        <span className="text-xs font-semibold">S/.</span>{" "}
+                                        {product.precio?.toFixed(2) ?? "0.00"}
                                     </p>
 
-                                    {product.precioComparativo && product.precioComparativo > product.precio && (
-                                        <div className="flex flex-col justify-end sm:pb-1 items-center sm:items-start">
+                                    {product.precioComparativo &&
+                                        product.precioComparativo > product.precio && (
+                                            <div className="flex flex-col items-center md:items-start">
+                                                {/* Descuento animado */}
+                                                <div
+                                                    className="
+                            relative h-8 w-40
+                            overflow-hidden
+                            bg-[var(--store-primary)]
+                            text-[var(--store-primary-text)]
+                            text-xs font-semibold
+                            flex items-center justify-center
+                          "
+                                                >
+                                                    <span
+                                                        className={`absolute transition-all duration-500
+                              ${showDiscount
+                                                                ? "translate-y-0 opacity-100"
+                                                                : "-translate-y-full opacity-0"
+                                                            }`}
+                                                    >
+                                                        -{discountPercentage}% OFF
+                                                    </span>
 
-                                            {/* Descuento Dinámico en Loop (Aparece/Desaparece) */}
-                                            <div className="relative h-8 w-42 overflow-hidden bg-yellow-300  flex items-center justify-center mb-0.5  group-hover:bg-yellow-200 transition-colors">
-                                                <span
-                                                    className={`absolute w-full text-center text-[10px] sm:text-xs font-semibold text-gray-800 transition-all duration-500 ease-in-out transform
-                                                    ${showDiscount ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}
-                                                >
-                                                    -{discountPercentage}% OFF
-                                                </span>
-                                                <span
-                                                    className={`absolute w-full text-center text-xs font-semibold text-gray-600 transition-all duration-500 ease-in-out transform
-                                                    ${!showDiscount ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}`}
-                                                >
-                                                    Ahorras S/. {(product.precioComparativo - product.precio).toFixed(2)}
+                                                    <span
+                                                        className={`absolute transition-all duration-500
+                              ${!showDiscount
+                                                                ? "translate-y-0 opacity-100"
+                                                                : "translate-y-full opacity-0"
+                                                            }`}
+                                                    >
+                                                        Ahorras S/.{" "}
+                                                        {(product.precioComparativo - product.precio).toFixed(2)}
+                                                    </span>
+                                                </div>
+
+                                                <span className="text-xs text-[var(--store-text-muted)] line-through mt-1">
+                                                    S/. {product.precioComparativo.toFixed(2)}
                                                 </span>
                                             </div>
-
-                                            <span className="text-xs sm:text-sm text-neutral-400 line-through decoration-neutral-400">
-                                                S/. {product.precioComparativo.toFixed(2)}
-                                            </span>
-                                        </div>
-                                    )}
+                                        )}
                                 </div>
                             </article>
 
-                            {/* Image Section - Transiciones mejoradas */}
-                            <div className="relative w-full md:w-2/3 h-[260px] sm:h-[300px] md:h-[350px] order-1 md:order-2">
+                            {/* ===== IMAGEN ===== */}
+                              <div className="relative w-full md:w-2/3 h-[260px] sm:h-[300px] md:h-[350px] order-1 md:order-2">
                                 <div className="relative w-full h-full perspective-1000">
                                     <Image
                                         src={product.imagenes?.[0] || "/logoapp.png"}

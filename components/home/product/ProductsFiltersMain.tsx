@@ -136,17 +136,17 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
     );
 
     return (
-        <aside className="w-full h-fit lg:sticky lg:top-24 space-y-6 pt-2 select-none scroll-auto">
+        <aside className="w-full h-fit lg:sticky lg:top-24 space-y-6 pt-2 select-none scroll-auto bg-[var(--store-surface)] p-4 ">
             {/* Header */}
-            <div className="flex justify-between items-center px-1 pb-3 border-b border-gray-200">
-                <h2 className="text-sm  uppercase tracking-widest flex items-center gap-2 text-gray-900">
+            <div className="flex justify-between items-center px-1 pb-3 border-b border-[var(--store-border)]">
+                <h2 className="text-sm uppercase flex items-center gap-2 text-[var(--store-text)]">
                     <LuListFilter className="w-4 h-4" />
                     Filtros
                 </h2>
                 {hasActiveFilters && (
                     <button
                         onClick={clearFilters}
-                        className="text-xs flex items-center gap-1.5 text-gray-500 hover:text-black transition-colors  hover:underline underline-offset-2"
+                        className="text-xs flex items-center gap-1.5 text-[var(--store-text-muted)] hover:text-[var(--store-text)] transition-colors hover:underline underline-offset-2"
                     >
                         Limpiar <LuX className="w-3.5 h-3.5" />
                     </button>
@@ -155,13 +155,13 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
 
             <Accordion
                 type="multiple"
-                defaultValue={["categories", "price", "brands"]}
-                className="w-full space-y-1"
+                defaultValue={[]}
+                className="w-full space-y-1 text-sm"
             >
                 {/* Categorías */}
                 {sortedCategories.length > 0 && (
-                    <AccordionItem value="categories" className="border-none">
-                        <AccordionTrigger className="text-base  text-gray-800 hover:text-black hover:no-underline py-3">
+                    <AccordionItem value="categories" className="border-b">
+                        <AccordionTrigger className="text-sm text-[var(--store-text)] hover:text-[var(--store-primary)] hover:no-underline py-3">
                             Categorías
                         </AccordionTrigger>
                         <AccordionContent className="pt-0 pb-2">
@@ -181,12 +181,11 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
 
                 {/* Precio */}
                 {priceFilter && (
-                    <AccordionItem value="price" className="border-none">
-                        <AccordionTrigger className="text-base  text-gray-800 hover:text-black hover:no-underline py-3">
+                    <AccordionItem value="price" className="border-b">
+                        <AccordionTrigger className="text-sm text-[var(--store-text)] hover:text-[var(--store-primary)] hover:no-underline py-3">
                             Precio
                         </AccordionTrigger>
                         <AccordionContent className="pt-6 pb-2 px-1">
-                            {/* El slider mantiene el gray-900 solo para la barra activa */}
                             <Slider
                                 min={priceFilter.min ?? 0}
                                 max={priceFilter.max ?? 1000}
@@ -194,14 +193,20 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                                 value={priceRange}
                                 onValueChange={(val) => setPriceRange(val as [number, number])}
                                 onValueCommit={(val) => updatePriceRange(val as [number, number])}
-                                className="my-4 [&_.relative]:bg-gray-200 [&_.absolute]:bg-gray-900 [&_span]:border-gray-900 [&_span]:focus:ring-gray-900/20"
+                                className="
+                my-4
+                [&_.relative]:bg-[var(--store-border)]
+                [&_.absolute]:bg-[var(--store-primary)]
+                [&_span]:border-[var(--store-primary)]
+                [&_span]:focus:ring-[var(--store-primary)]/20
+              "
                             />
                             <div className="flex justify-between items-center mt-5">
-                                <div className="border border-gray-300 rounded px-3 py-1.5 bg-white text-sm text-gray-900  shadow-sm">
+                                <div className="border border-[var(--store-border)] rounded px-3 py-1.5 bg-[var(--store-surface)] text-sm text-[var(--store-text)] shadow-sm">
                                     S/. {priceRange[0]}
                                 </div>
-                                <div className="h-px w-4 bg-gray-300"></div>
-                                <div className="border border-gray-300 rounded px-3 py-1.5 bg-white text-sm text-gray-900  shadow-sm">
+                                <div className="h-px w-4 bg-[var(--store-border)]"></div>
+                                <div className="border border-[var(--store-border)] rounded px-3 py-1.5 bg-[var(--store-surface)] text-sm text-[var(--store-text)] shadow-sm">
                                     S/. {priceRange[1]}
                                 </div>
                             </div>
@@ -211,8 +216,8 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
 
                 {/* Marcas */}
                 {sortedBrands.length > 0 && (
-                    <AccordionItem value="brands" className="border-none">
-                        <AccordionTrigger className="text-base  text-gray-800 hover:text-black hover:no-underline py-3">
+                    <AccordionItem value="brands" className="border-b">
+                        <AccordionTrigger className="text-sm text-[var(--store-text)] hover:text-[var(--store-primary)] hover:no-underline py-3">
                             Marcas
                         </AccordionTrigger>
                         <AccordionContent className="pt-0 pb-2">
@@ -232,8 +237,8 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
 
                 {/* Atributos dinámicos */}
                 {sortedAtributos.map((attr) => (
-                    <AccordionItem key={attr.name} value={attr.name} className="border-none">
-                        <AccordionTrigger className="text-base  text-gray-800 hover:text-black hover:no-underline py-3 capitalize">
+                    <AccordionItem key={attr.name} value={attr.name} className="border-b">
+                        <AccordionTrigger className="text-sm text-[var(--store-text)] hover:text-[var(--store-primary)] hover:no-underline py-3 capitalize">
                             {attr.name}
                         </AccordionTrigger>
                         <AccordionContent className="pt-0 pb-2">
@@ -253,4 +258,6 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
             </Accordion>
         </aside>
     );
+
+
 }

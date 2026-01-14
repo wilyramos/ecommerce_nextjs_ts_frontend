@@ -37,7 +37,7 @@ export default async function ProductResults({
 
     if (!products) {
         return (
-            <div className="py-20 text-center text-gray-400">
+            <div className="py-20 text-center text-[var(--store-text-muted)]">
                 Error al cargar productos
             </div>
         );
@@ -65,7 +65,7 @@ export default async function ProductResults({
                     <section className="col-span-1 md:col-span-4 flex flex-col gap-3">
 
                         {/* Barra superior */}
-                        <div className="flex justify-between md:justify-end items-center gap-2 text-sm border-b md:border-none sticky md:static top-10 py-1 bg-white md:bg-transparent z-10">
+                        <div className="flex justify-between md:justify-end items-center gap-2 text-sm border-b md:border-none sticky md:static top-12 py-1 bg-[var(--store-surface)] md:bg-transparent z-10">
                             <div className="md:hidden">
                                 <DrawerFiltersMain filters={products?.filters || null} />
                             </div>

@@ -63,7 +63,7 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
 
     return (
         <div
-            className="group relative flex flex-col transform transition-transform duration-500 hover:scale-[1.01] overflow-visible bg-white"
+            className="group relative flex flex-col transform transition-transform duration-500 hover:scale-[1.01] overflow-visible bg-[var(--store-surface)] rounded-lg"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onTouchStart={handleTouchStart}
@@ -73,9 +73,9 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
         >
             <Link href={`/productos/${product.slug}`} className="flex flex-col h-full">
                 {/* Imagen */}
-                <div className="relative w-full aspect-square bg-white overflow-hidden rounded-t">
+                <div className="relative w-full aspect-square bg-[var(--store-card-bg)] overflow-hidden rounded-t">
                     {imagenes.length > 0 ? (
-                        <div className="relative w-full h-full bg-white overflow-hidden">
+                        <div className="relative w-full h-full bg-[var(--store-card-bg)] overflow-hidden">
                             {/* Contenedor de todas las imágenes deslizables */}
                             <div
                                 className="flex w-full h-full transition-transform duration-500 ease-in-out"
@@ -87,9 +87,9 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                                             src={img}
                                             alt={`${product.nombre} ${idx + 1}`}
                                             fill
-                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                            className="object-cover"
-                                            quality={70}
+                                            sizes=""
+                                            className="object-contain"
+                                            quality={60}
                                         />
                                     </div>
                                 ))}
@@ -140,12 +140,12 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                     {(product.esNuevo || product.precioComparativo) && (
                         <div className="absolute top-4 left-2 right-2 flex justify-between items-start text-[13px] font-semibold">
                             {product.esNuevo && (
-                                <span className="px-2 py-0.5 bg-black text-white text-[10px] md:text-xs">
+                                <span className="px-2 py-0.5 bg-[var(--store-primary)] text-white text-[10px] md:text-xs">
                                     Nuevo
                                 </span>
                             )}
                             {product.precioComparativo && (
-                                <span className="px-2 py-0.5 bg-black text-white text-[10px] md:text-xs ml-auto">
+                                <span className="px-2 py-0.5 bg-[var(--store-primary)] text-white text-[10px] md:text-xs ml-auto">
                                     -{Math.round(discountedPrice)}%
                                 </span>
                             )}
@@ -157,17 +157,17 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                 {/* --- SECCIÓN DE INFO CORREGIDA --- */}
                 <div className="flex flex-col flex-1 p-2 md:p-4">
                     {/* Contenedor para marca y nombre */}
-                    <div>
+                    <div className="flex flex-col gap-1">
                         {/* Fila 1: Marca */}
                         <div className="h-5"> {/* Altura fija para la marca */}
-                            <span className="text-[10px] md:text-xs font-medium text-muted uppercase">
+                            <span className="text-[10px] md:text-xs font-medium text-[var(--store-text-muted)] uppercase ">
                                 {product.brand?.nombre}
                             </span>
                         </div>
 
                         {/* Fila 2, 3, 4: Nombre del Producto */}
                         <h3
-                            className=" text-xs md:text-sm text-foreground font-normal leading-snug line-clamp-3 h-[4.5rem] md:h-[5rem] " // 2. Altura fija
+                            className=" text-xs md:text-sm text-[var(--store-text)] leading-snug line-clamp-3 h-[4.5rem] md:h-[5rem] " // 2. Altura fija
                         >
                             {product.nombre}
                         </h3>
@@ -181,19 +181,19 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                         <div className="ml-auto flex flex-col items-end leading-tight">
                             {stock > 0 ? (
                                 <>
-                                    <div>
+                                    <div className="space-x-2">
                                         {(product.precioComparativo ?? 0) > 0 && (
-                                            <span className="text-gray-400 text-xs line-through px-1 font-light">
+                                            <span className="text-[var(--store-text-muted)] text-xs line-through px-1 font-light">
                                                 s/ {product.precioComparativo!.toFixed(2)}
                                             </span>
                                         )}
-                                        <span className="text-black text-sm">
+                                        <span className="text-[var(--store-text)] text-base">
                                             s/ {precio.toFixed(2)}
                                         </span>
                                     </div>
                                 </>
                             ) : (
-                                <span className="text-gray-600 text-sm bg-gray-100 px-1 rounded">Sin stock</span>
+                                <span className="text-[var(--store-text-muted)] text-sm bg-[var(--store-surface-hover)] px-1 rounded">Sin stock</span>
                             )}
                         </div>
                     </div>

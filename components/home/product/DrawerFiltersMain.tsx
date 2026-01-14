@@ -119,7 +119,7 @@ export default function DrawerFiltersMain({ filters }: Props) {
     };
 
     const SectionTitle = ({ title }: { title: string }) => (
-        <span className="uppercase tracking-wide text-sm font-semibold text-gray-600">
+        <span className="uppercase tracking-wide text-sm font-semibold text-[var(--store-text-muted)]">
             {title}
         </span>
     );
@@ -137,16 +137,16 @@ export default function DrawerFiltersMain({ filters }: Props) {
             onClick={onClick}
             className="
         flex items-center gap-3 py-2 px-2 rounded-md cursor-pointer select-none
-        hover:bg-gray-50 transition
+        hover:bg-[var(--store-surface-hover)] transition
       "
         >
             <input
                 type="checkbox"
                 checked={checked}
                 readOnly
-                className="accent-black pointer-events-none"
+                className="accent-[var(--store-primary)] pointer-events-none"
             />
-            <span className="text-[13px] text-gray-700">{label}</span>
+            <span className="text-[13px] text-[var(--store-text)]">{label}</span>
         </li>
     );
 
@@ -159,16 +159,16 @@ export default function DrawerFiltersMain({ filters }: Props) {
     }) => (
         <Disclosure>
             {({ open }) => (
-                <div className="border-b border-gray-200 pb-2">
+                <div className="border-b border-[var(--store-border)] pb-2">
                     <Disclosure.Button
                         className="
-              w-full flex justify-between items-center py-3
-              hover:bg-gray-50 transition px-1
+              w-full flex justify-between items-center py-3 px-1
+              hover:bg-[var(--store-surface-hover)] transition
             "
                     >
                         <SectionTitle title={title} />
                         <ChevronUpIcon
-                            className={`w-5 h-5 transition-transform ${open ? "rotate-180" : ""
+                            className={`w-5 h-5 text-[var(--store-text-muted)] transition-transform ${open ? "rotate-180" : ""
                                 }`}
                         />
                     </Disclosure.Button>
@@ -184,8 +184,11 @@ export default function DrawerFiltersMain({ filters }: Props) {
             <DrawerTrigger asChild>
                 <button
                     className="
-            w-full sm:hidden bg-white px-3 py-2
-            flex items-center gap-2 justify-center 
+            w-full sm:hidden
+            
+            px-3 py-2
+            flex items-center gap-2 justify-center
+            text-[var(--store-text)]
           "
                 >
                     <VscSettings size={18} />
@@ -193,23 +196,22 @@ export default function DrawerFiltersMain({ filters }: Props) {
                 </button>
             </DrawerTrigger>
 
-            <DrawerContent className="p-0 rounded-t-xl">
-                <DrawerHeader className="p-4 border-b">
+            <DrawerContent className="p-0 rounded-t-xl bg-[var(--store-surface)]">
+                <DrawerHeader className="p-4 border-b border-[var(--store-border)]">
                     <div className="flex w-full justify-between items-center">
-                        <DrawerTitle className="text-lg font-medium text-gray-800">
+                        <DrawerTitle className="text-lg font-medium text-[var(--store-text)]">
                             Filtros
                         </DrawerTitle>
 
                         <button
                             onClick={clearFilters}
-                            className="flex items-center gap-1 text-sm text-red-600 hover:text-red-500"
+                            className="flex items-center gap-1 text-sm text-[var(--store-error)] hover:opacity-80"
                         >
                             <MdClear size={17} />
                             Limpiar
                         </button>
                     </div>
                 </DrawerHeader>
-
 
                 <ScrollArea className="h-[72vh] px-4">
                     {categories.length > 0 && (
@@ -258,34 +260,20 @@ export default function DrawerFiltersMain({ filters }: Props) {
 
                     {atributos.length > 0 && (
                         <div className="mt-3 space-y-2">
-                            {atributos
-                                .slice()
-                                .sort((a, b) =>
-                                    a.name.localeCompare(b.name, undefined, {
-                                        sensitivity: "base",
-                                    })
-                                )
-                                .map((attr) => (
-                                    <SectionWrapper key={attr.name} title={attr.name}>
-                                        <ul>
-                                            {attr.values
-                                                .slice()
-                                                .sort((a, b) =>
-                                                    a.localeCompare(b, undefined, {
-                                                        sensitivity: "base",
-                                                    })
-                                                )
-                                                .map((v) => (
-                                                    <Item
-                                                        key={v}
-                                                        label={v}
-                                                        checked={!!selectedFilters?.[attr.name]?.includes(v)}
-                                                        onClick={() => toggleCheckboxValue(attr.name, v)}
-                                                    />
-                                                ))}
-                                        </ul>
-                                    </SectionWrapper>
-                                ))}
+                            {atributos.map((attr) => (
+                                <SectionWrapper key={attr.name} title={attr.name}>
+                                    <ul>
+                                        {attr.values.map((v) => (
+                                            <Item
+                                                key={v}
+                                                label={v}
+                                                checked={!!selectedFilters?.[attr.name]?.includes(v)}
+                                                onClick={() => toggleCheckboxValue(attr.name, v)}
+                                            />
+                                        ))}
+                                    </ul>
+                                </SectionWrapper>
+                            ))}
                         </div>
                     )}
 
@@ -294,39 +282,29 @@ export default function DrawerFiltersMain({ filters }: Props) {
                             <SectionTitle title="Precio" />
 
                             <div className="flex items-center gap-4 mt-3">
-                                <div className="flex flex-col text-xs text-gray-700 w-full">
-                                    <label className="mb-1">Mín</label>
-                                    <input
-                                        type="number"
-                                        min={0}
-                                        value={minPrice}
-                                        onChange={(e) =>
-                                            handlePriceChange("min", e.target.value)
-                                        }
-                                        className="
-                      w-full border rounded px-2 py-1
-                      focus:outline-none focus:ring-1 focus:ring-gray-400
-                    "
-                                    />
-                                </div>
-
-                                <span className="mt-6 text-gray-500">–</span>
-
-                                <div className="flex flex-col text-xs text-gray-700 w-full">
-                                    <label className="mb-1">Máx</label>
-                                    <input
-                                        type="number"
-                                        min={0}
-                                        value={maxPrice}
-                                        onChange={(e) =>
-                                            handlePriceChange("max", e.target.value)
-                                        }
-                                        className="
-                      w-full border rounded px-2 py-1
-                      focus:outline-none focus:ring-1 focus:ring-gray-400
-                    "
-                                    />
-                                </div>
+                                {(["min", "max"] as const).map((type) => (
+                                    <div key={type} className="flex flex-col text-xs w-full">
+                                        <label className="mb-1 text-[var(--store-text-muted)]">
+                                            {type === "min" ? "Mín" : "Máx"}
+                                        </label>
+                                        <input
+                                            type="number"
+                                            min={0}
+                                            value={type === "min" ? minPrice : maxPrice}
+                                            onChange={(e) =>
+                                                handlePriceChange(type, e.target.value)
+                                            }
+                                            className="
+                        w-full border border-[var(--store-border)]
+                        rounded px-2 py-1
+                        bg-[var(--store-surface)]
+                        text-[var(--store-text)]
+                        focus:outline-none
+                        focus:ring-1 focus:ring-[var(--store-primary)]
+                      "
+                                        />
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     )}

@@ -173,36 +173,49 @@
   background: #d1d5db; /* gray-300 */
 }
 
+:root {
+  /* ===== PALETA TIENDA (CUSTOM) ===== */
 
-/* Estilos para paleta de colores general */
+  /* Fondo general del sitio (páginas, layout principal) */
+  --store-bg: #f6f6f6;
 
-@theme {
-  /* --- PALETA TECH LIGHT (Minimalismo Clínico) --- */
+  /* Superficies principales:
+     cards de producto, modales, dropdowns, panels */
+  --store-surface: #ffffff;
 
-  /* Fondo y Texto Base */
-  --color-background: #f9fafb;       /* Gray 50 */
-  --color-foreground: #09090b;       /* Zinc 950 - Texto casi negro (menos duro que #000) */
+  /* Estado hover de superficies:
+     hover de cards, filas, contenedores interactivos */
+  --store-surface-hover: #f4f4f5;
 
-  /* Superficies (Cards, Secciones) */
-  --color-card: #ffffff;             /* Blanco */
-  --color-card-alt: #fafafa;         /* Zinc 50 - Para fondos alternativos sutiles */
-  --color-card-hover: #f4f4f5;       /* Zinc 100 */
+  /* Texto principal:
+     nombres de producto, precios, títulos */
+  --store-text: #09090b;
 
-  /* Bordes (CRÍTICOS en modo claro para definir estructura) */
-  --color-border: #e4e4e7;           /* Zinc 200 - Gris muy suave */
-  --color-border-strong: #d4d4d8;    /* Zinc 300 - Para inputs o elementos activos */
+  /* Texto secundario:
+     marcas, descripciones cortas, metadata, precios tachados */
+  --store-text-muted: #71717a;
 
-  /* Textos Secundarios */
-  --color-muted: #71717a;            /* Zinc 500 - Gris medio legible */
-  --color-muted-light: #a1a1aa;      /* Zinc 400 - Detalles menores */
+  /* Color de acción principal (CTA):
+     botones Comprar, Agregar al carrito, acciones destacadas */
+  --store-primary: #18181b;
 
-  /* Acción Principal (El toque "Premium") */
-  /* Botones negros sólidos sobre fondo blanco crean autoridad */
-  --color-primary: #18181b;          /* Zinc 900 */
-  --color-primary-foreground: #ffffff; /* Texto blanco */
-  --color-primary-hover: #27272a;    /* Zinc 800 */
+  /* Estado hover / activo del CTA principal */
+  --store-primary-hover: #27272a;
 
-  /* Acentos de Estado */
-  --color-error: #ef4444;            /* Rojo para errores */
-  --color-success: #10b981;          /* Verde para "En stock" */
+  /* Texto sobre el color primario:
+     texto de botones, badges oscuros */
+  --store-primary-text: #ffffff;
+
+  /* Estado positivo:
+     En stock, Disponible, Éxito en acciones */
+  --store-success: #10b981;
+
+  /* Estado negativo:
+     Error, Sin stock, Eliminado, Alerta */
+  --store-error: #ef4444;
+
+  /* Bordes sutiles:
+     cards, inputs, divisores, separadores visuales */
+  --store-border: #e4e4e7;
 }
+

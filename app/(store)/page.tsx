@@ -91,7 +91,6 @@ export default function HomePage() {
                 <BrandsList />
             </section>
 
-           
             <section>
                 <FeaturesList />
             </section>

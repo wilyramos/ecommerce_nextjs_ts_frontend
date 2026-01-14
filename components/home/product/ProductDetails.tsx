@@ -475,7 +475,7 @@ ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
                         {/* Envío */}
                         <div className="bg-white py-2 md:px-4 flex items-start gap-4 px-4">
                             <div className="flex flex-wrap gap-x-2 flex-col">
-                                <div className=" bg-white rounded-full  text-slate-700 flex flex-col">
+                                <div className=" bg-[var(--store-surface)] rounded-full text-[var(--store-text-muted)] flex flex-col">
                                     <p>
                                         Envíos <span className="font-semibold">gratuitos y contraentrega</span> en todo Cañete
                                     </p>

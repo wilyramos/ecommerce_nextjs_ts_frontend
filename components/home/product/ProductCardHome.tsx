@@ -13,15 +13,28 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
     return (
         <Link
             href={`/productos/${product.slug}`}
-            className="group block w-full"
+            className="
+        group
+        block w-full
+        rounded-lg
+        transition-transform
+        hover:scale-[1.01]
+      "
         >
-            {/* Contenedor de Imagen: Fondo gris muy sutil para resaltar el cuero */}
-            <div className="relative aspect-square w-full overflow-hidden rounded-sm bg-white">
+            {/* Imagen */}
+            <div
+                className="
+          relative aspect-square w-full
+          overflow-hidden
+          rounded-lg
+          bg-[var(--store-surface)]
+        "
+            >
                 {primaryImage ? (
                     <>
                         <Image
                             src={primaryImage}
-                            alt={product.nombre || 'Producto Rivas Paredes'}
+                            alt={product.nombre || "Producto"}
                             fill
                             sizes="(max-width: 768px) 50vw, 25vw"
                             className={cn(
@@ -38,25 +51,44 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                                 alt=""
                                 fill
                                 sizes="(max-width: 768px) 50vw, 25vw"
-                                className="absolute inset-0 object-contain p-4 opacity-0 transition-all duration-500 ease-in-out group-hover:opacity-100 group-hover:scale-105"
+                                className="
+                  absolute inset-0
+                  object-contain p-4
+                  opacity-0
+                  transition-all duration-500 ease-in-out
+                  group-hover:opacity-100
+                  group-hover:scale-105
+                "
                             />
                         )}
                     </>
                 ) : (
-                    <div className="flex h-full w-full items-center justify-center text-xs text-gray-300 uppercase tracking-widest">
+                    <div className="flex h-full w-full items-center justify-center text-xs uppercase tracking-widest text-[var(--store-text-muted)]">
                         Sin imagen
                     </div>
                 )}
             </div>
 
-            {/* Info del Producto: Limpia, sin decoración extra */}
-            <div className="mt-4 flex flex-col gap-1">
-                <h3 className="truncate text-sm font-medium text-gray-500 transition-colors group-hover:text-black">
+            {/* Info */}
+            <div className="mt-4 flex flex-col gap-1.5 px-0.5">
+                <h3
+                    className="
+            truncate
+            text-sm
+            font-normal
+            text-[var(--store-text-muted)]
+            transition-colors
+            group-hover:text-[var(--store-text)]
+          "
+                >
                     {product.nombre}
                 </h3>
 
-                <span className="text-sm font-semibold text-gray-900">
-                    S/ {price.toLocaleString("es-PE", { minimumFractionDigits: 2 })}
+                <span className="text-sm font-semibold text-[var(--store-text)]">
+                    S/{" "}
+                    {price.toLocaleString("es-PE", {
+                        minimumFractionDigits: 2,
+                    })}
                 </span>
             </div>
         </Link>

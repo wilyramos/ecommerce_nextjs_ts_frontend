@@ -8,7 +8,7 @@ import Link from "next/link";
 import HeaderConTituloConControles from "../ui/HeaderConTituloConControles";
 
 const AbsoluteHeaderWrapper = (props: ButtonGroupProps) => (
-    <div className="absolute top-0 left-0 right-0 z-20 px-4 md:px-0">
+    <div className="absolute top-0 left-0 right-0 z-20 px-6">
         <HeaderConTituloConControles {...props} title="Marcas" />
     </div>
 );
@@ -29,8 +29,11 @@ export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {
         <section
             className="
         relative
-        pt-10 md:pt-16
         w-full max-w-7xl mx-auto
+        px-6
+        pt-14
+        pb-8
+        bg-[var(--store-bg)]
       "
         >
             <Carousel
@@ -41,8 +44,8 @@ export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {
                 renderButtonGroupOutside
                 arrows={false}
                 customButtonGroup={<AbsoluteHeaderWrapper />}
+                containerClass="-mx-3 pb-2"
                 itemClass="px-3"
-                containerClass="pb-6"
             >
                 {brands.map((brand) => (
                     <Link
@@ -51,38 +54,33 @@ export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {
                         className="
               group
               flex items-center justify-center
-              h-20 w-20
-              transition-transform
-              hover:scale-105
-              cursor-pointer
+              w-24 h-24
+              rounded-lg
+              bg-[var(--store-surface)]
+              
+              hover:bg-[var(--store-surface-hover)]
+              transition-all
             "
                     >
-                        <div
-                            className="
-                relative
-                w-full h-full
-                flex items-center justify-center
-                overflow-hidden
-              "
-                        >
+                        <div className="relative w-full h-full flex items-center justify-center">
                             {brand.logo ? (
                                 <Image
                                     src={brand.logo}
                                     alt={brand.nombre}
                                     fill
+                                    quality={60}
                                     className="
                     object-contain
-                    p-2
-                    opacity-90
+                    p-3
+                    opacity-80
                     group-hover:opacity-100
                     transition-opacity
                   "
-                                    quality={60}
                                 />
                             ) : (
-                                <div className="flex items-center justify-center w-full h-full text-gray-400 text-sm">
-                                    Sin logo
-                                </div>
+                                <span className="text-[8px] uppercase tracking-widest text-[var(--store-text-muted)]">
+                                    No logo
+                                </span>
                             )}
                         </div>
                     </Link>
