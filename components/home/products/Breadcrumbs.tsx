@@ -17,8 +17,8 @@ export default function Breadcrumb({
     return (
         <nav
             className="
-        px-4
-        text-xs md:text-sm
+        px-2
+        text-xs
         bg-[var(--store-bg)]
         overflow-hidden
       "

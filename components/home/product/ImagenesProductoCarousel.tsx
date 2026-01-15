@@ -166,7 +166,6 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                         priority // Carga prioritaria para la imagen principal
                     />
 
-                    {/* Botones de navegación (solo si hay más de 1 imagen) */}
                     {uniqueImages.length > 1 && !zoom && (
                         <>
                             <button
@@ -204,7 +203,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                                 className={`relative h-10 w-10 rounded-md overflow-hidden border-2 transition-all flex-shrink-0
                                     ${selectedIndex === idx ? "border-gray-800 ring-1 ring-gray-800" : "border-gray-200 opacity-70"}`}
                             >
-                                <Image src={img} alt="Thumb" fill className="object-cover" sizes="48px" quality={5} />
+                                <Image src={img} alt="Thumb" fill className="object-contain" sizes="48px" quality={5} />
                             </button>
                         ))}
                     </div>
