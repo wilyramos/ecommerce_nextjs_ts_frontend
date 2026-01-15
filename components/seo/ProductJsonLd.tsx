@@ -1,5 +1,3 @@
-'use client'
-
 import type { ProductWithCategoryResponse } from "@/src/schemas"
 
 export default function ProductJsonLd({ producto }: { producto: ProductWithCategoryResponse }) {

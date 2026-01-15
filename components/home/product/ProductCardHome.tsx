@@ -21,7 +21,6 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
         hover:scale-[1.01]
       "
         >
-            {/* Imagen */}
             <div
                 className="
           relative aspect-square w-full
@@ -38,7 +37,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                             fill
                             sizes="(max-width: 768px) 50vw, 25vw"
                             className={cn(
-                                "object-contain p-4 transition-all duration-500 ease-in-out",
+                                "object-contain transition-all duration-500 ease-in-out",
                                 hoverImage !== primaryImage
                                     ? "group-hover:opacity-0"
                                     : "group-hover:scale-105"

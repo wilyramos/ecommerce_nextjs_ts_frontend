@@ -205,15 +205,7 @@
   /* Texto sobre el color primario:
      texto de botones, badges oscuros */
   --store-primary-text: #ffffff;
-
-  /* Estado positivo:
-     En stock, Disponible, Éxito en acciones */
-  --store-success: #10b981;
-
-  /* Estado negativo:
-     Error, Sin stock, Eliminado, Alerta */
-  --store-error: #ef4444;
-
+  
   /* Bordes sutiles:
      cards, inputs, divisores, separadores visuales */
   --store-border: #e4e4e7;

@@ -118,7 +118,12 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
                             if (e.target.value.length > 0) setIsOpen(true);
                         }}
                         placeholder="Buscar productos, marcas..."
-                        className="flex-1 px-3 py-2 bg-transparent text-sm text-gray-900 placeholder-gray-500 outline-none w-full"
+                        className="
+  flex-1 px-3 py-2 bg-transparent 
+  text-base md:text-sm 
+  text-gray-900 placeholder-gray-500 
+  outline-none w-full
+"
                         onFocus={() => setIsOpen(true)}
                         autoFocus={isMobile}
                     />

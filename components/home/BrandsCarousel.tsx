@@ -6,6 +6,8 @@ import Image from "next/image";
 import type { TBrand } from "@/src/schemas/brands";
 import Link from "next/link";
 import HeaderConTituloConControles from "../ui/HeaderConTituloConControles";
+import { MdOutlineImageNotSupported } from "react-icons/md";
+
 
 const AbsoluteHeaderWrapper = (props: ButtonGroupProps) => (
     <div className="absolute top-0 left-0 right-0 z-20 px-6">
@@ -70,17 +72,13 @@ export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {
                                     fill
                                     quality={60}
                                     className="
-                    object-contain
-                    p-3
-                    opacity-80
-                    group-hover:opacity-100
-                    transition-opacity
+                    object-cover rounded-lg
                   "
                                 />
                             ) : (
-                                <span className="text-[8px] uppercase tracking-widest text-[var(--store-text-muted)]">
-                                    No logo
-                                </span>
+                                <div className="flex items-center justify-center w-full h-full text-[var(--store-text-muted)]">
+                                    <MdOutlineImageNotSupported size={18} />
+                                </div>
                             )}
                         </div>
                     </Link>

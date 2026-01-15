@@ -154,8 +154,7 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                 </div>
 
 
-                {/* --- SECCIÓN DE INFO CORREGIDA --- */}
-                <div className="flex flex-col flex-1 p-2 ">
+                <div className="flex flex-col flex-1 p-2 md:p-4">
                     {/* Contenedor para marca y nombre */}
                     <div className="flex flex-col gap-1 h-[4rem] md:h-[4.5rem]">
                         {/* Marca (1 línea fija) */}
@@ -174,9 +173,6 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                         </h3>
                     </div>
 
-
-                    {/* Fila 5: Precios y color (empujado hacia abajo) */}
-                    {/* 3. mt-auto empuja este div hasta el final del contenedor flex-col */}
                     <div className="flex items-center gap-2 mt-auto pt-4">
                         {/* <span className="text-gray-400 text-xs">Color </span> */}
                         {color && <ColorCircle color={color} size={12} />}
