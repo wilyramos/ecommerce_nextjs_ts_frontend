@@ -6,6 +6,7 @@ import { MdFilterListOff } from "react-icons/md";
 import type { Attribute } from "@/src/schemas";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import ColorCircle from "@/components/ui/ColorCircle";
 
 import {
     Accordion,
@@ -31,7 +32,6 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
     const [minPrice, setMinPrice] = useState<number>(MIN);
     const [maxPrice, setMaxPrice] = useState<number>(MAX);
 
-    // --- Cargar valores iniciales desde la URL ---
     useEffect(() => {
         const filters: Record<string, string[]> = {};
         attributes.forEach((attr) => {
@@ -79,7 +79,6 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
         updateParams({ ...cleared, priceRange: null, sort: null });
     };
 
-    // --- Manejar cambios en inputs de precio ---
     const handlePriceChange = (type: "min" | "max", value: string) => {
         const number = Number(value);
         if (type === "min") {
@@ -92,30 +91,34 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
     };
 
     return (
-        <aside className="p-4 ">
-            {/* Botón limpiar filtros */}
-            <div className="flex justify-end mb-4">
-                
+        <aside className="p-4 rounded-lg bg-[var(--store-surface)] text-[var(--store-text)] border border-[var(--store-border)]">
 
-                  <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={clearFilters}
-                        className="h-8 px-2 text-xs text-muted-foreground hover:text-red-500"
-                    >
-                        <MdFilterListOff className="mr-2 h-4 w-4" />
-                        Limpiar
-                    </Button>
-            </div>
-            {/* ----- Filtro por Precio con inputs ----- */}
-            <div className="mb-4">
-                <h2 className="text-sm font-semibold text-gray-800 mb-1">Precio</h2>
-                <div
-                    className="flex flex-row gap-2 "
+            <h2 className="text-xl font-light leading-6 mb-4 text-[var(--store-text)]">
+                Productos en {categorySlug.charAt(0).toUpperCase() + categorySlug.slice(1)}
+            </h2>
+            <div className="flex justify-end mb-4">
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={clearFilters}
+                    className="h-8 px-2 text-xs text-[var(--store-text-muted)] hover:text-red-500"
                 >
-                    {/* Input Mín */}
-                    <div className="flex flex-col text-sm text-gray-800 w-full sm:w-auto px-4">
-                        <Label htmlFor="min" className="mb-1 text-xs font-semibold">
+                    <MdFilterListOff className="mr-2 h-4 w-4" />
+                    Limpiar
+                </Button>
+            </div>
+
+            <div className="mb-4">
+                <h2 className="text-sm font-semibold text-[var(--store-text)] mb-1">
+                    Precio
+                </h2>
+
+                <div className="flex flex-row gap-2">
+                    <div className="flex flex-col text-sm w-full sm:w-auto px-4">
+                        <Label
+                            htmlFor="min"
+                            className="mb-1 text-xs font-semibold text-[var(--store-text)]"
+                        >
                             Mín
                         </Label>
                         <Input
@@ -123,15 +126,20 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
                             type="number"
                             min={0}
                             value={minPrice}
-                            onChange={(e) => handlePriceChange("min", e.target.value)}
+                            onChange={(e) =>
+                                handlePriceChange("min", e.target.value)
+                            }
+                            className="border-[var(--store-border)]"
                         />
                     </div>
 
-                    <span className="text-gray-8000 md:mt-5">-</span>
+                    <span className="md:mt-5 text-[var(--store-text)]">-</span>
 
-                    {/* Input Máx */}
-                    <div className="flex flex-col text-sm text-gray-800 w-full sm:w-auto">
-                        <Label htmlFor="max" className="mb-1 text-xs font-semibold">
+                    <div className="flex flex-col text-sm w-full sm:w-auto">
+                        <Label
+                            htmlFor="max"
+                            className="mb-1 text-xs font-semibold text-[var(--store-text)]"
+                        >
                             Máx
                         </Label>
                         <Input
@@ -139,43 +147,68 @@ export default function FiltrosClient({ categorySlug, attributes }: Props) {
                             type="number"
                             min={0}
                             value={maxPrice}
-                            onChange={(e) => handlePriceChange("max", e.target.value)}
+                            onChange={(e) =>
+                                handlePriceChange("max", e.target.value)
+                            }
+                            className="border-[var(--store-border)]"
                         />
                     </div>
                 </div>
             </div>
 
+            <Accordion type="multiple" className="space-y-4">
+                {attributes.map((attr) => {
+                    const isColorAttribute =
+                        attr.name.toLowerCase() === "color";
 
-            {/* ----- Filtros por atributos con shadcn Accordion ----- */}
-            <Accordion type="multiple" className="space-y-4 ">
-                {attributes.map((attr) => (
-                    <AccordionItem key={attr.name} value={attr.name}>
-                        <AccordionTrigger
-                            className="text-sm font-semibold text-zinc-800 hover:bg-zinc-200 py-2 px-2 cursor-pointer select-none"
-                        >
-                            {attr.name.charAt(0).toUpperCase() + attr.name.slice(1).toLowerCase()}
-                        </AccordionTrigger>
-                        <AccordionContent className="pl-2 pt-2 text-sm text-gray-800">
-                            <ul className="space-y-1">
-                                {attr.values.map((value) => (
-                                    <li
-                                        key={value}
-                                        onClick={() => toggleCheckboxValue(attr.name, value)}
-                                        className="flex items-center gap-2 hover:bg-zinc-200 px-2 cursor-pointer py-1  select-none"
-                                    >
-                                        <input
-                                            type="checkbox"
-                                            checked={!!selectedFilters[attr.name]?.includes(value)}
-                                            readOnly
-                                            className="accent-blue-600 pointer-events-none"
-                                        />
-                                        <span className="text-sm text-gray-800">{value}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </AccordionContent>
-                    </AccordionItem>
-                ))}
+                    return (
+                        <AccordionItem key={attr.name} value={attr.name}>
+                            <AccordionTrigger className="text-sm font-semibold py-2 px-2 cursor-pointer select-none text-[var(--store-text)]">
+                                {attr.name.charAt(0).toUpperCase() +
+                                    attr.name.slice(1).toLowerCase()}
+                            </AccordionTrigger>
+
+                            <AccordionContent className="pl-2 pt-2 text-sm text-[var(--store-text)]">
+                                <ul className="space-y-1">
+                                    {attr.values.map((value) => (
+                                        <li
+                                            key={value}
+                                            onClick={() =>
+                                                toggleCheckboxValue(
+                                                    attr.name,
+                                                    value
+                                                )
+                                            }
+                                            className="flex items-center gap-2 px-2 cursor-pointer py-1 select-none text-[var(--store-text)] hover:bg-[var(--store-surface-hover)]"
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                checked={
+                                                    !!selectedFilters[
+                                                        attr.name
+                                                    ]?.includes(value)
+                                                }
+                                                readOnly
+                                                className="pointer-events-none accent-[var(--store-primary)]"
+                                            />
+
+                                            {isColorAttribute && (
+                                                <ColorCircle
+                                                    color={value}
+                                                    size={16}
+                                                />
+                                            )}
+
+                                            <span className="text-sm text-[var(--store-text)]">
+                                                {value}
+                                            </span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </AccordionContent>
+                        </AccordionItem>
+                    );
+                })}
             </Accordion>
         </aside>
     );

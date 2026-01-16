@@ -57,6 +57,7 @@ export default async function ProductResults({
                         <div className="sticky top-24">
                             <ProductsFiltersMain
                                 filters={products.filters || null}
+                                
                             />
                         </div>
                     </aside>

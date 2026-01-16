@@ -12,6 +12,7 @@ import { Slider } from "@/components/ui/slider";
 import { LuListFilter, LuX } from "react-icons/lu";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import ColorCircle from "@/components/ui/ColorCircle";
 
 type ProductsFiltersProps = {
     filters: TFilter[] | null;
@@ -107,8 +108,9 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
     const FilterCheckboxItem = ({
         label,
         checked,
-        onChange
-    }: { label: string, checked: boolean, onChange: () => void }) => (
+        onChange,
+        isColor = false
+    }: { label: string, checked: boolean, onChange: () => void, isColor?: boolean }) => (
         <li className="group">
             <label className={cn(
                 "flex items-center gap-3 cursor-pointer py-2 px-1 transition-all duration-200",
@@ -125,6 +127,10 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                     checked={checked}
                     onChange={onChange}
                 />
+
+                {/* Renderizar circulo de color si corresponde */}
+                {isColor && <ColorCircle color={label} size={16} />}
+
                 <span className={cn(
                     "text-sm select-none capitalize leading-none pt-0.5",
                     checked ? "font-semibold" : "font-normal"
@@ -139,9 +145,9 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
         <aside className="w-full h-fit lg:sticky lg:top-24 space-y-6 pt-2 select-none scroll-auto bg-[var(--store-surface)] p-4 rounded-lg">
             {/* Header */}
             <div className="flex justify-between items-center px-1 pb-3 border-b border-[var(--store-border)]">
-                <h2 className="text-sm uppercase flex items-center gap-2 text-[var(--store-text)]">
+                <h2 className="text-lg font-light uppercase flex items-center gap-2 text-[var(--store-text)]">
                     <LuListFilter className="w-4 h-4" />
-                    Filtros
+                    Filtros { }
                 </h2>
                 {hasActiveFilters && (
                     <button
@@ -236,28 +242,31 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                 )}
 
                 {/* Atributos dinámicos */}
-                {sortedAtributos.map((attr) => (
-                    <AccordionItem key={attr.name} value={attr.name} className="border-b">
-                        <AccordionTrigger className="text-sm text-[var(--store-text)] hover:text-[var(--store-primary)] hover:no-underline py-3 capitalize">
-                            {attr.name}
-                        </AccordionTrigger>
-                        <AccordionContent className="pt-0 pb-2">
-                            <ul className=" max-h-[200px] overflow-y-auto pr-2 custom-scrollbar">
-                                {attr.values.map((value) => (
-                                    <FilterCheckboxItem
-                                        key={value}
-                                        label={value}
-                                        checked={searchParams.getAll(attr.name).includes(value)}
-                                        onChange={() => handleFilterChange(attr.name, value)}
-                                    />
-                                ))}
-                            </ul>
-                        </AccordionContent>
-                    </AccordionItem>
-                ))}
+                {sortedAtributos.map((attr) => {
+                    const isColorAttribute = attr.name.toLowerCase() === "color";
+
+                    return (
+                        <AccordionItem key={attr.name} value={attr.name} className="border-b">
+                            <AccordionTrigger className="text-sm text-[var(--store-text)] hover:text-[var(--store-primary)] hover:no-underline py-3 capitalize">
+                                {attr.name}
+                            </AccordionTrigger>
+                            <AccordionContent className="pt-0 pb-2">
+                                <ul className=" max-h-[200px] overflow-y-auto pr-2 custom-scrollbar">
+                                    {attr.values.map((value) => (
+                                        <FilterCheckboxItem
+                                            key={value}
+                                            label={value}
+                                            checked={searchParams.getAll(attr.name).includes(value)}
+                                            onChange={() => handleFilterChange(attr.name, value)}
+                                            isColor={isColorAttribute}
+                                        />
+                                    ))}
+                                </ul>
+                            </AccordionContent>
+                        </AccordionItem>
+                    );
+                })}
             </Accordion>
         </aside>
     );
-
-
 }
