@@ -1,7 +1,6 @@
 // File: frontend/components/home/products/Breadcrumb.tsx
 import Link from "next/link";
 import { LuChevronRight, LuHouse } from "react-icons/lu";
-import { BiCategory } from "react-icons/bi";
 
 type Props = {
     categoryName: string;
@@ -17,7 +16,7 @@ export default function Breadcrumb({
     return (
         <nav
             className="
-        px-2
+        py-1
         text-xs
         bg-[var(--store-bg)]
         overflow-hidden
@@ -65,7 +64,6 @@ export default function Breadcrumb({
               hover:text-[var(--store-text)]
             "
                     >
-                        <BiCategory size={15} className="mb-[1px]" />
                         <span>{categoryName}</span>
                     </Link>
                 </li>

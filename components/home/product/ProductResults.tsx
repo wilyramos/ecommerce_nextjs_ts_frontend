@@ -4,6 +4,9 @@ import Pagination from "../Pagination";
 import ProductsFiltersMain from "./ProductsFiltersMain";
 import OrdenarPor from "../products/OrdenarPor";
 import DrawerFiltersMain from "./DrawerFiltersMain";
+import ActiveFiltersChips from "../products/ActiveFiltersChips";
+import Breadcrumbs from "@/components/ui/Breadcrumbs";
+// import RecommendedProducts from "../products/RecommendedProducts";
 
 type ProductResultsProps = {
     category?: string;
@@ -13,6 +16,7 @@ type ProductResultsProps = {
     sort?: string;
     query?: string;
 } & Record<string, string | string[] | undefined | number>;
+
 
 export default async function ProductResults({
     category,
@@ -37,7 +41,7 @@ export default async function ProductResults({
 
     if (!products) {
         return (
-            <div className="py-20 text-center text-[var(--store-text-muted)]">
+            <div className="py-24 text-center text-[var(--store-text-muted)]">
                 Error al cargar productos
             </div>
         );
@@ -47,75 +51,97 @@ export default async function ProductResults({
     const hasProducts = products.products.length > 0;
 
     return (
-        <main className="flex flex-col gap-4">
-            {/* ===== NORMAL MODE ===== */}
-            {!isFallback && (
-                <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <main className="flex flex-col gap-4 md:gap-5">
+            {/* Breadcrumbs */}
+            <div className="pt-1">
+                <Breadcrumbs current="Productos" />
+            </div>
 
-                    {/* Sidebar filtros */}
+            {!isFallback && (
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-6">
+                    {/* Sidebar filtros + header */}
                     <aside className="hidden md:block md:col-span-1">
+                        <div className="flex flex-col gap-3 pb-2">
+                            <header className="flex flex-col gap-1">
+                                <h1 className="text-xl md:text-2xl font-medium text-[var(--store-text)] leading-tight">
+                                    {query ? `Resultados para "${query}"` : "Todos los productos"}
+                                </h1>
+
+                                <span className="text-xs text-[var(--store-text-muted)]">
+                                    Mostrando {products.products.length} de {products.totalProducts} productos
+                                </span>
+                            </header>
+
+                            <div className="min-h-[28px]">
+                                <ActiveFiltersChips />
+                            </div>
+                        </div>
+
                         <div className="sticky top-24">
-                            <ProductsFiltersMain
-                                filters={products.filters || null}
-                                
-                            />
+                            <ProductsFiltersMain filters={products.filters || null} />
                         </div>
                     </aside>
 
                     {/* Contenido principal */}
-                    <section className="col-span-1 md:col-span-4 flex flex-col gap-3">
-
+                    <section className="col-span-1 md:col-span-4 flex flex-col gap-4">
                         {/* Barra superior */}
-                        <div className="flex justify-between md:justify-end items-center gap-2 text-sm border-b md:border-none sticky md:static top-12 py-1 bg-[var(--store-surface)] md:bg-transparent z-10">
+                        <div
+                            className="
+                flex justify-between md:justify-end items-center
+                gap-2 text-sm border-b md:border-none
+                sticky md:static top-12
+                py-2 md:py-1
+                bg-[var(--store-surface)] md:bg-transparent
+                z-10
+              "
+                        >
                             <div className="md:hidden">
                                 <DrawerFiltersMain filters={products?.filters || null} />
                             </div>
 
-                            <OrdenarPor pathname="/productos" />
+                            <div className="flex items-center gap-2">
+                                <OrdenarPor pathname="/productos" />
+                            </div>
                         </div>
 
                         {/* Lista productos */}
                         {hasProducts && (
-                            <>
+                            <div className="flex flex-col gap-5">
                                 <ProductosList products={products.products} />
 
-                                <Pagination
-                                    currentPage={products.currentPage}
-                                    totalPages={products.totalPages}
-                                    limit={limit}
-                                    pathname="/productos"
-                                    queryParams={{
-                                        category,
-                                        priceRange,
-                                        sort,
-                                        query,
-                                        ...rest,
-                                    }}
-                                />
-                            </>
+                                <div className="pt-1">
+                                    <Pagination
+                                        currentPage={products.currentPage}
+                                        totalPages={products.totalPages}
+                                        limit={limit}
+                                        pathname="/productos"
+                                        queryParams={{
+                                            category,
+                                            priceRange,
+                                            sort,
+                                            query,
+                                            ...rest,
+                                        }}
+                                    />
+                                </div>
+                            </div>
                         )}
                     </section>
                 </div>
             )}
 
-            {/* ===== FALLBACK MODE ===== */}
+            {/* MODO SIN RESULTADOS */}
             {isFallback && (
-                <section className="flex flex-col gap-6">
-
-                    {/* Mensaje */}
-                    <div className="text-center py-4 text-gray-500 text-sm">
+                <section className="flex flex-col gap-6 pt-3">
+                    <div className="text-center py-6 text-[var(--store-text-muted)] text-sm">
                         No se encontraron productos con los filtros seleccionados.
                         <br />
-                        Te recomendamos estos productos.
+                        Prueba cambiando los criterios de búsqueda.
                     </div>
 
-                    {/* Productos ocupan todo el ancho */}
                     {hasProducts && (
                         <div className="w-full">
-                            <ProductosList
-                                products={products.products}
-
-                            />
+                            <ProductosList products={products.products} />
                         </div>
                     )}
                 </section>

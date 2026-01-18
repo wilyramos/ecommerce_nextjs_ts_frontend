@@ -120,9 +120,14 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                 <input
                     type="checkbox"
                     className={cn(
-                        "w-4 h-4 rounded border-gray-300 transition-all focus:ring-0 focus:ring-offset-0 cursor-pointer",
-                        // Aquí aplicamos el gray-900 solo al estado checked del input
-                        "checked:bg-gray-900 checked:border-gray-900 checked:hover:bg-gray-900"
+                        "appearance-none",
+                        "w-5 h-5 rounded border border-gray-300 bg-white",
+                        "transition-all duration-200 cursor-pointer relative",
+                        "checked:bg-gray-900 checked:border-gray-900",
+                        "after:content-[''] after:absolute after:opacity-0 checked:after:opacity-100",
+                        "after:left-[6px] after:top-[2px] after:w-[6px] after:h-[10px]",
+                        "after:border-white after:border-b-2 after:border-r-2 after:rotate-45"
+
                     )}
                     checked={checked}
                     onChange={onChange}
@@ -154,7 +159,7 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                         onClick={clearFilters}
                         className="text-xs flex items-center gap-1.5 text-[var(--store-text-muted)] hover:text-[var(--store-text)] transition-colors hover:underline underline-offset-2"
                     >
-                        Limpiar <LuX className="w-3.5 h-3.5" />
+                        Limpiar todo <LuX className="w-3.5 h-3.5" />
                     </button>
                 )}
             </div>
