@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import type { IconType } from "react-icons";
 import { FaTags, FaTruck, FaLock, FaExchangeAlt } from "react-icons/fa";
@@ -6,7 +5,7 @@ import { FaTags, FaTruck, FaLock, FaExchangeAlt } from "react-icons/fa";
 type Feature = {
   title: string;
   icon: IconType;
-  url?: string; // opcional: si está presente el feature será clicable
+  url?: string;
 };
 
 const features: Feature[] = [
@@ -18,24 +17,31 @@ const features: Feature[] = [
 
 export default function MinimalFeatures() {
   return (
-    <section className=" py-10 ">
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 sm:grid-cols-4 gap-6 py-6">
+    <section className="py-10">
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6 py-2">
         {features.map((feature) => {
           const Content = (
             <div
-              className="flex flex-col items-center text-center text-black hover:text-gray-900 transition p-3 rounded-md border border-gray-200 hover:shadow-md"
+              className="group flex flex-col items-center justify-center text-center h-full p-5 rounded-2xl 
+                         bg-[var(--store-surface)]  
+                         text-[var(--store-text)] 
+                         transition-all duration-300 hover:-translate-y-1 cursor-default"
               aria-label={feature.title}
             >
-              <feature.icon size={20} className="mb-2" />
-              <span className="text-xs font-medium">{feature.title}</span>
+              <feature.icon
+                size={22}
+                className="mb-3 text-[var(--store-text-muted)] group-hover:text-[var(--store-text)] transition-colors"
+              />
+              <span className="text-xs md:text-sm font-medium tracking-wide">
+                {feature.title}
+              </span>
             </div>
           );
 
-          // Si feature.url existe, lo envolvemos en Link para hacerlo navegable
           return (
-            <div key={feature.title}>
+            <div key={feature.title} className="h-full">
               {feature.url ? (
-                <Link href={feature.url} aria-label={feature.title}>
+                <Link href={feature.url} aria-label={feature.title} className="block h-full cursor-pointer">
                   {Content}
                 </Link>
               ) : (

@@ -1,6 +1,5 @@
 "use client";
 
-import { FiCreditCard } from "react-icons/fi";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 import CheckoutIzipay from "@/components/checkout/izipay/CheckoutIzipay";
 import type { TOrderPopulated } from "@/src/schemas";
@@ -9,48 +8,52 @@ import CheckoutProMP from "./mercadopago/CheckoutProMP";
 import CheckoutYape from "./mercadopago/CheckoutYape";
 
 export default function PaymentMethodsAccordion({ order }: { order: TOrderPopulated }) {
-    return (
-        <section className="w-full max-w-3xl mx-auto px-4 py-6">
-            <div className="flex items-center justify-between mb-6">
-            <p className="flex items-center gap-2 text-sm text-black mb-2">
-                    <span className="bg-zinc-100 p-2 rounded-lg">
-                        <FiCreditCard className="w-5 h-5 text-zinc-700" />
-                    </span>
-                    Selecciona un método de pago
-                </p>
-            </div>
 
-            <Accordion type="single" collapsible className="flex flex-col gap-4">
+    // Clases comunes para los items del acordeón
+    const itemBaseClass = "group border border-[var(--store-border)] rounded-xl bg-[var(--store-surface)] overflow-hidden transition-all duration-300";
+    const triggerClass = "px-5 py-5 hover:no-underline hover:bg-[var(--store-surface-hover)] transition-colors";
+    const contentClass = "border-t border-[var(--store-border)] bg-[var(--store-bg)]";
+    const textTitleClass = "text-sm font-semibold text-[var(--store-text)]";
+    const textSubtitleClass = "text-xs text-[var(--store-text-muted)] font-medium mt-0.5";
+
+    return (
+        <section className="w-full">
+            <p className="text-sm text-[var(--store-text-muted)] mb-4">
+                Selecciona tu metodo de pago:
+                
+            </p>
+
+            <Accordion type="single" collapsible className="flex flex-col gap-3">
 
                 {/* IZIPAY */}
                 <AccordionItem
                     value="izipay"
-                    className="group border border-zinc-200 rounded-2xl bg-white overflow-hidden transition-all duration-300 data-[state=open]:border-zinc-900 data-[state=open]:shadow-lg data-[state=open]:ring-1 data-[state=open]:ring-zinc-900/5"
+                    className={`${itemBaseClass} data-[state=open]:border-[var(--store-text)] data-[state=open]:shadow-md`}
                 >
-                    <AccordionTrigger className="px-5 py-5 hover:no-underline hover:bg-zinc-50/50 transition-colors">
+                    <AccordionTrigger className={triggerClass}>
                         <div className="flex items-center w-full justify-between gap-4">
                             <div className="flex items-center gap-4">
                                 {/* Custom Radio UI */}
-                                <div className="relative flex items-center justify-center w-5 h-5 shrink-0 border-2 border-zinc-300 rounded-full transition-colors group-data-[state=open]:border-zinc-900">
-                                    <div className="w-2.5 h-2.5 rounded-full bg-zinc-900 scale-0 transition-transform duration-200 group-data-[state=open]:scale-100" />
+                                <div className="relative flex items-center justify-center w-5 h-5 shrink-0 border border-[var(--store-border)] rounded-full transition-colors group-data-[state=open]:border-[var(--store-text)]">
+                                    <div className="w-2.5 h-2.5 rounded-full bg-[var(--store-text)] scale-0 transition-transform duration-200 group-data-[state=open]:scale-100" />
                                 </div>
-                                
+
                                 <div className="flex flex-col text-left">
-                                    <span className="text-sm font-semibold text-zinc-900">Tarjeta de Crédito / Débito</span>
-                                    <span className="text-xs text-zinc-500 font-medium mt-0.5">Procesado por Izipay</span>
+                                    <span className={textTitleClass}>Tarjeta de Crédito / Débito</span>
+                                    <span className={textSubtitleClass}>Procesado por Izipay</span>
                                 </div>
                             </div>
 
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-2 ">
                                 <Image src="/payments/visa.png" alt="Visa" width={32} height={20} className="object-contain w-auto h-4" />
                                 <Image src="/payments/mastercard.png" alt="Mastercard" width={32} height={20} className="object-contain w-auto h-4" />
-                                <div className="w-px h-4 bg-zinc-300 mx-1 hidden sm:block"></div>
+                                <div className="w-px h-4 bg-[var(--store-border)] mx-1 hidden sm:block"></div>
                                 <Image src="/payments/izipay.png" alt="Izipay" width={40} height={20} className="object-contain w-auto h-4 hidden sm:block" />
                             </div>
                         </div>
                     </AccordionTrigger>
 
-                    <AccordionContent className="border-t border-zinc-100 bg-zinc-50/30">
+                    <AccordionContent className={contentClass}>
                         <div className="p-6 max-w-lg mx-auto">
                             <CheckoutIzipay order={order} />
                         </div>
@@ -60,32 +63,32 @@ export default function PaymentMethodsAccordion({ order }: { order: TOrderPopula
                 {/* YAPE */}
                 <AccordionItem
                     value="yape"
-                    className="group border border-zinc-200 rounded-2xl bg-white overflow-hidden transition-all duration-300 data-[state=open]:border-[#742284] data-[state=open]:shadow-lg data-[state=open]:ring-1 data-[state=open]:ring-[#742284]/10"
+                    className={`${itemBaseClass} data-[state=open]:border-[#742284] data-[state=open]:shadow-md`}
                 >
-                    <AccordionTrigger className="px-5 py-5 hover:no-underline hover:bg-zinc-50/50 transition-colors">
+                    <AccordionTrigger className={triggerClass}>
                         <div className="flex items-center w-full justify-between gap-4">
                             <div className="flex items-center gap-4">
-                                <div className="relative flex items-center justify-center w-5 h-5 shrink-0 border-2 border-zinc-300 rounded-full transition-colors group-data-[state=open]:border-[#742284]">
+                                <div className="relative flex items-center justify-center w-5 h-5 shrink-0 border border-[var(--store-border)] rounded-full transition-colors group-data-[state=open]:border-[#742284]">
                                     <div className="w-2.5 h-2.5 rounded-full bg-[#742284] scale-0 transition-transform duration-200 group-data-[state=open]:scale-100" />
                                 </div>
 
                                 <div className="flex flex-col text-left">
-                                    <span className="text-sm font-semibold text-zinc-900">Yape</span>
-                                    <span className="text-xs text-zinc-500 font-medium mt-0.5">Aprobación inmediata</span>
+                                    <span className={textTitleClass}>Yape</span>
+                                    <span className={textSubtitleClass}>Aprobación inmediata</span>
                                 </div>
                             </div>
 
-                            <Image 
-                                src="/payments/yape.png" 
-                                alt="Yape" 
-                                width={32} 
-                                height={32} 
-                                className="object-contain " 
+                            <Image
+                                src="/payments/yape.png"
+                                alt="Yape"
+                                width={32}
+                                height={32}
+                                className="object-contain rounded-md"
                             />
                         </div>
                     </AccordionTrigger>
 
-                    <AccordionContent className="border-t border-zinc-100 bg-zinc-50/30">
+                    <AccordionContent className={contentClass}>
                         <div className="p-6 flex justify-center">
                             <CheckoutYape order={order} />
                         </div>
@@ -95,18 +98,18 @@ export default function PaymentMethodsAccordion({ order }: { order: TOrderPopula
                 {/* MERCADO PAGO */}
                 <AccordionItem
                     value="mercadopago"
-                    className="group border border-zinc-200 rounded-2xl bg-white overflow-hidden transition-all duration-300 data-[state=open]:border-[#009EE3] data-[state=open]:shadow-lg data-[state=open]:ring-1 data-[state=open]:ring-[#009EE3]/10"
+                    className={`${itemBaseClass} data-[state=open]:border-[#009EE3] data-[state=open]:shadow-md`}
                 >
-                    <AccordionTrigger className="px-5 py-5 hover:no-underline hover:bg-zinc-50/50 transition-colors">
+                    <AccordionTrigger className={triggerClass}>
                         <div className="flex items-center w-full justify-between gap-4">
                             <div className="flex items-center gap-4">
-                                <div className="relative flex items-center justify-center w-5 h-5 shrink-0 border-2 border-zinc-300 rounded-full transition-colors group-data-[state=open]:border-[#009EE3]">
+                                <div className="relative flex items-center justify-center w-5 h-5 shrink-0 border border-[var(--store-border)] rounded-full transition-colors group-data-[state=open]:border-[#009EE3]">
                                     <div className="w-2.5 h-2.5 rounded-full bg-[#009EE3] scale-0 transition-transform duration-200 group-data-[state=open]:scale-100" />
                                 </div>
 
                                 <div className="flex flex-col text-left">
-                                    <span className="text-sm font-semibold text-zinc-900">Mercado Pago</span>
-                                    <span className="text-xs text-zinc-500 font-medium mt-0.5">Saldo, Tarjetas, yape</span>
+                                    <span className={textTitleClass}>Mercado Pago</span>
+                                    <span className={textSubtitleClass}>Saldo, Tarjetas</span>
                                 </div>
                             </div>
 
@@ -116,10 +119,10 @@ export default function PaymentMethodsAccordion({ order }: { order: TOrderPopula
                         </div>
                     </AccordionTrigger>
 
-                    <AccordionContent className="border-t border-zinc-100 bg-zinc-50/30">
+                    <AccordionContent className={contentClass}>
                         <div className="p-6 text-center">
-                            <div className="mb-4 text-sm text-gray-600">
-                                Serás redirigido a la plataforma segura de Mercado Pago
+                            <div className="mb-4 text-xs text-[var(--store-text-muted)]">
+                                Serás redirigido a la plataforma segura de Mercado Pago para completar tu compra.
                             </div>
                             <CheckoutProMP orderId={order._id} />
                         </div>

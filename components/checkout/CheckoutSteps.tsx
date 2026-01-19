@@ -14,47 +14,59 @@ export default function CheckoutSteps() {
     const pathname = usePathname();
 
     return (
-        <div className="flex md:items-center md:justify-between mx-auto w-full py-2">
+        <div className="flex md:items-center md:justify-between mx-auto w-full max-w-3xl py-4 px-2">
             {steps.map((step, index) => {
+                // Lógica de estado
                 const isActive = pathname.startsWith(step.path);
                 const currentStepIndex = steps.findIndex((s) => s.path === pathname);
                 const isCompleted = currentStepIndex > index;
 
                 const StepContent = (
-                    <div className="flex-1 flex items-center gap-2 md:pb-10">
+                    <div className="flex-1 flex items-center gap-2 md:pb-2">
+                        {/* Círculo indicador */}
                         <div
                             className={cn(
-                                "w-5 h-5 rounded-full flex items-center justify-center text-sm font-bold transition-colors",
+                                "w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 border",
                                 isCompleted
-                                    ? "bg-gray-900 text-white" // completado
+                                    ? "bg-[var(--store-text)] border-[var(--store-text)] text-[var(--store-surface)]" // Completado (Negro sólido)
                                     : isActive
-                                        ? "bg-gray-700 text-white" // activo
-                                        : "bg-gray-300 text-gray-600" // pendiente
+                                        ? "bg-[var(--store-text)] border-[var(--store-text)] text-[var(--store-surface)] scale-110" // Activo (Negro resaltado)
+                                        : "bg-[var(--store-bg)] border-[var(--store-border)] text-[var(--store-text-muted)]" // Pendiente (Gris sutil)
                             )}
                         >
                             {index + 1}
                         </div>
+
+                        {/* Etiqueta de texto */}
                         <span
                             className={cn(
-                                "text-xs md:text-sm transition-colors",
+                                "text-xs md:text-sm transition-colors font-medium hidden md:block",
                                 isActive
-                                    ? "text-gray-900 font-bold" // paso activo
+                                    ? "text-[var(--store-text)] font-semibold" // Activo
                                     : isCompleted
-                                        ? "text-gray-800 cursor-pointer hover:text-gray-600" // paso completado
-                                        : "text-gray-400" // pendiente
+                                        ? "text-[var(--store-text)] cursor-pointer" // Completado
+                                        : "text-[var(--store-text-muted)]" // Pendiente
                             )}
                         >
                             {step.label}
                         </span>
 
+                        {/* Línea divisoria (conector) */}
                         {index < steps.length - 1 && (
-                            <div className="hidden md:block flex-1 h-px bg-gray-400 mx-2 text-xs" />
+                            <div
+                                className={cn(
+                                    "flex-1 h-[1px] mx-2 md:mx-4 transition-colors",
+                                    isCompleted
+                                        ? "bg-[var(--store-text)]"
+                                        : "bg-[var(--store-border)]"
+                                )}
+                            />
                         )}
                     </div>
                 );
 
                 return (
-                    <div key={step.path} className="flex-1">
+                    <div key={step.path} className={index === steps.length - 1 ? "flex-none" : "flex-1"}>
                         {isCompleted ? (
                             <Link href={step.path}>{StepContent}</Link>
                         ) : (

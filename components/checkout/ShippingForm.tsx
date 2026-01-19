@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/select"
 import { Button } from '../ui/button'
 import type { TCreateOrder } from '@/src/schemas'
-import { Input } from '../ui/input'
 import { toast } from 'sonner'
 
 type ShippingData = {
@@ -29,8 +28,6 @@ type ShippingData = {
     pisoDpto?: string
     referencia: string
 }
-
-//TODO: Retornar en caso exista errores en la creación de la orden
 
 export default function ShippingForm() {
     const router = useRouter()
@@ -97,13 +94,19 @@ export default function ShippingForm() {
         setLoading(false);
     };
 
+    // --- CLASES DE ESTILO REUTILIZABLES ---
+    const labelClass = "block text-xs font-medium text-[var(--store-text-muted)] mb-1.5 uppercase tracking-wide";
+    const inputClass = "w-full px-4 py-2.5 bg-transparent border border-[var(--store-border)] rounded-lg text-[var(--store-text)] text-sm focus:outline-none focus:border-[var(--store-text-muted)] focus:ring-1 focus:ring-[var(--store-text-muted)] transition-all placeholder:text-gray-300";
+    const selectTriggerClass = "w-full px-4 py-2.5 bg-transparent border border-[var(--store-border)] rounded-lg text-[var(--store-text)] text-sm focus:ring-1 focus:ring-[var(--store-text-muted)] data-[placeholder]:text-gray-300";
+
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto space-y-1 md:space-y-3">
-            {/* Departamento / Provincia / Distrito */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:gap-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+
+            {/* UBIGEO: Departamento / Provincia / Distrito */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                 <div>
-                    <label className="text-xs font-bold">Departamento <span className="text-red-500">*</span></label>
+                    <label className={labelClass}>Departamento <span className="text-red-500">*</span></label>
                     <Select
                         value={selectedDepartamento || ""}
                         onValueChange={(val) => {
@@ -113,19 +116,23 @@ export default function ShippingForm() {
                             trigger(['departamento', 'provincia', 'distrito'])
                         }}
                     >
-                        <SelectTrigger><SelectValue placeholder="--Seleccione--" /></SelectTrigger>
-                        <SelectContent>
+                        <SelectTrigger className={selectTriggerClass}>
+                            <SelectValue placeholder="Seleccionar" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-[var(--store-surface)] border-[var(--store-border)] text-[var(--store-text)]">
                             {Object.keys(locations).map(dep => (
-                                <SelectItem key={dep} value={dep}>{dep}</SelectItem>
+                                <SelectItem key={dep} value={dep} className="hover:bg-[var(--store-bg)] cursor-pointer focus:bg-[var(--store-bg)]">
+                                    {dep}
+                                </SelectItem>
                             ))}
                         </SelectContent>
                     </Select>
-                    <input type="hidden" {...register('departamento', { required: 'El departamento es obligatorio' })} />
+                    <input type="hidden" {...register('departamento', { required: 'Requerido' })} />
                     {errors.departamento && <ErrorMessage>{errors.departamento.message}</ErrorMessage>}
                 </div>
 
                 <div>
-                    <label className="text-xs font-bold">Provincia <span className="text-red-500">*</span></label>
+                    <label className={labelClass}>Provincia <span className="text-red-500">*</span></label>
                     <Select
                         value={selectedProvincia || ""}
                         onValueChange={(val) => {
@@ -135,19 +142,23 @@ export default function ShippingForm() {
                         }}
                         disabled={!provincias.length}
                     >
-                        <SelectTrigger><SelectValue placeholder="--Seleccione--" /></SelectTrigger>
-                        <SelectContent>
+                        <SelectTrigger className={`${selectTriggerClass} disabled:opacity-50 disabled:bg-[var(--store-bg)]`}>
+                            <SelectValue placeholder="Seleccionar" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-[var(--store-surface)] border-[var(--store-border)] text-[var(--store-text)]">
                             {provincias.map(p => (
-                                <SelectItem key={p} value={p}>{p}</SelectItem>
+                                <SelectItem key={p} value={p} className="hover:bg-[var(--store-bg)] cursor-pointer focus:bg-[var(--store-bg)]">
+                                    {p}
+                                </SelectItem>
                             ))}
                         </SelectContent>
                     </Select>
-                    <input type="hidden" {...register('provincia', { required: 'La provincia es obligatoria' })} />
+                    <input type="hidden" {...register('provincia', { required: 'Requerido' })} />
                     {errors.provincia && <ErrorMessage>{errors.provincia.message}</ErrorMessage>}
                 </div>
 
                 <div>
-                    <label className="text-xs font-bold">Distrito <span className="text-red-500">*</span></label>
+                    <label className={labelClass}>Distrito <span className="text-red-500">*</span></label>
                     <Select
                         value={watch('distrito') || ""}
                         onValueChange={(val) => {
@@ -156,57 +167,78 @@ export default function ShippingForm() {
                         }}
                         disabled={!distritos.length}
                     >
-                        <SelectTrigger><SelectValue placeholder="--Seleccione--" /></SelectTrigger>
-                        <SelectContent>
+                        <SelectTrigger className={`${selectTriggerClass} disabled:opacity-50 disabled:bg-[var(--store-bg)]`}>
+                            <SelectValue placeholder="Seleccionar" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-[var(--store-surface)] border-[var(--store-border)] text-[var(--store-text)]">
                             {distritos.map(d => (
-                                <SelectItem key={d} value={d}>{d}</SelectItem>
+                                <SelectItem key={d} value={d} className="hover:bg-[var(--store-bg)] cursor-pointer focus:bg-[var(--store-bg)]">
+                                    {d}
+                                </SelectItem>
                             ))}
                         </SelectContent>
                     </Select>
-                    <input type="hidden" {...register('distrito', { required: 'El distrito es obligatorio' })} />
+                    <input type="hidden" {...register('distrito', { required: 'Requerido' })} />
                     {errors.distrito && <ErrorMessage>{errors.distrito.message}</ErrorMessage>}
                 </div>
             </div>
 
+            {/* DIRECCIÓN */}
             <div>
-                <label className="text-xs font-bold">Dirección <span className="text-red-500">*</span></label>
-                <Input
+                <label className={labelClass}>Dirección <span className="text-red-500">*</span></label>
+                <input
                     type="text"
                     {...register('direccion', { required: 'La dirección es obligatoria' })}
-                    placeholder="Av. abc 123"
+                    placeholder="Av. Principal 123"
+                    className={inputClass}
                 />
                 {errors.direccion && <ErrorMessage>{errors.direccion.message}</ErrorMessage>}
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            {/* NÚMERO Y PISO */}
+            <div className="grid grid-cols-2 gap-5">
                 <div>
-                    <label className="text-xs font-bold">Número</label>
-                    <Input type="text" {...register('numero')} />
+                    <label className={labelClass}>Número</label>
+                    <input
+                        type="text"
+                        {...register('numero')}
+                        placeholder="N°"
+                        className={inputClass}
+                    />
                 </div>
                 <div>
-                    <label className="text-xs font-bold">Piso / Dpto</label>
-                    <Input type="text" {...register('pisoDpto')} />
+                    <label className={labelClass}>Piso / Dpto</label>
+                    <input
+                        type="text"
+                        {...register('pisoDpto')}
+                        placeholder="Opcional"
+                        className={inputClass}
+                    />
                 </div>
             </div>
 
+            {/* REFERENCIA */}
             <div>
-                <label className="text-xs font-bold">Referencia *</label>
+                <label className={labelClass}>Referencia <span className="text-red-500">*</span></label>
                 <input
                     type="text"
                     {...register('referencia', { required: 'La referencia es obligatoria' })}
-                    placeholder="Ej. Frente a la tienda Tottus"
-                    className="w-full px-3 py-2 border rounded-lg"
+                    placeholder="Ej. Frente al parque, casa color verde..."
+                    className={inputClass}
                 />
                 {errors.referencia && <ErrorMessage>{errors.referencia.message}</ErrorMessage>}
             </div>
 
-            <Button
-                type="submit"
-                disabled={loading}
-                className="w-full mt-2 disabled:opacity-50 cursor-pointer"
-            >
-                {loading ? 'Creando orden...' : 'Ir a pagar'}
-            </Button>
+            {/* BOTÓN */}
+            <div className="pt-4">
+                <Button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full py-3 text-base font-medium shadow-md hover:shadow-lg transition-all cursor-pointer"
+                >
+                    {loading ? 'Procesando orden...' : 'Confirmar y Pagar'}
+                </Button>
+            </div>
         </form>
     )
 }

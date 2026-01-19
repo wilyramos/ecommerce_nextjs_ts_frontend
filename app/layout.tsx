@@ -14,7 +14,7 @@ const inter = Inter({
 export const metadata: Metadata = {
     metadataBase: new URL("https://gophone.pe"),
     title: {
-        default: "GoPhone | Calidad a tu alcance",
+        default: "GoPhone - Calidad a tu alcance",
         template: "%s | GoPhone"
     },
     description:

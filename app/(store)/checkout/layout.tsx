@@ -8,29 +8,25 @@ export default async function CheckoutLayout({ children }: { children: React.Rea
     if (!user) redirect("/auth/login?redirect=/checkout/profile")
 
     return (
-        <main className="max-w-6xl mx-auto px-3 sm:px-4">
+        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8 bg-[var(--store-bg)] min-h-screen">
 
-            <div className="mb-2">
+            {/* Contenedor de Pasos Centrado */}
+            <div className="mb-6 md:mb-8 flex justify-center w-full">
                 <CheckoutSteps />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                
-                <section className="md:col-span-2">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                {/* Sección Principal (Formularios) */}
+                <section className="lg:col-span-2">
                     {children}
                 </section>
 
-                <aside
-                    className="
-                        mt-4
-                        md:mt-0
-                        lg:col-span-1
-                        lg:ml-8
-                        lg:sticky
-                        lg:top-20
-                    "
-                >
-                    <ResumenFinalCarrito />
+                {/* Resumen Lateral (Sticky) */}
+                <aside className="lg:col-span-1">
+                    <div className="lg:sticky lg:top-8">
+                        <ResumenFinalCarrito />
+                    </div>
                 </aside>
 
             </div>

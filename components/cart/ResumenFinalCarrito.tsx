@@ -3,6 +3,7 @@
 import { useCartStore } from "@/src/store/cartStore";
 import Image from "next/image";
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import { MdOutlineImageNotSupported } from "react-icons/md";
 
 export default function ResumenFinalCarrito() {
     const { cart } = useCartStore();
@@ -11,16 +12,17 @@ export default function ResumenFinalCarrito() {
     const total = subtotal + envio;
 
     return (
-        <section className="p-5 border-l md:border-l-2 border-gray-100 bg-white md:rounded-l-2xl">
+        <section className="p-5 border-l md:border-l-2 border-[var(--store-border)] bg-[var(--store-surface)] md:rounded-l-2xl h-full">
             <Accordion type="single" collapsible defaultValue="resumen">
                 <AccordionItem value="resumen" className="border-b-0">
-                    <AccordionTrigger className="text-gray-900 font-semibold text-sm md:text-base pb-1">
+                    <AccordionTrigger className="text-[var(--store-text)] font-semibold text-sm md:text-base pb-1 hover:no-underline">
                         Resumen del carrito
                     </AccordionTrigger>
 
                     <AccordionContent>
                         <div className="mt-5">
-                            <ul className="space-y-4 max-h-80 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+                            {/* Lista de productos con scrollbar personalizado */}
+                            <ul className="space-y-4 max-h-80 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-[var(--store-border)] scrollbar-track-transparent">
                                 {cart.map((item) => {
                                     const img = item.variant?.imagenes?.[0] ?? item.imagenes?.[0];
                                     const price = item.variant?.precio ?? item.precio;
@@ -29,7 +31,7 @@ export default function ResumenFinalCarrito() {
                                     return (
                                         <li
                                             key={item._id + (item.variant?._id ?? "")}
-                                            className="flex justify-between items-center border-b border-gray-100 pb-3"
+                                            className="flex justify-between items-center border-b border-[var(--store-border)] pb-3"
                                         >
                                             <div className="flex gap-3 items-center min-w-0">
                                                 {img ? (
@@ -39,34 +41,35 @@ export default function ResumenFinalCarrito() {
                                                         width={48}
                                                         height={48}
                                                         quality={70}
-                                                        className="w-12 h-12 object-cover rounded-lg border border-gray-100"
+                                                        className="w-12 h-12 object-cover rounded-lg border border-[var(--store-border)]"
                                                     />
                                                 ) : (
-                                                    <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-lg text-[10px] text-gray-400">
-                                                        Sin imagen
+                                                    <div className="flex items-center justify-center w-12 h-12 bg-[var(--store-border)] rounded-lg border border-[var(--store-border)]">
+                                                                                    <MdOutlineImageNotSupported size={18} />
+                                                        
                                                     </div>
                                                 )}
 
                                                 <div className="flex flex-col min-w-0">
-                                                    <p className="font-medium text-gray-800 text-sm break-words max-w-[150px]">
+                                                    <p className="font-medium text-[var(--store-text)] text-sm break-words max-w-[150px]">
                                                         {item.nombre}
                                                     </p>
 
                                                     {attrs && (
-                                                        <p className="text-[11px] text-gray-500 break-words max-w-[150px]">
+                                                        <p className="text-[11px] text-[var(--store-text-muted)] break-words max-w-[150px]">
                                                             {Object.entries(attrs)
                                                                 .map(([k, v]) => `${k}: ${v}`)
                                                                 .join(" • ")}
                                                         </p>
                                                     )}
 
-                                                    <p className="text-xs text-gray-500 mt-0.5">
+                                                    <p className="text-xs text-[var(--store-text-muted)] mt-0.5">
                                                         x{item.cantidad} • S/ {price.toFixed(2)}
                                                     </p>
                                                 </div>
                                             </div>
 
-                                            <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
+                                            <span className="text-sm font-semibold text-[var(--store-text)] whitespace-nowrap">
                                                 S/ {item.subtotal.toFixed(2)}
                                             </span>
                                         </li>
@@ -74,20 +77,23 @@ export default function ResumenFinalCarrito() {
                                 })}
                             </ul>
 
-                            <div className="border-t border-gray-200 mt-6 pt-4 text-sm text-gray-700 space-y-2">
+                            {/* Sección de Totales */}
+                            <div className="border-t border-[var(--store-border)] mt-6 pt-4 text-sm text-[var(--store-text-muted)] space-y-2">
                                 <div className="flex justify-between">
                                     <span>Subtotal</span>
-                                    <span className="font-medium">S/ {subtotal.toFixed(2)}</span>
+                                    <span className="font-medium text-[var(--store-text)]">S/ {subtotal.toFixed(2)}</span>
                                 </div>
 
-                                <div className="flex justify-between text-gray-500">
+                                <div className="flex justify-between items-center">
                                     <span>Envío</span>
-                                    <span>S/ {envio.toFixed(2)}</span>
+                                    <span className="text-[10px] font-bold uppercase text-[var(--store-primary)] bg-[var(--store-surface-hover)] px-2 py-0.5 rounded-full">
+                                        Gratis
+                                    </span>
                                 </div>
 
-                                <hr className="border-gray-200 my-4" />
+                                <hr className="border-[var(--store-border)] my-4" />
 
-                                <div className="flex justify-between font-bold text-base text-gray-900">
+                                <div className="flex justify-between font-bold text-base text-[var(--store-text)]">
                                     <span>Total</span>
                                     <span className="text-lg">S/ {total.toFixed(2)}</span>
                                 </div>
