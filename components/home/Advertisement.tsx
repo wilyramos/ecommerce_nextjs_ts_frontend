@@ -15,14 +15,18 @@ export default function Advertisement() {
     const [isVisible, setIsVisible] = useState(true);
     const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
+    // Clases comunes para el texto blanco sobre fondo oscuro
+    const textBase = "text-[var(--store-surface)]";
+    const textBold = "font-bold text-white"; // Blanco puro para resaltar
+
     const ads = [
         {
             id: 1,
-            icon: <Truck className="w-3 h-3 text-white" />,
+            icon: <Truck className={`w-3 h-3 ${textBase}`} />,
             text: (
                 <span className="flex items-center gap-2">
-                    Envíos en <span className="font-bold text-white">Cañete</span>
-                    <span className="bg-red-600 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full tracking-wider">
+                    Envíos en <span className={textBold}>Cañete</span>
+                    <span className="bg-[var(--store-danger)] text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded-full tracking-wider">
                         Gratis
                     </span>
                 </span>
@@ -32,25 +36,25 @@ export default function Advertisement() {
             id: 2,
             text: (
                 <span>
-                    Envíos a <span className="font-bold text-white">todo el Perú</span>
+                    Envíos a <span className={textBold}>todo el Perú</span>
                 </span>
             ),
         },
         {
             id: 3,
-            icon: <CreditCard className="w-3 h-3 text-white" />,
+            icon: <CreditCard className={`w-3 h-3 ${textBase}`} />,
             text: (
                 <span>
-                    Paga con <span className="font-bold text-white">tarjeta o Yape</span>
+                    Paga con <span className={textBold}>tarjeta o Yape</span>
                 </span>
             ),
         },
         {
             id: 4,
-            icon: <Store className="w-3 h-3 text-white" />,
+            icon: <Store className={`w-3 h-3 ${textBase}`} />,
             text: (
                 <span>
-                    Recoge en <span className="font-bold text-white">tienda física</span> sin costo
+                    Recoge en <span className={textBold}>tienda física</span> sin costo
                 </span>
             ),
         },
@@ -59,7 +63,10 @@ export default function Advertisement() {
     if (!isVisible) return null;
 
     return (
-        <div className="w-full relative overflow-hidden bg-black text-white h-7 py-1">
+        /* Fondo oscuro usando la variable de texto principal (#1D1D1F) 
+           para contraste con el navbar blanco 
+        */
+        <div className="w-full relative overflow-hidden bg-[var(--store-text)] text-[var(--store-surface)] h-7 py-1 transition-colors">
 
             <style>{`
                 @keyframes marquee {
@@ -75,12 +82,13 @@ export default function Advertisement() {
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
             >
-                <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none"></div>
-                <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none"></div>
+                {/* Degradados laterales ajustados al color de fondo --store-text */}
+                <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-[var(--store-text)] to-transparent z-10 pointer-events-none"></div>
+                <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-[var(--store-text)] to-transparent z-10 pointer-events-none"></div>
 
                 <button
                     onClick={() => setIsVisible(false)}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 z-20 p-1 text-gray-400 hover:text-white hover:bg-white/10 rounded-full transition"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 z-20 p-1 text-[var(--store-text-muted)] hover:text-white hover:bg-white/10 rounded-full transition"
                 >
                     <X size={16} />
                 </button>
@@ -90,9 +98,9 @@ export default function Advertisement() {
                         } animate-marquee`}
                 >
                     {[...ads, ...ads, ...ads].map((ad, index) => (
-                        <div key={`${ad.id}-${index}`} className="flex items-center mx-12 md:mx-20">
-                            <div className="mr-2">{ad.icon}</div>
-                            <div className="text-sm font-light">{ad.text}</div>
+                        <div key={`${ad.id}-${index}`} className="flex items-center mx-12 md:mx-20 text-xs md:text-sm font-light tracking-wide">
+                            {ad.icon && <div className="mr-2">{ad.icon}</div>}
+                            <div>{ad.text}</div>
                         </div>
                     ))}
                 </div>

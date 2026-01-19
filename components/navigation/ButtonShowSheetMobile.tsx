@@ -43,21 +43,21 @@ export default function ButtonShowSheetMobile({
     return (
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-                <button className="p-2 text-white hover:text-gray-300 transition focus:outline-none">
+                <button className="p-2 text-[var(--store-text)] hover:text-[var(--store-text-muted)] transition focus:outline-none">
                     {open ? <X size={24} /> : <Menu size={24} />}
                 </button>
             </SheetTrigger>
 
             <SheetContent
                 side="left"
-                className="flex flex-col h-full w-[85vw] sm:w-[350px] p-0 bg-white shadow-2xl border-r border-gray-200 outline-none gap-0"
+                className="flex flex-col h-full w-[85vw] sm:w-[350px] p-0 bg-[var(--store-surface)] shadow-2xl border-r border-[var(--store-border)] outline-none gap-0"
             >
                 {/* Header */}
-                <div className="px-6 py-5 border-b border-gray-100">
+                <div className="px-6 py-5 border-b border-[var(--store-border)]">
                     <SheetHeader className="text-left">
                         <SheetTitle className="flex flex-col gap-2">
-                        
-                            <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+
+                            <span className="text-xs font-semibold uppercase tracking-wider text-[var(--store-text-muted)]">
                                 Explora por categorías
                             </span>
                         </SheetTitle>
@@ -72,12 +72,12 @@ export default function ButtonShowSheetMobile({
                             const hasSub = subcategories.length > 0;
 
                             return (
-                                <div key={parent._id} className="border-b border-gray-50 last:border-0 py-1">
+                                <div key={parent._id} className="border-b border-[var(--store-border)] last:border-0 py-1">
                                     <details className="group">
-                                        <summary className="cursor-pointer list-none flex items-center justify-between text-[15px] font-medium text-gray-800 py-3 px-2 rounded-md hover:bg-gray-50 transition-colors select-none">
+                                        <summary className="cursor-pointer list-none flex items-center justify-between text-[15px] font-medium text-[var(--store-text)] py-3 px-2 rounded-md hover:bg-[var(--store-bg)] transition-colors select-none">
                                             <span>{parent.nombre}</span>
                                             {hasSub && (
-                                                <ChevronRight className="h-4 w-4 text-gray-400 group-open:rotate-90 transition-transform duration-200" />
+                                                <ChevronRight className="h-4 w-4 text-[var(--store-text-muted)] group-open:rotate-90 transition-transform duration-200" />
                                             )}
                                         </summary>
 
@@ -87,7 +87,13 @@ export default function ButtonShowSheetMobile({
                                                     <Link
                                                         key={subcategory._id}
                                                         href={`/productos?category=${subcategory.slug}`}
-                                                        className="block text-sm text-gray-500 hover:text-gray-900 hover:bg-gray-50 px-3 py-2 rounded-md transition-colors"
+                                                        className="
+                                                            block text-sm 
+                                                            text-[var(--store-text-muted)] 
+                                                            hover:text-[var(--store-text)] 
+                                                            hover:bg-[var(--store-bg)] 
+                                                            px-3 py-2 rounded-md transition-colors
+                                                        "
                                                     >
                                                         {subcategory.nombre}
                                                     </Link>
@@ -102,10 +108,10 @@ export default function ButtonShowSheetMobile({
                 </ScrollArea>
 
                 {/* Footer */}
-                <div className="mt-auto border-t border-gray-100 bg-gray-50 p-6">
+                <div className="mt-auto border-t border-[var(--store-border)] bg-[var(--store-bg)] p-6">
                     <Link
                         href="/auth/registro"
-                        className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg bg-gray-900 text-white text-sm font-medium hover:bg-gray-800 transition shadow-sm"
+                        className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-[var(--store-radius)] bg-[var(--store-primary)] text-[var(--store-primary-text)] text-sm font-medium hover:bg-[var(--store-primary-hover)] transition shadow-sm"
                     >
                         <User className="h-4 w-4" />
                         Iniciar sesión

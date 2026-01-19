@@ -175,21 +175,21 @@ export default function ProductDetails({ producto }: Props) {
 
                 {/* Detalles */}
                 <section className='md:col-span-3'>
-                    <div className="space-y-0 bg-white p-4">
-                        <header className="pt-1 border-b pb-4 space-y-1">
+                    <div className="space-y-0 bg-[var(--store-surface)] p-4">
+                        <header className="pt-1 border-b border-[var(--store-border)] pb-4 space-y-1">
                             {/* SKU y código */}
                             <div className="flex items-start justify-between w-full">
                                 {producto.brand && (
                                     <Link
                                         href={`/productos?brand=${producto.brand.slug}`}
-                                        className="text-xs font-semibold text-zinc-400 uppercase hover:text-gray-400"
+                                        className="text-xs font-semibold text-[var(--store-text-muted)] uppercase hover:text-[var(--store-text)] transition-colors"
                                     >
                                         {producto.brand.nombre}
                                     </Link>
                                 )}
 
                                 {(selectedVariant || producto.sku || producto.barcode) && (
-                                    <div className="text-[8px] md:text-[12px] text-gray-400 uppercase flex flex-row items-end leading-tight gap-1">
+                                    <div className="text-[8px] md:text-[12px] text-[var(--store-text-muted)] uppercase flex flex-row items-end leading-tight gap-1">
                                         {(selectedVariant?.sku || producto.sku) && (
                                             <span>SKU: {selectedVariant ? selectedVariant.sku : producto.sku} |</span>
                                         )}
@@ -202,7 +202,7 @@ export default function ProductDetails({ producto }: Props) {
                             </div>
 
                             <div>
-                                <h1 className="text-md md:text-lg leading-snug text-gray-800 font-semibold">
+                                <h1 className="text-md md:text-lg leading-snug text-[var(--store-text)] font-semibold">
                                     {producto.nombre}
                                 </h1>
                             </div>
@@ -211,7 +211,7 @@ export default function ProductDetails({ producto }: Props) {
                             {!producto.variants?.length && colorAtributo && (
                                 <div className="flex items-center gap-3">
                                     {/* Etiqueta sutil estilo metadata */}
-                                    <span className="text-xs font-medium text-gray-500">
+                                    <span className="text-xs font-medium text-[var(--store-text-muted)]">
                                         Color
                                     </span>
 
@@ -230,27 +230,28 @@ export default function ProductDetails({ producto }: Props) {
                             <div className="flex flex-row items-center gap-1 md:gap-3">
                                 {/* Price Block: Always grouped together */}
                                 <div className="flex items-baseline gap-2">
-                                    <div className="flex items-baseline text-gray-900">
+                                    <div className="flex items-baseline text-[var(--store-text)]">
                                         <span className="text-sm font-medium mr-0.5">S/</span>
                                         <span className="text-2xl font-semibold tracking-tight">{precio.toFixed(2)}</span>
                                     </div>
 
                                     {hasDiscount && (
-                                        <span className="text-xs md:text-sm text-gray-400 line-through decoration-gray-400">
+                                        <span className="text-xs md:text-sm text-[var(--store-text-muted)] line-through decoration-[var(--store-text-muted)]">
                                             S/ {precioComparativo.toFixed(2)}
                                         </span>
                                     )}
                                 </div>
 
-                                {/* Discount Info: New line on mobile, Same line on desktop */}
+                                {/* Discount Info */}
                                 {hasDiscount && (
                                     <div className="flex items-center gap-2">
-                                        <span className="bg-gray-900 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
+                                        {/* Badge rojo estilo Apple para el % de ahorro */}
+                                        <span className="bg-[var(--store-primary)] text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
                                             -{Math.round(((precioComparativo - precio) / precioComparativo) * 100)}%
                                         </span>
 
                                         <span
-                                            className={`text-xs font-medium text-blue-900 uppercase tracking-wide
+                                            className={`text-xs font-medium text-[var(--store-primary)] uppercase tracking-wide
                     transition-all duration-300 ease-in-out
                     ${visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'}
                 `}
@@ -265,10 +266,10 @@ export default function ProductDetails({ producto }: Props) {
                             {stock <= 3 && (
                                 <div className="flex items-center gap-2 mt-2">
                                     <span
-                                        className={`text-xs font-medium px-2.5 py-1 flex items-center gap-1.5 w-fit transition-colors
-                                        ${stock === 0
-                                                ? "bg-gray-50 text-gray-400 border-gray-100"
-                                                : "bg-yellow-300 text-gray-900 border-yellow-600"
+                                        className={`text-xs font-medium px-2.5 py-1 flex items-center gap-1.5 w-fit transition-colors rounded
+                                    ${stock === 0
+                                                ? "bg-[var(--store-bg)] text-[var(--store-text-muted)] border border-[var(--store-border)]"
+                                                : "bg-yellow-300 text-yellow-900 border border-yellow-400"
                                             }`}
                                     >
 
@@ -276,7 +277,7 @@ export default function ProductDetails({ producto }: Props) {
                                     </span>
 
                                     {stock > 0 && (
-                                        <span className="text-[10px] font-bold text-gray-600 uppercase tracking-wide">
+                                        <span className="text-[10px] font-bold text-[var(--store-text-muted)] uppercase tracking-wide">
                                             ¡Pídelo antes que se acabe!
                                         </span>
                                     )}
@@ -286,7 +287,7 @@ export default function ProductDetails({ producto }: Props) {
                         </header>
 
                         {Object.entries(allAttributes).length > 0 && (
-                            <p className="text-xs mb-3 text-gray-600 mt-4">
+                            <p className="text-xs mb-3 text-[var(--store-text-muted)] mt-4">
                                 Seleccionar opciones:
                             </p>
                         )}
@@ -296,7 +297,7 @@ export default function ProductDetails({ producto }: Props) {
 
                             return (
                                 <fieldset key={key} className="mb-2 p-1">
-                                    <legend className="text-sm font-bold text-gray-400 uppercase tracking-wide mb-2">{key}:</legend>
+                                    <legend className="text-sm font-bold text-[var(--store-text-muted)] uppercase tracking-wide mb-2">{key}:</legend>
 
                                     {key.toLowerCase() === "color" ? (
                                         <div className="flex flex-wrap items-center gap-3">
@@ -318,28 +319,31 @@ export default function ProductDetails({ producto }: Props) {
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
                                                         title={val}
-                                                        className={`relative w-20 h-24 rounded border transition-colors
+                                                        className={`relative w-20 h-24 rounded border transition-all
 flex flex-col items-center justify-center p-1
-${selected ? 'border-gray-800 ring-1 ring-gray-800' : 'border-gray-300 hover:border-gray-500'}
+${selected
+                                                                ? 'border-[var(--store-primary)] ring-1 ring-[var(--store-primary)]'
+                                                                : 'border-[var(--store-border)] hover:border-[var(--store-text-muted)]'
+                                                            }
 ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
 `}
 
                                                     >
-                                                        {/* Color (como Amazon: pequeño, arriba) */}
+                                                        {/* Color */}
                                                         <div className="flex items-center justify-center">
                                                             <ColorCircle color={val} />
                                                         </div>
 
-                                                        {/* Imagen (zona principal, centrada y consistente) */}
-                                                        <div className="my-2 flex items-center justify-center bg-gray-100 ">
+                                                        {/* Imagen: Fondo gris muy claro para contrastar con el blanco del componente */}
+                                                        <div className="my-2 flex items-center justify-center bg-[var(--store-bg)] rounded-sm">
                                                             {variantForValue?.imagenes?.[0] && (
-                                                                <div className="flex items-center justify-center bg-gray-100">
+                                                                <div className="flex items-center justify-center bg-[var(--store-bg)]">
                                                                     <Image
                                                                         src={variantForValue.imagenes[0]}
                                                                         alt={`Variante ${val}`}
                                                                         width={36}
                                                                         height={36}
-                                                                        className="object-cover h-7 w-7"
+                                                                        className="object-cover h-7 w-7 mix-blend-multiply"
                                                                         quality={2}
                                                                     />
                                                                 </div>
@@ -351,16 +355,16 @@ ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
                                                         <div className="flex w-full items-center justify-center px-1">
                                                             <span
                                                                 className={`text-[11px] text-center truncate leading-tight
-        ${selected ? 'font-semibold text-gray-900' : 'font-medium text-gray-600'}`}
+        ${selected ? 'font-semibold text-[var(--store-text)]' : 'font-medium text-[var(--store-text-muted)]'}`}
                                                             >
                                                                 {val}
                                                             </span>
                                                         </div>
 
-                                                        {/* Precio (opcional, muy sutil como Amazon) */}
+                                                        {/* Precio */}
                                                         <div className="h-4 flex items-center justify-center">
                                                             {variantForValue?.precio && (
-                                                                <span className="text-[9px] font-semibold text-gray-700">
+                                                                <span className="text-[9px] font-semibold text-[var(--store-text-muted)]">
                                                                     S/ {variantForValue.precio.toFixed(0)}
                                                                 </span>
                                                             )}
@@ -368,7 +372,7 @@ ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
 
                                                         {outOfStock && (
                                                             <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                                                <div className="w-[80%] border-t-2 border-gray-500 border-dashed -rotate-45" />
+                                                                <div className="w-[80%] border-t-2 border-[var(--store-text-muted)] border-dashed -rotate-45" />
                                                             </span>
                                                         )}
                                                     </button>
@@ -389,12 +393,22 @@ ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
                                                         size="sm"
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
-                                                        className={`relative ${outOfStock ? "opacity-40 cursor-not-allowed font-bold uppercase rounded-none" : "cursor-pointer rounded-none font-medium"}`}
+                                                        /* Ajuste de estilos para el botón seleccionado y por defecto:
+                                                           - Si está seleccionado: usa el estilo default (que debería mapear a primary en shadcn o lo forzamos aqui)
+                                                           - Si no: usa el borde sutil
+                                                        */
+                                                        className={`relative rounded-none font-medium
+                                                            ${selected
+                                                                ? 'bg-[var(--store-primary)] text-[var(--store-primary-text)] hover:bg-[var(--store-primary-hover)]'
+                                                                : 'border-[var(--store-border)] text-[var(--store-text)] hover:bg-[var(--store-bg)]'
+                                                            }
+                                                            ${outOfStock ? "opacity-40 cursor-not-allowed font-bold uppercase" : "cursor-pointer"}
+                                                        `}
                                                     >
                                                         {val}
                                                         {outOfStock && (
                                                             <span
-                                                                className="absolute top-1/2 left-1/2 w-[80%] border-t-2 border-gray-500 border-dashed"
+                                                                className="absolute top-1/2 left-1/2 w-[80%] border-t-2 border-[var(--store-text-muted)] border-dashed"
                                                                 style={{ transform: 'translate(-50%, -50%) rotate(-45deg)' }}
                                                             />
                                                         )}
@@ -408,10 +422,10 @@ ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
                                             value={selectedAttributes[key] || ""}
                                             onValueChange={(value) => updateSelectedVariant(key, value)}
                                         >
-                                            <SelectTrigger>
+                                            <SelectTrigger className="border-[var(--store-border)] text-[var(--store-text)]">
                                                 <SelectValue placeholder={`Seleccionar ${key}`} />
                                             </SelectTrigger>
-                                            <SelectContent>
+                                            <SelectContent className="bg-[var(--store-surface)] border-[var(--store-border)]">
                                                 {availableValues.map(val => {
                                                     const outOfStock = isOptionOutOfStock(key, val);
                                                     return (
@@ -419,7 +433,7 @@ ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
                                                             key={val}
                                                             value={val}
                                                             disabled={outOfStock}
-                                                            className={`${outOfStock ? "opacity-40 cursor-not-allowed line-through" : "cursor-pointer"}`}
+                                                            className={`${outOfStock ? "opacity-40 cursor-not-allowed line-through text-[var(--store-text-muted)]" : "cursor-pointer text-[var(--store-text)]"}`}
                                                         >
                                                             {val}
                                                         </SelectItem>
@@ -432,12 +446,10 @@ ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
                             );
                         })}
 
-                        {/* Asi haya variante seleccionada o no, separar el espacio */}
                         {/* Separador invisible SOLO si existen variantes */}
                         {(producto.variants?.length ?? 0) > 0 && (
                             <div className="mt-1">
-                                {/* Línea reservada: nunca empuja el contenido inferior */}
-                                <p className="mt-1 h-2 text-xs font-medium text-gray-600 leading-4">
+                                <p className="mt-1 h-2 text-xs font-medium text-[var(--store-text-muted)] leading-4">
                                     {selectedVariant
                                         ? `Variante seleccionada: ${selectedVariant.nombre} - S/ ${selectedVariant.precio ?? producto.precio
                                         }`
@@ -471,22 +483,24 @@ ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
                     </div>
 
                     {/* Información adicional */}
-                    <div className="space-y-2 mt-2 text-gray-700 text-sm">
+                    <div className="space-y-2 mt-2 text-[var(--store-text)] text-sm">
                         {/* Envío */}
-                        <div className="bg-white py-2 md:px-4 flex items-start gap-4 px-4">
+                        <div className="bg-[var(--store-surface)] py-2 md:px-4 flex items-start gap-4 px-4">
                             <div className="flex flex-wrap gap-x-2 flex-col">
-                                <div className=" bg-[var(--store-surface)] rounded-full text-[var(--store-text-muted)] flex flex-col">
+                                {/* Nota: Ajuste a variables. El fondo gris claro --store-bg destaca sobre el blanco --store-surface */}
+                                <div className="text-[var(--store-text-muted)] flex flex-col px-3 py-2">
                                     <p>
-                                        Envíos <span className="font-semibold">gratuitos y contraentrega</span> en todo Cañete
+                                        Envíos <span className="font-semibold text-[var(--store-text)]">gratuitos y contraentrega</span> en todo Cañete
                                     </p>
                                     <p>
                                         Envíos al resto del Perú mediante{" "}
-                                        <span className="font-semibold italic bg-red-600 text-white px-1">SHALOM</span>
+                                        {/* SHALOM rojo se mantiene como marca */}
+                                        <span className="font-semibold italic bg-[#D62828] text-white px-1">SHALOM</span>
                                     </p>
                                 </div>
 
 
-                                <p className="border-l-2 border-blue-900 py-2 px-1 text-gray-600 bg-zinc-50  mt-1">
+                                <p className="border-l-2 border-[var(--store-primary)] py-2 px-1 text-[var(--store-text-muted)] bg-[var(--store-bg)] mt-1">
                                     {producto.diasEnvio
                                         ? `Recíbelo entre: ${getDeliveryRange(producto.diasEnvio)}`
                                         : "Recíbelo en 1–3 días hábiles"}
@@ -495,9 +509,9 @@ ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
                         </div>
 
                         {/* Compra segura */}
-                        <div className="bg-white md:px-4 flex items-center gap-4 px-4 py-2">
+                        <div className="bg-[var(--store-surface)] md:px-4 flex items-center gap-4 px-4 py-2">
                             <div className="flex flex-col lg:flex-row lg:items-center md:justify-between w-full gap-2">
-                                <p className="text-gray-600 whitespace-nowrap">Aceptamos los siguientes medios de pago:</p>
+                                <p className="text-[var(--store-text-muted)] whitespace-nowrap">Aceptamos los siguientes medios de pago:</p>
                                 <div className="flex items-center flex-wrap gap-1 ">
                                     <PaymentMethods />
                                 </div>
@@ -505,7 +519,7 @@ ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
                         </div>
 
                         {/* Contacto */}
-                        <div className="bg-white px-4 py-2 text-center">
+                        <div className="bg-[var(--store-surface)] px-4 py-2 text-center">
                             <p>
                                 ¿Tienes dudas?{" "}
                                 <a
@@ -527,7 +541,8 @@ ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
                 <ProductExpandableSections producto={producto} />
             </section>
 
-            <div className="md:hidden fixed bottom-0 left-0 w-full bg-white p-4 border-t shadow-md z-50">
+            {/* Barra fija inferior Mobile: fondo blanco superficie y borde sutil */}
+            <div className="md:hidden fixed bottom-0 left-0 w-full bg-[var(--store-surface)] p-4 border-t border-[var(--store-border)] shadow-md z-50">
                 <div className="max-w-7xl mx-auto flex items-center justify-center w-full">
                     <AddProductToCart
                         product={producto}

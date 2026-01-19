@@ -141,7 +141,7 @@ function ListItem({
 
           {/* Texto */}
           <div>
-            <div className="font-medium text-gray-700">{title}</div>
+            <div className="font-medium ">{title}</div>
             <p className="text-muted-foreground text-xs line-clamp-2 leading-snug">
               {children}
             </p>

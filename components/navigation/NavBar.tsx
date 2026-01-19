@@ -1,5 +1,4 @@
 // frontend/components/navigation/NavBar.tsx
-
 import Link from "next/link";
 import Logo from "../ui/Logo";
 import ButtonShowCart from "../ui/ButtonShowCart";
@@ -13,9 +12,8 @@ import ButtonSearchMobile from "./ButtonSearchMobile";
 export default function NavBar() {
     return (
         <NavBarClient>
-            {/* HEADER FIJO */}
-            <header className="sticky top-0 z-50 bg-black text-white">
-                <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 h-12">
+            <header className="sticky top-0 z-50 h-12 flex flex-col justify-center bg-[var(--store-surface)]  text-[var(--store-text)] transition-colors duration-300">
+                <div className="max-w-7xl w-full mx-auto flex items-center justify-between px-4 md:px-6">
 
                     {/* Mobile menu button */}
                     <div className="md:hidden flex items-center">
@@ -25,16 +23,16 @@ export default function NavBar() {
                     {/* Mobile logo centered */}
                     <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-10 max-w-[140px]">
                         <Link href="/" className="flex items-center">
-                            <Logo color="white" />
+                            <Logo color="black" />
                         </Link>
                     </div>
 
-                    {/* Desktop logo */}
+                    
                     <Link
                         href="/"
                         className="hidden md:flex items-center max-w-[140px] lg:max-w-[120px]"
                     >
-                        <Logo color="white" />
+                        <Logo color="black" /> 
                     </Link>
 
 
@@ -49,12 +47,12 @@ export default function NavBar() {
                     <div className="hidden md:flex items-center gap-1">
                         <Link
                             href="/auth/registro"
-                            className="flex items-center gap-1 transition px-2 py-1"
+                            className="flex items-center gap-1 transition px-2 py-1  rounded-full"
                             aria-label="Cuenta"
-                        >
-                            <div className="hover:bg-white hover:text-black rounded-full p-2">
+                        > <div className="hover:bg-[var(--store-surface-hover)] rounded-full p-2">
                                 <AiOutlineUser className="h-6 w-6" />
                             </div>
+                        
                         </Link>
 
                         <ButtonShowCart />
@@ -67,8 +65,7 @@ export default function NavBar() {
                 </div>
             </header>
 
-            {/* CATEGORÍAS FIJAS EN DESKTOP */}
-            <div className="hidden md:block sticky z-40 bg-white w-full border-b">
+            <div className="hidden md:block sticky z-40 w-full border-b border-[var(--store-border)] bg-[var(--store-surface)] transition-colors duration-300">
                 <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center">
                     <ServerCategorias />
                 </div>

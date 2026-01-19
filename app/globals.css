@@ -173,41 +173,37 @@
   background: #d1d5db; /* gray-300 */
 }
 
+
 :root {
-  /* ===== PALETA TIENDA (CUSTOM) ===== */
+  /* ===== PALETA TIENDA (ESTILO APPLE) ===== */
 
-  /* Fondo general del sitio (páginas, layout principal) */
-  --store-bg: #f6f6f6;
+  /* Fondo general: Gris "Athens" (Clave del look Apple) */
+  --store-bg: #F5F5F7;
 
-  /* Superficies principales:
-     cards de producto, modales, dropdowns, panels */
-  --store-surface: #ffffff;
+  /* Superficies principales: Blanco puro para contraste máximo */
+  --store-surface: #FFFFFF;
 
-  /* Estado hover de superficies:
-     hover de cards, filas, contenedores interactivos */
-  --store-surface-hover: #f4f4f5;
+  /* Estado hover: Un gris muy sutil, apenas perceptible */
+  --store-surface-hover: #F0F0F2;
 
-  /* Texto principal:
-     nombres de producto, precios, títulos */
-  --store-text: #09090b;
+  /* Texto principal: "Seminegro" (Menos duro que el #000000) */
+  --store-text: #1D1D1F;
 
-  /* Texto secundario:
-     marcas, descripciones cortas, metadata, precios tachados */
-  --store-text-muted: #71717a;
+  /* Texto secundario: Gris frío metálico */
+  --store-text-muted: #86868B;
 
-  /* Color de acción principal (CTA):
-     botones Comprar, Agregar al carrito, acciones destacadas */
-  --store-primary: #18181b;
+  /* Color de acción principal (CTA): Azul Apple Eléctrico 
+     (Usa esto para que destaque sobre el fondo neutro) */
+  --store-primary: #0071E3;
 
-  /* Estado hover / activo del CTA principal */
-  --store-primary-hover: #27272a;
+  /* Estado hover del CTA: Un azul ligeramente más oscuro */
+  --store-primary-hover: #005BB5;
 
-  /* Texto sobre el color primario:
-     texto de botones, badges oscuros */
-  --store-primary-text: #ffffff;
-  
-  /* Bordes sutiles:
-     cards, inputs, divisores, separadores visuales */
-  --store-border: #e4e4e7;
+  /* Texto sobre el color primario: Blanco */
+  --store-primary-text: #FFFFFF;
+
+  /* Bordes: Muy sutiles, casi invisibles */
+  --store-border: #ebe8e8;
+
+
 }
-

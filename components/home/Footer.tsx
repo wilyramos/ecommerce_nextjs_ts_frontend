@@ -33,12 +33,12 @@ export default function Footer() {
     return (
         <footer
             className="
-        bg-[var(--store-primary)]
-        text-[var(--store-text-muted)]
-        text-sm
-        border-t
-        border-[var(--store-border)]
-      "
+                bg-[var(--store-surface)]
+                text-[var(--store-text-muted)]
+                text-sm
+                border-t
+                border-[var(--store-border)]
+            "
         >
             {/* Contenido principal */}
             <div className="max-w-7xl mx-auto px-6 py-12 lg:py-16">
@@ -46,15 +46,16 @@ export default function Footer() {
 
                     {/* Brand */}
                     <div className="lg:col-span-4 flex flex-col gap-4">
-                        <div className="w-20 opacity-90">
-                            <Logo color="white" />
+                        <div className="w-20 opacity-100">
+                            {/* Logo en negro para contrastar con el fondo blanco/gris claro */}
+                            <Logo color="black" />
                         </div>
 
                         <p className="text-sm leading-relaxed max-w-xs text-[var(--store-text-muted)]">
-                            {/* Calidad premium a tu alcance. Especialistas en tecnología y estilo de vida. */}
+                            Calidad premium a tu alcance. Especialistas en tecnología y estilo de vida.
                         </p>
 
-                        <div className="text-xs text-[var(--store-text-muted)] opacity-80">
+                        <div className="text-xs text-[var(--store-text-muted)] opacity-80 mt-2">
                             <p>Jr. O Higgins 120</p>
                             <p>San Vicente de Cañete, Perú</p>
                         </div>
@@ -64,13 +65,13 @@ export default function Footer() {
                     <nav className="lg:col-span-2">
                         <h3
                             className="
-                mb-6
-                text-xs
-                uppercase
-                tracking-wider
-                font-medium
-                text-[var(--store-primary-text)]
-              "
+                                mb-6
+                                text-xs
+                                uppercase
+                                tracking-wider
+                                font-semibold
+                                text-[var(--store-text)]
+                            "
                         >
                             Explora
                         </h3>
@@ -80,10 +81,11 @@ export default function Footer() {
                                     <Link
                                         href={href}
                                         className="
-                      block w-fit
-                      transition-colors
-                      hover:text-[var(--store-primary-text)]
-                    "
+                                            block w-fit
+                                            transition-colors duration-200
+                                            hover:text-[var(--store-primary)]
+                                            hover:underline
+                                        "
                                     >
                                         {label}
                                     </Link>
@@ -96,13 +98,13 @@ export default function Footer() {
                     <nav className="lg:col-span-3">
                         <h3
                             className="
-                mb-6
-                text-xs
-                uppercase
-                tracking-wider
-                font-medium
-                text-[var(--store-primary-text)]
-              "
+                                mb-6
+                                text-xs
+                                uppercase
+                                tracking-wider
+                                font-semibold
+                                text-[var(--store-text)]
+                            "
                         >
                             Soporte
                         </h3>
@@ -112,10 +114,11 @@ export default function Footer() {
                                     <Link
                                         href={href}
                                         className="
-                      block w-fit
-                      transition-colors
-                      hover:text-[var(--store-primary-text)]
-                    "
+                                            block w-fit
+                                            transition-colors duration-200
+                                            hover:text-[var(--store-primary)]
+                                            hover:underline
+                                        "
                                     >
                                         {label}
                                     </Link>
@@ -128,13 +131,13 @@ export default function Footer() {
                     <div className="lg:col-span-3">
                         <h3
                             className="
-                mb-6
-                text-xs
-                uppercase
-                tracking-wider
-                font-medium
-                text-[var(--store-primary-text)]
-              "
+                                mb-6
+                                text-xs
+                                uppercase
+                                tracking-wider
+                                font-semibold
+                                text-[var(--store-text)]
+                            "
                         >
                             Contacto
                         </h3>
@@ -144,11 +147,9 @@ export default function Footer() {
                                 <a
                                     href="mailto:contacto@gophone.pe"
                                     className="
-                    transition-colors
-                    hover:text-[var(--store-primary-text)]
-                    border-b border-transparent
-                    hover:border-[var(--store-primary-text)]
-                  "
+                                        transition-colors duration-200
+                                        hover:text-[var(--store-primary)]
+                                    "
                                 >
                                     contacto@gophone.pe
                                 </a>
@@ -157,13 +158,17 @@ export default function Footer() {
                             <li>
                                 <a
                                     href="tel:+51925054636"
-                                    className="hover:text-[var(--store-primary-text)] transition-colors"
+                                    className="
+                                        hover:text-[var(--store-primary)] 
+                                        transition-colors duration-200
+                                    "
                                 >
                                     +51 925 054 636
                                 </a>
                             </li>
 
-                            <li className="text-xs opacity-70">
+                            <li className="text-xs opacity-70 flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full bg-green-500 inline-block"></span>
                                 Lun–Sáb · 10am – 7pm
                             </li>
                         </ul>
@@ -177,12 +182,12 @@ export default function Footer() {
                                     rel="noopener noreferrer"
                                     aria-label={name}
                                     className="
-                    text-lg
-                    text-[var(--store-text-muted)]
-                    transition-all
-                    hover:text-[var(--store-primary-text)]
-                    hover:scale-110
-                  "
+                                        text-xl
+                                        text-[var(--store-text-muted)]
+                                        transition-all duration-300
+                                        hover:text-[var(--store-text)]
+                                        hover:scale-110
+                                    "
                                 >
                                     {icon}
                                 </a>
@@ -195,19 +200,18 @@ export default function Footer() {
             {/* Footer Bottom */}
             <div
                 className="
-          border-t
-          border-[var(--store-border)]
-          bg-[var(--store-primary)]
-        "
+                    border-t
+                    border-[var(--store-border)]
+                    bg-[var(--store-bg)]
+                "
             >
                 <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
 
-                    <div className="text-xs text-center md:text-left opacity-70">
+                    <div className="text-xs text-center md:text-left text-[var(--store-text-muted)]">
                         © {new Date().getFullYear()} Gophone. Todos los derechos reservados.
-
                     </div>
 
-                    <div className="opacity-80 hover:opacity-100 transition-opacity">
+                    <div className="opacity-80 hover:opacity-100 transition-opacity grayscale hover:grayscale-0">
                         <PaymentMethods />
                     </div>
                 </div>

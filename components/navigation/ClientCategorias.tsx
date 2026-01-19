@@ -37,7 +37,7 @@ export default function ClientCategorias({ categories }: { categories: CategoryR
     return (
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-                <button className="flex items-center gap-1 transition hover:bg-gray-100 px-2 py-1 cursor-pointer font-semibold">
+                <button className="flex items-center gap-1 transition px-2 py-1 cursor-pointer font-semibold text-black">
                     <RiMenu2Line size={20} />
                     Categorías
                 </button>
@@ -45,7 +45,7 @@ export default function ClientCategorias({ categories }: { categories: CategoryR
 
             <SheetContent
                 side="left"
-                className="w-[340px] px-5 py-6 bg-white shadow-xl border-r rounded-r-2xl"
+                className="w-[340px] px-5 py-6 shadow-xl border-r rounded-r-2xl"
             >
                 <div className="pb-4 border-b mb-4">
                     <SheetHeader>

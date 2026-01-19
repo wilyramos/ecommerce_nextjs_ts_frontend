@@ -101,12 +101,12 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
                 <div
                     className={`
                         relative flex items-center transition-all duration-300
-                         bg-gray-100
-                         h-10
-                        ${isMobile ? "rounded-full" : "rounded-full bg-gray-100 hover:bg-white shadow-md"}
+                        bg-[var(--store-bg)] 
+                        h-10
+                        ${isMobile ? "rounded-lg" : "rounded-lg hover:bg-[var(--store-surface-hover)]"}
                     `}
                 >
-                    <div className="pl-3 text-gray-400">
+                    <div className="pl-3 text-[var(--store-text-muted)]">
                         <Search size={20} />
                     </div>
 
@@ -119,11 +119,11 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
                         }}
                         placeholder="Buscar productos, marcas..."
                         className="
-  flex-1 px-3 py-2 bg-transparent 
-  text-base md:text-sm 
-  text-gray-900 placeholder-gray-500 
-  outline-none w-full
-"
+                            flex-1 px-3 py-2 bg-transparent 
+                            text-base md:text-sm 
+                            text-[var(--store-text)] placeholder-[var(--store-text-muted)]
+                            outline-none w-full
+                        "
                         onFocus={() => setIsOpen(true)}
                         autoFocus={isMobile}
                     />
@@ -135,7 +135,7 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
                                 setQuery("");
                                 setResults([]);
                             }}
-                            className="p-2 mr-1 text-gray-400 hover:text-gray-600"
+                            className="p-2 mr-1 text-[var(--store-text-muted)] hover:text-[var(--store-text)]"
                         >
                             <X size={16} />
                         </button>
@@ -148,23 +148,23 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
                 <div
                     ref={dropdownRef}
                     className={`
-                        bg-white border-b border-gray-200 z-[1000000] overflow-hidden 
+                        bg-[var(--store-surface)] border-b border-[var(--store-border)] z-[1000000] overflow-hidden 
                         ${isMobile
                             ? "absolute top-[calc(100%+1px)] left-0 w-full  h-[calc(100vh-300px)]"
-                            : "absolute top-full left-0 w-full max-h-[calc(100vh-200px)]"
+                            : "absolute top-full left-0 w-full max-h-[calc(100vh-200px)] shadow-sm rounded-b-[var(--store-radius)]"
                         }
                     `}
                 >
                     <div
                         className={`
-                            h-full overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 
+                            h-full overflow-y-auto scrollbar-thin scrollbar-thumb-[var(--store-border)] 
                             ${isMobile ? "p-4" : "p-4 max-w-7xl mx-auto"}
                         `}
                     >
 
                         {/* LOADING */}
                         {loading && (
-                            <div className="flex flex-col items-center justify-center py-8 text-gray-500">
+                            <div className="flex flex-col items-center justify-center py-8 text-[var(--store-text-muted)]">
                                 <Loader2 className="animate-spin mb-2" size={24} />
                                 <span className="text-xs font-medium">Buscando...</span>
                             </div>
@@ -173,7 +173,7 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
                         {/* HISTORIAL */}
                         {!loading && !query && history.length > 0 && (
                             <div>
-                                <h4 className="text-xs font-semibold text-gray-400 uppercase mb-3 flex items-center gap-2">
+                                <h4 className="text-xs font-semibold text-[var(--store-text-muted)] uppercase mb-3 flex items-center gap-2">
                                     <History size={14} /> Recientes
                                 </h4>
 
@@ -183,7 +183,7 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
                                             key={i}
                                             type="button"
                                             onClick={() => setQuery(h)}
-                                            className="px-3 py-1.5 bg-gray-50 hover:bg-gray-100 b rounded text-xs text-gray-700"
+                                            className="px-3 py-1.5 bg-[var(--store-bg)] hover:bg-[var(--store-border)] rounded-lg text-xs text-[var(--store-text)] transition-colors"
                                         >
                                             {h}
                                         </button>
@@ -197,7 +197,7 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
                             <div className="space-y-2">
 
                                 <div className="flex items-center justify-between  ">
-                                    <h3 className="font-semibold text-sm text-gray-900">Resultados</h3>
+                                    <h3 className="font-semibold text-sm text-[var(--store-text)]">Resultados</h3>
 
                                     <Link
                                         href={`/productos?query=${encodeURIComponent(query)}`}
@@ -205,7 +205,7 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
                                             saveHistory(query.trim());
                                             onSearchComplete?.();
                                         }}
-                                        className="flex items-center gap-1 text-xs text-gray-800 font-semibold hover:underline"
+                                        className="flex items-center gap-1 text-xs text-[var(--store-primary)] font-semibold hover:underline"
                                     >
                                         Ver todos <ArrowRight size={12} />
                                     </Link>
@@ -225,12 +225,12 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
 
                         {/* SIN RESULTADOS */}
                         {!loading && query && results.length === 0 && (
-                            <div className="text-center py-8 text-gray-500">
-                                <Search size={22} className="mx-auto mb-3 text-gray-400" />
-                                <p className="text-sm font-medium text-gray-900">
+                            <div className="text-center py-8 text-[var(--store-text-muted)]">
+                                <Search size={22} className="mx-auto mb-3 opacity-50" />
+                                <p className="text-sm font-medium text-[var(--store-text)]">
                                     Sin resultados para “{query}”
                                 </p>
-                                <p className="text-xs text-gray-500">
+                                <p className="text-xs">
                                     Intenta con otra palabra clave.
                                 </p>
                             </div>

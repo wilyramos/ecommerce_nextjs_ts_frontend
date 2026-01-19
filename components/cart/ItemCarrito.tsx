@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { CartItem } from "@/src/schemas";
 import { useCartStore } from "@/src/store/cartStore";
 import { FiTrash2 } from "react-icons/fi";
+import { MdOutlineImageNotSupported } from "react-icons/md";
 
 export default function ItemCarrito({ item }: { item: CartItem }) {
     const updateQuantity = useCartStore((state) => state.updateQuantity);
@@ -28,8 +29,9 @@ export default function ItemCarrito({ item }: { item: CartItem }) {
                             quality={40}
                         />
                     ) : (
-                        <div className="flex items-center justify-center w-full h-full text-gray-400 text-xs">
-                            Sin imagen
+                        <div className="flex items-center justify-center w-full h-full ">
+                            <MdOutlineImageNotSupported size={18} />
+
                         </div>
                     )}
                 </div>

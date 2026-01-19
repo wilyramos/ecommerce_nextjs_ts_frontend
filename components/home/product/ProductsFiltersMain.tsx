@@ -13,6 +13,9 @@ import { LuListFilter, LuX } from "react-icons/lu";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import ColorCircle from "@/components/ui/ColorCircle";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+
 
 type ProductsFiltersProps = {
     filters: TFilter[] | null;
@@ -106,45 +109,47 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
 
     // --- Render Helpers ---
     const FilterCheckboxItem = ({
-        label,
-        checked,
-        onChange,
-        isColor = false
-    }: { label: string, checked: boolean, onChange: () => void, isColor?: boolean }) => (
-        <li className="group">
-            <label className={cn(
-                "flex items-center gap-3 cursor-pointer py-2 px-1 transition-all duration-200",
-                "hover:bg-gray-50 rounded-md", // Hover neutral
-                checked ? "text-gray-900" : "text-gray-600 hover:text-gray-900"
-            )}>
-                <input
-                    type="checkbox"
-                    className={cn(
-                        "appearance-none",
-                        "w-5 h-5 rounded border border-gray-300 bg-white",
-                        "transition-all duration-200 cursor-pointer relative",
-                        "checked:bg-gray-900 checked:border-gray-900",
-                        "after:content-[''] after:absolute after:opacity-0 checked:after:opacity-100",
-                        "after:left-[6px] after:top-[2px] after:w-[6px] after:h-[10px]",
-                        "after:border-white after:border-b-2 after:border-r-2 after:rotate-45"
+    label,
+    checked,
+    onChange,
+    isColor = false
+}: {
+    label: string;
+    checked: boolean;
+    onChange: () => void;
+    isColor?: boolean;
+}) => {
+    const id = `filter-${label.replace(/\s+/g, "-").toLowerCase()}`;
 
-                    )}
+    return (
+        <li className="group">
+            <div className="flex items-center gap-3 py-2 px-1 transition-all duration-200 hover:bg-gray-50 rounded-md">
+                <Input
+                    id={id}
+                    type="checkbox"
                     checked={checked}
                     onChange={onChange}
+                    className="h-5 w-5 cursor-pointer accent-[var(--store-primary)]"
                 />
 
-                {/* Renderizar circulo de color si corresponde */}
                 {isColor && <ColorCircle color={label} size={16} />}
 
-                <span className={cn(
-                    "text-sm select-none capitalize leading-none pt-0.5",
-                    checked ? "font-semibold" : "font-normal"
-                )}>
+                <Label
+                    htmlFor={id}
+                    className={cn(
+                        "text-sm select-none capitalize leading-none cursor-pointer",
+                        checked
+                            ? "font-semibold text-gray-900"
+                            : "font-normal text-gray-600 hover:text-gray-900"
+                    )}
+                >
                     {label}
-                </span>
-            </label>
+                </Label>
+            </div>
         </li>
     );
+};
+
 
     return (
         <aside className="w-full h-fit lg:sticky lg:top-24 space-y-6 pt-2 select-none scroll-auto bg-[var(--store-surface)] p-4 rounded-lg">

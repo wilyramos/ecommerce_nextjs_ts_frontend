@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { CategoryListResponse } from "@/src/schemas";
 import HeaderConControles from "../ui/HeaderConTituloConControles";
+import { MdOutlineImageNotSupported } from "react-icons/md";
 
 // Header flotante con controles
 const AbsoluteHeaderWrapper = (props: ButtonGroupProps) => {
@@ -52,7 +53,7 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                 arrows={false}
                 renderButtonGroupOutside
                 customButtonGroup={<AbsoluteHeaderWrapper />}
-                containerClass="-mx-3"
+                containerClass=""
                 itemClass="px-2"
                 partialVisible
             >
@@ -63,8 +64,8 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                         className="
               group
               flex flex-col items-center
-              gap-2
-              p-2
+              
+                p-4
               rounded-lg
               bg-[var(--store-surface)]
               hover:bg-[var(--store-surface-hover)]
@@ -76,7 +77,7 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                             className="
                 relative
                 w-full aspect-square
-                rounded-md
+                
                 overflow-hidden
                 flex items-center justify-center
                 bg-[var(--store-surface)]
@@ -90,14 +91,15 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                                     height={220}
                                     quality={45}
                                     className="
-                    object-contain
+                    object-cover
                     transition-transform duration-500 ease-out
                     group-hover:scale-105
                   "
                                 />
                             ) : (
                                 <span className="text-xs uppercase tracking-widest text-[var(--store-text-muted)]">
-                                    N/A
+                                    <MdOutlineImageNotSupported size={18} />
+                            
                                 </span>
                             )}
                         </div>

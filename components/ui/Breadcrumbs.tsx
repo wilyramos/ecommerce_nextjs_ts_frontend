@@ -24,7 +24,7 @@ export default function Breadcrumbs({ current }: BreadcrumbsProps) {
         });
 
     return (
-        <nav className="text-sm text-[var(--store-text-muted)] max-w-full">
+        <nav className="text-sm text-[var(--store-text-muted)] max-w-full px-2">
             <ol className="flex items-center gap-1 overflow-hidden min-w-0">
                 <li className="shrink-0">
                     <Link href="/" className="hover:underline whitespace-nowrap">
