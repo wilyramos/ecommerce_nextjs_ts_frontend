@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ColorCircle from "@/components/ui/ColorCircle";
 import type { ProductResponse } from "@/src/schemas";
+import { MdOutlineImageNotSupported } from "react-icons/md";
 
 export default function ProductCard({ product }: { product: ProductResponse }) {
     const color = product.atributos?.Color || product.atributos?.color || null;
@@ -132,8 +133,8 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                             )}
                         </div>
                     ) : (
-                        <div className="flex items-center justify-center w-full h-full text-gray-400 text-xs">
-                            no image
+                        <div className="flex items-center justify-center w-full h-full text-[var(--store-text-muted)]">
+                            <MdOutlineImageNotSupported size={18} />
                         </div>
                     )}
 

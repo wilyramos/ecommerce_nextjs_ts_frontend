@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { MdOutlineImageNotSupported } from "react-icons/md";
 
 export default function ImagenesProductoCarousel({ images }: { images: string[] }) {
 
@@ -82,7 +83,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
     if (uniqueImages.length === 0) {
         return (
             <div className="w-full max-w-sm md:max-w-3xl mx-auto aspect-square bg-gray-100 flex items-center justify-center text-gray-400">
-                Sin imágenes
+                <MdOutlineImageNotSupported size={18} />
             </div>
         );
     }

@@ -11,7 +11,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, User, ChevronRight } from "lucide-react";
 import { ScrollArea } from "../ui/scroll-area";
-import Logo from "../ui/Logo";
 import type { CategoryListResponse, CategoryResponse } from "@/src/schemas";
 import { usePathname } from "next/navigation";
 
@@ -57,9 +56,7 @@ export default function ButtonShowSheetMobile({
                 <div className="px-6 py-5 border-b border-gray-100">
                     <SheetHeader className="text-left">
                         <SheetTitle className="flex flex-col gap-2">
-                            <div className="w-32">
-                                <Logo />
-                            </div>
+                        
                             <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
                                 Explora por categorías
                             </span>

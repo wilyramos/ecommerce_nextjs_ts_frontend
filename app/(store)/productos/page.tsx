@@ -110,7 +110,7 @@ export default async function PageProducts({
     const limitNumber = limit ? parseInt(limit) : 24;
 
     return (
-        <main className="md:max-w-screen-2xl mx-auto p-2 md:px-4 md:p-6">
+        <main className="md:max-w-screen-2xl mx-auto p-2 md:px-4 ">
             <Suspense fallback={<SpinnerLoading />}>
                 <ProductResults
                     category={category}

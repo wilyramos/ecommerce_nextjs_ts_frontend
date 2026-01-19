@@ -6,7 +6,6 @@ import OrdenarPor from "../products/OrdenarPor";
 import DrawerFiltersMain from "./DrawerFiltersMain";
 import ActiveFiltersChips from "../products/ActiveFiltersChips";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
-// import RecommendedProducts from "../products/RecommendedProducts";
 
 type ProductResultsProps = {
     category?: string;
@@ -16,7 +15,6 @@ type ProductResultsProps = {
     sort?: string;
     query?: string;
 } & Record<string, string | string[] | undefined | number>;
-
 
 export default async function ProductResults({
     category,
@@ -49,18 +47,17 @@ export default async function ProductResults({
 
     const isFallback = products.totalProducts === 0;
     const hasProducts = products.products.length > 0;
-
     return (
-        <main className="flex flex-col gap-4 md:gap-5">
-            {/* Breadcrumbs */}
+        <main className="flex flex-col gap-2">
             <div className="pt-1">
                 <Breadcrumbs current="Productos" />
             </div>
 
             {!isFallback && (
-                <div className="grid grid-cols-1 md:grid-cols-5 gap-4 md:gap-6">
-                    {/* Sidebar filtros + header */}
-                    <aside className="hidden md:block md:col-span-1">
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-4 ">
+
+                    {/* SIDEBAR + HEADER (desktop) centrado */}
+                    <aside className="hidden md:block md:col-span-1 p-2">
                         <div className="flex flex-col gap-3 pb-2">
                             <header className="flex flex-col gap-1">
                                 <h1 className="text-xl md:text-2xl font-medium text-[var(--store-text)] leading-tight">
@@ -70,30 +67,48 @@ export default async function ProductResults({
                                 <span className="text-xs text-[var(--store-text-muted)]">
                                     Mostrando {products.products.length} de {products.totalProducts} productos
                                 </span>
-                            </header>
 
-                            <div className="min-h-[28px]">
-                                <ActiveFiltersChips />
-                            </div>
+                                <div className="min-h-[28px]">
+                                    <ActiveFiltersChips />
+                                </div>
+                            </header>
                         </div>
 
-                        <div className="sticky top-24">
+                        <div className="sticky top-24 ">
                             <ProductsFiltersMain filters={products.filters || null} />
                         </div>
                     </aside>
 
-                    {/* Contenido principal */}
-                    <section className="col-span-1 md:col-span-4 flex flex-col gap-4">
+                    {/* CONTENIDO PRINCIPAL */}
+                    <section className="col-span-1 md:col-span-4 flex flex-col  p-2">
+
+                        {/* Header MOBILE */}
+                        <div className="md:hidden px-1 ">
+                            <header className="flex flex-col gap-1">
+                                <h1 className="text-xl font-medium text-[var(--store-text)] leading-tight">
+                                    {query ? `Resultados para "${query}"` : "Todos los productos"}
+                                </h1>
+
+                                <span className="text-xs text-[var(--store-text-muted)]">
+                                    Mostrando {products.products.length} de {products.totalProducts} productos
+                                </span>
+
+                                <div className="min-h-[28px]">
+                                    <ActiveFiltersChips />
+                                </div>
+                            </header>
+                        </div>
+
                         {/* Barra superior */}
                         <div
                             className="
-                flex justify-between md:justify-end items-center
-                gap-2 text-sm border-b md:border-none
-                sticky md:static top-12
-                py-2 md:py-1
-                bg-[var(--store-surface)] md:bg-transparent
-                z-10
-              "
+                            flex justify-between md:justify-end items-center
+                            gap-2 text-sm border-b md:border-none
+                            sticky md:static top-12
+                            py-2 md:py-1
+                            bg-[var(--store-surface)] md:bg-transparent
+                            z-10
+                        "
                         >
                             <div className="md:hidden">
                                 <DrawerFiltersMain filters={products?.filters || null} />
@@ -104,7 +119,6 @@ export default async function ProductResults({
                             </div>
                         </div>
 
-                        {/* Lista productos */}
                         {hasProducts && (
                             <div className="flex flex-col gap-5">
                                 <ProductosList products={products.products} />
@@ -130,7 +144,6 @@ export default async function ProductResults({
                 </div>
             )}
 
-            {/* MODO SIN RESULTADOS */}
             {isFallback && (
                 <section className="flex flex-col gap-6 pt-3">
                     <div className="text-center py-6 text-[var(--store-text-muted)] text-sm">
