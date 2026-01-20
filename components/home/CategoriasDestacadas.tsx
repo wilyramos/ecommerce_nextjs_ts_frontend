@@ -8,11 +8,15 @@ import type { CategoryListResponse } from "@/src/schemas";
 import HeaderConControles from "../ui/HeaderConTituloConControles";
 import { MdOutlineImageNotSupported } from "react-icons/md";
 
-// Header flotante con controles
+// Header flotante con controles estilo Apple
 const AbsoluteHeaderWrapper = (props: ButtonGroupProps) => {
     return (
-        <div className="absolute top-0 left-0 right-0 z-20 px-6">
-            <HeaderConControles {...props} title="Categorías" />
+        <div className="absolute top-0 left-0 right-0 z-20 px-4 md:px-0">
+            <HeaderConControles
+                {...props}
+                title="Categorías."
+                subtitle="Encuentra lo que buscas"
+            />
         </div>
     );
 };
@@ -23,38 +27,36 @@ interface Props {
 
 export default function ClientCarouselCategorias({ categorias }: Props) {
     const responsive = {
-        desktop: { breakpoint: { max: 3000, min: 1280 }, items: 4 },
+        desktop: { breakpoint: { max: 3000, min: 1280 }, items: 5 },
         laptop: { breakpoint: { max: 1280, min: 1024 }, items: 4 },
-        tablet: { breakpoint: { max: 1024, min: 640 }, items: 4 },
+        tablet: { breakpoint: { max: 1024, min: 640 }, items: 3 },
         mobile: {
             breakpoint: { max: 640, min: 0 },
             items: 2,
-            partialVisibilityGutter: 30,
+            partialVisibilityGutter: 20,
         },
     };
 
     return (
         <section
             className="
-        relative
-        w-full max-w-7xl mx-auto
-        px-4
-        pt-14          /* espacio real para header */
-        pb-8
-        border-b border-[var(--store-border)]
-        bg-[var(--store-bg)]
-      "
+                relative
+                w-full max-w-7xl mx-auto
+                px-4 md:px-0
+                pt-20 md:pt-24
+                pb-12
+                bg-[var(--store-bg)]
+            "
         >
             <Carousel
                 responsive={responsive}
                 infinite
                 autoPlay
-                autoPlaySpeed={5000}
+                autoPlaySpeed={6000}
                 arrows={false}
                 renderButtonGroupOutside
                 customButtonGroup={<AbsoluteHeaderWrapper />}
-                containerClass=""
-                itemClass="px-2"
+                itemClass="px-2 md:px-3"
                 partialVisible
             >
                 {categorias.map((categoria) => (
@@ -62,60 +64,65 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                         key={categoria._id}
                         href={`/categoria/${categoria.slug}`}
                         className="
-              group
-              flex flex-col items-center
-              
-                p-4
-              rounded-lg
-              bg-[var(--store-surface)]
-              hover:bg-[var(--store-surface-hover)]
-              transition-colors
-            "
+                            group
+                            flex flex-col
+                            h-full
+                            p-6 md:p-8
+                            rounded-lg
+                            bg-[var(--store-surface)]
+                            border border-[var(--store-border)]
+                            transition-all duration-500
+                            hover:shadow-xl hover:scale-[1.02]
+                        "
                     >
-                        {/* Imagen */}
+                        {/* Contenedor de Imagen */}
                         <div
                             className="
-                relative
-                w-full aspect-square
-                
-                overflow-hidden
-                flex items-center justify-center
-                bg-[var(--store-surface)]
-              "
+                                relative
+                                w-full aspect-square
+                                mb-6
+                                flex items-center justify-center
+                                bg-transparent
+                            "
                         >
                             {categoria.image ? (
                                 <Image
                                     src={categoria.image}
                                     alt={categoria.nombre}
-                                    width={220}
-                                    height={220}
-                                    quality={45}
+                                    width={180}
+                                    height={180}
                                     className="
-                    object-cover
-                    transition-transform duration-500 ease-out
-                    group-hover:scale-105
-                  "
+                                        object-contain
+                                        transition-transform duration-700 ease-out
+                                        group-hover:scale-110
+                                    "
                                 />
                             ) : (
-                                <span className="text-xs uppercase tracking-widest text-[var(--store-text-muted)]">
-                                    <MdOutlineImageNotSupported size={18} />
-                            
-                                </span>
+                                <div className="flex flex-col items-center gap-2 text-[var(--store-text-muted)] opacity-30">
+                                    <MdOutlineImageNotSupported size={32} />
+                                </div>
                             )}
                         </div>
 
-                        {/* Texto */}
-                        <h3
-                            className="
-                text-xs md:text-sm
-                font-medium
-                tracking-wide uppercase
-                text-center
-                text-[var(--store-text-muted)]
-              "
-                        >
-                            {categoria.nombre}
-                        </h3>
+                        {/* Texto - Estilo Apple (Más grande y Bold) */}
+                        <div className="mt-auto">
+                            <h3
+                                className="
+                                    text-lg md:text-xl
+                                    font-bold
+                                    tracking-tight
+                                    text-center md:text-left
+                                    text-[var(--store-text)]
+                                    group-hover:text-[var(--store-primary)]
+                                    transition-colors
+                                "
+                            >
+                                {categoria.nombre}
+                            </h3>
+                            <p className="hidden md:block text-xs text-[var(--store-text-muted)] text-left mt-1 font-medium">
+                                Ver colección
+                            </p>
+                        </div>
                     </Link>
                 ))}
             </Carousel>

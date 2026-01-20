@@ -131,13 +131,14 @@ export default function ProductDetails({ producto }: Props) {
 
     const variantImages =
         selectedVariant?.imagenes && selectedVariant.imagenes.length > 0
-            ? selectedVariant.imagenes
+            ? selectedVariant.imagenes.filter(img => Boolean(img))
             : [
                 ...(producto.imagenes ?? []),
-                ...(
-                    producto.variants?.flatMap(v => v.imagenes ?? []) ?? []
-                )
-            ].filter((img, idx, arr) => arr.indexOf(img) === idx);
+                ...(producto.variants?.flatMap(v => v.imagenes ?? []) ?? [])
+            ]
+                .filter(img => Boolean(img))
+                .filter((img, idx, arr) => arr.indexOf(img) === idx);
+
 
 
     // Palabras dinamicas para mostrar descuento 

@@ -1,56 +1,81 @@
+"use client";
+
 import Link from "next/link";
-import type { IconType } from "react-icons";
-import { FaTags, FaTruck, FaLock, FaExchangeAlt } from "react-icons/fa";
+import { TicketPercent, Truck, ShieldCheck, ArrowLeftRight } from "lucide-react";
 
 type Feature = {
-  title: string;
-  icon: IconType;
-  url?: string;
+    title: string;
+    description: string;
+    icon: typeof TicketPercent;
+    url?: string;
 };
 
 const features: Feature[] = [
-  { title: "Ofertas exclusivas", icon: FaTags },
-  { title: "Envíos rápidos", icon: FaTruck },
-  { title: "Pago 100% seguro", icon: FaLock },
-  { title: "Cambios y devoluciones", icon: FaExchangeAlt, url: "/hc/garantias-y-devoluciones" },
+    {
+        title: "Ofertas exclusivas",
+        description: "Precios especiales para ti",
+        icon: TicketPercent
+    },
+    {
+        title: "Envíos rápidos",
+        description: "A todo el país en tiempo récord",
+        icon: Truck
+    },
+    {
+        title: "Pago 100% seguro",
+        description: "Tus datos están protegidos",
+        icon: ShieldCheck
+    },
+    {
+        title: "Cambios y devoluciones",
+        description: "Garantía de satisfacción total",
+        icon: ArrowLeftRight,
+        url: "/hc/garantias-y-devoluciones"
+    },
 ];
 
 export default function MinimalFeatures() {
-  return (
-    <section className="py-10">
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6 py-2">
-        {features.map((feature) => {
-          const Content = (
-            <div
-              className="group flex flex-col items-center justify-center text-center h-full p-5 rounded-2xl 
-                         bg-[var(--store-surface)]  
-                         text-[var(--store-text)] 
-                         transition-all duration-300 hover:-translate-y-1 cursor-default"
-              aria-label={feature.title}
-            >
-              <feature.icon
-                size={22}
-                className="mb-3 text-[var(--store-text-muted)] group-hover:text-[var(--store-text)] transition-colors"
-              />
-              <span className="text-xs md:text-sm font-medium tracking-wide">
-                {feature.title}
-              </span>
-            </div>
-          );
+    return (
+        <section className="bg-white py-12 md:py-16 border-b border-[var(--store-border)]">
+            <div className="max-w-7xl mx-auto px-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
+                    {features.map((feature) => {
+                        const Content = (
+                            <div
+                                className="group flex flex-col items-center md:items-start text-center md:text-left transition-all duration-300"
+                                aria-label={feature.title}
+                            >
+                                <div className="mb-4 p-3 rounded-2xl bg-[var(--store-bg)] text-[var(--store-text)] group-hover:bg-[var(--store-primary)] group-hover:text-white transition-all duration-500">
+                                    <feature.icon
+                                        size={26}
+                                        strokeWidth={1.5}
+                                    />
+                                </div>
 
-          return (
-            <div key={feature.title} className="h-full">
-              {feature.url ? (
-                <Link href={feature.url} aria-label={feature.title} className="block h-full cursor-pointer">
-                  {Content}
-                </Link>
-              ) : (
-                Content
-              )}
+                                <h3 className="text-sm md:text-base font-bold text-[var(--store-text)] tracking-tight mb-1">
+                                    {feature.title}
+                                </h3>
+
+                                <p className="text-xs text-[var(--store-text-muted)] leading-relaxed max-w-[200px]">
+                                    {feature.description}
+                                </p>
+                            </div>
+                        );
+
+                        return (
+                            <div key={feature.title} className="h-full">
+                                {feature.url ? (
+                                    <Link href={feature.url} className="block group cursor-pointer">
+                                        {Content}
+                                    </Link>
+                                ) : (
+                                    Content
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
-          );
-        })}
-      </div>
-    </section>
-  );
+        </section>
+    );
 }

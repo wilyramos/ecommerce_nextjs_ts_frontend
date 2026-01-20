@@ -11,32 +11,34 @@ export function CustomDot({
     onClick,
     active,
     index,
-    duration = 7000,
+    duration = 8000, // Ajustado a la velocidad del autoPlaySpeed del carrusel
 }: CustomDotProps) {
     return (
         <li
-            className="inline-flex items-center justify-center px-1.5 py-4 cursor-pointer group"
+            className="inline-flex items-center justify-center px-1 py-6 cursor-pointer group"
             onClick={onClick}
             role="button"
             aria-label={`Ir al slide ${index}`}
         >
             <div
                 className={clsx(
-                    "relative h-[3px] overflow-hidden transition-all duration-500 ease-out",
+                    "relative h-[2px] rounded-full overflow-hidden transition-all duration-500 ease-out",
                     active
-                        ? "w-12 bg-neutral-200"
-                        : "w-3 bg-neutral-400 group-hover:bg-neutral-600 group-hover:w-5"
+                        ? "w-14 bg-[var(--store-border)]"
+                        : "w-8 bg-gray-300/50 group-hover:bg-gray-400 group-hover:w-10"
                 )}
             >
-                {/* Barra de progreso con gradiente sutil para profundidad */}
+                {/* Barra de progreso (Solo visible cuando está activo) */}
                 <span
                     className={clsx(
-                        "absolute top-0 left-0 h-full bg-neutral-900 block transition-all ease-linear",
+                        "absolute top-0 left-0 h-full bg-[var(--store-text)] block",
                         active ? "opacity-100" : "w-0 opacity-0"
                     )}
                     style={{
                         width: active ? "100%" : "0%",
-                        transitionDuration: active ? `${duration}ms` : "0ms",
+                        transition: active
+                            ? `width ${duration}ms linear, opacity 300ms ease`
+                            : "none",
                     }}
                 />
             </div>

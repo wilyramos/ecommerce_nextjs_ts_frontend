@@ -9,6 +9,7 @@ import {
 import type { ProductWithCategoryResponse } from "@/src/schemas";
 import { getDeliveryRange } from "@/lib/utils";
 import Link from "next/link";
+import { Truck, ShieldCheck, Info, ChevronRight } from "lucide-react";
 
 type Props = { producto: ProductWithCategoryResponse };
 
@@ -18,76 +19,57 @@ export default function ProductExpandableSections({ producto }: Props) {
 
     if (!hasDescripcion && !hasSpecs) return null;
 
-    const descripcionColSpan =
-        hasDescripcion && !hasSpecs ? "lg:col-span-2" : "lg:col-span-1";
-
-    const specsColSpan =
-        hasSpecs && !hasDescripcion ? "lg:col-span-2" : "lg:col-span-1";
-
     return (
         <Accordion
             type="multiple"
             defaultValue={["descripcion-especificaciones"]}
-            className="w-full px-4 md:px-6 py-2 mb-6 rounded-lg"
-            style={{
-                backgroundColor: "var(--store-surface)"
-            }}
+            className="w-full space-y-2"
         >
             {/* SECCIÓN 1: INFORMACIÓN Y ESPECIFICACIONES */}
-            <AccordionItem value="descripcion-especificaciones" className="border-b" style={{ borderColor: "var(--store-border)" }}>
-                <AccordionTrigger
-                    className="text-sm md:text-base tracking-wide hover:no-underline py-4"
-                    style={{ color: "var(--store-text)" }}
-                >
-                    Información del producto
+            <AccordionItem
+                value="descripcion-especificaciones"
+                className="border-b border-[var(--store-border)] px-4 md:px-0"
+            >
+                <AccordionTrigger className="py-6 hover:no-underline group">
+                    <div className="flex items-center gap-3">
+                        <Info size={20} className="text-[var(--store-text-muted)] group-hover:text-[var(--store-primary)] transition-colors" />
+                        <span className="text-base md:text-lg font-semibold tracking-tight text-[var(--store-text)]">
+                            Información del producto
+                        </span>
+                    </div>
                 </AccordionTrigger>
-                <AccordionContent className="pb-6">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        {hasDescripcion && (
-                            <div className={`${descripcionColSpan} space-y-3`}>
-                                <h3 className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "var(--store-text)" }}>
-                                    Descripción
-                                </h3>
-                                <div
-                                    className="prose prose-sm max-w-none text-sm leading-relaxed"
-                                    style={{ color: "var(--store-text-muted)" }}
-                                    dangerouslySetInnerHTML={{
-                                        __html: producto.descripcion ?? "",
-                                    }}
-                                />
-                            </div>
-                        )}
 
+                <AccordionContent className="pb-10 pt-2">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-16">
+
+                        {/* Descripción (Izquierda/Full) */}
+                        <div className={`${hasSpecs ? "lg:col-span-7" : "lg:col-span-12"} space-y-4`}>
+                            <h3 className="text-xs font-bold uppercase tracking-[0.1em] text-[var(--store-text-muted)]">
+                                Resumen
+                            </h3>
+                            <div
+                                className="prose prose-sm max-w-none text-[var(--store-text)] leading-relaxed font-normal"
+                                dangerouslySetInnerHTML={{ __html: producto.descripcion ?? "" }}
+                            />
+                        </div>
+
+                        {/* Ficha Técnica (Derecha) - Estilo Apple Specs */}
                         {hasSpecs && (
-                            <div className={specsColSpan}>
-                                <h3 className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: "var(--store-text)" }}>
-                                    Ficha Técnica
+                            <div className="lg:col-span-5 space-y-4">
+                                <h3 className="text-xs font-bold uppercase tracking-[0.1em] text-[var(--store-text-muted)]">
+                                    Especificaciones
                                 </h3>
-                                <div className="rounded-md border overflow-hidden" style={{ borderColor: "var(--store-border)" }}>
-                                    <table className="w-full text-xs md:text-sm border-collapse">
-                                        <tbody>
-                                            {producto.especificaciones!.map((spec) => (
-                                                <tr
-                                                    key={spec.key}
-                                                    className="border-b last:border-0"
-                                                    style={{ borderColor: "var(--store-border)" }}
-                                                >
-                                                    <td
-                                                        className="px-4 py-2.5 w-1/3 font-semibold bg-gray-50/50"
-                                                        style={{
-                                                            color: "var(--store-text)",
-                                                            backgroundColor: "var(--store-surface-hover)"
-                                                        }}
-                                                    >
-                                                        {spec.key}
-                                                    </td>
-                                                    <td className="px-4 py-2.5" style={{ color: "var(--store-text-muted)" }}>
-                                                        {spec.value}
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
+                                <div className="divide-y divide-[var(--store-border)]">
+                                    {producto.especificaciones!.map((spec) => (
+                                        <div key={spec.key} className="py-3 flex justify-between gap-4">
+                                            <span className="text-sm font-medium text-[var(--store-text)] w-1/3">
+                                                {spec.key}
+                                            </span>
+                                            <span className="text-sm text-[var(--store-text-muted)] w-2/3 text-right">
+                                                {spec.value}
+                                            </span>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         )}
@@ -96,76 +78,74 @@ export default function ProductExpandableSections({ producto }: Props) {
             </AccordionItem>
 
             {/* SECCIÓN 2: ENVÍOS Y DEVOLUCIONES */}
-            <AccordionItem value="cambios-devoluciones-vendedores" className="border-b" style={{ borderColor: "var(--store-border)" }}>
-                <AccordionTrigger
-                    className="text-sm md:text-base tracking-wide hover:no-underline py-4"
-                    style={{ color: "var(--store-text)" }}
-                >
-                    Envíos, devoluciones y vendedores
+            <AccordionItem
+                value="cambios-devoluciones-vendedores"
+                className="border-b border-[var(--store-border)] px-4 md:px-0"
+            >
+                <AccordionTrigger className="py-6 hover:no-underline group">
+                    <div className="flex items-center gap-3">
+                        <Truck size={20} className="text-[var(--store-text-muted)] group-hover:text-[var(--store-primary)] transition-colors" />
+                        <span className="text-base md:text-lg font-semibold tracking-tight text-[var(--store-text)]">
+                            Entrega y Devoluciones
+                        </span>
+                    </div>
                 </AccordionTrigger>
-                <AccordionContent className="pb-6">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 text-sm leading-relaxed" style={{ color: "var(--store-text-muted)" }}>
-                        <div className="space-y-4">
-                            <div>
-                                <h4 className="font-bold mb-1" style={{ color: "var(--store-text)" }}>Gestión GoPhone</h4>
-                                <ul className="list-disc list-inside space-y-1.5 ml-1">
-                                    <li>Envío con tarifa única nacional.</li>
-                                    <li>
-                                        <Link
-                                            href="/hc/garantias-y-devoluciones"
-                                            className="underline decoration-2 underline-offset-4 transition-colors"
-                                            style={{ color: "var(--store-primary)" }}
-                                        >
-                                            Política de devoluciones
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </div>
 
-                            <p>
-                                Solicitudes de cambio en <strong style={{ color: "var(--store-text)" }}>3 días hábiles</strong> por fallas de origen. El empaque debe permanecer original y sellado.
+                <AccordionContent className="pb-10 pt-2">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        {/* Entrega Estimada Box */}
+                        <div className="bg-[var(--store-bg)] rounded-3xl p-6 flex flex-col justify-between">
+                            <div>
+                                <h4 className="text-sm font-bold text-[var(--store-text)] mb-2 flex items-center gap-2">
+                                    Entrega estimada
+                                </h4>
+                                <p className="text-2xl font-semibold text-[var(--store-text)] tracking-tight">
+                                    {getDeliveryRange(producto.diasEnvio || 0)}
+                                </p>
+                            </div>
+                            <p className="text-xs text-[var(--store-text-muted)] mt-6">
+                                * Los tiempos de entrega varían según la ubicación y el método de envío seleccionado.
                             </p>
                         </div>
 
-                        <div className="space-y-4">
-                            <div className="p-3 rounded-lg" style={{ backgroundColor: "var(--store-surface-hover)" }}>
-                                <p className="mb-2">
-                                    <span className="block text-xs font-bold uppercase mb-1" style={{ color: "var(--store-text)" }}>Entrega estimada</span>
-                                    {getDeliveryRange(producto.diasEnvio || 0)}
-                                </p>
-                                <p className="text-xs">
-                                    * Reembolsos procesados en un máximo de 72h tras validación técnica.
+                        {/* Políticas */}
+                        <div className="flex flex-col justify-center space-y-6">
+                            <div className="space-y-2">
+                                <h4 className="text-sm font-bold text-[var(--store-text)]">Gestión GoPhone</h4>
+                                <p className="text-sm text-[var(--store-text-muted)] leading-relaxed">
+                                    Ofrecemos cambios en un plazo de <span className="font-semibold text-[var(--store-text)]">3 días hábiles</span> por fallas de fábrica. El empaque debe estar sellado.
                                 </p>
                             </div>
-                            <p className="text-xs italic">
-                                Producto garantizado por el fabricante.
-                            </p>
+                            <Link
+                                href="/hc/garantias-y-devoluciones"
+                                className="inline-flex items-center text-sm font-medium text-[var(--store-primary)] hover:underline group/link"
+                            >
+                                Ver política de devoluciones <ChevronRight size={14} className="ml-1 group-hover/link:translate-x-1 transition-transform" />
+                            </Link>
                         </div>
                     </div>
                 </AccordionContent>
             </AccordionItem>
 
             {/* SECCIÓN 3: GARANTÍA */}
-            <AccordionItem value="Sobre nuestra garantía" className="border-0">
-                <AccordionTrigger
-                    className="text-sm md:text-base tracking-wide hover:no-underline py-4"
-                    style={{ color: "var(--store-text)" }}
-                >
-                    Sobre nuestra garantía
+            <AccordionItem
+                value=" Sobre nuestra garantía"
+                className="border-0 px-4 md:px-0"
+            >
+                <AccordionTrigger className="py-6 hover:no-underline group">
+                    <div className="flex items-center gap-3">
+                        <ShieldCheck size={20} className="text-[var(--store-text-muted)] group-hover:text-[var(--store-primary)] transition-colors" />
+                        <span className="text-base md:text-lg font-semibold tracking-tight text-[var(--store-text)]">
+                            Garantía Oficial
+                        </span>
+                    </div>
                 </AccordionTrigger>
-                <AccordionContent className="pb-6">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 text-sm leading-relaxed" style={{ color: "var(--store-text-muted)" }}>
-                        <div className="space-y-3">
-                            <p>
-                                Todos nuestros productos cuentan con <strong style={{ color: "var(--store-text)" }}>garantía oficial</strong>.
-                                Gestionamos directamente con el fabricante para tu tranquilidad.
-                            </p>
-                        </div>
-                        <div className="space-y-3">
-                            <p>
-                                La vigencia depende de la marca. Recomendamos conservar la boleta o factura para cualquier requerimiento técnico.
-                            </p>
-                        </div>
+
+                <AccordionContent className="pb-10 pt-2">
+                    <div className="max-w-3xl">
+                        <p className="text-sm md:text-base text-[var(--store-text-muted)] leading-relaxed">
+                            Todos nuestros productos son <span className="text-[var(--store-text)] font-medium">100% originales</span> y cuentan con garantía oficial gestionada directamente con el fabricante. La vigencia varía según la marca del dispositivo; te recomendamos conservar tu comprobante de compra para cualquier gestión técnica.
+                        </p>
                     </div>
                 </AccordionContent>
             </AccordionItem>

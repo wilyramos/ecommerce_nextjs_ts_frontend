@@ -4,17 +4,17 @@ import {
     Sheet,
     SheetContent,
     SheetHeader,
-    SheetTitle, SheetTrigger
+    SheetTitle, 
+    SheetTrigger
 } from "@/components/ui/sheet";
 
-import { GrShop } from "react-icons/gr";
+import { ShoppingCart, ArrowRight } from "lucide-react";
 import { useCartStore } from "@/src/store/cartStore";
 import ItemCarrito from "../cart/ItemCarrito";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 export default function ButtonShowCart() {
-
     const carrito = useCartStore((state) => state.cart);
     const isCartOpen = useCartStore((state) => state.isCartOpen);
     const setCartOpen = useCartStore((state) => state.setCartOpen);
@@ -33,53 +33,89 @@ export default function ButtonShowCart() {
 
     return (
         <Sheet open={isCartOpen} onOpenChange={setCartOpen}>
-            <SheetTrigger className="relative cursor-pointer">
-                <div className="hover:bg-[var(--store-surface-hover)] hover:text-black rounded-full p-2">
-                    <GrShop className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-semibold rounded-full h-5 w-5 flex items-center justify-center">
-                        {carrito.length}
-                    </span>
-                </div>
+            <SheetTrigger asChild>
+                <button className="relative p-2 rounded-full transition-colors hover:bg-[var(--store-surface-hover)] group">
+                    <ShoppingCart 
+                        size={22} 
+                        strokeWidth={1.5} 
+                        className="text-[var(--store-text)] transition-transform group-active:scale-90" 
+                    />
+                    {carrito.length > 0 && (
+                        <span className="absolute top-1 right-1 bg-[var(--store-primary)] text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center animate-in zoom-in">
+                            {carrito.length}
+                        </span>
+                    )}
+                </button>
             </SheetTrigger>
 
-            <SheetContent className="sm:max-w-[450px] px-6 py-5 bg-gray-50 border-l border-gray-200 shadow-2xl rounded-lg">
-                <SheetHeader>
-                    <SheetTitle className="text-xl font-semibold text-gray-700">
-                        Carrito de Compras
+            <SheetContent 
+                side="right"
+                className="w-full sm:max-w-[440px] flex flex-col h-full bg-[var(--store-surface)] border-l border-[var(--store-border)] p-0"
+            >
+                {/* Header Estilo Apple con terminación Carrito */}
+                <SheetHeader className="p-6 border-b border-[var(--store-border)]">
+                    <SheetTitle className="text-2xl font-bold tracking-tight text-[var(--store-text)]">
+                        Tu Carrito.
                     </SheetTitle>
+                    <p className="text-xs text-[var(--store-text-muted)] font-medium uppercase tracking-widest">
+                        {carrito.length} {carrito.length === 1 ? 'Artículo' : 'Artículos'}
+                    </p>
                 </SheetHeader>
 
-                <div className="mt-6 space-y-5 max-h-[65vh] overflow-y-auto pr-2">
+                {/* Lista de productos */}
+                <div className="flex-1 overflow-y-auto px-6 py-4 scrollbar-thin">
                     {carrito.length === 0 ? (
-                        <p className="text-center text-gray-400 ">
-                            Tu carrito está vacío.
-                        </p>
+                        <div className="h-full flex flex-col items-center justify-center space-y-4 opacity-60">
+                            <ShoppingCart size={48} strokeWidth={1} className="text-[var(--store-text-muted)]" />
+                            <p className="text-sm font-medium text-[var(--store-text-muted)]">
+                                Tu carrito está vacío.
+                            </p>
+                        </div>
                     ) : (
-                        carrito.map((item) => (
-                            <ItemCarrito
-                                key={`${item._id}-${item.variant?._id ?? "no-variant"}`}
-                                item={item}
-                            />
-                        ))
+                        <div className="divide-y divide-[var(--store-border)]">
+                            {carrito.map((item) => (
+                                <div key={`${item._id}-${item.variant?._id ?? "no-variant"}`} className="py-4">
+                                    <ItemCarrito item={item} />
+                                </div>
+                            ))}
+                        </div>
                     )}
                 </div>
 
+                {/* Footer y Checkout */}
                 {carrito.length > 0 && (
-                    <div className="pt-2 pb-20">
-                        <div className="flex items-center justify-between text-sm text-gray-700 pb-6">
-                            <span className="text-gray-500">Total</span>
-                            <span className="text-base font-semibold">S/. {total}</span>
+                    <div className="p-6 space-y-4 bg-[var(--store-bg)] border-t border-[var(--store-border)]">
+                        <div className="space-y-1.5">
+                            <div className="flex justify-between text-sm">
+                                <span className="text-[var(--store-text-muted)]">Subtotal</span>
+                                <span className="font-medium text-[var(--store-text)]">S/. {total}</span>
+                            </div>
+                            
+                            <div className="flex justify-between items-end pt-4 border-t border-[var(--store-border)]">
+                                <span className="text-lg font-bold text-[var(--store-text)]">Total</span>
+                                <span className="text-xl font-bold text-[var(--store-text)] tracking-tighter">
+                                    S/. {total}
+                                </span>
+                            </div>
                         </div>
 
-                        <button
-                            onClick={handleCheckout}
-                            className=" w-full bg-black text-white text-sm py-2 rounded-md hover:bg-gray-800 transition-colors cursor-pointer"
-                        >
-                            Ir a pagar
-                        </button>
+                        <div className="pt-2 space-y-3 pb-safe">
+                            <button
+                                onClick={handleCheckout}
+                                className="w-full bg-[var(--store-primary)] text-white text-sm font-semibold py-4 rounded-full hover:bg-[var(--store-primary-hover)] transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                            >
+                                Revisar Carrito <ArrowRight size={16} />
+                            </button>
+                            
+                            <button 
+                                onClick={() => setCartOpen(false)}
+                                className="w-full text-sm font-medium text-[var(--store-primary)] hover:underline"
+                            >
+                                Seguir comprando
+                            </button>
+                        </div>
                     </div>
                 )}
-
             </SheetContent>
         </Sheet>
     );

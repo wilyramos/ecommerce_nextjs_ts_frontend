@@ -5,7 +5,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import type { ProductResponse } from "@/src/schemas";
 import Link from "next/link";
-import { Sparkle, Tag } from "lucide-react";
+import { ChevronRight } from "lucide-react"; // Usaremos este para el estilo Apple Link
 import { CustomDot } from "../ui/CustomDot";
 import { CustomArrow } from "../ui/CustomArrows";
 import { useEffect, useState } from "react";
@@ -23,116 +23,117 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
     useEffect(() => {
         const interval = setInterval(() => {
             setShowDiscount((prev) => !prev);
-        }, 2000);
+        }, 3000); // Un poco más lento para no distraer
         return () => clearInterval(interval);
     }, []);
 
     return (
-        <section className="relative w-full mx-auto bg-white overflow-hidden">
+        <section className="relative w-full bg-[var(--store-bg)]  overflow-hidden">
             <Carousel
                 responsive={responsive}
                 autoPlay
                 infinite
-                autoPlaySpeed={7000}
+                autoPlaySpeed={8000}
                 showDots
                 renderDotsOutside
-                dotListClass="flex justify-center"
+                dotListClass=""
                 customDot={<CustomDot />}
                 customLeftArrow={<CustomArrow direction="left" />}
                 customRightArrow={<CustomArrow direction="right" />}
-                itemClass="px-2 md:px-4"
+                itemClass=""
             >
                 {products.map((product) => {
-                    // Cálculo del porcentaje de descuento
                     const discountPercentage = product.precioComparativo
-                        ? Math.round(
-                            ((product.precioComparativo - product.precio) /
-                                product.precioComparativo) * 100
-                        )
+                        ? Math.round(((product.precioComparativo - product.precio) / product.precioComparativo) * 100)
                         : 0;
 
                     return (
-                        <Link
-                            key={product._id}
-                            href={`/productos/${product.slug}`}
-                            className="group relative flex flex-col md:flex-row items-center justify-between 
-                        px-4 md:px-20 py-5 h-auto md:h-[360px] w-full transition-all duration-300"
-                        >
-                            {/* Text Section */}
-                            <article className="z-10 w-full md:w-1/3 space-y-3 sm:space-y-2 text-center md:text-left order-2 md:order-1">
+                        <div key={product._id} className="">
+                            <Link
+                                href={`/productos/${product.slug}`}
+                                className="group relative flex flex-col md:flex-row items-center justify-between 
+                                bg-[var(--store-surface)] px-6 md:px-20 py-10 md:py-0 h-auto md:h-[480px] w-full 
+                                transition-all duration-500 "
+                            >
+                                {/* Sección de Texto */}
+                                <article className="z-10 w-full md:w-1/2 space-y-4 text-center md:text-left order-2 md:order-1 mt-8 md:mt-0">
+                                    
+                                    {/* Tag Estilo Apple */}
+                                    <div className="flex items-center justify-center md:justify-start">
+                                        <span className="text-[12px] font-semibold uppercase tracking-[0.1em] text-[var(--store-primary)]">
+                                            {product.esNuevo ? "Nuevo" : product.brand?.nombre || "Exclusivo"}
+                                        </span>
+                                    </div>
 
-                                {/* Etiqueta de Marca / Nuevo con animación Hover */}
-                                <div className="w-fit mx-auto md:mx-0 flex items-center gap-1.5 px-3 py-1 bg-white border text-[10px]  transition-all duration-300 hover:scale-105 hover:shadow-md hover:border-blue-200">
-                                    {product.esNuevo ? (
-                                        // Animación: Pulso + Spin lento
-                                        <Sparkle className="w-3 h-3 text-blue-600 animate-[pulse_2s_ease-in-out_infinite]" />
-                                    ) : (
-                                        <Tag className="w-3 h-3 text-neutral-500" />
-                                    )}
-                                    <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-800">
-                                        {product.brand?.nombre || "TECNOLOGÍA"}
-                                    </span>
-                                </div>
+                                    {/* Título Principal */}
+                                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[var(--store-text)] leading-[1.1] truncate">
+                                        {product.nombre}
+                                    </h2>
 
-                                {/* Título con transición de color */}
-                                <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-black leading-tight transition-colors duration-300 group-hover:text-gray-800">
-                                    {product.nombre}
-                                </h2>
-
-                                <div className="flex flex-col sm:flex-row sm:items-end sm:justify-center md:justify-start gap-2 sm:gap-3">
-                                    {/* Precio con escala suave */}
-                                    <p className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 transition-transform duration-300 origin-left group-hover:scale-105">
-                                        <span className="text-xs font-semibold">S/.</span> {product.precio?.toFixed(2) ?? "0.00"}
-                                    </p>
-
-                                    {product.precioComparativo && product.precioComparativo > product.precio && (
-                                        <div className="flex flex-col justify-end sm:pb-1 items-center sm:items-start">
-
-                                            {/* Descuento Dinámico en Loop (Aparece/Desaparece) */}
-                                            <div className="relative h-8 w-42 overflow-hidden bg-yellow-300  flex items-center justify-center mb-0.5  group-hover:bg-yellow-200 transition-colors">
-                                                <span
-                                                    className={`absolute w-full text-center text-[10px] sm:text-xs font-semibold text-gray-800 transition-all duration-500 ease-in-out transform
-                                                    ${showDiscount ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}
-                                                >
-                                                    -{discountPercentage}% OFF
+                                    {/* Precio y Descuento */}
+                                    <div className="flex flex-col gap-1">
+                                        <div className="flex items-center justify-center md:justify-start gap-3">
+                                            <p className="text-xl md:text-2xl font-medium text-[var(--store-text)]">
+                                                Desde S/. {product.precio?.toFixed(2)}
+                                            </p>
+                                            
+                                            {product.precioComparativo && (
+                                                <span className="text-sm text-[var(--store-text-muted)] line-through">
+                                                    S/. {product.precioComparativo.toFixed(2)}
                                                 </span>
-                                                <span
-                                                    className={`absolute w-full text-center text-xs font-semibold text-gray-600 transition-all duration-500 ease-in-out transform
-                                                    ${!showDiscount ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}`}
-                                                >
-                                                    Ahorras S/. {(product.precioComparativo - product.precio).toFixed(2)}
+                                            )}
+                                        </div>
+
+                                        {/* Badge de Ahorro Elegante */}
+                                        {discountPercentage > 0 && (
+                                            <div className="h-6 relative overflow-hidden flex items-center justify-center md:justify-start">
+                                                <span className={`absolute transition-all duration-700 ease-in-out text-sm font-medium text-[var(--store-primary)]
+                                                    ${showDiscount ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
+                                                    Ahorra un {discountPercentage}% hoy
+                                                </span>
+                                                <span className={`absolute transition-all duration-700 ease-in-out text-sm font-medium text-[var(--store-text-muted)]
+                                                    ${!showDiscount ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}`}>
+                                                    Oportunidad limitada
                                                 </span>
                                             </div>
+                                        )}
+                                    </div>
 
-                                            <span className="text-xs sm:text-sm text-neutral-400 line-through decoration-neutral-400">
-                                                S/. {product.precioComparativo.toFixed(2)}
-                                            </span>
+                                    {/* Botones de Acción Estilo Apple */}
+                                    <div className="flex items-center justify-center md:justify-start gap-6 pt-4">
+                                        <button className="bg-[var(--store-primary)]  text-white px-6 py-2.5 rounded-full text-sm font-semibold transition-all">
+                                            Comprar
+                                        </button>
+                                        <div className="flex items-center text-[var(--store-primary)] font-medium hover:underline cursor-pointer group/link text-sm">
+                                            Más información <ChevronRight size={16} className="group-hover/link:translate-x-1 transition-transform" />
                                         </div>
-                                    )}
-                                </div>
-                            </article>
+                                    </div>
+                                </article>
 
-                            {/* Image Section - Transiciones mejoradas */}
-                            <div className="relative w-full md:w-2/3 h-[260px] sm:h-[300px] md:h-[350px] order-1 md:order-2">
-                                <div className="relative w-full h-full perspective-1000">
-                                    <Image
-                                        src={product.imagenes?.[0] || "/logoapp.png"}
-                                        alt={product.nombre}
-                                        fill
-                                        priority
-                                        className="object-contain transition-all duration-700 ease-in-out transform group-hover:scale-110 group-hover:opacity-0 group-hover:rotate-3"
-                                    />
-                                    {product.imagenes?.[1] && (
+                                {/* Sección de Imagen */}
+                                <div className="relative w-full md:w-1/2 h-[280px] sm:h-[350px] md:h-[400px] order-1 md:order-2">
+                                    <div className="relative w-full h-full p-4">
                                         <Image
-                                            src={product.imagenes[1]}
-                                            alt={`${product.nombre} alternate view`}
+                                            src={product.imagenes?.[0] || "/logoapp.png"}
+                                            alt={product.nombre}
                                             fill
-                                            className="absolute inset-0 object-contain transition-all duration-700 ease-in-out transform opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-105 group-hover:rotate-3"
+                                            priority
+                                            className="object-contain transition-all duration-1000 ease-in-out group-hover:scale-105"
                                         />
-                                    )}
+                                        
+                                        {/* Efecto de segunda imagen al hover (suave) */}
+                                        {product.imagenes?.[1] && (
+                                            <Image
+                                                src={product.imagenes[1]}
+                                                alt={product.nombre}
+                                                fill
+                                                className="absolute inset-0 object-contain transition-all duration-1000 ease-in-out opacity-0 group-hover:opacity-100 scale-95 group-hover:scale-105"
+                                            />
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                        </Link>
+                            </Link>
+                        </div>
                     );
                 })}
             </Carousel>

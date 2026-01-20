@@ -13,7 +13,7 @@ export default async function ProductosNuevos() {
     }
 
     return (
-        <section className="mx-auto p-4 md:p-8 border-b max-w-7xl">
+        <section className="mx-auto py-5 border-b  bg-white">
             <div className=" mx-auto space-y-2">
                 <ClientCarouselProductosNuevos products={newProducts.products} />
             </div>

@@ -1,34 +1,42 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Image from "next/image";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { MdOutlineImageNotSupported } from "react-icons/md";
+import { ChevronLeft, ChevronRight, ImageOff, ZoomIn, ZoomOut } from "lucide-react";
 
 export default function ImagenesProductoCarousel({ images }: { images: string[] }) {
-
-    // 1. Lógica de deduplicación: Crea un array de URLs únicas
     const uniqueImages = useMemo(() => {
         if (!images) return [];
-        return Array.from(new Set(images));
+        return Array.from(new Set(images.filter(Boolean)));
     }, [images]);
 
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [zoom, setZoom] = useState(false);
     const [position, setPosition] = useState({ x: 50, y: 50 });
 
-    const [dragStart, setDragStart] = useState<number | null>(null);
-    const [dragEnd, setDragEnd] = useState<number | null>(null);
+    // Refs para scroll y gestos
+    const thumbnailsRef = useRef<HTMLDivElement>(null);
+    const touchStartX = useRef<number | null>(null);
+    const touchEndX = useRef<number | null>(null);
 
-    // 2. Resetear el índice si las imágenes cambian drásticamente 
-    // (opcional, pero recomendado al cambiar de variante)
+    // Centrar miniatura activa en Desktop
     useEffect(() => {
-        if (selectedIndex >= uniqueImages.length) {
-            setSelectedIndex(0);
-        }
-    }, [uniqueImages, selectedIndex]);
+        if (thumbnailsRef.current) {
+            const container = thumbnailsRef.current;
+            const selectedThumb = container.children[selectedIndex] as HTMLElement;
 
-    // Usamos uniqueImages en lugar de images en todas las funciones
+            if (selectedThumb) {
+                const containerCenter = container.offsetHeight / 2;
+                const thumbCenter = selectedThumb.offsetTop + (selectedThumb.offsetHeight / 2);
+
+                container.scrollTo({
+                    top: thumbCenter - containerCenter,
+                    behavior: "smooth"
+                });
+            }
+        }
+    }, [selectedIndex]);
+
     const nextImage = () => {
         setSelectedIndex((prev) => (prev + 1) % uniqueImages.length);
         setZoom(false);
@@ -39,6 +47,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
         setZoom(false);
     };
 
+    // Lógica de Zoom
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!zoom) return;
         const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
@@ -47,165 +56,140 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
         setPosition({ x, y });
     };
 
-    const toggleZoom = () => setZoom((prev) => !prev);
-
-    const onDragStart = (e: React.TouchEvent | React.MouseEvent) => {
-        const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
-        setDragStart(clientX);
+    // --- Lógica de DRAG / SWIPE ---
+    const handleTouchStart = (e: React.TouchEvent) => {
+        if (zoom) return; // Deshabilitar swipe si hay zoom
+        touchStartX.current = e.targetTouches[0].clientX;
     };
 
-    const onDragMove = (e: React.TouchEvent | React.MouseEvent) => {
-        if (dragStart === null) return;
-        const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
-        setDragEnd(clientX);
+    const handleTouchMove = (e: React.TouchEvent) => {
+        if (zoom) return;
+        touchEndX.current = e.targetTouches[0].clientX;
     };
 
-    const onDragEnd = () => {
-        if (dragStart === null || dragEnd === null) {
-            setDragStart(null);
-            setDragEnd(null);
-            return;
+    const handleTouchEnd = () => {
+        if (!touchStartX.current || !touchEndX.current) return;
+
+        const distance = touchStartX.current - touchEndX.current;
+        const isSignificantSwipe = Math.abs(distance) > 50;
+
+        if (isSignificantSwipe) {
+            if (distance > 0) nextImage();
+            else prevImage();
         }
 
-        const diff = dragStart - dragEnd;
-
-        // Sensibilidad del swipe
-        if (diff > 50) nextImage();
-        if (diff < -50) prevImage();
-
-        setDragStart(null);
-        setDragEnd(null);
+        // Reset
+        touchStartX.current = null;
+        touchEndX.current = null;
     };
 
-    const showThumbnails = uniqueImages.length > 1;
-
-    // Si no hay imágenes únicas, no renderizamos nada o un placeholder
     if (uniqueImages.length === 0) {
         return (
-            <div className="w-full max-w-sm md:max-w-3xl mx-auto aspect-square bg-gray-100 flex items-center justify-center text-gray-400">
-                <MdOutlineImageNotSupported size={18} />
+            <div className="w-full aspect-square bg-[var(--store-bg)] rounded-3xl flex flex-col items-center justify-center text-[var(--store-text-muted)] border border-[var(--store-border)]">
+                <ImageOff size={32} strokeWidth={1.2} />
+                <span className="text-xs mt-2 font-medium">Imagen no disponible</span>
             </div>
         );
     }
 
     return (
-        <div className="w-full max-w-sm md:max-w-3xl mx-auto flex flex-col md:flex-row gap-3 bg-white">
+        <div className="w-full flex flex-col md:flex-row gap-4 lg:gap-6 bg-white select-none rounded-lg">
 
-            {showThumbnails && (
-                <div
-                    className="
-      hidden md:flex 
-      flex-col 
-      gap-2 
-      overflow-y-auto 
-      overflow-x-hidden 
-      no-scrollbar 
-      w-20 
-      md:p-2 
-      sticky 
-      top-30 
-      h-full 
-      max-h-[500px]
-    "
-                >
-                    {uniqueImages.map((img, idx) => (
-                        <button
-                            key={img}
-                            onClick={() => setSelectedIndex(idx)}
-                            className={`
-          relative 
-          h-16 
-          w-16 
-          flex-none
-          rounded-md 
-          overflow-hidden 
-          border-2 
-          transition-all 
-          duration-300
-          ${selectedIndex === idx
-                                    ? "border-gray-800 opacity-100 ring-1 ring-gray-800"
-                                    : "border-gray-200 opacity-70 hover:opacity-100 hover:border-gray-400"}
-        `}
-                        >
-                            <Image
-                                src={img}
-                                alt={`Vista ${idx + 1}`}
-                                fill
-                                className="object-cover"
-                                sizes="64px"
-                                quality={20}
-                            />
-                        </button>
-                    ))}
+            {/* MINIATURAS DESKTOP */}
+            {uniqueImages.length > 1 && (
+                <div className="hidden md:block w-20 shrink-0">
+                    <div
+                        ref={thumbnailsRef}
+                        className="sticky top-24 max-h-[500px] overflow-y-auto no-scrollbar space-y-3 py-2 px-1"
+                    >
+                        {uniqueImages.map((img, idx) => (
+                            <button
+                                key={`${img}-${idx}`}
+                                onClick={() => setSelectedIndex(idx)}
+                                className={`
+                                    relative aspect-square w-full rounded-xl overflow-hidden border-2 transition-all duration-500
+                                    ${selectedIndex === idx
+                                        ? "border-[var(--store-primary)] "
+                                        : "border-[var(--store-border)] hover:border-[var(--store-text-muted)]"}
+                                `}
+                            >
+                                <Image
+                                    src={img}
+                                    alt={`Miniatura ${idx + 1}`}
+                                    fill
+                                    className="object-contain p-1"
+                                    sizes="80px"
+                                    quality={20}
+                                />
+                            </button>
+                        ))}
+                    </div>
                 </div>
             )}
 
-
-            <div className="flex-1 relative">
+            {/* IMAGEN PRINCIPAL */}
+            <div className="flex-1 relative group">
                 <div
-                    className={`relative aspect-square overflow-hidden bg-white rounded-lg select-none
+                    className={`relative aspect-square overflow-hidden bg-white transition-all duration-700 ease-in-out 
                         ${zoom ? "cursor-zoom-out" : "cursor-zoom-in"}`}
                     onMouseMove={handleMouseMove}
-                    onClick={toggleZoom}
-                    onMouseDown={onDragStart}
-                    onMouseMoveCapture={onDragMove}
-                    onMouseUp={onDragEnd}
-                    onMouseLeave={onDragEnd} // Importante para cancelar drag si sale
-                    onTouchStart={onDragStart}
-                    onTouchMove={onDragMove}
-                    onTouchEnd={onDragEnd}
+                    onClick={() => setZoom(!zoom)}
+                    // Eventos de Touch para Mobile Drag
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchEnd}
                 >
                     <Image
-                        key={uniqueImages[selectedIndex]} // Key para forzar re-render suave al cambiar
+                        key={uniqueImages[selectedIndex]}
                         src={uniqueImages[selectedIndex]}
                         alt="Producto principal"
                         fill
-                        className={`object-contain transition-transform duration-200 ease-out 
-                            ${zoom ? "scale-[2]" : "scale-100"}`} // Zoom aumentado a 2x
+                        priority
+                        className={`object-contain transition-transform duration-500 ease-out p-4 md:p-8
+                            ${zoom ? "scale-[2.5]" : "scale-100"}`}
                         style={zoom ? { transformOrigin: `${position.x}% ${position.y}%` } : undefined}
-                        quality={90}
-                        priority // Carga prioritaria para la imagen principal
+                        quality={100}
                     />
 
+                    {/* Botón Zoom (Solo Desktop) */}
+                    <div className="absolute top-4 right-4 p-2.5 bg-white/60 backdrop-blur-lg rounded-full text-[var(--store-text)] opacity-0 md:group-hover:opacity-100 transition-opacity">
+                        {zoom ? <ZoomOut size={18} strokeWidth={1.5} /> : <ZoomIn size={18} strokeWidth={1.5} />}
+                    </div>
+
+                    {/* Controles Navegación (Visibles en Mobile y Desktop) */}
                     {uniqueImages.length > 1 && !zoom && (
                         <>
                             <button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    prevImage();
-                                }}
-                                className="absolute top-1/2 left-1 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all z-10 cursor-pointer"
-                                aria-label="Imagen anterior"
+                                onClick={(e) => { e.stopPropagation(); prevImage(); }}
+                                className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 p-2 md:p-3 rounded-full bg-white/70 md:bg-white/50 backdrop-blur-md text-[var(--store-text)] shadow-sm border border-[var(--store-border)] opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-white active:scale-90 z-10"
+                                aria-label="Anterior"
                             >
-                                <FaChevronLeft size={16} />
+                                <ChevronLeft size={20} strokeWidth={1.5} />
                             </button>
-
                             <button
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    nextImage();
-                                }}
-                                className="absolute top-1/2 right-1 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg transition-all z-10 cursor-pointer"
-                                aria-label="Siguiente imagen"
+                                onClick={(e) => { e.stopPropagation(); nextImage(); }}
+                                className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 p-2 md:p-3 rounded-full bg-white/70 md:bg-white/50 backdrop-blur-md text-[var(--store-text)] shadow-sm border border-[var(--store-border)] opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-white active:scale-90 z-10"
+                                aria-label="Siguiente"
                             >
-                                <FaChevronRight size={16} />
+                                <ChevronRight size={20} strokeWidth={1.5} />
                             </button>
                         </>
                     )}
                 </div>
 
-                {/* Miniaturas Móviles (Debajo) */}
-                {showThumbnails && (
-                    <div className="mt-3 flex md:hidden justify-center gap-2 overflow-x-auto no-scrollbar px-2">
-                        {uniqueImages.map((img, idx) => (
+                {/* PAGINACIÓN MÓVIL (Puntos tipo iOS) */}
+                {uniqueImages.length > 1 && (
+                    <div className="flex md:hidden justify-center items-center gap-2 mt-6">
+                        {uniqueImages.map((_, idx) => (
                             <button
-                                key={img}
+                                key={idx}
                                 onClick={() => setSelectedIndex(idx)}
-                                className={`relative h-10 w-10 rounded-md overflow-hidden border-2 transition-all flex-shrink-0
-                                    ${selectedIndex === idx ? "border-gray-800 ring-1 ring-gray-800" : "border-gray-200 opacity-70"}`}
-                            >
-                                <Image src={img} alt="Thumb" fill className="object-contain" sizes="48px" quality={5} />
-                            </button>
+                                className={`transition-all duration-500 rounded-full
+                                    ${selectedIndex === idx
+                                        ? "w-8 h-1 bg-[var(--store-text)]"
+                                        : "w-1.5 h-1.5 bg-[var(--store-border)]"}`}
+                                aria-label={`Imagen ${idx + 1}`}
+                            />
                         ))}
                     </div>
                 )}

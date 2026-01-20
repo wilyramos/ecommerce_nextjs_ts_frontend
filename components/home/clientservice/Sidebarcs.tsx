@@ -100,7 +100,6 @@ export default function Sidebarcs() {
                                 `}
                             >
                                 <Icon className={`w-6 h-6 ${isActive ? "scale-110" : ""} transition-transform`} />
-                                {/* En móvil reducimos el texto y el interlineado para mantenerlo limpio */}
                                 <span className="text-[10px] font-medium text-center leading-none max-w-[64px] truncate">
                                     {item.name.split(" ")[0]} {/* Truco minimalista: Mostrar solo la 1ra palabra en móvil si es muy largo, o quitar .split si prefieres todo */}
                                 </span>

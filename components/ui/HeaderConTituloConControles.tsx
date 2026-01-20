@@ -10,19 +10,16 @@ interface Props extends ButtonGroupProps {
 
 export default function HeaderConTituloConControles({ title, subtitle, next, previous }: Props) {
     return (
-        <div className="flex items-start justify-between mb-10 md:mb-12">
-            <div>
-                <h2 className="text-lg md:text-xl font-semibold mb-2 text-gray-800">
-                    {title}
-                </h2>
-                <div className='border-2 border-b border-blue-900 mb-2 w-20 md:w-24'>
-                </div>
-
+        <div className="flex items-end justify-between mb-8 md:mb-10">
+            <div className="space-y-1">
                 {subtitle && (
-                    <p className="text-neutral-500 text-sm uppercase tracking-wider">
+                    <p className="text-[var(--store-primary)] text-xs font-semibold uppercase tracking-[0.1em]">
                         {subtitle}
                     </p>
                 )}
+                <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-[var(--store-text)]">
+                    {title}
+                </h2>
             </div>
 
             <HeaderConControles next={next} previous={previous} />

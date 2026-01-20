@@ -12,58 +12,52 @@ import ButtonSearchMobile from "./ButtonSearchMobile";
 export default function NavBar() {
     return (
         <NavBarClient>
-            <header className="sticky top-0 z-50 h-12 flex flex-col justify-center bg-[var(--store-surface)]  text-[var(--store-text)] transition-colors duration-300">
-                <div className="max-w-7xl w-full mx-auto flex items-center justify-between px-4 md:px-6">
+            <header className="sticky top-0 z-50 h-12 flex flex-col justify-center text-[var(--store-text)] transition-colors duration-300">
+                <div className="max-w-7xl w-full mx-auto grid grid-cols-3 items-center px-4 md:px-6">
 
-                    {/* Mobile menu button */}
-                    <div className="md:hidden flex items-center">
-                        <ServerSheetMobile />
+                    {/* Left column */}
+                    <div className="flex items-center">
+                        <div className="md:hidden">
+                            <ServerSheetMobile />
+                        </div>
+
+                        <div className="hidden md:flex">
+                            <ButtonSearchFormStore />
+                        </div>
                     </div>
 
-                    {/* Mobile logo centered */}
-                    <div className="md:hidden absolute left-1/2 -translate-x-1/2 z-10 max-w-[140px]">
-                        <Link href="/" className="flex items-center">
+                    {/* Center column - LOGO SIEMPRE CENTRADO */}
+                    <div className="flex justify-center">
+                        <Link href="/" className="flex items-center max-w-[140px]">
                             <Logo color="black" />
                         </Link>
                     </div>
 
-                    
-                    <Link
-                        href="/"
-                        className="hidden md:flex items-center max-w-[140px] lg:max-w-[120px]"
-                    >
-                        <Logo color="black" /> 
-                    </Link>
+                    {/* Right column */}
+                    <div className="flex items-center justify-end gap-2">
+                        <div className="hidden md:flex items-center gap-1">
+                            <Link
+                                href="/auth/registro"
+                                className="flex items-center gap-1 transition px-2 py-1 rounded-full"
+                                aria-label="Cuenta"
+                            >
+                                <div className="hover:bg-[var(--store-surface-hover)] rounded-full p-2">
+                                    <AiOutlineUser className="h-6 w-6" />
+                                </div>
+                            </Link>
 
-
-                    {/* Desktop search */}
-                    <nav className="hidden md:flex flex-1 justify-center px-4">
-                        <div className="max-w-xl w-full">
-                            <ButtonSearchFormStore />
+                            <ButtonShowCart />
                         </div>
-                    </nav>
 
-                    {/* Desktop actions */}
-                    <div className="hidden md:flex items-center gap-1">
-                        <Link
-                            href="/auth/registro"
-                            className="flex items-center gap-1 transition px-2 py-1  rounded-full"
-                            aria-label="Cuenta"
-                        > <div className="hover:bg-[var(--store-surface-hover)] rounded-full p-2">
-                                <AiOutlineUser className="h-6 w-6" />
-                            </div>
-                        
-                        </Link>
-
-                        <ButtonShowCart />
+                        <div className="md:hidden flex items-center gap-2">
+                            <ButtonSearchMobile />
+                            <ButtonShowCart />
+                        </div>
                     </div>
 
-                    <div className="md:hidden flex items-center gap-2">
-                        <ButtonSearchMobile />
-                        <ButtonShowCart />
-                    </div>
                 </div>
             </header>
+
 
             <div className="hidden md:block sticky z-40 w-full border-b border-[var(--store-border)] bg-[var(--store-surface)] transition-colors duration-300">
                 <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center">

@@ -71,7 +71,7 @@ export default function HomePage() {
                 <Advertisement />
             </section>
 
-            <section className="container mx-auto">
+            <section className="bg-white ">
                 <CarruselPrincipal />
             </section>
 
