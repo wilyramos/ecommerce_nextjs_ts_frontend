@@ -57,7 +57,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                             >
                                 {/* Sección de Texto */}
                                 <article className="z-10 w-full md:w-1/2 space-y-4 text-center md:text-left order-2 md:order-1 mt-8 md:mt-0">
-                                    
+
                                     {/* Tag Estilo Apple */}
                                     <div className="flex items-center justify-center md:justify-start">
                                         <span className="text-[12px] font-semibold uppercase tracking-[0.1em] text-[var(--store-primary)]">
@@ -66,7 +66,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                     </div>
 
                                     {/* Título Principal */}
-                                    <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[var(--store-text)] leading-[1.1] truncate">
+                                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[var(--store-text)] leading-[1.1] line-clamp-2">
                                         {product.nombre}
                                     </h2>
 
@@ -76,7 +76,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                             <p className="text-xl md:text-2xl font-medium text-[var(--store-text)]">
                                                 Desde S/. {product.precio?.toFixed(2)}
                                             </p>
-                                            
+
                                             {product.precioComparativo && (
                                                 <span className="text-sm text-[var(--store-text-muted)] line-through">
                                                     S/. {product.precioComparativo.toFixed(2)}
@@ -120,7 +120,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                             priority
                                             className="object-contain transition-all duration-1000 ease-in-out group-hover:scale-105"
                                         />
-                                        
+
                                         {/* Efecto de segunda imagen al hover (suave) */}
                                         {product.imagenes?.[1] && (
                                             <Image

@@ -50,7 +50,7 @@ export default function ButtonShowCart() {
 
             <SheetContent 
                 side="right"
-                className="w-full sm:max-w-[440px] flex flex-col h-full bg-[var(--store-surface)] border-l border-[var(--store-border)] p-0"
+                className=" flex flex-col h-full bg-[var(--store-surface)] border-l border-[var(--store-border)] p-0"
             >
                 {/* Header Estilo Apple con terminación Carrito */}
                 <SheetHeader className="p-6 border-b border-[var(--store-border)]">
