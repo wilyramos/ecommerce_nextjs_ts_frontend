@@ -103,7 +103,7 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
                         relative flex items-center transition-all duration-300
                         bg-[var(--store-bg)] border border-[var(--store-border)]
                         h-10
-                        ${isMobile ? "rounded-lg" : "rounded-lg bg-[var(--store-surface)]"}
+                        ${isMobile ? "rounded-lg" : "rounded-full bg-[var(--store-surface)]"}
                     `}
                 >
                     <div className="pl-3 text-[var(--store-text-muted)]">

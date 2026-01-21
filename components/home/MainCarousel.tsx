@@ -74,7 +74,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                     <div className="flex flex-col gap-1">
                                         <div className="flex items-center justify-center md:justify-start gap-3">
                                             <p className="text-xl md:text-2xl font-medium text-[var(--store-text)]">
-                                                Desde S/. {product.precio?.toFixed(2)}
+                                                S/. {product.precio?.toFixed(2)}
                                             </p>
 
                                             {product.precioComparativo && (
