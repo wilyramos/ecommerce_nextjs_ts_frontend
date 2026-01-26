@@ -11,9 +11,9 @@ import { MdOutlineImageNotSupported } from "react-icons/md";
 
 const AbsoluteHeaderWrapper = (props: ButtonGroupProps) => (
     <div className="absolute top-0 left-0 right-0 z-20 px-4 md:px-0">
-        <HeaderConTituloConControles 
-            {...props} 
-            title="Marcas." 
+        <HeaderConTituloConControles
+            {...props}
+            title="Marcas."
             subtitle="Las mejores de calidad precio"
         />
     </div>
@@ -33,12 +33,12 @@ export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {
     return (
         <section
             className="
-        relative
-        w-full max-w-7xl mx-auto
-        px-6
-        pt-14
-        pb-8
-        bg-[var(--store-bg)]
+         relative
+                w-full max-w-7xl mx-auto
+                px-4 md:px-0
+                pt-20 md:pt-24
+                pb-12
+                bg-[var(--store-bg)]
       "
         >
             <Carousel
@@ -60,7 +60,6 @@ export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {
               group
               flex items-center justify-center
               w-24 h-24
-              rounded-lg
               bg-[var(--store-surface)]
               
               hover:bg-[var(--store-surface-hover)]
@@ -75,7 +74,7 @@ export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {
                                     fill
                                     quality={60}
                                     className="
-                    object-cover rounded-lg
+                    object-cover
                   "
                                 />
                             ) : (

@@ -7,7 +7,7 @@ import SidebarProfileNav from '@/components/profile/SidebarProfileNav';
 export default async function ProfileLayout({ children }: { children: React.ReactNode }) {
     const { user } = await verifySession();
     if (!user) redirect('/auth/login');
-    if (user.rol === "administrador") redirect('/admin');
+    // if (user.rol === "administrador") redirect('/admin');
 
 
     return (

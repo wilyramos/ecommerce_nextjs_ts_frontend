@@ -283,3 +283,30 @@ export const getReportOrdersByCity = async (params: GetOrdersReportsParams) => {
         return [];
     }
 }
+
+export const updateOrderStatus = async (id: string, status: string) => {
+    try {
+        const token = await getToken();
+
+        const url = `${process.env.API_URL}/orders/${id}/status`;
+
+        const req = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status })
+        });
+
+        const json = await req.json();
+
+        if (!req.ok) {
+            throw new Error(json.message || 'Error al actualizar el estado');
+        }
+
+        return { success: true, data: json };
+    } catch (error) {
+        return { success: false, error: (error as Error).message };
+    }
+}

@@ -30,6 +30,9 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
     const [history, setHistory] = useState<string[]>([]);
     useEffect(() => setHistory(getSearchHistory()), []);
 
+    const DEFAULT_SUGGESTIONS = ["iphone", "case", "audífonos"];
+
+
     const saveHistory = (term: string) => {
         if (!term) return;
         saveSearchTerm(term);
@@ -96,7 +99,7 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
             <form
                 ref={formRef}
                 onSubmit={handleSubmit}
-                className={`relative w-full mx-auto ${isMobile ? "max-w-full px-2" : "max-w-2xl"}`}
+                className={`relative w-full mx-auto ${isMobile ? "max-w-full px-2" : "max-w-5xl"}`}
             >
                 <div
                     className={`
@@ -171,26 +174,28 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
                         )}
 
                         {/* HISTORIAL */}
-                        {!loading && !query && history.length > 0 && (
+                        {/* HISTORIAL / SUGERENCIAS */}
+                        {!loading && !query && (
                             <div>
                                 <h4 className="text-xs font-semibold text-[var(--store-text-muted)] uppercase mb-3 flex items-center gap-2">
-                                    <History size={14} /> Recientes
+                                    <History size={14} /> {history.length > 0 ? "Recientes" : "Sugerencias"}
                                 </h4>
 
                                 <div className="flex flex-wrap gap-2">
-                                    {history.map((h, i) => (
+                                    {(history.length > 0 ? history : DEFAULT_SUGGESTIONS).map((term, i) => (
                                         <button
                                             key={i}
                                             type="button"
-                                            onClick={() => setQuery(h)}
+                                            onClick={() => setQuery(term)}
                                             className="px-3 py-1.5 bg-[var(--store-bg)] hover:bg-[var(--store-border)] rounded-lg text-xs text-[var(--store-text)] transition-colors"
                                         >
-                                            {h}
+                                            {term}
                                         </button>
                                     ))}
                                 </div>
                             </div>
                         )}
+
 
                         {/* RESULTADOS */}
                         {!loading && results.length > 0 && (
