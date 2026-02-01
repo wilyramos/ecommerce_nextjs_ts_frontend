@@ -34,7 +34,7 @@ export default function ButtonShowCart() {
     return (
         <Sheet open={isCartOpen} onOpenChange={setCartOpen}>
             <SheetTrigger asChild>
-                <button className="relative p-2 rounded-full transition-colors hover:bg-[var(--store-surface-hover)] group">
+                <button className="relative p-2 rounded-full transition-colors hover:bg-[var(--store-surface-hover)] group cursor-pointer">
                     <ShoppingCart 
                         size={22} 
                         strokeWidth={1.5} 

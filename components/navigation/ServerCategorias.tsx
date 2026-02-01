@@ -10,7 +10,7 @@ export default async function ServerCategorias() {
     <>
       {/* Mobile categories */}
       <div className="md:hidden">
-        <ClientCategorias categories={categories} />
+        <ClientCategorias categories={categories} />z
       </div>
 
       {/* Desktop categories */}

@@ -67,10 +67,8 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                             group
                             flex flex-col
                             h-full
-                            p-6 md:p-8
                             rounded-lg
                             bg-[var(--store-surface)]
-                            border border-[var(--store-border)]
                             transition-all duration-500
                             hover:shadow-xl hover:scale-[1.02]
                         "
@@ -92,7 +90,7 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                                     width={180}
                                     height={180}
                                     className="
-                                        object-contain
+                                        object-cover
                                         transition-transform duration-700 ease-out
                                         group-hover:scale-110
                                     "
@@ -105,7 +103,7 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                         </div>
 
                         {/* Texto - Estilo Apple (Más grande y Bold) */}
-                        <div className="mt-auto">
+                        <div className="mt-auto p-6">
                             <h3
                                 className="
                                     text-lg md:text-xl
