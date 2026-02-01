@@ -34,7 +34,7 @@ export default function FilterSidebar({ filters }: FilterSidebarProps) {
   // Zod dice: number | null. El Slider exige: number.
   const backendMin = prices.length > 0 ? (prices[0].min ?? 0) : 0;
   const backendMax = prices.length > 0 ? (prices[0].max ?? 0) : 0;
-  
+
   // Solo mostramos slider si hay una diferencia real de precios
   const showSlider = backendMax > backendMin;
 
@@ -57,7 +57,7 @@ export default function FilterSidebar({ filters }: FilterSidebarProps) {
   // ===========================================================================
   // 3. LÓGICA DE ACTUALIZACIÓN DE URL
   // ===========================================================================
-  
+
   // Para Checkboxes (Categorías, Marcas, Atributos)
   const handleFilterChange = (key: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -105,24 +105,24 @@ export default function FilterSidebar({ filters }: FilterSidebarProps) {
       {/* HEADER */}
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold tracking-tight">Filtros</h3>
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          onClick={clearAllFilters} 
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={clearAllFilters}
           className="h-8 px-2 text-xs text-muted-foreground hover:text-primary"
         >
           <X className="mr-1 h-3 w-3" />
           Limpiar
         </Button>
       </div>
-      
 
-      <Accordion 
-        type="multiple" 
-        defaultValue={["categories", "price", "brands", ...atributos.map(a => a.name)]} 
+
+      <Accordion
+        type="multiple"
+        defaultValue={["categories", "price", "brands", ...atributos.map(a => a.name)]}
         className="w-full"
       >
-        
+
         {/* 1. CATEGORÍAS */}
         {categories.length > 0 && (
           <AccordionItem value="categories">
@@ -133,13 +133,13 @@ export default function FilterSidebar({ filters }: FilterSidebarProps) {
               <div className="space-y-3 pt-1">
                 {categories.map((cat) => (
                   <div key={cat.slug} className="flex items-center space-x-2">
-                    <Checkbox 
-                      id={`cat-${cat.slug}`} 
+                    <Checkbox
+                      id={`cat-${cat.slug}`}
                       checked={isChecked("category", cat.slug)}
                       onCheckedChange={() => handleFilterChange("category", cat.slug)}
                     />
-                    <Label 
-                      htmlFor={`cat-${cat.slug}`} 
+                    <Label
+                      htmlFor={`cat-${cat.slug}`}
                       className="text-sm font-normal cursor-pointer leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                     >
                       {cat.nombre}
@@ -189,8 +189,8 @@ export default function FilterSidebar({ filters }: FilterSidebarProps) {
               <div className="space-y-3 pt-1">
                 {brands.map((brand) => (
                   <div key={brand.slug} className="flex items-center space-x-2">
-                    <Checkbox 
-                      id={`brand-${brand.slug}`} 
+                    <Checkbox
+                      id={`brand-${brand.slug}`}
                       checked={isChecked("brand", brand.slug)}
                       onCheckedChange={() => handleFilterChange("brand", brand.slug)}
                     />
@@ -214,8 +214,8 @@ export default function FilterSidebar({ filters }: FilterSidebarProps) {
               <div className="space-y-3 pt-1">
                 {attr.values.map((val) => (
                   <div key={val} className="flex items-center space-x-2">
-                    <Checkbox 
-                      id={`${attr.name}-${val}`} 
+                    <Checkbox
+                      id={`${attr.name}-${val}`}
                       // Enviamos 'attr.name' como key (ej: "Color")
                       checked={isChecked(attr.name, val)}
                       onCheckedChange={() => handleFilterChange(attr.name, val)}
