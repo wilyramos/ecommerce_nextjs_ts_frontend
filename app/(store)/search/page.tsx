@@ -141,9 +141,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                             </div>
                         ) : (
                             <div className="flex flex-col items-center justify-center py-32 px-4 border border-[var(--store-border)] border-dashed rounded-3xl bg-[var(--store-surface)] text-center">
-                                <div className="bg-[var(--store-bg)] p-4 rounded-full mb-4">
-                                    <span className="text-3xl">🔍</span>
-                                </div>
+                                
                                 <h3 className="text-xl font-semibold text-[var(--store-text)]">
                                     No encontramos lo que buscas
                                 </h3>
