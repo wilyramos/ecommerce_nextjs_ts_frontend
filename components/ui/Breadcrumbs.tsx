@@ -1,67 +1,49 @@
-"use client";
-
+// File: src/components/ui/Breadcrumbs.tsx
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { LuChevronRight } from "react-icons/lu";
 
-type BreadcrumbsProps = {
-    current?: string;
-};
-
-export default function Breadcrumbs({ current }: BreadcrumbsProps) {
-    const pathname = usePathname();
-
-    const segments = pathname
-        .split("/")
-        .filter(Boolean)
-        .map((segment, index, arr) => {
-            const href = "/" + arr.slice(0, index + 1).join("/");
-
-            return {
-                label: segment.charAt(0).toUpperCase() + segment.slice(1),
-                href,
-            };
-        });
+export default function Breadcrumbs({ segments, current }: { segments: {label: string, href: string}[], current?: string }) {
+    // Generamos el esquema para Google
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Inicio",
+                "item": `${process.env.NEXT_PUBLIC_BASE_URL}`
+            },
+            ...segments.map((s, i) => ({
+                "@type": "ListItem",
+                "position": i + 2,
+                "name": s.label,
+                "item": `${process.env.NEXT_PUBLIC_BASE_URL}${s.href}`
+            }))
+        ]
+    };
 
     return (
-        <nav className="text-sm text-[var(--store-text-muted)] max-w-full px-2">
-            <ol className="flex items-center gap-1 overflow-hidden min-w-0">
-                <li className="shrink-0">
-                    <Link href="/" className="hover:underline whitespace-nowrap">
-                        Inicio
-                    </Link>
-                </li>
-
-                {segments.map((segment, index) => (
-                    <li
-                        key={segment.href}
-                        className="flex items-center gap-1 min-w-0 overflow-hidden"
-                    >
-                        <LuChevronRight size={14} className="shrink-0" />
-
-                        {index === segments.length - 1 ? (
-                            <span
-                                className="
-                  font-medium truncate
-                  min-w-0 max-w-full
-                  text-[var(--store-text)]
-                  pointer-events-none
-                "
-                                title={current || segment.label}
-                            >
-                                {current || segment.label}
-                            </span>
-                        ) : (
-                            <Link
-                                href={segment.href}
-                                className="hover:underline truncate min-w-0"
-                                title={segment.label}
-                            >
-                                {segment.label}
-                            </Link>
-                        )}
+        <nav className="text-sm text-[var(--store-text-muted)] mb-4">
+            {/* Inyectamos el JSON-LD para Google */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            <ol className="flex items-center gap-1">
+                <li><Link href="/" className="hover:underline">Inicio</Link></li>
+                {segments.map((s, i) => (
+                    <li key={i} className="flex items-center gap-1">
+                        <LuChevronRight size={14} />
+                        <Link href={s.href} className="hover:underline">{s.label}</Link>
                     </li>
                 ))}
+                {current && (
+                    <li className="flex items-center gap-1 text-[var(--store-text)] font-medium">
+                        <LuChevronRight size={14} />
+                        <span>{current}</span>
+                    </li>
+                )}
             </ol>
         </nav>
     );

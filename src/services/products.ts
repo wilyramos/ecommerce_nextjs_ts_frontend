@@ -161,6 +161,12 @@ export const getProductsMainPage = async ({
         return null;
     }
 
+    // timeout de 10 segundos
+    const timeout = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Request timed out")), 10000)
+    );
+    await Promise.race([req, timeout]);
+
     const json = await req.json();
     const products = productsApiResponseWithFilters.parse(json);
     return products;

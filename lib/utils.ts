@@ -66,3 +66,12 @@ export function getDeliveryRange(days: number): string {
 
     return `${format(startDate)} – ${format(endDate)}`;
 }
+
+
+export function formatPrice(price: number): string {
+    return new Intl.NumberFormat("es-PE", {
+        style: "currency",
+        currency: "PEN",
+        minimumFractionDigits: 2,
+    }).format(price);
+}

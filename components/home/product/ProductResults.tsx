@@ -47,10 +47,15 @@ export default async function ProductResults({
 
     const isFallback = products.totalProducts === 0;
     const hasProducts = products.products.length > 0;
+
+    const breadcrumbSegments = [{ label: "Catálogo", href: "/productos" }];
     return (
         <main className="flex flex-col gap-2">
             <div className="pt-1">
-                <Breadcrumbs current="Productos" />
+                <Breadcrumbs
+                    segments={breadcrumbSegments}
+                    current="Productos" 
+                />
             </div>
 
             {!isFallback && (

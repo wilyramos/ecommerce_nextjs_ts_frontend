@@ -74,7 +74,7 @@ export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {
                                     fill
                                     quality={60}
                                     className="
-                    object-cover
+                    object-contain
                   "
                                 />
                             ) : (

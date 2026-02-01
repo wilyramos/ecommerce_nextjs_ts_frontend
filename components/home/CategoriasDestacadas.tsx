@@ -78,7 +78,7 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                             className="
                                 relative
                                 w-full aspect-square
-                                mb-6
+                                
                                 flex items-center justify-center
                                 bg-transparent
                             "
@@ -103,7 +103,7 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                         </div>
 
                         {/* Texto - Estilo Apple (Más grande y Bold) */}
-                        <div className="mt-auto p-6">
+                        <div className="mt-auto px-6 pb-6">
                             <h3
                                 className="
                                     text-lg md:text-xl
@@ -117,9 +117,7 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                             >
                                 {categoria.nombre}
                             </h3>
-                            <p className="hidden md:block text-xs text-[var(--store-text-muted)] text-left mt-1 font-medium">
-                                Ver colección
-                            </p>
+                           
                         </div>
                     </Link>
                 ))}
