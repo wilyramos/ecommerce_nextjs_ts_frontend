@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { useSearchParams } from "next/navigation"; // ✅ Importar hook de navegación
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -11,7 +11,7 @@ import { MdOutlineImageNotSupported } from "react-icons/md";
 import { cn } from "@/lib/utils";
 
 export default function ProductCard({ product }: { product: ProductResponse }) {
-    const searchParams = useSearchParams(); // ✅ Leer parámetros URL
+    const searchParams = useSearchParams();
     const [currentIndex, setCurrentIndex] = useState(0);
     const [previewImages, setPreviewImages] = useState<string[]>(product.imagenes ?? []);
     const [selectedColor, setSelectedColor] = useState<string | null>(null);
@@ -36,16 +36,9 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
         return Array.from(colors);
     }, [product]);
 
-    // ✅ EFECTO: Sincronizar con Filtros de URL y Color Principal
     useEffect(() => {
-        // 1. Obtener color del filtro (si existe)
         const filterColor = searchParams.get("Color") || searchParams.get("color");
-
-        // 2. Obtener color por defecto del producto
         const mainColor = product.atributos?.Color || product.atributos?.color;
-
-        // 3. Determinar qué color mostrar:
-        // Prioridad: Filtro URL (si el producto tiene ese color) > Color Principal
         let targetColor = mainColor;
 
         if (filterColor && uniqueColors.includes(filterColor)) {
@@ -54,16 +47,12 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
 
         if (!targetColor) return;
 
-        // 4. Actualizar Estado Visual
         setSelectedColor(targetColor);
         setCurrentIndex(0);
 
-        // 5. Buscar y setear imágenes correspondientes
         if (targetColor === mainColor && product.imagenes && product.imagenes.length > 0) {
-            // Caso: Es el producto padre
             setPreviewImages(product.imagenes);
         } else {
-            // Caso: Es una variante
             const foundVariant = product.variants?.find(v => {
                 const vAttrs = v.atributos as Record<string, string>;
                 return (vAttrs?.Color === targetColor || vAttrs?.color === targetColor);
@@ -72,11 +61,10 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
             if (foundVariant && foundVariant.imagenes && foundVariant.imagenes.length > 0) {
                 setPreviewImages(foundVariant.imagenes);
             } else {
-                // Fallback: Si la variante no tiene fotos, mostramos las del padre
                 setPreviewImages(product.imagenes ?? []);
             }
         }
-    }, [searchParams, product, uniqueColors]); // Se ejecuta cuando cambia la URL o el producto
+    }, [searchParams, product, uniqueColors]);
 
     // --- SELECCIÓN MANUAL DE COLOR ---
     const handleColorSelect = (e: React.MouseEvent | React.TouchEvent, color: string) => {
@@ -114,22 +102,16 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
     const handleTouchEnd = (e: React.TouchEvent) => {
         if (startX === null) return;
         const diff = startX - e.changedTouches[0].clientX;
-        if (diff > 50) {
-            nextImage();
-        } else if (diff < -50) {
-            prevImage();
-        }
+        if (diff > 50) nextImage();
+        else if (diff < -50) prevImage();
         setStartX(null);
     };
     const handleMouseDown = (e: React.MouseEvent) => setStartX(e.clientX);
     const handleMouseUp = (e: React.MouseEvent) => {
         if (startX === null) return;
         const diff = startX - e.clientX;
-        if (diff > 50) {
-            nextImage();
-        } else if (diff < -50) {
-            prevImage();
-        }
+        if (diff > 50) nextImage();
+        else if (diff < -50) prevImage();
         setStartX(null);
     };
 
@@ -194,10 +176,12 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                         </div>
                     )}
 
-                    {(product.esNuevo || product.precioComparativo) && (
-                        <div className="absolute top-3 left-3 right-3 flex justify-between items-start pointer-events-none z-10">
-                            {product.esNuevo ? <span className="px-2 py-1 bg-[var(--store-text)] text-[var(--store-surface)] text-[10px] font-bold uppercase tracking-wider rounded-sm">Nuevo</span> : <span />}
-                            {product.precioComparativo && <span className="px-2 py-1 bg-[var(--store-primary)] text-white text-[10px] font-bold rounded-sm shadow-sm">-{Math.round(discountedPrice)}%</span>}
+                    {/* Badge Nuevo (El de descuento se movió abajo) */}
+                    {product.esNuevo && (
+                        <div className="absolute top-3 left-3 pointer-events-none z-10">
+                            <span className="px-2 py-1 bg-[var(--store-text)] text-[var(--store-surface)] text-[10px] font-bold uppercase tracking-wider rounded-sm">
+                                Nuevo
+                            </span>
                         </div>
                     )}
                 </div>
@@ -254,20 +238,31 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                     </div>
 
                     <div className="flex items-end justify-between mt-auto pt-2 border-t border-transparent group-hover:border-[var(--store-border)] transition-colors">
-                        <div className="flex flex-col">
+                        <div className="flex flex-col w-full">
                             {stock > 0 ? (
-                                <>
+                                <div className="flex flex-col items-start">
+                                    {/* Precio anterior (Tachado) */}
                                     {(product.precioComparativo ?? 0) > 0 && (
-                                        <span className="text-[11px] text-[var(--store-text-muted)] line-through">
+                                        <span className="text-[10px] md:text-[11px] text-[var(--store-text-muted)] line-through mb-0.5">
                                             S/ {product.precioComparativo!.toFixed(2)}
                                         </span>
                                     )}
-                                    <span className="text-sm md:text-[15px] font-bold text-[var(--store-text)]">
-                                        S/ {precio.toFixed(2)}
-                                    </span>
-                                </>
+
+                                    {/* Precio Actual y Etiqueta de Descuento */}
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-sm md:text-[15px] font-bold text-[var(--store-text)]">
+                                            S/ {precio.toFixed(2)}
+                                        </span>
+
+                                        {(product.precioComparativo ?? 0) > 0 && (
+                                            <span className="text-[9px] md:text-[10px] font-bold text-[var(--store-surface)] bg-[var(--store-primary)] px-1.5 py-0.5 rounded">
+                                                -{Math.round(discountedPrice)}%
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
                             ) : (
-                                <span className="text-[10px] font-bold text-[var(--store-text-muted)] bg-[var(--store-bg)] px-2 py-1 rounded-full">
+                                <span className="text-[10px] font-bold text-[var(--store-text-muted)] bg-[var(--store-bg)] px-2 py-1 rounded-full self-start">
                                     Agotado
                                 </span>
                             )}
