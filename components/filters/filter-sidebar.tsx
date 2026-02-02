@@ -119,7 +119,7 @@ export default function FilterSidebar({ filters }: FilterSidebarProps) {
 
       <Accordion
         type="multiple"
-        defaultValue={["categories", "price", "brands", ...atributos.map(a => a.name)]}
+        // defaultValue={["categories", "price", "brands", ...atributos.map(a => a.name)]}
         className="w-full"
       >
 
