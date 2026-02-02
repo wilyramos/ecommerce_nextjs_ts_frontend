@@ -14,7 +14,8 @@ const features: Feature[] = [
     {
         title: "Ofertas exclusivas",
         description: "Precios especiales para ti",
-        icon: TicketPercent
+        icon: TicketPercent,
+        url: "/ofertas"
     },
     {
         title: "Envíos rápidos",

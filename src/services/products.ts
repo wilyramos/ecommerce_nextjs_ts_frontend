@@ -8,6 +8,7 @@ import { apiProductListSchema, productsResponseAllSchema, ApiProductsSchema } fr
 
 import { ApiProductWithCategorySchema, productsAPIResponse, productsWithCategoryAPIResponse, productsApiResponseWithFilters } from "@/src/schemas";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 
 
 export const getProduct = async (id: string) => {
@@ -171,6 +172,48 @@ export const getProductsMainPage = async ({
     const products = productsApiResponseWithFilters.parse(json);
     return products;
 };
+
+type GetOffersParams = {
+    page?: number;
+    limit?: number;
+};
+
+// Usamos 'cache' para deduplicar requests si se llama varias veces en el layout/page
+export const getOffers = cache(async ({ page = 1, limit = 12 }: GetOffersParams = {}) => {
+    try {
+        const params = new URLSearchParams({
+            page: page.toString(),
+            limit: limit.toString(),
+        });
+
+        const url = `${process.env.API_URL}/products/offers/all?${params.toString()}`;
+
+        const req = await fetch(url, {
+            method: 'GET',
+            // Estrategia de Caché:
+            // next: { revalidate: 3600 } -> Actualiza las ofertas cada 1 hora.
+            // cache: 'no-store' -> Úsalo si el stock vuela muy rápido y necesitas tiempo real absoluto.
+            next: { revalidate: 3600 }
+        });
+
+        if (!req.ok) {
+            console.error(`Error fetching offers: ${req.status}`);
+            return null;
+        }
+
+        const json = await req.json();
+
+        // Validamos con Zod. 
+        // Aunque el endpoint de ofertas quizás no devuelva "filtros" complejos, 
+        // la estructura paginada (products, totalPages, etc.) es compatible con este esquema.
+        const result = productsApiResponseWithFilters.parse(json);
+        return result;
+
+    } catch (error) {
+        console.error("Error en servicio getOffers:", error);
+        return null;
+    }
+});
 
 export const getAllProductsSlug = async ({ q }: GetProductListParams) => {
     try {

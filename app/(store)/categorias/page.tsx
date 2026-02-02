@@ -6,7 +6,7 @@ import Link from "next/link";
 import React from "react";
 
 export const metadata: Metadata = {
-    title: "Categorías | Tu Tienda",
+    title: "Categorías | GoPhone",
     description: "Explora todas nuestras subcategorías y encuentra productos específicos organizados para ti.",
     alternates: {
         canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/categorias`,

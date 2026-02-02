@@ -9,6 +9,7 @@ import CategoriasDestacadasWrapper from "@/components/home/CategoriasDestacadasW
 import FeaturesList from "@/components/home/FeaturesList";
 import BrandsList from "@/components/home/BrandsList";
 import Advertisement from "@/components/home/Advertisement";
+import FlashSaleBanner from "@/components/home/FlashSaleBanner";
 
 // Metadata for SEO and social sharing
 export const metadata: Metadata = {
@@ -78,6 +79,8 @@ export default function HomePage() {
             <section>
                 <ProductosDestacados />
             </section>
+
+            <FlashSaleBanner />
 
             <section>
                 <ProductosNuevos />

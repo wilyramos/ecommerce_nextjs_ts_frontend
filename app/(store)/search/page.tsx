@@ -136,6 +136,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                                         pathname="/search"
                                         currentPage={data.currentPage}
                                         totalPages={data.totalPages}
+                                        limit={24}
                                     />
                                 </div>
                             </div>
