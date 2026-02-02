@@ -61,7 +61,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                     {/* Header: Marca y Color */}
                     <div className="flex justify-between items-center mb-2">
                         <span className="text-[10px] font-bold tracking-[0.15em] text-[var(--store-text-muted)] uppercase">
-                            {brand?.nombre || "GO PHONE"}
+                            {brand?.nombre || ""}
                         </span>
                         {color && (
                             <div className="flex items-center gap-1">

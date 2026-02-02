@@ -160,9 +160,18 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                     <div className="flex flex-col gap-1 h-[4rem] md:h-[4.5rem]">
                         {/* Marca (1 línea fija) */}
                         <div className="h-5 shrink-0">
-                            <span className="text-[10px] md:text-xs font-medium text-[var(--store-text-muted)] uppercase">
-                                {product.brand?.nombre}
-                            </span>
+                            <div className="flex justify-between items-center mb-2">
+                                <span className="text-[10px] font-bold tracking-[0.15em] text-[var(--store-text-muted)] uppercase">
+                                    {product.brand?.nombre || ""}
+                                </span>
+                                {color && (
+                                    <div className="flex items-center gap-1">
+                                        <ColorCircle color={color} size={12} />
+                                    </div>
+                                )}
+                            </div>
+
+
                         </div>
 
                         {/* Nombre (reserva 3 líneas aunque tenga menos texto) */}
@@ -176,7 +185,6 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
 
                     <div className="flex items-center gap-2 mt-auto pt-4">
                         {/* <span className="text-gray-400 text-xs">Color </span> */}
-                        {color && <ColorCircle color={color} size={12} />}
                         <div className="ml-auto flex flex-col items-end md:leading-tight">
                             {stock > 0 ? (
                                 <>
