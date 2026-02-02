@@ -1,5 +1,4 @@
 // app/robots.ts
-
 import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
@@ -12,9 +11,13 @@ export default function robots(): MetadataRoute.Robots {
                     "/",
                     "/productos",
                     "/categoria",
-                    "/auth",
+                    "/ofertas",
                     "/marca",
-                    // "/tema"
+                    "/hc",             
+                    "/terminos",       
+                    "/cookies",        
+                    "/auth",
+                    "/search",
                 ],
 
                 disallow: [
@@ -24,6 +27,10 @@ export default function robots(): MetadataRoute.Robots {
                     "/profile",
                     "/pos",
                     "/api",
+                    "/search?*sort=",
+                    "/search?*priceRange=",
+                    "/search?*min=",
+                    "/search?*max=",
                 ],
             },
         ],

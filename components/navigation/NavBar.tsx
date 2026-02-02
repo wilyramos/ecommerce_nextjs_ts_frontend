@@ -13,7 +13,7 @@ export default function NavBar() {
     return (
         <NavBarClient>
             <header className="sticky top-0 z-50 h-12 flex flex-col justify-center text-[var(--store-text)] transition-colors duration-300">
-                <div className="max-w-7xl w-full mx-auto grid grid-cols-3 items-center px-4 md:px-6">
+                <div className="max-w-screen-2xl w-full mx-auto grid grid-cols-3 items-center px-4 md:px-6">
 
                     {/* Left column */}
                     <div className="flex items-center">
@@ -60,7 +60,7 @@ export default function NavBar() {
 
 
             <div className="hidden md:block sticky z-40 w-full border-b border-[var(--store-border)] bg-[var(--store-surface)] transition-colors duration-300">
-                <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center">
+                <div className="max-w-screen-2xl mx-auto px-4 md:px-6 flex items-center">
                     <ServerCategorias />
                 </div>
             </div>

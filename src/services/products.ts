@@ -169,7 +169,9 @@ export const getProductsMainPage = async ({
     await Promise.race([req, timeout]);
 
     const json = await req.json();
+
     const products = productsApiResponseWithFilters.parse(json);
+    console.log("Products fetched:", products);
     return products;
 };
 

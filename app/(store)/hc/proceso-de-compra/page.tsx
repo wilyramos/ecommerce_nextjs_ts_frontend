@@ -5,130 +5,123 @@ import {
     Package,
     Truck,
     ShieldCheck,
+    ArrowRight
 } from "lucide-react";
 import Link from "next/link";
 
 export default function ProcesoCompraPage() {
+    const pasos = [
+        {
+            icon: ShoppingCart,
+            title: "Selección de productos",
+            description: "Explora nuestras categorías y variantes. Una vez encuentres lo que buscas, agrégalo a tu bolsa de compra."
+        },
+        {
+            icon: CreditCard,
+            title: "Pago seguro",
+            description: "Finaliza tu pedido utilizando Visa, Mastercard, American Express, Mercado Pago o Yape. Procesamos tu pago con cifrado de nivel bancario.",
+            extra: ["Cifrado SSL de 256 bits", "Privacidad garantizada"]
+        },
+        {
+            icon: CheckCircle2,
+            title: "Confirmación",
+            description: "Recibirás un correo electrónico automático con el resumen detallado y número de orden. También podemos notificarte vía WhatsApp."
+        },
+        {
+            icon: Package,
+            title: "Preparación",
+            description: "Cada dispositivo y accesorio pasa por un control de calidad y un embalaje protector antes de salir de nuestro centro de distribución."
+        },
+        {
+            icon: Truck,
+            title: "Envío y Seguimiento",
+            description: "Despachamos a nivel nacional. Si estás en Cañete, disfruta de nuestra entrega prioritaria el mismo día.",
+            extra: ["Cañete: < 24h", "Provincias: 48h - 72h"]
+        }
+    ];
+
     return (
-        <section className="max-w-5xl mx-auto px-4 space-y-8">
-
-            {/* Título */}
-            <h1 className="text-xl md:text-3xl font-bold text-gray-900">
-                Proceso de Compra
-            </h1>
-
-            {/* Intro */}
-            <div className="bg-white rounded-xl p-5 shadow-sm space-y-4">
-                <p className="text-gray-700 text-sm leading-relaxed">
-                    Comprar en <b>Gophone</b> es rápido, seguro y sencillo. A continuación te
-                    explicamos paso a paso cómo realizar tu pedido.
+        <section className="max-w-4xl mx-auto px-4 py-12 md:py-20 animate-in fade-in duration-700">
+            
+            {/* Header Estilo Apple */}
+            <header className="mb-16 text-center md:text-left">
+                <h1 className="text-4xl md:text-5xl font-bold text-[var(--store-text)] tracking-tight mb-4">
+                    Comprar es tan simple <br className="hidden md:block" /> 
+                </h1>
+                <p className="text-lg text-[var(--store-text-muted)] max-w-2xl leading-relaxed">
+                    Hemos diseñado un proceso de compra fluido y transparente para que tu única preocupación sea disfrutar de tu nuevo gadget.
                 </p>
+            </header>
+
+            {/* Timeline de Pasos */}
+            <div className="space-y-12 relative">
+                {pasos.map((paso, index) => (
+                    <div key={index} className="relative flex gap-6 md:gap-10 group">
+                        
+                        {/* Línea conectora visual */}
+                        {index !== pasos.length - 1 && (
+                            <div className="absolute left-6 top-12 bottom-[-48px] w-px bg-[var(--store-border)] hidden md:block" />
+                        )}
+
+                        {/* Icono con contenedor Apple */}
+                        <div className="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-[var(--store-surface)] border border-[var(--store-border)] flex items-center justify-center shadow-sm group-hover:border-[var(--store-primary)] transition-colors duration-300">
+                            <paso.icon className="w-6 h-6 text-[var(--store-text)] group-hover:text-[var(--store-primary)] transition-colors" />
+                        </div>
+
+                        {/* Contenido */}
+                        <div className="pt-2 md:pt-3 flex-1 pb-12 border-b border-[var(--store-border)] last:border-0">
+                            <h2 className="text-xl font-bold text-[var(--store-text)] mb-2 tracking-tight">
+                                {index + 1}. {paso.title}
+                            </h2>
+                            <p className="text-[var(--store-text-muted)] leading-relaxed text-sm md:text-base max-w-2xl">
+                                {paso.description}
+                            </p>
+                            
+                            {paso.extra && (
+                                <div className="mt-4 flex flex-wrap gap-2">
+                                    {paso.extra.map((ex, i) => (
+                                        <span key={i} className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-md bg-[var(--store-bg)] text-[var(--store-text-muted)] border border-[var(--store-border)]">
+                                            {ex}
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                ))}
             </div>
 
-            {/* Paso 1 */}
-            <div className="bg-white rounded-xl p-5 shadow-sm space-y-3">
-                <h2 className="font-semibold text-gray-900 text-lg flex items-center gap-2">
-                    <ShoppingCart className="w-5 h-5 text-gray-700" />
-                    1. Elige tus productos
-                </h2>
-
-                <p className="text-sm text-gray-700 leading-relaxed">
-                    Navega por nuestras categorías, revisa características, variantes
-                    disponibles y agrega al carrito los productos que deseas comprar.
-                </p>
+            {/* Recomendación Destacada */}
+            <div className="mt-20 p-8 md:p-10 rounded-[2.5rem] bg-[var(--store-text)] text-[var(--store-surface)] relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-8 opacity-10">
+                    <ShieldCheck size={120} />
+                </div>
+                <div className="relative z-10 max-w-xl">
+                    <h3 className="text-2xl font-bold mb-4 tracking-tight">Tu satisfacción es nuestra prioridad.</h3>
+                    <p className="text-[var(--store-text-muted)] text-sm md:text-base leading-relaxed mb-6">
+                        Recomendamos verificar el estado del empaque al recibirlo. Conserva siempre tu comprobante (boleta o factura) para gestionar garantías de forma rápida a través de nuestro centro de soporte.
+                    </p>
+                    <Link 
+                        href="/hc/contacto-y-soporte" 
+                        className="text-[var(--store-primary)] font-semibold flex items-center gap-2 hover:underline"
+                    >
+                        Contactar a un especialista <ArrowRight size={16} />
+                    </Link>
+                </div>
             </div>
 
-            {/* Paso 2 */}
-            <div className="bg-white rounded-xl p-5 shadow-sm space-y-3">
-                <h2 className="font-semibold text-gray-900 text-lg flex items-center gap-2">
-                    <CreditCard className="w-5 h-5 text-gray-700" />
-                    2. Métodos de pago disponibles
-                </h2>
-
-                <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
-                    <li>Visa</li>
-                    <li>Mastercard</li>
-                    <li>American Express</li>
-                    <li>Mercado Pago</li>
-                    <li>Yape</li>
-                </ul>
-
-                <p className="text-xs text-gray-500 italic">
-                    *Todos los pagos son procesados de manera segura.
+            {/* Footer de Página */}
+            <footer className="mt-20 text-center space-y-6">
+                <p className="text-xs text-[var(--store-text-muted)] font-medium tracking-widest uppercase">
+                    GoPhone · Calidad a tu alcance
                 </p>
-            </div>
-
-            {/* Paso 3 */}
-            <div className="bg-white rounded-xl p-5 shadow-sm space-y-3">
-                <h2 className="font-semibold text-gray-900 text-lg flex items-center gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-gray-700" />
-                    3. Confirmación del pedido
-                </h2>
-
-                <p className="text-sm text-gray-700 leading-relaxed">
-                    Una vez realizado el pago, recibirás un correo con la confirmación de tu pedido
-                    y los detalles del mismo. Si usaste WhatsApp, también podemos confirmarlo por ahí.
-                </p>
-            </div>
-
-            {/* Paso 4 */}
-            <div className="bg-white rounded-xl p-5 shadow-sm space-y-3">
-                <h2 className="font-semibold text-gray-900 text-lg flex items-center gap-2">
-                    <Package className="w-5 h-5 text-gray-700" />
-                    4. Preparación del producto
-                </h2>
-
-                <p className="text-sm text-gray-700 leading-relaxed">
-                    Nuestro equipo prepara cuidadosamente tu pedido para garantizar que llegue
-                    en perfectas condiciones. Todos los productos se verifican antes del envío.
-                </p>
-            </div>
-
-            {/* Paso 5 */}
-            <div className="bg-white rounded-xl p-5 shadow-sm space-y-3">
-                <h2 className="font-semibold text-gray-900 text-lg flex items-center gap-2">
-                    <Truck className="w-5 h-5 text-gray-700" />
-                    5. Envíos y tiempos de entrega
-                </h2>
-
-                <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
-                    <li>Envíos a nivel nacional</li>
-                    <li>Entrega rápida en Cañete</li>
-                    <li>Courier seguro según destino</li>
-                </ul>
-
-                <p className="text-xs text-gray-500 italic">
-                    *Los tiempos varían según tu localidad. Consulta por disponibilidad inmediata.
-                </p>
-            </div>
-
-            {/* Recomendación */}
-            <div className="bg-white rounded-xl p-5 shadow-sm space-y-3">
-                <h2 className="font-semibold text-gray-900 text-lg flex items-center gap-2">
-                    <ShieldCheck className="w-5 h-5 text-gray-700" />
-                    Recomendación importante
-                </h2>
-
-                <p className="text-sm text-gray-700 leading-relaxed">
-                    Revisa tu producto apenas lo recibas y conserva la boleta o factura de compra,
-                    ya que es necesaria para validar cualquier garantía o cambio.
-                </p>
-            </div>
-
-            <p className="text-[11px] text-gray-400 italic text-center">
-                Gracias por confiar en Gophone.
-            </p>
-
-            {/* Botón volver */}
-            <div className="text-center mt-6">
                 <Link
                     href="/"
-                    className="inline-block bg-black text-white px-5 py-2 rounded-lg text-sm hover:bg-gray-800 transition"
+                    className="inline-flex items-center justify-center px-8 py-3 bg-[var(--store-primary)] text-white rounded-full font-semibold text-sm hover:bg-[var(--store-primary-hover)] transition-all active:scale-95 shadow-lg shadow-blue-500/20"
                 >
-                    Volver al inicio
+                    Volver a la tienda
                 </Link>
-            </div>
-
+            </footer>
         </section>
     );
 }

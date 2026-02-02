@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { getProductsMainPage } from "@/src/services/products";
-import FilterSidebar from "@/components/filters/filter-sidebar";
+// import FilterSidebar from "@/components/filters/filter-sidebar";
 import ProductGrid from "@/components/product/product-grid";
 import Pagination from "@/components/ui/Pagination";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
@@ -21,8 +21,8 @@ export async function generateMetadata({ searchParams }: SearchPageProps): Promi
     const page = params.page ? ` - Página ${params.page}` : "";
 
     return {
-        title: `${query}${category}${page} | Tu Ecommerce`,
-        description: `Encuentra los mejores productos de ${query}${category}. Calidad premium, garantía oficial y envíos a todo el país.`,
+        title: `${query}${category}${page} | GoPhone`,
+        description: `Encuentra los mejores productos de ${query}${category}. Calidad, garantía oficial y envíos a todo el país.`,
         alternates: {
             canonical: `${baseUrl}/search`, // Agrupa la autoridad de todas las páginas de búsqueda en la principal
         },
@@ -32,7 +32,7 @@ export async function generateMetadata({ searchParams }: SearchPageProps): Promi
             follow: true,
         },
         openGraph: {
-            title: `${query} | Tu Ecommerce`,
+            title: `${query} | GoPhone`,
             description: `Explora nuestra selección de productos.`,
             url: `${baseUrl}/search`,
             type: "website",
@@ -65,9 +65,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             </div>
         );
     }
-
-    // 4. DATOS ESTRUCTURADOS (JSON-LD)
-    // Esto genera los "Rich Snippets" en Google (estrellas, precios, stock en el buscador)
     const itemListSchema = {
         "@context": "https://schema.org",
         "@type": "ItemList",
@@ -81,7 +78,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     };
 
     // 5. DEFINICIÓN DE BREADCRUMBS
-    const breadcrumbSegments = [{ label: "Catálogo", href: "/search" }];
+    const breadcrumbSegments = [{ label: "Catálogo", href: "/productos" }];
     if (params.category) {
         breadcrumbSegments.push({ label: params.category, href: `/search?category=${params.category}` });
     }
@@ -110,7 +107,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
                 <div className="flex flex-col lg:flex-row gap-8">
                     {/* COLUMNA IZQUIERDA: Filtros (Client Component) */}
-                    <aside className="w-full lg:w-64 shrink-0">
+                    {/* <aside className="w-full lg:w-64 shrink-0">
                         <div className="sticky top-24">
                             {data.filters && data.filters.length > 0 ? (
                                 <FilterSidebar filters={data.filters[0]} />
@@ -122,7 +119,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                                 </div>
                             )}
                         </div>
-                    </aside>
+                    </aside> */}
 
                     {/* COLUMNA DERECHA: Resultados */}
                     <main className="flex-1">

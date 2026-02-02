@@ -6,7 +6,7 @@ export default function WhatsappButton() {
         <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
             {/* Tooltip de ayuda / Call to Action */}
             <span className="bg-white/90 backdrop-blur-sm text-[10px] uppercase tracking-[0.2em] font-medium text-neutral-800 px-3 py-1.5 rounded-full shadow-sm border border-neutral-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                Asesoría Premium
+                Asesoría
             </span>
 
             <Link

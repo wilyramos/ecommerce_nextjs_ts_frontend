@@ -15,17 +15,19 @@ const features: Feature[] = [
         title: "Ofertas exclusivas",
         description: "Precios especiales para ti",
         icon: TicketPercent,
-        url: "/ofertas"
+        url: "/ofertas" 
     },
     {
         title: "Envíos rápidos",
         description: "A todo el país en tiempo récord",
-        icon: Truck
+        icon: Truck,
+        url: "/hc/proceso-de-compra" 
     },
     {
         title: "Pago 100% seguro",
         description: "Tus datos están protegidos",
-        icon: ShieldCheck
+        icon: ShieldCheck,
+        url: "/hc/preguntas-frecuentes"
     },
     {
         title: "Cambios y devoluciones",

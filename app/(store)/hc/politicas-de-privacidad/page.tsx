@@ -1,4 +1,3 @@
-//File: frontend/app/%28store%29/hc/politicas-de-privacidad/page.tsx
 import type { Metadata } from "next";
 import {
     Shield,
@@ -7,164 +6,124 @@ import {
     Mail,
     Eye,
     FileCheck,
+    ArrowRight
 } from "lucide-react";
 import Link from "next/link";
 
 export const metadata: Metadata = {
     title: "Políticas de Privacidad | Gophone Perú",
-    description:
-        "Conoce cómo Gophone recopila, utiliza y protege tu información personal. Transparencia en el tratamiento de datos según las normas de protección vigentes en Perú.",
-    keywords: [
-        "políticas de privacidad",
-        "protección de datos",
-        "privacidad Gophone",
-        "datos personales",
-        "información del cliente",
-        "seguridad de datos",
-        "Gophone Perú"
-    ],
-    openGraph: {
-        title: "Políticas de Privacidad | Gophone Perú",
-        description:
-            "Información clara y detallada sobre cómo Gophone protege tus datos personales conforme a la normativa peruana.",
-        url: "https://gophone.pe/hc/politicas-de-privacidad",
-        siteName: "Gophone Perú",
-        type: "article",
-        images: [
-            {
-                url: "https://gophone.pe/logoapp.svg", // puedes pedir una imagen y te la genero
-                width: 1200,
-                height: 630,
-                alt: "Políticas de Privacidad - Gophone Perú",
-            },
-        ],
-    },
-    robots: {
-        index: true,
-        follow: true,
-    },
-    alternates: {
-        canonical: "https://gophone.pe/hc/politicas-de-privacidad",
-    },
-    authors: [{ name: "Gophone Perú" }],
-    creator: "Gophone Perú",
-    publisher: "Gophone Perú",
+    description: "Conoce cómo Gophone recopila, utiliza y protege tu información personal con total transparencia.",
+    alternates: { canonical: "https://gophone.pe/hc/politicas-de-privacidad" },
 };
 
-
 export default function PoliticasPrivacidadPage() {
+    const secciones = [
+        {
+            icon: User,
+            title: "Información que recopilamos",
+            items: ["Nombre y apellidos", "Correo electrónico", "Número de teléfono", "Dirección de envío", "Historial de compras"]
+        },
+        {
+            icon: FileCheck,
+            title: "¿Para qué utilizamos tu información?",
+            items: ["Procesar tus compras y pagos", "Coordinar envíos y entregas", "Brindarte soporte personalizado", "Enviar notificaciones sobre tu pedido", "Mejorar tu experiencia de compra"]
+        },
+        {
+            icon: Eye,
+            title: "Tus derechos",
+            items: ["Acceder a tus datos personales", "Solicitar corrección o actualización", "Pedir la eliminación de tu información", "Retirar tu consentimiento"]
+        }
+    ];
+
     return (
-        <section className="max-w-5xl mx-auto px-4 space-y-8">
-
-            {/* Título */}
-            <h1 className="text-xl md:text-3xl font-bold text-gray-900 flex items-center gap-2">
-                <Shield className="w-7 h-7 text-gray-700" />
-                Políticas de Privacidad
-            </h1>
-
-            {/* Intro */}
-            <div className="bg-white rounded-xl p-5 shadow-sm space-y-4">
-                <p className="text-gray-700 text-sm leading-relaxed">
-                    En <b>Gophone</b> valoramos tu privacidad y protegemos tus datos personales.
-                    Esta política explica cómo recopilamos, utilizamos y resguardamos tu información
-                    al usar nuestra tienda online.
+        <section className="max-w-4xl mx-auto px-4 py-12 md:py-20 animate-in fade-in duration-700">
+            
+            {/* --- CABECERA EDITORIAL --- */}
+            <header className="mb-16 text-center md:text-left">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--store-primary)]/10 text-[var(--store-primary)] text-[10px] font-bold uppercase tracking-widest mb-6">
+                    <Shield size={14} />
+                    <span>Privacidad Garantizada</span>
+                </div>
+                <h1 className="text-4xl md:text-5xl font-bold text-[var(--store-text)] tracking-tight mb-4 leading-[1.1]">
+                    Tu privacidad. <br />
+                    <span className="text-[var(--store-text-muted)] text-2xl md:text-3xl font-medium">Nuestra responsabilidad.</span>
+                </h1>
+                <p className="text-lg text-[var(--store-text-muted)] max-w-2xl leading-relaxed mt-6 font-medium">
+                    En GoPhone, protegemos tus datos personales bajo los más altos estándares de seguridad y transparencia, cumpliendo con la normativa vigente en Perú.
                 </p>
+            </header>
+
+            <div className="grid gap-12">
+                
+                {/* --- BLOQUES DE INFORMACIÓN --- */}
+                <div className="grid md:grid-cols-2 gap-8">
+                    {secciones.map((sec, idx) => (
+                        <div key={idx} className="bg-[var(--store-surface)] border border-[var(--store-border)] rounded-[2.5rem] p-8 md:p-10 shadow-sm group hover:border-[var(--store-primary)]/30 transition-all">
+                            <div className="w-12 h-12 rounded-2xl bg-[var(--store-bg)] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                                <sec.icon className="text-[var(--store-text)]" size={22} />
+                            </div>
+                            <h2 className="text-xl font-bold text-[var(--store-text)] mb-4 tracking-tight">
+                                {sec.title}
+                            </h2>
+                            <ul className="space-y-3">
+                                {sec.items.map((item, i) => (
+                                    <li key={i} className="flex items-center gap-2 text-sm text-[var(--store-text-muted)] font-medium">
+                                        <div className="w-1 h-1 rounded-full bg-[var(--store-primary)]" />
+                                        {item}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    ))}
+
+                    {/* --- BLOQUE: PROTECCIÓN DE DATOS (DESTACADO) --- */}
+                    <div className="bg-[var(--store-text)] text-[var(--store-surface)] rounded-[2.5rem] p-8 md:p-10 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mb-6 text-[var(--store-primary)]">
+                                <Lock size={22} />
+                            </div>
+                            <h2 className="text-xl font-bold mb-4 tracking-tight">Protección de datos</h2>
+                            <p className="text-sm text-gray-400 leading-relaxed font-medium">
+                                Implementamos medidas de seguridad avanzadas. Tus datos jamás serán vendidos ni compartidos con terceros, salvo para el procesamiento logístico de tus pedidos.
+                            </p>
+                        </div>
+                        <div className="mt-8 flex items-center gap-2 text-[var(--store-primary)] text-xs font-bold uppercase tracking-widest">
+                            Seguridad de nivel bancario
+                        </div>
+                    </div>
+                </div>
+
+                {/* --- SECCIÓN: CONTACTO --- */}
+                <div className="mt-8 p-10 rounded-[2.5rem] border border-[var(--store-border)] bg-[var(--store-bg)]">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
+                        <div>
+                            <h3 className="text-2xl font-bold text-[var(--store-text)] mb-2 tracking-tight">Ejerce tus derechos</h3>
+                            <p className="text-[var(--store-text-muted)] text-sm font-medium">¿Deseas actualizar o eliminar tu información? Contáctanos.</p>
+                        </div>
+                        <div className="flex flex-col sm:flex-row gap-4">
+                            <a href="mailto:contacto@gophone.pe" className="flex items-center gap-3 px-6 py-3 bg-[var(--store-surface)] rounded-full border border-[var(--store-border)] text-[13px] font-bold text-[var(--store-text)] hover:shadow-md transition-all">
+                                <Mail size={16} />
+                                contacto@gophone.pe
+                            </a>
+                            <Link href="/hc/contacto-y-soporte" className="flex items-center gap-2 px-6 py-3 bg-[var(--store-primary)] text-white rounded-full text-[13px] font-bold hover:bg-[var(--store-primary-hover)] transition-all">
+                                Centro de Soporte <ArrowRight size={14} />
+                            </Link>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            {/* Sección 1 */}
-            <div className="bg-white rounded-xl p-5 shadow-sm space-y-3">
-                <h2 className="font-semibold text-gray-900 text-lg flex items-center gap-2">
-                    <User className="w-5 h-5" />
-                    Información que recopilamos
-                </h2>
-
-                <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
-                    <li>Nombre y apellidos</li>
-                    <li>Correo electrónico</li>
-                    <li>Número de teléfono</li>
-                    <li>Dirección de envío</li>
-                    <li>Historial de compras</li>
-                </ul>
-            </div>
-
-            {/* Sección 2 */}
-            <div className="bg-white rounded-xl p-5 shadow-sm space-y-3">
-                <h2 className="font-semibold text-gray-900 text-lg flex items-center gap-2">
-                    <FileCheck className="w-5 h-5" />
-                    ¿Para qué utilizamos tu información?
-                </h2>
-
-                <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
-                    <li>Procesar tus compras y pagos</li>
-                    <li>Coordinar envíos y entregas</li>
-                    <li>Brindarte soporte y atención personalizada</li>
-                    <li>Enviar notificaciones sobre tu pedido</li>
-                    <li>Mejorar tu experiencia de compra</li>
-                </ul>
-            </div>
-
-            {/* Sección 3 */}
-            <div className="bg-white rounded-xl p-5 shadow-sm space-y-3">
-                <h2 className="font-semibold text-gray-900 text-lg flex items-center gap-2">
-                    <Lock className="w-5 h-5" />
-                    Protección de datos
-                </h2>
-
-                <p className="text-sm text-gray-700 leading-relaxed">
-                    Implementamos medidas de seguridad para proteger tu información personal.
-                    Tus datos no serán vendidos ni compartidos con terceros, salvo cuando sea
-                    estrictamente necesario para procesar envíos o pagos.
+            <footer className="mt-24 text-center">
+                <p className="text-[10px] text-[var(--store-text-muted)] font-bold tracking-[0.25em] uppercase mb-8">
+                    GoPhone · Privacidad y Confianza
                 </p>
-            </div>
-
-            {/* Sección 4 */}
-            <div className="bg-white rounded-xl p-5 shadow-sm space-y-3">
-                <h2 className="font-semibold text-gray-900 text-lg flex items-center gap-2">
-                    <Eye className="w-5 h-5" />
-                    Tus derechos
-                </h2>
-
-                <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
-                    <li>Acceder a tus datos personales</li>
-                    <li>Solicitar corrección o actualización</li>
-                    <li>Pedir la eliminación de tu información</li>
-                    <li>Retirar tu consentimiento en cualquier momento</li>
-                </ul>
-            </div>
-
-            {/* Sección 5 */}
-            <div className="bg-white rounded-xl p-5 shadow-sm space-y-3">
-                <h2 className="font-semibold text-gray-900 text-lg flex items-center gap-2">
-                    <Mail className="w-5 h-5" />
-                    Contacto para consultas
-                </h2>
-
-                <p className="text-sm text-gray-700 leading-relaxed">
-                    Si deseas ejercer cualquiera de tus derechos o tienes consultas sobre el
-                    tratamiento de tus datos, contáctanos:
-                </p>
-
-                <ul className="text-sm text-gray-700 space-y-2">
-                    <li><b>Email:</b> contacto@gophone.pe</li>
-                    <li><b>WhatsApp:</b> +51 925 054 636</li>
-                </ul>
-            </div>
-
-            {/* Aviso */}
-            <p className="text-[11px] text-gray-400 italic text-center">
-                Al utilizar nuestra tienda aceptas esta Política de Privacidad.
-            </p>
-
-            {/* Botón volver */}
-            <div className="text-center mt-6">
                 <Link
                     href="/"
-                    className="inline-block bg-black text-white px-5 py-2 rounded-lg text-sm hover:bg-gray-800 transition"
+                    className="inline-flex items-center justify-center px-10 py-4 bg-[var(--store-surface)] text-[var(--store-text)] border border-[var(--store-border)] rounded-full font-semibold text-sm hover:bg-[var(--store-bg)] transition-all active:scale-95"
                 >
                     Volver al inicio
                 </Link>
-            </div>
-
+            </footer>
         </section>
     );
 }
