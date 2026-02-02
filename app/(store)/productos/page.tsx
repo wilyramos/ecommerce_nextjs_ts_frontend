@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
     title: {
         default: "Productos GoPhone | iPhone y Accesorios en Perú",
-        template: "%s | GoPhone Perú"
+        template: "%s | GoPhone"
     },
 
     description:

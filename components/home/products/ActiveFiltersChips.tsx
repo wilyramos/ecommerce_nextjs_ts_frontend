@@ -19,32 +19,37 @@ export default function ActiveFiltersChips() {
         newParams.delete(key);
 
         const queryString = newParams.toString();
-        router.push(queryString ? `${pathname}?${queryString}` : pathname);
+        // scroll: false evita que la página salte al inicio al quitar un filtro
+        router.push(queryString ? `${pathname}?${queryString}` : pathname, { scroll: false });
     };
 
     const clearAll = () => {
-        router.push(pathname);
+        router.push(pathname, { scroll: false });
+    };
+
+    const formatValue = (text: string) => {
+        return text.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
     };
 
     return (
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 py-1 animate-in fade-in slide-in-from-left-2 duration-300">
             {entries.map(([key, value]) => (
                 <button
                     key={`${key}-${value}`}
                     onClick={() => removeFilter(key)}
-                    className="flex items-center gap-1 px-3 py-1 text-xs border rounded-full bg-[var(--store-surface)] hover:bg-gray-100 transition"
+                    className="group flex items-center gap-2 px-3 py-1.5 text-[11px] font-bold border border-[var(--store-border)] rounded-full bg-[var(--store-bg)] text-[var(--store-text)] hover:bg-[var(--store-border)] transition-all duration-200 active:scale-95"
                 >
-                    <span className="capitalize">{key}:</span> {value}
-                    <LuX size={12} />
+                    <span className="tracking-tight">{formatValue(value)}</span>
+                    <LuX className="w-3 h-3 opacity-40 group-hover:opacity-100 transition-opacity" />
                 </button>
             ))}
 
             {entries.length > 1 && (
                 <button
                     onClick={clearAll}
-                    className="text-xs text-red-500 hover:underline ml-2"
+                    className="text-[10px] font-bold uppercase tracking-[0.15em] text-[var(--store-primary)] hover:opacity-70 transition-opacity ml-2"
                 >
-                    Limpiar filtros
+                    Limpiar todo
                 </button>
             )}
         </div>
