@@ -6,7 +6,7 @@ import { HiOutlineSortDescending } from "react-icons/hi";
 import { FaCheck } from "react-icons/fa";
 
 const sortOptions = [
-    { label: "Ordenar por: Relevancia", value: "" },
+    { label: "Relevancia", value: "" },
     { label: "Precio: menor a mayor", value: "price-asc" },
     { label: "Precio: mayor a menor", value: "price-desc" },
     { label: "Nombre: A-Z", value: "name-asc" },
