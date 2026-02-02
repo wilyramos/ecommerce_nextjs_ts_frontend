@@ -2,64 +2,84 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Zap } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export default function HeroFlashSale() {
   const [mounted, setMounted] = useState(false);
-  const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
+  const [timeLeft, setTimeLeft] = useState({
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
 
   useEffect(() => {
     setMounted(true);
+
     const calculateTimeLeft = () => {
       const now = new Date();
-      const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+      const endOfDay = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        23,
+        59,
+        59
+      );
       const diff = endOfDay.getTime() - now.getTime();
-      return diff > 0 ? {
-        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((diff / 1000 / 60) % 60),
-        seconds: Math.floor((diff / 1000) % 60),
-      } : { hours: 0, minutes: 0, seconds: 0 };
+
+      if (diff > 0) {
+        return {
+          hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((diff / 1000 / 60) % 60),
+          seconds: Math.floor((diff / 1000) % 60),
+        };
+      }
+      return { hours: 0, minutes: 0, seconds: 0 };
     };
 
-    const interval = setInterval(() => setTimeLeft(calculateTimeLeft()), 1000);
+    setTimeLeft(calculateTimeLeft());
+    const interval = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
     return () => clearInterval(interval);
   }, []);
 
   if (!mounted) return null;
 
   return (
-    <section className="w-full py-6 bg-[var(--store-bg)]">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="relative overflow-hidden rounded-[2rem] bg-[var(--store-surface)] border border-[var(--store-border)] shadow-sm">
+    <section className="w-full bg-[var(--store-bg)]">
+      <div className="mx-auto">
+        <div className="relative overflow-hidden border border-[var(--store-border)] bg-[var(--store-surface)] isolate">
+          {/* Glow reducido */}
+          <div
+            className="absolute top-[-40%] right-[-10%] md:right-[10%] w-[420px] h-[420px] rounded-full blur-[90px] -z-10 opacity-20 pointer-events-none"
+            style={{ backgroundColor: "var(--store-primary)" }}
+          />
 
-          {/* Sutil gradiente de profundidad estilo Apple */}
-          <div className="absolute inset-0 bg-gradient-to-br from-transparent to-[var(--store-bg)] opacity-50 pointer-events-none" />
-
-          <div className="relative flex flex-col md:flex-row items-center justify-between p-8 md:p-14 gap-10">
-
-            {/* LADO IZQUIERDO: CONTENIDO */}
-            <div className="flex-1 text-center md:text-left z-10">
-              <div className="inline-flex items-center gap-2 mb-4">
-                <Zap className="w-4 h-4 text-[var(--store-primary)] fill-[var(--store-primary)]" />
-                <span className="text-xs font-semibold text-[var(--store-primary)] uppercase tracking-wider">
-                  Oferta de tiempo limitado
-                </span>
+          <div className="flex flex-col md:flex-row items-center justify-between px-6 py-6 md:px-12 md:py-8 gap-6 max-w-7xl mx-auto">
+            {/* IZQUIERDA */}
+            <div className="flex-1 text-center md:text-left space-y-4">
+              <div className="inline-flex items-center gap-2 px-2 py-0.5 rounded-full border border-[var(--store-border)] bg-[var(--store-bg)] backdrop-blur-md">
+               
               </div>
 
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[var(--store-text)] tracking-tight leading-[1.1] mb-6">
-                Precios especiales. <br />
-                <span className="text-[var(--store-text-muted)]">Termina pronto.</span>
+              <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-[var(--store-text)] leading-tight">
+                Precios fugaces.{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--store-primary)] to-[var(--store-primary-hover)]">
+                  Oportunidad única.
+                </span>
               </h2>
 
-              <p className="text-[var(--store-text-muted)] text-lg md:text-xl font-medium max-w-md mx-auto md:mx-0 mb-8">
-                Consigue tus favoritos con descuentos exclusivos antes de que el tiempo se agote.
+              <p className="text-sm md:text-base text-[var(--store-text-muted)] max-w-md mx-auto md:mx-0">
+                Descuentos que desaparecen hoy. Aprovecha antes de medianoche.
               </p>
 
-              <div className="flex flex-col sm:flex-row items-center gap-4 justify-center md:justify-start">
-
+              <div>
                 <Link
                   href="/ofertas"
-                  className="group flex items-center gap-1 text-[var(--store-primary)] font-semibold hover:underline underline-offset-4"
+                  className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-white font-medium text-sm transition-all duration-300 hover:scale-105"
+                  style={{ backgroundColor: "var(--store-primary)" }}
                 >
                   Ver ofertas
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -67,26 +87,16 @@ export default function HeroFlashSale() {
               </div>
             </div>
 
-            {/* LADO DERECHO: CONTADOR MINIMALISTA */}
-            <div className="relative z-10">
-              <div className="flex items-end gap-3 md:gap-4 bg-[var(--store-bg)] p-8 rounded-[2.5rem] border border-[var(--store-border)]">
-                <TimeSegment value={timeLeft.hours} label="Horas" />
-                <span className="text-3xl font-light text-[var(--store-text-muted)] mb-6">:</span>
-                <TimeSegment value={timeLeft.minutes} label="Minutos" />
-                <span className="text-3xl font-light text-[var(--store-text-muted)] mb-6">:</span>
-                <TimeSegment value={timeLeft.seconds} label="Segundos" highlight />
+            {/* DERECHA: RELOJ COMPACTO */}
+            <div className="flex-shrink-0">
+              <div className="grid grid-cols-3 gap-2 p-3 rounded-2xl bg-[var(--store-bg)]/50 border border-[var(--store-border)] backdrop-blur-sm">
+                <TimeCard value={timeLeft.hours} label="Horas" />
+                <TimeCard value={timeLeft.minutes} label="Minutos" />
+                <TimeCard value={timeLeft.seconds} label="Segundos" isActive />
               </div>
-
-              {/* Barra de progreso sutil */}
-              <div className="mt-6 px-2">
-                <div className="flex justify-between text-[11px] font-bold text-[var(--store-text-muted)] uppercase mb-2">
-                  <span>Disponibilidad</span>
-                  <span className="text-[var(--store-primary)]">Quedan pocas unidades</span>
-                </div>
-                <div className="h-1.5 w-full bg-[var(--store-border)] rounded-full overflow-hidden">
-                  <div className="h-full bg-[var(--store-primary)] w-[85%] rounded-full" />
-                </div>
-              </div>
+              <p className="text-center mt-2 text-[10px] font-medium text-[var(--store-text-muted)] uppercase tracking-widest">
+                Tiempo restante
+              </p>
             </div>
           </div>
         </div>
@@ -95,16 +105,34 @@ export default function HeroFlashSale() {
   );
 }
 
-function TimeSegment({ value, label, highlight = false }: { value: number; label: string; highlight?: boolean }) {
+function TimeCard({
+  value,
+  label,
+  isActive = false,
+}: {
+  value: number;
+  label: string;
+  isActive?: boolean;
+}) {
   return (
-    <div className="flex flex-col items-center">
-      <div className={`
-        text-4xl md:text-5xl font-bold tabular-nums tracking-tighter
-        ${highlight ? "text-[var(--store-primary)]" : "text-[var(--store-text)]"}
-      `}>
+    <div
+      className={`flex flex-col items-center justify-center w-16 h-20 md:w-20 md:h-24 rounded-xl border transition-all
+        ${
+          isActive
+            ? "bg-[var(--store-surface)] border-[var(--store-primary)]"
+            : "bg-[var(--store-surface)] border-[var(--store-border)]"
+        }`}
+    >
+      <span
+        className={`text-2xl md:text-3xl font-bold tabular-nums leading-none ${
+          isActive
+            ? "text-[var(--store-primary)]"
+            : "text-[var(--store-text)]"
+        }`}
+      >
         {value.toString().padStart(2, "0")}
-      </div>
-      <span className="text-[10px] font-bold text-[var(--store-text-muted)] uppercase mt-1 tracking-widest">
+      </span>
+      <span className="text-[9px] md:text-[10px] font-semibold text-[var(--store-text-muted)] uppercase">
         {label}
       </span>
     </div>

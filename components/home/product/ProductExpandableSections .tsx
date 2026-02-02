@@ -23,7 +23,7 @@ export default function ProductExpandableSections({ producto }: Props) {
         <Accordion
             type="multiple"
             defaultValue={["descripcion-especificaciones"]}
-            className="w-full space-y-2"
+            className="w-full space-y-2 bg-white md:px-4"
         >
             {/* SECCIÓN 1: INFORMACIÓN Y ESPECIFICACIONES */}
             <AccordionItem

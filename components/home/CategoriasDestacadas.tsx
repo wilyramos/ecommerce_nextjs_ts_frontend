@@ -110,7 +110,7 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                                     font-bold
                                     tracking-tight
                                     text-center md:text-left
-                                    text-[var(--store-text)]
+                                    text-[var(--store-text-muted)]
                                     group-hover:text-[var(--store-primary)]
                                     transition-colors
                                 "
