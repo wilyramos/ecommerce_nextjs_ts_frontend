@@ -171,7 +171,6 @@ export const getProductsMainPage = async ({
     const json = await req.json();
 
     const products = productsApiResponseWithFilters.parse(json);
-    console.log("Products fetched:", products);
     return products;
 };
 
