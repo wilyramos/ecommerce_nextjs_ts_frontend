@@ -11,7 +11,6 @@ type ProductResultsProps = {
     category?: string;
     priceRange?: string;
     page?: string;
-    limit?: number;
     sort?: string;
     query?: string;
 } & Record<string, string | string[] | undefined | number>;
@@ -20,7 +19,6 @@ export default async function ProductResults({
     category,
     priceRange,
     page,
-    limit = 24,
     sort,
     query,
     ...rest
@@ -29,7 +27,6 @@ export default async function ProductResults({
 
     const products = await getProductsMainPage({
         page: currentPage,
-        limit,
         category: category || "",
         priceRange: priceRange || "",
         query: query || "",
@@ -146,7 +143,7 @@ export default async function ProductResults({
                                     <Pagination
                                         currentPage={products.currentPage}
                                         totalPages={products.totalPages}
-                                        limit={limit}
+                                        limit={24}
                                         pathname="/productos"
                                         queryParams={{
                                             category,

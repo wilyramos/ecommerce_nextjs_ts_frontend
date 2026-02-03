@@ -9,7 +9,7 @@ export default function ActiveFiltersChips() {
     const pathname = usePathname();
 
     const entries = Array.from(params.entries()).filter(
-        ([key]) => !["page", "sort"].includes(key)
+        ([key]) => !["page", "limit", "sort"].includes(key)
     );
 
     if (entries.length === 0) return null;
