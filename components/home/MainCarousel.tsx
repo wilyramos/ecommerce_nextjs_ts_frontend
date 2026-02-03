@@ -101,9 +101,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
 
                                     {/* Botones de Acción Estilo Apple */}
                                     <div className="flex items-center justify-center md:justify-start gap-6 pt-4">
-                                        <button className="bg-[var(--store-primary)]  text-white px-6 py-2.5 rounded-full text-sm font-semibold transition-all">
-                                            Comprar
-                                        </button>
+
                                         <div className="flex items-center text-[var(--store-primary)] font-medium hover:underline cursor-pointer group/link text-sm">
                                             Más información <ChevronRight size={16} className="group-hover/link:translate-x-1 transition-transform" />
                                         </div>
@@ -118,8 +116,12 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                             alt={product.nombre}
                                             fill
                                             priority
+                                            sizes="(max-width: 640px) 100vw,
+         (max-width: 1024px) 50vw,
+         50vw"
                                             className="object-contain transition-all duration-1000 ease-in-out group-hover:scale-105"
                                         />
+
 
                                         {/* Efecto de segunda imagen al hover (suave) */}
                                         {product.imagenes?.[1] && (
@@ -127,9 +129,14 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                                 src={product.imagenes[1]}
                                                 alt={product.nombre}
                                                 fill
-                                                className="absolute inset-0 object-contain transition-all duration-1000 ease-in-out opacity-0 group-hover:opacity-100 scale-95 group-hover:scale-105"
+                                                sizes="(max-width: 640px) 100vw,
+           (max-width: 1024px) 50vw,
+           50vw"
+                                                className="absolute inset-0 object-contain transition-all duration-1000 ease-in-out
+               opacity-0 group-hover:opacity-100 scale-95 group-hover:scale-105"
                                             />
                                         )}
+
                                     </div>
                                 </div>
                             </Link>

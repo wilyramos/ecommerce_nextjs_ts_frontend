@@ -11,7 +11,7 @@ import { MdOutlineImageNotSupported } from "react-icons/md";
 // Header flotante con controles estilo Apple
 const AbsoluteHeaderWrapper = (props: ButtonGroupProps) => {
     return (
-        <div className="absolute top-0 left-0 right-0 z-20 px-4 md:px-0">
+        <div className="absolute top-0 left-0 right-0 z-20 px-4 md:px-8">
             <HeaderConControles
                 {...props}
                 title="Categorías."
@@ -42,7 +42,7 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
             className="
                 relative
                 w-full max-w-7xl mx-auto
-                px-4 md:px-0
+                px-4 md:px-8
                 pt-20 md:pt-24
                 pb-12
                 bg-[var(--store-bg)]
@@ -64,62 +64,68 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                         key={categoria._id}
                         href={`/categoria/${categoria.slug}`}
                         className="
-                            group
-                            flex flex-col
-                            h-full
-                            rounded-lg
-                            bg-[var(--store-surface)]
-                            transition-all duration-500
-                            hover:shadow-xl hover:scale-[1.02]
-                        "
+    group relative flex flex-col h-full
+    rounded-2xl
+    bg-[var(--store-surface)]
+    transition-all duration-500 ease-out
+    hover:-translate-y-1
+    hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)]
+  "
                     >
-                        {/* Contenedor de Imagen */}
-                        <div
-                            className="
-                                relative
-                                w-full aspect-square
-                                
-                                flex items-center justify-center
-                                bg-transparent
-                            "
-                        >
+                        {/* Imagen */}
+                        <div className="relative w-full aspect-square overflow-hidden rounded-t-2xl">
                             {categoria.image ? (
-                                <Image
-                                    src={categoria.image}
-                                    alt={categoria.nombre}
-                                    width={180}
-                                    height={180}
-                                    className="
-                                        object-cover
-                                        transition-transform duration-700 ease-out
-                                        group-hover:scale-110
-                                    "
-                                />
+                                <>
+                                    <Image
+                                        src={categoria.image}
+                                        alt={categoria.nombre}
+                                        fill
+                                        sizes="(max-width: 640px) 50vw,
+         (max-width: 1024px) 33vw,
+         (max-width: 1280px) 25vw,
+         20vw"
+                                        className="
+    object-contain
+    transition-all duration-700 ease-out
+    scale-95 group-hover:scale-105
+  "
+                                    />
+
+                                    {/* Overlay sutil estilo Apple */}
+                                    <div
+                                        className="
+            pointer-events-none absolute inset-0
+            bg-gradient-to-t from-black/5 via-transparent to-transparent
+            opacity-0 group-hover:opacity-100
+            transition-opacity duration-500
+          "
+                                    />
+                                </>
                             ) : (
-                                <div className="flex flex-col items-center gap-2 text-[var(--store-text-muted)] opacity-30">
-                                    <MdOutlineImageNotSupported size={32} />
+                                <div className="flex h-full items-center justify-center text-[var(--store-text-muted)] opacity-30">
+                                    <MdOutlineImageNotSupported size={36} />
                                 </div>
                             )}
                         </div>
 
-                        {/* Texto - Estilo Apple (Más grande y Bold) */}
-                        <div className="mt-auto px-6 pb-6">
+                        {/* Texto */}
+                        <div className="px-5 py-4">
                             <h3
                                 className="
-                                    text-lg md:text-xl
-                                    font-bold
-                                    tracking-tight
-                                    text-center md:text-left
-                                    text-[var(--store-text-muted)]
-                                    group-hover:text-[var(--store-primary)]
-                                    transition-colors
-                                "
+        text-base md:text-lg
+        font-semibold
+        tracking-tight
+        text-center md:text-left
+        text-[var(--store-text)]
+        transition-colors duration-300
+        group-hover:text-[var(--store-primary)]
+      "
                             >
                                 {categoria.nombre}
                             </h3>
-                           
                         </div>
                     </Link>
+
                 ))}
             </Carousel>
         </section>

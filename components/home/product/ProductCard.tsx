@@ -171,7 +171,7 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                             )}
                         </div>
                     ) : (
-                        <div className="flex items-center justify-center w-full h-full text-[var(--store-text-muted)] bg-[var(--store-bg)]">
+                        <div className="flex items-center justify-center w-full h-full text-[var(--store-text-muted)] bg-[var(--store-bg)] border border-[var(--store-border)] rounded-t-lg">
                             <MdOutlineImageNotSupported size={24} />
                         </div>
                     )}
@@ -232,7 +232,7 @@ export default function ProductCard({ product }: { product: ProductResponse }) {
                             )}
                         </div>
 
-                        <h3 className="text-[13px] font-medium text-[var(--store-text)] leading-[1.3] line-clamp-2 md:min-h-[2.6rem]">
+                        <h3 className="text-[13px] font-medium text-[var(--store-text)] leading-[1.3] line-clamp-2 md:min-h-[3.2rem]">
                             {product.nombre}
                         </h3>
                     </div>

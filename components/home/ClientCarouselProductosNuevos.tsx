@@ -13,7 +13,7 @@ interface Props {
 
 const AbsoluteHeaderWrapper = (props: ButtonGroupProps) => {
     return (
-        <div className="absolute top-0 left-0 right-0 z-20 px-4 md:px-0">
+        <div className="absolute top-0 left-0 right-0 z-20 px-4 md:px-8">
             <HeaderConTituloConControles
                 {...props}
                 title="Novedades."
@@ -32,7 +32,7 @@ export default function ClientCarouselProductosNuevos({ products }: Props) {
     };
 
     return (
-        <section className="w-full max-w-7xl mx-auto relative pt-20 md:pt-24 px-4 md:px-0 ">
+        <section className="w-full max-w-7xl mx-auto relative pt-20 md:pt-24 px-4 md:px-8 ">
             <Carousel
                 responsive={responsive}
                 infinite
