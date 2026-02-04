@@ -3,6 +3,8 @@ import { getBrandBySlug } from '@/src/services/brands';
 import type { Metadata } from 'next';
 import { metadata as globalMetadata } from '@/app/layout'; // mismo patrón que en /store
 
+// TODO: REVISAR LA PAGINA DE MARCA
+
 type Params = Promise<{
     slug: string;
 }>;

@@ -1,48 +1,82 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { ImageIcon } from "lucide-react";
+import Image from "next/image";
 import type { TProductListSchema } from "@/src/schemas";
+import { MdOutlineImageNotSupported } from "react-icons/md";
 
-type Props = {
+interface Props {
     item: TProductListSchema;
-    onClickResult?: () => void;
-};
+}
 
-export default function ProductResultSearch({ item, onClickResult }: Props) {
+export default function ProductResultSearch({ item }: Props) {
+    const precio = item.precio ?? 0;
+    const imagen = item.imagenes?.[0];
+    const tieneDescuento = (item.precioComparativo ?? 0) > precio;
+
     return (
         <Link
             href={`/productos/${item.slug}`}
-            onClick={onClickResult}
-            className="group block relative bg-white p-3 transition-all hover:shadow-xs "
+            className="
+                group relative flex flex-col p-3 rounded-2xl transition-all duration-300
+                bg-transparent hover:bg-[var(--store-surface-hover)]
+            "
         >
-            <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-gray-100 mb-3">
-                {item.imagenes?.[0] ? (
+            {/* --- IMAGEN CON FONDO "ATHENS GRAY" --- */}
+            <div className="relative aspect-square w-full mb-3">
+                {imagen ? (
                     <Image
-                        src={item.imagenes[0]}
+                        src={imagen}
                         alt={item.nombre}
                         fill
-                        sizes="(max-width: 768px) 40vw, 20vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        quality={10}
+                        sizes="(max-width: 640px) 33vw, 20vw"
+                        className="object-contain p-3 transition-transform duration-500 group-hover:scale-105 mix-blend-multiply"
                     />
                 ) : (
-                    <div className="flex items-center justify-center h-full text-gray-300">
-                        <ImageIcon className="w-10 h-10" />
+                    <div className="flex items-center justify-center w-full h-full text-[var(--store-text-muted)]">
+                        <MdOutlineImageNotSupported size={20} />
+                    </div>
+                )}
+
+                {/* Badge de Oferta: Minimalista, usando tu color primario invertido o texto sólido */}
+                {tieneDescuento && (
+                    <div className="absolute top-2 left-2">
+                        <span className="
+                            inline-block px-1.5 py-0.5 rounded
+                            bg-[var(--store-surface)] text-[var(--store-text)] 
+                            text-[9px] font-bold uppercase tracking-wider
+                        ">
+                            Oferta
+                        </span>
                     </div>
                 )}
             </div>
 
-            <div>
-                <h3 className="text-sm font-normal text-gray-700 line-clamp-2 leading-snug min-h-[2.5rem] mb-1 group-hover:text-gray-600 transition-colors">
-                    {item.nombre}
-                </h3>
-
-                <div className="flex gap-2">
-                    <span className="text-sm text-gray-900">
-                        S/. {item.precio?.toFixed(2)}
+            {/* --- INFORMACIÓN --- */}
+            <div className="flex flex-col gap-1.5">
+                {/* Marca: Texto Muted + Tracking Apple */}
+                {item.brand && (
+                    <span className="text-[9px] font-bold text-[var(--store-text-muted)] uppercase tracking-[0.15em] truncate">
+                        {typeof item.brand === 'object' ? item.brand.nombre : ''}
                     </span>
+                )}
+
+                {/* Título: Seminegro */}
+                <h4 className="text-xs font-medium text-[var(--store-text)] line-clamp-2 leading-snug min-h-[2.4em]">
+                    {item.nombre}
+                </h4>
+
+                {/* Precios */}
+                <div className="flex items-baseline gap-2 mt-auto">
+                    <span className="text-sm font-bold text-[var(--store-text)]">
+                        S/ {precio.toFixed(2)}
+                    </span>
+
+                    {tieneDescuento && (
+                        <span className="text-[10px] text-[var(--store-text-muted)] line-through decoration-[var(--store-text-muted)]">
+                            S/ {item.precioComparativo?.toFixed(2)}
+                        </span>
+                    )}
                 </div>
             </div>
         </Link>

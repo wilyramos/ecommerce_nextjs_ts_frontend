@@ -9,35 +9,32 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Slider } from "@/components/ui/slider";
-import { LuListFilter, LuX } from "react-icons/lu";
+import { RiDeleteBinLine } from "react-icons/ri";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import ColorCircle from "@/components/ui/ColorCircle";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-
 
 type ProductsFiltersProps = {
-    filters: TFilter[] | null;
+    filters: TFilter | null | undefined;
 };
 
 export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const { brands = [], atributos = [], price = [] } = filters?.[0] ?? {};
+    const { brands = [], categories = [], atributos = [], price = [] } = filters ?? {};
     const priceFilter = price?.[0] ?? null;
 
-    // --- Ordenamiento seguro ---
-    const sortedCategories =
-        filters?.[0]?.categories
-            ?.slice()
-            .sort((a, b) => a.nombre.localeCompare(b.nombre, undefined, { sensitivity: "base" })) ?? [];
+    // --- Ordenamiento ---
+    const sortedCategories = categories
+        .slice()
+        .sort((a, b) => a.nombre.localeCompare(b.nombre, undefined, { sensitivity: "base" }));
 
-    const sortedBrands =
-        brands
-            .slice()
-            .sort((a, b) => a.nombre.localeCompare(b.nombre, undefined, { sensitivity: "base" }));
+    const sortedBrands = brands
+        .slice()
+        .sort((a, b) => a.nombre.localeCompare(b.nombre, undefined, { sensitivity: "base" }));
 
     const sortedAtributos = atributos
         .slice()
@@ -45,55 +42,65 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
             ...attr,
             values: attr.values
                 .slice()
-                .sort((a, b) =>
-                    a.localeCompare(b, undefined, { sensitivity: "base" })
-                ),
+                .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" })),
         }))
-        .sort((a, b) =>
-            a.name.localeCompare(b.name, undefined, { sensitivity: "base" })
-        );
+        .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }));
 
-    // --- Price range state ---
+    // --- Price State ---
     const [priceRange, setPriceRange] = useState<[number, number]>([
         priceFilter?.min ?? 0,
-        priceFilter?.max ?? 0,
+        priceFilter?.max ?? 1000,
     ]);
 
     useEffect(() => {
-        if (!priceFilter) return;
         const paramRange = searchParams.get("priceRange");
         if (paramRange) {
             const [min, max] = paramRange.split("-").map(Number);
-            setPriceRange([
-                min || priceFilter.min || 0,
-                max || priceFilter.max || 0,
-            ]);
-        } else {
-            setPriceRange([priceFilter.min ?? 0, priceFilter.max ?? 0]);
+            setPriceRange([min || 0, max || 1000]);
+        } else if (priceFilter) {
+            setPriceRange([priceFilter.min ?? 0, priceFilter.max ?? 1000]);
         }
     }, [searchParams, priceFilter]);
 
-    if (!filters || filters.length === 0) return null;
+    if (!filters) return null;
 
-    // --- Handlers ---
-    const updatePriceRange = (range: [number, number]) => {
-        const params = new URLSearchParams(searchParams.toString());
-        params.set("priceRange", `${range[0]}-${range[1]}`);
+    // --- HANDLERS ---
+
+    const updateURL = (params: URLSearchParams) => {
         params.set("page", "1");
         router.push(`/productos?${params.toString()}`, { scroll: false });
     };
 
+    const updatePriceRange = (range: [number, number]) => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("priceRange", `${range[0]}-${range[1]}`);
+        updateURL(params);
+    };
+
     const handleFilterChange = (key: string, value: string) => {
         const params = new URLSearchParams(searchParams.toString());
-        if (params.getAll(key).includes(value)) {
-            const newValues = params.getAll(key).filter((v) => v !== value);
-            params.delete(key);
-            newValues.forEach((v) => params.append(key, v));
-        } else {
-            params.append(key, value);
+        const lowerKey = key.toLowerCase();
+
+        // 1. CASO COLOR: SELECCIÓN ÚNICA (Radio Logic)
+        if (lowerKey === "color") {
+            const currentColor = params.get(key);
+            if (currentColor === value) {
+                params.delete(key);
+            } else {
+                params.set(key, value);
+            }
         }
-        params.set("page", "1");
-        router.push(`/productos?${params.toString()}`, { scroll: false });
+        // 2. CASO RESTO: SELECCIÓN MÚLTIPLE (Checkbox Logic)
+        else {
+            const currentValues = params.getAll(key);
+            if (currentValues.includes(value)) {
+                params.delete(key);
+                currentValues.filter(v => v !== value).forEach(v => params.append(key, v));
+            } else {
+                params.append(key, value);
+            }
+        }
+        updateURL(params);
     };
 
     const clearFilters = () => {
@@ -104,90 +111,105 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
     };
 
     const hasActiveFilters = Array.from(searchParams.keys()).some(
-        (key) => key !== "page" && key !== "query" && key !== "sort"
+        (key) => !["page", "query", "sort", "limit"].includes(key)
     );
 
-    // --- Render Helpers ---
-    const FilterCheckboxItem = ({
-    label,
-    checked,
-    onChange,
-    isColor = false
-}: {
-    label: string;
-    checked: boolean;
-    onChange: () => void;
-    isColor?: boolean;
-}) => {
-    const id = `filter-${label.replace(/\s+/g, "-").toLowerCase()}`;
+    // --- SUB-COMPONENTES ---
 
-    return (
-        <li className="group">
-            <div className="flex items-center gap-3 py-2 px-1 transition-all duration-200 hover:bg-gray-50 rounded-md">
-                <Input
-                    id={id}
-                    type="checkbox"
-                    checked={checked}
-                    onChange={onChange}
-                    className="h-5 w-5 cursor-pointer accent-[var(--store-primary)]"
-                />
+    // A) Item para Checkbox Estándar (Marcas, Categorías, etc.)
+    const StandardFilterItem = ({ label, checked, onChange }: { label: string, checked: boolean, onChange: () => void }) => {
+        const id = `filter-${label.replace(/\s+/g, "-")}`;
+        return (
+            <li className="py-1.5">
+                <div className="flex items-center space-x-3">
+                    <Checkbox
+                        id={id}
+                        checked={checked}
+                        onCheckedChange={onChange}
+                        className="
+                            data-[state=checked]:bg-[var(--store-primary)] 
+                            data-[state=checked]:border-[var(--store-primary)]
+                            border-gray-300 w-4 h-4 rounded-sm
+                        "
+                    />
+                    <Label
+                        htmlFor={id}
+                        className={cn(
+                            "text-sm capitalize cursor-pointer font-normal hover:text-[var(--store-text)] transition-colors",
+                            checked ? "font-medium text-[var(--store-text)]" : "text-[var(--store-text-muted)]"
+                        )}
+                    >
+                        {label}
+                    </Label>
+                </div>
+            </li>
+        );
+    };
 
-                {isColor && <ColorCircle color={label} size={16} />}
-
-                <Label
-                    htmlFor={id}
-                    className={cn(
-                        "text-sm select-none capitalize leading-none cursor-pointer",
-                        checked
-                            ? "font-semibold text-gray-900"
-                            : "font-normal text-gray-600 hover:text-gray-900"
-                    )}
+    const ColorFilterItem = ({ label, checked, onChange }: { label: string, checked: boolean, onChange: () => void }) => {
+        return (
+            <li className="flex justify-center">
+                <button
+                    onClick={onChange}
+                    className="group flex flex-col items-center justify-center gap-1.5 outline-none"
+                    title={label}
                 >
-                    {label}
-                </Label>
-            </div>
-        </li>
-    );
-};
+                    {/* Contenedor del Círculo (Aquí aplicamos el anillo de selección) */}
+                    <div className={cn(
+                        "rounded-full transition-all duration-200 p-0.5", // p-0.5 evita que el ring corte el círculo
+                        checked
+                            ? "ring-1 ring-offset-1 ring-[var(--store-primary)] scale-110"
+                            : "group-hover:scale-110"
+                    )}>
+                        <ColorCircle color={label} size={24} />
+                    </div>
 
+                    {/* Nombre del Color */}
+                    <span className={cn(
+                        "text-[10px] capitalize leading-tight text-center max-w-[60px] truncate px-1",
+                        checked
+                            ? "font-semibold text-[var(--store-text)]"
+                            : "text-[var(--store-text-muted)] group-hover:text-[var(--store-text)]"
+                    )}>
+                        {label}
+                    </span>
+                </button>
+            </li>
+        );
+    };
 
     return (
-        <aside className="w-full h-fit lg:sticky lg:top-24 space-y-6 pt-2 select-none scroll-auto bg-[var(--store-surface)] p-4 rounded-lg">
-            {/* Header */}
-            <div className="flex justify-between items-center px-1 pb-3 border-b border-[var(--store-border)]">
-                <h2 className="text-lg font-light uppercase flex items-center gap-2 text-[var(--store-text)]">
-                    <LuListFilter className="w-4 h-4" />
-                    Filtros { }
+        <aside className="w-full space-y-1 select-none animate-in fade-in duration-500">
+            <div className="flex justify-between items-end mb-4 px-1">
+                <h2 className="text-sm font-bold uppercase tracking-widest text-[var(--store-text)] flex items-center gap-2">
+                    Filtros
                 </h2>
                 {hasActiveFilters && (
                     <button
                         onClick={clearFilters}
-                        className="text-xs flex items-center gap-1.5 text-[var(--store-text-muted)] hover:text-[var(--store-text)] transition-colors hover:underline underline-offset-2"
+                        className="text-[10px] font-medium text-[var(--store-primary)] hover:underline flex items-center gap-1 transition-all"
                     >
-                        Limpiar todo <LuX className="w-3.5 h-3.5" />
+                        Limpiar <RiDeleteBinLine size={12} />
                     </button>
                 )}
             </div>
 
-            <Accordion
-                type="multiple"
-                defaultValue={[]}
-                className="w-full space-y-1 text-sm"
-            >
+            <Accordion type="multiple" defaultValue={["categories"]} className="w-full">
+
                 {/* Categorías */}
                 {sortedCategories.length > 0 && (
-                    <AccordionItem value="categories" className="border-b">
-                        <AccordionTrigger className="text-sm text-[var(--store-text)] hover:text-[var(--store-primary)] hover:no-underline py-3">
+                    <AccordionItem value="categories" className="border-b-[var(--store-border)]">
+                        <AccordionTrigger className="text-[13px] font-semibold text-[var(--store-text)] hover:no-underline py-4">
                             Categorías
                         </AccordionTrigger>
-                        <AccordionContent className="pt-0 pb-2">
-                            <ul className=" max-h-[260px] overflow-y-auto pr-2 custom-scrollbar">
-                                {sortedCategories.map((category) => (
-                                    <FilterCheckboxItem
-                                        key={category.slug}
-                                        label={category.nombre}
-                                        checked={searchParams.getAll("category").includes(category.slug)}
-                                        onChange={() => handleFilterChange("category", category.slug)}
+                        <AccordionContent className="pt-0 pb-4">
+                            <ul className="space-y-1 max-h-[240px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-200">
+                                {sortedCategories.map((cat) => (
+                                    <StandardFilterItem
+                                        key={cat.id}
+                                        label={cat.nombre}
+                                        checked={searchParams.getAll("category").includes(cat.slug)}
+                                        onChange={() => handleFilterChange("category", cat.slug)}
                                     />
                                 ))}
                             </ul>
@@ -197,34 +219,24 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
 
                 {/* Precio */}
                 {priceFilter && (
-                    <AccordionItem value="price" className="border-b">
-                        <AccordionTrigger className="text-sm text-[var(--store-text)] hover:text-[var(--store-primary)] hover:no-underline py-3">
+                    <AccordionItem value="price" className="border-b-[var(--store-border)]">
+                        <AccordionTrigger className="text-[13px] font-semibold text-[var(--store-text)] hover:no-underline py-4">
                             Precio
                         </AccordionTrigger>
-                        <AccordionContent className="pt-6 pb-2 px-1">
+                        <AccordionContent className="pt-2 pb-6 px-1">
                             <Slider
                                 min={priceFilter.min ?? 0}
                                 max={priceFilter.max ?? 1000}
-                                step={5}
+                                step={10}
                                 value={priceRange}
                                 onValueChange={(val) => setPriceRange(val as [number, number])}
                                 onValueCommit={(val) => updatePriceRange(val as [number, number])}
-                                className="
-                my-4
-                [&_.relative]:bg-[var(--store-border)]
-                [&_.absolute]:bg-[var(--store-primary)]
-                [&_span]:border-[var(--store-primary)]
-                [&_span]:focus:ring-[var(--store-primary)]/20
-              "
+                                className="my-6 cursor-pointer"
                             />
-                            <div className="flex justify-between items-center mt-5">
-                                <div className="border border-[var(--store-border)] rounded px-3 py-1.5 bg-[var(--store-surface)] text-sm text-[var(--store-text)] shadow-sm">
-                                    S/. {priceRange[0]}
-                                </div>
-                                <div className="h-px w-4 bg-[var(--store-border)]"></div>
-                                <div className="border border-[var(--store-border)] rounded px-3 py-1.5 bg-[var(--store-surface)] text-sm text-[var(--store-text)] shadow-sm">
-                                    S/. {priceRange[1]}
-                                </div>
+                            <div className="flex justify-between items-center text-xs font-medium text-[var(--store-text)]">
+                                <span className="bg-[var(--store-bg)] px-2 py-1 rounded">S/ {priceRange[0]}</span>
+                                <span className="text-[var(--store-text-muted)]">-</span>
+                                <span className="bg-[var(--store-bg)] px-2 py-1 rounded">S/ {priceRange[1]}</span>
                             </div>
                         </AccordionContent>
                     </AccordionItem>
@@ -232,15 +244,15 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
 
                 {/* Marcas */}
                 {sortedBrands.length > 0 && (
-                    <AccordionItem value="brands" className="border-b">
-                        <AccordionTrigger className="text-sm text-[var(--store-text)] hover:text-[var(--store-primary)] hover:no-underline py-3">
+                    <AccordionItem value="brands" className="border-b-[var(--store-border)]">
+                        <AccordionTrigger className="text-[13px] font-semibold text-[var(--store-text)] hover:no-underline py-4">
                             Marcas
                         </AccordionTrigger>
-                        <AccordionContent className="pt-0 pb-2">
-                            <ul className=" max-h-[260px] overflow-y-auto pr-2 custom-scrollbar">
+                        <AccordionContent className="pt-0 pb-4">
+                            <ul className="space-y-1 max-h-[240px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-200">
                                 {sortedBrands.map((brand) => (
-                                    <FilterCheckboxItem
-                                        key={brand.slug}
+                                    <StandardFilterItem
+                                        key={brand.id}
                                         label={brand.nombre}
                                         checked={searchParams.getAll("brand").includes(brand.slug)}
                                         onChange={() => handleFilterChange("brand", brand.slug)}
@@ -251,31 +263,48 @@ export default function ProductsFiltersMain({ filters }: ProductsFiltersProps) {
                     </AccordionItem>
                 )}
 
-                {/* Atributos dinámicos */}
+                {/* Atributos Dinámicos */}
                 {sortedAtributos.map((attr) => {
-                    const isColorAttribute = attr.name.toLowerCase() === "color";
+                    const isColor = attr.name.toLowerCase() === "color";
 
                     return (
-                        <AccordionItem key={attr.name} value={attr.name} className="border-b">
-                            <AccordionTrigger className="text-sm text-[var(--store-text)] hover:text-[var(--store-primary)] hover:no-underline py-3 capitalize">
+                        <AccordionItem key={attr.name} value={attr.name.toLowerCase()} className="border-b-[var(--store-border)]">
+                            <AccordionTrigger className="text-[13px] font-semibold text-[var(--store-text)] hover:no-underline py-4 capitalize">
                                 {attr.name}
                             </AccordionTrigger>
-                            <AccordionContent className="pt-0 pb-2">
-                                <ul className=" max-h-[200px] overflow-y-auto pr-2 custom-scrollbar">
-                                    {attr.values.map((value) => (
-                                        <FilterCheckboxItem
-                                            key={value}
-                                            label={value}
-                                            checked={searchParams.getAll(attr.name).includes(value)}
-                                            onChange={() => handleFilterChange(attr.name, value)}
-                                            isColor={isColorAttribute}
-                                        />
-                                    ))}
-                                </ul>
+                            <AccordionContent className="pt-4 pb-4">
+                                {isColor ? (
+                                    // GRID ESPECIAL PARA COLORES (Estilo Radio)
+                                    <ul className="grid grid-cols-5 gap-3">
+                                        {attr.values.map((val) => (
+                                            <ColorFilterItem
+                                                key={val}
+                                                label={val}
+                                                // Checked visual: Exact match (Single Select)
+                                                checked={searchParams.get(attr.name.toLowerCase()) === val}
+                                                onChange={() => handleFilterChange(attr.name.toLowerCase(), val)}
+                                            />
+
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    // LISTA ESTÁNDAR PARA OTROS ATRIBUTOS (Estilo Checkbox)
+                                    <ul className="space-y-1 max-h-[240px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-200">
+                                        {attr.values.map((val) => (
+                                            <StandardFilterItem
+                                                key={val}
+                                                label={val}
+                                                checked={searchParams.getAll(attr.name.toLowerCase()).includes(val)}
+                                                onChange={() => handleFilterChange(attr.name.toLowerCase(), val)}
+                                            />
+                                        ))}
+                                    </ul>
+                                )}
                             </AccordionContent>
                         </AccordionItem>
                     );
                 })}
+
             </Accordion>
         </aside>
     );

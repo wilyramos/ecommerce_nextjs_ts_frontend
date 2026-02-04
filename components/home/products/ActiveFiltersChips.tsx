@@ -39,6 +39,7 @@ export default function ActiveFiltersChips() {
                     onClick={() => removeFilter(key)}
                     className="group flex items-center gap-2 px-3 py-1.5 text-[11px] font-bold border border-[var(--store-border)] rounded-full bg-[var(--store-bg)] text-[var(--store-text)] hover:bg-[var(--store-border)] transition-all duration-200 active:scale-95"
                 >
+                    <span className="font-bold text-[8px] opacity-70">{formatValue(key)}:</span>
                     <span className="tracking-tight">{formatValue(value)}</span>
                     <LuX className="w-3 h-3 opacity-40 group-hover:opacity-100 transition-opacity" />
                 </button>

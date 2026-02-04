@@ -14,8 +14,6 @@ export default function RecentViewed({ products }: Props) {
     return (
         <section
             className="
-        max-w-7xl mx-auto
-        md:px-4
         py-8
       "
         >

@@ -281,6 +281,8 @@ export const ProductListSchema = ApiProductSchema.pick({
     precio: true,
     slug: true,
     imagenes: true,
+    precioComparativo: true,
+    brand: true,
 });
 
 export const productResponseAllSchema = ApiProductSchema.pick({
@@ -310,32 +312,53 @@ export type ProductsAPIResponse = z.infer<typeof productsAPIResponse>;
    🏷️ MARCAS Y FILTROS
 ============================================================ */
 
-export const brandSchema = z.object({
+// 1. Schema para Marca dentro del filtro
+export const brandFilterSchema = z.object({
     id: z.string(),
     nombre: z.string(),
     slug: z.string(),
 });
 
-const filterAttributeSchema = z.object({
-    name: z.string(),
-    values: z.array(z.string()),
+// 2. Schema para Categoría dentro del filtro
+export const categoryFilterSchema = z.object({
+    id: z.string(),
+    nombre: z.string(),
+    slug: z.string(),
 });
 
-const filterSchema = z.object({
-    brands: z.array(brandSchema).optional(),
-    categories: z.array(z.object({
-        id: z.string(),
-        nombre: z.string(),
-        slug: z.string(),
-    })).optional(),
-    atributos: z.array(filterAttributeSchema).optional(),
-    price: z.array(z.object({ min: z.number().nullable(), max: z.number().nullable() })).optional(),
+// 3. Schema para Atributos Dinámicos (ej: Color, Memoria)
+const attributeFilterSchema = z.object({
+    name: z.string(), // ej: "Color"
+    values: z.array(z.string()), // ej: ["Rojo", "Azul"]
 });
+
+// 4. Schema para Precio (Mongo lo devuelve como array de 1 elemento)
+const priceFilterSchema = z.object({
+    min: z.number().nullable().optional(),
+    max: z.number().nullable().optional(),
+});
+
+// 5. Schema PRINCIPAL de Filtros (El objeto contenedor)
+export const filterSchema = z.object({
+    brands: z.array(brandFilterSchema).optional().default([]),
+    categories: z.array(categoryFilterSchema).optional().default([]),
+    atributos: z.array(attributeFilterSchema).optional().default([]),
+    price: z.array(priceFilterSchema).optional().default([]),
+});
+
 export type TFilter = z.infer<typeof filterSchema>;
 
+
+/* ============================================================
+   🚀 RESPUESTA FINAL DE LA API CON FILTROS
+============================================================ */
+
 export const productsApiResponseWithFilters = productsAPIResponse.extend({
-    filters: z.array(filterSchema).optional(),
+    // CORRECCIÓN AQUÍ: 'filters' es un OBJETO, no un array de objetos.
+    // Antes tenías: z.array(filterSchema)
+    filters: filterSchema.optional(), 
 });
+
 export type TProductsApiResponseWithFilters = z.infer<typeof productsApiResponseWithFilters>;
 
 

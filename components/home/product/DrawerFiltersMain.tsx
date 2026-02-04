@@ -3,6 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { LuListFilter, LuX } from "react-icons/lu";
+import { RiDeleteBinLine } from "react-icons/ri";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Slider } from "@/components/ui/slider";
 import {
@@ -11,6 +12,7 @@ import {
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger,
+    DrawerClose
 } from "@/components/ui/drawer";
 import {
     Accordion,
@@ -20,11 +22,12 @@ import {
 } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
 import ColorCircle from "@/components/ui/ColorCircle";
+import { Checkbox } from "@/components/ui/checkbox"; // ✅ Checkbox de shadcn
+import { Label } from "@/components/ui/label"; // ✅ Label de shadcn
 import type { TFilter } from "@/src/schemas";
 
-
 type Props = {
-    filters: TFilter[] | null;
+    filters: TFilter | null | undefined;
 };
 
 export default function DrawerFiltersMain({ filters }: Props) {
@@ -32,13 +35,13 @@ export default function DrawerFiltersMain({ filters }: Props) {
     const searchParams = useSearchParams();
     const [open, setOpen] = useState(false);
 
-    const { brands = [], atributos = [], price = [] } = filters?.[0] ?? {};
+    const { brands = [], categories = [], atributos = [], price = [] } = filters ?? {};
     const priceFilter = price?.[0] ?? null;
 
-    // --- Ordenamiento seguro (Igual al Desktop) ---
-    const sortedCategories = filters?.[0]?.categories
-        ?.slice()
-        .sort((a, b) => a.nombre.localeCompare(b.nombre, undefined, { sensitivity: "base" })) ?? [];
+    // --- Ordenamiento ---
+    const sortedCategories = categories
+        .slice()
+        .sort((a, b) => a.nombre.localeCompare(b.nombre, undefined, { sensitivity: "base" }));
 
     const sortedBrands = brands
         .slice()
@@ -54,35 +57,27 @@ export default function DrawerFiltersMain({ filters }: Props) {
         }))
         .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }));
 
-    // --- Price range state ---
+    // --- Price Range State ---
     const [priceRange, setPriceRange] = useState<[number, number]>([
         priceFilter?.min ?? 0,
-        priceFilter?.max ?? 0,
+        priceFilter?.max ?? 1000,
     ]);
 
     useEffect(() => {
-        if (!priceFilter) return;
         const paramRange = searchParams.get("priceRange");
         if (paramRange) {
             const [min, max] = paramRange.split("-").map(Number);
-            setPriceRange([min || priceFilter.min || 0, max || priceFilter.max || 0]);
-        } else {
-            setPriceRange([priceFilter.min ?? 0, priceFilter.max ?? 0]);
+            setPriceRange([min || 0, max || 1000]);
+        } else if (priceFilter) {
+            setPriceRange([priceFilter.min ?? 0, priceFilter.max ?? 1000]);
         }
     }, [searchParams, priceFilter]);
 
-    if (!filters?.length) return null;
+    if (!filters) return null;
 
-    // --- Handlers ---
-    const handleFilterChange = (key: string, value: string) => {
-        const params = new URLSearchParams(searchParams.toString());
-        if (params.getAll(key).includes(value)) {
-            const newValues = params.getAll(key).filter((v) => v !== value);
-            params.delete(key);
-            newValues.forEach((v) => params.append(key, v));
-        } else {
-            params.append(key, value);
-        }
+    // --- HANDLERS ---
+
+    const updateURL = (params: URLSearchParams) => {
         params.set("page", "1");
         router.push(`/productos?${params.toString()}`, { scroll: false });
     };
@@ -90,8 +85,33 @@ export default function DrawerFiltersMain({ filters }: Props) {
     const updatePriceRange = (range: [number, number]) => {
         const params = new URLSearchParams(searchParams.toString());
         params.set("priceRange", `${range[0]}-${range[1]}`);
-        params.set("page", "1");
-        router.push(`/productos?${params.toString()}`, { scroll: false });
+        updateURL(params);
+    };
+
+    const handleFilterChange = (key: string, value: string) => {
+        const params = new URLSearchParams(searchParams.toString());
+        const lowerKey = key.toLowerCase();
+
+        // 1. CASO COLOR: SELECCIÓN ÚNICA (Radio)
+        if (lowerKey === "color") {
+            const currentColor = params.get(key);
+            if (currentColor === value) {
+                params.delete(key);
+            } else {
+                params.set(key, value);
+            }
+        }
+        // 2. OTROS: SELECCIÓN MÚLTIPLE (Checkbox)
+        else {
+            const currentValues = params.getAll(key);
+            if (currentValues.includes(value)) {
+                params.delete(key);
+                currentValues.filter(v => v !== value).forEach(v => params.append(key, v));
+            } else {
+                params.append(key, value);
+            }
+        }
+        updateURL(params);
     };
 
     const clearFilters = () => {
@@ -103,86 +123,117 @@ export default function DrawerFiltersMain({ filters }: Props) {
     };
 
     const hasActiveFilters = Array.from(searchParams.keys()).some(
-        (key) => key !== "page" && key !== "query" && key !== "sort"
+        (key) => !["page", "query", "sort", "limit"].includes(key)
     );
 
-    // --- Reutilización de diseño de Item (Desktop Mirror) ---
-    const FilterCheckboxItem = ({
-        label,
-        checked,
-        onChange,
-        isColor = false
-    }: { label: string, checked: boolean, onChange: () => void, isColor?: boolean }) => (
-        <li className="group list-none">
-            <label className={cn(
-                "flex items-center gap-3 cursor-pointer py-2 px-1 transition-all duration-200",
-                "active:bg-gray-100 rounded-md",
-                checked ? "text-gray-900" : "text-gray-600"
-            )}>
-                <input
-                    type="checkbox"
-                    className={cn(
-                        "appearance-none",
-                        "w-5 h-5 rounded border border-gray-300 bg-white",
-                        "transition-all duration-200 cursor-pointer relative",
-                        "checked:bg-gray-900 checked:border-gray-900",
-                        "after:content-[''] after:absolute after:opacity-0 checked:after:opacity-100",
-                        "after:left-[6px] after:top-[2px] after:w-[6px] after:h-[10px]",
-                        "after:border-white after:border-b-2 after:border-r-2 after:rotate-45"
-                    )}
-                    checked={checked}
-                    onChange={onChange}
-                />
-                {isColor && <ColorCircle color={label} size={18} />}
-                <span className={cn(
-                    "text-[15px] select-none capitalize leading-none pt-0.5",
-                    checked ? "font-semibold" : "font-normal"
-                )}>
-                    {label}
-                </span>
-            </label>
-        </li>
-    );
+    // A) Item para Checkbox Estándar (Marcas, Categorías, etc.)
+    const StandardFilterItem = ({ label, checked, onChange }: { label: string, checked: boolean, onChange: () => void }) => {
+        const id = `drawer-filter-${label.replace(/\s+/g, "-")}`;
+        return (
+            <li className="py-3 border-b border-gray-50 last:border-0">
+                <div className="flex items-center space-x-4">
+                    <Checkbox
+                        id={id}
+                        checked={checked}
+                        onCheckedChange={onChange}
+                        className="
+                            w-5 h-5 rounded-md border-gray-300
+                            data-[state=checked]:bg-[var(--store-primary)] 
+                            data-[state=checked]:border-[var(--store-primary)]
+                        "
+                    />
+                    <Label
+                        htmlFor={id}
+                        className={cn(
+                            "text-base capitalize flex-1 cursor-pointer font-normal",
+                            checked ? "font-semibold text-[var(--store-text)]" : "text-[var(--store-text-muted)]"
+                        )}
+                    >
+                        {label}
+                    </Label>
+                </div>
+            </li>
+        );
+    };
+
+    // B) Item para Color (Radio Visual - Estilo Apple)
+    const ColorFilterItem = ({ label, checked, onChange }: { label: string, checked: boolean, onChange: () => void }) => {
+        return (
+            <li className="flex justify-center">
+                <button
+                    onClick={onChange}
+                    className="group flex flex-col items-center justify-center gap-1.5 outline-none"
+                    title={label}
+                >
+                    {/* Contenedor del Círculo (Aquí aplicamos el anillo de selección) */}
+                    <div className={cn(
+                        "rounded-full transition-all duration-200 p-0.5", // p-0.5 evita que el ring corte el círculo
+                        checked
+                            ? "ring-1 ring-offset-1 ring-[var(--store-primary)] scale-110"
+                            : "group-hover:scale-110"
+                    )}>
+                        <ColorCircle color={label} size={24} />
+                    </div>
+
+                    {/* Nombre del Color */}
+                    <span className={cn(
+                        "text-[10px] capitalize leading-tight text-center max-w-[60px] truncate px-1",
+                        checked
+                            ? "font-semibold text-[var(--store-text)]"
+                            : "text-[var(--store-text-muted)] group-hover:text-[var(--store-text)]"
+                    )}>
+                        {label}
+                    </span>
+                </button>
+            </li>
+        );
+    };
 
     return (
         <Drawer open={open} onOpenChange={setOpen}>
             <DrawerTrigger asChild>
-                <button className="w-full lg:hidden px-4 py-2.5 flex items-center gap-2 justify-center text-[var(--store-text)]">
+                <button className="lg:hidden flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-bold uppercase tracking-wider text-[var(--store-text)] bg-[var(--store-surface)] hover:bg-[var(--store-surface-hover)] active:scale-95 transition-all w-full">
                     <LuListFilter size={18} />
-                    <span className="text-sm font-medium uppercase tracking-wider">Filtros</span>
+                    Filtros {hasActiveFilters}
                 </button>
             </DrawerTrigger>
 
-            <DrawerContent className="p-0 max-h-[90vh] bg-[var(--store-surface)]">
-                <DrawerHeader className="p-4 border-b border-[var(--store-border)]">
-                    <div className="flex w-full justify-between items-center">
-                        <DrawerTitle className="text-lg font-light uppercase flex items-center gap-2">
-                            <LuListFilter className="w-4 h-4" />
-                            Filtros
-                        </DrawerTitle>
+            <DrawerContent className="max-h-[92vh] bg-[var(--store-surface)] rounded-t-[24px]">
+                {/* Header Fijo */}
+                <DrawerHeader className="flex justify-between items-center px-6 py-5 border-b border-[var(--store-border)]">
+                    <DrawerTitle className="text-lg font-bold uppercase tracking-widest text-[var(--store-text)] flex items-center gap-2">
+                        Filtros
+                    </DrawerTitle>
 
+                    <div className="flex items-center gap-5">
                         {hasActiveFilters && (
                             <button
                                 onClick={clearFilters}
-                                className="text-xs flex items-center gap-1.5 text-[var(--store-text-muted)] hover:text-[var(--store-text)] transition-colors underline underline-offset-2"
+                                className="text-xs font-bold text-[var(--store-primary)] uppercase tracking-wider flex items-center gap-1 active:opacity-60"
                             >
-                                Limpiar <LuX className="w-3.5 h-3.5" />
+                                Limpiar <RiDeleteBinLine size={16} />
                             </button>
                         )}
+                        <DrawerClose className="p-2 -mr-3 text-[var(--store-text-muted)] active:text-[var(--store-text)] bg-gray-100 rounded-full">
+                            <LuX size={20} />
+                        </DrawerClose>
                     </div>
                 </DrawerHeader>
 
-                <ScrollArea className="h-full overflow-y-auto px-4 pb-10">
-                    <Accordion type="multiple" defaultValue={[]} className="w-full space-y-1">
+                {/* Contenido Scrollable */}
+                <ScrollArea className="h-full overflow-y-auto px-6 pb-24 pt-4">
+                    <Accordion type="multiple" defaultValue={["categories", "price", "brands", "color"]} className="w-full space-y-4">
 
                         {/* Categorías */}
                         {sortedCategories.length > 0 && (
-                            <AccordionItem value="categories" className="border-b">
-                                <AccordionTrigger className="text-sm py-4 hover:no-underline capitalize">Categorías</AccordionTrigger>
-                                <AccordionContent>
-                                    <ul className="space-y-1">
+                            <AccordionItem value="categories" className="border-b-[var(--store-border)]">
+                                <AccordionTrigger className="text-base font-bold text-[var(--store-text)] py-4 hover:no-underline">
+                                    Categorías
+                                </AccordionTrigger>
+                                <AccordionContent className="pb-2">
+                                    <ul className="flex flex-col">
                                         {sortedCategories.map((c) => (
-                                            <FilterCheckboxItem
+                                            <StandardFilterItem
                                                 key={c.slug}
                                                 label={c.nombre}
                                                 checked={searchParams.getAll("category").includes(c.slug)}
@@ -196,25 +247,27 @@ export default function DrawerFiltersMain({ filters }: Props) {
 
                         {/* Precio */}
                         {priceFilter && (
-                            <AccordionItem value="price" className="border-b">
-                                <AccordionTrigger className="text-sm py-4 hover:no-underline">Precio</AccordionTrigger>
-                                <AccordionContent className="pt-6 pb-4 px-2">
+                            <AccordionItem value="price" className="border-b-[var(--store-border)]">
+                                <AccordionTrigger className="text-base font-bold text-[var(--store-text)] py-4 hover:no-underline">
+                                    Rango de Precio
+                                </AccordionTrigger>
+                                <AccordionContent className="pt-6 pb-8 px-2">
                                     <Slider
                                         min={priceFilter.min ?? 0}
                                         max={priceFilter.max ?? 1000}
-                                        step={5}
+                                        step={10}
                                         value={priceRange}
                                         onValueChange={(val) => setPriceRange(val as [number, number])}
                                         onValueCommit={(val) => updatePriceRange(val as [number, number])}
-                                        className="[&_.relative]:bg-[var(--store-border)] [&_.absolute]:bg-[var(--store-primary)] [&_span]:border-[var(--store-primary)]"
+                                        className="mb-8 cursor-pointer h-8" // Slider más alto para toque
                                     />
-                                    <div className="flex justify-between items-center mt-6">
-                                        <div className="border border-[var(--store-border)] rounded-md px-4 py-2 bg-[var(--store-surface)] text-sm shadow-sm font-medium">
-                                            S/. {priceRange[0]}
+                                    <div className="flex justify-between items-center text-sm font-semibold text-[var(--store-text)]">
+                                        <div className="bg-[var(--store-bg)] px-4 py-2 rounded-xl border border-[var(--store-border)] min-w-[80px] text-center">
+                                            S/ {priceRange[0]}
                                         </div>
-                                        <div className="h-px w-6 bg-[var(--store-border)]"></div>
-                                        <div className="border border-[var(--store-border)] rounded-md px-4 py-2 bg-[var(--store-surface)] text-sm shadow-sm font-medium">
-                                            S/. {priceRange[1]}
+                                        <span className="text-[var(--store-text-muted)] font-light mx-2">-</span>
+                                        <div className="bg-[var(--store-bg)] px-4 py-2 rounded-xl border border-[var(--store-border)] min-w-[80px] text-center">
+                                            S/ {priceRange[1]}
                                         </div>
                                     </div>
                                 </AccordionContent>
@@ -223,12 +276,14 @@ export default function DrawerFiltersMain({ filters }: Props) {
 
                         {/* Marcas */}
                         {sortedBrands.length > 0 && (
-                            <AccordionItem value="brands" className="border-b">
-                                <AccordionTrigger className="text-sm py-4 hover:no-underline">Marcas</AccordionTrigger>
-                                <AccordionContent>
-                                    <ul className="space-y-1">
+                            <AccordionItem value="brands" className="border-b-[var(--store-border)]">
+                                <AccordionTrigger className="text-base font-bold text-[var(--store-text)] py-4 hover:no-underline">
+                                    Marcas
+                                </AccordionTrigger>
+                                <AccordionContent className="pb-2">
+                                    <ul className="flex flex-col">
                                         {sortedBrands.map((b) => (
-                                            <FilterCheckboxItem
+                                            <StandardFilterItem
                                                 key={b.slug}
                                                 label={b.nombre}
                                                 checked={searchParams.getAll("brand").includes(b.slug)}
@@ -240,30 +295,57 @@ export default function DrawerFiltersMain({ filters }: Props) {
                             </AccordionItem>
                         )}
 
-                        {/* Atributos */}
+                        {/* Atributos Dinámicos */}
                         {sortedAtributos.map((attr) => {
                             const isColor = attr.name.toLowerCase() === "color";
                             return (
-                                <AccordionItem key={attr.name} value={attr.name} className="border-b">
-                                    <AccordionTrigger className="text-sm py-4 hover:no-underline capitalize">{attr.name}</AccordionTrigger>
-                                    <AccordionContent>
-                                        <ul className="space-y-1">
-                                            {attr.values.map((v) => (
-                                                <FilterCheckboxItem
-                                                    key={v}
-                                                    label={v}
-                                                    checked={searchParams.getAll(attr.name).includes(v)}
-                                                    onChange={() => handleFilterChange(attr.name, v)}
-                                                    isColor={isColor}
-                                                />
-                                            ))}
-                                        </ul>
+                                <AccordionItem key={attr.name} value={attr.name.toLowerCase()} className="border-b-[var(--store-border)]">
+                                    <AccordionTrigger className="text-base font-bold text-[var(--store-text)] py-4 hover:no-underline capitalize">
+                                        {attr.name}
+                                    </AccordionTrigger>
+                                    <AccordionContent className="pb-2">
+                                        {isColor ? (
+                                            // Grid de Colores (Radio)
+                                            <ul className="grid grid-cols-5 gap-4 py-2">
+                                                {attr.values.map((val) => (
+                                                    <ColorFilterItem
+                                                        key={val}
+                                                        label={val}
+                                                        checked={searchParams.get(attr.name.toLowerCase()) === val}
+                                                        onChange={() => handleFilterChange(attr.name.toLowerCase(), val)}
+                                                    />
+                                                ))}
+                                            </ul>
+                                        ) : (
+                                            // Lista Normal (Checkbox)
+                                            <ul className="flex flex-col">
+                                                {attr.values.map((val) => (
+                                                    <StandardFilterItem
+                                                        key={val}
+                                                        label={val}
+                                                        checked={searchParams.getAll(attr.name.toLowerCase()).includes(val)}
+                                                        onChange={() => handleFilterChange(attr.name.toLowerCase(), val)}
+                                                    />
+                                                ))}
+                                            </ul>
+                                        )}
                                     </AccordionContent>
                                 </AccordionItem>
                             );
                         })}
+
                     </Accordion>
                 </ScrollArea>
+
+                {/* Footer Fijo con Sombra */}
+                <div className="absolute bottom-0 left-0 right-0 p-6 bg-[var(--store-surface)] border-t border-[var(--store-border)] shadow-[0_-4px_20px_rgba(0,0,0,0.05)] pb-safe">
+                    <button
+                        onClick={() => setOpen(false)}
+                        className="w-full bg-[var(--store-text)] text-[var(--store-surface)] font-bold py-4 rounded-2xl active:scale-[0.98] transition-transform text-base tracking-wide"
+                    >
+                        Ver Resultados
+                    </button>
+                </div>
             </DrawerContent>
         </Drawer>
     );

@@ -51,7 +51,7 @@ export default function OrdenarPor({ pathname }: Props) {
                     className="
                         w-full cursor-pointer rounded-lg 
                         bg-[var(--store-surface)] px-3 py-2
-                        border border-[var(--store-border)]
+                        
                         text-sm
                     "
                 >

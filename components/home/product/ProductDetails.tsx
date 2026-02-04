@@ -168,7 +168,7 @@ export default function ProductDetails({ producto }: Props) {
 
     return (
         <>
-            <article className="grid grid-cols-1 md:grid-cols-6 gap-2 md:gap-6 max-w-7xl mx-auto py-2">
+            <article className="grid grid-cols-1 md:grid-cols-6 gap-2 md:gap-6 mx-auto py-2">
                 {/* Imágenes */}
                 <div className='md:col-span-3'>
                     <ImagenesProductoCarousel images={variantImages} />

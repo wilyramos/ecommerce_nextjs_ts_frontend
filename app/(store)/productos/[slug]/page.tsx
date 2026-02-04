@@ -96,7 +96,7 @@ export default async function pageProduct({ params }: { params: Params }) {
     const producto = await GetProductsBySlug(slug);
 
     return (
-        <main className='px-4 md:px-8'>
+        <main className='md:max-w-screen-2xl mx-auto p-2 md:px-4'>
             <ProductJsonLd producto={producto} />
             <Suspense fallback={<SpinnerLoading />}>
                 <ProductPageServer producto={producto} />

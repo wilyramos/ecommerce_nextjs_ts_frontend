@@ -5,7 +5,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import type { ProductResponse } from "@/src/schemas";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react"; // Usaremos este para el estilo Apple Link
+import { ChevronRight } from "lucide-react";
 import { CustomDot } from "../ui/CustomDot";
 import { CustomArrow } from "../ui/CustomArrows";
 import { useEffect, useState } from "react";
@@ -23,24 +23,24 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
     useEffect(() => {
         const interval = setInterval(() => {
             setShowDiscount((prev) => !prev);
-        }, 3000); // Un poco más lento para no distraer
+        }, 4000); // 4 segundos para lectura tranquila
         return () => clearInterval(interval);
     }, []);
 
     return (
-        <section className="relative w-full bg-[var(--store-bg)]  overflow-hidden">
+        <section className="relative w-full  overflow-hidden">
             <Carousel
                 responsive={responsive}
                 autoPlay
                 infinite
-                autoPlaySpeed={8000}
+                autoPlaySpeed={6000} // Velocidad un poco más rápida para dinamismo
                 showDots
                 renderDotsOutside
-                dotListClass=""
+                dotListClass="!bottom-4" // Dots dentro del container visualmente
                 customDot={<CustomDot />}
                 customLeftArrow={<CustomArrow direction="left" />}
                 customRightArrow={<CustomArrow direction="right" />}
-                itemClass=""
+                itemClass="px-0" // Sin padding extra entre items
             >
                 {products.map((product) => {
                     const discountPercentage = product.precioComparativo
@@ -48,95 +48,73 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                         : 0;
 
                     return (
-                        <div key={product._id} className="">
+                        <div key={product._id} className="w-full px-4 md:px-0 py-4 md:py-6">
                             <Link
                                 href={`/productos/${product.slug}`}
                                 className="group relative flex flex-col md:flex-row items-center justify-between 
-                                bg-[var(--store-surface)] px-6 md:px-20 py-10 md:py-0 h-auto md:h-[480px] w-full 
-                                transition-all duration-500 "
+                                bg-[var(--store-surface)] overflow-hidden
+                                 transition-all duration-500
+                                h-[500px] md:h-[400px] w-full max-w-[1440px] mx-auto"
                             >
-                                {/* Sección de Texto */}
-                                <article className="z-10 w-full md:w-1/2 space-y-4 text-center md:text-left order-2 md:order-1 mt-8 md:mt-0">
+                                {/* --- SECCIÓN DE TEXTO (Izquierda en Desktop) --- */}
+                                <div className="w-full md:w-[45%] h-1/2 md:h-full flex flex-col justify-center items-center md:items-start p-6 md:pl-16 md:pr-4 text-center md:text-left order-2 md:order-1 z-10">
 
-                                    {/* Tag Estilo Apple */}
-                                    <div className="flex items-center justify-center md:justify-start">
-                                        <span className="text-[12px] font-semibold uppercase tracking-[0.1em] text-[var(--store-primary)]">
-                                            {product.esNuevo ? "Nuevo" : product.brand?.nombre || "Exclusivo"}
-                                        </span>
-                                    </div>
+                                    {/* Tag Superior */}
+                                    <span className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--store-text-muted)] mb-3">
+                                        {product.esNuevo ? "Nuevo Lanzamiento" : product.brand?.nombre || "Destacado"}
+                                    </span>
 
-                                    {/* Título Principal */}
-                                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[var(--store-text)] leading-[1.1] line-clamp-2">
+                                    {/* Título */}
+                                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--store-text)] tracking-tight leading-[1.1] mb-2 line-clamp-2">
                                         {product.nombre}
                                     </h2>
 
-                                    {/* Precio y Descuento */}
-                                    <div className="flex flex-col gap-1">
-                                        <div className="flex items-center justify-center md:justify-start gap-3">
-                                            <p className="text-xl md:text-2xl font-medium text-[var(--store-text)]">
-                                                S/. {product.precio?.toFixed(2)}
-                                            </p>
-
+                                    {/* Precio y Animación de Descuento */}
+                                    <div className="h-12 flex flex-col justify-center mb-4">
+                                        <div className="flex items-baseline gap-3 justify-center md:justify-start">
+                                            <span className="text-xl md:text-2xl font-semibold text-[var(--store-text)]">
+                                                S/ {product.precio?.toFixed(2)}
+                                            </span>
                                             {product.precioComparativo && (
                                                 <span className="text-sm text-[var(--store-text-muted)] line-through">
-                                                    S/. {product.precioComparativo.toFixed(2)}
+                                                    S/ {product.precioComparativo.toFixed(2)}
                                                 </span>
                                             )}
                                         </div>
 
-                                        {/* Badge de Ahorro Elegante */}
+                                        {/* Mensaje Rotativo */}
                                         {discountPercentage > 0 && (
-                                            <div className="h-6 relative overflow-hidden flex items-center justify-center md:justify-start">
-                                                <span className={`absolute transition-all duration-700 ease-in-out text-sm font-medium text-[var(--store-primary)]
+                                            <div className="relative h-8 w-full overflow-hidden ">
+                                                <p className={`absolute w-full transition-all duration-700 ease-in-out text-xs font-semibold text-[var(--store-primary)]
                                                     ${showDiscount ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
                                                     Ahorra un {discountPercentage}% hoy
-                                                </span>
-                                                <span className={`absolute transition-all duration-700 ease-in-out text-sm font-medium text-[var(--store-text-muted)]
+                                                </p>
+                                                <p className={`absolute w-full transition-all duration-700 ease-in-out text-xs font-medium text-[var(--store-text-muted)]
                                                     ${!showDiscount ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}`}>
-                                                    Oportunidad limitada
-                                                </span>
+                                                    Oferta por tiempo limitado
+                                                </p>
                                             </div>
                                         )}
                                     </div>
 
-                                    {/* Botones de Acción Estilo Apple */}
-                                    <div className="flex items-center justify-center md:justify-start gap-6 pt-4">
-
-                                        <div className="flex items-center text-[var(--store-primary)] font-medium hover:underline cursor-pointer group/link text-sm">
-                                            Más información <ChevronRight size={16} className="group-hover/link:translate-x-1 transition-transform" />
-                                        </div>
+                                    {/* Botón CTA (Call To Action) */}
+                                    <div className="flex items-center text-[var(--store-primary)] text-sm font-medium group/btn cursor-pointer">
+                                        Comprar ahora
+                                        <ChevronRight size={16} className="ml-1 transition-transform group-hover/btn:translate-x-1" />
                                     </div>
-                                </article>
+                                </div>
 
-                                {/* Sección de Imagen */}
-                                <div className="relative w-full md:w-1/2 h-[280px] sm:h-[350px] md:h-[400px] order-1 md:order-2">
-                                    <div className="relative w-full h-full p-4">
+                                {/* --- SECCIÓN DE IMAGEN (Derecha en Desktop) --- */}
+                                <div className="w-full md:w-[55%] h-1/2 md:h-full relative order-1 md:order-2 bg-[var(--store-bg)] md:bg-transparent">
+                                    <div className="relative w-full h-full p-6 md:p-8">
                                         <Image
-                                            src={product.imagenes?.[0] || "/logoapp.png"}
+                                            src={product.imagenes?.[0] || "/placeholder.png"}
                                             alt={product.nombre}
                                             fill
                                             priority
-                                            sizes="(max-width: 640px) 100vw,
-         (max-width: 1024px) 50vw,
-         50vw"
-                                            className="object-contain transition-all duration-1000 ease-in-out group-hover:scale-105"
+                                            sizes="(max-width: 768px) 100vw, 60vw"
+                                            className="object-contain mix-blend-multiply transition-transform duration-700 ease-out group-hover:scale-105"
                                         />
-
-
-                                        {/* Efecto de segunda imagen al hover (suave) */}
-                                        {product.imagenes?.[1] && (
-                                            <Image
-                                                src={product.imagenes[1]}
-                                                alt={product.nombre}
-                                                fill
-                                                sizes="(max-width: 640px) 100vw,
-           (max-width: 1024px) 50vw,
-           50vw"
-                                                className="absolute inset-0 object-contain transition-all duration-1000 ease-in-out
-               opacity-0 group-hover:opacity-100 scale-95 group-hover:scale-105"
-                                            />
-                                        )}
-
                                     </div>
                                 </div>
                             </Link>

@@ -25,8 +25,9 @@ export default async function ProductPageServer({ producto }: Props) {
             <h1 className="text-xl text-center hidden">
                 {producto.nombre}
             </h1>
+            
 
-            <section className="max-w-7xl mx-auto py-2">
+            <section className="py-2">
                 <Breadcrumb
                     categoryName={producto.categoria?.nombre || 'General'}
                     categorySlug={producto.categoria?.slug || 'general'}
@@ -40,11 +41,11 @@ export default async function ProductPageServer({ producto }: Props) {
                 </div>
             </section>
 
-            <section className="max-w-7xl mx-auto py-4">
+            <section className=" mx-auto py-4">
                 <ProductosRelated slug={producto.slug} />
             </section>
 
-            <section className="max-w-7xl mx-auto py-4">
+            <section className="mx-auto py-4">
                 <RecentViewedClient producto={producto} />
             </section>
         </>
