@@ -95,6 +95,7 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         diasEnvio: formData.get('diasEnvio') ? Number(formData.get('diasEnvio')) : undefined,
         variants: cleanedVariants,
         isFrontPage: formData.get('isFrontPage') === 'true',
+        line: formData.get('line') || undefined,
     }
 
     const product = updateProductSchema.safeParse(productData);

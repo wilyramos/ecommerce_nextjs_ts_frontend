@@ -6,7 +6,7 @@ import ImagenesProductoCarousel from './ImagenesProductoCarousel';
 import type { ProductWithCategoryResponse, TApiVariant } from '@/src/schemas';
 import ShopNowButton from './ShopNowButton';
 import ProductExpandableSections from './ProductExpandableSections ';
-import { getDeliveryRange } from '@/lib/utils';
+import { cn, getDeliveryRange } from '@/lib/utils';
 import {
     Select,
     SelectContent,
@@ -20,6 +20,7 @@ import PaymentMethods from '../PaymentMethods';
 import ColorCircle from '@/components/ui/ColorCircle';
 import Link from 'next/link';
 import Image from 'next/image';
+import { CalendarDays, MapPin, MessageCircle } from 'lucide-react';
 
 type Props = {
     producto: ProductWithCategoryResponse;
@@ -202,11 +203,9 @@ export default function ProductDetails({ producto }: Props) {
                                 )}
                             </div>
 
-                            <div>
-                                <h1 className="text-md md:text-lg leading-snug text-[var(--store-text)] font-semibold">
-                                    {producto.nombre}
-                                </h1>
-                            </div>
+                            <h1 className="text-3xl md:text-4xl font-semibold text-[var(--store-text)] tracking-tight leading-tight">
+                                {producto.nombre}
+                            </h1>
 
                             {/* Mostrar color solo si NO hay variantes */}
                             {!producto.variants?.length && colorAtributo && (
@@ -264,24 +263,10 @@ export default function ProductDetails({ producto }: Props) {
                             </div>
 
                             {/* Stock */}
-                            {stock <= 3 && (
-                                <div className="flex items-center gap-2 mt-2">
-                                    <span
-                                        className={`text-xs font-medium px-2.5 py-1 flex items-center gap-1.5 w-fit transition-colors rounded
-                                    ${stock === 0
-                                                ? "bg-[var(--store-bg)] text-[var(--store-text-muted)] border border-[var(--store-border)]"
-                                                : "bg-yellow-300 text-yellow-900 border border-yellow-400"
-                                            }`}
-                                    >
-
-                                        {stock === 0 ? "Agotado" : `¡Solo quedan ${stock}!`}
-                                    </span>
-
-                                    {stock > 0 && (
-                                        <span className="text-[10px] font-bold text-[var(--store-text-muted)] uppercase tracking-wide">
-                                            ¡Pídelo antes que se acabe!
-                                        </span>
-                                    )}
+                            {stock <= 5 && stock > 0 && (
+                                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-yellow-50 border border-yellow-100 rounded-lg text-yellow-800 text-xs font-medium mt-1">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></div>
+                                    Solo quedan {stock} unidades. ¡Pídelo pronto!
                                 </div>
                             )}
 
@@ -297,17 +282,20 @@ export default function ProductDetails({ producto }: Props) {
                             const availableValues = getAvailableValues(key);
 
                             return (
-                                <fieldset key={key} className="mb-2 p-1">
-                                    <legend className="text-sm font-bold text-[var(--store-text-muted)] uppercase tracking-wide mb-2">{key}:</legend>
+                                <fieldset key={key} className="space-y-2">
+                                    <legend className="text-sm font-bold text-[var(--store-text-muted)] uppercase tracking-wider mb-3">
+                                        {key}:
+                                    </legend>
 
                                     {key.toLowerCase() === "color" ? (
-                                        <div className="flex flex-wrap items-center gap-3">
-                                            {availableValues.map(val => {
+                                        /* USO DE GRID EN LUGAR DE FLEX PARA MEJOR RESPONSIVIDAD */
+                                        <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
+                                            {availableValues.map((val) => {
                                                 const outOfStock = isOptionOutOfStock(key, val);
                                                 const selected = selectedAttributes[key] === val;
 
                                                 const variantForValue = producto.variants?.find(
-                                                    v =>
+                                                    (v) =>
                                                         v.atributos[key] === val &&
                                                         Object.entries(selectedAttributes).every(
                                                             ([k, v2]) => k === key || v.atributos[k] === v2
@@ -320,43 +308,38 @@ export default function ProductDetails({ producto }: Props) {
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
                                                         title={val}
-                                                        className={`relative w-20 h-24 rounded border transition-all
-flex flex-col items-center justify-center p-1
-${selected
-                                                                ? 'border-[var(--store-primary)] ring-1 ring-[var(--store-primary)]'
-                                                                : 'border-[var(--store-border)] hover:border-[var(--store-text-muted)]'
-                                                            }
-${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
-`}
-
+                                                        /* CAMBIOS: w-full, sin min-w fijo, transiciones suaves, ring-offset para que el borde no pegue */
+                                                        className={cn(
+                                                            "relative group flex flex-col items-center justify-between gap-2 p-1 rounded-xl border w-full transition-all duration-200 ease-in-out",
+                                                            selected
+                                                                ? "border-[var(--store-primary)]  border-2  "
+                                                                : "border-[var(--store-border)] hover:border-[var(--store-text-muted)] hover:shadow-md bg-white/50",
+                                                            outOfStock && "opacity-50 grayscale cursor-not-allowed"
+                                                        )}
                                                     >
-                                                        {/* Color */}
-                                                        <div className="flex items-center justify-center">
-                                                            <ColorCircle color={val} />
-                                                        </div>
-
-                                                        {/* Imagen: Fondo gris muy claro para contrastar con el blanco del componente */}
-                                                        <div className="my-2 flex items-center justify-center bg-[var(--store-bg)] rounded-sm">
-                                                            {variantForValue?.imagenes?.[0] && (
-                                                                <div className="flex items-center justify-center bg-[var(--store-bg)]">
-                                                                    <Image
-                                                                        src={variantForValue.imagenes[0]}
-                                                                        alt={`Variante ${val}`}
-                                                                        width={36}
-                                                                        height={36}
-                                                                        className="object-cover h-7 w-7 mix-blend-multiply"
-                                                                        quality={2}
-                                                                    />
-                                                                </div>
+                                                        {/* Color / Imagen - Tamaño ligeramente ajustado */}
+                                                        <div className="relative w-10 h-10 flex-shrink-0 overflow-hidden rounded-full border border-black/5 shadow-sm group-hover:scale-105 transition-transform">
+                                                            {variantForValue?.imagenes?.[0] ? (
+                                                                <Image
+                                                                    src={variantForValue.imagenes[0]}
+                                                                    alt={val}
+                                                                    fill
+                                                                    className="object-cover"
+                                                                    quality={30} // Subido un poco la calidad para retina
+                                                                />
+                                                            ) : (
+                                                                <ColorCircle color={val} />
                                                             )}
-
                                                         </div>
 
                                                         {/* Nombre / etiqueta */}
                                                         <div className="flex w-full items-center justify-center px-1">
                                                             <span
-                                                                className={`text-[11px] text-center truncate leading-tight
-        ${selected ? 'font-semibold text-[var(--store-text)]' : 'font-medium text-[var(--store-text-muted)]'}`}
+                                                                className={`text-xs text-center truncate leading-tight transition-colors
+                                            ${selected
+                                                                        ? 'font-bold text-[var(--store-text)]'
+                                                                        : 'font-medium text-[var(--store-text-muted)] group-hover:text-[var(--store-text)]'
+                                                                    }`}
                                                             >
                                                                 {val}
                                                             </span>
@@ -365,76 +348,74 @@ ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
                                                         {/* Precio */}
                                                         <div className="h-4 flex items-center justify-center">
                                                             {variantForValue?.precio && (
-                                                                <span className="text-[9px] font-semibold text-[var(--store-text-muted)]">
+                                                                <span className="text-[10px] font-bold text-[var(--store-text-muted)] bg-[var(--store-surface)] px-2 py-0.5 rounded-full">
                                                                     S/ {variantForValue.precio.toFixed(0)}
                                                                 </span>
                                                             )}
                                                         </div>
 
                                                         {outOfStock && (
-                                                            <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                                                                <div className="w-[80%] border-t-2 border-[var(--store-text-muted)] border-dashed -rotate-45" />
+                                                            <span className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+                                                                <div className="w-[70%] border-t-2 border-[var(--store-text-muted)]/70 border-dashed -rotate-45" />
                                                             </span>
                                                         )}
                                                     </button>
-
-
                                                 );
                                             })}
                                         </div>
                                     ) : availableValues.length <= 6 ? (
-                                        <div className="flex flex-wrap gap-2">
-                                            {availableValues.map(val => {
+                                        <div className="flex flex-wrap gap-2.5">
+                                            {availableValues.map((val) => {
                                                 const outOfStock = isOptionOutOfStock(key, val);
                                                 const selected = selectedAttributes[key] === val;
                                                 return (
                                                     <Button
                                                         key={val}
                                                         variant={selected ? "default" : "outline"}
-                                                        size="sm"
+                                                        size="sm" // Puedes cambiar a 'default' si quieres botones más altos en móvil
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
-                                                        /* Ajuste de estilos para el botón seleccionado y por defecto:
-                                                           - Si está seleccionado: usa el estilo default (que debería mapear a primary en shadcn o lo forzamos aqui)
-                                                           - Si no: usa el borde sutil
-                                                        */
-                                                        className={`relative rounded-none font-medium
-                                                            ${selected
-                                                                ? 'bg-[var(--store-primary)] text-[var(--store-primary-text)] hover:bg-[var(--store-primary-hover)]'
-                                                                : 'border-[var(--store-border)] text-[var(--store-text)] hover:bg-[var(--store-bg)]'
+                                                        /* CAMBIOS: rounded-md (más moderno), min-w para touch target, transiciones */
+                                                        className={`relative h-10 px-4 min-w-[3.5rem] rounded-md font-medium transition-all duration-200
+                                    ${selected
+                                                                ? "bg-[var(--store-primary)] text-[var(--store-primary-text)] shadow-md transform scale-[1.02]"
+                                                                : "border-[var(--store-border)] text-[var(--store-text)] bg-transparent hover:bg-[var(--store-surface)] hover:text-[var(--store-text)] hover:border-[var(--store-text-muted)]"
                                                             }
-                                                            ${outOfStock ? "opacity-40 cursor-not-allowed font-bold uppercase" : "cursor-pointer"}
-                                                        `}
+                                    ${outOfStock ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}
+                                `}
                                                     >
                                                         {val}
                                                         {outOfStock && (
                                                             <span
-                                                                className="absolute top-1/2 left-1/2 w-[80%] border-t-2 border-[var(--store-text-muted)] border-dashed"
-                                                                style={{ transform: 'translate(-50%, -50%) rotate(-45deg)' }}
+                                                                className="absolute top-1/2 left-1/2 w-[80%] border-t-[1.5px] border-current border-dashed opacity-70"
+                                                                style={{ transform: "translate(-50%, -50%) rotate(-15deg)" }}
                                                             />
                                                         )}
                                                     </Button>
                                                 );
                                             })}
                                         </div>
-
                                     ) : (
                                         <Select
                                             value={selectedAttributes[key] || ""}
                                             onValueChange={(value) => updateSelectedVariant(key, value)}
                                         >
-                                            <SelectTrigger className="border-[var(--store-border)] text-[var(--store-text)]">
+                                            {/* SelectTrigger ancho completo para móvil */}
+                                            <SelectTrigger className="w-full h-11 border-[var(--store-border)] text-[var(--store-text)] rounded-md shadow-sm focus:ring-1 focus:ring-[var(--store-primary)]">
                                                 <SelectValue placeholder={`Seleccionar ${key}`} />
                                             </SelectTrigger>
-                                            <SelectContent className="bg-[var(--store-surface)] border-[var(--store-border)]">
-                                                {availableValues.map(val => {
+                                            <SelectContent className="bg-[var(--store-surface)] border-[var(--store-border)] shadow-xl rounded-md">
+                                                {availableValues.map((val) => {
                                                     const outOfStock = isOptionOutOfStock(key, val);
                                                     return (
                                                         <SelectItem
                                                             key={val}
                                                             value={val}
                                                             disabled={outOfStock}
-                                                            className={`${outOfStock ? "opacity-40 cursor-not-allowed line-through text-[var(--store-text-muted)]" : "cursor-pointer text-[var(--store-text)]"}`}
+                                                            className={`py-2.5 ${outOfStock
+                                                                ? "opacity-50 line-through text-[var(--store-text-muted)]"
+                                                                : "cursor-pointer text-[var(--store-text)] focus:bg-[var(--store-bg)]"
+                                                                }`}
                                                         >
                                                             {val}
                                                         </SelectItem>
@@ -483,57 +464,87 @@ ${outOfStock ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
                         </section>
                     </div>
 
-                    {/* Información adicional */}
-                    <div className="space-y-2 mt-2 text-[var(--store-text)] text-sm">
-                        {/* Envío */}
-                        <div className="bg-[var(--store-surface)] py-2 md:px-4 flex items-start gap-4 px-4">
-                            <div className="flex flex-wrap gap-x-2 flex-col">
-                                {/* Nota: Ajuste a variables. El fondo gris claro --store-bg destaca sobre el blanco --store-surface */}
-                                <div className="text-[var(--store-text-muted)] flex flex-col px-3 py-2">
-                                    <p>
-                                        Envíos <span className="font-semibold text-[var(--store-text)]">gratuitos y contraentrega</span> en todo Cañete
-                                    </p>
-                                    <p>
-                                        Envíos al resto del Perú mediante{" "}
-                                        {/* SHALOM rojo se mantiene como marca */}
-                                        <span className="font-semibold italic bg-[#D62828] text-white px-1">SHALOM</span>
-                                    </p>
+                    {/* Información Adicional - Responsive */}
+                    <div className="mt-6 sm:mt-8 bg-[var(--store-surface)] divide-y divide-[var(--store-border)]">
+
+                        {/* 1. Envío */}
+                        <div className="p-4 sm:p-5 flex flex-col sm:flex-row gap-4">
+
+
+                            <div className="space-y-4 flex-1">
+                                <div>
+                                    <h3 className="text-sm font-semibold mb-1 text-[var(--store-text)]">
+                                        Opciones de Envío:
+                                    </h3>
+
+                                    <div className="text-sm text-[var(--store-text-muted)] space-y-2">
+                                        <p className="flex flex-wrap items-center gap-2">
+                                            <MapPin className="w-3.5 h-3.5 shrink-0" />
+                                            <span>
+                                                Cañete:
+                                                <span className="ml-1 text-[var(--store-primary)] font-medium">
+                                                    Gratis y Contraentrega
+                                                </span>
+                                            </span>
+                                        </p>
+
+                                        <p className="leading-relaxed">
+                                            Resto del Perú: Envíos mediante{" "}
+                                            <span className="inline-block font-medium text-white bg-red-600 px-2 py-0.5 rounded">
+                                                SHALOM
+                                            </span>
+                                        </p>
+                                    </div>
                                 </div>
 
-
-                                <p className="border-l-2 border-[var(--store-primary)] py-2 px-1 text-[var(--store-text-muted)] bg-[var(--store-bg)] mt-1">
-                                    {producto.diasEnvio
-                                        ? `Recíbelo entre: ${getDeliveryRange(producto.diasEnvio)}`
-                                        : "Recíbelo en 1–3 días hábiles"}
-                                </p>
+                                <div className="flex gap-2 bg-[var(--store-bg)] rounded-lg p-3">
+                                    <CalendarDays className="w-4 h-4 text-[var(--store-text-muted)] mt-0.5 shrink-0" />
+                                    <div className="text-xs text-[var(--store-text)]">
+                                        <span className="font-semibold block mb-0.5">
+                                            Estimación de entrega
+                                        </span>
+                                        {producto.diasEnvio
+                                            ? getDeliveryRange(producto.diasEnvio)
+                                            : "Disponible para envío en 1–3 días hábiles"}
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        {/* Compra segura */}
-                        <div className="bg-[var(--store-surface)] md:px-4 flex items-center gap-4 px-4 py-2">
-                            <div className="flex flex-col lg:flex-row lg:items-center md:justify-between w-full gap-2">
-                                <p className="text-[var(--store-text-muted)] whitespace-nowrap">Aceptamos los siguientes medios de pago:</p>
-                                <div className="flex items-center flex-wrap gap-1 ">
+                        {/* 2. Pagos */}
+                        <div className="p-4 sm:p-5 flex flex-col sm:flex-row gap-4">
+
+
+                            <div className="flex-1">
+                                <h3 className="text-sm font-semibold mb-2 text-[var(--store-text)]">
+                                    Medios de pago:
+                                </h3>
+
+                                <div className="flex flex-wrap gap-2 sm:gap-3">
                                     <PaymentMethods />
                                 </div>
                             </div>
                         </div>
 
-                        {/* Contacto */}
-                        <div className="bg-[var(--store-surface)] px-4 py-2 text-center">
-                            <p>
-                                ¿Tienes dudas?{" "}
-                                <a
-                                    href={`https://wa.me/51925054636?text=Hola%2C%20quería%20consultar%20sobre%20${encodeURIComponent(producto.nombre)}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-green-600 font-medium underline"
-                                >
-                                    Contáctanos por WhatsApp
-                                </a>.
-                            </p>
+                        {/* 3. WhatsApp */}
+                        <div className="p-4 flex justify-center text-center">
+                            <a
+                                href={`https://wa.me/51925054636?text=Hola%2C%20quería%20consultar%20sobre%20${encodeURIComponent(producto.nombre)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group flex flex-wrap items-center justify-center gap-2 text-sm font-medium text-[var(--store-text-muted)] hover:text-[#25D366] transition-colors"
+                            >
+                                <MessageCircle className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                                <span>
+                                    ¿Tienes dudas?{" "}
+                                    <span className="underline decoration-dotted underline-offset-4">
+                                        Escríbenos al WhatsApp
+                                    </span>
+                                </span>
+                            </a>
                         </div>
                     </div>
+
 
                 </section>
             </article>

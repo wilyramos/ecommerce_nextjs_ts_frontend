@@ -4,19 +4,29 @@ import Link from "next/link";
 import { FaFacebookF, FaInstagram, FaWhatsapp } from "react-icons/fa";
 import PaymentMethods from "./PaymentMethods";
 import Logo from "../ui/Logo";
+import { routes } from "@/lib/routes";
 
 export default function Footer() {
-    const links = [
-        { label: "Inicio", href: "/" },
-        { label: "Productos", href: "/productos" },
-        { label: "Categorías", href: "/categorias" },
-        { label: "Ofertas", href: "/ofertas" },
-        // { label: "Marcas", href: "/marcas" },
+
+    // 1. Enlaces de Navegación (Priorizando lo nuevo)
+    const shopLinks = [
+        { label: "Ver todo", href: routes.catalog() },
+        { label: "Novedades", href: "/novedades" }, // <--- NUEVO
+        { label: "Ofertas", href: "/ofertas" },     // <--- NUEVO
+        { label: "Celulares", href: routes.catalog({ category: 'celulares' }) },
+        { label: "Audio", href: routes.catalog({ category: 'audio' }) },
+        { label: "Cables y Cargadores", href: routes.catalog({ category: 'cables-y-cargadores' }) },
+    ];
+
+    // 2. Enlaces de Marcas
+    const brandLinks = [
+        { label: "Apple", href: routes.catalog({ brand: 'apple' }) },
+        { label: "Samsung", href: routes.catalog({ brand: 'samsung' }) },
+        { label: "Xiaomi", href: routes.catalog({ brand: 'xiaomi' }) },
     ];
 
     const helpCenterLinks = [
         { label: "Contacto y soporte", href: "/hc/contacto-y-soporte" },
-        { label: "Proceso de compra", href: "/hc/proceso-de-compra" },
         { label: "Garantías y devoluciones", href: "/hc/garantias-y-devoluciones" },
         { label: "Preguntas frecuentes", href: "/hc/preguntas-frecuentes" },
     ];
@@ -24,7 +34,6 @@ export default function Footer() {
     const legalLinks = [
         { label: "Privacidad", href: "/hc/politicas-de-privacidad" },
         { label: "Términos", href: "/terminos" },
-        { label: "Cookies", href: "/cookies" },
     ];
 
     const social = [
@@ -39,12 +48,12 @@ export default function Footer() {
                 <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-12">
 
                     {/* Branding & Social */}
-                    <div className="lg:col-span-5 flex flex-col justify-between">
+                    <div className="lg:col-span-4 flex flex-col justify-between space-y-8">
                         <div className="space-y-6">
-                            <div className="w-24">
+                            <div className="w-28">
                                 <Logo color="black" />
                             </div>
-                            <p className="text-[15px] leading-relaxed max-w-sm text-[var(--store-text-muted)]">
+                            <p className="text-[14px] leading-relaxed max-w-sm text-[var(--store-text-muted)]">
                                 Elevando tu experiencia digital. Descubre la selección más curada de tecnología y accesorios premium en Cañete.
                             </p>
                             <div className="flex gap-5">
@@ -54,7 +63,8 @@ export default function Footer() {
                                         href={href}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-[var(--store-text-muted)] hover:text-[var(--store-text)] transition-all duration-300 transform hover:-translate-y-1"
+                                        aria-label={name}
+                                        className="text-[var(--store-text-muted)] hover:text-[var(--store-text)] transition-all duration-300 transform hover:-translate-y-1 hover:scale-110"
                                     >
                                         {icon}
                                     </a>
@@ -64,15 +74,17 @@ export default function Footer() {
                     </div>
 
                     {/* Navigation Columns */}
-                    <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-8">
+                    <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-8">
+
+                        {/* Columna: Tienda */}
                         <nav className="flex flex-col gap-5">
                             <h3 className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--store-text)]">
-                                Navegación
+                                Explorar
                             </h3>
                             <ul className="flex flex-col gap-3">
-                                {links.map(({ label, href }) => (
-                                    <li key={href}>
-                                        <Link href={href} className="text-[13px] text-[var(--store-text-muted)] hover:text-[var(--store-primary)] transition-colors">
+                                {shopLinks.map(({ label, href }) => (
+                                    <li key={label}>
+                                        <Link href={href} className="text-[13px] text-[var(--store-text-muted)] hover:text-[var(--store-primary)] hover:underline transition-colors decoration-1 underline-offset-4">
                                             {label}
                                         </Link>
                                     </li>
@@ -80,9 +92,26 @@ export default function Footer() {
                             </ul>
                         </nav>
 
+                        {/* Columna: Marcas */}
                         <nav className="flex flex-col gap-5">
                             <h3 className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--store-text)]">
-                                Soporte
+                                Marcas
+                            </h3>
+                            <ul className="flex flex-col gap-3">
+                                {brandLinks.map(({ label, href }) => (
+                                    <li key={label}>
+                                        <Link href={href} className="text-[13px] text-[var(--store-text-muted)] hover:text-[var(--store-primary)] hover:underline transition-colors decoration-1 underline-offset-4">
+                                            {label}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </nav>
+
+                        {/* Columna: Soporte */}
+                        <nav className="flex flex-col gap-5">
+                            <h3 className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--store-text)]">
+                                Ayuda
                             </h3>
                             <ul className="flex flex-col gap-3">
                                 {helpCenterLinks.map(({ label, href }) => (
@@ -95,17 +124,15 @@ export default function Footer() {
                             </ul>
                         </nav>
 
-                        <div className="flex flex-col gap-5 col-span-2 md:col-span-1">
+                        {/* Columna: Info */}
+                        <div className="flex flex-col gap-5">
                             <h3 className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--store-text)]">
-                                Sede Central
+                                Visítanos
                             </h3>
                             <div className="text-[13px] text-[var(--store-text-muted)] leading-relaxed space-y-1">
                                 <p>Jr. O Higgins 120</p>
                                 <p>San Vicente de Cañete</p>
-                                <div className="pt-2 flex items-center gap-2">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                                    <span className="text-[11px] font-medium">Abierto ahora</span>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -114,19 +141,24 @@ export default function Footer() {
                 {/* Bottom Bar: Legal & Global */}
                 <div className="mt-16 pt-8 border-t border-[var(--store-border)]">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-                        <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
-                            <span className="text-[11px] text-[var(--store-text-muted)] font-medium">
-                                Copyright © {new Date().getFullYear()} GoPhone Inc.
+
+                        <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8 order-2 md:order-1">
+                            <span 
+                                className="text-[11px] text-[var(--store-text-muted)] font-medium"
+                                suppressHydrationWarning
+                            >
+                                © {new Date().getFullYear()} GoPhone Inc.
                             </span>
                             <nav className="flex items-center gap-4">
                                 {legalLinks.map((link, index) => (
                                     <div key={link.href} className="flex items-center gap-4">
-                                        <Link 
-                                            href={link.href} 
+                                        <Link
+                                            href={link.href}
                                             className="text-[11px] text-[var(--store-text-muted)] hover:text-[var(--store-text)] transition-colors"
                                         >
                                             {link.label}
                                         </Link>
+                                        {/* Separador vertical sutil */}
                                         {index < legalLinks.length - 1 && (
                                             <span className="w-px h-2.5 bg-[var(--store-border)]" />
                                         )}
@@ -134,13 +166,13 @@ export default function Footer() {
                                 ))}
                             </nav>
                         </div>
-                        
-                        <div className="flex items-center gap-6">
-                            <div className="grayscale opacity-40 hover:opacity-100 hover:grayscale-0 transition-all duration-500">
+
+                        <div className="flex items-center gap-4 order-1 md:order-2">
+                            <div className="grayscale opacity-50 hover:opacity-100 hover:grayscale-0 transition-all duration-500 scale-90">
                                 <PaymentMethods />
                             </div>
-                            <span className="text-[11px] font-semibold text-[var(--store-text)]">Perú</span>
                         </div>
+
                     </div>
                 </div>
             </div>

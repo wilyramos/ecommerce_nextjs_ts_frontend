@@ -236,6 +236,7 @@ export const productBaseSchema = z.object({
     brand: z.string().optional(),
     variants: z.array(variantSchema).optional(),
     isFrontPage: z.boolean().optional().default(false),
+    line: z.string().optional(),
 });
 
 // ---------- Create & Update ----------
@@ -251,11 +252,15 @@ export const ApiVariantSchema = variantSchema.extend({
 });
 
 export const ApiProductSchema = productBaseSchema
-    .omit({ slug: true, brand: true })
+    .omit({ slug: true, brand: true, line: true }) // Omitimos para redefinir con poblados
     .extend({
         _id: z.string(),
         slug: z.string(),
         brand: ApiBrandSchema.optional(),
+        line: z.object({
+            nombre: z.string(),
+            slug: z.string(),
+        }).optional(),
         variants: z.array(ApiVariantSchema).optional(),
         createdAt: z.string().datetime().optional(),
         updatedAt: z.string().datetime().optional(),

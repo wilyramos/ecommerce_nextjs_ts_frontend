@@ -7,6 +7,7 @@ import Link from "next/link";
 import type { CategoryListResponse } from "@/src/schemas";
 import HeaderConControles from "../ui/HeaderConTituloConControles";
 import { MdOutlineImageNotSupported } from "react-icons/md";
+import { routes } from "@/lib/routes";
 
 // Header flotante con controles estilo Apple
 const AbsoluteHeaderWrapper = (props: ButtonGroupProps) => {
@@ -62,7 +63,7 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                 {categorias.map((categoria) => (
                     <Link
                         key={categoria._id}
-                        href={`/categoria/${categoria.slug}`}
+                        href={routes.catalog({ category: categoria.slug })}
                         className="
     group relative flex flex-col h-full
     rounded-2xl

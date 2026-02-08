@@ -57,14 +57,15 @@ export default async function ProductResults({
             ? `Categoría ${formatLabel(category)}`
             : "Todos los productos";
 
-    const breadcrumbSegments = [{ label: "Catálogo", href: "/productos" }];
 
     return (
         <main className="flex flex-col gap-2 animate-in fade-in duration-500">
             <div className="pt-1 opacity-70 hover:opacity-100 transition-opacity">
                 <Breadcrumbs
-                    segments={breadcrumbSegments}
-                    current={category ? formatLabel(category) : "Productos"}
+                    items={[
+                        { label: "Catálogo", href: "/productos" },
+                        ...(category ? [{ label: formatLabel(category), href: `/categoria/${category}` }] : []),
+                    ]}
                 />
             </div>
 

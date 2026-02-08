@@ -7,8 +7,15 @@ import { createProduct } from '@/actions/product/add-product-action'
 import { toast } from 'sonner'
 import type { CategoryListResponse } from '@/src/schemas'
 import type { TBrand } from '@/src/schemas/brands'
+import type { ProductLine } from '@/src/schemas/line.schema' // Importamos tipo Line
 
-export default function CreateProductForm({ categorias, brands }: { categorias: CategoryListResponse, brands: TBrand[] }) {
+interface CreateProductFormProps {
+    categorias: CategoryListResponse;
+    brands: TBrand[];
+    lines: ProductLine[]; // Nueva prop
+}
+
+export default function CreateProductForm({ categorias, brands, lines }: CreateProductFormProps) {
 
     const router = useRouter();
 
@@ -18,7 +25,6 @@ export default function CreateProductForm({ categorias, brands }: { categorias: 
     });
 
     useEffect(() => {
-
         if (state.success) {
             toast.success(state.success)
             router.push("/admin/products")
@@ -28,14 +34,11 @@ export default function CreateProductForm({ categorias, brands }: { categorias: 
                 toast.error(error)
             })
         }
-
     }, [state, router])
 
-    // Ordenar categorias
     const categoriasOrdenadas = [...categorias].sort((a, b) =>
         a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' })
     );
-
 
     return (
         <form
@@ -44,15 +47,15 @@ export default function CreateProductForm({ categorias, brands }: { categorias: 
             action={dispatch}
         >
             <ProductForm
-                categorias={categoriasOrdenadas} 
+                categorias={categoriasOrdenadas}
                 brands={brands}
+                lines={lines} // Pasamos las líneas
             />
             <input
                 type='submit'
                 className='bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800 cursor-pointer inline-block'
                 value={"Crear producto"}
             />
-
         </form>
     )
 }

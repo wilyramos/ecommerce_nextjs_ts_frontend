@@ -5,6 +5,7 @@ import DeleteProductButton from "@/components/admin/products/DeleteProductButton
 import Link from "next/link";
 import BackButton from "@/components/ui/BackButton";
 import { getBrands } from "@/src/services/brands";
+import { linesService } from "@/src/services/lines.service";
 // import EditStatusProductButton from "@/components/admin/products/EditStatusProductButton";
 
 type Params = Promise<{
@@ -17,6 +18,7 @@ export default async function ProductDetailsPage({ params }: { params: Params })
     const categorias = await getCategories();
     const product = await getProduct(id);
     const brands = await getBrands();
+    const lines = await linesService.getAll();
 
     if (!product) {
         return (
@@ -43,7 +45,7 @@ export default async function ProductDetailsPage({ params }: { params: Params })
                 </div>
             </div>
 
-            <EditProductForm product={product} categorias={categorias} brands={brands} />
+            <EditProductForm product={product} categorias={categorias} brands={brands} lines={lines} />
         </div>
     );
 }

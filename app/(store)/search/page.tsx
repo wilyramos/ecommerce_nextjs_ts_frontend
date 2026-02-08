@@ -94,7 +94,12 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             <div className="container mx-auto px-4 py-8">
                 {/* Navegación y Título */}
                 <header className="mb-8">
-                    <Breadcrumbs segments={breadcrumbSegments} current={params.q} />
+                    <Breadcrumbs 
+                        items={[
+                            { label: "Inicio", href: "/" },
+                            ...breadcrumbSegments
+                        ]}
+                    />
                     <h1 className="text-3xl md:text-4xl font-bold text-[var(--store-text)] mt-4 tracking-tight">
                         {params.q ? `Resultados para "${params.q}"` : "Explorar Catálogo"}
                     </h1>

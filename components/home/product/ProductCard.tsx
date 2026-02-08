@@ -6,11 +6,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import ColorCircle from "@/components/ui/ColorCircle";
-import type { ProductResponse } from "@/src/schemas";
+import type { TApiProduct } from "@/src/schemas";
 import { MdOutlineImageNotSupported } from "react-icons/md";
 import { cn } from "@/lib/utils";
 
-export default function ProductCard({ product }: { product: ProductResponse }) {
+export default function ProductCard({ product }: { product: TApiProduct }) {
     const searchParams = useSearchParams();
     const [currentIndex, setCurrentIndex] = useState(0);
     const [previewImages, setPreviewImages] = useState<string[]>(product.imagenes ?? []);

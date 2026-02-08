@@ -15,24 +15,38 @@ import UploadProductImageDialog from "./UploadProductImageDialog";
 
 import { Input } from "@/components/ui/input";
 import { LabelWithTooltip } from "@/components/utils/LabelWithTooltip";
+import type { ProductLine } from "@/src/schemas/line.schema";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function ProductForm({
     product,
     categorias,
     brands,
+    lines,
 }: {
     product?: ProductWithCategoryResponse;
     categorias: CategoryListResponse;
     brands: TBrand[];
+    lines: ProductLine[];
 }) {
-    const [selectedCategoryId, setSelectedCategoryId] = useState<
-        string | undefined
-    >(product?.categoria?._id);
+    // Estado para categoría
+    const [selectedCategoryId, setSelectedCategoryId] = useState<string | undefined>(product?.categoria?._id);
 
-    const currentCategory = categorias.find(
-        (c) => c._id === selectedCategoryId
+    // Estado para Marca y Líneas
+    // Si editamos, inicializamos con la marca del producto, si es nuevo undefined
+    const [selectedBrandId, setSelectedBrandId] = useState<string | undefined>(
+        typeof product?.brand === 'object' ? product?.brand._id : product?.brand
     );
+    
+    // Filtramos las líneas cada vez que cambia la marca
+    const filteredLines = lines.filter(line => {
+        if (!selectedBrandId) return false;
+        // La línea tiene una propiedad 'brand' que puede ser objeto o string ID
+        const lineBrandId = typeof line.brand === 'object' ? line.brand._id : line.brand;
+        return lineBrandId === selectedBrandId;
+    });
 
+    const currentCategory = categorias.find((c) => c._id === selectedCategoryId);
     const dynamicCategoryAttributes = currentCategory?.attributes || [];
 
     return (
@@ -171,19 +185,55 @@ export default function ProductForm({
                 </div>
 
                 {/* Marca */}
-                <div className="space-y-1">
-                    <LabelWithTooltip
-                        htmlFor="brand"
-                        label="Marca"
-                        tooltip="Marca asociada al producto."
-                    />
-                    <BrandCombobox
-                        brands={brands}
-                        value={product?.brand?._id}
-                    />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Marca */}
+                    <div className="space-y-1">
+                        <LabelWithTooltip
+                            htmlFor="brand"
+                            label="Marca"
+                            required
+                            tooltip="Marca asociada al producto."
+                        />
+                        <BrandCombobox
+                            brands={brands}
+                            value={selectedBrandId} 
+                            // IMPORTANTE: Asegúrate de que tu BrandCombobox tenga este prop onChange
+                            // Si no lo tiene, modifica BrandCombobox para que devuelva el ID al cambiar
+                            onChange={(val) => setSelectedBrandId(val)}
+                        />
+                        {/* Input hidden para que el Server Action reciba el dato si el combobox no lo inyecta */}
+                        <input type="hidden" name="brand" value={selectedBrandId || ""} />
+                    </div>
+
+                    {/* LÍNEA DE PRODUCTO (NUEVO) */}
+                    <div className="space-y-1">
+                        <LabelWithTooltip
+                            htmlFor="line"
+                            label="Línea"
+                            tooltip="Línea o familia de productos (Depende de la marca seleccionada)."
+                        />
+                        <Select name="line" defaultValue={product?.line?.nombre || ""}>
+                            <SelectTrigger disabled={!selectedBrandId || filteredLines.length === 0}>
+                                <SelectValue placeholder={
+                                    !selectedBrandId 
+                                        ? "Selecciona una marca primero" 
+                                        : filteredLines.length === 0 
+                                            ? "Sin líneas disponibles" 
+                                            : "Selecciona una línea"
+                                } />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {filteredLines.map((line) => (
+                                    <SelectItem key={line._id} value={line._id}>
+                                        {line.nombre}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
                 </div>
 
-                {/* Categoría + atributos dinámicos */}
+                {/* Categoría */}
                 <ClientCategoryAttributes
                     categorias={categorias}
                     initialCategoryId={product?.categoria?._id}

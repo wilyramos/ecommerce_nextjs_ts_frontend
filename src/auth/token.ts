@@ -1,3 +1,4 @@
+//File: frontend/src/auth/token.ts
 
 import { cookies } from "next/headers";
 

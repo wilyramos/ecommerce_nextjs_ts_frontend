@@ -10,6 +10,7 @@ import FeaturesList from "@/components/home/FeaturesList";
 import BrandsList from "@/components/home/BrandsList";
 import Advertisement from "@/components/home/Advertisement";
 import FlashSaleBanner from "@/components/home/FlashSaleBanner";
+import HeroNewArrivals from "@/components/catalog/HeroNewArrivals";
 
 // Metadata for SEO and social sharing
 export const metadata: Metadata = {
@@ -88,6 +89,11 @@ export default function HomePage() {
 
              <section className="my-10">
                 <CategoriasDestacadasWrapper />
+            </section>
+
+            <section>
+
+                <HeroNewArrivals />
             </section>
 
             <section className="my-5">

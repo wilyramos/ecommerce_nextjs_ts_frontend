@@ -381,3 +381,87 @@ export const getProductsByBrandSlug = async (brandSlug: string) => {
     const products = productsApiResponseWithFilters.parse(json);
     return products;
 }
+
+
+
+// ... imports existentes
+
+/* ====================================================================
+   🚀 CATALOGO SEO-FRIENDLY (Slug Based)
+   Esta función adapta la respuesta de la API para el componente <ProductResults />
+   ==================================================================== */
+
+export const getProductsForCatalog = async (
+    slugs: string[] = [],
+    searchParams: { [key: string]: string | string[] | undefined } = {}
+) => {
+    try {
+        const params = new URLSearchParams();
+
+        // 1. Convertir Slugs a Query Param (El backend espera ?slugs=iphone,apple)
+        if (slugs.length > 0) {
+            params.append("slugs", slugs.join(","));
+        }
+
+        // 2. Convertir SearchParams del Frontend a Query Params de la API
+        Object.entries(searchParams).forEach(([key, value]) => {
+            if (value === undefined || value === null) return;
+
+            if (Array.isArray(value)) {
+                // Caso: ?color=rojo&color=azul
+                value.forEach((v) => params.append(key, v));
+            } else {
+                params.append(key, value);
+            }
+        });
+
+        // 3. Fetch al Endpoint Maestro
+        const url = `${process.env.API_URL}/products/mainpage?${params.toString()}`;
+
+        const req = await fetch(url, {
+            method: "GET",
+            // Revalidación inteligente: El catálogo no cambia cada segundo, 1 hora está bien.
+            // Si necesitas realtime en stock, baja esto o usa dynamic en el componente.
+            next: { revalidate: 3600 },
+        });
+
+        if (!req.ok) return null;
+
+        const json = await req.json();
+
+        // 4. Validación con Zod (Tu esquema actualizado con filters como objeto)
+        const data = productsApiResponseWithFilters.parse(json);
+
+        // 5. Construcción de Contexto para SEO (Títulos Dinámicos)
+        // Intentamos encontrar el "Nombre Bonito" (ej: "Apple") basándonos en los slugs de la URL
+        // cruzándolos con los filtros disponibles que devuelve la API.
+        const findFilterName = (list: { slug: string; nombre: string }[] | undefined) =>
+            list?.find((item) => slugs.includes(item.slug))?.nombre;
+
+        return {
+            products: data.products,
+            filters: data.filters ?? null,
+
+            // Estructura limpia para el componente Pagination
+            pagination: {
+                currentPage: data.currentPage,
+                totalPages: data.totalPages,
+                totalItems: data.totalProducts,
+            },
+
+            // Contexto para Breadcrumbs y H1
+            context: {
+                categoryName: findFilterName(data.filters?.categories),
+                brandName: findFilterName(data.filters?.brands),
+                searchQuery: searchParams.query as string | undefined,
+            },
+
+            // Si totalProducts es 0, el backend envió productos sugeridos (Fallback)
+            isFallback: data.totalProducts === 0,
+        };
+
+    } catch (error) {
+        console.error("Error en getProductsForCatalog:", error);
+        return null;
+    }
+};

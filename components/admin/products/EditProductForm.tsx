@@ -1,60 +1,68 @@
-"use client"
+"use client";
 
-import type { ProductWithCategoryResponse } from "@/src/schemas";
 import { useActionState, useEffect } from "react";
-import ProductForm from "./ProductForm";
-import { EditProduct } from "@/actions/product/edit-product-action";
-import type { CategoryListResponse } from '@/src/schemas';
 import { toast } from "sonner";
+
+// Actions y Componentes
+import { EditProduct } from "@/actions/product/edit-product-action";
+import ProductForm from "./ProductForm";
+
+// Tipos
+import type { ProductWithCategoryResponse, CategoryListResponse } from "@/src/schemas";
 import type { TBrand } from "@/src/schemas/brands";
+import type { ProductLine } from "@/src/schemas/line.schema"; // Importamos el tipo
 
+interface EditProductFormProps {
+    product: ProductWithCategoryResponse;
+    categorias: CategoryListResponse;
+    brands: TBrand[];
+    lines: ProductLine[]; // Agregamos lines a las props
+}
 
-export default function EditProductForm({ product, categorias, brands }: { product: ProductWithCategoryResponse, categorias: CategoryListResponse, brands: TBrand[] }) {
+export default function EditProductForm({ product, categorias, brands, lines }: EditProductFormProps) {
 
+    // Bind para pasar el ID al Server Action de forma segura
     const editProductWithId = EditProduct.bind(null, product._id);
+
     const [state, dispatch] = useActionState(editProductWithId, {
         errors: [],
         success: ""
-    })
+    });
 
     useEffect(() => {
         if (state.errors) {
-            state.errors.forEach(error => {
-                toast.error(error)
-            })
+            state.errors.forEach(error => toast.error(error));
         }
         if (state.success) {
-            toast.success(state.success)
+            toast.success(state.success);
         }
+    }, [state]);
 
-    }, [state])
-
-    // CreateProductForm.tsx
     const categoriasOrdenadas = [...categorias].sort((a, b) =>
         a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' })
     );
 
-
     return (
-        <>
-            <form
-                className="flex flex-col gap-2 w-full max-w-6xl mx-auto mt-8 bg-white rounuded"
-                noValidate
-                action={dispatch}
-            >
-                <ProductForm
-                    key={product._id} // Ensure the form re-renders when the product is updated
-                    product={product}
-                    categorias={categoriasOrdenadas}
-                    brands={brands}
-                />
+        <form
+            className="flex flex-col gap-2 w-full max-w-7xl mx-auto mt-8 bg-white rounded-lg"
+            noValidate
+            action={dispatch}
+        >
+            <ProductForm
+                key={product._id} // Fuerza re-render si cambia el ID (buena práctica)
+                product={product} // Pasamos los datos actuales para rellenar el form
+                categorias={categoriasOrdenadas}
+                brands={brands}
+                lines={lines} // Pasamos las líneas al formulario genérico
+            />
+
+            <div className="p-4">
                 <input
                     type="submit"
                     value="Actualizar Producto"
-                    className='bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 cursor-pointer inline-block' 
+                    className='bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800 cursor-pointer inline-block w-full sm:w-auto'
                 />
-
-            </form>
-        </>
-    )
+            </div>
+        </form>
+    );
 }

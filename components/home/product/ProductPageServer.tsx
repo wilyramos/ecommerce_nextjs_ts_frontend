@@ -1,51 +1,94 @@
 // app/productos/[slug]/ProductPageServer.tsx
 import ProductDetails from '@/components/home/product/ProductDetails';
 import ProductosRelated from '@/components/home/product/ProductosRelated';
-import Breadcrumb from '@/components/home/products/Breadcrumbs';
-import type { ProductWithCategoryResponse } from '@/src/schemas';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import RecentViewedClient from './RecentViewedClient';
+import type { ProductWithCategoryResponse } from '@/src/schemas';
+import { routes } from "@/lib/routes";
 
 type Props = {
     producto: ProductWithCategoryResponse;
 };
 
-
 export default async function ProductPageServer({ producto }: Props) {
 
     if (!producto) {
         return (
-            <div className="text-center py-10">
-                <h1 className="text-2xl font-bold text-gray-800">Producto no encontrado</h1>
+            <div className="flex flex-col items-center justify-center min-h-[50vh] text-center py-10 space-y-4">
+                <h1 className="text-2xl font-bold text-[var(--store-text)]">Producto no encontrado</h1>
+                <p className="text-[var(--store-text-muted)]">El producto que buscas no existe o ha sido retirado.</p>
             </div>
         );
     }
 
+    // --- LÓGICA DE BREADCRUMBS ---
+    // Construimos la ruta jerárquica: Catálogo > Categoría > Marca > Línea
+    const breadcrumbSegments = [
+        { label: "Catálogo", href: routes.catalog() }
+    ];
+
+    // 1. Agregar Categoría
+    if (producto.categoria && typeof producto.categoria === 'object') {
+        breadcrumbSegments.push({
+            label: producto.categoria.nombre,
+            href: routes.catalog({ category: producto.categoria.slug })
+        });
+    }
+
+    // 2. Agregar Marca (acumulando categoría si existe)
+    if (producto.brand && typeof producto.brand === 'object') {
+        breadcrumbSegments.push({
+            label: producto.brand.nombre,
+            href: routes.catalog({
+                category: typeof producto.categoria === 'object' ? producto.categoria.slug : undefined,
+                brand: producto.brand.slug
+            })
+        });
+    }
+
+    // 3. Agregar Línea (acumulando anteriores)
+    if (producto.line && typeof producto.line === 'object') {
+        breadcrumbSegments.push({
+            label: producto.line.nombre,
+            href: routes.catalog({
+                category: typeof producto.categoria === 'object' ? producto.categoria.slug : undefined,
+                brand: typeof producto.brand === 'object' ? producto.brand.slug : undefined,
+                line: producto.line.slug
+            })
+        });
+    }
+
     return (
         <>
-            <h1 className="text-xl text-center hidden">
-                {producto.nombre}
+            {/* Título oculto para SEO (H1 debe ser único y descriptivo) */}
+            <h1 className="sr-only">
+                {producto.nombre} - GOPHONE
             </h1>
-            
 
-            <section className="py-2">
-                <Breadcrumb
-                    categoryName={producto.categoria?.nombre || 'General'}
-                    categorySlug={producto.categoria?.slug || 'general'}
-                    productName={producto.nombre}
+            <section className="container mx-auto px-4 md:px-6">
+                {/* Navegación de migas de pan */}
+                <Breadcrumbs
+                    items={breadcrumbSegments}
+                    current={producto.nombre} // El nombre del producto es el último nivel (texto no clicable)
                 />
 
-                <div className="flex flex-col lg:flex-row">
+                <div className="flex flex-col lg:flex-row gap-12">
                     <div className="w-full">
                         <ProductDetails producto={producto} />
                     </div>
                 </div>
             </section>
 
-            <section className=" mx-auto py-4">
+            {/* Productos Relacionados (Por Línea/Marca) */}
+            <section className="container mx-auto px-4 md:px-6 py-12 border-t border-[var(--store-border)]">
+                <h2 className="text-xl md:text-2xl font-bold text-[var(--store-text)] mb-6">
+                    También podría interesarte
+                </h2>
                 <ProductosRelated slug={producto.slug} />
             </section>
 
-            <section className="mx-auto py-4">
+            {/* Vistos Recientemente (Client Component) */}
+            <section className="container mx-auto px-4 md:px-6 py-8 pb-16">
                 <RecentViewedClient producto={producto} />
             </section>
         </>

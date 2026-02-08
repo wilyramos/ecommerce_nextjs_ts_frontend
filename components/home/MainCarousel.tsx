@@ -65,7 +65,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                     </span>
 
                                     {/* Título */}
-                                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--store-text)] tracking-tight leading-[1.1] mb-2 line-clamp-2">
+                                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--store-text)] tracking-tight leading-[1.1] mb-2 line-clamp-3">
                                         {product.nombre}
                                     </h2>
 
@@ -84,12 +84,12 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
 
                                         {/* Mensaje Rotativo */}
                                         {discountPercentage > 0 && (
-                                            <div className="relative h-8 w-full overflow-hidden ">
-                                                <p className={`absolute w-full transition-all duration-700 ease-in-out text-xs font-semibold text-[var(--store-primary)]
+                                            <div className="relative h-8 w-full overflow-hidden text-[var(--store-text-muted)] ">
+                                                <p className={`absolute w-full transition-all duration-700 ease-in-out text-xs font-semibold
                                                     ${showDiscount ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
                                                     Ahorra un {discountPercentage}% hoy
                                                 </p>
-                                                <p className={`absolute w-full transition-all duration-700 ease-in-out text-xs font-medium text-[var(--store-text-muted)]
+                                                <p className={`absolute w-full transition-all duration-700 ease-in-out text-xs font-medium 
                                                     ${!showDiscount ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}`}>
                                                     Oferta por tiempo limitado
                                                 </p>
@@ -99,7 +99,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
 
                                     {/* Botón CTA (Call To Action) */}
                                     <div className="flex items-center text-[var(--store-primary)] text-sm font-medium group/btn cursor-pointer">
-                                        Comprar ahora
+                                        Ver Producto
                                         <ChevronRight size={16} className="ml-1 transition-transform group-hover/btn:translate-x-1" />
                                     </div>
                                 </div>

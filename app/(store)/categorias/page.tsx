@@ -37,7 +37,12 @@ export default async function CategoriesPage() {
             />
 
             <div className="container mx-auto px-4">
-                <Breadcrumbs segments={[]} current="Categorías" />
+                <Breadcrumbs
+                    items={[
+                        { label: "Inicio", href: "/" },
+                        { label: "Categorías", href: "/categorias" },
+                    ]}
+                />
 
                 <header className="mb-12 mt-6">
                     <h1 className="text-4xl font-bold text-[var(--store-text)] tracking-tight">
