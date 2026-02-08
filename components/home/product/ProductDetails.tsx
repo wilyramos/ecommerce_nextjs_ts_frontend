@@ -179,23 +179,45 @@ export default function ProductDetails({ producto }: Props) {
                 <section className='md:col-span-3'>
                     <div className="space-y-0 bg-[var(--store-surface)] p-4">
                         <header className="pt-1 border-b border-[var(--store-border)] pb-4 space-y-1">
-                            {/* SKU y código */}
+                            {/* Cabecera Superior: Marca / Línea y SKU */}
                             <div className="flex items-start justify-between w-full">
-                                {producto.brand && (
-                                    <Link
-                                        href={`/productos?brand=${producto.brand.slug}`}
-                                        className="text-xs font-semibold text-[var(--store-text-muted)] uppercase hover:text-[var(--store-text)] transition-colors"
-                                    >
-                                        {producto.brand.nombre}
-                                    </Link>
-                                )}
 
+                                {/* IZQUIERDA: Marca y Línea (Agrupados) */}
+                                <div className="flex items-center gap-1.5 flex-wrap">
+                                    {producto.brand && (
+                                        <Link
+                                            href={`/catalogo/${producto.brand.slug}`}
+                                            className="text-xs font-semibold text-[var(--store-text-muted)] uppercase hover:text-[var(--store-text)] transition-colors"
+                                        >
+                                            {producto.brand.nombre}
+                                        </Link>
+                                    )}
+
+                                    {/* Separador solo si hay marca y línea */}
+                                    {producto.brand && producto.line && (
+                                        <span className="text-xs text-[var(--store-text-muted)]">/</span>
+                                    )}
+
+                                    {producto.line && (
+                                        <Link
+                                            href={`/catalogo/${producto.line.slug}`} // Asumiendo que las líneas también van a /catalogo
+                                            className="text-xs font-semibold text-[var(--store-text-muted)] uppercase hover:text-[var(--store-text)] transition-colors"
+                                        >
+                                            {producto.line.nombre}
+                                        </Link>
+                                    )}
+                                </div>
+
+                                {/* DERECHA: SKU y Barcode */}
                                 {(selectedVariant || producto.sku || producto.barcode) && (
-                                    <div className="text-[8px] md:text-[12px] text-[var(--store-text-muted)] uppercase flex flex-row items-end leading-tight gap-1">
+                                    <div className="text-[8px] md:text-[12px] text-[var(--store-text-muted)] uppercase flex flex-row items-end leading-tight gap-1 text-right">
                                         {(selectedVariant?.sku || producto.sku) && (
-                                            <span>SKU: {selectedVariant ? selectedVariant.sku : producto.sku} |</span>
+                                            <span>SKU: {selectedVariant ? selectedVariant.sku : producto.sku} </span>
                                         )}
-
+                                        {/* Pequeño separador visual si hay ambos */}
+                                        {(selectedVariant?.sku || producto.sku) && (selectedVariant?.barcode || producto.barcode) && (
+                                            <span>|</span>
+                                        )}
                                         {(selectedVariant?.barcode || producto.barcode) && (
                                             <span>{selectedVariant ? selectedVariant.barcode : producto.barcode}</span>
                                         )}
@@ -203,32 +225,31 @@ export default function ProductDetails({ producto }: Props) {
                                 )}
                             </div>
 
-                            <h1 className="text-3xl md:text-4xl font-semibold text-[var(--store-text)] tracking-tight leading-tight">
+                            {/* Título del Producto */}
+                            <h1 className="text-2xl md:text-3xl font-semibold text-[var(--store-text)] tracking-tight leading-tight">
                                 {producto.nombre}
                             </h1>
 
                             {/* Mostrar color solo si NO hay variantes */}
                             {!producto.variants?.length && colorAtributo && (
                                 <div className="flex items-center gap-3">
-                                    {/* Etiqueta sutil estilo metadata */}
                                     <span className="text-xs font-medium text-[var(--store-text-muted)]">
                                         Color
                                     </span>
-
-                                    {/* Contenedor de círculos */}
                                     <div className="flex items-center gap-1.5">
                                         {(Array.isArray(colorAtributo) ? colorAtributo : [colorAtributo]).map((c) => (
                                             <ColorCircle
                                                 key={c}
                                                 color={c}
-                                                size={14}
+                                                size={20}
                                             />
                                         ))}
                                     </div>
                                 </div>
                             )}
+
+                            {/* Bloque de Precios y Stock */}
                             <div className="flex flex-row items-center gap-1 md:gap-3">
-                                {/* Price Block: Always grouped together */}
                                 <div className="flex items-baseline gap-2">
                                     <div className="flex items-baseline text-[var(--store-text)]">
                                         <span className="text-sm font-medium mr-0.5">S/</span>
@@ -245,16 +266,15 @@ export default function ProductDetails({ producto }: Props) {
                                 {/* Discount Info */}
                                 {hasDiscount && (
                                     <div className="flex items-center gap-2">
-                                        {/* Badge rojo estilo Apple para el % de ahorro */}
                                         <span className="bg-[var(--store-primary)] text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
                                             -{Math.round(((precioComparativo - precio) / precioComparativo) * 100)}%
                                         </span>
 
                                         <span
                                             className={`text-xs font-medium text-[var(--store-primary)] uppercase tracking-wide
-                    transition-all duration-300 ease-in-out
-                    ${visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'}
-                `}
+    transition-all duration-300 ease-in-out
+    ${visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'}
+`}
                                         >
                                             {discountList[discountIndex]}
                                         </span>
@@ -262,14 +282,13 @@ export default function ProductDetails({ producto }: Props) {
                                 )}
                             </div>
 
-                            {/* Stock */}
+                            {/* Stock Warning */}
                             {stock <= 5 && stock > 0 && (
                                 <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-yellow-50 border border-yellow-100 rounded-lg text-yellow-800 text-xs font-medium mt-1">
                                     <div className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></div>
                                     Solo quedan {stock} unidades. ¡Pídelo pronto!
                                 </div>
                             )}
-
                         </header>
 
                         {Object.entries(allAttributes).length > 0 && (
@@ -328,7 +347,9 @@ export default function ProductDetails({ producto }: Props) {
                                                                     quality={30} // Subido un poco la calidad para retina
                                                                 />
                                                             ) : (
-                                                                <ColorCircle color={val} />
+                                                                <ColorCircle color={val}
+                                                                    size={40}
+                                                                />
                                                             )}
                                                         </div>
 

@@ -13,7 +13,7 @@ export default function Footer() {
         { label: "Ver todo", href: routes.catalog() },
         { label: "Novedades", href: "/novedades" }, // <--- NUEVO
         { label: "Ofertas", href: "/ofertas" },     // <--- NUEVO
-        { label: "Celulares", href: routes.catalog({ category: 'celulares' }) },
+        { label: "Celulares", href: routes.catalog({ category: 'iphone' }) },
         { label: "Audio", href: routes.catalog({ category: 'audio' }) },
         { label: "Cables y Cargadores", href: routes.catalog({ category: 'cables-y-cargadores' }) },
     ];

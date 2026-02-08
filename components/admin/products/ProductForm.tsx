@@ -29,15 +29,16 @@ export default function ProductForm({
     brands: TBrand[];
     lines: ProductLine[];
 }) {
+    // 1. Lógica para obtener IDs iniciales (Maneja si viene poblado o solo ID)
+    const initialBrandId = typeof product?.brand === 'object' ? product?.brand?._id : product?.brand;
+    const initialLineId = typeof product?.line === 'object' ? product?.line?._id : product?.line;
+
     // Estado para categoría
     const [selectedCategoryId, setSelectedCategoryId] = useState<string | undefined>(product?.categoria?._id);
 
-    // Estado para Marca y Líneas
-    // Si editamos, inicializamos con la marca del producto, si es nuevo undefined
-    const [selectedBrandId, setSelectedBrandId] = useState<string | undefined>(
-        typeof product?.brand === 'object' ? product?.brand._id : product?.brand
-    );
-    
+    // Estado para Marca
+    const [selectedBrandId, setSelectedBrandId] = useState<string | undefined>(initialBrandId);
+
     // Filtramos las líneas cada vez que cambia la marca
     const filteredLines = lines.filter(line => {
         if (!selectedBrandId) return false;
@@ -184,7 +185,7 @@ export default function ProductForm({
                     </div>
                 </div>
 
-                {/* Marca */}
+                {/* Marca y Línea */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Marca */}
                     <div className="space-y-1">
@@ -196,29 +197,32 @@ export default function ProductForm({
                         />
                         <BrandCombobox
                             brands={brands}
-                            value={selectedBrandId} 
-                            // IMPORTANTE: Asegúrate de que tu BrandCombobox tenga este prop onChange
-                            // Si no lo tiene, modifica BrandCombobox para que devuelva el ID al cambiar
+                            value={selectedBrandId}
                             onChange={(val) => setSelectedBrandId(val)}
                         />
-                        {/* Input hidden para que el Server Action reciba el dato si el combobox no lo inyecta */}
+                        {/* Input hidden para enviar el valor en el FormData */}
                         <input type="hidden" name="brand" value={selectedBrandId || ""} />
                     </div>
 
-                    {/* LÍNEA DE PRODUCTO (NUEVO) */}
+                    {/* LÍNEA DE PRODUCTO */}
                     <div className="space-y-1">
                         <LabelWithTooltip
                             htmlFor="line"
                             label="Línea"
                             tooltip="Línea o familia de productos (Depende de la marca seleccionada)."
                         />
-                        <Select name="line" defaultValue={product?.line?.nombre || ""}>
+                      
+                        <Select 
+                            key={selectedBrandId} 
+                            name="line" 
+                            defaultValue={initialLineId} 
+                        >
                             <SelectTrigger disabled={!selectedBrandId || filteredLines.length === 0}>
                                 <SelectValue placeholder={
-                                    !selectedBrandId 
-                                        ? "Selecciona una marca primero" 
-                                        : filteredLines.length === 0 
-                                            ? "Sin líneas disponibles" 
+                                    !selectedBrandId
+                                        ? "Selecciona una marca primero"
+                                        : filteredLines.length === 0
+                                            ? "Sin líneas disponibles"
                                             : "Selecciona una línea"
                                 } />
                             </SelectTrigger>
@@ -255,8 +259,6 @@ export default function ProductForm({
                 <ProductVariantsForm
                     product={product}
                     categoryAttributes={dynamicCategoryAttributes}
-                    // Si usas estado: globalImages={globalImages}
-                    // Si usas solo data inicial: 
                     globalImages={product?.imagenes || []}
                 />
             </div>
@@ -265,14 +267,8 @@ export default function ProductForm({
             <div>
                 <div>
                     <ProductSwitches product={product} />
-
                 </div>
-
             </div>
-
-
-
-
         </div>
     );
 }

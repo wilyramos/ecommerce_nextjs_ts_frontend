@@ -21,7 +21,7 @@ export default async function ProductDetailsPage({ params }: { params: Params })
         getProduct(id),
         getCategories(),
         getActiveBrands(),
-        linesService.getAllActive(), // <--- Obtenemos las líneas
+        linesService.getAllActive(),
     ]);
 
     if (!product) {

@@ -258,6 +258,7 @@ export const ApiProductSchema = productBaseSchema
         slug: z.string(),
         brand: ApiBrandSchema.optional(),
         line: z.object({
+            _id: z.string().optional(),
             nombre: z.string(),
             slug: z.string(),
         }).optional(),
