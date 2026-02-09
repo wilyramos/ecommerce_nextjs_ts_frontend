@@ -4,6 +4,8 @@ import CategoryCard from "@/components/category/category-card";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import Link from "next/link";
 import React from "react";
+import { routes } from "@/lib/routes";
+
 
 export const metadata: Metadata = {
     title: "Categorías | GoPhone",
@@ -76,7 +78,7 @@ export default async function CategoriesPage() {
                             .map((c) => (
                                 <div key={c._id} className="break-inside-avoid">
                                     <Link
-                                        href={`/categoria/${c.slug}`}
+                                        href={routes.catalog({ category: c.slug })}
                                         className="text-sm text-[var(--store-text)] hover:text-[var(--store-primary)] transition-colors flex items-center gap-2 group"
                                     >
                                         <span className="w-1 h-1 rounded-full bg-[var(--store-border)] group-hover:bg-[var(--store-primary)] transition-colors" />

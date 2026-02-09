@@ -16,6 +16,7 @@ export default function Footer() {
         { label: "Celulares", href: routes.catalog({ category: 'iphone' }) },
         { label: "Audio", href: routes.catalog({ category: 'audio' }) },
         { label: "Cables y Cargadores", href: routes.catalog({ category: 'cables-y-cargadores' }) },
+        { label: "Categorias", href: "/categorias" }, 
     ];
 
     // 2. Enlaces de Marcas

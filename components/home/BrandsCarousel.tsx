@@ -7,6 +7,7 @@ import type { TBrand } from "@/src/schemas/brands";
 import Link from "next/link";
 import HeaderConTituloConControles from "../ui/HeaderConTituloConControles";
 import { MdOutlineImageNotSupported } from "react-icons/md";
+import { routes } from "@/lib/routes";
 
 
 const AbsoluteHeaderWrapper = (props: ButtonGroupProps) => (
@@ -54,7 +55,7 @@ export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {
             >
                 {brands.map((brand) => (
                     <Link
-                        href={`/productos?brand=${brand.slug}`}
+                        href={routes.catalog({ brand: brand.slug })}
                         key={brand._id}
                         className="
               group

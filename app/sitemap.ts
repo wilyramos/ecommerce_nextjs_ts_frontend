@@ -45,7 +45,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         { url: "", priority: 1.0, changefreq: "daily" as ChangeFreq },         // Home
         { url: "/catalogo", priority: 1.0, changefreq: "daily" as ChangeFreq }, // Root del catálogo
         { url: "/ofertas", priority: 0.9, changefreq: "daily" as ChangeFreq },  // Ofertas
-        { url: "/novedades", priority: 0.9, changefreq: "daily" as ChangeFreq }, 
+        { url: "/novedades", priority: 0.9, changefreq: "daily" as ChangeFreq },
+        { url: "/categorias", priority: 0.8, changefreq: "weekly" as ChangeFreq },
 
         // Páginas Legales y Soporte (Baja prioridad, cambio poco frecuente)
         { url: "/hc/contacto-y-soporte", priority: 0.6, changefreq: "monthly" as ChangeFreq },
