@@ -8,19 +8,40 @@ import type { CategoryListResponse } from "@/src/schemas";
 import HeaderConControles from "../ui/HeaderConTituloConControles";
 import { MdOutlineImageNotSupported } from "react-icons/md";
 import { routes } from "@/lib/routes";
+import { ChevronRight } from "lucide-react";
 
 // Header flotante con controles estilo Apple
 const AbsoluteHeaderWrapper = (props: ButtonGroupProps) => {
     return (
         <div className="absolute top-0 left-0 right-0 z-20 px-4 md:px-8">
-            <HeaderConControles
-                {...props}
-                title="Categorías."
-                subtitle="Encuentra lo que buscas"
-            />
+            <div className="flex items-center justify-between">
+                <HeaderConControles
+                    {...props}
+                    title="Categorías."
+                    subtitle="Encuentra lo que buscas"
+                />
+
+                <Link
+                    href={routes.catalog()}
+                    className="
+                        group inline-flex items-center gap-1
+                        text-sm font-medium
+                        text-[var(--store-text-muted)]
+                        hover:text-[var(--store-primary)]
+                        transition-colors
+                    "
+                >
+                    Ver todos
+                    <ChevronRight
+                        size={16}
+                        className="transition-transform group-hover:translate-x-0.5"
+                    />
+                </Link>
+            </div>
         </div>
     );
 };
+
 
 interface Props {
     categorias: CategoryListResponse;
@@ -49,6 +70,8 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
                 bg-[var(--store-bg)]
             "
         >
+
+
             <Carousel
                 responsive={responsive}
                 infinite
@@ -129,6 +152,7 @@ export default function ClientCarouselCategorias({ categorias }: Props) {
 
                 ))}
             </Carousel>
+
         </section>
     );
 }
