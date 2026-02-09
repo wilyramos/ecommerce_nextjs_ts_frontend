@@ -511,7 +511,7 @@ export default function ProductDetails({ producto }: Props) {
 
                                         <p className="leading-relaxed">
                                             Resto del Perú: Envíos mediante{" "}
-                                            <span className="inline-block font-medium text-white bg-red-600 px-2 py-0.5 rounded">
+                                            <span className="inline-block font-medium text-white bg-red-600 px-2">
                                                 SHALOM
                                             </span>
                                         </p>

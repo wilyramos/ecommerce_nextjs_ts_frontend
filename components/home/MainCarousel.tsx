@@ -65,7 +65,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                     </span>
 
                                     {/* Título */}
-                                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--store-text)] tracking-tight leading-[1.1] mb-2 line-clamp-3">
+                                    <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-[var(--store-text)] tracking-tight leading-[1.1] mb-2 line-clamp-3">
                                         {product.nombre}
                                     </h2>
 
@@ -105,7 +105,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                 </div>
 
                                 {/* --- SECCIÓN DE IMAGEN (Derecha en Desktop) --- */}
-                                <div className="w-full md:w-[55%] h-1/2 md:h-full relative order-1 md:order-2 bg-[var(--store-bg)] md:bg-transparent">
+                                <div className="w-full md:w-[55%] h-1/2 md:h-full relative order-1 md:order-2 ">
                                     <div className="relative w-full h-full p-6 md:p-8">
                                         <Image
                                             src={product.imagenes?.[0] || "/placeholder.png"}
