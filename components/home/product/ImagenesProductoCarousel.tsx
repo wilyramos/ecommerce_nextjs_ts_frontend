@@ -93,7 +93,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
     }
 
     return (
-        <div className="w-full flex flex-col md:flex-row gap-4 lg:gap-6 bg-white select-none rounded-lg">
+        <div className="w-full flex flex-col md:flex-row gap-4 lg:gap-6 bg-white select-none rounded-lg sticky top-24 ">
 
             {/* MINIATURAS DESKTOP */}
             {uniqueImages.length > 1 && (
