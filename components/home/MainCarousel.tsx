@@ -23,26 +23,26 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
     useEffect(() => {
         const interval = setInterval(() => {
             setShowDiscount((prev) => !prev);
-        }, 4000); // 4 segundos para lectura tranquila
+        }, 4000);
         return () => clearInterval(interval);
     }, []);
 
     if (!products || products.length === 0) return null;
 
     return (
-        <section className="relative w-full overflow-hidden py-4 md:py-6">
+        <section className="relative w-full overflow-hidden py-2 md:py-4">
             <Carousel
                 responsive={responsive}
                 autoPlay
                 infinite
-                autoPlaySpeed={6000} // Velocidad un poco más rápida para dinamismo
+                autoPlaySpeed={6000}
                 showDots
                 renderDotsOutside
-                dotListClass="!bottom-0" // Ajuste para que los dots se vean bien con el nuevo padding
+                dotListClass="!bottom-0"
                 customDot={<CustomDot />}
                 customLeftArrow={<CustomArrow direction="left" />}
                 customRightArrow={<CustomArrow direction="right" />}
-                itemClass="px-4" // Padding lateral para que se vean los bordes redondeados
+                itemClass="px-2 md:px-4"
             >
                 {products.map((product) => {
                     const discountPercentage = product.precioComparativo
@@ -50,65 +50,65 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                         : 0;
 
                     return (
-                        <div key={product._id} className="w-full pb-8">
+                        <div key={product._id} className="w-full pb-6">
                             <Link
                                 href={`/productos/${product.slug}`}
                                 className="group relative flex flex-col md:flex-row items-center justify-between 
                                 bg-[var(--store-surface)]
-                                min-h-[500px] md:h-[460px] w-full max-w-[1440px] mx-auto overflow-hidden"
+                                min-h-[340px] md:h-[300px] w-full max-w-[1440px] mx-auto overflow-hidden rounded-lg"
                             >
                                 {/* --- SECCIÓN DE TEXTO (Abajo en Móvil, Izquierda en Desktop) --- */}
-                                <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start p-8 md:pl-16 md:pr-8 text-center md:text-left order-2 md:order-1 z-10 h-1/2 md:h-full">
+                                <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start p-4 md:pl-12 md:pr-4 text-center md:text-left order-2 md:order-1 z-10 h-[55%] md:h-full">
 
                                     {/* Tag Superior */}
-                                    <span className="inline-flex items-center gap-1.5 px-3 py-1 mb-4 rounded-full border border-[var(--store-border)] bg-[var(--store-bg)]">
-                                        <span className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--store-text-muted)]">
-                                            {product.esNuevo ? "Nuevo Lanzamiento" : product.brand?.nombre || "Destacado"}
+                                    <span className="inline-flex items-center gap-1.5 px-2 py-0.5 mb-2 rounded-full border border-[var(--store-border)] bg-[var(--store-bg)]">
+                                        <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.15em] text-[var(--store-text-muted)]">
+                                            {product.esNuevo ? "Nuevo" : product.brand?.nombre || "Destacado"}
                                         </span>
                                     </span>
 
-                                    {/* Título */}
-                                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[var(--store-text)] tracking-tighter leading-[1.1] mb-4 line-clamp-3">
+                                    {/* Título - Reducido */}
+                                    <h2 className="text-lg md:text-2xl lg:text-3xl font-bold text-[var(--store-text)] tracking-tighter leading-[1.1] mb-2 line-clamp-2 md:line-clamp-3">
                                         {product.nombre}
                                     </h2>
 
-                                    {/* Bloque de Precio y Animación */}
-                                    <div className="flex flex-col justify-center items-center md:items-start mb-6 w-full">
-                                        <div className="flex items-baseline gap-3">
-                                            <span className="text-2xl md:text-3xl font-semibold text-[var(--store-text)] tracking-tight">
+                                    {/* Bloque de Precio */}
+                                    <div className="flex flex-col justify-center items-center md:items-start mb-3 w-full">
+                                        <div className="flex items-baseline gap-2">
+                                            <span className="text-xl md:text-2xl font-semibold text-[var(--store-text)] tracking-tight">
                                                 S/ {product.precio?.toFixed(2)}
                                             </span>
                                             {product.precioComparativo && (
-                                                <span className="text-sm md:text-base text-[var(--store-text-muted)] line-through decoration-[var(--store-text-muted)]">
+                                                <span className="text-xs md:text-sm text-[var(--store-text-muted)] line-through decoration-[var(--store-text-muted)]">
                                                     S/ {product.precioComparativo.toFixed(2)}
                                                 </span>
                                             )}
                                         </div>
 
-                                        {/* Mensaje Rotativo (Con contenedor fijo para evitar saltos) */}
+                                        {/* Mensaje Rotativo */}
                                         {discountPercentage > 0 && (
-                                            <div className="relative h-5 w-full mt-1 overflow-hidden">
-                                                <p className={`absolute w-full left-0 transition-all duration-700 ease-in-out text-xs font-semibold text-[var(--store-primary)] uppercase tracking-wider
+                                            <div className="relative h-4 w-full mt-0.5 overflow-hidden">
+                                                <p className={`absolute w-full left-0 transition-all duration-700 ease-in-out text-[10px] md:text-xs font-semibold text-[var(--store-primary)] uppercase tracking-wider
                                                     ${showDiscount ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
-                                                    Ahorra un {discountPercentage}% hoy
+                                                    Ahorra un {discountPercentage}%
                                                 </p>
-                                                <p className={`absolute w-full left-0 transition-all duration-700 ease-in-out text-xs font-medium text-[var(--store-text-muted)] uppercase tracking-wider
+                                                <p className={`absolute w-full left-0 transition-all duration-700 ease-in-out text-[10px] md:text-xs font-medium text-[var(--store-text-muted)] uppercase tracking-wider
                                                     ${!showDiscount ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}`}>
-                                                    Oferta por tiempo limitado
+                                                    Oferta limitada
                                                 </p>
                                             </div>
                                         )}
                                     </div>
 
-                                    {/* Botón CTA */}
-                                    <div className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[var(--store-text)] text-[var(--store-surface)] text-sm font-medium transition-transform duration-300 group-hover:scale-105">
+                                    {/* Botón CTA - Más compacto */}
+                                    <div className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-full bg-[var(--store-text)] text-[var(--store-surface)] text-xs md:text-sm font-medium transition-transform duration-300 group-hover:scale-105">
                                         Ver Detalles
-                                        <ChevronRight size={16} className="transition-transform group-hover:translate-x-1" />
+                                        <ChevronRight size={14} className="transition-transform group-hover:translate-x-1" />
                                     </div>
                                 </div>
 
                                 {/* --- SECCIÓN DE IMAGEN (Arriba en Móvil, Derecha en Desktop) --- */}
-                                <div className="w-full md:w-1/2 relative order-1 md:order-2 h-[250px] md:h-full p-6 md:p-12 flex items-center justify-center ">
+                                <div className="w-full md:w-1/2 relative order-1 md:order-2 h-[45%] md:h-full p-4 md:p-8 flex items-center justify-center bg-[var(--store-bg-secondary)]/30">
                                     <div className="relative w-full h-full">
                                         <Image
                                             src={product.imagenes?.[0] || "/placeholder.png"}
