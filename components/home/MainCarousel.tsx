@@ -27,8 +27,10 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
         return () => clearInterval(interval);
     }, []);
 
+    if (!products || products.length === 0) return null;
+
     return (
-        <section className="relative w-full  overflow-hidden">
+        <section className="relative w-full overflow-hidden py-4 md:py-6">
             <Carousel
                 responsive={responsive}
                 autoPlay
@@ -36,11 +38,11 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                 autoPlaySpeed={6000} // Velocidad un poco más rápida para dinamismo
                 showDots
                 renderDotsOutside
-                dotListClass="!bottom-4" // Dots dentro del container visualmente
+                dotListClass="!bottom-0" // Ajuste para que los dots se vean bien con el nuevo padding
                 customDot={<CustomDot />}
                 customLeftArrow={<CustomArrow direction="left" />}
                 customRightArrow={<CustomArrow direction="right" />}
-                itemClass="px-0" // Sin padding extra entre items
+                itemClass="px-4" // Padding lateral para que se vean los bordes redondeados
             >
                 {products.map((product) => {
                     const discountPercentage = product.precioComparativo
@@ -48,48 +50,49 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                         : 0;
 
                     return (
-                        <div key={product._id} className="w-full px-4 md:px-0 py-4 md:py-6">
+                        <div key={product._id} className="w-full pb-8">
                             <Link
                                 href={`/productos/${product.slug}`}
                                 className="group relative flex flex-col md:flex-row items-center justify-between 
-                                bg-[var(--store-surface)] overflow-hidden
-                                 transition-all duration-500
-                                h-[500px] md:h-[400px] w-full max-w-[1440px] mx-auto"
+                                bg-[var(--store-surface)]
+                                min-h-[500px] md:h-[460px] w-full max-w-[1440px] mx-auto overflow-hidden"
                             >
-                                {/* --- SECCIÓN DE TEXTO (Izquierda en Desktop) --- */}
-                                <div className="w-full md:w-[45%] h-1/2 md:h-full flex flex-col justify-center items-center md:items-start p-6 md:pl-16 md:pr-4 text-center md:text-left order-2 md:order-1 z-10">
+                                {/* --- SECCIÓN DE TEXTO (Abajo en Móvil, Izquierda en Desktop) --- */}
+                                <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start p-8 md:pl-16 md:pr-8 text-center md:text-left order-2 md:order-1 z-10 h-1/2 md:h-full">
 
                                     {/* Tag Superior */}
-                                    <span className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--store-text-muted)] mb-3">
-                                        {product.esNuevo ? "Nuevo Lanzamiento" : product.brand?.nombre || "Destacado"}
+                                    <span className="inline-flex items-center gap-1.5 px-3 py-1 mb-4 rounded-full border border-[var(--store-border)] bg-[var(--store-bg)]">
+                                        <span className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--store-text-muted)]">
+                                            {product.esNuevo ? "Nuevo Lanzamiento" : product.brand?.nombre || "Destacado"}
+                                        </span>
                                     </span>
 
                                     {/* Título */}
-                                    <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-[var(--store-text)] tracking-tight leading-[1.1] mb-2 line-clamp-3">
+                                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[var(--store-text)] tracking-tighter leading-[1.1] mb-4 line-clamp-3">
                                         {product.nombre}
                                     </h2>
 
-                                    {/* Precio y Animación de Descuento */}
-                                    <div className="h-12 flex flex-col justify-center mb-4">
-                                        <div className="flex items-baseline gap-3 justify-center md:justify-start">
-                                            <span className="text-xl md:text-2xl font-semibold text-[var(--store-text)]">
+                                    {/* Bloque de Precio y Animación */}
+                                    <div className="flex flex-col justify-center items-center md:items-start mb-6 w-full">
+                                        <div className="flex items-baseline gap-3">
+                                            <span className="text-2xl md:text-3xl font-semibold text-[var(--store-text)] tracking-tight">
                                                 S/ {product.precio?.toFixed(2)}
                                             </span>
                                             {product.precioComparativo && (
-                                                <span className="text-sm text-[var(--store-text-muted)] line-through">
+                                                <span className="text-sm md:text-base text-[var(--store-text-muted)] line-through decoration-[var(--store-text-muted)]">
                                                     S/ {product.precioComparativo.toFixed(2)}
                                                 </span>
                                             )}
                                         </div>
 
-                                        {/* Mensaje Rotativo */}
+                                        {/* Mensaje Rotativo (Con contenedor fijo para evitar saltos) */}
                                         {discountPercentage > 0 && (
-                                            <div className="relative h-8 w-full overflow-hidden text-[var(--store-text-muted)] ">
-                                                <p className={`absolute w-full transition-all duration-700 ease-in-out text-xs font-semibold
+                                            <div className="relative h-5 w-full mt-1 overflow-hidden">
+                                                <p className={`absolute w-full left-0 transition-all duration-700 ease-in-out text-xs font-semibold text-[var(--store-primary)] uppercase tracking-wider
                                                     ${showDiscount ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
                                                     Ahorra un {discountPercentage}% hoy
                                                 </p>
-                                                <p className={`absolute w-full transition-all duration-700 ease-in-out text-xs font-medium 
+                                                <p className={`absolute w-full left-0 transition-all duration-700 ease-in-out text-xs font-medium text-[var(--store-text-muted)] uppercase tracking-wider
                                                     ${!showDiscount ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}`}>
                                                     Oferta por tiempo limitado
                                                 </p>
@@ -97,23 +100,23 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                         )}
                                     </div>
 
-                                    {/* Botón CTA (Call To Action) */}
-                                    <div className="flex items-center text-[var(--store-primary)] text-sm font-medium group/btn cursor-pointer">
-                                        Ver Producto
-                                        <ChevronRight size={16} className="ml-1 transition-transform group-hover/btn:translate-x-1" />
+                                    {/* Botón CTA */}
+                                    <div className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[var(--store-text)] text-[var(--store-surface)] text-sm font-medium transition-transform duration-300 group-hover:scale-105">
+                                        Ver Detalles
+                                        <ChevronRight size={16} className="transition-transform group-hover:translate-x-1" />
                                     </div>
                                 </div>
 
-                                {/* --- SECCIÓN DE IMAGEN (Derecha en Desktop) --- */}
-                                <div className="w-full md:w-[55%] h-1/2 md:h-full relative order-1 md:order-2 ">
-                                    <div className="relative w-full h-full p-6 md:p-8">
+                                {/* --- SECCIÓN DE IMAGEN (Arriba en Móvil, Derecha en Desktop) --- */}
+                                <div className="w-full md:w-1/2 relative order-1 md:order-2 h-[250px] md:h-full p-6 md:p-12 flex items-center justify-center ">
+                                    <div className="relative w-full h-full">
                                         <Image
                                             src={product.imagenes?.[0] || "/placeholder.png"}
                                             alt={product.nombre}
                                             fill
                                             priority
-                                            sizes="(max-width: 768px) 100vw, 60vw"
-                                            className="object-contain mix-blend-multiply transition-transform duration-700 ease-out group-hover:scale-105"
+                                            sizes="(max-width: 768px) 100vw, 50vw"
+                                            className="object-contain mix-blend-multiply transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                                         />
                                     </div>
                                 </div>

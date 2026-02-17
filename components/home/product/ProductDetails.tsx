@@ -249,11 +249,21 @@ export default function ProductDetails({ producto }: Props) {
                             )}
 
                             {/* Bloque de Precios y Stock */}
-                            <div className="flex flex-row items-center gap-1 md:gap-3">
+                            {/* CAMBIOS RESPONSIVE:
+    1. flex-col: En móvil se apila (Precio arriba, Descuento abajo).
+    2. sm:flex-row: En pantallas sm (640px) en adelante se pone al lado.
+    3. items-start: En móvil se alinea a la izquierda.
+    4. sm:items-center: En desktop se centra verticalmente.
+*/}
+                            <div className="flex flex-col sm:flex-row sm:items-center items-start gap-2 sm:gap-4 w-full">
+
+                                {/* 1. PRECIOS */}
                                 <div className="flex items-baseline gap-2">
                                     <div className="flex items-baseline text-[var(--store-text)]">
                                         <span className="text-sm font-medium mr-0.5">S/</span>
-                                        <span className="text-2xl font-semibold tracking-tight">{precio.toFixed(2)}</span>
+                                        <span className="text-2xl md:text-3xl font-semibold tracking-tight">
+                                            {precio.toFixed(2)}
+                                        </span>
                                     </div>
 
                                     {hasDiscount && (
@@ -263,25 +273,32 @@ export default function ProductDetails({ producto }: Props) {
                                     )}
                                 </div>
 
-                                {/* Discount Info */}
+                                {/* 2. INFORMACIÓN DE DESCUENTO (Con tamaño fijo mantenido) */}
                                 {hasDiscount && (
-                                    <div className="flex items-center gap-2">
-                                        <span className="bg-[var(--store-primary)] text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
+                                    <div className="flex items-center gap-2 select-none">
+                                        {/* Badge de % */}
+                                        <span className="bg-[var(--store-primary)] text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider shrink-0">
                                             -{Math.round(((precioComparativo - precio) / precioComparativo) * 100)}%
                                         </span>
 
-                                        <span
-                                            className={`text-xs font-medium text-[var(--store-primary)] uppercase tracking-wide
-    transition-all duration-300 ease-in-out
-    ${visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'}
-`}
-                                        >
-                                            {discountList[discountIndex]}
-                                        </span>
+                                        {/* CONTENEDOR DE TEXTO FIJO
+                Mantiene w-28 y h-4 para evitar "bailes" (layout shift)
+            */}
+                                        <div className="w-28 h-4 relative overflow-hidden">
+                                            <span
+                                                className={`
+                        absolute left-0 top-1/2 -translate-y-1/2 w-full
+                        text-[10px] sm:text-xs font-medium text-[var(--store-primary)] uppercase tracking-wide whitespace-nowrap
+                        transition-all duration-300 ease-in-out
+                        ${visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'}
+                    `}
+                                            >
+                                                {discountList[discountIndex]}
+                                            </span>
+                                        </div>
                                     </div>
                                 )}
                             </div>
-
                             {/* Stock Warning */}
                             {stock <= 5 && stock > 0 && (
                                 <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-yellow-50 border border-yellow-100 rounded-lg text-yellow-800 text-xs font-medium mt-1">

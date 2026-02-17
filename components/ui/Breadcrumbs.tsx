@@ -61,9 +61,9 @@ export default function Breadcrumbs({ items, current, className }: Props) {
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
 
-            <ol className="flex items-center whitespace-nowrap overflow-x-auto py-2 no-scrollbar text-xs text-[var(--store-text-muted)]">
+            <ol className="flex items-center whitespace-nowrap overflow-hidden py-2 text-xs text-[var(--store-text-muted)]">
 
-                {/* Home Icon */}
+                {/* Home */}
                 <li className="flex items-center shrink-0">
                     <Link
                         href="/"
@@ -75,25 +75,25 @@ export default function Breadcrumbs({ items, current, className }: Props) {
                     </Link>
                 </li>
 
-                {/* Items Intermedios */}
+                {/* Intermedios */}
                 {items.map((item, index) => (
-                    <li key={`${item.label}-${index}`} className="flex items-center shrink-0">
+                    <li key={`${item.label}-${index}`} className="flex items-center min-w-0">
                         <ChevronRight className="w-3 h-3 mx-2 text-gray-300 shrink-0" />
                         <Link
                             href={item.href}
-                            className="hover:text-[var(--store-primary)] hover:underline decoration-1 underline-offset-2 transition-all font-medium"
+                            className="font-medium hover:text-[var(--store-primary)] hover:underline decoration-1 underline-offset-2 truncate min-w-0 max-w-[120px] sm:max-w-[180px]"
                         >
                             {item.label}
                         </Link>
                     </li>
                 ))}
 
-                {/* Página Actual */}
+                {/* Actual */}
                 {current && (
-                    <li className="flex items-center shrink-0">
+                    <li className="flex items-center min-w-0 flex-1">
                         <ChevronRight className="w-3 h-3 mx-2 text-gray-300 shrink-0" />
                         <span
-                            className="font-bold text-[var(--store-text)] truncate max-w-[200px] sm:max-w-none"
+                            className="font-bold text-[var(--store-text)] truncate min-w-0"
                             aria-current="page"
                         >
                             {current}
@@ -101,6 +101,8 @@ export default function Breadcrumbs({ items, current, className }: Props) {
                     </li>
                 )}
             </ol>
+
+
         </nav>
     );
 }
