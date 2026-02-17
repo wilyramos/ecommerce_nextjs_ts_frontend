@@ -25,7 +25,6 @@ export default function ProductExpandableSections({ producto }: Props) {
     return (
         <Accordion
             type="multiple"
-            defaultValue={["info", "envios"]} // "info" abierto por defecto
             className="w-full space-y-4 bg-[var(--store-bg)]" // Usar variable de fondo para consistencia
         >
             {/* =========================================================
@@ -35,7 +34,7 @@ export default function ProductExpandableSections({ producto }: Props) {
                 value="info"
                 className="border-b border-[var(--store-border)]"
             >
-                <AccordionTrigger className="py-5 hover:no-underline group px-1">
+                <AccordionTrigger className="py-2 hover:no-underline group px-1">
                     <div className="flex items-center gap-3">
                         <Info size={20} className="text-[var(--store-text-muted)] group-hover:text-[var(--store-primary)] transition-colors" />
                         <span className="text-base font-semibold tracking-tight text-[var(--store-text)]">
