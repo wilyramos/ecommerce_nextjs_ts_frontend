@@ -179,7 +179,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
 
                 {/* PAGINACIÓN MÓVIL (Puntos tipo iOS) */}
                 {uniqueImages.length > 1 && (
-                    <div className="flex md:hidden justify-center items-center gap-2 mt-6">
+                    <div className="flex md:hidden justify-center items-center gap-2 my-2">
                         {uniqueImages.map((_, idx) => (
                             <button
                                 key={idx}
