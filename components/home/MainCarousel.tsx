@@ -17,7 +17,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
     if (!products || products.length === 0) return null;
 
     return (
-        <section className="w-full bg-[#F5F5F7] py-4 md:py-8">
+        <section className="w-full bg-[#F5F5F7] py-2 md:py-8">
             <Carousel
                 responsive={responsive}
                 autoPlay
@@ -25,7 +25,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                 autoPlaySpeed={5000}
                 showDots
                 renderDotsOutside={false}
-                dotListClass="!bottom-6"
+                dotListClass=""
                 customDot={<CustomDot />}
                 customLeftArrow={<CustomArrow direction="left" />}
                 customRightArrow={<CustomArrow direction="right" />}
@@ -36,11 +36,10 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                         <Link
                             href={`/productos/${product.slug}`}
                             className="group relative flex flex-row items-center justify-between 
-                                       h-[240px] md:h-[320px] w-full max-w-[1200px] 
+                                       h-[320px] md:h-[360px] w-full max-w-[1200px] 
                                        mx-auto overflow-hidden rounded-[28px] bg-[#FFFFFF]
                                        transition-all duration-500 border border-[#ebe8e8] hover:shadow-md"
                         >
-                            {/* --- CONTENIDO TEXTUAL (Izquierda) --- */}
                             <div className="w-3/5 md:w-1/2 flex flex-col justify-center pl-8 md:pl-20 z-10">
                                 {/* Badge Sutil */}
                                 <span className="text-[10px] md:text-xs font-semibold uppercase tracking-[0.15em] text-[#86868B] mb-2">
@@ -58,13 +57,12 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                         S/ {product.precio?.toFixed(2)}
                                     </span>
                                     <div className="flex items-center text-[#0071E3] hover:text-[#005BB5] text-xs md:text-lg font-medium group/link transition-colors">
-                                        Ver más<span className="hidden md:inline">detalles</span>
+                                        Ver más
                                         <ChevronRight size={18} className="ml-0.5 transition-transform group-hover/link:translate-x-1" />
                                     </div>
                                 </div>
                             </div>
 
-                            {/* --- IMAGEN (Derecha) --- */}
                             <div className="w-2/5 md:w-1/2 relative h-full flex items-center justify-center p-6 md:p-14">
                                 <div className="relative w-full h-full transition-transform duration-700 ease-out group-hover:scale-[1.03]">
                                     <Image
