@@ -1,134 +1,61 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { Timer } from "lucide-react";
 
 export default function HeroFlashSale() {
     const [mounted, setMounted] = useState(false);
-    const [timeLeft, setTimeLeft] = useState({
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
-    });
+    const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
 
     useEffect(() => {
         setMounted(true);
-
-        const calculateTimeLeft = () => {
+        const calculate = () => {
             const now = new Date();
-            const endOfDay = new Date(
-                now.getFullYear(),
-                now.getMonth(),
-                now.getDate(),
-                23,
-                59,
-                59
-            );
-            const diff = endOfDay.getTime() - now.getTime();
-
-            if (diff > 0) {
-                return {
-                    hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-                    minutes: Math.floor((diff / 1000 / 60) % 60),
-                    seconds: Math.floor((diff / 1000) % 60),
-                };
-            }
-            return { hours: 0, minutes: 0, seconds: 0 };
+            const diff = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59).getTime() - now.getTime();
+            return diff > 0 ? {
+                hours: Math.floor((diff / 36e5) % 24),
+                minutes: Math.floor((diff / 6e4) % 60),
+                seconds: Math.floor((diff / 1000) % 60),
+            } : { hours: 0, minutes: 0, seconds: 0 };
         };
-
-        setTimeLeft(calculateTimeLeft());
-        const interval = setInterval(() => {
-            setTimeLeft(calculateTimeLeft());
-        }, 1000);
-
-        return () => clearInterval(interval);
+        const timer = setInterval(() => setTimeLeft(calculate()), 1000);
+        return () => clearInterval(timer);
     }, []);
 
-    if (!mounted) return null;
+    if (!mounted) return <div className="min-h-[360px] bg-[var(--store-surface)]" />;
 
     return (
-        <section className="w-full bg-[var(--store-bg)]">
-            <div className="mx-auto">
-                <div className="relative overflow-hidden border border-[var(--store-border)] bg-[var(--store-surface)] isolate">
-                    {/* Glow reducido */}
-                    <div
-                        className="absolute top-[-40%] right-[-10%] md:right-[10%] w-[420px] h-[420px] rounded-full blur-[90px] -z-10 opacity-20 pointer-events-none"
-                        style={{ backgroundColor: "var(--store-primary)" }}
-                    />
+        <div className="relative flex flex-col justify-center p-10 md:p-14 bg-[var(--store-bg)] border-b md:border-b-0 md:border-r border-[var(--store-border)] min-h-[360px] bg">
+            <div className="space-y-5">
+                <div className="inline-flex items-center gap-2 text-[var(--store-primary)] font-semibold text-xs uppercase tracking-tight">
+                    <Timer className="w-4 h-4" /> Oferta del día
+                </div>
 
-                    <div className="flex flex-col md:flex-row items-center justify-between px-6 py-6 md:px-12 md:py-8 gap-6 max-w-7xl mx-auto">
-                        {/* IZQUIERDA */}
-                        <div className="flex-1 text-center md:text-left space-y-4">
-                            <div className="inline-flex items-center gap-2 px-2 py-0.5 rounded-full border border-[var(--store-border)] bg-[var(--store-bg)] backdrop-blur-md">
+                <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-[var(--store-text)] leading-[1.1]">
+                    Precios fugaces. <br />
+                    <span className="text-[var(--store-text-muted)]">Oportunidad única.</span>
+                </h2>
 
-                            </div>
-
-                            <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-[var(--store-text)] leading-tight">
-                                Precios fugaces.{" "}
-                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--store-primary)] to-[var(--store-primary-hover)]">
-                                    Oportunidad única.
-                                </span>
-                            </h2>
-
-                            <p className="text-sm md:text-base text-[var(--store-text-muted)] max-w-md mx-auto md:mx-0">
-                                Descuentos que desaparecen hoy. Aprovecha antes de medianoche.
-                            </p>
-
-                            <div>
-                                <Link
-                                    href="/ofertas"
-                                    className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-white font-medium text-sm transition-all duration-300 hover:scale-105"
-                                    style={{ backgroundColor: "var(--store-primary)" }}
-                                >
-                                    Ver ofertas
-                                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                                </Link>
-                            </div>
-                        </div>
-
-                        {/* DERECHA: RELOJ COMPACTO */}
-                        <div className="flex-shrink-0">
-                            <div className="grid grid-cols-3 gap-2 p-3 rounded-2xl bg-[var(--store-bg)]/50 border border-[var(--store-border)] backdrop-blur-sm">
-                                <TimeCard value={timeLeft.hours} label="Horas" />
-                                <TimeCard value={timeLeft.minutes} label="Minutos" />
-                                <TimeCard value={timeLeft.seconds} label="Segundos" isActive />
-                            </div>
-                            <p className="text-center mt-2 text-[10px] font-medium text-[var(--store-text-muted)] uppercase tracking-widest">
-                                Tiempo restante
-                            </p>
-                        </div>
+                <div className="flex items-center gap-8 pt-4">
+                    <Link href="/ofertas" className="px-6 py-3 rounded-full bg-[var(--store-primary)] text-[var(--store-primary-text)] font-medium transition-all hover:bg-[var(--store-primary-hover)] hover:scale-[1.02]">
+                        Ver ofertas
+                    </Link>
+                    <div className="flex gap-4 border-l border-[var(--store-border)] pl-8">
+                        <TimeBox val={timeLeft.hours} unit="H" />
+                        <TimeBox val={timeLeft.minutes} unit="M" />
+                        <TimeBox val={timeLeft.seconds} unit="S" active />
                     </div>
                 </div>
             </div>
-        </section>
-    );
-}
-
-function TimeCard({
-    value,
-    label,
-    isActive = false,
-}: {
-    value: number;
-    label: string;
-    isActive?: boolean;
-}) {
-    return (
-        <div
-            className="flex flex-col items-center justify-center"
-        >
-            <span
-                className={`text-2xl md:text-3xl font-bold tabular-nums leading-none ${isActive
-                    ? "text-[var(--store-primary)]"
-                    : "text-[var(--store-text)]"
-                    }`}
-            >
-                {value.toString().padStart(2, "0")}
-            </span>
-            <span className="text-[9px] md:text-[10px] font-semibold text-[var(--store-text-muted)] uppercase">
-                {label}
-            </span>
         </div>
     );
 }
+
+const TimeBox = ({ val, unit, active }: { val: number; unit: string; active?: boolean }) => (
+    <div className="text-center">
+        <div className={`text-xl font-bold tabular-nums ${active ? "text-[var(--store-primary)]" : "text-[var(--store-text)]"}`}>
+            {val.toString().padStart(2, "0")}
+        </div>
+        <div className="text-[10px] text-[var(--store-text-muted)] font-bold">{unit}</div>
+    </div>
+);

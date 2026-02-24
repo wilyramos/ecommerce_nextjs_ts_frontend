@@ -51,11 +51,11 @@ export default function ShopNowButton({ product, variant, disabled }: Props) {
             type="button"
             onClick={handleClick}
             className={`
-                w-full px-6 py-2 rounded font-medium flex items-center justify-center gap-2 text-sm
-                transition duration-200 transform border
+                w-full px-6 py-2 font-medium flex items-center justify-center gap-2 text-sm transition-colors
+                border-1 border-[var(--store-border)]
                 ${isVisuallyDisabled
-                    ? 'bg-gray-300 text-gray-600 cursor-not-allowed opacity-90'
-                    : 'bg-gray-50 text-gray-900 hover:bg-gray-200 hover:scale-105 cursor-pointer'}
+                    ? 'bg-[var(--store-surface-hover)] text-[var(--store-text-muted)] cursor-not-allowed opacity-90'
+                    : 'bg-[var(--store-surface)] text-[var(--store-text)] hover:bg-[var(--store-surface-hover)] cursor-pointer'}
             `}
         >
             <IoBagCheckOutline size={20} />

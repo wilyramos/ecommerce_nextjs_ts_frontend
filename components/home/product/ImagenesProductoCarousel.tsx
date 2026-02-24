@@ -3,14 +3,21 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, ImageOff, ZoomIn, ZoomOut } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function ImagenesProductoCarousel({ images }: { images: string[] }) {
     const uniqueImages = useMemo(() => {
-        if (!images) return [];
-        return Array.from(new Set(images.filter(Boolean)));
+        // Validación extra: asegurar que solo pasen URLs válidas
+        return Array.from(new Set(images.filter(img => typeof img === 'string' && img.length > 0)));
     }, [images]);
 
     const [selectedIndex, setSelectedIndex] = useState(0);
+
+    useEffect(() => {
+        if (selectedIndex >= uniqueImages.length) {
+            setSelectedIndex(0);
+        }
+    }, [uniqueImages, selectedIndex]);
     const [zoom, setZoom] = useState(false);
     const [position, setPosition] = useState({ x: 50, y: 50 });
 
@@ -83,6 +90,16 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
         touchEndX.current = null;
     };
 
+    const currentImgSrc = uniqueImages[selectedIndex] || null;
+
+    if (!currentImgSrc) {
+        return (
+            <div className="w-full aspect-square bg-gray-100 flex items-center justify-center">
+                <ImageOff className="text-gray-400" />
+            </div>
+        );
+    }
+
     if (uniqueImages.length === 0) {
         return (
             <div className="w-full aspect-square bg-[var(--store-bg)] rounded-3xl flex flex-col items-center justify-center text-[var(--store-text-muted)] border border-[var(--store-border)]">
@@ -139,17 +156,21 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                     onTouchMove={handleTouchMove}
                     onTouchEnd={handleTouchEnd}
                 >
+                   {currentImgSrc && (
                     <Image
-                        key={uniqueImages[selectedIndex]}
-                        src={uniqueImages[selectedIndex]}
+                        key={currentImgSrc}
+                        src={currentImgSrc}
                         alt="Producto principal"
                         fill
                         priority
-                        className={`object-contain transition-transform duration-500 ease-out p-4 md:p-8
-                            ${zoom ? "scale-[2.5]" : "scale-100"}`}
+                        className={cn(
+                            "object-contain transition-transform duration-500 ease-out p-4 md:p-8",
+                            zoom ? "scale-[2.5]" : "scale-100"
+                        )}
                         style={zoom ? { transformOrigin: `${position.x}% ${position.y}%` } : undefined}
                         quality={100}
                     />
+                )}
 
                     {/* Botón Zoom (Solo Desktop) */}
                     <div className="absolute top-4 right-4 p-2.5 bg-white/60 backdrop-blur-lg rounded-full text-[var(--store-text)] opacity-0 md:group-hover:opacity-100 transition-opacity">

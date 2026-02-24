@@ -87,20 +87,20 @@ export default function ProductDetails({ producto }: Props) {
 
     // Lógica de imágenes ajustada
     const variantImages = useMemo(() => {
-        // 1. Si hay variante seleccionada y tiene imágenes, mostrar SOLO esas
+        let images: string[] = [];
+
         if (selectedVariant?.imagenes && selectedVariant.imagenes.length > 0) {
-            return selectedVariant.imagenes.filter(Boolean);
+            images = selectedVariant.imagenes;
+        } else {
+            const generalImages = producto.imagenes ?? [];
+            const allVariantsImages = producto.variants?.flatMap(v => v.imagenes ?? []) ?? [];
+            images = [...generalImages, ...allVariantsImages];
         }
 
-        // 2. Si no hay variante o no tiene imágenes, mostrar mezcla de generales + todas las variantes
-        const generalImages = producto.imagenes ?? [];
-        const allVariantsImages = producto.variants?.flatMap(v => v.imagenes ?? []) ?? [];
-        
-        const combined = [...generalImages, ...allVariantsImages]
-            .filter(Boolean)
-            .filter((img, idx, arr) => arr.indexOf(img) === idx); // Eliminar duplicados
+        // Limpieza estricta: quitar null, undefined, strings vacíos y duplicados
+        const cleaned = Array.from(new Set(images.filter(img => img && img.trim() !== "")));
 
-        return combined.length > 0 ? combined : ["/placeholder-product.png"]; // Fallback a imagen por defecto
+        return cleaned.length > 0 ? cleaned : ["/logoapp.svg"];
     }, [selectedVariant, producto.imagenes, producto.variants]);
 
     const precio = selectedVariant?.precio ?? producto.precio ?? 0;
@@ -136,7 +136,7 @@ export default function ProductDetails({ producto }: Props) {
 
     return (
         <>
-            <article className="grid grid-cols-1 md:grid-cols-6 gap-2 md:gap-6 mx-auto py-2">
+            <article className="grid grid-cols-1 md:grid-cols-6 gap-2 md:gap-6 mx-auto">
                 <div className='md:col-span-3'>
                     <ImagenesProductoCarousel images={variantImages} />
                 </div>
@@ -165,7 +165,7 @@ export default function ProductDetails({ producto }: Props) {
                                 </div>
                             </div>
 
-                            <h1 className="text-2xl md:text-3xl font-semibold text-[var(--store-text)] tracking-tight leading-tight">
+                            <h1 className="text-[clamp(1.25rem,3vw,2.25rem)] font-semibold text-[var(--store-text)] tracking-tight leading-[1.1] break-words">
                                 {producto.nombre}
                             </h1>
 
@@ -195,11 +195,27 @@ export default function ProductDetails({ producto }: Props) {
 
                                 {hasDiscount && (
                                     <div className="flex items-center gap-2 select-none">
-                                        <span className="bg-[var(--store-primary)] text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
+                                        <span className="bg-[var(--store-primary)] text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider shrink-0">
                                             -{Math.round(((precioComparativo - precio) / precioComparativo) * 100)}%
                                         </span>
-                                        <div className="w-28 h-4 relative overflow-hidden">
-                                            <span className={`absolute left-0 top-1/2 -translate-y-1/2 w-full text-[10px] sm:text-xs font-medium text-[var(--store-primary)] uppercase tracking-wide transition-all duration-300 ${visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'}`}>
+
+                                        {/* CONTENEDOR DINÁMICO */}
+                                        <div className="relative inline-grid h-4 items-center">
+                                            {/* Este span invisible ocupa el espacio del texto más largo 
+                   para que el contenedor siempre tenga el ancho máximo necesario.
+                */}
+                                            <span className="invisible pointer-events-none text-[10px] sm:text-xs font-medium uppercase tracking-wide px-1 row-start-1 col-start-1">
+                                                {discountList.reduce((a, b) => a.length > b.length ? a : b)}
+                                            </span>
+
+                                            {/* Este es el texto que se anima */}
+                                            <span
+                                                key={discountIndex} // Usamos key para disparar la animación de entrada si prefieres CSS puro
+                                                className={cn(
+                                                    "absolute left-0 text-[10px] sm:text-xs font-medium text-[var(--store-primary)] uppercase tracking-wide transition-all duration-300 row-start-1 col-start-1 whitespace-nowrap",
+                                                    visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-1'
+                                                )}
+                                            >
                                                 {discountList[discountIndex]}
                                             </span>
                                         </div>
@@ -219,7 +235,7 @@ export default function ProductDetails({ producto }: Props) {
                             return (
                                 <fieldset key={key} className="space-y-2 mt-4">
                                     <legend className="text-sm font-bold text-[var(--store-text-muted)] uppercase tracking-wider mb-3">{key}:</legend>
-                                    
+
                                     {key.toLowerCase() === "color" ? (
                                         <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
                                             {availableValues.map((val) => {
@@ -280,10 +296,10 @@ export default function ProductDetails({ producto }: Props) {
                                 <AddProductToCart product={producto} variant={selectedVariant ?? undefined} />
                             </div>
                             <div className="flex-1">
-                                <ShopNowButton 
-                                    disabled={((producto.variants?.length ?? 0) > 0 && (!allAttributesSelected || !selectedVariant)) || stock <= 0} 
-                                    product={producto} 
-                                    variant={selectedVariant ?? undefined} 
+                                <ShopNowButton
+                                    disabled={((producto.variants?.length ?? 0) > 0 && (!allAttributesSelected || !selectedVariant)) || stock <= 0}
+                                    product={producto}
+                                    variant={selectedVariant ?? undefined}
                                 />
                             </div>
                         </section>
@@ -294,7 +310,7 @@ export default function ProductDetails({ producto }: Props) {
                             <h3 className="text-sm font-semibold text-[var(--store-text)]">Opciones de Envío:</h3>
                             <div className="text-sm text-[var(--store-text-muted)] space-y-2">
                                 <p className="flex items-center gap-2"><MapPin className="w-3.5 h-3.5" /> Cañete: <span className="text-[var(--store-primary)] font-medium">Gratis y Contraentrega</span></p>
-                                <p>Resto del Perú: Envíos mediante <span className="bg-red-600 text-white px-2 font-medium">SHALOM</span></p>
+                                <p>Resto del Perú: Envíos mediante <span className="bg-red-600 text-white px-1 italic font-medium">SHALOM</span></p>
                             </div>
                             <div className="flex gap-2 bg-[var(--store-bg)] rounded-lg p-3">
                                 <CalendarDays className="w-4 h-4 mt-0.5" />

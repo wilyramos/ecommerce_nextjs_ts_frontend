@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ChevronRight, Home } from "lucide-react";
+import { ChevronRight, Home, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface BreadcrumbItem {
@@ -9,23 +9,26 @@ interface BreadcrumbItem {
 
 interface Props {
     items: BreadcrumbItem[];
-    current?: string; // La página actual (no clicable)
+    current?: string;
     className?: string;
 }
 
 export default function Breadcrumbs({ items, current, className }: Props) {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://gophone.pe";
+    
+    // Lógica de colapso: si hay más de 3 items, mostramos el primero, ... y el último
+    const shouldCollapse = items.length > 3;
+    const displayItems = shouldCollapse 
+        ? [items[0], { label: "...", href: "#" }, items[items.length - 1]] 
+        : items;
 
-    // --- Generación de Schema.org (JSON-LD) para SEO ---
     const schemaItems = [
-        // 1. Inicio siempre es el primero
         {
             "@type": "ListItem",
             "position": 1,
             "name": "Inicio",
             "item": baseUrl
         },
-        // 2. Segmentos intermedios
         ...items.map((item, index) => ({
             "@type": "ListItem",
             "position": index + 2,
@@ -34,13 +37,12 @@ export default function Breadcrumbs({ items, current, className }: Props) {
         }))
     ];
 
-    // 3. Si hay página actual, la añadimos al schema
     if (current) {
         schemaItems.push({
             "@type": "ListItem",
             "position": schemaItems.length + 1,
             "name": current,
-            "item": typeof window !== 'undefined' ? window.location.href : `${baseUrl}/#` // Fallback seguro
+            "item": typeof window !== 'undefined' ? window.location.href : `${baseUrl}/#`
         });
     }
 
@@ -53,16 +55,14 @@ export default function Breadcrumbs({ items, current, className }: Props) {
     return (
         <nav
             aria-label="Breadcrumb"
-            className={cn("w-full overflow-hidden", className)}
+            className={cn("w-full overflow-hidden px-2", className)}
         >
-            {/* Inyección SEO */}
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
 
             <ol className="flex items-center whitespace-nowrap overflow-hidden py-2 text-xs text-[var(--store-text-muted)]">
-
                 {/* Home */}
                 <li className="flex items-center shrink-0">
                     <Link
@@ -75,16 +75,22 @@ export default function Breadcrumbs({ items, current, className }: Props) {
                     </Link>
                 </li>
 
-                {/* Intermedios */}
-                {items.map((item, index) => (
+                {/* Items con lógica de elipsis */}
+                {displayItems.map((item, index) => (
                     <li key={`${item.label}-${index}`} className="flex items-center min-w-0">
                         <ChevronRight className="w-3 h-3 mx-2 text-gray-300 shrink-0" />
-                        <Link
-                            href={item.href}
-                            className="font-medium hover:text-[var(--store-primary)] hover:underline decoration-1 underline-offset-2 truncate min-w-0 max-w-[120px] sm:max-w-[180px]"
-                        >
-                            {item.label}
-                        </Link>
+                        {item.label === "..." ? (
+                            <span className="flex items-center justify-center w-6 h-6 rounded-md hover:bg-gray-100 transition-colors cursor-default">
+                                <MoreHorizontal className="w-4 h-4" />
+                            </span>
+                        ) : (
+                            <Link
+                                href={item.href}
+                                className="font-medium hover:text-[var(--store-primary)] hover:underline decoration-1 underline-offset-2 truncate min-w-0 max-w-[100px] sm:max-w-[180px]"
+                            >
+                                {item.label}
+                            </Link>
+                        )}
                     </li>
                 ))}
 
@@ -101,8 +107,6 @@ export default function Breadcrumbs({ items, current, className }: Props) {
                     </li>
                 )}
             </ol>
-
-
         </nav>
     );
 }

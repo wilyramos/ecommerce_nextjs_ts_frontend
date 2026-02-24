@@ -42,11 +42,24 @@ export default function EditProductForm({ product, categorias, brands, lines }: 
         a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' })
     );
 
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        const formData = new FormData(e.currentTarget);
+        const variantsError = formData.get("variants_error");
+
+        // Si existe un error marcado por el componente de variantes, detenemos el envío
+        if (variantsError === "true") {
+            e.preventDefault();
+            toast.error("Por favor, corrige los errores en las variantes antes de actualizar.");
+            return;
+        }
+    };
+
     return (
         <form
             className="flex flex-col gap-2 w-full max-w-7xl mx-auto mt-8 bg-white rounded-lg"
             noValidate
             action={dispatch}
+            onSubmit={handleSubmit}
         >
             <ProductForm
                 key={product._id} // Fuerza re-render si cambia el ID (buena práctica)

@@ -30,10 +30,14 @@ interface CategoryAttr {
 interface Props {
     product?: ProductWithCategoryResponse;
     categoryAttributes: CategoryAttr[];
-    globalImages: string[]; // <--- NUEVA PROP
+    globalImages: string[];
 }
 
 export default function ProductVariantsForm({ product, categoryAttributes, globalImages }: Props) {
+
+
+    //TODO: VALIDAR LOS ATRIBUTOS DE VARIANTES EN EL BACKEND y front ADECUADAMENTE.
+
     // 1. Filtramos atributos obligatorios para variantes
     const variantAttributes = categoryAttributes.filter((attr) => attr.isVariant);
 
@@ -293,16 +297,16 @@ export default function ProductVariantsForm({ product, categoryAttributes, globa
 
                                     {/* IMÁGENES */}
                                     {/* Dentro del mapeo de variants en AccordionContent */}
-<UploadVariantImageDialog
-                 images={variant.imagenes ?? []}
-                 globalImages={globalImages} // <--- Pasamos las globales al dialog
-                 setImages={(fn) => {
-                     const next = [...variants];
-                     next[index].imagenes = fn(next[index].imagenes ?? []);
-                     setVariants(next);
-                     // Si tienes validación en tiempo real, llámala aquí también
-                 }}
-             />
+                                    <UploadVariantImageDialog
+                                        images={variant.imagenes ?? []}
+                                        globalImages={globalImages} // <--- Pasamos las globales al dialog
+                                        setImages={(fn) => {
+                                            const next = [...variants];
+                                            next[index].imagenes = fn(next[index].imagenes ?? []);
+                                            setVariants(next);
+                                            // Si tienes validación en tiempo real, llámala aquí también
+                                        }}
+                                    />
 
                                     {/* DELETE */}
                                     <div className="flex justify-end">
@@ -328,7 +332,13 @@ export default function ProductVariantsForm({ product, categoryAttributes, globa
             <input
                 type="hidden"
                 name="variants"
-                value={errors.length === 0 && variants.length > 0 ? JSON.stringify(variantsToSubmit) : ""}
+                value={errors.length === 0 ? JSON.stringify(variantsToSubmit) : "[]"}
+            />
+
+            <input
+                type="hidden"
+                name="variants_error"
+                value={errors.length > 0 ? "true" : "false"}
             />
 
             <div className="flex gap-2">

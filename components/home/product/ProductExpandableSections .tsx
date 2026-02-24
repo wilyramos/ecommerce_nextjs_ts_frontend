@@ -11,8 +11,8 @@ import { getDeliveryRange } from "@/lib/utils";
 import Link from "next/link";
 import { Truck, ShieldCheck, Info, ChevronRight, FileText } from "lucide-react";
 
-type Props = { 
-    producto: ProductWithCategoryResponse 
+type Props = {
+    producto: ProductWithCategoryResponse
 };
 
 export default function ProductExpandableSections({ producto }: Props) {
@@ -25,11 +25,8 @@ export default function ProductExpandableSections({ producto }: Props) {
     return (
         <Accordion
             type="multiple"
-            className="w-full space-y-4 bg-[var(--store-bg)]" // Usar variable de fondo para consistencia
+            className="w-full space-y-4 bg-[var(--store-bg)] pt-4" // Usar variable de fondo para consistencia
         >
-            {/* =========================================================
-                SECCIÓN 1: INFORMACIÓN Y ESPECIFICACIONES
-               ========================================================= */}
             <AccordionItem
                 value="info"
                 className="border-b border-[var(--store-border)]"
@@ -112,7 +109,7 @@ export default function ProductExpandableSections({ producto }: Props) {
 
                 <AccordionContent className="pb-8 pt-2 px-1">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-                        
+
                         {/* Caja de Estimación de Entrega */}
                         <div className="bg-[var(--store-surface)] border border-[var(--store-border)] rounded-2xl p-6 flex flex-col justify-between h-full">
                             <div>
@@ -139,13 +136,13 @@ export default function ProductExpandableSections({ producto }: Props) {
                                     Si el producto presenta fallas de fábrica, gestionamos el cambio inmediato dentro de los primeros <span className="font-semibold text-[var(--store-text)]">7 días hábiles</span>.
                                 </p>
                             </div>
-                            
+
                             <Link
                                 href="/hc/garantias-y-devoluciones"
                                 className="inline-flex items-center text-sm font-medium text-[var(--store-primary)] hover:underline group/link w-fit"
                             >
                                 <FileText size={14} className="mr-2" />
-                                Ver política completa 
+                                Ver política completa
                                 <ChevronRight size={14} className="ml-1 group-hover/link:translate-x-1 transition-transform" />
                             </Link>
                         </div>
@@ -172,8 +169,8 @@ export default function ProductExpandableSections({ producto }: Props) {
                 <AccordionContent className="pb-8 pt-2 px-1">
                     <div className="max-w-3xl">
                         <p className="text-sm md:text-base text-[var(--store-text-muted)] leading-relaxed">
-                            Todos nuestros productos en <span className="font-bold text-[var(--store-text)]">GoPhone</span> son 100% originales. 
-                            Cuentan con garantía oficial válida directamente con nosotros o con el centro autorizado de la marca (Apple, Samsung, Xiaomi). 
+                            Todos nuestros productos en <span className="font-bold text-[var(--store-text)]">GoPhone</span> son 100% originales.
+                            Cuentan con garantía oficial válida directamente con nosotros o con el centro autorizado de la marca (Apple, Samsung, Xiaomi).
                             <br /><br />
                             Conservar tu comprobante de pago es indispensable para validar la vigencia de tu protección.
                         </p>

@@ -9,8 +9,8 @@ import CategoriasDestacadasWrapper from "@/components/home/CategoriasDestacadasW
 import FeaturesList from "@/components/home/FeaturesList";
 import BrandsList from "@/components/home/BrandsList";
 import Advertisement from "@/components/home/Advertisement";
-import FlashSaleBanner from "@/components/home/FlashSaleBanner";
 import HeroNewArrivals from "@/components/catalog/HeroNewArrivals";
+import HeroFlashSale from "@/components/home/FlashSaleBanner";
 
 // Metadata for SEO and social sharing
 export const metadata: Metadata = {
@@ -73,7 +73,7 @@ export default function HomePage() {
                 <Advertisement />
             </section>
 
-            <section className="bg-white ">
+            <section className=" ">
                 <CarruselPrincipal />
             </section>
 
@@ -81,20 +81,19 @@ export default function HomePage() {
                 <ProductosDestacados />
             </section>
 
-            <FlashSaleBanner />
+            <div className="grid grid-cols-1 md:grid-cols-2 overflow-hidden max-w-7xl mx-auto">
+                <HeroFlashSale />
+                <HeroNewArrivals />
+            </div>
 
             <section>
                 <ProductosNuevos />
             </section>
 
-             <section className="my-10">
+            <section className="my-10">
                 <CategoriasDestacadasWrapper />
             </section>
 
-            <section>
-
-                <HeroNewArrivals />
-            </section>
 
             <section className="my-5">
                 <BrandsList />
