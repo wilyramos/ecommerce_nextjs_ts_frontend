@@ -37,7 +37,7 @@ export default function HeroFlashSale() {
                 </h2>
 
                 <div className="flex items-center gap-8 pt-4">
-                    <Link href="/ofertas" className="px-2 py-2 rounded-full bg-[var(--store-primary)] text-[var(--store-primary-text)] font-medium transition-all hover:bg-[var(--store-primary-hover)] hover:scale-[1.02] text-xs md:text-base">
+                    <Link href="/ofertas" className="px-2 py-2 rounded-full bg-[var(--store-primary)] text-[var(--store-primary-text)] font-medium transition-all hover:bg-[var(--store-primary-hover)] hover:scale-[1.02] text-xs">
                         Ver ofertas
                     </Link>
                     <div className="flex gap-4 border-l border-[var(--store-border)] pl-8">
