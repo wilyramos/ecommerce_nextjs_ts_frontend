@@ -282,7 +282,7 @@ export const getFrontPageProducts = async () => {
     const url = `${process.env.API_URL}/products/frontpage/all`;
     const req = await fetch(url, {
         method: 'GET',
-        next: { revalidate: 86400 }
+        // next: { revalidate: 86400 }
     });
 
     if (!req.ok) {
