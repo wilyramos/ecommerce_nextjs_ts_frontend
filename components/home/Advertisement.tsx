@@ -1,57 +1,47 @@
 "use client";
 
 import { useState } from "react";
-import { Truck, CreditCard, Store, X, ChevronRight } from "lucide-react";
+import { Truck, CreditCard, Store, X, ChevronRight, MapPin } from "lucide-react";
 
-const useHover = () => {
-    const [isHovered, setIsHovered] = useState(false);
-    return {
-        isHovered,
-        onMouseEnter: () => setIsHovered(true),
-        onMouseLeave: () => setIsHovered(false),
-    };
-};
-
-export default function Advertisement() {
+export default function AppleStyleAd() {
     const [isVisible, setIsVisible] = useState(true);
-    const { isHovered, onMouseEnter, onMouseLeave } = useHover();
 
     const ads = [
         {
             id: 1,
-            icon: <Truck size={14} strokeWidth={1.5} />,
-            text: (
-                <span className="flex items-center gap-1.5">
-                    Envíos en <span className="font-semibold">Cañete</span>
-                    <span className="bg-[var(--store-primary)] font-bold p-1 rounded-full text-[var(--store-surface)]">
-                        Gratis
-                    </span>
-                </span>
+            icon: <Truck size={13} />,
+            content: (
+                <>
+                    Envíos en <span className="text-white font-medium">Cañete</span> •
+                    <span className="ml-1 text-[#0071e3] font-medium hover:underline cursor-pointer">Gratis</span>
+                </>
             ),
         },
         {
             id: 2,
-            text: (
-                <span>
-                    Envíos a <span className="font-semibold">todo el Perú</span> vía <span className="font-semibold text-white bg-red-600 px-1.5 py-0.5 ">SHALOM</span>
-                </span>
+            icon: <MapPin size={13} />,
+            content: (
+                <>
+                    Envíos a todo el Perú vía <span className="text-white font-medium">Shalom</span>
+                </>
             ),
         },
         {
             id: 3,
-            icon: <CreditCard size={14} strokeWidth={1.5} />,
-            text: (
-                <span>
-                    Paga con <span className="font-semibold">tarjeta o Yape</span> de forma segura
-                </span>
+            icon: <CreditCard size={13} />,
+            content: (
+                <>
+                    Pagos seguros con <span className="text-white font-medium">Tarjeta o Yape</span>
+                </>
             ),
         },
         {
             id: 4,
-            icon: <Store size={14} strokeWidth={1.5} />,
-            text: (
-                <span className="flex items-center gap-1">
-                    Recojo en <span className="font-semibold">tienda física</span> <ChevronRight size={10} />
+            icon: <Store size={13} />,
+            content: (
+                <span className="group flex items-center gap-0.5 cursor-pointer">
+                    Recojo presencial <span className="text-white font-medium ml-1"></span>
+                    <ChevronRight size={12} className="group-hover:translate-x-0.5 transition-transform" />
                 </span>
             ),
         },
@@ -60,50 +50,46 @@ export default function Advertisement() {
     if (!isVisible) return null;
 
     return (
-        <div className="w-full relative overflow-hidden bg-[var(--store-text)] text-[var(--store-surface)] h-9 flex items-center transition-all ">
+        <div className="w-full bg-[#1d1d1f]/90 backdrop-blur-md sticky top-0  border-b border-white/5">
             <style>{`
-                @keyframes marquee {
-                    0% { transform: translateX(0); }
-                    100% { transform: translateX(-50%); }
-                }
-                .animate-marquee { animation: marquee 60s linear infinite; }
-                .paused { animation-play-state: paused; }
-            `}</style>
+        @keyframes marquee-refined {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-33.33%); }
+        }
+        .animate-marquee-refined {
+          animation: marquee-refined 40s linear infinite;
+        }
+        .animate-marquee-refined:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
 
-            <div
-                className="relative flex items-center w-full h-full overflow-hidden"
-                onMouseEnter={onMouseEnter}
-                onMouseLeave={onMouseLeave}
-            >
-                {/* Lateral Blurs style Apple */}
-                <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[var(--store-text)] to-transparent z-10 pointer-events-none" />
-                <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[var(--store-text)] to-transparent z-10 pointer-events-none" />
+            <div className=" mx-auto relative h-10 flex items-center overflow-hidden">
+                {/* Apple-style Gradient Fades */}
+                <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#1d1d1f] to-transparent z-10 pointer-events-none" />
+                <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#1d1d1f] to-transparent z-10 pointer-events-none" />
 
-                {/* Close Button */}
-                <button
-                    onClick={() => setIsVisible(false)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 z-20 p-1 text-[var(--store-text-muted)] hover:text-white transition-colors"
-                    aria-label="Cerrar anuncio"
-                >
-                    <X size={14} />
-                </button>
-
-                <div
-                    className={`flex items-center whitespace-nowrap w-max px-20 ${isHovered ? "paused" : ""
-                        } animate-marquee`}
-                >
+                {/* Marquee Container */}
+                <div className="flex items-center whitespace-nowrap animate-marquee-refined">
                     {[...ads, ...ads, ...ads].map((ad, index) => (
                         <div
                             key={`${ad.id}-${index}`}
-                            className="flex items-center mx-10 md:mx-16 text-[11px] md:text-xs font-normal tracking-tight"
+                            className="flex items-center mx-12 text-[12px] text-[#f5f5f7] opacity-80 hover:opacity-100 transition-opacity tracking-tight font-light"
                         >
-                            {ad.icon && <div className="mr-2 text-[var(--store-text-muted)]">{ad.icon}</div>}
-                            <div className="hover:opacity-100 transition-opacity cursor-default">
-                                {ad.text}
-                            </div>
+                            {ad.icon && <span className="mr-2 text-[#86868b]">{ad.icon}</span>}
+                            <div>{ad.content}</div>
                         </div>
                     ))}
                 </div>
+
+                {/* Modern Close Button */}
+                <button
+                    onClick={() => setIsVisible(false)}
+                    className="absolute right-4 p-1.5 rounded-full hover:bg-white/10 text-[#86868b] hover:text-white transition-all z-20"
+                    aria-label="Cerrar"
+                >
+                    <X size={14} />
+                </button>
             </div>
         </div>
     );

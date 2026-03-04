@@ -71,14 +71,14 @@ export default function MainCarousel({
                                     </div>
 
                                     <h2
-                                        className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight leading-tight mb-3 line-clamp-1 md:line-clamp-2"
+                                        className="text-xl md:text-3xl lg:text-4xl font-bold tracking-tight leading-tight mb-3 line-clamp-2 md:line-clamp-3"
                                         style={{ color: "var(--store-text)" }}
                                     >
                                         {product.nombre}
                                     </h2>
 
                                     <div className="flex items-center gap-3 mb-5">
-                                        <span className="text-xl md:text-2xl font-bold" style={{ color: "var(--store-text)" }}>
+                                        <span className="text-lg md:text-2xl font-bold" style={{ color: "var(--store-text)" }}>
                                             S/ {product.precio?.toFixed(2)}
                                         </span>
                                         {product.precioComparativo && (
@@ -98,8 +98,8 @@ export default function MainCarousel({
                                 </div>
 
                                 {/* IMAGEN: Aumentada a 60% de ancho y con escalado interno */}
-                                <div className="w-full md:w-[60%] h-64 sm:h-full relative flex items-center justify-center z-10 order-1 md:order-2">
-                                    <div className="relative w-full h-full transition-transform duration-500 hover:scale-110 scale-105 md:scale-125">
+                                <div className="w-full h-64 sm:h-full relative flex items-center justify-center z-10 order-1 md:order-2">
+                                    <div className="relative w-full h-full hover:scale-120 transition-transform duration-300">
                                         <Image
                                             src={product.imagenes?.[0] || "/logo.svg"}
                                             alt={product.nombre}
