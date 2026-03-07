@@ -14,6 +14,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import type { CategoryListResponse, CategoryResponse } from "@/src/schemas";
 import { usePathname } from "next/navigation";
 import { routes } from "@/lib/routes"; // Importamos el helper de rutas
+import Logo from "../ui/Logo";
 
 interface ButtonShowSheetMobileProps {
     categories: CategoryResponse[];
@@ -66,9 +67,7 @@ export default function ButtonShowSheetMobile({
                 <div className="px-6 py-5 border-b border-[var(--store-border)] bg-[var(--store-bg)]">
                     <SheetHeader className="text-left">
                         <SheetTitle className="flex items-center gap-2">
-                            <span className="text-sm font-bold uppercase tracking-widest text-[var(--store-text)]">
-                                Menú
-                            </span>
+                            <Logo size={20} />
                         </SheetTitle>
                     </SheetHeader>
                 </div>

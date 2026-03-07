@@ -102,7 +102,7 @@ export default function ButtonShowCart() {
                         <div className="pt-2 space-y-3 pb-safe">
                             <button
                                 onClick={handleCheckout}
-                                className="w-full bg-[var(--store-primary)] text-white text-sm font-semibold py-4 rounded-full hover:bg-[var(--store-primary-hover)] transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                                className="w-full bg-[var(--store-primary)] text-white text-sm  py-2 hover:bg-[var(--store-primary-hover)] transition-all active:scale-[0.98] flex items-center justify-center gap-2"
                             >
                                 Revisar Carrito <ArrowRight size={16} />
                             </button>
