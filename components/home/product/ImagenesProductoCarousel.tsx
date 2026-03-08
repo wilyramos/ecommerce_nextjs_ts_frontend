@@ -137,6 +137,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                                     className="object-contain p-1"
                                     sizes="80px"
                                     quality={20}
+                                    unoptimized
                                 />
                             </button>
                         ))}
@@ -169,6 +170,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                         )}
                         style={zoom ? { transformOrigin: `${position.x}% ${position.y}%` } : undefined}
                         quality={100}
+                        unoptimized
                     />
                 )}
 

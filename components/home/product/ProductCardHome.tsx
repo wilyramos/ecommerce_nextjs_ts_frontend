@@ -35,6 +35,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                             src={primaryImage}
                             alt={product.nombre || "Producto"}
                             fill
+                            unoptimized
                             sizes="(max-width: 768px) 50vw, 25vw"
                             className={cn(
                                 "object-contain transition-all duration-500 ease-in-out",
@@ -49,6 +50,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                                 src={hoverImage}
                                 alt=""
                                 fill
+                                unoptimized
                                 sizes="(max-width: 768px) 50vw, 25vw"
                                 className="
                   absolute inset-0

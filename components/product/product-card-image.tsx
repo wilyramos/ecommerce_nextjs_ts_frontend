@@ -46,6 +46,7 @@ export default function ProductCardImage({ imagenes, nombre }: ProductCardImageP
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                             className="object-cover"
                             priority={idx === 0}
+                            unoptimized
                         />
                     </div>
                 ))}

@@ -148,6 +148,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                                             sizes="(max-width: 768px) 50vw, 33vw"
                                             className="object-contain p-4 mix-blend-multiply"
                                             quality={75}
+                                            unoptimized
                                         />
                                     </div>
                                 ))}

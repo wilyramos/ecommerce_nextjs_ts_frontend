@@ -269,7 +269,7 @@ export default function ProductDetails({ producto }: Props) {
                                                     >
                                                         <div className={cn("relative w-10 h-10 overflow-hidden rounded-full border border-black/5 flex-shrink-0", outOfStock && "grayscale")}>
                                                             {variantForValue?.imagenes?.[0] ? (
-                                                                <Image src={variantForValue.imagenes[0]} alt={val} fill className="object-cover" quality={30} />
+                                                                <Image src={variantForValue.imagenes[0]} alt={val} fill className="object-cover" quality={30} unoptimized />
                                                             ) : (
                                                                 <ColorCircle color={val} size={40} />
                                                             )}
