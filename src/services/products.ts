@@ -42,7 +42,7 @@ export const GetProductsBySlug = async (slug: string) => {
     }
 
     const json = await req.json();
-    console.log("Producto obtenido por slug:", json);
+    // console.log("Producto obtenido por slug:", json);
     const product = ApiProductWithCategorySchema.parse(json);
     return product;
 };
@@ -307,7 +307,7 @@ export const getProductsRelated = async (slug: string) => {
     }
 
     const json = await req.json();
-    console.log("Productos relacionados obtenidos:", json);
+    // console.log("Productos relacionados obtenidos:", json);
     const products = ApiProductsSchema.parse(json);
     return products;
 
