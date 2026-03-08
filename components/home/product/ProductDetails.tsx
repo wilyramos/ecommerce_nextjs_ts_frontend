@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState, useEffect, useMemo } from 'react';
 import AddProductToCart from './AddProductToCart';
@@ -14,10 +14,19 @@ import ColorCircle from '@/components/ui/ColorCircle';
 import Link from 'next/link';
 import Image from 'next/image';
 import { CalendarDays, MapPin, MessageCircle } from 'lucide-react';
+import {
+    Select,
+    SelectTrigger,
+    SelectContent,
+    SelectItem,
+    SelectValue,
+} from "@/components/ui/select";
 
 type Props = {
     producto: ProductWithCategoryResponse;
 };
+
+const MAX_VISIBLE_OPTIONS = 10;
 
 export default function ProductDetails({ producto }: Props) {
     const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
@@ -82,10 +91,11 @@ export default function ProductDetails({ producto }: Props) {
                 .every(([key, value]) => key === attrKey || variant.atributos[key] === value);
             if (matchesOtherAttrs) values.add(variant.atributos[attrKey]);
         });
-        return Array.from(values).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
+        return Array.from(values).sort((a, b) => 
+            a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" })
+        );
     };
 
-    // Lógica de imágenes ajustada
     const variantImages = useMemo(() => {
         let images: string[] = [];
 
@@ -97,7 +107,6 @@ export default function ProductDetails({ producto }: Props) {
             images = [...generalImages, ...allVariantsImages];
         }
 
-        // Limpieza estricta: quitar null, undefined, strings vacíos y duplicados
         const cleaned = Array.from(new Set(images.filter(img => img && img.trim() !== "")));
 
         return cleaned.length > 0 ? cleaned : ["/logoapp.svg"];
@@ -199,18 +208,13 @@ export default function ProductDetails({ producto }: Props) {
                                             -{Math.round(((precioComparativo - precio) / precioComparativo) * 100)}%
                                         </span>
 
-                                        {/* CONTENEDOR DINÁMICO */}
                                         <div className="relative inline-grid h-4 items-center">
-                                            {/* Este span invisible ocupa el espacio del texto más largo 
-                   para que el contenedor siempre tenga el ancho máximo necesario.
-                */}
                                             <span className="invisible pointer-events-none text-[10px] sm:text-xs font-medium uppercase tracking-wide px-1 row-start-1 col-start-1">
                                                 {discountList.reduce((a, b) => a.length > b.length ? a : b)}
                                             </span>
 
-                                            {/* Este es el texto que se anima */}
                                             <span
-                                                key={discountIndex} // Usamos key para disparar la animación de entrada si prefieres CSS puro
+                                                key={discountIndex}
                                                 className={cn(
                                                     "absolute left-0 text-[10px] sm:text-xs font-medium text-[var(--store-primary)] uppercase tracking-wide transition-all duration-300 row-start-1 col-start-1 whitespace-nowrap",
                                                     visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-1'
@@ -222,26 +226,34 @@ export default function ProductDetails({ producto }: Props) {
                                     </div>
                                 )}
                             </div>
-                            {stock <= 5 && stock > 0 && (
-                                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-yellow-50 border border-yellow-100 rounded-lg text-yellow-800 text-xs font-medium mt-1">
+                            
+                            {/* Manejo de estado Agotado General o Poco Stock */}
+                            {stock <= 0 ? (
+                                <div className="inline-flex items-center px-3 py-1.5 bg-red-50  rounded text-red-600 text-xs font-bold mt-2 uppercase tracking-wider w-fit">
+                                    Agotado
+                                </div>
+                            ) : stock <= 5 ? (
+                                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-yellow-50 border border-yellow-100 rounded text-yellow-800 text-xs font-medium mt-1">
                                     <div className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></div>
                                     Solo quedan {stock} unidades. ¡Pídelo pronto!
                                 </div>
-                            )}
+                            ) : null}
                         </header>
 
                         {Object.entries(allAttributes).map(([key]) => {
                             const availableValues = getAvailableValues(key);
+                            const isColor = key.toLowerCase() === "color";
+                            const useDropdown = !isColor && availableValues.length > MAX_VISIBLE_OPTIONS;
+
                             return (
                                 <fieldset key={key} className="space-y-2 mt-4">
                                     <legend className="text-sm font-bold text-[var(--store-text-muted)] uppercase tracking-wider mb-3">{key}:</legend>
 
-                                    {key.toLowerCase() === "color" ? (
+                                    {isColor ? (
                                         <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
                                             {availableValues.map((val) => {
                                                 const outOfStock = isOptionOutOfStock(key, val);
                                                 const selected = selectedAttributes[key] === val;
-                                                // Buscar la variante específica para este valor para obtener su imagen
                                                 const variantForValue = producto.variants?.find(v => v.atributos[key] === val);
 
                                                 return (
@@ -250,24 +262,66 @@ export default function ProductDetails({ producto }: Props) {
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
                                                         className={cn(
-                                                            "relative group flex flex-col items-center justify-between gap-2 p-1 rounded-xl border w-full transition-all duration-200",
+                                                            "relative group flex flex-col items-center justify-between gap-2 p-1 rounded border w-full transition-all duration-200",
                                                             selected ? "border-[var(--store-primary)] border-2" : "border-[var(--store-border)] bg-white/50",
-                                                            outOfStock && "opacity-50 grayscale cursor-not-allowed"
+                                                            outOfStock && "opacity-60 cursor-not-allowed bg-gray-50 border-gray-200"
                                                         )}
                                                     >
-                                                        <div className="relative w-10 h-10 overflow-hidden rounded-full border border-black/5">
+                                                        <div className={cn("relative w-10 h-10 overflow-hidden rounded-full border border-black/5 flex-shrink-0", outOfStock && "grayscale")}>
                                                             {variantForValue?.imagenes?.[0] ? (
                                                                 <Image src={variantForValue.imagenes[0]} alt={val} fill className="object-cover" quality={30} />
                                                             ) : (
                                                                 <ColorCircle color={val} size={40} />
                                                             )}
+                                                            
+                                                            {outOfStock && (
+                                                                <span className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                                                                    <div className="w-[120%] border-t-[3px] border-red-500/80 -rotate-45" />
+                                                                </span>
+                                                            )}
                                                         </div>
-                                                        <span className={cn("text-xs text-center truncate w-full", selected ? "font-bold" : "font-medium")}>{val}</span>
-                                                        {outOfStock && <span className="absolute inset-0 flex items-center justify-center"><div className="w-[70%] border-t-2 border-muted-foreground/70 -rotate-45" /></span>}
+                                                        <span className={cn("text-xs text-center truncate w-full", selected ? "font-bold" : "font-medium", outOfStock && "line-through text-gray-400")}>
+                                                            {val}
+                                                        </span>
                                                     </button>
                                                 );
                                             })}
                                         </div>
+                                    ) : useDropdown ? (
+                                        <Select
+                                            value={selectedAttributes[key] || ""}
+                                            onValueChange={(val) => updateSelectedVariant(key, val)}
+                                        >
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder={`Selecciona una opción`} />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {availableValues.map((val) => {
+                                                    const outOfStock = isOptionOutOfStock(key, val);
+                                                    return (
+                                                        <SelectItem 
+                                                            key={val} 
+                                                            value={val} 
+                                                            disabled={outOfStock}
+                                                            className={cn(
+                                                                "cursor-pointer",
+                                                                outOfStock && "opacity-50 cursor-not-allowed focus:bg-transparent"
+                                                            )}
+                                                        >
+                                                            <div className="flex items-center justify-between w-full gap-4">
+                                                                <span className={cn(outOfStock && "line-through text-muted-foreground")}>{val}</span>
+                                                                
+                                                                {outOfStock && (
+                                                                    <span className="text-[10px] uppercase tracking-wider text-red-500 font-bold bg-red-50 px-1.5 py-0.5 rounded">
+                                                                        Agotado
+                                                                    </span>
+                                                                )}
+                                                            </div>
+                                                        </SelectItem>
+                                                    );
+                                                })}
+                                            </SelectContent>
+                                        </Select>
                                     ) : (
                                         <div className="flex flex-wrap gap-2.5">
                                             {availableValues.map((val) => {
@@ -279,9 +333,19 @@ export default function ProductDetails({ producto }: Props) {
                                                         variant={selected ? "default" : "outline"}
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
-                                                        className={cn("h-10 px-4 rounded-md", selected && "bg-[var(--store-primary)] shadow-md scale-[1.02]")}
+                                                        className={cn(
+                                                            "h-10 px-4 rounded relative overflow-hidden transition-all",
+                                                            selected && "bg-[var(--store-primary)] shadow-md scale-[1.02]",
+                                                            outOfStock && "opacity-50 text-gray-400 bg-gray-100 border-gray-300 cursor-not-allowed"
+                                                        )}
                                                     >
-                                                        {val}
+                                                        <span className={cn(outOfStock && "line-through")}>{val}</span>
+                                                        
+                                                        {outOfStock && (
+                                                            <span className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                                                                <div className="w-[110%] border-t-[1.5px] border-gray-400/60 -rotate-[15deg]" />
+                                                            </span>
+                                                        )}
                                                     </Button>
                                                 );
                                             })}
@@ -293,7 +357,11 @@ export default function ProductDetails({ producto }: Props) {
 
                         <section className="flex justify-between items-center gap-4 mt-8">
                             <div className="hidden md:flex flex-1">
-                                <AddProductToCart product={producto} variant={selectedVariant ?? undefined} />
+                                <AddProductToCart 
+                                    product={producto} 
+                                    variant={selectedVariant ?? undefined} 
+                                    // Considera pasar una prop disabled a este componente si no lo maneja internamente
+                                />
                             </div>
                             <div className="flex-1">
                                 <ShopNowButton
@@ -312,7 +380,7 @@ export default function ProductDetails({ producto }: Props) {
                                 <p className="flex items-center gap-2"><MapPin className="w-3.5 h-3.5" /> Cañete: <span className="text-[var(--store-primary)] font-medium">Gratis y Contraentrega</span></p>
                                 <p>Resto del Perú: Envíos mediante <span className="bg-red-600 text-white px-1 italic font-medium">SHALOM</span></p>
                             </div>
-                            <div className="flex gap-2 bg-[var(--store-bg)] rounded-lg p-3">
+                            <div className="flex gap-2 bg-[var(--store-bg)] rounded p-3">
                                 <CalendarDays className="w-4 h-4 mt-0.5" />
                                 <div className="text-xs">
                                     <span className="font-semibold block">Estimación de entrega</span>
@@ -325,7 +393,7 @@ export default function ProductDetails({ producto }: Props) {
                             <PaymentMethods />
                         </div>
                         <div className="p-4 flex justify-center">
-                            <a href={`https://wa.me/51925054636?text=Consulta%20${encodeURIComponent(producto.nombre)}`} target="_blank" className="flex items-center gap-2 text-sm hover:text-[#25D366] transition-colors">
+                            <a href={`https://wa.me/51925054636?text=Consulta%20${encodeURIComponent(producto.nombre)}`} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm hover:text-[#25D366] transition-colors">
                                 <MessageCircle className="w-4 h-4" /> ¿Tienes dudas? <span className="underline underline-offset-4">WhatsApp</span>
                             </a>
                         </div>
@@ -336,7 +404,10 @@ export default function ProductDetails({ producto }: Props) {
             <ProductExpandableSections producto={producto} />
 
             <div className="md:hidden fixed bottom-0 left-0 w-full bg-[var(--store-surface)] p-4 border-t border-[var(--store-border)] shadow-md z-50">
-                <AddProductToCart product={producto} variant={allAttributesSelected ? selectedVariant ?? undefined : undefined} />
+                <AddProductToCart 
+                    product={producto} 
+                    variant={allAttributesSelected ? selectedVariant ?? undefined : undefined} 
+                />
             </div>
         </>
     );

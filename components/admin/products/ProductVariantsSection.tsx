@@ -1,3 +1,5 @@
+//TODO: veirificar o eliminar pq no se esta usando en ningun lado, se dejo como referencia para futuras implementaciones de variantes mas avanzadas
+
 "use client";
 
 import { useState } from "react";

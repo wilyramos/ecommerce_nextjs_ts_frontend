@@ -11,7 +11,7 @@ import {
     SelectItem,
     SelectValue,
 } from "@/components/ui/select";
-import { Trash2, Plus, AlertCircle } from "lucide-react";
+import { Trash2, Plus, AlertCircle, ArrowUpDown } from "lucide-react";
 import UploadVariantImageDialog from "./UploadVariantImageDialog";
 import {
     Accordion,
@@ -19,7 +19,6 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion";
-
 
 interface CategoryAttr {
     name: string;
@@ -34,35 +33,26 @@ interface Props {
 }
 
 export default function ProductVariantsForm({ product, categoryAttributes, globalImages }: Props) {
-
-
-    //TODO: VALIDAR LOS ATRIBUTOS DE VARIANTES EN EL BACKEND y front ADECUADAMENTE.
-
-    // 1. Filtramos atributos obligatorios para variantes
     const variantAttributes = categoryAttributes.filter((attr) => attr.isVariant);
 
     const [variants, setVariants] = useState<TApiVariant[]>(product?.variants ?? []);
     const [errors, setErrors] = useState<string[]>([]);
     const [openItems, setOpenItems] = useState<string[]>([]);
+    const [sortMethod, setSortMethod] = useState<string>("default");
 
-
-    // Función auxiliar pura para obtener errores de una lista de variantes
     const getValidationErrors = (currentVariants: TApiVariant[]) => {
         const newErrors: string[] = [];
 
         if (!variantAttributes.length) return newErrors;
 
-        // Obtener qué atributos se están usando en cada variante (los que tengan valor)
         const usedAttrsPerVariant = currentVariants.map((variant) => {
             return Object.entries(variant.atributos)
                 .filter(([, val]) => val && val.trim() !== "")
                 .map(([key]) => key);
         });
 
-        // Referencia: los atributos usados por la primera variante que tenga al menos uno
         const referenceAttrs = usedAttrsPerVariant.find(attrs => attrs.length > 0) ?? [];
 
-        // Validar que cada variante tenga al menos un valor por cada atributo que esté en referencia
         usedAttrsPerVariant.forEach((attrs, index) => {
             referenceAttrs.forEach((refAttr) => {
                 if (!attrs.includes(refAttr)) {
@@ -72,7 +62,6 @@ export default function ProductVariantsForm({ product, categoryAttributes, globa
                 }
             });
 
-            // Validación extra: no permitir atributos adicionales que no estén en referencia
             const extraAttrs = attrs.filter(a => !referenceAttrs.includes(a));
             if (extraAttrs.length) {
                 newErrors.push(
@@ -81,6 +70,35 @@ export default function ProductVariantsForm({ product, categoryAttributes, globa
             }
         });
         return newErrors;
+    };
+
+    const handleSort = (method: string) => {
+        setSortMethod(method);
+        if (method === "default") return;
+
+        const sorted = [...variants].sort((a, b) => {
+            if (method === "incomplete") {
+                const aIncomplete = variantAttributes.some(attr => !a.atributos[attr.name]);
+                const bIncomplete = variantAttributes.some(attr => !b.atributos[attr.name]);
+                if (aIncomplete && !bIncomplete) return -1;
+                if (!aIncomplete && bIncomplete) return 1;
+                return 0;
+            }
+            if (method === "alphabetical") {
+                const aSummary = variantAttributes.map(attr => a.atributos[attr.name] || "").join("");
+                const bSummary = variantAttributes.map(attr => b.atributos[attr.name] || "").join("");
+                return aSummary.localeCompare(bSummary);
+            }
+            if (method === "price") {
+                return (a.precio || 0) - (b.precio || 0);
+            }
+            if (method === "stock") {
+                return (a.stock || 0) - (b.stock || 0);
+            }
+            return 0;
+        });
+
+        setVariants(sorted);
     };
 
     const addVariant = (event: React.FormEvent) => {
@@ -102,9 +120,9 @@ export default function ProductVariantsForm({ product, categoryAttributes, globa
 
         const nextVariants = [...variants, newVariant];
         setVariants(nextVariants);
-        // Validamos automáticamente al agregar (bloqueará el submit hasta que se llene)
         setErrors(getValidationErrors(nextVariants));
         setOpenItems((prev) => [...prev, newVariant._id!]);
+        setSortMethod("default"); 
     };
 
     const updateVariant = <K extends keyof TApiVariant>(index: number, key: K, value: TApiVariant[K]) => {
@@ -112,7 +130,7 @@ export default function ProductVariantsForm({ product, categoryAttributes, globa
         nextVariants[index] = { ...nextVariants[index], [key]: value };
 
         setVariants(nextVariants);
-        setErrors(getValidationErrors(nextVariants)); // Validación automática en tiempo real
+        setErrors(getValidationErrors(nextVariants));
     };
 
     const updateAttribute = (index: number, attrName: string, value: string) => {
@@ -123,16 +141,15 @@ export default function ProductVariantsForm({ product, categoryAttributes, globa
         };
 
         setVariants(nextVariants);
-        setErrors(getValidationErrors(nextVariants)); // Validación automática en tiempo real
+        setErrors(getValidationErrors(nextVariants));
     };
 
     const removeVariant = (index: number) => {
         const nextVariants = variants.filter((_, i) => i !== index);
         setVariants(nextVariants);
-        setErrors(getValidationErrors(nextVariants)); // Re-validar al eliminar
+        setErrors(getValidationErrors(nextVariants));
     };
 
-    // Preparamos datos limpios para el input hidden
     const variantsToSubmit = variants.map(v => ({
         ...v,
         atributos: Object.fromEntries(
@@ -154,10 +171,27 @@ export default function ProductVariantsForm({ product, categoryAttributes, globa
     return (
         <div className="space-y-4 my-4 border-2 p-4 rounded-lg bg-white">
             <div className="flex justify-between items-center">
-                <h3 className="text-base font-semibold">Variantes del producto:</h3>
+                <h3 className="text-base font-semibold">Variantes del producto ({variants.length}):</h3>
+                
+                {variants.length > 1 && (
+                    <div className="flex items-center gap-2">
+                        <ArrowUpDown className="w-4 h-4 text-muted-foreground" />
+                        <Select value={sortMethod} onValueChange={handleSort}>
+                            <SelectTrigger className="h-8 w-[180px] text-xs">
+                                <SelectValue placeholder="Ordenar por..." />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="default">Orden original</SelectItem>
+                                <SelectItem value="incomplete">Incompletas primero</SelectItem>
+                                <SelectItem value="alphabetical">Alfabético (Atributos)</SelectItem>
+                                <SelectItem value="price">Menor a mayor precio</SelectItem>
+                                <SelectItem value="stock">Menor a mayor stock</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                )}
             </div>
 
-            {/* Mostramos errores de validación automáticamente */}
             {errors.length > 0 && (
                 <div className="bg-red-50 border border-red-200 text-red-700 p-3 rounded-md text-sm space-y-1">
                     <div className="flex items-center gap-2 font-bold">
@@ -193,7 +227,6 @@ export default function ProductVariantsForm({ product, categoryAttributes, globa
                                 className={` border-2  ${isIncomplete ? "border-red-300" : ""
                                     }`}
                             >
-                                {/* Header compacto */}
                                 <AccordionTrigger className="px-3 py-2 text-sm hover:no-underline">
                                     <div className="flex w-full items-center justify-between gap-3">
                                         <div className="truncate uppercase font-medium text-xs ">
@@ -207,9 +240,7 @@ export default function ProductVariantsForm({ product, categoryAttributes, globa
                                     </div>
                                 </AccordionTrigger>
 
-                                {/* Contenido completo */}
                                 <AccordionContent className="px-3 pb-4 pt-2 space-y-4">
-                                    {/* ATRIBUTOS */}
                                     <div className="flex flex-wrap gap-3">
                                         {variantAttributes.map((attr) => {
                                             const isEmpty = !variant.atributos[attr.name];
@@ -249,9 +280,6 @@ export default function ProductVariantsForm({ product, categoryAttributes, globa
                                         })}
                                     </div>
 
-                                    {/* DATOS NUMÉRICOS */}
-
-
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 items-end">
                                         <div className="space-y-1">
                                             <label className="text-xs font-medium">Precio</label>
@@ -277,6 +305,7 @@ export default function ProductVariantsForm({ product, categoryAttributes, globa
                                             <label className="text-xs font-medium">Stock</label>
                                             <Input
                                                 className="h-9"
+                                                type="number"
                                                 value={variant.stock}
                                                 onChange={(e) => updateVariant(index, "stock", Number(e.target.value))}
                                             />
@@ -287,28 +316,20 @@ export default function ProductVariantsForm({ product, categoryAttributes, globa
                                                 className="h-9"
                                                 value={variant.sku}
                                                 onChange={(e) => updateVariant(index, "sku", e.target.value)}
-
                                             />
                                         </div>
-
-
-
                                     </div>
 
-                                    {/* IMÁGENES */}
-                                    {/* Dentro del mapeo de variants en AccordionContent */}
                                     <UploadVariantImageDialog
                                         images={variant.imagenes ?? []}
-                                        globalImages={globalImages} // <--- Pasamos las globales al dialog
+                                        globalImages={globalImages}
                                         setImages={(fn) => {
                                             const next = [...variants];
                                             next[index].imagenes = fn(next[index].imagenes ?? []);
                                             setVariants(next);
-                                            // Si tienes validación en tiempo real, llámala aquí también
                                         }}
                                     />
 
-                                    {/* DELETE */}
                                     <div className="flex justify-end">
                                         <Button
                                             variant="ghost"
@@ -325,10 +346,8 @@ export default function ProductVariantsForm({ product, categoryAttributes, globa
                         );
                     })}
                 </Accordion>
-
             </div>
 
-            {/* Input oculto: Se vacía si hay errores, impidiendo el envío del formulario padre */}
             <input
                 type="hidden"
                 name="variants"

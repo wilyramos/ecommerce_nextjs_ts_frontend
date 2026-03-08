@@ -106,8 +106,6 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         }
     }
     
-    console.log("Producto a actualizar:", product.data);
-
     const token = await getToken();
     const url = `${process.env.API_URL}/products/${id}`;
     const req = await fetch(url, {

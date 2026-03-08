@@ -47,9 +47,7 @@ export default function ProductExpandableSections({ producto }: Props) {
                         <div className={`${hasSpecs ? "lg:col-span-7" : "lg:col-span-12"} space-y-4`}>
                             {hasDescripcion && (
                                 <>
-                                    <h3 className="text-xs font-bold uppercase tracking-[0.15em] text-[var(--store-text-muted)] mb-4">
-                                        Resumen
-                                    </h3>
+                                    
                                     {/* Clases 'prose' personalizadas para respetar el tema oscuro/claro */}
                                     <div
                                         className="
