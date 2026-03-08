@@ -142,6 +142,7 @@ export default function UploadVariantImageDialog({ images, globalImages, setImag
                                                 <Image
                                                     src={img}
                                                     alt=""
+                                                    unoptimized
                                                     fill
                                                     className={`object-cover transition-all ${isSelected ? '' : 'opacity-80 group-hover:opacity-100'}`}
                                                 />
@@ -189,7 +190,7 @@ export default function UploadVariantImageDialog({ images, globalImages, setImag
                 {images.length > 0 ? (
                     images.map((img, i) => (
                         <div key={i} className="relative w-10 h-10 rounded border overflow-hidden shadow-sm flex-shrink-0 bg-white">
-                            <Image src={img} alt="" fill className="object-cover" />
+                            <Image src={img} alt="" fill className="object-cover" unoptimized />
                         </div>
                     ))
                 ) : (

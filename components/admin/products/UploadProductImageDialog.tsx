@@ -149,6 +149,7 @@ export default function UploadProductImageDialog({
                                                 <Image
                                                     src={img}
                                                     alt="Media"
+                                                    unoptimized
                                                     fill
                                                     className={`object-cover transition-transform duration-300 ${isSelected ? 'scale-90' : 'group-hover:scale-110'}`}
                                                 />
@@ -203,7 +204,7 @@ export default function UploadProductImageDialog({
             <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-3">
                 {selected.map((img) => (
                     <div key={img} className="relative aspect-square border rounded-lg overflow-hidden group">
-                        <Image src={img} alt="Selected" fill className="object-cover" />
+                        <Image src={img} alt="Selected" fill className="object-cover" unoptimized />
                         <button
                             type="button"
                             onClick={() => toggleSelect(img)}
