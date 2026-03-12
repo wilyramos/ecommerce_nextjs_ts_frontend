@@ -174,7 +174,7 @@ export default function ProductDetails({ producto }: Props) {
                                 </div>
                             </div>
 
-                            <h1 className="text-[clamp(1.25rem,3vw,2.25rem)] font-semibold text-[var(--store-text)] tracking-tight leading-[1.1] break-words">
+                            <h1 className="text-[clamp(1rem,1.5vmax,2rem)] font-semibold text-[var(--store-text)] tracking-tight leading-[1.1] break-words">
                                 {producto.nombre}
                             </h1>
 
