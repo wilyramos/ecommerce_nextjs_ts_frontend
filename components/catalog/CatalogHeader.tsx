@@ -22,13 +22,13 @@ interface Props {
 
 export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Props) {
     const { updateFilter, searchParams } = useCatalogNav();
-    
+
     // Obtenemos el sort actual de la URL o "recientes" por defecto
     const currentSort = searchParams.get("sort") || "recientes";
 
     return (
-        <div className="flex flex-col gap-6 pb-6 border-b border-[var(--store-border)]">
-            
+        <div className="flex flex-col gap-6 pb-1 border-b my-2 border-[var(--store-border)]">
+
             {/* 1. Breadcrumbs */}
             <nav aria-label="Breadcrumb">
                 <ol className="flex flex-wrap items-center gap-2 text-xs text-[var(--store-text-muted)]">
@@ -46,7 +46,7 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
 
                                 {isLast || isPlaceholder ? (
                                     // Texto plano (Elemento actual o sin enlace válido)
-                                    <span 
+                                    <span
                                         className={`flex items-center gap-1 ${isLast ? "font-bold text-[var(--store-text)]" : "font-medium"}`}
                                         aria-current={isLast ? "page" : undefined}
                                     >
@@ -55,8 +55,8 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
                                     </span>
                                 ) : (
                                     // Enlace funcional
-                                    <Link 
-                                        href={crumb.href} 
+                                    <Link
+                                        href={crumb.href}
                                         className="flex items-center gap-1 hover:text-[var(--store-primary)] hover:underline transition-all font-medium"
                                     >
                                         {isFirst && <Home className="w-3.5 h-3.5 mb-0.5" />}
@@ -75,23 +75,26 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
                     <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-[var(--store-text)] capitalize">
                         {title}
                     </h1>
-                    <p className="text-sm text-[var(--store-text-muted)] mt-1.5 font-medium">
+                    <p className="text-xs text-[var(--store-text-muted)] mt-1.5 font-medium">
                         {totalProducts} {totalProducts === 1 ? 'producto encontrado' : 'productos encontrados'}
                     </p>
                 </div>
 
                 {/* 3. Ordenamiento */}
-                <div className="flex items-center gap-3 w-full sm:w-auto">
-                    <span className="text-xs font-bold uppercase tracking-wider text-[var(--store-text-muted)] whitespace-nowrap hidden sm:block">
+                {/* 3. Ordenamiento */}
+                <div className="flex items-center gap-3 w-auto">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[var(--store-text-muted)] whitespace-nowrap">
                         Ordenar por:
                     </span>
-                    <Select 
-                        value={currentSort} 
+
+                    <Select
+                        value={currentSort}
                         onValueChange={(val) => updateFilter("sort", val)}
                     >
-                        <SelectTrigger className="w-full sm:w-[180px] h-10 rounded-lg border-[var(--store-border)] bg-[var(--store-surface)] text-sm focus:ring-1 focus:ring-[var(--store-primary)] transition-all">
+                        <SelectTrigger className="w-[180px] h-10 rounded-lg border-[var(--store-border)] bg-[var(--store-surface)] text-sm focus:ring-1 focus:ring-[var(--store-primary)] transition-all">
                             <SelectValue placeholder="Relevancia" />
                         </SelectTrigger>
+
                         <SelectContent align="end" className="bg-[var(--store-surface)]">
                             <SelectItem value="recientes">Más Nuevos</SelectItem>
                             <SelectItem value="price-asc">Precio: Bajo a Alto</SelectItem>

@@ -30,7 +30,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                 customLeftArrow={<CustomArrow direction="left" />}
                 customRightArrow={<CustomArrow direction="right" />}
                 itemClass="w-full"
-                containerClass="w-full h-[300px] sm:h-[400px] lg:h-[500px]"
+                containerClass="w-full h-[350px] sm:h-[380px] lg:h-[450px]"
             >
                 {products.map((product) => (
                     <div key={product._id} className="w-full h-full">
@@ -48,13 +48,10 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                 </h2>
 
                                 <div className="flex flex-col items-center md:items-start gap-1">
-                                    <span className="text-sm sm:text-lg md:text-xl font-normal text-[var(--store-text)]">
+                                    <span className="text-sm sm:text-xl md:text-3xl font-bold text-[var(--store-text-muted)]">
                                         S/ {product.precio?.toFixed(2)}
                                     </span>
-                                    
-                                    <span className="text-[11px] sm:text-sm font-medium mt-1 sm:mt-2 text-[var(--store-primary)] group-hover:underline underline-offset-4 transition-all">
-                                        Más información &gt;
-                                    </span>
+                                
                                 </div>
                             </div>
 

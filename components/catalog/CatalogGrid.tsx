@@ -14,7 +14,7 @@ export default function CatalogGrid({ products, isFallback }: Props) {
     // El backend no encontró nada con los filtros actuales, pero devuelve sugerencias (isFallback = true)
     if (isFallback) {
         return (
-            <div className="py-8 space-y-12 animate-in fade-in duration-700">
+            <div className="py-5 space-y-5 animate-in fade-in duration-700">
                 {/* Mensaje de "No encontrado" */}
                 <div className="bg-gray-50 rounded-2xl p-8 md:p-12 text-center max-w-2xl mx-auto border border-dashed border-gray-200">
                     <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm border border-gray-100">
@@ -47,7 +47,7 @@ export default function CatalogGrid({ products, isFallback }: Props) {
                 </div>
 
                 {/* Grid de Sugerencias */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1 md:gap-2">
                     {products.map((product) => (
                         <ProductCard key={product._id} product={product} />
                     ))}

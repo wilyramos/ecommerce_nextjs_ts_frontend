@@ -5,7 +5,6 @@ import "react-multi-carousel/lib/styles.css";
 import Image from "next/image";
 import Link from "next/link";
 import { MdOutlineImageNotSupported } from "react-icons/md";
-import { ChevronRight } from "lucide-react";
 import HeaderConControles from "../ui/HeaderConTituloConControles";
 import type { CategoryListResponse } from "@/src/schemas";
 import { routes } from "@/lib/routes";
@@ -13,9 +12,7 @@ import { routes } from "@/lib/routes";
 const AbsoluteHeaderWrapper = (p: ButtonGroupProps) => (
     <div className="absolute inset-x-0 top-0 z-20 px-4 md:px-8 flex items-center justify-between">
         <HeaderConControles {...p} title="Categorías." subtitle="Encuentra lo que buscas" />
-        <Link href={routes.catalog()} className="group flex items-center gap-1 text-sm text-[var(--store-text-muted)] hover:text-[var(--store-primary)] transition-colors">
-            Ver todos <ChevronRight size={16} />
-        </Link>
+       
     </div>
 );
 

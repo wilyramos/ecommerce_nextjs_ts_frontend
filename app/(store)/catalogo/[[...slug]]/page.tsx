@@ -85,9 +85,6 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
     };
 }
 
-// =====================================================================
-// 📄 COMPONENTE DE PÁGINA (SERVER COMPONENT)
-// =====================================================================
 export default async function Page({ params, searchParams }: Props) {
     const { slug } = await params;
     const resolvedSearchParams = await searchParams;

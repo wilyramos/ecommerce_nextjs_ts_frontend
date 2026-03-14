@@ -70,14 +70,6 @@ export default function CatalogMobileFilters({ filters }: Props) {
                     <CatalogSidebar filters={filters} />
                 </div>
 
-                {/* 3. FOOTER (Fijo abajo) */}
-                <div className="p-4 border-t border-[var(--store-border)] bg-[var(--store-surface)] pb-safe shrink-0">
-                    <DrawerClose asChild>
-                        <button className="w-full bg-[var(--store-text)] text-[var(--store-surface)] font-bold py-3.5 rounded-xl shadow-lg active:scale-[0.98] transition-transform flex justify-center items-center gap-2">
-                            Ver Resultados
-                        </button>
-                    </DrawerClose>
-                </div>
 
             </DrawerContent>
         </Drawer>

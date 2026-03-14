@@ -56,10 +56,10 @@ export default function ProductCard({ product }: ProductCardProps) {
                 </div>
 
                 {/* 2. Información del Producto */}
-                <div className="flex flex-col flex-grow p-5">
+                <div className="flex flex-col flex-grow p-2 md:p-4">
                     
                     {/* Header: Marca y Color */}
-                    <div className="flex justify-between items-center mb-2">
+                    <div className="flex justify-between items-center mb-1 md:mb-2">
                         <span className="text-[10px] font-bold tracking-[0.15em] text-[var(--store-text-muted)] uppercase">
                             {brand?.nombre || ""}
                         </span>
