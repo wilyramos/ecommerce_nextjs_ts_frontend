@@ -233,12 +233,12 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                             )}
                         </div>
 
-                        <h3 className="text-[13px] font-medium text-[var(--store-text)] leading-[1.3] line-clamp-2 md:min-h-[3.2rem]">
+                        <h3 className="text-[13px] font-medium text-[var(--store-text)] leading-[1.3] line-clamp-3 min-h-[3rem]  md:min-h-[3.2rem]">
                             {product.nombre}
                         </h3>
                     </div>
 
-                    <div className="flex items-end justify-between mt-auto pt-2 border-t border-transparent group-hover:border-[var(--store-border)] transition-colors">
+                    <div className="flex items-end justify-between mt-auto pt-4  group-hover:border-[var(--store-border)] transition-colors">
                         <div className="flex flex-col w-full">
                             {stock > 0 ? (
                                 <div className="flex flex-col items-start">
@@ -263,7 +263,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                                     </div>
                                 </div>
                             ) : (
-                                <span className="text-[10px] font-bold text-[var(--store-text-muted)] bg-[var(--store-bg)] px-2 py-1 rounded-full self-start">
+                                <span className="text-[10px] font-bold text-[var(--store-text-muted)] bg-[var(--store-bg)] px-2 py-1 rounded self-start">
                                     Agotado
                                 </span>
                             )}
