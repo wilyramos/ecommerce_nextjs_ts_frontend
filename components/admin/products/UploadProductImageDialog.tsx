@@ -21,7 +21,7 @@ interface UploadProductImageDialogProps {
 }
 
 const MAX_SIZE = 5 * 1024 * 1024 // 5MB
-const MAX_FILES = 10
+const MAX_FILES = 15
 
 export default function UploadProductImageDialog({
     CurrentImagenes = [],

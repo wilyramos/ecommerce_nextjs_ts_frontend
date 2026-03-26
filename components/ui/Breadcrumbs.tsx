@@ -17,7 +17,7 @@ export default function Breadcrumbs({ items, current, className }: Props) {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://gophone.pe";
     
     // Lógica de colapso: si hay más de 3 items, mostramos el primero, ... y el último
-    const shouldCollapse = items.length > 3;
+    const shouldCollapse = items.length > 4;
     const displayItems = shouldCollapse 
         ? [items[0], { label: "...", href: "#" }, items[items.length - 1]] 
         : items;
@@ -96,14 +96,9 @@ export default function Breadcrumbs({ items, current, className }: Props) {
 
                 {/* Actual */}
                 {current && (
-                    <li className="flex items-center min-w-0 flex-1">
-                        <ChevronRight className="w-3 h-3 mx-2 text-gray-300 shrink-0" />
-                        <span
-                            className="font-bold text-[var(--store-text)] truncate min-w-0"
-                            aria-current="page"
-                        >
-                            {current}
-                        </span>
+                    <li className="sr-only" aria-current="page">
+                        {/* <ChevronRight className="w-3 h-3 mx-2 text-gray-300 shrink-0" /> */}
+                        {current}
                     </li>
                 )}
             </ol>

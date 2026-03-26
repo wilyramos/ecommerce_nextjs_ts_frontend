@@ -34,6 +34,7 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
             }
         }
     }
+    
 
     // parsear las especificaciones del formulario
     const especificacionesString = formData.get('especificaciones') as string;
@@ -75,6 +76,10 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         };
     });
 
+    console.log("cleanedVariants", cleanedVariants)
+
+    
+
     const productData = {
         nombre: formData.get("nombre"),
         descripcion: formData.get("descripcion"),
@@ -97,6 +102,8 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         isFrontPage: formData.get('isFrontPage') === 'true',
         line: formData.get('line') || undefined,
     }
+
+    console.log("productData", productData)
 
     const product = updateProductSchema.safeParse(productData);
     if (!product.success) {

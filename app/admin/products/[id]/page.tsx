@@ -7,6 +7,8 @@ import EditProductForm from "@/components/admin/products/EditProductForm";
 import DeleteProductButton from "@/components/admin/products/DeleteProductButton";
 import AdminPageWrapper from "@/components/admin/AdminPageWrapper";
 import Link from "next/link";
+import { IoDuplicate } from "react-icons/io5";
+
 
 type Params = Promise<{
     id: string;
@@ -43,6 +45,13 @@ export default async function ProductDetailsPage({ params }: { params: Params })
             title={`Editar: ${product.nombre}`}
             actions={
                 <div className="flex gap-2">
+                    <Link
+                        href={`/admin/products/new?duplicate=${product._id}`}
+                        className="hover:bg-gray-200 px-4 py-2 rounded flex items-center gap-1"
+                    >
+                        <IoDuplicate />
+                        Duplicar
+                    </Link>
                     <DeleteProductButton productId={product._id} />
                 </div>
             }

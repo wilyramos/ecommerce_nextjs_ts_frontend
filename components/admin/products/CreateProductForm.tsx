@@ -5,7 +5,7 @@ import ProductForm from './ProductForm'
 import { useRouter } from 'next/navigation'
 import { createProduct } from '@/actions/product/add-product-action'
 import { toast } from 'sonner'
-import type { CategoryListResponse } from '@/src/schemas'
+import type { CategoryListResponse, ProductWithCategoryResponse } from '@/src/schemas'
 import type { TBrand } from '@/src/schemas/brands'
 import type { ProductLine } from '@/src/schemas/line.schema' // Importamos tipo Line
 
@@ -13,9 +13,10 @@ interface CreateProductFormProps {
     categorias: CategoryListResponse;
     brands: TBrand[];
     lines: ProductLine[]; // Nueva prop
+    initialData?: ProductWithCategoryResponse
 }
 
-export default function CreateProductForm({ categorias, brands, lines }: CreateProductFormProps) {
+export default function CreateProductForm({ categorias, brands, lines, initialData }: CreateProductFormProps) {
 
     const router = useRouter();
 
@@ -47,6 +48,7 @@ export default function CreateProductForm({ categorias, brands, lines }: CreateP
             action={dispatch}
         >
             <ProductForm
+                product={initialData}
                 categorias={categoriasOrdenadas}
                 brands={brands}
                 lines={lines} // Pasamos las líneas
