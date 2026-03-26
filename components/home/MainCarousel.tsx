@@ -43,7 +43,7 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                                     {product.brand?.nombre || "GoPhone"}
                                 </span>
 
-                                <h2 className="text-xl sm:text-3xl lg:text-5xl font-semibold tracking-tight leading-tight mb-2 sm:mb-4 lg:mb-6 text-[var(--store-text)]">
+                                <h2 className="text-xl sm:text-3xl lg:text-5xl font-bold tracking-tight lead mb-2 sm:mb-4 lg:mb-6 text-[var(--store-text)]">
                                     {product.nombre}
                                 </h2>
 

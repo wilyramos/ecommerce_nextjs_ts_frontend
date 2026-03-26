@@ -13,6 +13,7 @@ import { useCartStore } from "@/src/store/cartStore";
 import ItemCarrito from "../cart/ItemCarrito";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Button } from '@/components/ui/button';
 
 export default function ButtonShowCart() {
     const carrito = useCartStore((state) => state.cart);
@@ -53,7 +54,7 @@ export default function ButtonShowCart() {
                 className=" flex flex-col h-full bg-[var(--store-surface)] border-l border-[var(--store-border)] p-0"
             >
                 {/* Header Estilo Apple con terminación Carrito */}
-                <SheetHeader className="p-6 border-b border-[var(--store-border)]">
+                <SheetHeader className="p-4 border-b border-[var(--store-border)] flex flex-row justify-between items-center">
                     <SheetTitle className="text-2xl font-bold tracking-tight text-[var(--store-text)]">
                         Tu Carrito.
                     </SheetTitle>
@@ -63,7 +64,7 @@ export default function ButtonShowCart() {
                 </SheetHeader>
 
                 {/* Lista de productos */}
-                <div className="flex-1 overflow-y-auto px-6 py-4 scrollbar-thin">
+                <div className="flex-1 overflow-y-auto px-4 py-2 scrollbar-thin">
                     {carrito.length === 0 ? (
                         <div className="h-full flex flex-col items-center justify-center space-y-4 opacity-60">
                             <ShoppingCart size={48} strokeWidth={1} className="text-[var(--store-text-muted)]" />
@@ -74,7 +75,7 @@ export default function ButtonShowCart() {
                     ) : (
                         <div className="divide-y divide-[var(--store-border)]">
                             {carrito.map((item) => (
-                                <div key={`${item._id}-${item.variant?._id ?? "no-variant"}`} className="py-4">
+                                <div key={`${item._id}-${item.variant?._id ?? "no-variant"}`} className="py-2">
                                     <ItemCarrito item={item} />
                                 </div>
                             ))}
@@ -100,12 +101,13 @@ export default function ButtonShowCart() {
                         </div>
 
                         <div className="pt-2 space-y-3 pb-safe">
-                            <button
+                            <Button
+                            
                                 onClick={handleCheckout}
                                 className="w-full bg-[var(--store-primary)] text-white text-sm  py-2 hover:bg-[var(--store-primary-hover)] transition-all active:scale-[0.98] flex items-center justify-center gap-2"
                             >
                                 Revisar Carrito <ArrowRight size={16} />
-                            </button>
+                            </Button>
                             
                             <button 
                                 onClick={() => setCartOpen(false)}
