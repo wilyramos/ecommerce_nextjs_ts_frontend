@@ -1,36 +1,56 @@
-//File: 
-
+// File: frontend/components/POS/SubmitSaleButton.tsx
 "use client";
 
 import { useCartStore } from "@/src/store/cartStore";
-import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
+import { useFormStatus } from "react-dom"; // IMPORTANTE: Hook nativo de React
 import { toast } from "sonner";
 import { submitSaleAction } from "@/actions/pos/submit-sale-action";
 import type { CreateSaleInput } from "@/src/schemas";
+import { BarLoader } from "react-spinners";
 
+// 1. Creamos un sub-componente estricto para el botón. 
+// useFormStatus() SOLO funciona si está dentro de un <form>
+function SubmitButton() {
+    const { pending } = useFormStatus();
+
+    return (
+        <button
+            type="submit"
+            disabled={pending}
+            className={`
+                w-full flex items-center justify-center h-12 rounded-lg font-bold text-sm tracking-wider uppercase transition-all
+                ${pending 
+                    ? "bg-[var(--admin-primary-hover)] text-[var(--admin-text-muted)] cursor-not-allowed opacity-80" 
+                    : "bg-emerald-500 text-white hover:bg-emerald-600 shadow-md hover:shadow-lg"
+                }
+            `}
+        >
+            {pending ? (
+                <div className="flex items-center gap-3">
+                    <span className="text-white/80">PROCESANDO</span>
+                    <BarLoader width={40} height={3} color="white" speedMultiplier={1.5} />
+                </div>
+            ) : (
+                "COBRAR AHORA"
+            )}
+        </button>
+    );
+}
+
+// 2. El Componente Principal
 export default function SubmitSaleButton() {
-    const clearCart = useCartStore((s) => s.clearCart);
-    const cart = useCartStore((s) => s.cart);
-    const total = useCartStore((s) => s.total);
-    const dni = useCartStore((s) => s.dni);
-    const clearDni = useCartStore((s) => s.clearDni);
-    const comprobante = useCartStore((s) => s.comprobante);
-    const clearComprobante = useCartStore((s) => s.clearComprobante);
-    const setSaleCompleted = useCartStore((s) => s.setSaleCompleted);
-    const setSaleIdStore = useCartStore((s) => s.setSaleId);
-
-
-    const router = useRouter();
+    const { 
+        clearCart, cart, total, dni, clearDni, 
+        comprobante, clearComprobante, setSaleCompleted, setSaleId 
+    } = useCartStore();
 
     const sale: CreateSaleInput = {
         items: cart.map((item) => ({
             product: item._id,
-            // AQUÍ LA CORRECCIÓN CLAVE:
-            // Si el item tiene variante, enviamos su ID como 'variantId'
             variantId: item.variant ? item.variant._id : undefined,
             quantity: item.cantidad,
-            price: item.precio, // El store ya tiene el precio correcto (variante o base)
+            price: item.precio,
         })),
         totalPrice: total,
         totalDiscountAmount: 0,
@@ -48,28 +68,22 @@ export default function SubmitSaleButton() {
     });
 
     useEffect(() => {
-        if (state.errors) {
+        if (state.errors && state.errors.length > 0) {
             state.errors.forEach((error) => toast.error(error));
         }
         if (state.success) {
-            setSaleIdStore(state.success); // store
+            setSaleId(state.success); 
             toast.success("Venta guardada con éxito");
             clearCart();
             clearDni();
             clearComprobante();
             setSaleCompleted(true);
         }
-    }, [state, router, clearCart, clearDni, clearComprobante, setSaleCompleted, setSaleIdStore,]);
+    }, [state, clearCart, clearDni, clearComprobante, setSaleCompleted, setSaleId]);
 
     return (
-        <div className="space-y-4">
-            <form action={dispatch}>
-                <input
-                    type="submit"
-                    className="w-full bg-rose-600 text-white font-semibold py-2 hover:bg-rose-700 transition-colors disabled:opacity-50 cursor-pointer px-4 rounded"
-                    value="GUARDAR VENTA"
-                />
-            </form>
-        </div>
+        <form action={dispatch} className="w-full">
+            <SubmitButton />
+        </form>
     );
 }

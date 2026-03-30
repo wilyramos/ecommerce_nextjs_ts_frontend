@@ -5,7 +5,7 @@ import { ToastContainer } from "react-toastify"
 export default function ToastNotification() {
     return (
         <ToastContainer
-            position="top-right"
+            position="top-center"
             autoClose={5000}
             hideProgressBar={false}
             newestOnTop={false}
@@ -13,8 +13,6 @@ export default function ToastNotification() {
             rtl={false}
             pauseOnFocusLoss
             draggable
-            pauseOnHover
-            theme="light"
-        />
+            pauseOnHover        />
     )
 }

@@ -1,3 +1,4 @@
+// File: frontend/components/POS/ProductCardPOS.tsx
 "use client";
 
 import { useState } from "react";
@@ -10,19 +11,15 @@ import { FaPlus } from "react-icons/fa";
 
 export default function ProductCardPOS({ product }: { product: ProductWithCategoryResponse }) {
     const [open, setOpen] = useState(false);
-
     const { nombre, precio, imagenes, stock, barcode, variants } = product;
     const addToCart = useCartStore((s) => s.addToCart);
 
-    const totalStock = variants?.length
-        ? variants.reduce((acc, v) => acc + v.stock, 0)
-        : stock;
-
+    const totalStock = variants?.length ? variants.reduce((acc, v) => acc + v.stock, 0) : stock;
     const agotado = !totalStock || totalStock <= 0;
     const hasVariants = variants && variants.length > 0;
+
     const handleAddClick = () => {
         if (agotado) return;
-
         if (hasVariants) {
             setOpen(true);
         } else {
@@ -35,57 +32,69 @@ export default function ProductCardPOS({ product }: { product: ProductWithCatego
         <>
             <div
                 onClick={handleAddClick}
-                className={`bg-white rounded-md border p-2 shadow-sm flex flex-col gap-2 relative cursor-pointer ${agotado ? "opacity-60 cursor-not-allowed" : ""
-                    }`}
+                className={`
+                    group flex flex-col bg-[var(--admin-surface)] rounded-xl border border-[var(--admin-border)] 
+                    overflow-hidden shadow-sm transition-all duration-200 
+                    ${agotado ? "opacity-50 grayscale cursor-not-allowed" : "hover:border-[var(--admin-info)] hover:shadow-md cursor-pointer hover:-translate-y-0.5"}
+                `}
             >
-                {hasVariants && !agotado && (
-                    <span className="absolute top-2 left-2 bg-zinc-900 text-white text-[10px] px-1.5 py-0.5 rounded">
-                        Variantes
-                    </span>
-                )}
-
-                <div className="relative w-full h-20 bg-zinc-100 rounded flex items-center justify-center overflow-hidden">
-
-                    {/* Badge VARIANTES */}
+                {/* Imagen y Badges */}
+                <div className="relative w-full aspect-square bg-[var(--store-bg)] flex items-center justify-center p-2">
+                    {/* Badge Variantes */}
                     {hasVariants && !agotado && (
-                        <span className="absolute top-1 left-1 bg-zinc-900 text-white text-[9px] px-1.5 py-0.5 rounded z-10">
-                            VARIANTES
+                        <span className="absolute top-2 left-2 bg-[var(--admin-primary)] text-[var(--admin-primary-text)] text-[9px] font-bold tracking-wider px-2 py-1 rounded-md z-10 shadow-sm">
+                            OPCIONES
                         </span>
                     )}
 
-                    {/* Botón + */}
+                    {/* Badge Agotado */}
+                    {agotado && (
+                        <span className="absolute top-2 left-2 bg-[var(--admin-destructive-bg)] text-[var(--admin-destructive-text)] text-[10px] font-bold px-2 py-1 rounded-md z-10 border border-[var(--admin-destructive)]/20">
+                            AGOTADO
+                        </span>
+                    )}
+
+                    {/* Botón Flotante "+" */}
                     {!agotado && (
-                        <div className="absolute top-1 right-1 bg-white/90 p-1.5 rounded-full shadow z-10">
+                        <div className="absolute bottom-2 right-2 bg-[var(--admin-surface)] text-[var(--admin-info)] p-2 rounded-full shadow-md z-10 opacity-0 group-hover:opacity-100 transition-opacity border border-[var(--admin-border)]">
                             <FaPlus size={12} />
                         </div>
                     )}
 
-                    {/* Imagen */}
                     {imagenes?.[0] ? (
                         <Image
                             src={imagenes[0]}
                             alt={nombre}
-                            width={80}
-                            height={80}
-                            className="object-cover w-20 h-20"
+                            fill
+                            sizes="(max-width: 768px) 50vw, 25vw"
+                            className="object-contain mix-blend-multiply p-2 transition-transform duration-300 group-hover:scale-105"
                         />
                     ) : (
-                        <span className="text-[10px] text-zinc-400">Sin imagen</span>
+                        <span className="text-xs text-[var(--admin-text-muted)] font-medium">Sin imagen</span>
                     )}
                 </div>
 
-
-                <span className="font-medium text-sm line-clamp-2">{nombre}</span>
-
-                <div className="text-xs text-zinc-500 mt-auto">
-                    <div>Cód: {barcode || "---"}</div>
-
-                    <div className="flex justify-between mt-1">
-                        <span className="font-semibold text-zinc-900 text-[11px]">
-                            {hasVariants ? "Desde " : ""} S/ {precio.toFixed(2)}
+                {/* Detalles de Texto */}
+                <div className="p-3 flex flex-col flex-1 border-t border-[var(--admin-border)] bg-[var(--admin-surface)]">
+                    <span className="font-semibold text-xs text-[var(--admin-text)] line-clamp-2 leading-tight mb-1" title={nombre}>
+                        {nombre}
+                    </span>
+                    
+                    <div className="mt-auto pt-2 flex flex-col gap-1">
+                        <span className="text-[10px] text-[var(--admin-text-muted)] font-mono">
+                            {barcode || "SKU N/A"}
                         </span>
-
-                        {!agotado && <span className="text-zinc-700">{totalStock} uds</span>}
+                        <div className="flex items-end justify-between">
+                            <span className="font-bold text-[var(--admin-info-text)] text-sm">
+                                {hasVariants && <span className="text-[10px] text-[var(--admin-text-muted)] font-normal mr-1">Desde</span>}
+                                S/ {precio.toFixed(2)}
+                            </span>
+                            {!agotado && (
+                                <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded ${totalStock! < 5 ? 'bg-[var(--admin-warning-bg)] text-[var(--admin-warning-text)]' : 'bg-[var(--store-bg)] text-[var(--admin-text-muted)]'}`}>
+                                    {totalStock} disp.
+                                </span>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -205,5 +205,56 @@
   /* Bordes: Muy sutiles, casi invisibles */
   --store-border: #ebe8e8;
 
+/* ===== PALETA ADMIN & POS (ESTILO ENTERPRISE / DASHBOARD) ===== */
+  
+  /* Fondo del panel: Ligeramente más frío que la tienda para contrastar con las tarjetas blancas */
+  --admin-bg: #F9FAFB; 
 
+  /* Superficies (Tarjetas, Tablas, Modales): Blanco puro */
+  --admin-surface: #FFFFFF;
+
+  /* Sidebar/Navegación: Tono oscuro profundo para separar el menú del área de trabajo (Estilo Vercel/Stripe) */
+  --admin-sidebar-bg: #111827;
+  --admin-sidebar-text: #F3F4F6;
+  --admin-sidebar-hover: #1F2937;
+
+  /* Texto principal: Alto contraste para lectura densa de datos */
+  --admin-text: #111827;
+
+  /* Texto secundario: Para subtítulos, placeholders y metadatos */
+  --admin-text-muted: #6B7280;
+
+  /* Bordes: Más definidos que en la tienda para delimitar celdas y secciones claramente */
+  --admin-border: #E5E7EB;
+
+  /* Acción Principal (Botones Guardar, Crear): Negro o Azul muy oscuro para denotar autoridad y enfoque */
+  --admin-primary: #0F172A;
+  --admin-primary-hover: #1E293B;
+  --admin-primary-text: #FFFFFF;
+
+  /* Hover sutil para filas de tablas y menús desplegables */
+  --admin-accent: #F3F4F6;
+  --admin-accent-foreground: #111827;
+
+  /* --- COLORES SEMÁNTICOS (CRÍTICOS PARA EL POS Y GESTIÓN DE PEDIDOS) --- */
+
+  /* Éxito: Pagos aprobados, stock suficiente, órdenes completadas */
+  --admin-success: #10B981;
+  --admin-success-bg: #D1FAE5;
+  --admin-success-text: #065F46;
+
+  /* Peligro: Cancelaciones, errores, eliminar productos */
+  --admin-destructive: #EF4444;
+  --admin-destructive-bg: #FEE2E2;
+  --admin-destructive-text: #991B1B;
+
+  /* Advertencia: Stock bajo, pagos pendientes, reembolsos */
+  --admin-warning: #F59E0B;
+  --admin-warning-bg: #FEF3C7;
+  --admin-warning-text: #92400E;
+
+  /* Información: Estados de envío, notificaciones neutrales */
+  --admin-info: #3B82F6;
+  --admin-info-bg: #DBEAFE;
+  --admin-info-text: #1E40AF;
 }

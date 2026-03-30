@@ -3,11 +3,13 @@
 import { getOrder } from "@/src/services/orders";
 import Link from "next/link";
 import { formatDate } from "@/lib/utils";
-import { FaBoxOpen, FaPrint, FaArchive } from "react-icons/fa"; // Añadidas iconos
+import { FaBoxOpen, FaArchive } from "react-icons/fa"; // Añadidas iconos
 import OrderStatusBadge from "@/components/ui/OrderStatusBadge";
 import Image from "next/image";
 import PaymentStatusBadge from "@/components/ui/PaymentStatusBadge";
 import OrderActions from "@/components/admin/orders/OrderActions";
+import PrintOrderButton from "@/components/admin/orders/PrintOrderButton";
+import PrintLabelButton from "@/components/admin/orders/PrintLabelButton";
 type Params = Promise<{ id: string }>;
 
 export default async function OrderDetailsPage({ params }: { params: Params }) {
@@ -46,20 +48,20 @@ export default async function OrderDetailsPage({ params }: { params: Params }) {
             {/* Acciones Rápida */}
             <div className="flex flex-wrap items-center justify-between gap-4 bg-gray-50 p-3 rounded-lg border">
                 <div className="flex gap-2">
-                    <Link href="/admin/orders" className="text-sm text-gray-700 bg-white border px-3 py-1 rounded hover:bg-gray-100">
+                    <Link href="/admin/orders" className="text-sm text-gray-700 bg-white border px-3 py-1.5 rounded hover:bg-gray-100 transition-colors shadow-sm">
                         &larr; Volver
                     </Link>
 
-                    {/* ✅ Componente de cambio de estado dinámico */}
                     <OrderActions orderId={id} currentStatus={order.status} />
                 </div>
 
-                <div className="flex gap-2">
-                    <button className="flex items-center gap-1 text-sm px-3 py-1 bg-white border text-gray-700 rounded hover:bg-gray-100">
-                        <FaPrint /> Imprimir
-                    </button>
-                    <button className="flex items-center gap-1 text-sm px-3 py-1 bg-white border text-gray-700 rounded hover:bg-gray-100">
-                        <FaArchive /> Archivar
+                <div className="flex gap-2 items-center">
+                    <PrintOrderButton orderId={id} />
+                    <PrintLabelButton orderId={id} />
+
+                    {/* Botón de archivar (puedes volverlo su propio componente luego) */}
+                    <button className="flex items-center gap-1.5 text-sm px-3 py-1.5 bg-white border border-gray-200 text-gray-700 rounded-md hover:bg-gray-50 transition-colors shadow-sm">
+                        <FaArchive className="text-gray-400" /> Archivar
                     </button>
                 </div>
             </div>

@@ -10,7 +10,6 @@ type Props = {
 };
 
 // =====================================================================
-// 🔍 GENERACIÓN DE METADATA (SEO)
 // =====================================================================
 export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
     const { slug } = await params;
