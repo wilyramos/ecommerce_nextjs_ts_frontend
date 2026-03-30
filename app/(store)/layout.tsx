@@ -1,10 +1,11 @@
-//File: frontend/app/(store)/layout.tsx
+// File: frontend/app/(store)/layout.tsx
 
 import Footer from "@/components/home/Footer";
 import NavBar from "@/components/navigation/NavBar";
 import { metadata as globalMetadata } from "@/app/layout";
 import type { Metadata } from "next";
 import WhatsappButton from "@/components/home/WhatsappButton";
+import StoreBanner from "@/components/home/StoreBanner";
 
 // Extendemos metadata global para esta sección
 export const metadata: Metadata = {
@@ -42,23 +43,25 @@ export const metadata: Metadata = {
     }
 };
 
-
 export default function layout({ children }: { children: React.ReactNode }) {
     return (
         <>
+            <StoreBanner />
+
             <section className="flex flex-col min-h-screen">
-                {/* Aviso mejorado */}
-                <header>
+                {/* Asegura que el header sea inferior al z-9999 del banner */}
+                <header className="relative z-40">
                     <NavBar />
                 </header>
-                <main className="pt-12 md:pt-20 min-h-screen">
+
+                <main className="flex-1 pt-12 md:pt-20">
                     {children}
                 </main>
+
                 <Footer />
             </section>
 
             <WhatsappButton />
-
         </>
     );
 }
