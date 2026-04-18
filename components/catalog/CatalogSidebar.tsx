@@ -30,7 +30,6 @@ export default function CatalogSidebar({ filters }: Props) {
         searchParams,
     } = useCatalogNav();
 
-    // Ordenamiento alfabético consistente
     const sortedFilters = useMemo(() => {
         return {
             categories: [...filters.categories].sort((a, b) => a.nombre.localeCompare(b.nombre)),
@@ -45,10 +44,10 @@ export default function CatalogSidebar({ filters }: Props) {
         };
     }, [filters]);
 
-    // Clases reutilizables para mantener consistencia
-    const accordionItemClass = "border-b-0 mb-4"; 
-    const accordionTriggerClass = "text-[13px] font-bold uppercase tracking-wider text-[var(--store-text)] hover:no-underline py-3 px-1 border-b border-[var(--store-border)]";
-    const checkboxRowClass = "flex items-center space-x-3 cursor-pointer group p-2 -mx-2 rounded-md hover:bg-[var(--store-bg)] transition-colors";
+    // Clases con el nuevo sistema de colores
+    const accordionItemClass = "border-b-0 mb-4";
+    const accordionTriggerClass = "text-[13px] font-bold uppercase tracking-wider text-[var(--color-text-primary)] hover:no-underline py-3 px-1 border-b border-[var(--color-border-default)]";
+    const checkboxRowClass = "flex items-center space-x-3 cursor-pointer group p-2 -mx-2 rounded-md hover:bg-[var(--color-bg-secondary)] transition-colors";
 
     return (
         <div className="w-full pb-20 select-none">
@@ -59,10 +58,7 @@ export default function CatalogSidebar({ filters }: Props) {
                 className="w-full mt-4"
                 defaultValue={["item-categories", "item-brands"]}
             >
-                {/* ==========================================
-                    CATEGORÍAS (Navegación Principal)
-                    Diseño: Píldoras (Pills) sin checkbox
-                ========================================== */}
+                {/* CATEGORÍAS */}
                 {sortedFilters.categories.length > 0 && (
                     <AccordionItem value="item-categories" className={accordionItemClass}>
                         <AccordionTrigger className={accordionTriggerClass}>
@@ -77,14 +73,14 @@ export default function CatalogSidebar({ filters }: Props) {
                                             <button
                                                 onClick={() => setCategory(cat.slug)}
                                                 className={cn(
-                                                    "w-full text-left py-2 px-3 rounded-lg text-sm transition-all duration-200 flex items-center justify-between group",
+                                                    "w-full text-left py-2 px-3 text-sm transition-all duration-200 flex items-center justify-between group",
                                                     active
-                                                        ? "bg-[var(--store-text)] text-[var(--store-surface)] font-medium shadow-sm"
-                                                        : "text-[var(--store-text-muted)] hover:text-[var(--store-text)] hover:bg-[var(--store-bg)]"
+                                                        ? "bg-[var(--color-text-primary)] text-[var(--color-text-inverse)] font-medium shadow-sm"
+                                                        : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)]"
                                                 )}
                                             >
                                                 {cat.nombre}
-                                                {active && <span className="w-1.5 h-1.5 rounded-full bg-[var(--store-surface)]" />}
+                                                {active && <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-text-inverse)]" />}
                                             </button>
                                         </li>
                                     );
@@ -94,10 +90,7 @@ export default function CatalogSidebar({ filters }: Props) {
                     </AccordionItem>
                 )}
 
-                {/* ==========================================
-                    MARCAS (Selección Múltiple)
-                    Diseño: Lista con Checkboxes + Hover Row
-                ========================================== */}
+                {/* MARCAS */}
                 {sortedFilters.brands.length > 0 && (
                     <AccordionItem value="item-brands" className={accordionItemClass}>
                         <AccordionTrigger className={accordionTriggerClass}>
@@ -116,13 +109,13 @@ export default function CatalogSidebar({ filters }: Props) {
                                                 <Checkbox
                                                     id={`brand-${brand.id}`}
                                                     checked={active}
-                                                    className="border-[var(--store-border)] data-[state=checked]:bg-[var(--store-text)] data-[state=checked]:border-[var(--store-text)] w-4 h-4 rounded-[4px] transition-all"
+                                                    className="border-[var(--color-border-default)] data-[state=checked]:bg-[var(--color-text-primary)] data-[state=checked]:border-[var(--color-text-primary)] w-4 h-4 rounded-[4px] transition-all"
                                                 />
                                                 <label
                                                     htmlFor={`brand-${brand.id}`}
                                                     className={cn(
                                                         "text-sm cursor-pointer select-none w-full",
-                                                        active ? "font-semibold text-[var(--store-text)]" : "font-normal text-[var(--store-text-muted)] group-hover:text-[var(--store-text)]"
+                                                        active ? "font-semibold text-[var(--color-text-primary)]" : "font-normal text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)]"
                                                     )}
                                                 >
                                                     {brand.nombre}
@@ -136,9 +129,7 @@ export default function CatalogSidebar({ filters }: Props) {
                     </AccordionItem>
                 )}
 
-                {/* ==========================================
-                    LÍNEAS / MODELOS
-                ========================================== */}
+                {/* LÍNEAS / MODELOS */}
                 {sortedFilters.lines.length > 0 && (
                     <AccordionItem value="item-lines" className={accordionItemClass}>
                         <AccordionTrigger className={accordionTriggerClass}>
@@ -157,13 +148,13 @@ export default function CatalogSidebar({ filters }: Props) {
                                                 <Checkbox
                                                     id={`line-${line.id}`}
                                                     checked={active}
-                                                    className="border-[var(--store-border)] data-[state=checked]:bg-[var(--store-text)] data-[state=checked]:border-[var(--store-text)] w-4 h-4 rounded-[4px]"
+                                                    className="border-[var(--color-border-default)] data-[state=checked]:bg-[var(--color-text-primary)] data-[state=checked]:border-[var(--color-text-primary)] w-4 h-4 rounded-[4px]"
                                                 />
                                                 <label
                                                     htmlFor={`line-${line.id}`}
                                                     className={cn(
                                                         "text-sm cursor-pointer select-none w-full",
-                                                        active ? "font-semibold text-[var(--store-text)]" : "text-[var(--store-text-muted)] group-hover:text-[var(--store-text)]"
+                                                        active ? "font-semibold text-[var(--color-text-primary)]" : "text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)]"
                                                     )}
                                                 >
                                                     {line.nombre}
@@ -177,9 +168,7 @@ export default function CatalogSidebar({ filters }: Props) {
                     </AccordionItem>
                 )}
 
-                {/* ==========================================
-                    ATRIBUTOS DINÁMICOS (Capacidad, Color, etc.)
-                ========================================== */}
+                {/* ATRIBUTOS DINÁMICOS */}
                 {sortedFilters.atributos.map((attr, idx) => {
                     const isColorAttr = attr.name.toLowerCase().includes("color");
 
@@ -202,7 +191,7 @@ export default function CatalogSidebar({ filters }: Props) {
                                                 <Checkbox
                                                     id={`${attr.name}-${val}`}
                                                     checked={isChecked}
-                                                    className="border-[var(--store-border)] data-[state=checked]:bg-[var(--store-text)] data-[state=checked]:border-[var(--store-text)] w-4 h-4 rounded-[4px]"
+                                                    className="border-[var(--color-border-default)] data-[state=checked]:bg-[var(--color-text-primary)] data-[state=checked]:border-[var(--color-text-primary)] w-4 h-4 rounded-[4px]"
                                                 />
                                                 <div className="flex items-center gap-2 w-full">
                                                     {isColorAttr && <ColorCircle color={val} size={16} />}
@@ -210,7 +199,7 @@ export default function CatalogSidebar({ filters }: Props) {
                                                         htmlFor={`${attr.name}-${val}`}
                                                         className={cn(
                                                             "text-sm cursor-pointer select-none capitalize w-full",
-                                                            isChecked ? "font-semibold text-[var(--store-text)]" : "text-[var(--store-text-muted)] group-hover:text-[var(--store-text)]"
+                                                            isChecked ? "font-semibold text-[var(--color-text-primary)]" : "text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)]"
                                                         )}
                                                     >
                                                         {val}

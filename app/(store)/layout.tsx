@@ -5,7 +5,7 @@ import NavBar from "@/components/navigation/NavBar";
 import { metadata as globalMetadata } from "@/app/layout";
 import type { Metadata } from "next";
 import WhatsappButton from "@/components/home/WhatsappButton";
-import StoreBanner from "@/components/home/StoreBanner";
+import StoreMaintenance from "@/components/home/StoreMaintenance";
 
 // Extendemos metadata global para esta sección
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
         "Sección principal de la tienda GoPhone: productos, compras, cuenta y soporte.",
     openGraph: {
         ...globalMetadata.openGraph,
-        title: "GoPhone | Tienda",
+        title: "GoPhone",
         description:
             "Productos, compras, cuenta y soporte dentro de la tienda GoPhone.",
         url: "https://gophone.pe/productos",
@@ -39,15 +39,14 @@ export const metadata: Metadata = {
         images: ["https://gophone.pe/favicon.ico"]
     },
     alternates: {
-        canonical: "https://gophone.pe/productos"
+        canonical: "https://gophone.pe/catalogo"
     }
 };
 
 export default function layout({ children }: { children: React.ReactNode }) {
     return (
         <>
-            <StoreBanner />
-
+            <StoreMaintenance />
             <section className="flex flex-col min-h-screen">
                 {/* Asegura que el header sea inferior al z-9999 del banner */}
                 <header className="relative z-40">

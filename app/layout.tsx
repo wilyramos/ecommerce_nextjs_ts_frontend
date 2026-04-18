@@ -87,7 +87,7 @@ export default function RootLayout({
     return (
         <html lang="es">
             <body
-                className={`${inter.className} bg-[var(--store-bg)] text-[var(--store-text)]`}
+                className={`${inter.className} bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]`}
             >
                 <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
                     <MercadoPagoProvider />

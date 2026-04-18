@@ -356,7 +356,7 @@ export default function ProductVariantsForm({
                 <Button 
                     onClick={addVariant} 
                     size="sm" 
-                    variant="outline" 
+                    variant="default" 
                     className="flex-1 h-10 gap-2 border-dashed border-2 font-bold uppercase text-[11px]"
                 >
                     <Plus className="w-4 h-4" /> Añadir Nueva Variante

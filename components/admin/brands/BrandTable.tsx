@@ -59,7 +59,7 @@ export default function BrandTable({ brands }: { brands: Brand[] }) {
                                 <BrandDialog
                                     brand={b}
                                     trigger={
-                                        <Button size="sm" variant="outline" className="text-xs">
+                                        <Button size="sm" variant="default">
                                             Editar
                                         </Button>
                                     }

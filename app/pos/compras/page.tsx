@@ -20,7 +20,6 @@ export default async function ComprasPage({ searchParams }: { searchParams: Sear
     const currentPage = page ? parseInt(page, 10) : 1;
     const itemsPerPage = limit ? parseInt(limit, 10) : 10;
 
-    // 👉 Pasamos filtros y orden a la función del servicio
     const purchasesResponse = await getPurchases({
         page: currentPage,
         limit: itemsPerPage,

@@ -5,151 +5,154 @@ import {
     SheetContent,
     SheetHeader,
     SheetTitle,
-    SheetTrigger,
+    SheetTrigger
 } from "@/components/ui/sheet";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X, User, ChevronRight, Sparkles, Percent, Grid } from "lucide-react";
+import {
+    Menu, User, ChevronRight,
+    Zap, Tag, LayoutGrid
+} from "lucide-react";
 import { ScrollArea } from "../ui/scroll-area";
-import type { CategoryListResponse, CategoryResponse } from "@/src/schemas";
+import type { CategoryResponse } from "@/src/schemas";
 import { usePathname } from "next/navigation";
-import { routes } from "@/lib/routes"; // Importamos el helper de rutas
+import { routes } from "@/lib/routes";
 import Logo from "../ui/Logo";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
-interface ButtonShowSheetMobileProps {
+interface Props {
     categories: CategoryResponse[];
 }
 
-export default function ButtonShowSheetMobile({
-    categories,
-}: ButtonShowSheetMobileProps) {
+export default function ButtonShowSheetMobile({ categories }: Props) {
     const [open, setOpen] = useState(false);
     const pathname = usePathname();
 
-    // Cerrar el menú al cambiar de ruta
-    useEffect(() => {
-        setOpen(false);
-    }, [pathname]);
+    useEffect(() => setOpen(false), [pathname]);
 
-    // Agrupación de categorías
-    const grouped = categories.reduce((acc, category) => {
-        const parentId =
-            category.parent && typeof category.parent !== "string"
-                ? category.parent._id
-                : null;
-        if (!acc[parentId ?? "root"]) acc[parentId ?? "root"] = [];
-        acc[parentId ?? "root"].push(category);
-        return acc;
-    }, {} as Record<string, CategoryListResponse>);
-
-    const rootCategories = grouped["root"] || [];
-
-    // Enlaces estáticos principales
+    // Enlaces principales con iconos unificados al estilo tech premium
     const mainLinks = [
-        { href: "/novedades", label: "Novedades", icon: <Sparkles size={18} /> },
-        { href: "/ofertas", label: "Ofertas", icon: <Percent size={18} /> },
-        { href: routes.catalog(), label: "Todo el Catálogo", icon: <Grid size={18} /> },
+        {
+            href: "/novedades",
+            label: "Novedades",
+            icon: <Zap size={18} />,
+            description: "Lo último en tecnología"
+        },
+        {
+            href: "/ofertas",
+            label: "Ofertas",
+            icon: <Tag size={18} />,
+            description: "Precios imbatibles"
+        },
+        {
+            href: routes.catalog(),
+            label: "Catálogo General",
+            icon: <LayoutGrid size={18} />,
+            description: "Explora todos los productos"
+        },
     ];
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-                <button className="p-2 text-[var(--store-text)] hover:text-[var(--store-text-muted)] transition focus:outline-none">
-                    {open ? <X size={24} /> : <Menu size={24} />}
+                <button className="p-2 text-[var(--color-text-primary)] active:scale-95 transition-transform outline-none">
+                    <Menu size={26} strokeWidth={1.5} />
                 </button>
             </SheetTrigger>
 
             <SheetContent
                 side="left"
-                className="flex flex-col h-full w-[85vw] sm:w-[350px] p-0 bg-[var(--store-surface)] shadow-2xl border-r border-[var(--store-border)] outline-none gap-0"
+                className="flex flex-col h-full w-[85vw] sm:w-[380px] p-0 bg-[var(--color-bg-primary)] border-r border-[var(--color-border-subtle)] shadow-md outline-none"
             >
-                {/* Header */}
-                <div className="px-6 py-5 border-b border-[var(--store-border)] bg-[var(--store-bg)]">
+                <div className="px-8 pt-6 border-b border-[var(--color-border-subtle)]">
                     <SheetHeader className="text-left">
-                        <SheetTitle className="flex items-center gap-2">
-                            <Logo size={20} />
+                        <SheetTitle>
+                            <Logo />
                         </SheetTitle>
                     </SheetHeader>
                 </div>
 
-                {/* Scrollable Content */}
-                <ScrollArea className="flex-1 px-4 py-2">
-
-                    {/* 1. SECCIÓN PRINCIPAL (Novedades, Ofertas, etc.) */}
-                    <div className="py-2 mb-4 border-b border-[var(--store-border)]">
-                        {mainLinks.map((link) => (
-                            <Link
-                                key={link.href}
-                                href={link.href}
-                                className="flex items-center gap-3 px-3 py-3 rounded-lg text-[15px] font-medium text-[var(--store-text)] hover:bg-[var(--store-bg)] transition-colors"
-                            >
-                                {link.icon}
-                                {link.label}
-                            </Link>
-                        ))}
+                <ScrollArea className="flex-1 px-4">
+                    <div className="grid grid-cols-1 gap-1 mb-8">
+                        {mainLinks.map((link) => {
+                            const isActive = pathname === link.href;
+                            return (
+                                <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    className={cn(
+                                        "flex items-center gap-4 px-4 py-2 transition-all duration-300 group border",
+                                        isActive
+                                            ? "bg-[var(--color-action-primary)] text-[var(--color-text-inverse)] border-transparent shadow-md"
+                                            : "hover:bg-[var(--color-surface-hover)] border-transparent text-[var(--color-text-primary)]"
+                                    )}
+                                >
+                                    <div className={cn(
+                                        "p-2.5 transition-colors ",
+                                        isActive 
+                                            ? "bg-white/10 " 
+                                            : "text-[var(--color-accent-warm)]"
+                                    )}>
+                                        {link.icon}
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-[14px] font-bold uppercase tracking-tight leading-none">
+                                            {link.label}
+                                        </span>
+                                        <span className={cn(
+                                            "text-[10px] font-medium mt-1.5",
+                                            isActive ? "opacity-60" : "text-[var(--color-text-secondary)]"
+                                        )}>
+                                            {link.description}
+                                        </span>
+                                    </div>
+                                </Link>
+                            );
+                        })}
                     </div>
 
-                    {/* 2. SECCIÓN CATEGORÍAS */}
-                    <div className="px-2 pb-2">
-                        <span className="text-xs font-bold text-[var(--store-text-muted)] uppercase tracking-wider mb-2 block px-2">
-                            Categorías
-                        </span>
-
+                    <div className="px-2 pb-10">
+                        <h3 className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-[0.2em] mb-4 ml-2">Explorar</h3>
                         <div className="space-y-1">
-                            {rootCategories.map((parent) => {
-                                const subcategories = grouped[parent._id] || [];
-                                const hasSub = subcategories.length > 0;
-
-                                return (
-                                    <div key={parent._id} className="border-b border-[var(--store-border)] last:border-0 py-1">
-                                        <details className="group">
-                                            <summary className="cursor-pointer list-none flex items-center justify-between text-[15px] font-medium text-[var(--store-text)] py-3 px-2 rounded-md hover:bg-[var(--store-bg)] transition-colors select-none">
-                                                <span>{parent.nombre}</span>
-                                                {hasSub && (
-                                                    <ChevronRight className="h-4 w-4 text-[var(--store-text-muted)] group-open:rotate-90 transition-transform duration-200" />
-                                                )}
-                                            </summary>
-
-                                            {hasSub && (
-                                                <div className="pl-4 pr-2 pb-2 space-y-1 animate-in slide-in-from-top-1 duration-200">
-
-
-
-                                                    {/* Subcategorías */}
-                                                    {subcategories.map((subcategory) => (
-                                                        <Link
-                                                            key={subcategory._id}
-                                                            href={routes.catalog({ category: subcategory.slug })}
-                                                            className="
-                                                                block text-sm 
-                                                                text-[var(--store-text-muted)] 
-                                                                hover:text-[var(--store-text)] 
-                                                                hover:bg-[var(--store-bg)] 
-                                                                px-3 py-2 rounded-md transition-colors
-                                                            "
-                                                        >
-                                                            {subcategory.nombre}
-                                                        </Link>
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </details>
+                            {categories.filter(c => !c.parent).map((parent) => (
+                                <details key={parent._id} className="group overflow-hidden border border-transparent hover:border-[var(--color-border-subtle)] transition-all">
+                                    <summary className="list-none flex items-center justify-between p-4 cursor-pointer hover:bg-[var(--color-bg-secondary)] transition-colors">
+                                        <div className="flex items-center gap-3">
+                                            <span className="text-[14px] font-semibold text-[var(--color-text-primary)]">{parent.nombre}</span>
+                                        </div>
+                                        <ChevronRight size={14} className="text-[var(--color-text-secondary)] group-open:rotate-90 transition-transform" />
+                                    </summary>
+                                    <div className="pl-11 pr-4 pb-4 space-y-3 animate-in slide-in-from-top-2 duration-300">
+                                        {categories.filter(c => (typeof c.parent === 'object' ? c.parent?._id : c.parent) === parent._id).map((sub) => (
+                                            <Link
+                                                key={sub._id}
+                                                href={routes.catalog({ category: sub.slug })}
+                                                className="block text-[13px] font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-action-primary)] transition-colors"
+                                            >
+                                                {sub.nombre}
+                                            </Link>
+                                        ))}
                                     </div>
-                                );
-                            })}
+                                </details>
+                            ))}
                         </div>
                     </div>
                 </ScrollArea>
 
                 {/* Footer (Login / Cuenta) */}
-                <div className="mt-auto border-t border-[var(--store-border)] bg-[var(--store-bg)] p-6">
-                    <Link
-                        href="/auth/registro"
-                        className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-[var(--store-radius)] bg-[var(--store-primary)] text-[var(--store-primary-text)] text-sm font-medium hover:bg-[var(--store-primary-hover)] transition shadow-sm"
+                <div className="mt-auto border-t border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)] p-6">
+                    <Button
+                        asChild
+                        variant="default"
+                        size="default"
+                        className="w-full"
                     >
-                        <User className="h-4 w-4" />
-                        Iniciar sesión / Registrarse
-                    </Link>
+                        <Link href="/auth/registro" className="flex items-center justify-center gap-2">
+                            <User className="h-4 w-4" />
+                            Iniciar sesión / Registrarse
+                        </Link>
+                    </Button>
                 </div>
             </SheetContent>
         </Sheet>

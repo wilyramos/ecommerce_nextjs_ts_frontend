@@ -56,14 +56,23 @@ export default function NotFound() {
 
                             <div className="flex flex-col sm:flex-row gap-3">
                                 <Link href="/productos" className="flex-1">
-                                    <Button className="w-full uppercase gap-2" size="lg">
+                                    <Button
+                                        variant="default"
+                                        size="sm"
+
+                                    >
                                         <Store className="w-4 h-4" />
                                         Ver Tienda
                                     </Button>
                                 </Link>
 
                                 <Link href="/" className="flex-1">
-                                    <Button variant="outline" className="w-full uppercase gap-2" size="lg">
+                                    <Button
+
+                                        variant="accent"
+                                        size="sm"
+
+                                    >
                                         <Home className="w-4 h-4" />
                                         Inicio
                                     </Button>

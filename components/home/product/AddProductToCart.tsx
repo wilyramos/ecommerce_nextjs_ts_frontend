@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import { ProductWithCategoryResponse, VariantCart } from "@/src/schemas";
 import { useCartStore } from "@/src/store/cartStore";
-import { FaPlus, FaShoppingCart } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 
 interface Props {
     product: ProductWithCategoryResponse;
@@ -67,22 +68,17 @@ export default function AddProductToCart({ product, variant }: Props) {
     };
 
     return (
-        <div className="flex w-full">
-            <button
-                type="button"
+        <div className="w-full">
+            <Button
                 onClick={handleClick}
-                className={`
-    w-full px-6 py-2 font-medium flex items-center justify-center gap-2 text-sm transition-colors
-    shadow-sm
-    ${isVisuallyDisabled
-                        ? 'bg-[var(--store-surface-hover)] text-[var(--store-text-muted)] cursor-not-allowed opacity-90'
-                        : 'bg-[var(--store-primary)] text-[var(--store-primary-text)] hover:bg-[var(--store-primary-hover)] cursor-pointer'}
-`}
+                disabled={isVisuallyDisabled}
+                variant={isOutOfStock ? "destructive" : "accent"}
+                size="default"
+                className="w-full  "
             >
-                <FaShoppingCart size={18} className="shrink-0" />
-                Añadir al carrito
-                <FaPlus size={12} />
-            </button>
+                <FaPlus size={14} />
+                {isOutOfStock ? "Sin stock" : "Añadir al carrito"}
+            </Button>
         </div>
     );
 }

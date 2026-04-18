@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams, useParams } from "next/navigation";
-import { useCallback } from "react";
+import { useMemo, useCallback } from "react";
 
 export function useCatalogNav() {
     const router = useRouter();
@@ -9,8 +9,9 @@ export function useCatalogNav() {
     const params = useParams();
 
     // Obtenemos los slugs actuales
-    const slugs = (params.slug as string[]) || [];
-
+    const slugs = useMemo(() => {
+        return (params.slug as string[]) || [];
+    }, [params.slug]);
     // Helper base para crear URLs manteniendo query params (precio, sort, etc)
     const createUrl = useCallback((newPath: string) => {
         const paramsString = searchParams.toString();

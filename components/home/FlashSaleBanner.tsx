@@ -22,25 +22,28 @@ export default function HeroFlashSale() {
         return () => clearInterval(timer);
     }, []);
 
-    if (!mounted) return <div className="min-h-[360px] bg-[var(--store-surface)]" />;
+    if (!mounted) return <div className="min-h-[360px] bg-[var(--color-bg-secondary)]" />;
 
     return (
-        <div className="relative flex flex-col justify-center p-10 md:p-14 bg-[var(--store-bg)] border-b md:border-b-0 md:border-r border-[var(--store-border)] min-h-[360px] bg">
+        <div className="relative flex flex-col justify-center p-10 md:p-14 bg-[var(--color-bg-primary)] border-b md:border-b-0 md:border-r border-[var(--color-border-default)] min-h-[360px]">
             <div className="space-y-5">
-                <div className="inline-flex items-center gap-2 text-[var(--store-primary)] font-semibold text-xs uppercase tracking-tight">
+                <div className="inline-flex items-center gap-2 text-[var(--color-action-primary)] font-semibold text-xs uppercase tracking-tight">
                     <Timer className="w-4 h-4" /> Oferta del día
                 </div>
 
-                <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-[var(--store-text)] leading-[1.1]">
+                <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-[var(--color-text-primary)] leading-[1.1]">
                     Precios fugaces. <br />
-                    <span className="text-[var(--store-text-muted)]">Oportunidad única.</span>
+                    <span className="text-[var(--color-text-tertiary)]">Oportunidad única.</span>
                 </h2>
 
                 <div className="flex items-center gap-8 pt-4">
-                    <Link href="/ofertas" className="px-2 py-2 rounded-full bg-[var(--store-primary)] text-[var(--store-primary-text)] font-medium transition-all hover:bg-[var(--store-primary-hover)] hover:scale-[1.02] text-xs">
+                    <Link 
+                        href="/ofertas" 
+                        className="px-6 py-2.5 bg-[var(--color-action-primary)] text-[var(--color-text-inverse)] font-medium transition-all hover:bg-[var(--color-action-primary-hover)] hover:scale-[1.02] text-xs shadow-sm"
+                    >
                         Ver ofertas
                     </Link>
-                    <div className="flex gap-4 border-l border-[var(--store-border)] pl-8">
+                    <div className="flex gap-4 border-l border-[var(--color-border-default)] pl-8">
                         <TimeBox val={timeLeft.hours} unit="H" />
                         <TimeBox val={timeLeft.minutes} unit="M" />
                         <TimeBox val={timeLeft.seconds} unit="S" active />
@@ -53,9 +56,9 @@ export default function HeroFlashSale() {
 
 const TimeBox = ({ val, unit, active }: { val: number; unit: string; active?: boolean }) => (
     <div className="text-center">
-        <div className={`text-xl font-bold tabular-nums ${active ? "text-[var(--store-primary)]" : "text-[var(--store-text)]"}`}>
+        <div className={`text-xl font-bold tabular-nums ${active ? "text-[var(--color-action-primary)]" : "text-[var(--color-text-primary)]"}`}>
             {val.toString().padStart(2, "0")}
         </div>
-        <div className="text-[10px] text-[var(--store-text-muted)] font-bold">{unit}</div>
+        <div className="text-[10px] text-[var(--color-text-tertiary)] font-bold">{unit}</div>
     </div>
 );

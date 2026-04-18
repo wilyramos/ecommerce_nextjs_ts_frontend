@@ -175,86 +175,52 @@
 
 
 :root {
-  /* ===== PALETA TIENDA (ESTILO APPLE) ===== */
 
-  /* Fondo general: Gris "Athens" (Clave del look Apple) */
-  --store-bg: #F5F5F7;
 
-  /* Superficies principales: Blanco puro para contraste máximo */
-  --store-surface: #FFFFFF;
-
-  /* Estado hover: Un gris muy sutil, apenas perceptible */
-  --store-surface-hover: #F0F0F2;
-
-  /* Texto principal: "Seminegro" (Menos duro que el #000000) */
-  --store-text: #1D1D1F;
-
-  /* Texto secundario: Gris frío metálico */
-  --store-text-muted: #86868B;
-
-  /* Color de acción principal (CTA): Azul Apple Eléctrico 
-     (Usa esto para que destaque sobre el fondo neutro) */
-  --store-primary: #0071E3;
-
-  /* Estado hover del CTA: Un azul ligeramente más oscuro */
-  --store-primary-hover: #005BB5;
-
-  /* Texto sobre el color primario: Blanco */
-  --store-primary-text: #FFFFFF;
-
-  /* Bordes: Muy sutiles, casi invisibles */
-  --store-border: #ebe8e8;
-
-/* ===== PALETA ADMIN & POS (ESTILO ENTERPRISE / DASHBOARD) ===== */
+  /* --- FONDOS Y SUPERFICIES --- */
+  --color-bg-primary: #FFFFFF;        /* Fondo principal */
+  --color-bg-secondary: #f6f6f6;      /* Fondo secundario (secciones) */
+  --color-bg-tertiary: #F2F2F2;       /* Fondo terciario (cards, elementos) */
+  --color-bg-inverse: #232323;  /* Fondo  */
   
-  /* Fondo del panel: Ligeramente más frío que la tienda para contrastar con las tarjetas blancas */
-  --admin-bg: #F9FAFB; 
+  /* --- SUPERFICIES INTERACTIVAS --- */
+  --color-surface-hover: #E8E8E8;     /* Hover en elementos */
+  --color-surface-active: #DEDEDE;    /* Estado activo */
+  
 
-  /* Superficies (Tarjetas, Tablas, Modales): Blanco puro */
-  --admin-surface: #FFFFFF;
+  /* --- TIPOGRAFÍA --- */
+  --color-text-primary: #1A1A1A;      /* Texto principal (headings, body) */
+  --color-text-secondary: #5A5A5A;    /* Texto secundario (descripciones) */
+  --color-text-tertiary: #9A9A9A;     /* Texto terciario (hints, metadata) */
+  --color-text-inverse: #FFFFFF;      /* Texto sobre fondos oscuros */
 
-  /* Sidebar/Navegación: Tono oscuro profundo para separar el menú del área de trabajo (Estilo Vercel/Stripe) */
-  --admin-sidebar-bg: #111827;
-  --admin-sidebar-text: #F3F4F6;
-  --admin-sidebar-hover: #1F2937;
 
-  /* Texto principal: Alto contraste para lectura densa de datos */
-  --admin-text: #111827;
+  /* --- ACCIONES Y ESTADO --- */
+  /* Azul Primario */
+  --color-action-primary: #0071E3;
+  --color-action-primary-hover: #0077ED;
+  --color-action-primary-light: #E8F4FF;
 
-  /* Texto secundario: Para subtítulos, placeholders y metadatos */
-  --admin-text-muted: #6B7280;
+  /* Naranja Cálido (Color Vibrante) */
+  --color-accent-warm: #F97316;       /* Naranja principal */
+  --color-accent-warm-hover: #EA580C; /* Naranja hover */
+  --color-accent-warm-light: #FFEDD5; /* Fondo naranja sutil */
 
-  /* Bordes: Más definidos que en la tienda para delimitar celdas y secciones claramente */
-  --admin-border: #E5E7EB;
 
-  /* Acción Principal (Botones Guardar, Crear): Negro o Azul muy oscuro para denotar autoridad y enfoque */
-  --admin-primary: #0F172A;
-  --admin-primary-hover: #1E293B;
-  --admin-primary-text: #FFFFFF;
+  /* --- ESTADOS Y SEMÁNTICA --- */
+  --color-success: #10B981;           /* Verde - Éxito/Stock */
+  --color-success-light: #D1FAE5;
+  
+  --color-warning: #F59E0B;           /* Ámbar - Advertencia */
+  --color-warning-light: #FEF3C7;
+  
+  --color-error: #EF4444;             /* Rojo - Error/Crítico */
+  --color-error-light: #FEE2E2;
 
-  /* Hover sutil para filas de tablas y menús desplegables */
-  --admin-accent: #F3F4F6;
-  --admin-accent-foreground: #111827;
 
-  /* --- COLORES SEMÁNTICOS (CRÍTICOS PARA EL POS Y GESTIÓN DE PEDIDOS) --- */
+  /* --- BORDES Y DIVISORES --- */
+  --color-border-subtle: rgba(0, 0, 0, 0.06);
+  --color-border-default: rgba(0, 0, 0, 0.12);
+  --color-border-strong: rgba(0, 0, 0, 0.20);
 
-  /* Éxito: Pagos aprobados, stock suficiente, órdenes completadas */
-  --admin-success: #10B981;
-  --admin-success-bg: #D1FAE5;
-  --admin-success-text: #065F46;
-
-  /* Peligro: Cancelaciones, errores, eliminar productos */
-  --admin-destructive: #EF4444;
-  --admin-destructive-bg: #FEE2E2;
-  --admin-destructive-text: #991B1B;
-
-  /* Advertencia: Stock bajo, pagos pendientes, reembolsos */
-  --admin-warning: #F59E0B;
-  --admin-warning-bg: #FEF3C7;
-  --admin-warning-text: #92400E;
-
-  /* Información: Estados de envío, notificaciones neutrales */
-  --admin-info: #3B82F6;
-  --admin-info-bg: #DBEAFE;
-  --admin-info-text: #1E40AF;
 }

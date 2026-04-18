@@ -23,7 +23,7 @@ export default function CatalogMobileFilters({ filters }: Props) {
     return (
         <Drawer>
             <DrawerTrigger asChild>
-                <button className="lg:hidden flex items-center gap-2 px-4 py-2 bg-white border border-[var(--store-border)] rounded-lg text-sm font-bold uppercase tracking-wider text-[var(--store-text)] ">
+                <button className="lg:hidden flex items-center gap-2 px-4 py-2 bg-white border border-[var(--store-border)] rounded text-sm font-bold uppercase tracking-wider text-[var(--store-text)] ">
                     <LuListFilter className="w-4 h-4" />
                     Filtros
                     {hasFilters && (
@@ -36,7 +36,7 @@ export default function CatalogMobileFilters({ filters }: Props) {
             </DrawerTrigger>
 
             {/* Ajustamos la altura para que se sienta como una app nativa (85% de la pantalla) */}
-            <DrawerContent className="h-[85vh] bg-[var(--store-surface)] rounded-t-[20px] flex flex-col focus:outline-none">
+            <DrawerContent className="h-[85vh] bg-[var(--store-surface)] flex flex-col focus:outline-none">
 
                 {/* 1. HEADER (Fijo) */}
                 <DrawerHeader className="border-b border-[var(--store-border)] px-5 py-4 flex justify-between items-center shrink-0">
@@ -49,7 +49,7 @@ export default function CatalogMobileFilters({ filters }: Props) {
                         {hasFilters && (
                             <button
                                 onClick={clearFilters}
-                                className="text-xs font-medium text-red-500 flex items-center gap-1 hover:bg-red-50 px-2 py-1 rounded-md transition-colors"
+                                className="text-xs font-medium text-red-500 flex items-center gap-1 hover:bg-red-50 px-2 py-1 rounded transition-colors"
                             >
                                 <LuTrash2 className="w-3 h-3" />
                                 Limpiar

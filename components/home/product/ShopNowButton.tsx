@@ -5,6 +5,7 @@ import { useCartStore } from "@/src/store/cartStore";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 interface Props {
     product: ProductWithCategoryResponse;
@@ -47,19 +48,15 @@ export default function ShopNowButton({ product, variant, disabled }: Props) {
     };
 
     return (
-        <button
-            type="button"
+        <Button
             onClick={handleClick}
-            className={`
-                w-full px-6 py-2 font-medium flex items-center justify-center gap-2 text-sm transition-colors
-                border-1 border-[var(--store-border)]
-                ${isVisuallyDisabled
-                    ? 'bg-[var(--store-surface-hover)] text-[var(--store-text-muted)] cursor-not-allowed opacity-90'
-                    : 'bg-[var(--store-surface)] text-[var(--store-text)] hover:bg-[var(--store-surface-hover)] cursor-pointer'}
-            `}
+            disabled={isVisuallyDisabled}
+            variant={stock <= 0 ? "destructive" : "secondary"}
+            size="default"
+            className="w-full"
         >
-            <IoBagCheckOutline size={20} />
-            Comprar ahora
-        </button>
+            <IoBagCheckOutline size={18} />
+            {stock <= 0 ? "Agotado" : "Comprar ahora"}
+        </Button>
     );
 }

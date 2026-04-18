@@ -17,12 +17,12 @@ interface CatalogLayoutProps {
     isFallback: boolean;
 }
 
-export default function CatalogLayout({ 
-    products, 
-    filters, 
-    pagination, 
-    context, 
-    isFallback 
+export default function CatalogLayout({
+    products,
+    filters,
+    pagination,
+    context,
+    isFallback
 }: CatalogLayoutProps) {
 
     // --- 1. Generar Título SEO/Visual Dinámico ---
@@ -54,17 +54,17 @@ export default function CatalogLayout({
     if (context.brandName) {
         breadcrumbs.push({ label: context.brandName, href: "#" });
     }
-    if (context.lineName) { 
+    if (context.lineName) {
         breadcrumbs.push({ label: context.lineName, href: "#" });
     }
 
     return (
         <div className="container mx-auto px-4 md:px-6 max-w-[1440px] pb-10">
-            
+
             {/* Header Global (Título + Breadcrumbs + Contador Total) */}
             <div className="pt-8">
-                <CatalogHeader 
-                    title={getTitle()} 
+                <CatalogHeader
+                    title={getTitle()}
                     totalProducts={pagination.totalItems}
                     breadcrumbs={breadcrumbs}
                 />
@@ -72,7 +72,7 @@ export default function CatalogLayout({
 
             {/* Layout Principal (Grid 12 columnas) */}
             <div className="flex flex-col lg:grid lg:grid-cols-12 gap-2  relative">
-                
+
                 {/* --- SIDEBAR (Desktop) --- */}
                 {/* Oculto en móvil, visible en lg (col-span-3 o 2 dependiendo del diseño) */}
                 <aside className="hidden lg:block lg:col-span-3 xl:col-span-2 md:pr-6">
@@ -83,8 +83,8 @@ export default function CatalogLayout({
                 </aside>
 
                 {/* --- CONTENIDO PRINCIPAL --- */}
-                <main className="lg:col-span-9 xl:col-span-10 flex flex-col gap-4">
-                    
+                <main className="lg:col-span-9 xl:col-span-10 flex flex-col ">
+
                     {/* Toolbar Mobile (Contador + Botón Filtros Drawer) */}
                     {/* Solo visible en pantallas pequeñas */}
                     <div className="lg:hidden flex justify-between items-center sticky top-12 z-20 bg-[var(--store-bg)] py-2">
@@ -99,9 +99,9 @@ export default function CatalogLayout({
                     {/* Solo se muestra si NO estamos en modo fallback y hay más de 1 página */}
                     {!isFallback && pagination.totalPages > 1 && (
                         <div className="mt-auto pt-8 border-t border-[var(--store-border)]">
-                            <CatalogPagination 
-                                currentPage={pagination.currentPage} 
-                                totalPages={pagination.totalPages} 
+                            <CatalogPagination
+                                currentPage={pagination.currentPage}
+                                totalPages={pagination.totalPages}
                             />
                         </div>
                     )}

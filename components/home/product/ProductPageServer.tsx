@@ -81,9 +81,7 @@ export default async function ProductPageServer({ producto }: Props) {
 
             {/* Productos Relacionados (Por Línea/Marca) */}
             <section className="container mx-auto px-4 md:px-6 py-12 border-t border-[var(--store-border)]">
-                <h2 className="text-xl md:text-2xl font-bold text-[var(--store-text)] mb-6">
-                    También podría interesarte
-                </h2>
+                
                 <ProductosRelated slug={producto.slug} />
             </section>
 

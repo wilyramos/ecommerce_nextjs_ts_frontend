@@ -74,7 +74,7 @@ export default function UploadBrandImage({ defaultImage }: { defaultImage?: stri
 
             {preview && (
                 <Button
-                    variant="outline"
+                    variant="default"
                     size="sm"
                     onClick={() => setPreview("")}
                     type="button"

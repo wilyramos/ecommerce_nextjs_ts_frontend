@@ -126,10 +126,10 @@ function ListItem({
             <NavigationMenuLink asChild>
                 <Link
                     href={href}
-                    className="group flex items-center gap-3 p-2 rounded-lg transition-all duration-200 hover:bg-[var(--store-bg)]"
+                    className="group flex items-center gap-3 p-2 rounded hover:rounded transition-all duration-200 hover:bg-[var(--store-bg)]"
                 >
                     {/* Miniatura Estilo Apple */}
-                    <div className="relative w-10 h-10 flex-shrink-0 bg-white overflow-hidden border border-[var(--store-border)] rounded-md group-hover:border-[var(--store-primary)] transition-colors duration-300">
+                    <div className="relative w-10 h-10 flex-shrink-0 bg-white overflow-hidden border border-[var(--store-border)] rounded group-hover:border-[var(--store-primary)] transition-colors duration-300">
                         {image ? (
                             <Image
                                 src={image}

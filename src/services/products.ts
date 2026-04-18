@@ -235,7 +235,9 @@ export const getAllProductsSlug = async ({ q }: GetProductListParams) => {
         }
 
         const json = await req.json();
+        console.log("Respuesta cruda de la API para lista de productos:", json);
         const products = apiProductListSchema.parse(json);
+        console.log("Productos obtenidos para lista:", products.length);
         return products;
     } catch (error) {
         console.error("Error fetching product list:", error);

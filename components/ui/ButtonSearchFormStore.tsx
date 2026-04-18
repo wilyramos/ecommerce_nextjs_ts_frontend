@@ -9,6 +9,8 @@ import type { TProductListSchema } from "@/src/schemas";
 import { getSearchHistory, saveSearchTerm } from "@/lib/utils";
 import ProductResultSearch from "./home/ProductResultSearch";
 import Link from "next/link";
+import { Input } from "@/components/ui/input";
+
 
 interface Props {
     isMobile?: boolean;
@@ -26,6 +28,7 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
 
     const formRef = useRef<HTMLFormElement>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const [history, setHistory] = useState<string[]>([]);
     useEffect(() => setHistory(getSearchHistory()), []);
@@ -101,19 +104,13 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
                 onSubmit={handleSubmit}
                 className={`relative w-full mx-auto ${isMobile ? "max-w-full px-2" : "max-w-5xl"}`}
             >
-                <div
-                    className={`
-                        relative flex items-center transition-all duration-300
-                        bg-[var(--store-bg)] border border-[var(--store-border)]
-                        h-10
-                        ${isMobile ? "rounded-lg" : "rounded-full bg-[var(--store-surface)]"}
-                    `}
-                >
-                    <div className="pl-3 text-[var(--store-text-muted)]">
+                <div className="relative flex items-center">
+                    <div className="absolute left-3 text-[var(--color-text-secondary)] pointer-events-none">
                         <Search size={20} />
                     </div>
 
-                    <input
+                    <Input
+                        ref={inputRef}
                         type="text"
                         value={query}
                         onChange={(e) => {
@@ -121,14 +118,9 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
                             if (e.target.value.length > 0) setIsOpen(true);
                         }}
                         placeholder="Buscar productos, marcas..."
-                        className="
-                            flex-1 px-3 py-2 bg-transparent 
-                            text-base md:text-sm 
-                            text-[var(--store-text)] placeholder-[var(--store-text-muted)]
-                            outline-none w-full
-                        "
                         onFocus={() => setIsOpen(true)}
                         autoFocus={isMobile}
+                        className="pl-10 pr-10"
                     />
 
                     {query && (
@@ -137,8 +129,9 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
                             onClick={() => {
                                 setQuery("");
                                 setResults([]);
+                                inputRef.current?.focus();
                             }}
-                            className="p-2 mr-1 text-[var(--store-text-muted)] hover:text-[var(--store-text)]"
+                            className="absolute right-3 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors"
                         >
                             <X size={16} />
                         </button>
@@ -151,33 +144,32 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
                 <div
                     ref={dropdownRef}
                     className={`
-                        bg-[var(--store-surface)] border-b border-[var(--store-border)] z-[1000000] overflow-hidden 
+                        bg-[var(--color-bg-secondary)] border-b border-[var(--color-border-subtle)] z-[1000000] overflow-hidden 
                         ${isMobile
-                            ? "absolute top-[calc(100%+1px)] left-0 w-full  h-[calc(100vh-300px)]"
-                            : "absolute top-full left-0 w-full max-h-[calc(100vh-200px)] shadow-sm rounded-b-[var(--store-radius)]"
+                            ? "absolute top-[calc(100%+1px)] left-0 w-full h-[calc(100vh-300px)]"
+                            : "absolute top-full left-0 w-full max-h-[calc(100vh-200px)] shadow-md rounded-b"
                         }
                     `}
                 >
                     <div
                         className={`
-                            h-full overflow-y-auto scrollbar-thin scrollbar-thumb-[var(--store-border)] 
+                            h-full overflow-y-auto scrollbar-thin scrollbar-thumb-[var(--color-border-default)] 
                             ${isMobile ? "p-4" : "p-4 max-w-7xl mx-auto"}
                         `}
                     >
 
                         {/* LOADING */}
                         {loading && (
-                            <div className="flex flex-col items-center justify-center py-8 text-[var(--store-text-muted)]">
+                            <div className="flex flex-col items-center justify-center py-8 text-[var(--color-text-secondary)]">
                                 <Loader2 className="animate-spin mb-2" size={24} />
                                 <span className="text-xs font-medium">Buscando...</span>
                             </div>
                         )}
 
-                        {/* HISTORIAL */}
                         {/* HISTORIAL / SUGERENCIAS */}
                         {!loading && !query && (
                             <div>
-                                <h4 className="text-xs font-semibold text-[var(--store-text-muted)] uppercase mb-3 flex items-center gap-2">
+                                <h4 className="text-xs font-semibold text-[var(--color-text-tertiary)] uppercase mb-3 flex items-center gap-2">
                                     <History size={14} /> {history.length > 0 ? "Recientes" : "Sugerencias"}
                                 </h4>
 
@@ -186,8 +178,11 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
                                         <button
                                             key={i}
                                             type="button"
-                                            onClick={() => setQuery(term)}
-                                            className="px-3 py-1.5 bg-[var(--store-bg)] hover:bg-[var(--store-border)] rounded-lg text-xs text-[var(--store-text)] transition-colors"
+                                            onClick={() => {
+                                                setQuery(term);
+                                                inputRef.current?.focus();
+                                            }}
+                                            className="px-3 py-1.5 bg-[var(--color-bg-tertiary)] hover:bg-[var(--color-surface-hover)] rounded text-xs text-[var(--color-text-primary)] transition-colors"
                                         >
                                             {term}
                                         </button>
@@ -201,8 +196,8 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
                         {!loading && results.length > 0 && (
                             <div className="space-y-2">
 
-                                <div className="flex items-center justify-between  ">
-                                    <h3 className="font-semibold text-sm text-[var(--store-text)]">Resultados</h3>
+                                <div className="flex items-center justify-between">
+                                    <h3 className="font-semibold text-sm text-[var(--color-text-primary)]">Resultados</h3>
 
                                     <Link
                                         href={`/productos?query=${encodeURIComponent(query)}`}
@@ -210,7 +205,7 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
                                             saveHistory(query.trim());
                                             onSearchComplete?.();
                                         }}
-                                        className="flex items-center gap-1 text-xs text-[var(--store-primary)] font-semibold hover:underline"
+                                        className="flex items-center gap-1 text-xs text-[var(--color-action-primary)] font-semibold hover:text-[var(--color-action-primary-hover)] hover:underline transition-colors"
                                     >
                                         Ver todos <ArrowRight size={12} />
                                     </Link>
@@ -230,12 +225,12 @@ export default function ButtonSearchFormStore({ isMobile = false, onSearchComple
 
                         {/* SIN RESULTADOS */}
                         {!loading && query && results.length === 0 && (
-                            <div className="text-center py-8 text-[var(--store-text-muted)]">
+                            <div className="text-center py-8 text-[var(--color-text-secondary)]">
                                 <Search size={22} className="mx-auto mb-3 opacity-50" />
-                                <p className="text-sm font-medium text-[var(--store-text)]">
-                                    Sin resultados para “{query}”
+                                <p className="text-sm font-medium text-[var(--color-text-primary)]">
+                                    Sin resultados para <span className="italic">{query}</span>
                                 </p>
-                                <p className="text-xs">
+                                <p className="text-xs text-[var(--color-text-tertiary)]">
                                     Intenta con otra palabra clave.
                                 </p>
                             </div>

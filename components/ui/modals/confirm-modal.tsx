@@ -69,7 +69,7 @@ export const ConfirmModal = ({
 
                 <DialogFooter className="gap-2 sm:gap-0 mt-4">
                     <Button
-                        variant="outline"
+                        variant="default"
                         onClick={onClose}
                         disabled={loading}
                     >

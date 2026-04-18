@@ -90,7 +90,7 @@ export default function UploadProductImageDialog({
 
                 <Dialog>
                     <DialogTrigger asChild>
-                        <Button variant="outline" size="sm" className="gap-2">
+                        <Button variant="default" size="sm" className="gap-2">
                             <Plus className="w-4 h-4" />
                             {triggerLabel}
                         </Button>
