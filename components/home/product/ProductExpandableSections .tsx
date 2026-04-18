@@ -167,7 +167,7 @@ export default function ProductExpandableSections({ producto }: Props) {
                     </div>
                 </AccordionTrigger>
                 <AccordionContent className="pb-10 pt-2 px-1">
-                    <div className="max-w-7xl border-l-4 border-[var(--color-action-primary)] pl-6 py-2 bg-[var(--color-action-primary-light)] rounded-r-lg py-4 px-4">
+                    <div className="max-w-7xl border-l-4 border-[var(--color-action-primary)] pl-6 py-2 bg-[var(--color-action-primary-light)] rounded-r-lg  px-4">
                         <p className="text-sm md:text-base text-[var(--color-text-secondary)] leading-relaxed">
                             Todos los productos son <span className="text-[var(--color-text-primary)] font-semibold">100% originales.</span> Generalmente para la mayoría de productos, la garantía es de <span className="text-[var(--color-text-primary)] font-semibold">12 meses</span> por fallas técnicas de origen, pero puede variar dependiendo del tipo de producto.
                             Cuentan con respaldo oficial de hardware válido directamente de la misma marca.
