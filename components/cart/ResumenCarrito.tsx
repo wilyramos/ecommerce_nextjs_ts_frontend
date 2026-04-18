@@ -19,11 +19,11 @@ export default function ResumenCarrito() {
     if (cart.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-20 text-center">
-                <FaShoppingCart size={50} className="text-[var(--store-border)] mb-4" />
-                <p className="text-[var(--store-text-muted)] mb-6 text-sm">Tu carrito está vacío.</p>
+                <FaShoppingCart size={50} className="text-[var(--color-border-default)] mb-4" />
+                <p className="text-[var(--color-text-secondary)] mb-6 text-sm">Tu carrito está vacío.</p>
                 <button
                     onClick={() => router.push("/productos")}
-                    className="bg-[var(--store-primary)] text-[var(--store-primary-text)] px-6 py-2.5 rounded-full hover:bg-[var(--store-primary-hover)] transition-colors text-sm font-medium "
+                    className="bg-[var(--color-bg-inverse)] text-[var(--color-text-inverse)] px-6 py-2.5 rounded-full hover:bg-[var(--color-action-primary)] transition-colors text-sm font-medium"
                 >
                     Seguir comprando
                 </button>
@@ -33,16 +33,16 @@ export default function ResumenCarrito() {
 
     return (
         <div className="max-w-6xl mx-auto py-1 md:py-8">
-            <HeadingH1 className="text-lg md:text-2xl text-[var(--store-text)]">Resumen del carrito</HeadingH1>
+            <HeadingH1 className="text-lg md:text-2xl text-[var(--color-text-primary)]">Resumen del carrito</HeadingH1>
 
-            <p className="text-xs md:text-sm text-[var(--store-text-muted)] mb-4 md:mb-8">
+            <p className="text-xs md:text-sm text-[var(--color-text-secondary)] mb-4 md:mb-8">
                 {cart.length} {cart.length === 1 ? "producto" : "productos"} en tu carrito.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 md:gap-6 gap-3">
                 {/* LISTA DE PRODUCTOS */}
-                <div className="md:col-span-2 bg-[var(--store-surface)] rounded-xl p-2 md:p-4 border border-[var(--store-border)]">
-                    <ul className="divide-y divide-[var(--store-border)]">
+                <div className="md:col-span-2 bg-[var(--color-bg-primary)] rounded-xl p-2 md:p-4 border border-[var(--color-border-subtle)]">
+                    <ul className="divide-y divide-[var(--color-border-subtle)]">
                         {cart.map((item) => (
                             <ItemCarrito key={item._id} item={item} />
                         ))}
@@ -50,31 +50,30 @@ export default function ResumenCarrito() {
                 </div>
 
                 {/* RESUMEN DE ORDEN */}
-                <div className="bg-[var(--store-surface)] rounded-xl px-4 py-2 md:p-6 flex flex-col gap-4 md:gap-5 border border-[var(--store-border)] sticky top-4 h-fit">
+                <div className="bg-[var(--color-bg-primary)] rounded-xl px-4 py-2 md:p-6 flex flex-col gap-4 md:gap-5 border border-[var(--color-border-subtle)] sticky top-4 h-fit">
 
-                    <ul className="text-xs md:text-sm text-[var(--store-text-muted)] space-y-2 md:space-y-3">
+                    <ul className="text-xs md:text-sm text-[var(--color-text-secondary)] space-y-2 md:space-y-3">
                         <li className="flex justify-between">
                             <span>Subtotal</span>
-                            <span className="font-medium text-[var(--store-text)]">S/ {total.toFixed(2)}</span>
+                            <span className="font-medium text-[var(--color-text-primary)]">S/ {total.toFixed(2)}</span>
                         </li>
                         <li>
                             <div className="flex justify-between items-center">
                                 <span>Tarifa de envío</span>
-                                {/* Badge estilo sutil */}
-                                <span className="text-[10px] md:text-xs font-bold uppercase text-[var(--store-primary)] bg-[var(--store-surface-hover)] rounded-2xl px-2 py-1">
+                                <span className="text-[10px] md:text-xs font-bold uppercase text-[var(--color-action-primary)] bg-[var(--color-action-primary-light)] rounded-2xl px-2 py-1">
                                     Gratis
                                 </span>
                             </div>
                         </li>
-                        <li className="flex justify-between border-t border-[var(--store-border)] pt-2 md:pt-3 text-base md:text-lg font-semibold">
-                            <span className="text-[var(--store-text)]">Total</span>
-                            <span className="text-[var(--store-text)]">S/ {total.toFixed(2)}</span>
+                        <li className="flex justify-between border-t border-[var(--color-border-subtle)] pt-2 md:pt-3 text-base md:text-lg font-semibold">
+                            <span className="text-[var(--color-text-primary)]">Total</span>
+                            <span className="text-[var(--color-text-primary)]">S/ {total.toFixed(2)}</span>
                         </li>
                     </ul>
 
                     {/* CUPÓN */}
                     <div className="pt-1 md:pt-2">
-                        <label className="text-xs md:text-sm text-[var(--store-text-muted)] mb-1 block">
+                        <label className="text-xs md:text-sm text-[var(--color-text-secondary)] mb-1 block">
                             ¿Tienes un cupón?
                         </label>
                         <div className="flex items-center gap-2">
@@ -82,23 +81,23 @@ export default function ResumenCarrito() {
                                 type="text"
                                 placeholder="Ingresa tu cupón"
                                 disabled
-                                className="flex-1 border border-[var(--store-border)] bg-[var(--store-bg)] rounded-lg px-3 py-2 text-xs text-[var(--store-text)] placeholder-[var(--store-text-muted)] focus:outline-none opacity-70"
+                                className="flex-1 border border-[var(--color-border-default)] bg-[var(--color-bg-secondary)] rounded-lg px-3 py-2 text-xs text-[var(--color-text-primary)] placeholder-[var(--color-text-tertiary)] focus:outline-none opacity-70"
                             />
                             <button
-                                className="text-xs text-[var(--store-text-muted)] border border-[var(--store-border)] px-3 py-2 rounded-lg bg-[var(--store-surface-hover)] hover:bg-[var(--store-border)] transition-colors"
+                                className="text-xs text-[var(--color-text-secondary)] border border-[var(--color-border-default)] px-3 py-2 rounded-lg bg-[var(--color-bg-tertiary)] hover:bg-[var(--color-surface-hover)] transition-colors"
                             >
                                 Aplicar
                             </button>
                         </div>
                     </div>
 
-                    <p className="text-[10px] md:text-xs text-[var(--store-text-muted)]">
+                    <p className="text-[10px] md:text-xs text-[var(--color-text-tertiary)]">
                         Verifica tus productos antes de continuar.
                     </p>
 
                     <Button
                         onClick={handleContinuar}
-                        className="w-full text-sm md:text-base cursor-pointer bg-[var(--store-primary)] hover:bg-[var(--store-primary-hover)] text-[var(--store-primary-text)] border-none"
+                        className="w-full text-sm md:text-base cursor-pointer bg-[var(--color-bg-inverse)] hover:bg-[var(--color-action-primary-hover)] text-[var(--color-text-inverse)] border-none shadow-sm"
                     >
                         Realizar pedido
                     </Button>

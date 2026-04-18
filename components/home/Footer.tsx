@@ -7,16 +7,15 @@ import Logo from "../ui/Logo";
 import { routes } from "@/lib/routes";
 
 export default function Footer() {
-
-    // 1. Enlaces de Navegación (Priorizando lo nuevo)
+    // 1. Navigation Links
     const shopLinks = [
         { label: "Ver todo", href: routes.catalog() },
-        { label: "Novedades", href: "/novedades" }, // <--- NUEVO
-        { label: "Ofertas", href: "/ofertas" },     // <--- NUEVO
-        { label: "Categorias", href: "/categorias" }, 
+        { label: "Novedades", href: "/novedades" },
+        { label: "Ofertas", href: "/ofertas" },
+        { label: "Categorías", href: "/categorias" }, 
     ];
 
-    // 2. Enlaces de Marcas
+    // 2. Brand Links
     const brandLinks = [
         { label: "Apple", href: routes.catalog({ brand: 'apple' }) },
         { label: "Samsung", href: routes.catalog({ brand: 'samsung' }) },
@@ -41,7 +40,7 @@ export default function Footer() {
     ];
 
     return (
-        <footer className="bg-[var(--store-surface)] border-t border-[var(--store-border)]">
+        <footer className="bg-[var(--color-bg-primary)] border-t border-[var(--color-border-default)]">
             <div className="max-w-7xl mx-auto px-6 py-14 lg:py-20">
                 <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-12">
 
@@ -51,7 +50,7 @@ export default function Footer() {
                             <div className="w-28">
                                 <Logo color="black" />
                             </div>
-                            <p className="text-[14px] leading-relaxed max-w-sm text-[var(--store-text-muted)]">
+                            <p className="text-[14px] leading-relaxed max-w-sm text-[var(--color-text-secondary)]">
                                 Elevando tu experiencia digital. Descubre la selección más curada de tecnología y accesorios premium en Cañete.
                             </p>
                             <div className="flex gap-5">
@@ -62,7 +61,7 @@ export default function Footer() {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         aria-label={name}
-                                        className="text-[var(--store-text-muted)] hover:text-[var(--store-text)] transition-all duration-300 transform hover:-translate-y-1 hover:scale-110"
+                                        className="text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] transition-all duration-300 transform hover:-translate-y-1 hover:scale-110"
                                     >
                                         {icon}
                                     </a>
@@ -74,15 +73,15 @@ export default function Footer() {
                     {/* Navigation Columns */}
                     <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-8">
 
-                        {/* Columna: Tienda */}
+                        {/* Column: Explorar */}
                         <nav className="flex flex-col gap-5">
-                            <h3 className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--store-text)]">
+                            <h3 className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--color-text-primary)]">
                                 Explorar
                             </h3>
                             <ul className="flex flex-col gap-3">
                                 {shopLinks.map(({ label, href }) => (
                                     <li key={label}>
-                                        <Link href={href} className="text-[13px] text-[var(--store-text-muted)] hover:text-[var(--store-primary)] hover:underline transition-colors decoration-1 underline-offset-4">
+                                        <Link href={href} className="text-[13px] text-[var(--color-text-secondary)] hover:text-[var(--color-action-primary)] hover:underline transition-colors decoration-1 underline-offset-4">
                                             {label}
                                         </Link>
                                     </li>
@@ -90,15 +89,15 @@ export default function Footer() {
                             </ul>
                         </nav>
 
-                        {/* Columna: Marcas */}
+                        {/* Column: Marcas */}
                         <nav className="flex flex-col gap-5">
-                            <h3 className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--store-text)]">
+                            <h3 className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--color-text-primary)]">
                                 Marcas
                             </h3>
                             <ul className="flex flex-col gap-3">
                                 {brandLinks.map(({ label, href }) => (
                                     <li key={label}>
-                                        <Link href={href} className="text-[13px] text-[var(--store-text-muted)] hover:text-[var(--store-primary)] hover:underline transition-colors decoration-1 underline-offset-4">
+                                        <Link href={href} className="text-[13px] text-[var(--color-text-secondary)] hover:text-[var(--color-action-primary)] hover:underline transition-colors decoration-1 underline-offset-4">
                                             {label}
                                         </Link>
                                     </li>
@@ -106,15 +105,15 @@ export default function Footer() {
                             </ul>
                         </nav>
 
-                        {/* Columna: Soporte */}
+                        {/* Column: Ayuda */}
                         <nav className="flex flex-col gap-5">
-                            <h3 className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--store-text)]">
+                            <h3 className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--color-text-primary)]">
                                 Ayuda
                             </h3>
                             <ul className="flex flex-col gap-3">
                                 {helpCenterLinks.map(({ label, href }) => (
                                     <li key={href}>
-                                        <Link href={href} className="text-[13px] text-[var(--store-text-muted)] hover:text-[var(--store-primary)] transition-colors">
+                                        <Link href={href} className="text-[13px] text-[var(--color-text-secondary)] hover:text-[var(--color-action-primary)] transition-colors">
                                             {label}
                                         </Link>
                                     </li>
@@ -122,27 +121,26 @@ export default function Footer() {
                             </ul>
                         </nav>
 
-                        {/* Columna: Info */}
+                        {/* Column: Visítanos */}
                         <div className="flex flex-col gap-5">
-                            <h3 className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--store-text)]">
+                            <h3 className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--color-text-primary)]">
                                 Visítanos
                             </h3>
-                            <div className="text-[13px] text-[var(--store-text-muted)] leading-relaxed space-y-1">
+                            <div className="text-[13px] text-[var(--color-text-secondary)] leading-relaxed space-y-1">
                                 <p>Jr. O Higgins 120</p>
                                 <p>San Vicente de Cañete</p>
-                                
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {/* Bottom Bar: Legal & Global */}
-                <div className="mt-16 pt-8 border-t border-[var(--store-border)]">
+                <div className="mt-16 pt-8 border-t border-[var(--color-border-default)]">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-6">
 
                         <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8 order-2 md:order-1">
                             <span 
-                                className="text-[11px] text-[var(--store-text-muted)] font-medium"
+                                className="text-[11px] text-[var(--color-text-tertiary)] font-medium"
                                 suppressHydrationWarning
                             >
                                 © {new Date().getFullYear()} GoPhone Inc.
@@ -152,13 +150,12 @@ export default function Footer() {
                                     <div key={link.href} className="flex items-center gap-4">
                                         <Link
                                             href={link.href}
-                                            className="text-[11px] text-[var(--store-text-muted)] hover:text-[var(--store-text)] transition-colors"
+                                            className="text-[11px] text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] transition-colors"
                                         >
                                             {link.label}
                                         </Link>
-                                        {/* Separador vertical sutil */}
                                         {index < legalLinks.length - 1 && (
-                                            <span className="w-px h-2.5 bg-[var(--store-border)]" />
+                                            <span className="w-px h-2.5 bg-[var(--color-border-default)]" />
                                         )}
                                     </div>
                                 ))}

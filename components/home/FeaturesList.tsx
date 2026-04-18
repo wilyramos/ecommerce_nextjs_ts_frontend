@@ -39,7 +39,7 @@ const features: Feature[] = [
 
 export default function MinimalFeatures() {
     return (
-        <section className="bg-white py-12 md:py-16 border-b border-[var(--store-border)]">
+        <section className="bg-[var(--color-bg-primary)] py-12 md:py-16 border-b border-[var(--color-border-default)]">
             <div className="max-w-7xl mx-auto px-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
                     {features.map((feature) => {
@@ -48,18 +48,18 @@ export default function MinimalFeatures() {
                                 className="group flex flex-col items-center md:items-start text-center md:text-left transition-all duration-300"
                                 aria-label={feature.title}
                             >
-                                <div className="mb-4 p-3 rounded-2xl bg-[var(--store-bg)] text-[var(--store-text)] group-hover:bg-[var(--store-primary)] group-hover:text-white transition-all duration-500">
+                                <div className="mb-4 p-3 rounded- bg-[var(--color-bg-secondary)] text-[var(--color-text-primary)] group-hover:bg-[var(--color-accent-warm)] group-hover:text-[var(--color-text-inverse)] transition-all duration-500 shadow-sm">
                                     <feature.icon
                                         size={26}
                                         strokeWidth={1.5}
                                     />
                                 </div>
 
-                                <h3 className="text-sm md:text-base font-bold text-[var(--store-text)] tracking-tight mb-1">
+                                <h3 className="text-sm md:text-base font-bold text-[var(--color-text-primary)] tracking-tight mb-1">
                                     {feature.title}
                                 </h3>
 
-                                <p className="text-xs text-[var(--store-text-muted)] leading-relaxed max-w-[200px]">
+                                <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed max-w-[200px]">
                                     {feature.description}
                                 </p>
                             </div>

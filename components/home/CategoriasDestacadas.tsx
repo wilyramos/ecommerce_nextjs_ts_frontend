@@ -1,7 +1,6 @@
 "use client";
 
 import Carousel, { ButtonGroupProps } from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
 import Image from "next/image";
 import Link from "next/link";
 import { MdOutlineImageNotSupported } from "react-icons/md";

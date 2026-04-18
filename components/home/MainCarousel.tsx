@@ -28,6 +28,7 @@ export default function MainCarousel({
                 autoPlay
                 infinite
                 showDots
+                renderDotsOutside={false}
                 customDot={<CustomDot />}
                 customLeftArrow={<CustomArrow direction="left" />}
                 customRightArrow={<CustomArrow direction="right" />}
@@ -42,52 +43,48 @@ export default function MainCarousel({
                         <div key={product._id} className="w-full">
                             <Link
                                 href={`/productos/${product.slug}`}
-                                className="flex flex-col md:flex-row w-full group"
+                                className="flex flex-col md:flex-row w-full group outline-none"
                             >
-                                {/* TEXTO */}
-                                <div className="w-full md:w-1/2 flex flex-col justify-center px-5 sm:px-8 md:px-12 lg:px-20 py-6 md:py-0 space-y-2 md:space-y-3 order-2 md:order-1">
-                                    <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-tertiary)]">
+                                {/* TEXTO - Optimizado para legibilidad */}
+                                <div className="w-full md:w-1/2 flex flex-col justify-center px-6 sm:px-10 md:px-16 lg:px-24 py-8 md:py-16 space-y-3 md:space-y-4 order-2 md:order-1">
+                                    <span className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-[var(--color-text-tertiary)]">
                                         {product.brand?.nombre || "Exclusivo"}
                                     </span>
 
-                                    <h2 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-black text-[var(--color-text-primary)] leading-tight line-clamp-2">
+                                    {/* Título: Menos "ancho", más definido */}
+                                    <h2 className="max-w-md text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-text-primary)] leading-[1.1] tracking-tight line-clamp-2 transition-colors group-hover:text-[var(--color-action-primary)]">
                                         {product.nombre}
                                     </h2>
 
-                                    <div className="flex items-center gap-4 md:gap-6 pt-1 md:pt-2">
-                                        <span className="text-lg sm:text-xl md:text-3xl font-black text-[var(--color-action-primary)]">
+                                    <div className="flex items-center gap-5 pt-2">
+                                        <span className="text-xl md:text-3xl font-bold text-[var(--color-text-primary)] tracking-tight">
                                             S/ {product.precio?.toFixed(2)}
                                         </span>
 
-                                        <div className="flex items-center gap-1 md:gap-2 text-xs sm:text-sm font-bold group-hover:text-[var(--color-action-primary)] transition-colors">
-                                            Comprar
+                                        <div className="flex items-center gap-2 text-sm font-bold text-[var(--color-action-primary)] transition-all">
+                                            <span className="hidden sm:inline">Explorar ahora</span>
                                             <ArrowRight
-                                                size={16}
-                                                className="group-hover:translate-x-1 transition-transform"
+                                                size={18}
+                                                strokeWidth={2.5}
+                                                className="transition-transform group-hover:translate-x-2"
                                             />
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* IMAGEN */}
-                                <div className="w-full md:w-1/2 relative bg-white flex items-center justify-center order-1 md:order-2 overflow-hidden">
-                                    {/* Gradientes */}
-                                    <div className="hidden md:block absolute inset-y-0 left-0 w-24 lg:w-32 z-20 pointer-events-none bg-gradient-to-r from-[var(--color-bg-secondary)] to-transparent" />
-                                    <div className="md:hidden absolute inset-x-0 top-0 h-12 z-20 pointer-events-none bg-gradient-to-b from-[var(--color-bg-secondary)] to-transparent" />
+                                <div className="w-full md:w-1/2 relative bg-white flex items-center justify-center order-1 md:order-2 overflow-hidden min-h-[250px] sm:min-h-[350px] md:min-h-[450px]">
+                                    {/* Gradientes de suavizado */}
+                                    <div className="hidden md:block absolute inset-y-0 left-0 w-32 z-20 pointer-events-none bg-gradient-to-r from-[var(--color-bg-secondary)] to-transparent" />
+                                    <div className="md:hidden absolute inset-x-0 top-0 h-16 z-20 pointer-events-none bg-gradient-to-b from-[var(--color-bg-secondary)] to-transparent" />
 
-                                    {/* CONTENEDOR RESPONSIVE REAL */}
-                                    <div className="relative w-full max-w-[280px] sm:max-w-sm md:max-w-md lg:max-w-lg aspect-square md:aspect-[4/3] z-10 transition-transform duration-500 group-hover:scale-105">
+                                    <div className="relative w-full max-w-[240px] sm:max-w-xs md:max-w-md lg:max-w-lg aspect-square z-10 transition-transform duration-700 group-hover:scale-110">
                                         <Image
                                             src={imageUrl}
                                             alt={product.nombre || "Producto"}
                                             fill
-                                            className="object-contain"
-                                            sizes="
-                        (max-width: 640px) 90vw,
-                        (max-width: 768px) 80vw,
-                        (max-width: 1024px) 50vw,
-                        40vw
-                      "
+                                            className="object-contain p-4"
+                                            sizes="(max-width: 768px) 100vw, 50vw"
                                             priority
                                             unoptimized
                                         />

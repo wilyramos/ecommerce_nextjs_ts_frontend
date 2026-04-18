@@ -12,7 +12,7 @@ const buttonVariants = cva(
         variants: {
             variant: {
                 default:
-                    "bg-[var(--color-bg-inverse)] text-[var(--color-text-inverse)] shadow-sm hover:bg-[var(--color-action-primary-hover)] transition-colors",
+                    "bg-[var(--color-bg-inverse)] text-[var(--color-text-inverse)] shadow-sm hover:bg-[var(--color-action-primary)] transition-colors",
                 accent:
                     "bg-[var(--color-accent-warm)] text-[var(--color-text-inverse)] shadow-sm hover:bg-[var(--color-accent-warm-hover)] transition-colors",
                 secondary:
@@ -20,7 +20,7 @@ const buttonVariants = cva(
                 ghost:
                     "text-[var(--color-text-primary)] hover:bg-[var(--color-surface-hover)] transition-colors",
                 link:
-                    "text-[var(--color-action-primary)] underline-offset-4 hover:text-[var(--color-action-primary-hover)] hover:underline",
+                    "text-[var(--color-accent-warm)] underline-offset-4 hover:text-[var(--color-accent-warm-hover)] hover:underline",
                 success:
                     "bg-[var(--color-success)] text-[var(--color-text-inverse)] shadow-sm hover:opacity-90 transition-opacity",
                 warning:

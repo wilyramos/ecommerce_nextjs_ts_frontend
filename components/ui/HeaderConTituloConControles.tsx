@@ -13,11 +13,11 @@ export default function HeaderConTituloConControles({ title, subtitle, next, pre
         <div className="flex items-end justify-between mb-8 md:mb-10">
             <div className="space-y-1">
                 {subtitle && (
-                    <p className="text-[var(--store-primary)] text-xs font-semibold uppercase tracking-[0.1em]">
+                    <p className="text-[var(--color-accent-warm)] text-xs font-bold uppercase tracking-[0.2em]">
                         {subtitle}
                     </p>
                 )}
-                <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-[var(--store-text)]">
+                <h2 className="text-2xl md:text-4xl font-black tracking-tighter text-[var(--color-text-primary)]">
                     {title}
                 </h2>
             </div>

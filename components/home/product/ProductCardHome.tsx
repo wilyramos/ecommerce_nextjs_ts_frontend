@@ -91,15 +91,11 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                         text-[var(--color-text-primary)]
                         leading-[1.4]
                         transition-colors duration-300
-                        group-hover:text-[var(--color-action-primary)]
+                        group-hover:text-[var(--color-accent-warm)]
                     "
                 >
                     {product.nombre}
                 </h3>
-
-                {/* Separador Sutil */}
-                <div className="h-px bg-[var(--color-border-subtle)] group-hover:bg-[var(--color-border-default)] transition-colors duration-300" />
-
                 {/* Precios - Premium */}
                 <div className="flex flex-row gap-1.5">
                     <div className="flex items-baseline gap-1.5">
@@ -120,8 +116,6 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                             })}
                         </span>
                     )}
-
-
                 </div>
             </div>
         </Link>

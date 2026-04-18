@@ -132,9 +132,9 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
             <Link href={`/productos/${product.slug}`} className="flex flex-col h-full">
 
                 {/* --- IMAGEN --- */}
-                <div className="relative w-full aspect-square bg-[var(--color-bg-tertiary)] overflow-hidden rounded-t">
+                <div className="relative w-full aspect-square bg-[var(--color-bg-tertiary)] overflow-hidden ">
                     {previewImages.length > 0 ? (
-                        <div className="relative w-full h-full bg-[var(--color-bg-secondary)] overflow-hidden">
+                        <div className="relative w-full h-full  overflow-hidden">
                             <div
                                 className="flex w-full h-full transition-transform duration-500 ease-in-out"
                                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -146,7 +146,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                                             alt={`${product.nombre} - vista ${idx + 1}`}
                                             fill
                                             sizes="(max-width: 900px) 80w, 50vw"
-                                            className="object-contain p-0.5 mix-blend-multiply"
+                                            className="object-cover mix-blend-multiply"
                                             quality={80}
                                             unoptimized
                                         />
@@ -180,7 +180,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                     {/* Badge Nuevo */}
                     {product.esNuevo && (
                         <div className="absolute top-3 left-3 pointer-events-none z-10">
-                            <span className="px-2 py-1 bg-[var(--color-bg-inverse)] text-[var(--color-text-inverse)] text-[10px] font-bold uppercase tracking-wider">
+                            <span className="px-2 py-1 bg-[var(--color-bg-secondary)] text-[var(--color-text-primary)] text-[10px] font-bold uppercase tracking-wider">
                                 Nuevo
                             </span>
                         </div>
@@ -254,19 +254,19 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
 
                                     {/* Precio Actual y Etiqueta de Descuento */}
                                     <div className="flex items-center gap-2">
-                                        <span className="text-sm md:text-[15px] font-bold text-[var(--color-text-primary)]">
+                                        <span className="text-sm md:text-[15px] text-[var(--color-text-primary)]">
                                             S/ {precio.toFixed(2)}
                                         </span>
 
                                         {(product.precioComparativo ?? 0) > 0 && (
-                                            <span className="text-[9px] md:text-[10px] font-bold text-[var(--color-text-inverse)] bg-[var(--color-action-primary)] px-1.5 py-0.5">
+                                            <span className="text-[9px] md:text-[10px] font-extrabold text-[var(--color-text-primary)] bg-[var(--color-bg-tertiary)] px-1.5 py-0.5">
                                                 -{Math.round(discountedPrice)}%
                                             </span>
                                         )}
                                     </div>
                                 </div>
                             ) : (
-                                <span className="text-[10px] font-bold text-[var(--color-error)] bg-[var(--color-error-light)] px-2 py-1 rounded self-start">
+                                <span className="text-[10px] font-bold  px-2 py-1  self-start">
                                     Agotado
                                 </span>
                             )}
