@@ -74,7 +74,7 @@ export const ProductCard = ({ product }: { product: Product }) => {
                     <span className="text-sm font-black text-black">S/ {product.precio?.toFixed(2)}</span>
                     <div className={cn(
                         "text-[8px] font-black px-2 py-1 rounded-lg uppercase",
-                        hasStock ? "bg-emerald-50 text-emerald-600" : "bg-red-50 text-red-600"
+                        hasStock ? "bg-emerald-50 text-emerald-600" : "bg-red-50 "
                     )}>
                         {hasStock ? 'Disponible' : 'Sin Stock'}
                     </div>
