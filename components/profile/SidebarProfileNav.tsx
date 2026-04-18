@@ -2,41 +2,71 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaUser, FaBoxOpen, FaLock } from "react-icons/fa";
-import clsx from "clsx";
-
+import {
+    HiUser, HiOutlineUser,
+    HiArchiveBox, HiOutlineArchiveBox,
+    HiLockClosed, HiOutlineLockClosed
+} from "react-icons/hi2";
+import { cn } from "@/lib/utils";
 
 const links = [
-    { href: '/profile', label: 'Datos personales', icon: FaUser },
-    { href: '/profile/orders', label: 'Mis pedidos', icon: FaBoxOpen },
-    { href: '/profile/password', label: 'Cambiar contraseña', icon: FaLock },
+    {
+        href: '/profile',
+        label: 'Datos personales',
+        iconActive: HiUser,
+        iconInactive: HiOutlineUser
+    },
+    {
+        href: '/profile/orders',
+        label: 'Mis pedidos',
+        iconActive: HiArchiveBox,
+        iconInactive: HiOutlineArchiveBox
+    },
+    {
+        href: '/profile/password',
+        label: 'Seguridad',
+        iconActive: HiLockClosed,
+        iconInactive: HiOutlineLockClosed
+    },
 ];
 
 export default function SidebarProfileNav() {
     const pathname = usePathname();
 
     return (
-        <nav className="space-y-2">
-            {links.map(({ href, label, icon: Icon }) => {
+        <nav className="flex flex-col gap-0.5">
+            {links.map(({ href, label, iconActive: IconActive, iconInactive: IconInactive }) => {
                 const isActive = pathname === href;
 
                 return (
                     <Link
                         key={href}
                         href={href}
-                        className={clsx(
-                            'flex items-center gap-3 px-3 py-2 rounded-md text-sm transition-all',
+                        className={cn(
+                            "flex items-center gap-4 px-3 py-3 text-sm transition-all duration-300 relative group ",
                             isActive
-                                ? 'bg-blue-50 text-blue-700 font-semibold'
-                                : 'text-gray-700 hover:bg-gray-100 hover:text-blue-700'
+                                ? "text-[var(--color-text-primary)] font-bold "
+                                : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-tertiary)]/50"
                         )}
                     >
-                        <Icon className="text-lg" />
-                        <span>{label}</span>
+                        {/* Indicador Warm sutil (Dot) */}
+                        {isActive && (
+                            <div className="absolute left-0 w-1 h-full bg-[var(--color-accent-warm)]  animate-in fade-in slide-in-from-left-2 duration-500" />
+                        )}
+
+                        {/* Icon Switcher */}
+                        <div className="flex items-center justify-center w-6">
+                            {isActive ? (
+                                <IconActive className="text-xl text-[var(--color-accent-warm)] animate-in zoom-in duration-300" />
+                            ) : (
+                                <IconInactive className="text-xl text-[var(--color-text-tertiary)] group-hover:text-[var(--color-text-secondary)] transition-colors" />
+                            )}
+                        </div>
+
+                        <span className="tracking-tight">{label}</span>
                     </Link>
                 );
             })}
         </nav>
     );
-
 }

@@ -51,10 +51,10 @@ export default function ButtonShowCart() {
 
             <SheetContent 
                 side="right"
-                className="flex flex-col h-full bg-[var(--color-bg-primary)] border-l border-[var(--color-border-default)] p-0 w-full sm:max-w-md"
+                className="flex flex-col h-full"
             >
                 {/* Header */}
-                <SheetHeader className="p-6 border-b border-[var(--color-border-subtle)] space-y-1">
+                <SheetHeader className="p-4 border-b border-[var(--color-border-subtle)] space-y-1">
                     <div className="flex items-center justify-between">
                         <SheetTitle className="text-2xl font-bold tracking-tight text-[var(--color-text-primary)]">
                             Tu Carrito
@@ -66,7 +66,7 @@ export default function ButtonShowCart() {
                 </SheetHeader>
 
                 {/* Lista de productos */}
-                <div className="flex-1 overflow-y-auto px-6 scrollbar-hide">
+                <div className="flex-1 overflow-y-auto px-4 scrollbar-hide">
                     {carrito.length === 0 ? (
                         <div className="h-full flex flex-col items-center justify-center space-y-4">
                             <div className="p-6 rounded-full bg-[var(--color-bg-secondary)]">
@@ -94,7 +94,7 @@ export default function ButtonShowCart() {
 
                 {/* Footer y Checkout */}
                 {carrito.length > 0 && (
-                    <div className="p-6 space-y-6 bg-[var(--color-bg-primary)] border-t border-[var(--color-border-default)] shadow-[0_-10px_20px_rgba(0,0,0,0.02)]">
+                    <div className="p-4 space-y-6 bg-[var(--color-bg-primary)] border-t border-[var(--color-border-default)] shadow-[0_-10px_20px_rgba(0,0,0,0.02)]">
                         <div className="space-y-3">
                             <div className="flex justify-between items-center text-sm">
                                 <span className="text-[var(--color-text-secondary)]">Subtotal estimado</span>

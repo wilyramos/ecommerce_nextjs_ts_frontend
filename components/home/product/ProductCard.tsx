@@ -237,7 +237,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                             {product.nombre}
                         </h3>
 
-                                           {/* Overlay Hover Sutil */}
+                        {/* Overlay Hover Sutil */}
                         <div className="absolute inset-0 bg-[var(--color-text-primary)] opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none" />
                     </div>
 

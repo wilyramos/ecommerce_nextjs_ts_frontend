@@ -7,39 +7,50 @@ import SidebarProfileNav from '@/components/profile/SidebarProfileNav';
 export default async function ProfileLayout({ children }: { children: React.ReactNode }) {
     const { user } = await verifySession();
     if (!user) redirect('/auth/login');
-    // if (user.rol === "administrador") redirect('/admin');
-
 
     return (
-        <div className="flex flex-col md:flex-row ">
+        <div className="flex flex-col md:flex-row bg-[var(--color-bg-primary)]">
             {/* Sidebar */}
-            <aside className="w-full md:w-auto bg-white p-6 flex flex-col justify-between">
-                <div>
-                    {/* Usuario */}
-                    <div className="text-center mb-6">
-                        <p className="text-lg font-bold text-gray-800">
-                            {user.nombre} {user.apellidos}
-                        </p>
-                        <p className="text-sm text-gray-500">{user.email}</p>
+            <aside className="w-full md:w-80 bg-[var(--color-bg-secondary)] p-8 flex flex-col justify-between border-r border-[var(--color-border-subtle)] min-h-[auto] md:min-h-screen">
+                <div className="space-y-10">
+                    {/* Perfil de Usuario */}
+                    <div className="space-y-4">
+                        <div className="space-y-1">
+                            <p className="text-xl font-bold text-[var(--color-text-primary)] tracking-tight">
+                                {user.nombre} {user.apellidos}
+                            </p>
+                            <p className="text-xs font-medium text-[var(--color-text-tertiary)] truncate">
+                                {user.email}
+                            </p>
+                        </div>
 
+                        {/* Botón Cerrar Sesión */}
                         <form action={logout}>
                             <button
                                 type="submit"
-                                className="flex items-center gap-3 text-red-600 text-sm hover:text-red-800 transition-all p-6 cursor-pointer"
+                                className="flex items-center gap-2 text-[var(--color-error)] text-xs font-bold uppercase tracking-widest hover:text-[var(--color-error)] hover:opacity-80 transition-all cursor-pointer group"
                             >
-                                <FiLogOut className="text-lg" />
+                                <FiLogOut className="text-base transition-transform group-hover:-translate-x-1" />
                                 <span>Cerrar sesión</span>
                             </button>
                         </form>
                     </div>
+
+                    {/* Separador Sutil */}
+                    <div className="h-px bg-[var(--color-border-default)] w-full" />
+
                     {/* Navegación */}
-                    <SidebarProfileNav />
+                    <nav className="space-y-1">
+                        <SidebarProfileNav />
+                    </nav>
                 </div>
-                {/* Cerrar sesión */}
             </aside>
+
             {/* Contenido principal */}
-            <main className="flex-1 p-8 min-h-screen">
-                {children}
+            <main className="flex-1 p-6 md:p-12 lg:p-16 min-h-screen bg-[var(--color-bg-primary)]">
+                <div className="max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
+                    {children}
+                </div>
             </main>
         </div>
     );

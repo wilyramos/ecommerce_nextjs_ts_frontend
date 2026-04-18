@@ -1,125 +1,45 @@
+/* File: components/home/product/RecentViewed.tsx */
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
+import { useEffect } from "react";
+import { useRecentlyViewedStore } from "@/src/store/useRecentlyViewedStore";
+import ProductCard from "./ProductCard"; // Your existing component
 import type { ProductWithCategoryResponse } from "@/src/schemas";
 
-type Props = {
-    products: ProductWithCategoryResponse[];
-};
+export default function RecentViewed({ currentProduct }: { currentProduct: ProductWithCategoryResponse }) {
+    const { history, addProduct } = useRecentlyViewedStore();
+    //
+    useEffect(() => {
+        if (currentProduct) {
+            addProduct(currentProduct);
+        }
+    }, [currentProduct, addProduct]);
 
-export default function RecentViewed({ products }: Props) {
-    if (!products.length) return null;
+    // 2. Filter out the current product from the display list
+    const displayProducts = history.filter((p) => p.slug !== currentProduct.slug);
+
+    if (displayProducts.length === 0) return null;
 
     return (
-        <section
-            className="
-        py-8
-      "
-        >
-            {/* Header */}
-            <header className="mb-6">
-                <h3
-                    className="
-            text-sm md:text-base
-            uppercase
-            tracking-wide
-            font-medium
-            text-[var(--store-text)]
-          "
-                >
+        <section className="py-12 bg-[var(--color-bg-primary)]">
+            <header className="mb-8 px-2">
+                <div className="flex items-center gap-3 mb-2">
+                    <div className="h-6 w-1 bg-[var(--color-action-primary)] rounded-full" />
+                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--color-text-secondary)]">
+                        Tu historial de búsqueda
+                    </h3>
+                </div>
+                <p className="text-[18px] font-black tracking-tighter text-[var(--color-text-primary)] uppercase">
                     Vistos recientemente
-                </h3>
-
-                <div
-                    className="
-            mt-2
-            h-[2px]
-            w-16 md:w-20
-            bg-[var(--store-primary)]
-          "
-                />
+                </p>
             </header>
 
-            {/* Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
-                {products.map((p) => (
-                    <Link
-                        key={p.slug}
-                        href={`/productos/${p.slug}`}
-                        className="
-              group
-              block
-              bg-[var(--store-surface)]
-              rounded-sm
-              p-2
-              transition-colors
-              hover:bg-[var(--store-surface-hover)]
-            "
-                    >
-                        {/* Imagen */}
-                        <div
-                            className="
-                relative
-                w-full
-                h-32
-                mb-2
-                overflow-hidden
-                bg-[var(--store-surface)]
-              "
-                        >
-                            {p.imagenes?.length ? (
-                                <Image
-                                    src={p.imagenes[0]}
-                                    alt={p.nombre}
-                                    fill
-                                    quality={10}
-                                    className="
-                    object-contain
-                    transition-transform duration-300
-                    group-hover:scale-105
-                  "
-                                />
-                            ) : (
-                                <div
-                                    className="
-                    flex items-center justify-center
-                    w-full h-full
-                    text-xs
-                    uppercase tracking-widest
-                    text-[var(--store-text-muted)]
-                  "
-                                >
-                                    Sin imagen
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Info */}
-                        <p
-                            className="
-                text-xs md:text-sm
-                font-medium
-                line-clamp-2
-                text-[var(--store-text)]
-                transition-colors
-                group-hover:text-[var(--store-primary)]
-              "
-                        >
-                            {p.nombre}
-                        </p>
-
-                        <p
-                            className="
-                mt-1
-                text-sm
-                font-semibold
-                text-[var(--store-text)]
-              "
-                        >
-                            S/. {p.precio?.toFixed(2)}
-                        </p>
-                    </Link>
+            {/* Premium Grid using ProductCard */}
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+                {displayProducts.map((product) => (
+                    <div key={product.slug} className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <ProductCard product={product} />
+                    </div>
                 ))}
             </div>
         </section>

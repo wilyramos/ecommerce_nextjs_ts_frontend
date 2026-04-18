@@ -2,7 +2,7 @@
 import ProductDetails from '@/components/home/product/ProductDetails';
 import ProductosRelated from '@/components/home/product/ProductosRelated';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
-import RecentViewedClient from './RecentViewedClient';
+import RecentViewed from '@/components/home/product/RecentViewed';
 import type { ProductWithCategoryResponse } from '@/src/schemas';
 import { routes } from "@/lib/routes";
 
@@ -86,8 +86,8 @@ export default async function ProductPageServer({ producto }: Props) {
             </section>
 
             {/* Vistos Recientemente (Client Component) */}
-            <section className="container mx-auto px-4 md:px-6 py-8 pb-16">
-                <RecentViewedClient producto={producto} />
+            <section className="container mx-auto px-4 md:px-6 border-t border-[var(--color-border-subtle)]">
+                <RecentViewed currentProduct={producto} />
             </section>
         </>
     );

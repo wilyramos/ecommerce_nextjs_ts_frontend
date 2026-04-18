@@ -256,6 +256,7 @@ export const ApiProductSchema = productBaseSchema
     .extend({
         _id: z.string(),
         slug: z.string(),
+        categoria: z.union([z.string(), apiCategorySchema]),
         brand: ApiBrandSchema.optional(),
         line: z.object({
             _id: z.string().optional(),
@@ -289,6 +290,7 @@ export const ProductListSchema = ApiProductSchema.pick({
     imagenes: true,
     precioComparativo: true,
     brand: true,
+    categoria: true,
 });
 
 export const productResponseAllSchema = ApiProductSchema.pick({
@@ -367,10 +369,6 @@ export const productsApiResponseWithFilters = productsAPIResponse.extend({
 
 export type TProductsApiResponseWithFilters = z.infer<typeof productsApiResponseWithFilters>;
 
-
-/* ============================================================
-   📚 PRODUCTOS CON CATEGORÍA POBLADA
-============================================================ */
 
 export const ApiProductWithCategorySchema = ApiProductSchema.extend({
     categoria: apiCategorySchema,
