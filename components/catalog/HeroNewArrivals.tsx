@@ -13,7 +13,7 @@ export default function HeroNewArrivals() {
             <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] to-transparent pointer-events-none" />
 
             <div className="relative z-10 space-y-5">
-                <div className="inline-flex items-center gap-2 text-[var(--color-action-primary)] font-semibold text-xs uppercase tracking-tight">
+                <div className="inline-flex items-center gap-2 text-[var(--color-accent-warm)] font-semibold text-xs uppercase tracking-tight">
                     Recién llegado
                 </div>
 
@@ -28,7 +28,7 @@ export default function HeroNewArrivals() {
                     Explora la nueva generación de dispositivos diseñados para el futuro.
                 </p>
 
-                <div className="flex items-center gap-2 text-[var(--color-action-primary)] font-medium pt-4 group-hover:gap-3 transition-all">
+                <div className="flex items-center gap-2 text-[var(--color-accent-warm)] font-medium pt-4 group-hover:gap-3 transition-all">
                     Explorar novedades <ArrowRight className="w-5 h-5" />
                 </div>
             </div>

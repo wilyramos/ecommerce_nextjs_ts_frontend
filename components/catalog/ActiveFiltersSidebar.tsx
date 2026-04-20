@@ -4,61 +4,63 @@ import { useCatalogNav } from "./hooks/useCatalogNav";
 import { X, RotateCcw } from "lucide-react";
 
 export default function ActiveFiltersSidebar() {
-    const { 
-        currentSlugs,   
-        searchParams, 
-        setCategory, 
-        setBrand, 
-        setLine, 
-        updateFilter, 
+    const {
+        currentSlugs,
+        searchParams,
+        setCategory,
+        setBrand,
+        setLine,
+        updateFilter,
         clearFilters,
-        hasFilters 
+        hasFilters,
     } = useCatalogNav();
 
     if (!hasFilters) return null;
 
     return (
-        <div className="mb-8 animate-in fade-in slide-in-from-top-2 duration-300">
-            {/* Header con botón de limpiar */}
+        <div className="mb-6">
             <div className="flex items-center justify-between mb-3">
-                <h3 className="text-xs font-bold uppercase tracking-widest text-[var(--store-text)]">
-                    Filtros Activos
-                </h3>
+                <span
+                    className="text-[11px] uppercase tracking-[0.06em]"
+                    style={{ color: "var(--color-text-tertiary)" }}
+                >
+                    Filtros activos
+                </span>
+
                 <button
                     onClick={clearFilters}
-                    className="text-[10px] font-medium text-[var(--store-text-muted)] hover:text-red-600 flex items-center gap-1 transition-colors group"
+                    className="flex items-center gap-1 text-[12px] transition-colors duration-150"
+                    style={{ color: "var(--color-text-tertiary)" }}
+                    onMouseEnter={e => (e.currentTarget.style.color = "var(--color-accent-warm)")}
+                    onMouseLeave={e => (e.currentTarget.style.color = "var(--color-text-tertiary)")}
                 >
-                    <RotateCcw className="w-3 h-3 group-hover:-rotate-180 transition-transform duration-500" />
+                    <RotateCcw className="w-[11px] h-[11px]" />
                     Limpiar
                 </button>
             </div>
 
-            {/* Lista de Chips Vertical/Compacta */}
-            <div className="flex flex-wrap gap-2">
-                
-                {/* 1. Slugs de URL (Categoría, Marca, Línea) */}
+            <div className="flex flex-wrap gap-1.5">
                 {currentSlugs.map((slug) => (
-                    <FilterChip
+                    <Chip
                         key={slug}
-                        label={slug.replace(/-/g, ' ')}
+                        label={slug.replace(/-/g, " ")}
                         onRemove={() => {
-                            setCategory(slug); 
-                            setBrand(slug); 
+                            setCategory(slug);
+                            setBrand(slug);
                             setLine(slug);
                         }}
                     />
                 ))}
 
-                {/* 2. Query Params */}
                 {Array.from(searchParams.entries()).map(([key, value]) => {
-                    if (['page', 'limit', 'sort'].includes(key)) return null;
+                    if (["page", "limit", "sort"].includes(key)) return null;
 
                     let label = `${key}: ${value}`;
-                    if (key === 'priceRange') label = `Precio: S/ ${value.replace('-', ' - S/ ')}`;
-                    if (key === 'query') label = `Buscas: "${value}"`;
+                    if (key === "priceRange") label = `S/ ${value.replace("-", " – S/ ")}`;
+                    if (key === "query") label = `"${value}"`;
 
                     return (
-                        <FilterChip
+                        <Chip
                             key={`${key}-${value}`}
                             label={label}
                             onRemove={() => updateFilter(key, value)}
@@ -66,24 +68,39 @@ export default function ActiveFiltersSidebar() {
                     );
                 })}
             </div>
-            
-            {/* Separador visual elegante */}
-            <div className="mt-6 h-px w-full bg-gradient-to-r from-transparent via-[var(--store-border)] to-transparent" />
+
+            <div
+                className="mt-5 border-t"
+                style={{ borderColor: "var(--color-border-subtle)" }}
+            />
         </div>
     );
 }
 
-// Subcomponente Chip Minimalista
-function FilterChip({ label, onRemove }: { label: string, onRemove: () => void }) {
+function Chip({ label, onRemove }: { label: string; onRemove: () => void }) {
     return (
         <button
             onClick={onRemove}
-            className="group flex items-center justify-between w-full max-w-full gap-2 px-3 py-1.5 text-xs text-left bg-[var(--store-bg)] border border-transparent hover:border-[var(--store-border)] hover:bg-white rounded-md transition-all duration-200"
+            className="group inline-flex items-center gap-1.5 pl-3 pr-2.5 py-[5px] text-[12px] rounded transition-all duration-150"
+            style={{
+                color: "var(--color-text-primary)",
+                background: "var(--color-bg-primary)",
+                border: "1px solid var(--color-border-default)",
+            }}
+            onMouseEnter={e => {
+                (e.currentTarget.style.borderColor = "var(--color-border-strong)");
+            }}
+            onMouseLeave={e => {
+                (e.currentTarget.style.borderColor = "var(--color-border-default)");
+            }}
         >
-            <span className="truncate font-medium text-[var(--store-text)] capitalize">
+            <span className="capitalize truncate max-w-[160px] leading-none">
                 {label}
             </span>
-            <X className="w-3 h-3 text-[var(--store-text-muted)] group-hover:text-red-500 shrink-0" />
+            <X
+                className="w-[10px] h-[10px] flex-shrink-0 transition-colors duration-150"
+                style={{ color: "var(--color-text-tertiary)" }}
+            />
         </button>
     );
 }

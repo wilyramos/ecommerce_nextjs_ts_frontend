@@ -27,7 +27,7 @@ export default function HeroFlashSale() {
     return (
         <div className="relative flex flex-col justify-center p-10 md:p-14 bg-[var(--color-bg-primary)] border-b md:border-b-0 md:border-r border-[var(--color-border-default)] min-h-[360px]">
             <div className="space-y-5">
-                <div className="inline-flex items-center gap-2 text-[var(--color-action-primary)] font-semibold text-xs uppercase tracking-tight">
+                <div className="inline-flex items-center gap-2 text-[var(--color-accent-warm)] font-semibold text-xs uppercase tracking-tight">
                     <Timer className="w-4 h-4" /> Oferta del día
                 </div>
 
@@ -39,7 +39,7 @@ export default function HeroFlashSale() {
                 <div className="flex items-center gap-8 pt-4">
                     <Link 
                         href="/ofertas" 
-                        className="px-6 py-2.5 bg-[var(--color-action-primary)] text-[var(--color-text-inverse)] font-medium transition-all hover:bg-[var(--color-action-primary-hover)] hover:scale-[1.02] text-xs shadow-sm"
+                        className="px-4 py-1 bg-[var(--color-accent-warm)] text-[var(--color-text-inverse)] font-medium transition-all hover:bg-[var(--color-accent-warm-hover)] hover:scale-[1.02] text-xs shadow-sm"
                     >
                         Ver ofertas
                     </Link>
@@ -56,7 +56,7 @@ export default function HeroFlashSale() {
 
 const TimeBox = ({ val, unit, active }: { val: number; unit: string; active?: boolean }) => (
     <div className="text-center">
-        <div className={`text-xl font-bold tabular-nums ${active ? "text-[var(--color-action-primary)]" : "text-[var(--color-text-primary)]"}`}>
+        <div className={`text-xl font-bold tabular-nums ${active ? "text-[var(--color-accent-warm)]" : "text-[var(--color-text-primary)]"}`}>
             {val.toString().padStart(2, "0")}
         </div>
         <div className="text-[10px] text-[var(--color-text-tertiary)] font-bold">{unit}</div>

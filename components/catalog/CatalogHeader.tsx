@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronRight, Home } from "lucide-react";
+import { Home, ArrowUpDown } from "lucide-react";
 import {
     Select,
     SelectContent,
@@ -23,37 +23,31 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
     const currentSort = searchParams.get("sort") || "recientes";
 
     return (
-        <div className="flex flex-col gap-6 pb-1 border-b my-2 border-[var(--color-border-default)]">
+        <div className="w-full flex flex-col gap-8 pt-4 pb-6 border-b border-[var(--color-border-subtle)]">
 
-            {/* 1. Breadcrumbs */}
-            <nav aria-label="Breadcrumb">
-                <ol className="flex flex-wrap items-center gap-2 text-xs text-[var(--color-text-secondary)]">
+            {/* 1. Breadcrumbs - Estilo minimalista y espaciado */}
+            <nav aria-label="Breadcrumb" className="px-1">
+                <ol className="flex items-center flex-wrap gap-x-1.5 text-[10px] uppercase tracking-[0.15em] font-bold text-[var(--color-text-tertiary)]">
                     {breadcrumbs.map((crumb, index) => {
                         const isLast = index === breadcrumbs.length - 1;
-                        const isPlaceholder = crumb.href === "#";
                         const isFirst = index === 0;
 
                         return (
                             <li key={`${crumb.label}-${index}`} className="flex items-center">
-                                {/* Separator */}
                                 {index > 0 && (
-                                    <ChevronRight className="w-3 h-3 mx-2 text-[var(--color-text-tertiary)] flex-shrink-0" />
+                                    <span className="mx-1 opacity-40 text-[var(--color-text-tertiary)]">/</span>
                                 )}
 
-                                {isLast || isPlaceholder ? (
-                                    <span
-                                        className={`flex items-center gap-1 ${isLast ? "font-bold text-[var(--color-text-primary)]" : "font-medium"}`}
-                                        aria-current={isLast ? "page" : undefined}
-                                    >
-                                        {isFirst && <Home className="w-3.5 h-3.5 mb-0.5" />}
+                                {isLast ? (
+                                    <span className="text-[var(--color-text-primary)]" aria-current="page">
                                         {crumb.label}
                                     </span>
                                 ) : (
                                     <Link
                                         href={crumb.href}
-                                        className="flex items-center gap-1 hover:text-[var(--color-action-primary)] hover:underline transition-all font-medium"
+                                        className="flex items-center gap-1 hover:text-[var(--color-text-primary)] transition-colors duration-200"
                                     >
-                                        {isFirst && <Home className="w-3.5 h-3.5 mb-0.5" />}
+                                        {isFirst && <Home className="w-2.5 h-2.5 mb-0.5" />}
                                         {crumb.label}
                                     </Link>
                                 )}
@@ -63,38 +57,46 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
                 </ol>
             </nav>
 
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-                {/* 2. Title and Counter */}
-                <div>
-                    <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight text-[var(--color-text-primary)] capitalize">
-                        {title}
-                    </h1>
-                    <p className="text-xs text-[var(--color-text-secondary)] mt-1.5 font-medium">
-                        {totalProducts} {totalProducts === 1 ? 'producto encontrado' : 'productos encontrados'}
-                    </p>
+            {/* 2. Main Header Content */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 px-1">
+                <div className="space-y-1.5">
+                    <div className="flex items-baseline gap-4">
+                        <h1 className="text-3xl md:text-4xl font-semibold tracking-tighter text-[var(--color-text-primary)] uppercase">
+                            {title}
+                        </h1>
+                        <span className="h-6 w-[1px] bg-[var(--color-border-default)] hidden sm:block" />
+                        <span className="text-[11px] font-bold uppercase tracking-widest text-[var(--color-accent-warm)]">
+                            {totalProducts} Items
+                        </span>
+                    </div>
                 </div>
 
-                {/* 3. Sorting */}
-                <div className="flex items-center gap-3 w-auto">
-                    <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-secondary)] whitespace-nowrap">
-                        Ordenar por:
-                    </span>
+                {/* 3. Sorting - Estilo "Floating" sutil */}
+                <div className="flex items-center gap-4">
+                    <div className="group relative flex items-center">
+                        <div className="absolute left-3 z-10 pointer-events-none">
+                            <ArrowUpDown className="w-3.5 h-3.5 text-[var(--color-text-tertiary)] group-focus-within:text-[var(--color-action-primary)] transition-colors" />
+                        </div>
 
-                    <Select
-                        value={currentSort}
-                        onValueChange={(val) => updateFilter("sort", val)}
-                    >
-                        <SelectTrigger className="w-[180px] h-10 rounded border-[var(--color-border-default)] bg-[var(--color-bg-primary)] text-sm focus:ring-1 focus:ring-[var(--color-action-primary)] transition-all">
-                            <SelectValue placeholder="Relevancia" />
-                        </SelectTrigger>
+                        <Select
+                            value={currentSort}
+                            onValueChange={(val) => updateFilter("sort", val)}
+                        >
+                            <SelectTrigger className="w-[200px] h-11 pl-9 pr-4  border-[var(--color-border-default)] bg-[var(--color-bg-primary)] text-[13px] font-semibold text-[var(--color-text-primary)] focus:ring-2 focus:ring-[var(--color-action-primary-light)] focus:border-[var(--color-action-primary)] transition-all hover:bg-[var(--color-bg-secondary)]">
+                                <SelectValue placeholder="Ordenar por" />
+                            </SelectTrigger>
 
-                        <SelectContent align="end" className="bg-[var(--color-bg-primary)] border-[var(--color-border-default)]">
-                            <SelectItem value="recientes">Más Nuevos</SelectItem>
-                            <SelectItem value="price-asc">Precio: Bajo a Alto</SelectItem>
-                            <SelectItem value="price-desc">Precio: Alto a Bajo</SelectItem>
-                            <SelectItem value="name-asc">Nombre: A-Z</SelectItem>
-                        </SelectContent>
-                    </Select>
+                            <SelectContent
+                                align="end"
+                                className="bg-[var(--color-bg-primary)] border-[var(--color-border-default)] rounded-xl  p-1"
+                            >
+                                <SelectItem value="recientes" className="rounded-lg text-[13px] focus:bg-[var(--color-bg-secondary)]">Más Recientes</SelectItem>
+                                <SelectItem value="price-asc" className="rounded-lg text-[13px] focus:bg-[var(--color-bg-secondary)]">Precio: Menor a Mayor</SelectItem>
+                                <SelectItem value="price-desc" className="rounded-lg text-[13px] focus:bg-[var(--color-bg-secondary)]">Precio: Mayor a Menor</SelectItem>
+                                <SelectItem value="name-asc" className="rounded-lg text-[13px] focus:bg-[var(--color-bg-secondary)]">Nombre: A - Z</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
                 </div>
             </div>
         </div>

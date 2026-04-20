@@ -6,39 +6,37 @@ import Link from "next/link";
 import React from "react";
 import { routes } from "@/lib/routes";
 
-
 export const metadata: Metadata = {
     title: "Categorías | GoPhone",
-    description: "Explora todas nuestras subcategorías y encuentra productos específicos organizados para ti.",
+    description:
+        "Explora todas nuestras subcategorías y encuentra productos específicos organizados para ti.",
     alternates: {
         canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/categorias`,
     },
 };
 
 export default async function CategoriesPage() {
-    // Usamos exclusivamente el servicio de subcategorías solicitado
     const subcategories = await getAllSubcategories();
 
     const jsonLd = {
         "@context": "https://schema.org",
         "@type": "ItemList",
-        "name": "Subcategorías de Productos",
-        "description": "Lista de subcategorías especializadas",
-        "itemListElement": subcategories.map((c, i) => ({
+        name: "Subcategorías de Productos",
+        itemListElement: subcategories.map((c, i) => ({
             "@type": "ListItem",
-            "position": i + 1,
-            "url": `${process.env.NEXT_PUBLIC_BASE_URL}/categoria/${c.slug}`
-        }))
+            position: i + 1,
+            url: `${process.env.NEXT_PUBLIC_BASE_URL}/categoria/${c.slug}`,
+        })),
     };
 
     return (
-        <main className="bg-[var(--store-bg)] min-h-screen py-8">
+        <main className="bg-[var(--color-bg-primary)] min-h-screen py-8">
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
 
-            <div className="container mx-auto px-4">
+            <div className="max-w-7xl mx-auto px-4">
                 <Breadcrumbs
                     items={[
                         { label: "Inicio", href: "/" },
@@ -46,45 +44,45 @@ export default async function CategoriesPage() {
                     ]}
                 />
 
-                <header className="mb-12 mt-6">
-                    <h1 className="text-4xl font-bold text-[var(--store-text)] tracking-tight">
-                        Explora por Categoría
+                <header className="mt-6 mb-10">
+                    <h1 className="text-3xl font-semibold text-[var(--color-text-primary)]">
+                        Categorías
                     </h1>
-                    <p className="text-[var(--store-text-muted)] mt-2 max-w-2xl">
-                        Encuentra exactamente lo que buscas navegando por nuestras especialidades.
+                    <p className="text-[var(--color-text-secondary)] mt-2 max-w-xl">
+                        Navega por nuestras subcategorías.
                     </p>
                 </header>
 
-                {/* Grilla Principal basada en getAllSubcategories */}
+                {/* Grid */}
                 <section>
-                    <h2 className="text-[10px] font-bold text-[var(--store-text-muted)] uppercase tracking-[0.2em] mb-8">
-                        Catálogo Especializado
+                    <h2 className="text-xs uppercase tracking-widest text-[var(--color-text-tertiary)] mb-6">
+                        Catálogo
                     </h2>
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
-                        {subcategories.map((category) => (
-                            <CategoryCard key={category._id} category={category} />
+
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                        {subcategories.map((c) => (
+                            <CategoryCard key={c._id} category={c} />
                         ))}
                     </div>
                 </section>
 
-                {/* SEO Sitemap Section */}
-                <section className="mt-24 border-t border-[var(--store-border)] pt-12 pb-20">
-                    <h2 className="text-[10px] font-bold text-[var(--store-text-muted)] uppercase tracking-[0.2em] mb-8">
-                        Índice Completo
+                {/* Sitemap */}
+                <section className="mt-16 pt-8 border-t border-[var(--color-border-subtle)]">
+                    <h2 className="text-xs uppercase tracking-widest text-[var(--color-text-tertiary)] mb-6">
+                        Índice
                     </h2>
-                    <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-12 space-y-4">
+
+                    <div className="columns-2 md:columns-3 lg:columns-4 gap-8 space-y-3">
                         {[...subcategories]
                             .sort((a, b) => a.nombre.localeCompare(b.nombre))
                             .map((c) => (
-                                <div key={c._id} className="break-inside-avoid">
-                                    <Link
-                                        href={routes.catalog({ category: c.slug })}
-                                        className="text-sm text-[var(--store-text)] hover:text-[var(--store-primary)] transition-colors flex items-center gap-2 group"
-                                    >
-                                        <span className="w-1 h-1 rounded-full bg-[var(--store-border)] group-hover:bg-[var(--store-primary)] transition-colors" />
-                                        {c.nombre}
-                                    </Link>
-                                </div>
+                                <Link
+                                    key={c._id}
+                                    href={routes.catalog({ category: c.slug })}
+                                    className="block text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-accent-warm)]"
+                                >
+                                    {c.nombre}
+                                </Link>
                             ))}
                     </div>
                 </section>

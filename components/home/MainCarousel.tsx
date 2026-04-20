@@ -61,7 +61,7 @@ export default function MainCarousel({
                                             S/ {product.precio?.toFixed(2)}
                                         </span>
 
-                                        <div className="flex items-center gap-2 text-sm font-bold text-[var(--color-accent-warm)] transition-all">
+                                        <div className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)] transition-all">
                                             <span className="hidden sm:inline">Explorar ahora</span>
                                             <ArrowRight
                                                 size={16}

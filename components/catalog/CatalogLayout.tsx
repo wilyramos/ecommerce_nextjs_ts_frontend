@@ -75,7 +75,7 @@ export default function CatalogLayout({
 
                 {/* --- SIDEBAR (Desktop) --- */}
                 {/* Oculto en móvil, visible en lg (col-span-3 o 2 dependiendo del diseño) */}
-                <aside className="hidden lg:block lg:col-span-3 xl:col-span-2 md:pr-6">
+                <aside className="hidden lg:block lg:col-span-3 xl:col-span-2 md:pr-6 border-r">
                     <div className="sticky top-24">
                         {/* Pasamos TODOS los filtros (incluyendo líneas) */}
                         <CatalogSidebar filters={filters} />
@@ -87,7 +87,7 @@ export default function CatalogLayout({
 
                     {/* Toolbar Mobile (Contador + Botón Filtros Drawer) */}
                     {/* Solo visible en pantallas pequeñas */}
-                    <div className="lg:hidden flex justify-between items-center sticky top-12 z-20 bg-[var(--store-bg)] py-2">
+                    <div className="lg:hidden flex justify-between items-center sticky top-12 z-20 bg-[var(--color-bg-primary)] py-2">
                         {/* Pasamos los filtros al Drawer móvil */}
                         <CatalogMobileFilters filters={filters} />
                     </div>
@@ -98,7 +98,7 @@ export default function CatalogLayout({
                     {/* Paginación */}
                     {/* Solo se muestra si NO estamos en modo fallback y hay más de 1 página */}
                     {!isFallback && pagination.totalPages > 1 && (
-                        <div className="mt-auto pt-8 border-t border-[var(--store-border)]">
+                        <div className="mt-auto pt-8 border-t border-[var(--color-border)]">
                             <CatalogPagination
                                 currentPage={pagination.currentPage}
                                 totalPages={pagination.totalPages}
