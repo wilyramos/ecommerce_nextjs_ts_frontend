@@ -1,7 +1,6 @@
 "use client";
 
 import Carousel, { ButtonGroupProps } from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
 import Image from "next/image";
 import Link from "next/link";
 import { MdOutlineImageNotSupported } from "react-icons/md";
@@ -11,7 +10,7 @@ import { routes } from "@/lib/routes";
 
 const AbsoluteHeaderWrapper = (p: ButtonGroupProps) => (
     <div className="absolute inset-x-0 top-0 z-20 px-4 md:px-8">
-        <HeaderConTituloConControles {...p} title="Marcas." subtitle="Las mejores de calidad precio" />
+        <HeaderConTituloConControles {...p} title="Marcas disponibles" />
     </div>
 );
 

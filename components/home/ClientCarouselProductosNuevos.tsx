@@ -16,8 +16,7 @@ const AbsoluteHeaderWrapper = (props: ButtonGroupProps) => {
         <div className="absolute top-0 left-0 right-0 z-20 px-4 md:px-8">
             <HeaderConTituloConControles
                 {...props}
-                title="Novedades."
-                subtitle="Lo más reciente"
+                title="Productos Nuevos"
             />
         </div>
     );

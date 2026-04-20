@@ -11,7 +11,7 @@ export default async function ProductosDestacados() {
     if (!productos.length) return null;
 
     return (
-        <section className="bg-[var(--color-bg-primary)] py-12 md:py-20 border-b border-[var(--color-border-subtle)]">
+        <section className="bg-[var(--color-bg-primary)] py-6  border-y border-[var(--color-border-subtle)]">
             <div className="max-w-7xl mx-auto px-4 md:px-6">
                 
                 {/* Cabecera Premium */}
@@ -21,19 +21,17 @@ export default async function ProductosDestacados() {
 
                         {/* Título */}
                         <div>
-                            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-[var(--color-text-primary)] leading-tight">
-                                Lo mejor de GoPhone.
+                            <h2 className="text-lg md:text-xl font-semibold text-[var(--color-text-secondary)]">
+                                Los productos más destacados del momento
                             </h2>
-                            <p className="text-lg md:text-xl text-[var(--color-text-secondary)] mt-2 md:mt-3">
-                                Calidad que puedes sentir.
-                            </p>
+                         
                         </div>
                     </div>
 
                     {/* Link "Ver todo" - Desktop */}
                     <Link 
                         href="/productos" 
-                        className="hidden md:flex items-center gap-2 text-[var(--color-action-primary)] hover:text-[var(--color-action-primary-hover)] font-semibold transition-colors group"
+                        className="hidden md:flex items-center gap-2 text-[var(--color-action-tertiary)] hover:text-[var(--color-action-tertiary-hover)] font-semibold transition-colors group text-sm"
                     >
                         Ver todos 
                         <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />

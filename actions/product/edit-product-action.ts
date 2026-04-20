@@ -20,6 +20,9 @@ type ActionStateType = {
 
 export async function EditProduct(id: string, prevState: ActionStateType, formData: FormData) {
 
+    const complementariosIds = formData.getAll('complementarios') as string[];
+
+
     // parsear los atributos del formulario
     const atributosString = formData.get("atributos") as string;
     let atributos: Record<string, string> = {};
@@ -34,7 +37,7 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
             }
         }
     }
-    
+
 
     // parsear las especificaciones del formulario
     const especificacionesString = formData.get('especificaciones') as string;
@@ -76,9 +79,7 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         };
     });
 
-    console.log("cleanedVariants", cleanedVariants)
-
-    
+    // complementarios    
 
     const productData = {
         nombre: formData.get("nombre"),
@@ -101,9 +102,10 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         variants: cleanedVariants,
         isFrontPage: formData.get('isFrontPage') === 'true',
         line: formData.get('line') || undefined,
+        complementarios: complementariosIds.length > 0 ? complementariosIds : undefined
     }
 
-    console.log("productData", productData)
+    console.log("Complementarios antes de parsear: ", productData.complementarios)
 
     const product = updateProductSchema.safeParse(productData);
     if (!product.success) {
@@ -112,7 +114,7 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
             success: ""
         }
     }
-    
+
     const token = await getToken();
     const url = `${process.env.API_URL}/products/${id}`;
     const req = await fetch(url, {

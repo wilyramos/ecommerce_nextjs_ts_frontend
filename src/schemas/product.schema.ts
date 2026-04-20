@@ -2,6 +2,7 @@ import { z } from "zod";
 
 /**
  * Helper para campos poblados (ID o Objeto)
+ * Se asegura de que acepte tanto el string del ID como el objeto con data básica.
  */
 const populatedField = z.union([
     z.string(),
@@ -9,6 +10,8 @@ const populatedField = z.union([
         _id: z.string(),
         nombre: z.string(),
         slug: z.string().optional(),
+        precio: z.number().optional(), // Añadido para mostrar en UI de complementos
+        imagenes: z.array(z.string()).optional(), // Añadido para previsualización
     }).passthrough()
 ]);
 
@@ -40,7 +43,6 @@ export const productSchema = z.object({
     costo: z.number().min(0).default(0),
     imagenes: z.array(z.string()).default([]),
     
-    // Relaciones Pobladas
     categoria: populatedField,
     brand: populatedField.optional().nullable(),
     line: populatedField.optional().nullable(),
@@ -56,15 +58,16 @@ export const productSchema = z.object({
     especificaciones: z.array(specificationSchema).default([]),
     variants: z.array(variantSchema).default([]),
     
+    // ACTUALIZADO: Soporta array de IDs o array de Objetos poblados
+    complementarios: z.array(populatedField).default([]),
+    
     createdAt: z.coerce.date().optional(),
     updatedAt: z.coerce.date().optional(),
 });
 
-// Tipos inferidos
 export type Product = z.infer<typeof productSchema>;
 export type ProductVariant = z.infer<typeof variantSchema>;
 
-// Respuesta paginada del backend
 export interface PaginatedProducts {
     success: boolean;
     products: Product[];
@@ -72,3 +75,5 @@ export interface PaginatedProducts {
     totalPages: number;
     currentPage: number;
 }
+
+export const productListSchema = z.array(productSchema);

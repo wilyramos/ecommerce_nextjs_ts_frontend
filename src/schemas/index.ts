@@ -237,6 +237,7 @@ export const productBaseSchema = z.object({
     variants: z.array(variantSchema).optional(),
     isFrontPage: z.boolean().optional().default(false),
     line: z.string().optional(),
+    complementarios: z.array(z.string()).optional().default([]),
 });
 
 // ---------- Create & Update ----------
@@ -251,18 +252,33 @@ export const ApiVariantSchema = variantSchema.extend({
     _id: z.string(),
 });
 
+// Esquema para la versión minimalista del producto dentro de complementarios
+export const ComplementaryProductSchema = z.object({
+    _id: z.string(),
+    nombre: z.string(),
+    precio: z.number(),
+    slug: z.string(),
+    imagenes: z.array(z.string()).optional(),
+});
+
+export type TComplementaryProduct = z.infer<typeof ComplementaryProductSchema>;
+
 export const ApiProductSchema = productBaseSchema
     .omit({ slug: true, brand: true, line: true }) // Omitimos para redefinir con poblados
     .extend({
         _id: z.string(),
         slug: z.string(),
-        categoria: z.union([z.string(), apiCategorySchema]),
+        categoria: z.union([z.string(), apiCategorySchema]).optional().nullable(),
         brand: ApiBrandSchema.optional(),
         line: z.object({
             _id: z.string().optional(),
             nombre: z.string(),
             slug: z.string(),
         }).optional(),
+        complementarios: z.union([
+            z.array(z.string()), 
+            z.array(ComplementaryProductSchema)
+        ]).optional().default([]),
         variants: z.array(ApiVariantSchema).optional(),
         createdAt: z.string().datetime().optional(),
         updatedAt: z.string().datetime().optional(),
@@ -280,6 +296,11 @@ export type TCreateProduct = z.infer<typeof createProductSchema>;
 export type TUpdateProduct = z.infer<typeof updateProductSchema>;
 export type TApiProduct = z.infer<typeof ApiProductSchema>;
 export type TApiProducts = z.infer<typeof ApiProductsSchema>;
+export const ApiProductFullSchema = ApiProductSchema.extend({
+    categoria: apiCategorySchema, // Forzamos a que no sea string ni opcional
+});
+
+export type TApiProductFull = z.infer<typeof ApiProductFullSchema>;
 
 // ---------- Listas y Respuestas ----------
 export const ProductListSchema = ApiProductSchema.pick({

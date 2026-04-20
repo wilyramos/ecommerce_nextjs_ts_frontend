@@ -76,17 +76,18 @@ export default async function ProductPageServer({ producto }: Props) {
                     <div className="w-full">
                         <ProductDetails producto={producto} />
                     </div>
+
                 </div>
             </section>
 
             {/* Productos Relacionados (Por Línea/Marca) */}
-            <section className="container mx-auto px-4 md:px-6 py-12 border-t border-[var(--store-border)]">
+            <section className="container mx-auto px-4 md:px-6 py-4 border-t border-[var(--store-border)]">
                 
                 <ProductosRelated slug={producto.slug} />
             </section>
 
             {/* Vistos Recientemente (Client Component) */}
-            <section className="container mx-auto px-4 md:px-6 border-t border-[var(--color-border-subtle)]">
+            <section className="container mx-auto px-4 md:px-6 py-4 border-t border-[var(--color-border-subtle)]">
                 <RecentViewed currentProduct={producto} />
             </section>
         </>

@@ -2,7 +2,7 @@ import "server-only";
 
 
 import getToken from "../auth/token";
-import { apiProductListSchema, productsResponseAllSchema, ApiProductsSchema } from "@/src/schemas";
+import { apiProductListSchema, productsResponseAllSchema, ApiProductsSchema, ApiProductFullSchema } from "@/src/schemas";
 
 // new
 
@@ -43,7 +43,7 @@ export const GetProductsBySlug = async (slug: string) => {
 
     const json = await req.json();
     // console.log("Producto obtenido por slug:", json);
-    const product = ApiProductWithCategorySchema.parse(json);
+    const product = ApiProductFullSchema.parse(json);
     return product;
 };
 

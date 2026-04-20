@@ -17,8 +17,6 @@ type Params = Promise<{
 export default async function ProductDetailsPage({ params }: { params: Params }) {
     const { id } = await params;
 
-    // 2. Optimización: Usamos Promise.all para cargar todo en paralelo
-    // Esto reduce el tiempo de carga significativamente vs hacer await uno por uno.
     const [product, categorias, brands, lines] = await Promise.all([
         getProduct(id),
         getCategories(),

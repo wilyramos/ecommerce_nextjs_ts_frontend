@@ -10,7 +10,7 @@ import { routes } from "@/lib/routes";
 
 const AbsoluteHeaderWrapper = (p: ButtonGroupProps) => (
     <div className="absolute inset-x-0 top-0 z-20 px-4 md:px-8 flex items-center justify-between">
-        <HeaderConControles {...p} title="Categorías." subtitle="Encuentra lo que buscas" />
+        <HeaderConControles {...p} title="Categorías Destacadas" />
        
     </div>
 );

@@ -16,7 +16,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
     return (
         <Link
             href={`/productos/${product.slug}`}
-            className="group flex flex-col h-full transition-all duration-300"
+            className="group flex flex-col h-full transition-all duration-300  px-2"
         >
             {/* Contenedor Imagen - Premium */}
             <div

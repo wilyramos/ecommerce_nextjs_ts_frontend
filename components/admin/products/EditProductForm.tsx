@@ -10,8 +10,7 @@ import ProductForm from "./ProductForm";
 // Tipos
 import type { ProductWithCategoryResponse, CategoryListResponse } from "@/src/schemas";
 import type { TBrand } from "@/src/schemas/brands";
-import type { ProductLine } from "@/src/schemas/line.schema"; // Importamos el tipo
-
+import type { ProductLine } from "@/src/schemas/line.schema"; 
 interface EditProductFormProps {
     product: ProductWithCategoryResponse;
     categorias: CategoryListResponse;
@@ -68,7 +67,6 @@ export default function EditProductForm({ product, categorias, brands, lines }: 
                 brands={brands}
                 lines={lines} // Pasamos las líneas al formulario genérico
             />
-
             <div className="p-4">
                 <input
                     type="submit"

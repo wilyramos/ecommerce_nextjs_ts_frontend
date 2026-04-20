@@ -5,22 +5,14 @@ import HeaderConControles from "./HeaderConControles";
 
 interface Props extends ButtonGroupProps {
     title: string;
-    subtitle?: string;
 }
 
-export default function HeaderConTituloConControles({ title, subtitle, next, previous }: Props) {
+export default function HeaderConTituloConControles({ title, next, previous }: Props) {
     return (
-        <div className="flex items-end justify-between mb-8 md:mb-10">
-            <div className="space-y-1">
-                {subtitle && (
-                    <p className="text-[var(--color-accent-warm)] text-xs font-bold uppercase tracking-[0.2em]">
-                        {subtitle}
-                    </p>
-                )}
-                <h2 className="text-2xl md:text-4xl font-black tracking-tighter text-[var(--color-text-primary)]">
-                    {title}
-                </h2>
-            </div>
+        <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl tracking-tighter text-[var(--color-text-secondary)] whitespace-nowrap font-semibold">
+                {title}
+            </h2>
 
             <HeaderConControles next={next} previous={previous} />
         </div>

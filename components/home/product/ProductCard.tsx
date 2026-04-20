@@ -132,7 +132,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
             <Link href={`/productos/${product.slug}`} className="flex flex-col h-full">
 
                 {/* --- IMAGEN --- */}
-                <div className="relative w-full aspect-square bg-[var(--color-bg-tertiary)] overflow-hidden ">
+                <div className="relative w-full aspect-square bg-[var(--color-bg-primary)] overflow-hidden ">
                     {previewImages.length > 0 ? (
                         <div className="relative w-full h-full  overflow-hidden">
                             <div
@@ -146,7 +146,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                                             alt={`${product.nombre} - vista ${idx + 1}`}
                                             fill
                                             sizes="(max-width: 900px) 80w, 50vw"
-                                            className="object-cover mix-blend-multiply"
+                                            className="object-contain mix-blend-multiply"
                                             quality={80}
                                             unoptimized
                                         />
@@ -179,8 +179,8 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
 
                     {/* Badge Nuevo */}
                     {product.esNuevo && (
-                        <div className="absolute top-3 left-3 pointer-events-none z-10">
-                            <span className="px-2 py-1 bg-[var(--color-bg-secondary)] text-[var(--color-text-primary)] text-[10px] font-bold uppercase tracking-wider">
+                        <div className="absolute top-2 left-2 pointer-events-none z-10">
+                            <span className="p-1 bg-[var(--color-bg-secondary)] text-[var(--color-text-primary)] text-[10px] font-bold uppercase tracking-wider">
                                 Nuevo
                             </span>
                         </div>
@@ -188,7 +188,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                 </div>
 
                 {/* --- INFO --- */}
-                <div className="flex flex-col flex-1 p-3 md:p-4">
+                <div className="flex flex-col flex-1 p-3 md:p-4 bg-[var(--color-bg-secondary)]">
                     <div className="flex flex-col gap-1 h-[4.5rem] md:h-[5rem]">
 
                         <div className="h-5 shrink-0 flex justify-between items-center mb-1">

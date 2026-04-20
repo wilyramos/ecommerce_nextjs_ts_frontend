@@ -135,23 +135,23 @@ export default function ProductDetails({ producto }: Props) {
                 </div>
 
                 <section className='md:col-span-5'>
-                    <div className="space-y-0 p-4">
-                        <header className="pt-1 border-b border-[var(--color-border-default)] pb-4 space-y-1">
+                    <div className="space-y-0">
+                        <header className="pt-1 border-b border-[var(--color-border-default)] pb-2 md:pb-4 space-y-1">
                             <div className="flex items-start justify-between w-full">
                                 <div className="flex items-center gap-1.5 flex-wrap">
                                     {producto.brand && (
-                                        <Link href={`/catalogo/${producto.brand.slug}`} className="text-xs font-semibold text-[var(--color-text-secondary)] uppercase hover:text-[var(--color-text-primary)] transition-colors">
+                                        <Link href={`/catalogo/${producto.brand.slug}`} className="text-xs font-semibold text-[var(--color-text-secondary)]  hover:text-[var(--color-text-primary)] transition-colors">
                                             {producto.brand.nombre}
                                         </Link>
                                     )}
                                     {producto.brand && producto.line && <span className="text-xs text-[var(--color-text-secondary)]">/</span>}
                                     {producto.line && (
-                                        <Link href={`/catalogo/${producto.line.slug}`} className="text-xs font-semibold text-[var(--color-text-secondary)] uppercase hover:text-[var(--color-text-primary)] transition-colors">
+                                        <Link href={`/catalogo/${producto.line.slug}`} className="text-xs font-semibold text-[var(--color-text-secondary)]  hover:text-[var(--color-text-primary)] transition-colors">
                                             {producto.line.nombre}
                                         </Link>
                                     )}
                                 </div>
-                                <div className="text-[8px] md:text-[12px] text-[var(--color-text-secondary)] uppercase flex flex-row items-end leading-tight gap-1 text-right">
+                                <div className="text-[8px] md:text-[12px] text-[var(--color-text-secondary)]  flex flex-row items-end leading-tight gap-1 text-right">
                                     {(selectedVariant?.sku || producto.sku) && <span>SKU: {selectedVariant?.sku || producto.sku}</span>}
                                     {(selectedVariant?.sku || producto.sku) && (selectedVariant?.barcode || producto.barcode) && <span>|</span>}
                                     {selectedVariant?.barcode || producto.barcode}
@@ -175,8 +175,8 @@ export default function ProductDetails({ producto }: Props) {
 
                             <div className="flex flex-col sm:flex-row sm:items-baseline gap-x-4 gap-y-1 w-full py-2">
                                 <div className="flex items-baseline text-[var(--color-text-primary)]">
-                                    <span className="text-sm md:text-base font-bold mr-1 self-baseline">S/</span>
-                                    <span className="text-3xl md:text-4xl font-bold tracking-tighter">
+                                    <span className="text-sm md:text-base font-semibold mr-1 self-baseline">S/</span>
+                                    <span className="text-3xl md:text-4xl font-semibold tracking-tighter">
                                         {precio.toFixed(2)}
                                     </span>
                                 </div>
@@ -187,15 +187,15 @@ export default function ProductDetails({ producto }: Props) {
                                             S/ {precioComparativo.toFixed(2)}
                                         </span>
 
-                                        <span className="inline-flex items-center px-2 py-0.5 text-[10px] md:text-xs font-bold uppercase tracking-tight text-[var(--color-action-primary)] bg-[var(--color-action-primary-light)]">
+                                        <span className="inline-flex items-center px-2 py-0.5 text-[10px] md:text-xs font-semibold  tracking-tight text-[var(--color-action-primary)] bg-[var(--color-action-primary-light)]">
                                             Ahorra {Math.round(((precioComparativo - precio) / precioComparativo) * 100)}%
                                         </span>
                                     </div>
                                 )}
                             </div>
-                            
+
                             {stock === 0 && (
-                                <div className="inline-flex items-center px-3 py-1.5 bg-[var(--color-error-light)] rounded text-[var(--color-error)] text-xs font-semibold mt-2 uppercase w-fit">
+                                <div className="inline-flex items-center px-3 py-1.5 bg-[var(--color-error-light)]  text-[var(--color-error)] text-xs font-semibold mt-2  w-fit">
                                     Agotado
                                 </div>
                             )}
@@ -208,7 +208,7 @@ export default function ProductDetails({ producto }: Props) {
 
                             return (
                                 <fieldset key={key} className="space-y-2 mt-4">
-                                    <legend className="text-sm font-bold text-[var(--color-text-secondary)] mb-3">Selección de {key}:</legend>
+                                    <legend className="text-sm font-semibold text-[var(--color-text-secondary)] mb-3">Selección de {key}:</legend>
 
                                     {isColor ? (
                                         <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
@@ -241,7 +241,7 @@ export default function ProductDetails({ producto }: Props) {
                                                                 </span>
                                                             )}
                                                         </div>
-                                                        <span className={cn("text-xs text-center truncate w-full", selected ? "font-bold" : "font-medium", outOfStock && "line-through text-[var(--color-text-tertiary)]")}>
+                                                        <span className={cn("text-xs text-center truncate w-full", selected ? "font-semibold" : "font-medium", outOfStock && "line-through text-[var(--color-text-tertiary)]")}>
                                                             {val}
                                                         </span>
                                                     </button>
@@ -288,7 +288,7 @@ export default function ProductDetails({ producto }: Props) {
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
                                                         className={cn(
-                                                            "h-10 px-4 rounded relative overflow-hidden transition-all border",
+                                                            "h-10 px-4 relative overflow-hidden transition-all border",
                                                             selected && "border-[var(--color-text-secondary)] border-2",
                                                             outOfStock && "opacity-50 text-[var(--color-text-tertiary)] bg-[var(--color-bg-secondary)] border-[var(--color-border-default)] cursor-not-allowed"
                                                         )}
@@ -326,32 +326,108 @@ export default function ProductDetails({ producto }: Props) {
                         </section>
                     </div>
 
-                    <div className="divide-y divide-[var(--color-border-default)] border rounded border-[var(--color-border-subtle)] mt-8">
-                        <div className="p-5 space-y-4">
-                            <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">Opciones de Envío:</h3>
-                            <div className="text-sm text-[var(--color-text-secondary)] space-y-2">
-                                <p className="flex items-center gap-2"><MapPin className="w-3.5 h-3.5" /> Cañete: <span className="text-[var(--color-action-primary)] font-medium">Gratis y Contraentrega</span></p>
-                                <p>Resto del Perú: Envíos mediante <span className="bg-red-600 text-white px-2 italic font-medium">SHALOM</span></p>
-                            </div>
-                            <div className="flex gap-2 bg-[var(--color-bg-secondary)] rounded p-3">
-                                <CalendarDays className="w-4 h-4 mt-0.5" />
-                                <div className="text-xs">
-                                    <span className="font-semibold block">Estimación de entrega</span>
-                                    {producto.diasEnvio ? getDeliveryRange(producto.diasEnvio) : "1–3 días hábiles"}
+                    <div className="mt-4 flex flex-col gap-2">
+                        <div className="space-y-4">
+                            {/* <h3 className="text-[10px] font-semibold  tracking-[0.2em] text-[var(--color-text-tertiary)] mb-2">
+                                Información de Envío
+                            </h3> */}
+
+                            <div className="flex flex-col gap-2 p-4 border text-[var(--color-text-secondary)]">
+                                {/* Envíos */}
+                                <div className="flex items-center gap-2 text-sm ">
+                                    <MapPin className="w-4 h-4" />
+                                    <span>Envíos a todo el Perú</span>
+                                </div>
+
+                                {/* Tiempo */}
+                                <div className="flex items-center gap-2 text-sm">
+                                    <CalendarDays className="w-4 h-4 " />
+                                    Entrega estimada
+                                    <span>
+                                        {producto.diasEnvio
+                                            ? getDeliveryRange(producto.diasEnvio)
+                                            : "1 a 3 días hábiles"}
+                                    </span>
                                 </div>
                             </div>
                         </div>
-                        <div className="p-5">
-                            <h3 className="text-sm font-semibold mb-3">Medios de pago:</h3>
+
+                        <div className="h-px bg-[var(--color-border-subtle)] w-full" />
+
+                        <div className="space-y-1">
+                            <h3 className="text-xs font-semibold  tracking-widest text-[var(--color-text-primary)] ">
+                                Medios de pago:
+                            </h3>
                             <PaymentMethods />
                         </div>
-                        <div className="p-4 flex justify-center">
-                            <a href={`https://wa.me/51925054636?text=Consulta%20${encodeURIComponent(producto.nombre)}`} target="_blank" rel="noreferrer" className="flex items-center gap-2 text-sm hover:text-[#25D366] transition-colors">
-                                <MessageCircle className="w-4 h-4" /> ¿Tienes dudas? <span className="underline underline-offset-4">WhatsApp</span>
+
+                        <div className="h-px bg-[var(--color-border-subtle)] w-full" />
+
+                        <div className="pt-2">
+                            <a
+                                href={`https://wa.me/51925054636?text=Consulta%20${encodeURIComponent(producto.nombre)}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex items-center gap-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-success)] transition-colors group"
+                            >
+                                <MessageCircle className="w-4 h-4 transition-transform group-hover:scale-110" />
+                                <span>
+                                    ¿Tienes dudas? <span className="font-medium underline underline-offset-4 decoration-[var(--color-border-default)] group-hover:decoration-[var(--color-success)] transition-colors">WhatsApp</span>
+                                </span>
                             </a>
                         </div>
                     </div>
+
+
+                    {/* Cards simples de los productos complementarios */}
+                    <section className="md:col-span-12 mt-6 border-t pt-4">
+                        {producto.complementarios && producto.complementarios.length > 0 && (
+                            <div className="space-y-6">
+                                <h3 className="text-sm font-semibold tracking-widest text-[var(--color-text-primary)]">
+                                    Completa tu compra
+                                </h3>
+
+                                {/* Contenedor Flex que se expande */}
+                                <div className="flex flex-wrap gap-4">
+                                    {producto.complementarios.map((comp) => {
+                                        const isPopulated = typeof comp !== 'string';
+                                        if (!isPopulated) return null;
+
+                                        return (
+                                            <Link
+                                                key={comp._id}
+                                                href={`/productos/${comp.slug}`}
+                                                className="group flex-1 min-w-[160px] max-w-[280px] flex flex-col gap-3 p-3 transition-all border border-[var(--color-border-subtle)]"
+                                            >
+                                                <div className="relative aspect-square overflow-hidden bg-white">
+                                                    <Image
+                                                        src={comp.imagenes?.[0] || "/logo.png"}
+                                                        alt={comp.nombre}
+                                                        fill
+                                                        className="object-contain p-2 transition-transform duration-500 group-hover:scale-105"
+                                                        unoptimized
+                                                    />
+                                                </div>
+
+                                                <div className="space-y-1">
+                                                    <h4 className="text-xs font-medium text-[var(--color-text-primary)] leading-tight line-clamp-2 uppercase">
+                                                        {comp.nombre}
+                                                    </h4>
+                                                    <p className="text-sm font-bold text-[var(--color-text-primary)]">
+                                                        S/ {comp.precio.toFixed(2)}
+                                                    </p>
+                                                </div>
+                                            </Link>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
+                    </section>
                 </section>
+
+                {/* Cards simples de los productos complementarios */}
+
             </article>
 
             <ProductExpandableSections producto={producto} />

@@ -1,4 +1,4 @@
-//File: frontend/components/ui/button.tsx
+// File: frontend/components/ui/button.tsx
 
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
@@ -7,32 +7,36 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-    "inline-flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer text-sm font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-[var(--color-action-primary)] focus-visible:ring-offset-2",
     {
         variants: {
             variant: {
                 default:
-                    "bg-[var(--color-bg-inverse)] text-[var(--color-text-inverse)] shadow-sm hover:bg-[var(--color-action-primary)] transition-colors",
+                    "bg-[var(--color-bg-inverse)] text-[var(--color-text-inverse)] shadow-sm hover:bg-[var(--color-text-primary)]",
+                primary:
+                    "bg-[var(--color-action-primary)] text-[var(--color-text-inverse)] shadow-sm hover:bg-[var(--color-action-primary-hover)]",
                 accent:
-                    "bg-[var(--color-accent-warm)] text-[var(--color-text-inverse)] shadow-sm hover:bg-[var(--color-accent-warm-hover)] transition-colors",
+                    "bg-[var(--color-accent-warm)] text-[var(--color-text-inverse)] shadow-sm hover:bg-[var(--color-accent-warm-hover)]",
                 secondary:
-                    "bg-[var(--color-bg-tertiary)] text-[var(--color-text-primary)] border border-[var(--color-border-default)] shadow-sm hover:bg-[var(--color-surface-hover)] transition-colors",
+                    "bg-[var(--color-bg-tertiary)] text-[var(--color-text-primary)] border border-[var(--color-border-default)] shadow-sm hover:bg-[var(--color-surface-hover)] hover:border-[var(--color-border-strong)]",
+                outline:
+                    "bg-transparent text-[var(--color-text-primary)] border border-[var(--color-border-default)] hover:bg-[var(--color-bg-secondary)] hover:border-[var(--color-border-strong)]",
                 ghost:
-                    "text-[var(--color-text-primary)] hover:bg-[var(--color-surface-hover)] transition-colors",
+                    "text-[var(--color-text-primary)] hover:bg-[var(--color-surface-hover)] active:bg-[var(--color-surface-active)]",
                 link:
-                    "text-[var(--color-accent-warm)] underline-offset-4 hover:text-[var(--color-accent-warm-hover)] hover:underline",
+                    "text-[var(--color-action-primary)] underline-offset-4 hover:underline",
                 success:
-                    "bg-[var(--color-success)] text-[var(--color-text-inverse)] shadow-sm hover:opacity-90 transition-opacity",
+                    "bg-[var(--color-success)] text-[var(--color-text-inverse)] shadow-sm hover:opacity-90",
                 warning:
-                    "bg-[var(--color-warning)] text-[var(--color-text-inverse)] shadow-sm hover:opacity-90 transition-opacity",
+                    "bg-[var(--color-warning)] text-[var(--color-text-inverse)] shadow-sm hover:opacity-90",
                 destructive:
-                    "bg-[var(--color-error)] text-[var(--color-text-inverse)] shadow-sm hover:opacity-90 transition-opacity",
+                    "bg-[var(--color-error)] text-[var(--color-text-inverse)] shadow-sm hover:opacity-90",
             },
             size: {
-                default: "h-9 px-4 py-2 has-[>svg]:px-3",
-                sm: "h-8  gap-1.5 px-3 has-[>svg]:px-2.5",
-                lg: "h-10  px-6 has-[>svg]:px-4",
-                icon: "size-9",
+                default: "h-10 px-4 py-2",
+                sm: "h-8 gap-1.5 px-3 text-xs",
+                lg: "h-12 px-8 text-base",
+                icon: "size-10 ",
             },
         },
         defaultVariants: {

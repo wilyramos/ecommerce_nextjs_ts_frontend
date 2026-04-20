@@ -20,6 +20,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { X, ImageIcon } from "lucide-react";
+import ComplementaryProductsSection from "./ComplementaryProductsSection";
 
 export default function ProductForm({
     product,
@@ -42,7 +43,7 @@ export default function ProductForm({
 
     // 2. ESTADO MAESTRO DE IMÁGENES (Pool Global)
     // Usamos un Set en la inicialización para asegurar que no haya duplicados desde el inicio
-    const [masterImages, setMasterImages] = useState<string[]>(() => 
+    const [masterImages, setMasterImages] = useState<string[]>(() =>
         Array.from(new Set(product?.imagenes || []))
     );
 
@@ -222,11 +223,11 @@ export default function ProductForm({
                             label="Línea"
                             tooltip="Línea o familia de productos (Depende de la marca seleccionada)."
                         />
-                      
-                        <Select 
-                            key={selectedBrandId} 
-                            name="line" 
-                            defaultValue={initialLineId} 
+
+                        <Select
+                            key={selectedBrandId}
+                            name="line"
+                            defaultValue={initialLineId}
                         >
                             <SelectTrigger disabled={!selectedBrandId || filteredLines.length === 0}>
                                 <SelectValue placeholder={
@@ -256,27 +257,25 @@ export default function ProductForm({
                     onCategoryChange={setSelectedCategoryId}
                 />
 
-                {/* Imágenes */}
-             
-
                 {/* Especificaciones */}
                 <SpecificationsSection
                     initial={product?.especificaciones}
                 />
 
-                 {/* ========================================================== */}
-                {/* SECCIÓN MULTIMEDIA (POOL GLOBAL) - ESTILO SHOPIFY          */}
-                {/* ========================================================== */}
+                <ComplementaryProductsSection
+                    initialItems={product?.complementarios || []}
+                />
+                {/* Galería Multimedia */}
                 <div className="p-4 border rounded-xl bg-card space-y-4 shadow-sm">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                             <ImageIcon className="w-4 h-4 text-primary" />
                             <Label className="text-sm font-bold">Galería Multimedia del Producto</Label>
                         </div>
-                        <MediaLibraryDialog 
+                        <MediaLibraryDialog
                             selectedImages={masterImages}
                             globalImagesPool={masterImages}
-                            onConfirmSelection={setMasterImages} 
+                            onConfirmSelection={setMasterImages}
                             onUploadSuccess={handleAddImagesToPool}
                             triggerLabel="Añadir Imágenes"
                         />
@@ -286,12 +285,12 @@ export default function ProductForm({
                     <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-3 min-h-[100px] border-2 border-dashed rounded-lg p-3">
                         {masterImages.map((img) => (
                             <div key={`master-${img}`} className="relative aspect-square border rounded-md overflow-hidden group shadow-sm bg-white">
-                                <Image 
-                                    src={img} 
-                                    alt="Product Pool" 
-                                    fill 
-                                    className="object-cover" 
-                                    unoptimized 
+                                <Image
+                                    src={img}
+                                    alt="Product Pool"
+                                    fill
+                                    className="object-cover"
+                                    unoptimized
                                 />
                                 <button
                                     type="button"
@@ -317,10 +316,10 @@ export default function ProductForm({
                 <SpecificationsSection initial={product?.especificaciones} />
 
                 {/* Variantes del Producto */}
-                <ProductVariantsForm 
+                <ProductVariantsForm
                     product={product}
                     categoryAttributes={dynamicCategoryAttributes}
-                    globalImagesPool={masterImages} 
+                    globalImagesPool={masterImages}
                     onUploadToPool={handleAddImagesToPool}
                 />
             </div>

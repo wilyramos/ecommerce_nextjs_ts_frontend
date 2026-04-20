@@ -21,17 +21,15 @@ export default function RecentViewed({ currentProduct }: { currentProduct: Produ
     if (displayProducts.length === 0) return null;
 
     return (
-        <section className="py-12 bg-[var(--color-bg-primary)]">
+        <section className=" bg-[var(--color-bg-primary)]">
             <header className="mb-8 px-2">
-                <div className="flex items-center gap-3 mb-2">
-                    <div className="h-6 w-1 bg-[var(--color-action-primary)] rounded-full" />
-                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--color-text-secondary)]">
-                        Tu historial de búsqueda
-                    </h3>
-                </div>
-                <p className="text-[18px] font-black tracking-tighter text-[var(--color-text-primary)] uppercase">
+                
+                <p className="text-[18px] font-bold tracking-tighter text-[var(--color-text-primary)] ">
                     Vistos recientemente
                 </p>
+                <div>
+                <div className="border-b border-2 border-black w-14 md:w-20 mb-4"></div>
+            </div>
             </header>
 
             {/* Premium Grid using ProductCard */}
