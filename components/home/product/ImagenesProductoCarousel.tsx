@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, ImageOff, ZoomIn, ZoomOut } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronUp, ChevronDown, ImageOff, ZoomIn, ZoomOut } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function ImagenesProductoCarousel({ images }: { images: string[] }) {
@@ -11,6 +11,8 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
     }, [images]);
 
     const [selectedIndex, setSelectedIndex] = useState(0);
+    const [canScrollUp, setCanScrollUp] = useState(false);
+    const [canScrollDown, setCanScrollDown] = useState(false);
 
     useEffect(() => {
         if (selectedIndex >= uniqueImages.length) {
@@ -25,15 +27,28 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
     const touchStartX = useRef<number | null>(null);
     const touchEndX = useRef<number | null>(null);
 
+    const updateScrollButtons = () => {
+        const el = thumbnailsRef.current;
+        if (!el) return;
+        setCanScrollUp(el.scrollTop > 0);
+        setCanScrollDown(el.scrollTop + el.clientHeight < el.scrollHeight - 1);
+    };
+
+    useEffect(() => {
+        const el = thumbnailsRef.current;
+        if (!el) return;
+        updateScrollButtons();
+        el.addEventListener("scroll", updateScrollButtons);
+        return () => el.removeEventListener("scroll", updateScrollButtons);
+    }, [uniqueImages]);
+
     useEffect(() => {
         if (thumbnailsRef.current) {
             const container = thumbnailsRef.current;
             const selectedThumb = container.children[selectedIndex] as HTMLElement;
-
             if (selectedThumb) {
                 const containerCenter = container.offsetHeight / 2;
                 const thumbCenter = selectedThumb.offsetTop + (selectedThumb.offsetHeight / 2);
-
                 container.scrollTo({
                     top: thumbCenter - containerCenter,
                     behavior: "smooth"
@@ -41,6 +56,12 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
             }
         }
     }, [selectedIndex]);
+
+    const scrollThumbs = (direction: "up" | "down") => {
+        const el = thumbnailsRef.current;
+        if (!el) return;
+        el.scrollBy({ top: direction === "up" ? -120 : 120, behavior: "smooth" });
+    };
 
     const nextImage = () => {
         setSelectedIndex((prev) => (prev + 1) % uniqueImages.length);
@@ -72,15 +93,12 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
 
     const handleTouchEnd = () => {
         if (!touchStartX.current || !touchEndX.current) return;
-
         const distance = touchStartX.current - touchEndX.current;
         const isSignificantSwipe = Math.abs(distance) > 50;
-
         if (isSignificantSwipe) {
             if (distance > 0) nextImage();
             else prevImage();
         }
-
         touchStartX.current = null;
         touchEndX.current = null;
     };
@@ -101,34 +119,60 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
 
             {/* DESKTOP THUMBNAILS */}
             {uniqueImages.length > 1 && (
-                <div className="hidden md:block w-30 shrink-0">
+                <div className="hidden md:flex flex-col items-center w-[100px] shrink-0 gap-1">
+
+                    {/* Botón scroll arriba */}
+                    <button
+                        onClick={() => scrollThumbs("up")}
+                        className={cn(
+                            "w-full flex items-center justify-center py-0.5  transition-all duration-200 bg-[var(--color-bg-primary)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)]",
+                            !canScrollUp && "opacity-0 pointer-events-none"
+                        )}
+                        aria-label="Desplazar miniaturas hacia arriba"
+                    >
+                        <ChevronUp size={14} strokeWidth={1.5} />
+                    </button>
+
+                    {/* Lista de miniaturas */}
                     <div
                         ref={thumbnailsRef}
-                        className="sticky top-24 max-h-[650px] overflow-y-auto no-scrollbar py-2 px-1 md:space-y-2"
+                        className="w-full flex flex-col gap-2 overflow-y-auto max-h-[600px] py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                     >
                         {uniqueImages.map((img, idx) => (
                             <button
                                 key={`${img}-${idx}`}
                                 onClick={() => setSelectedIndex(idx)}
-                                className={`
-                                    relative aspect-square w-full overflow-hidden border-r-[3px] transition-all duration-500
-                                    ${selectedIndex === idx
-                                        ? "border-[var(--color-action-primary)]"
-                                        : "border-[var(--color-border-default)] hover:border-[var(--color-text-secondary)]"}
-                                `}
+                                className={cn(
+                                    "relative aspect-square w-full shrink-0 overflow-hidden border-r-[3px] transition-all duration-500",
+                                    selectedIndex === idx
+                                        ? "border-[var(--color-accent-warm)]"
+                                        : "border-[var(--color-border-default)] hover:border-[var(--color-text-secondary)]"
+                                )}
                             >
                                 <Image
                                     src={img}
                                     alt={`Miniatura ${idx + 1}`}
                                     fill
                                     className="object-contain"
-                                    sizes="100px"
+                                    sizes="72px"
                                     quality={20}
                                     unoptimized
                                 />
                             </button>
                         ))}
                     </div>
+
+                    {/* Botón scroll abajo */}
+                    <button
+                        onClick={() => scrollThumbs("down")}
+                        className={cn(
+                            "w-full flex items-center justify-center py-0.5  transition-all duration-200 bg-[var(--color-bg-primary)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)]",
+                            !canScrollDown && "opacity-0 pointer-events-none"
+                        )}
+                        aria-label="Desplazar miniaturas hacia abajo"
+                    >
+                        <ChevronDown size={14} strokeWidth={1.5} />
+                    </button>
                 </div>
             )}
 

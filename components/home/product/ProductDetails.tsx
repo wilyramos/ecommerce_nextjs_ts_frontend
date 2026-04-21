@@ -12,7 +12,7 @@ import PaymentMethods from '../PaymentMethods';
 import ColorCircle from '@/components/ui/ColorCircle';
 import Link from 'next/link';
 import Image from 'next/image';
-import { CalendarDays, MapPin, MessageCircle } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 import {
     Select,
     SelectTrigger,
@@ -326,24 +326,22 @@ export default function ProductDetails({ producto }: Props) {
                         </section>
                     </div>
 
-                    <div className="mt-4 flex flex-col gap-2">
-                        <div className="space-y-4">
+                    <div className="mt-4 flex flex-col gap-2 space-y-4">
+                        <div className="space-y-2">
                             {/* <h3 className="text-[10px] font-semibold  tracking-[0.2em] text-[var(--color-text-tertiary)] mb-2">
                                 Información de Envío
                             </h3> */}
 
-                            <div className="flex flex-col gap-2 p-4 border text-[var(--color-text-secondary)]">
+                            <div className="flex flex-col text-[var(--color-text-secondary)]">
                                 {/* Envíos */}
                                 <div className="flex items-center gap-2 text-sm ">
-                                    <MapPin className="w-4 h-4" />
                                     <span>Envíos a todo el Perú</span>
                                 </div>
 
                                 {/* Tiempo */}
-                                <div className="flex items-center gap-2 text-sm">
-                                    <CalendarDays className="w-4 h-4 " />
-                                    Entrega estimada
-                                    <span>
+                                <div className="flex items-center gap-2 text-sm text-[var(--color-text-primary)]">
+                                    <p className='font-bold text-xs'>Entrega estimada:</p>
+                                    <span className='text-[var(--color-text-secondary)] font-medium'>
                                         {producto.diasEnvio
                                             ? getDeliveryRange(producto.diasEnvio)
                                             : "1 a 3 días hábiles"}
@@ -352,18 +350,17 @@ export default function ProductDetails({ producto }: Props) {
                             </div>
                         </div>
 
-                        <div className="h-px bg-[var(--color-border-subtle)] w-full" />
 
-                        <div className="space-y-1">
-                            <h3 className="text-xs font-semibold  tracking-widest text-[var(--color-text-primary)] ">
+                        <div className="space-y-1 ">
+                            <p className="text-xs font-bold  text-[var(--color-text-primary)] ">
                                 Medios de pago:
-                            </h3>
+                            </p>
                             <PaymentMethods />
                         </div>
 
                         <div className="h-px bg-[var(--color-border-subtle)] w-full" />
 
-                        <div className="pt-2">
+                        <div className="">
                             <a
                                 href={`https://wa.me/51925054636?text=Consulta%20${encodeURIComponent(producto.nombre)}`}
                                 target="_blank"
@@ -380,15 +377,15 @@ export default function ProductDetails({ producto }: Props) {
 
 
                     {/* Cards simples de los productos complementarios */}
-                    <section className="md:col-span-12 mt-6 border-t pt-4">
+                    <section className="md:col-span-12 mt-6 pt-4">
                         {producto.complementarios && producto.complementarios.length > 0 && (
-                            <div className="space-y-6">
-                                <h3 className="text-sm font-semibold tracking-widest text-[var(--color-text-primary)]">
-                                    Completa tu compra
+                            <div className="space-y-2 border-t">
+                                <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">
+                                    Completa tu compra:
                                 </h3>
 
                                 {/* Contenedor Flex que se expande */}
-                                <div className="flex flex-wrap gap-4">
+                                <div className="flex flex-wrap gap-1">
                                     {producto.complementarios.map((comp) => {
                                         const isPopulated = typeof comp !== 'string';
                                         if (!isPopulated) return null;
@@ -397,7 +394,7 @@ export default function ProductDetails({ producto }: Props) {
                                             <Link
                                                 key={comp._id}
                                                 href={`/productos/${comp.slug}`}
-                                                className="group flex-1 min-w-[160px] max-w-[280px] flex flex-col gap-3 p-3 transition-all border border-[var(--color-border-subtle)]"
+                                                className="group flex-1 min-w-[160px] max-w-[280px] flex flex-col gap-3 p-3 transition-all border border-[var(--color-border-subtle)] rounded hover:shadow-lg"
                                             >
                                                 <div className="relative aspect-square overflow-hidden bg-white">
                                                     <Image

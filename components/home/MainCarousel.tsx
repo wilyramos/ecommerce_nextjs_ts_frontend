@@ -52,7 +52,7 @@ export default function MainCarousel({
                                     </span>
 
                                     {/* Tamaños de texto ajustados a la nueva proporción */}
-                                    <h2 className="max-w-md text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-[var(--color-text-primary)] leading-[1.1] tracking-tight line-clamp-2 transition-colors group-hover:text-[var(--color-text-secondary)]">
+                                    <h2 className="max-w-md text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-[var(--color-text-primary)] leading-[1.1] tracking-tight line-clamp-2 transition-colors group-hover:text-[var(--color-text-secondary)]">
                                         {product.nombre}
                                     </h2>
 

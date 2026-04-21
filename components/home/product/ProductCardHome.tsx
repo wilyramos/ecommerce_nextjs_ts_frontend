@@ -46,7 +46,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
 
             {/* Info */}
             <div className="mt-3 space-y-1">
-                <h3 className="text-sm line-clamp-2 group-hover:text-[var(--color-text-secondary)] transition-colors">
+                <h3 className="text-xs md:text-sm line-clamp-2 group-hover:text-[var(--color-text-secondary)] transition-colors">
                     {product.nombre}
                 </h3>
 

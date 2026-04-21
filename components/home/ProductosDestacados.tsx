@@ -45,9 +45,9 @@ export default async function ProductosDestacados() {
                         grid-cols-2
                         md:grid-cols-3
                         lg:grid-cols-4
-                        gap-3
-                        md:gap-6
-                        lg:gap-8
+                        gap-2
+                        md:gap-4
+                        lg:gap-6
                     "
                 >
                     {productos.slice(0, 8).map((product, idx) => (
