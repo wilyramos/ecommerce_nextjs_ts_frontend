@@ -176,7 +176,7 @@ export default function ProductDetails({ producto }: Props) {
                             <div className="flex flex-col sm:flex-row sm:items-baseline gap-x-4 gap-y-1 w-full py-2">
                                 <div className="flex items-baseline text-[var(--color-text-primary)]">
                                     <span className="text-sm md:text-base font-semibold mr-1 self-baseline">S/</span>
-                                    <span className="text-3xl md:text-4xl font-semibold tracking-tighter">
+                                    <span className="text-xl md:text-2xl font-semibold tracking-tighter">
                                         {precio.toFixed(2)}
                                     </span>
                                 </div>
@@ -195,7 +195,7 @@ export default function ProductDetails({ producto }: Props) {
                             </div>
 
                             {stock === 0 && (
-                                <div className="inline-flex items-center px-3 py-1.5 bg-[var(--color-error-light)]  text-[var(--color-error)] text-xs font-semibold mt-2  w-fit">
+                                <div className="inline-flex items-center px-3 bg-[var(--color-error-light)]  text-[var(--color-error)] text-xs font-semibold mt-2  w-fit">
                                     Agotado
                                 </div>
                             )}

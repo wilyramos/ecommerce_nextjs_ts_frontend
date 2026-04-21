@@ -118,14 +118,15 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
         <div className="w-full flex flex-col md:flex-row gap-4 lg:gap-6 bg-[var(--color-bg-primary)] select-none rounded-lg sticky top-24">
 
             {/* DESKTOP THUMBNAILS */}
+
             {uniqueImages.length > 1 && (
-                <div className="hidden md:flex flex-col items-center w-[100px] shrink-0 gap-1">
+                <div className="hidden md:flex flex-col items-center w-[120px] shrink-0 gap-1">
 
                     {/* Botón scroll arriba */}
                     <button
                         onClick={() => scrollThumbs("up")}
                         className={cn(
-                            "w-full flex items-center justify-center py-0.5  transition-all duration-200 bg-[var(--color-bg-primary)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)]",
+                            "w-full flex items-center justify-center py-0.5 transition-all duration-200 bg-[var(--color-bg-primary)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)]",
                             !canScrollUp && "opacity-0 pointer-events-none"
                         )}
                         aria-label="Desplazar miniaturas hacia arriba"
@@ -143,10 +144,10 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                                 key={`${img}-${idx}`}
                                 onClick={() => setSelectedIndex(idx)}
                                 className={cn(
-                                    "relative aspect-square w-full shrink-0 overflow-hidden border-r-[3px] transition-all duration-500",
+                                    "relative aspect-square w-full shrink-0 overflow-hidden border-r-[3px] transition-all duration-300 ease-in-out",
                                     selectedIndex === idx
-                                        ? "border-[var(--color-accent-warm)]"
-                                        : "border-[var(--color-border-default)] hover:border-[var(--color-text-secondary)]"
+                                        ? "border-[var(--color-accent-warm)] opacity-100"
+                                        : "border-[var(--color-border-default)] opacity-50 hover:opacity-100 hover:border-[var(--color-text-secondary)]"
                                 )}
                             >
                                 <Image
@@ -166,7 +167,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                     <button
                         onClick={() => scrollThumbs("down")}
                         className={cn(
-                            "w-full flex items-center justify-center py-0.5  transition-all duration-200 bg-[var(--color-bg-primary)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)]",
+                            "w-full flex items-center justify-center py-0.5 transition-all duration-200 bg-[var(--color-bg-primary)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)]",
                             !canScrollDown && "opacity-0 pointer-events-none"
                         )}
                         aria-label="Desplazar miniaturas hacia abajo"
@@ -214,14 +215,14 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                         <>
                             <button
                                 onClick={(e) => { e.stopPropagation(); prevImage(); }}
-                                className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 p-2 md:p-3 rounded-full bg-[var(--color-bg-primary)]/70 md:bg-[var(--color-bg-primary)]/50 backdrop-blur-md text-[var(--color-text-primary)] shadow-sm border border-[var(--color-border-default)] opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-[var(--color-bg-primary)] active:scale-90 z-10"
+                                className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-[var(--color-bg-primary)]/70 md:bg-[var(--color-bg-primary)]/50 backdrop-blur-xs text-[var(--color-text-primary)]  opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-[var(--color-bg-primary)] active:scale-90 z-10"
                                 aria-label="Anterior"
                             >
                                 <ChevronLeft size={20} strokeWidth={1.5} />
                             </button>
                             <button
                                 onClick={(e) => { e.stopPropagation(); nextImage(); }}
-                                className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 p-2 md:p-3 rounded-full bg-[var(--color-bg-primary)]/70 md:bg-[var(--color-bg-primary)]/50 backdrop-blur-md text-[var(--color-text-primary)] shadow-sm border border-[var(--color-border-default)] opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-[var(--color-bg-primary)] active:scale-90 z-10"
+                                className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-[var(--color-bg-primary)]/70 md:bg-[var(--color-bg-primary)]/50 backdrop-blur-xs text-[var(--color-text-primary)] opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-[var(--color-bg-primary)] active:scale-90 z-10"
                                 aria-label="Siguiente"
                             >
                                 <ChevronRight size={20} strokeWidth={1.5} />
