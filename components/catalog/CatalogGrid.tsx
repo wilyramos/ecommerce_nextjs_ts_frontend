@@ -67,7 +67,6 @@ export default function CatalogGrid({ products, isFallback }: Props) {
         );
     }
 
-    // CASO C: GRID NORMAL CON RESULTADOS
     return (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-0.5 md:gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {products.map((product) => (

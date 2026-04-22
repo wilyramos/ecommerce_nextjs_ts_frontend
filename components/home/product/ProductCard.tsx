@@ -132,7 +132,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
             <Link href={`/productos/${product.slug}`} className="flex flex-col h-full">
 
                 {/* --- IMAGEN --- */}
-                <div className="relative w-full aspect-square bg-[var(--color-bg-primary)] overflow-hidden ">
+                <div className="relative w-full aspect-square bg-[var(--color-bg-secondary)] overflow-hidden ">
                     {previewImages.length > 0 ? (
                         <div className="relative w-full h-full  overflow-hidden">
                             <div
@@ -177,18 +177,18 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                         </div>
                     )}
 
-                    {/* Badge Nuevo */}
-                    {product.esNuevo && (
-                        <div className="absolute top-2 left-2 pointer-events-none z-10">
-                            <span className="p-1 bg-[var(--color-bg-secondary)] text-[var(--color-text-primary)] text-[10px] font-bold uppercase tracking-wider">
-                                Nuevo
+                    {/* Badges: Descuento y Nuevo */}
+                    <div className="absolute top-2 left-2 pointer-events-none z-10 flex flex-col gap-1">
+                        {(product.precioComparativo ?? 0) > 0 && (
+                            <span className="px-1 py-0.5 bg-[var(--color-accent-warm)] text-[var(--color-text-inverse)] text-[10px] font-bold uppercase tracking-wider">
+                                -{Math.round(discountedPrice)}%
                             </span>
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </div>
 
                 {/* --- INFO --- */}
-                <div className="flex flex-col flex-1 p-3 md:p-4 bg-[var(--color-bg-secondary)]">
+                <div className="flex flex-col flex-1 p-3 md:p-4 bg-[var(--color-bg-primary)]">
                     <div className="flex flex-col gap-1 h-[4.5rem] md:h-[5rem]">
 
                         <div className="h-5 shrink-0 flex justify-between items-center mb-1">
@@ -241,29 +241,20 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                         <div className="absolute inset-0 bg-[var(--color-text-primary)] opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none" />
                     </div>
 
-                    <div className="flex items-end justify-between mt-auto pt-4 group-hover:border-[var(--color-border-default)] transition-colors">
+                    <div className="flex items-end justify-between mt-auto pt-2 group-hover:border-[var(--color-border-default)] transition-colors">
                         <div className="flex flex-col w-full">
                             {stock > 0 ? (
-                                <div className="flex flex-col items-start">
+                                <div className="flex flex-row items-start gap-2">
+                                    {/* Precio Actual */}
+                                    <span className="text-sm md:text-[15px] text-[var(--color-text-primary)]">
+                                        S/ {precio.toFixed(2)}
+                                    </span>
                                     {/* Precio anterior */}
                                     {(product.precioComparativo ?? 0) > 0 && (
-                                        <span className="text-[10px] md:text-[11px] text-[var(--color-text-tertiary)] line-through mb-0.5">
+                                        <span className="text-[12px] md:text-[13px] text-[var(--color-text-tertiary)] line-through mb-0.5">
                                             S/ {product.precioComparativo!.toFixed(2)}
                                         </span>
                                     )}
-
-                                    {/* Precio Actual y Etiqueta de Descuento */}
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-sm md:text-[15px] text-[var(--color-text-primary)]">
-                                            S/ {precio.toFixed(2)}
-                                        </span>
-
-                                        {(product.precioComparativo ?? 0) > 0 && (
-                                            <span className="text-[9px] md:text-[10px] font-extrabold text-[var(--color-text-primary)] bg-[var(--color-bg-tertiary)] px-1.5 py-0.5">
-                                                -{Math.round(discountedPrice)}%
-                                            </span>
-                                        )}
-                                    </div>
                                 </div>
                             ) : (
                                 <span className="text-[10px] font-bold  px-2 py-1  self-start">

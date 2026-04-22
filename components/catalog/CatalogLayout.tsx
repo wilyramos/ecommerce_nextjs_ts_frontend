@@ -59,7 +59,7 @@ export default function CatalogLayout({
     }
 
     return (
-        <div className="container mx-auto px-4 md:px-6 max-w-[1440px] pb-10">
+        <section className="container mx-auto px-4 md:px-6 max-w-[1440px] pb-10">
 
             {/* Header Global (Título + Breadcrumbs + Contador Total) */}
             <div className="pt-8">
@@ -87,7 +87,7 @@ export default function CatalogLayout({
 
                     {/* Toolbar Mobile (Contador + Botón Filtros Drawer) */}
                     {/* Solo visible en pantallas pequeñas */}
-                    <div className="lg:hidden flex justify-between items-center sticky top-12 z-20 bg-[var(--color-bg-primary)] py-2">
+                    <div className="lg:hidden flex justify-between items-center sticky top-12 z-10 bg-[var(--color-bg-primary)] py-2">
                         {/* Pasamos los filtros al Drawer móvil */}
                         <CatalogMobileFilters filters={filters} />
                     </div>
@@ -107,6 +107,6 @@ export default function CatalogLayout({
                     )}
                 </main>
             </div>
-        </div>
+        </section>
     );
 }

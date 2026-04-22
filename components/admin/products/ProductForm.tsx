@@ -257,10 +257,10 @@ export default function ProductForm({
                     onCategoryChange={setSelectedCategoryId}
                 />
 
-                {/* Especificaciones */}
+                {/* Especificaciones 
                 <SpecificationsSection
                     initial={product?.especificaciones}
-                />
+                />*/}
 
                 <ComplementaryProductsSection
                     initialItems={product?.complementarios || []}

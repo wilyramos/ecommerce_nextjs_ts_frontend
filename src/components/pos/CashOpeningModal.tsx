@@ -8,8 +8,7 @@ import {
     Dialog,
     DialogContent,
     DialogHeader,
-    DialogTitle,
-    DialogDescription
+    DialogTitle
 } from "@/components/ui/dialog";
 import { openCashAction } from '@/actions/cash-actions';
 import { useCashStore } from "@/src/store/useCashStore";
@@ -63,23 +62,21 @@ export const CashOpeningModal = ({ userId, onClose }: Props) => {
                 if (!isOpen && onClose) onClose();
             }}
         >
-            <DialogContent className="sm:max-w-sm rounded-[2.5rem] p-8 border-none shadow-2xl">
+            <DialogContent className="bg-[var(--color-bg-primary)] border-[var(--color-border-default)]">
                 <DialogHeader className="text-left mb-4">
-                    <DialogTitle className="text-xl font-black uppercase tracking-tighter text-black">
+                    <DialogTitle className="text-xl font-black uppercase tracking-tighter text-[var(--color-text-primary)]">
                         Apertura de Caja
                     </DialogTitle>
-                    <DialogDescription className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                        GOPHONE v3 / Terminal Operativo
-                    </DialogDescription>
+                    
                 </DialogHeader>
 
                 <form onSubmit={handleOpen} className="space-y-6">
                     <div className="space-y-3">
-                        <Label className="text-[10px] font-black uppercase text-slate-500 ml-1">
+                        <Label className="text-[10px] font-black uppercase text-[var(--color-text-secondary)] ml-1">
                             Efectivo Inicial (S/)
                         </Label>
                         <div className="relative group">
-                            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-black transition-colors z-10">
+                            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)] group-focus-within:text-[var(--color-text-primary)] transition-colors z-10">
                                 <Banknote size={20} />
                             </div>
                             <Input
@@ -91,7 +88,7 @@ export const CashOpeningModal = ({ userId, onClose }: Props) => {
                                 value={balance}
                                 onChange={(e) => setBalance(e.target.value)}
                                 placeholder="0.00"
-                                className="h-16 pl-12 pr-4 bg-slate-50 border-2 border-slate-100 rounded-2xl text-2xl font-black focus-visible:ring-black focus-visible:border-black transition-all outline-none"
+                                className="h-12 pl-12 pr-4 bg-[var(--color-bg-secondary)] border-2 border-[var(--color-border-default)] text-2xl font-black text-[var(--color-text-primary)] focus-visible:ring-[var(--color-action-primary)] focus-visible:border-[var(--color-action-primary)] transition-all outline-none"
                                 autoFocus
                             />
                         </div>
@@ -100,7 +97,7 @@ export const CashOpeningModal = ({ userId, onClose }: Props) => {
                     <Button
                         type="submit"
                         disabled={isPending}
-                        className="w-full h-16 rounded-2xl bg-black text-white hover:bg-slate-900 transition-all active:scale-[0.98] shadow-xl shadow-black/5 gap-3"
+                        className="w-full bg-[var(--color-bg-inverse)] text-[var(--color-text-inverse)] hover:opacity-90 transition-all active:scale-[0.98] gap-3"
                     >
                         {isPending ? (
                             <Loader2 className="animate-spin" size={20} />
@@ -114,7 +111,7 @@ export const CashOpeningModal = ({ userId, onClose }: Props) => {
                 </form>
 
                 <div className="mt-2 text-center">
-                    <p className="text-[9px] font-bold text-slate-300 uppercase tracking-tighter">
+                    <p className="text-[9px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-tighter">
                         Asegúrese de contar el efectivo físico antes de confirmar
                     </p>
                 </div>
