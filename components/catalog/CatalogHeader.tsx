@@ -61,11 +61,11 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 px-1">
                 <div className="space-y-1.5">
                     <div className="flex items-baseline gap-4">
-                        <h1 className="text-3xl md:text-4xl font-semibold tracking-tighter text-[var(--color-text-primary)] uppercase">
+                        <h1 className="text-xl md:text-2xl font-semibold tracking-tighter text-[var(--color-text-primary)] uppercase">
                             {title}
                         </h1>
                         <span className="h-6 w-[1px] bg-[var(--color-border-default)] hidden sm:block" />
-                        <span className="text-[11px] font-bold uppercase tracking-widest text-[var(--color-accent-warm)]">
+                        <span className="text-[11px] font-bold tracking-widest text-[var(--color-accent-warm)]">
                             {totalProducts} Items
                         </span>
                     </div>

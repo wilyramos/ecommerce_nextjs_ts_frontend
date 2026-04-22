@@ -172,13 +172,13 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                             )}
                         </div>
                     ) : (
-                        <div className="flex items-center justify-center w-full h-full text-[var(--color-text-tertiary)]">
-                            <MdOutlineImageNotSupported size={36} />
+                        <div className="flex items-center justify-center w-full h-full text-[var(--color-text-tertiary)] opacity-50">
+                            <MdOutlineImageNotSupported size={20} />
                         </div>
                     )}
 
                     {/* Badges: Descuento y Nuevo */}
-                    <div className="absolute top-2 left-2 pointer-events-none z-10 flex flex-col gap-1">
+                    <div className="absolute top-2 left-2 pointer-events-none flex flex-col gap-1">
                         {(product.precioComparativo ?? 0) > 0 && (
                             <span className="px-1 py-0.5 bg-[var(--color-accent-warm)] text-[var(--color-text-inverse)] text-[10px] font-bold uppercase tracking-wider">
                                 -{Math.round(discountedPrice)}%
@@ -251,7 +251,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                                     </span>
                                     {/* Precio anterior */}
                                     {(product.precioComparativo ?? 0) > 0 && (
-                                        <span className="text-[12px] md:text-[13px] text-[var(--color-text-tertiary)] line-through mb-0.5">
+                                        <span className="text-[10px] md:text-[13px] text-[var(--color-text-tertiary)] line-through mb-0.5">
                                             S/ {product.precioComparativo!.toFixed(2)}
                                         </span>
                                     )}
