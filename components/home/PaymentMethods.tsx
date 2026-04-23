@@ -1,33 +1,21 @@
 import Image from "next/image";
 
 export default function PaymentMethods() {
+    const methods = [
+        { src: "/payments/visa.png",       alt: "Visa" },
+        { src: "/payments/mastercard.png", alt: "Mastercard" },
+        { src: "/payments/amex.png",       alt: "American Express" },
+        { src: "/payments/mp.png",         alt: "Mercado Pago" },
+        { src: "/payments/yape.png",       alt: "Yape" },
+    ];
+
     return (
-        <section className="">
-            <div className="">
-                <div className="flex items-center gap-3 max-w-md mx-auto">
-
-                    <div className="relative w-8 h-5 ">
-                        <Image src="/payments/visa.png" alt="Visa" fill className="object-contain" sizes="40px" />
-                    </div>
-
-                    <div className="relative w-8 h-5 ">
-                        <Image src="/payments/mastercard.png" alt="Mastercard" fill className="object-contain" sizes="40px" />
-                    </div>
-
-                    <div className="relative w-8 h-5 ">
-                        <Image src="/payments/amex.png" alt="American Express" fill className="object-contain" sizes="40px" />
-                    </div>
-
-                    <div className="relative w-8 h-5 ">
-                        <Image src="/payments/mp.png" alt="Mercado Pago" fill className="object-contain" sizes="40px" />
-                    </div>
-
-                    <div className="relative w-8 h-5 ">
-                        <Image src="/payments/yape.png" alt="Yape" fill className="object-contain" sizes="40px" />
-                    </div>
-
+        <div className="flex items-center gap-2">
+            {methods.map(({ src, alt }) => (
+                <div key={alt} className="relative w-7 h-4 shrink-0">
+                    <Image src={src} alt={alt} fill className="object-contain" sizes="28px" />
                 </div>
-            </div>
-        </section>
+            ))}
+        </div>
     );
 }

@@ -12,7 +12,7 @@ import PaymentMethods from '../PaymentMethods';
 import ColorCircle from '@/components/ui/ColorCircle';
 import Link from 'next/link';
 import Image from 'next/image';
-import { MessageCircle } from 'lucide-react';
+import { ChevronRight, CreditCard, MessageCircle, Truck } from 'lucide-react';
 import {
     Select,
     SelectTrigger,
@@ -134,71 +134,86 @@ export default function ProductDetails({ producto }: Props) {
                     <ImagenesProductoCarousel images={variantImages} />
                 </div>
 
-                <section className='md:col-span-5'>
+                <section className='md:col-span-5 px-2 md:px-0'>
                     <div className="space-y-0">
-                        <header className="pt-1 border-b border-[var(--color-border-default)] pb-2 md:pb-4 space-y-1">
-                            <div className="flex items-start justify-between w-full">
+                        <header className="pt-1 pb-4 border-b border-[var(--color-border-subtle)] space-y-3">
+
+                            {/* Breadcrumb marca / línea + SKU */}
+                            <div className="flex items-center justify-between w-full">
                                 <div className="flex items-center gap-1.5 flex-wrap">
                                     {producto.brand && (
-                                        <Link href={`/catalogo/${producto.brand.slug}`} className="text-xs font-semibold text-[var(--color-text-secondary)]  hover:text-[var(--color-text-primary)] transition-colors">
+                                        <Link
+                                            href={`/catalogo/${producto.brand.slug}`}
+                                            className="text-[11px] font-medium text-[var(--color-text-tertiary)] hover:text-[var(--color-accent-warm)] transition-colors uppercase tracking-wide"
+                                        >
                                             {producto.brand.nombre}
                                         </Link>
                                     )}
-                                    {producto.brand && producto.line && <span className="text-xs text-[var(--color-text-secondary)]">/</span>}
+                                    {producto.brand && producto.line && (
+                                        <span className="text-[11px] text-[var(--color-border-default)]">/</span>
+                                    )}
                                     {producto.line && (
-                                        <Link href={`/catalogo/${producto.line.slug}`} className="text-xs font-semibold text-[var(--color-text-secondary)]  hover:text-[var(--color-text-primary)] transition-colors">
+                                        <Link
+                                            href={`/catalogo/${producto.line.slug}`}
+                                            className="text-[11px] font-medium text-[var(--color-text-tertiary)] hover:text-[var(--color-accent-warm)] transition-colors uppercase tracking-wide"
+                                        >
                                             {producto.line.nombre}
                                         </Link>
                                     )}
                                 </div>
-                                <div className="text-[8px] md:text-[12px] text-[var(--color-text-secondary)]  flex flex-row items-end leading-tight gap-1 text-right">
-                                    {(selectedVariant?.sku || producto.sku) && <span>SKU: {selectedVariant?.sku || producto.sku}</span>}
-                                    {(selectedVariant?.sku || producto.sku) && (selectedVariant?.barcode || producto.barcode) && <span>|</span>}
-                                    {selectedVariant?.barcode || producto.barcode}
-                                </div>
+
+                                {(selectedVariant?.sku || producto.sku) && (
+                                    <span className="text-[10px] text-[var(--color-text-tertiary)]">
+                                        SKU: {selectedVariant?.sku || producto.sku}
+                                    </span>
+                                )}
                             </div>
 
-                            <h1 className="text-[clamp(1rem,1.5vmax,2rem)] font-normal text-[var(--color-text-primary)] tracking-tight leading-[1.1] break-words">
+                            {/* Nombre */}
+                            <h1 className="text-[clamp(1.1rem,2vw,1.6rem)] font-normal text-[var(--color-text-primary)] tracking-tight leading-tight">
                                 {producto.nombre}
                             </h1>
 
+                            {/* Color sin variantes */}
                             {!producto.variants?.length && colorAtributo && (
-                                <div className="flex items-center gap-3">
-                                    <span className="text-xs font-medium text-[var(--color-text-secondary)]">Color</span>
+                                <div className="flex items-center gap-2">
+                                    <span className="text-[11px] text-[var(--color-text-tertiary)]">Color</span>
                                     <div className="flex items-center gap-1.5">
                                         {(Array.isArray(colorAtributo) ? colorAtributo : [colorAtributo]).map((c) => (
-                                            <ColorCircle key={c} color={c} size={20} />
+                                            <ColorCircle key={c} color={c} size={18} />
                                         ))}
                                     </div>
                                 </div>
                             )}
 
-                            <div className="flex flex-col sm:flex-row sm:items-baseline gap-x-4 gap-y-1 w-full py-2">
-                                <div className="flex items-baseline text-[var(--color-text-primary)]">
-                                    <span className="text-sm md:text-base font-semibold mr-1 self-baseline">S/</span>
-                                    <span className="text-xl md:text-2xl font-semibold tracking-tighter">
+                            {/* Precio */}
+                            <div className="flex items-baseline gap-3 flex-wrap">
+                                <div className="flex items-baseline gap-0.5 text-[var(--color-text-primary)]">
+                                    <span className="text-sm font-medium">S/</span>
+                                    <span className="text-xl md:text-2xl font-semibold tracking-tight">
                                         {precio.toFixed(2)}
                                     </span>
                                 </div>
 
                                 {hasDiscount && (
-                                    <div className="flex items-baseline gap-2">
-                                        <span className="text-sm md:text-base text-[var(--color-text-secondary)] line-through decoration-[1.5px]">
-                                            S/ {precioComparativo.toFixed(2)}
+                                    <>
+                                        <span className="text-sm text-[var(--color-text-tertiary)] line-through">
+                                            S/ {precioComparativo!.toFixed(2)}
                                         </span>
-
-                                        <span className="inline-flex items-center px-2 py-0.5 text-[10px] md:text-xs font-semibold  tracking-tight text-[var(--color-action-primary)] bg-[var(--color-action-primary-light)]">
-                                            Ahorra {Math.round(((precioComparativo - precio) / precioComparativo) * 100)}%
+                                        <span className="text-[11px] font-semibold px-2 py-0.5 bg-[var(--color-accent-warm-light)] text-[var(--color-accent-warm)]">
+                                            −{Math.round(((precioComparativo! - precio) / precioComparativo!) * 100)}%
                                         </span>
-                                    </div>
+                                    </>
                                 )}
                             </div>
 
+                            {/* Stock agotado */}
                             {stock === 0 && (
-                                <div className="inline-flex items-center px-3 bg-[var(--color-error-light)]  text-[var(--color-error)] text-xs font-semibold mt-2  w-fit">
-                                    Agotado
-                                </div>
+                                <span className="inline-flex items-center text-xs font-medium text-[var(--color-error)] bg-[var(--color-error-light)] px-2.5 py-1">
+                                    Sin stock
+                                </span>
                             )}
+
                         </header>
 
                         {Object.entries(allAttributes).map(([key]) => {
@@ -326,53 +341,50 @@ export default function ProductDetails({ producto }: Props) {
                         </section>
                     </div>
 
-                    <div className="mt-4 flex flex-col gap-2 space-y-4">
-                        <div className="space-y-2">
-                            {/* <h3 className="text-[10px] font-semibold  tracking-[0.2em] text-[var(--color-text-tertiary)] mb-2">
-                                Información de Envío
-                            </h3> */}
+                    <div className="mt-4 ">
 
-                            <div className="flex flex-col text-[var(--color-text-secondary)]">
-                                {/* Envíos */}
-                                <div className="flex items-center gap-2 text-sm ">
-                                    <span>Envíos a todo el Perú</span>
-                                </div>
-
-                                {/* Tiempo */}
-                                <div className="flex items-center gap-2 text-sm text-[var(--color-text-primary)]">
-                                    <p className='font-bold text-xs'>Entrega estimada:</p>
-                                    <span className='text-[var(--color-text-secondary)] font-medium'>
-                                        {producto.diasEnvio
-                                            ? getDeliveryRange(producto.diasEnvio)
-                                            : "1 a 3 días hábiles"}
-                                    </span>
-                                </div>
+                        {/* Envío */}
+                        <div className="flex items-center justify-between py-3">
+                            <div className="flex items-center gap-2 text-[var(--color-text-secondary)]">
+                                <Truck className="w-4 h-4 shrink-0 text-[var(--color-text-tertiary)]" />
+                                <span className="text-xs">Entrega estimada</span>
+                            </div>
+                            <div className="text-right">
+                                <span className="text-xs font-semibold text-[var(--color-text-primary)]">
+                                    {getDeliveryRange(producto.diasEnvio || 1)}
+                                </span>
+                                <span className="text-xs text-[var(--color-text-tertiary)] ml-1.5">
+                                    ({producto.diasEnvio || 1} día{(producto.diasEnvio || 1) !== 1 ? "s" : ""})
+                                </span>
                             </div>
                         </div>
 
-
-                        <div className="space-y-1 ">
-                            <p className="text-xs font-bold  text-[var(--color-text-primary)] ">
-                                Medios de pago:
-                            </p>
+                        {/* Medios de pago */}
+                        <div className="flex items-center justify-between py-3">
+                            <div className="flex items-center gap-2">
+                                <CreditCard className="w-4 h-4 text-[var(--color-text-tertiary)] shrink-0" />
+                                <span className="text-xs text-[var(--color-text-secondary)]">Medios de pago</span>
+                            </div>
                             <PaymentMethods />
                         </div>
 
-                        <div className="h-px bg-[var(--color-border-subtle)] w-full" />
+                        {/* Consulta por WhatsApp */}
+                        <a
+                            href={`https://wa.me/51925054636?text=Consulta%20${encodeURIComponent(producto.nombre)}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="flex items-center justify-between py-3 hover:bg-[var(--color-bg-secondary)] transition-colors group"
+                        >
+                            <div className="flex items-center gap-2">
+                                <MessageCircle className="w-4 h-4 text-[var(--color-text-tertiary)] group-hover:text-[var(--color-success)] transition-colors shrink-0" />
+                                <span className="text-xs text-[var(--color-text-secondary)]">¿Tienes dudas?</span>
+                            </div>
+                            <span className="text-xs font-semibold text-[var(--color-success)] flex items-center gap-1">
+                                WhatsApp
+                                <ChevronRight className="w-3 h-3" />
+                            </span>
+                        </a>
 
-                        <div className="">
-                            <a
-                                href={`https://wa.me/51925054636?text=Consulta%20${encodeURIComponent(producto.nombre)}`}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="inline-flex items-center gap-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-success)] transition-colors group"
-                            >
-                                <MessageCircle className="w-4 h-4 transition-transform group-hover:scale-110" />
-                                <span>
-                                    ¿Tienes dudas? <span className="font-medium underline underline-offset-4 decoration-[var(--color-border-default)] group-hover:decoration-[var(--color-success)] transition-colors">WhatsApp</span>
-                                </span>
-                            </a>
-                        </div>
                     </div>
 
 
