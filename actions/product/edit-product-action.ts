@@ -1,29 +1,18 @@
 "use server"
 
 import getToken from "@/src/auth/token"
-import { especificacionSchema, SuccessResponse, type TEspecificacion } from "@/src/schemas"
-// import { ErrorResponse } from "@/src/schemas" // TODO
+import { updateProductSchema, especificacionSchema, SuccessResponse } from "@/src/schemas"
+import type { TApiVariant, TEspecificacion } from "@/src/schemas"
 import { revalidatePath } from "next/cache"
-import type { TApiVariant } from "@/src/schemas"
-
-// New schema
-
-import { updateProductSchema } from "@/src/schemas"
-
-
 
 type ActionStateType = {
-    errors: string[],
-    success: string
+    errors: string[];
+    success: string;
 }
-
 
 export async function EditProduct(id: string, prevState: ActionStateType, formData: FormData) {
 
-    const complementariosIds = formData.getAll('complementarios') as string[];
-
-
-    // parsear los atributos del formulario
+    // 1. Atributos
     const atributosString = formData.get("atributos") as string;
     let atributos: Record<string, string> = {};
     if (atributosString) {
@@ -31,15 +20,11 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
             atributos = JSON.parse(atributosString);
         } catch (error) {
             console.error("Error parsing atributos:", error);
-            return {
-                errors: ["Error al procesar los atributos del producto."],
-                success: ""
-            }
+            return { errors: ["Error al procesar los atributos del producto."], success: "" };
         }
     }
 
-
-    // parsear las especificaciones del formulario
+    // 2. Especificaciones
     const especificacionesString = formData.get('especificaciones') as string;
     let especificaciones: TEspecificacion[] = [];
     if (especificacionesString) {
@@ -48,76 +33,92 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
             especificaciones = especificacionSchema.array().parse(parsed);
         } catch (error) {
             console.error("Error parsing especificaciones:", error);
-            return {
-                errors: ["Las especificaciones son inválidas."],
-                success: ""
-            }
+            return { errors: ["Las especificaciones son inválidas."], success: "" };
         }
     }
 
-    // valoidar precio comparativo
+    // 3. Precio comparativo
     const precioCompString = formData.get('precioComparativo') as string;
     const precioComparativo =
         precioCompString && precioCompString.trim() !== ''
             ? Number(precioCompString)
             : undefined;
 
-    const rawVariants = formData.get('variants') ? JSON.parse(formData.get('variants') as string) : [];
+    // 4. Variantes
+    const rawVariants = formData.get('variants')
+        ? JSON.parse(formData.get('variants') as string)
+        : [];
 
     const cleanedVariants = rawVariants.map((variant: TApiVariant) => {
-        // Filtrar atributos vacíos
         const filteredAttributes: Record<string, string> = {};
         Object.entries(variant.atributos).forEach(([key, value]) => {
-            if (value.trim() !== "") {
-                filteredAttributes[key] = value;
-            }
+            if (value.trim() !== "") filteredAttributes[key] = value;
         });
-
-        return {
-            ...variant,
-            atributos: filteredAttributes
-        };
+        return { ...variant, atributos: filteredAttributes };
     });
 
-    // complementarios    
+    // 5. Tags
+    const tagsRaw = formData.get('tags') as string;
+    const tags: string[] = tagsRaw ? JSON.parse(tagsRaw) : [];
 
+    // 6. Dimensions
+    const dimLength = formData.get('dimensions.length') as string;
+    const dimWidth = formData.get('dimensions.width') as string;
+    const dimHeight = formData.get('dimensions.height') as string;
+    const dimensions =
+        dimLength || dimWidth || dimHeight
+            ? {
+                length: dimLength ? Number(dimLength) : 0,
+                width: dimWidth ? Number(dimWidth) : 0,
+                height: dimHeight ? Number(dimHeight) : 0,
+            }
+            : undefined;
+
+    // 7. Complementarios
+    const complementarios = formData.getAll('complementarios') as string[];
+
+    // 8. Construir productData
     const productData = {
         nombre: formData.get("nombre"),
         descripcion: formData.get("descripcion"),
         precio: Number(formData.get("precio")),
-        precioComparativo: precioComparativo,
+        precioComparativo,
         costo: Number(formData.get("costo")),
-        categoria: formData.get("categoria"),
         stock: Number(formData.get("stock")),
-        sku: formData.get("sku"),
-        barcode: formData.get("barcode"),
+        categoria: formData.get("categoria"),
+        brand: formData.get("brand") || undefined,
+        line: formData.get("line") || undefined,
+        sku: formData.get("sku") || undefined,
+        barcode: formData.get("barcode") || undefined,
         imagenes: formData.getAll("imagenes[]") as string[],
+        atributos,
+        especificaciones,
+        variants: cleanedVariants,
+        complementarios: complementarios.length > 0 ? complementarios : [],
         esDestacado: formData.get("esDestacado") === "true",
         esNuevo: formData.get("esNuevo") === "true",
         isActive: formData.get("isActive") === "true",
-        atributos: atributos,
-        brand: formData.get("brand") || undefined,
-        especificaciones: especificaciones,
+        isFrontPage: formData.get("isFrontPage") === "true",
         diasEnvio: formData.get('diasEnvio') ? Number(formData.get('diasEnvio')) : undefined,
-        variants: cleanedVariants,
-        isFrontPage: formData.get('isFrontPage') === 'true',
-        line: formData.get('line') || undefined,
-        complementarios: complementariosIds.length > 0 ? complementariosIds : undefined
-    }
+        tags,
+        weight: formData.get('weight') ? Number(formData.get('weight')) : undefined,
+        dimensions,
+        metaTitle: formData.get('metaTitle') || undefined,
+        metaDescription: formData.get('metaDescription') || undefined,
+    };
 
-    console.log("Complementarios antes de parsear: ", productData.complementarios)
-
+    // 9. Validar con Zod
     const product = updateProductSchema.safeParse(productData);
     if (!product.success) {
         return {
             errors: product.error.errors.map(error => error.message),
             success: ""
-        }
+        };
     }
 
+    // 10. Enviar al Backend
     const token = await getToken();
-    const url = `${process.env.API_URL}/products/${id}`;
-    const req = await fetch(url, {
+    const req = await fetch(`${process.env.API_URL}/products/${id}`, {
         method: 'PUT',
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -127,20 +128,12 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
     });
 
     const json = await req.json();
-    // console.log("json", json)
     if (!req.ok) {
-        return {
-            errors: [json.message],
-            success: ""
-        }
+        return { errors: [json.message], success: "" };
     }
+
     const success = SuccessResponse.parse(json);
+    revalidatePath(`/admin/products/${id}`);
 
-    //Revalidate
-    revalidatePath(`/admin/products/${id}`)
-
-    return {
-        errors: [],
-        success: success.message
-    }
+    return { errors: [], success: success.message };
 }

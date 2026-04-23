@@ -187,13 +187,19 @@ export type CategoryListResponse = z.infer<typeof apiCategoryListSchema>;
 /* ============================================================
    PRODUCTOS Y VARIANTES
 ============================================================ */
-
 // ---------- Esquemas base ----------
 const atributosSchema = z.record(z.string(), z.string());
 
 export const especificacionSchema = z.object({
     key: z.string().min(1),
     value: z.string().min(1),
+});
+
+// ---------- Dimensiones ----------
+export const dimensionsSchema = z.object({
+    length: z.number().min(0, 'El largo no puede ser negativo'),
+    width:  z.number().min(0, 'El ancho no puede ser negativo'),
+    height: z.number().min(0, 'El alto no puede ser negativo'),
 });
 
 // ---------- Variantes ----------
@@ -238,11 +244,16 @@ export const productBaseSchema = z.object({
     isFrontPage: z.boolean().optional().default(false),
     line: z.string().optional(),
     complementarios: z.array(z.string()).optional().default([]),
+    tags:            z.array(z.string()).optional().default([]),
+    weight:          z.number().min(0, 'El peso no puede ser negativo').optional(),
+    dimensions:      dimensionsSchema.optional(),
+    metaTitle:       z.string().max(60, 'El metaTitle no puede superar los 60 caracteres').optional(),
+    metaDescription: z.string().max(160, 'La metaDescription no puede superar los 160 caracteres').optional(),
 });
 
 // ---------- Create & Update ----------
 export const createProductSchema = productBaseSchema.extend({
-    nombre: z.string().min(1, 'El nombre es obligatorio'),
+    nombre:   z.string().min(1, 'El nombre es obligatorio'),
     categoria: z.string().min(1, 'La categoría es obligatoria'),
 });
 export const updateProductSchema = productBaseSchema.partial();
@@ -252,7 +263,6 @@ export const ApiVariantSchema = variantSchema.extend({
     _id: z.string(),
 });
 
-// Esquema para la versión minimalista del producto dentro de complementarios
 export const ComplementaryProductSchema = z.object({
     _id: z.string(),
     nombre: z.string(),
@@ -264,7 +274,7 @@ export const ComplementaryProductSchema = z.object({
 export type TComplementaryProduct = z.infer<typeof ComplementaryProductSchema>;
 
 export const ApiProductSchema = productBaseSchema
-    .omit({ slug: true, brand: true, line: true }) // Omitimos para redefinir con poblados
+    .omit({ slug: true, brand: true, line: true })
     .extend({
         _id: z.string(),
         slug: z.string(),
@@ -276,28 +286,33 @@ export const ApiProductSchema = productBaseSchema
             slug: z.string(),
         }).optional(),
         complementarios: z.union([
-            z.array(z.string()), 
+            z.array(z.string()),
             z.array(ComplementaryProductSchema)
         ]).optional().default([]),
         variants: z.array(ApiVariantSchema).optional(),
-        createdAt: z.string().datetime().optional(),
-        updatedAt: z.string().datetime().optional(),
+        rating:     z.number().min(0).max(5).default(0),
+        numReviews: z.number().min(0).default(0),
+        deletedAt:  z.string().datetime().optional().nullable(),
+        createdAt:  z.string().datetime().optional(),
+        updatedAt:  z.string().datetime().optional(),
         __v: z.number().optional(),
     });
 
 export const ApiProductsSchema = z.array(ApiProductSchema);
 
 // ---------- Tipos inferidos ----------
-export type TEspecificacion = z.infer<typeof especificacionSchema>;
-export type TVariant = z.infer<typeof variantSchema>;
-export type TApiVariant = z.infer<typeof ApiVariantSchema>;
-export type TProductBase = z.infer<typeof productBaseSchema>;
-export type TCreateProduct = z.infer<typeof createProductSchema>;
-export type TUpdateProduct = z.infer<typeof updateProductSchema>;
-export type TApiProduct = z.infer<typeof ApiProductSchema>;
-export type TApiProducts = z.infer<typeof ApiProductsSchema>;
+export type TEspecificacion    = z.infer<typeof especificacionSchema>;
+export type TDimensions        = z.infer<typeof dimensionsSchema>;
+export type TVariant           = z.infer<typeof variantSchema>;
+export type TApiVariant        = z.infer<typeof ApiVariantSchema>;
+export type TProductBase       = z.infer<typeof productBaseSchema>;
+export type TCreateProduct     = z.infer<typeof createProductSchema>;
+export type TUpdateProduct     = z.infer<typeof updateProductSchema>;
+export type TApiProduct        = z.infer<typeof ApiProductSchema>;
+export type TApiProducts       = z.infer<typeof ApiProductsSchema>;
+
 export const ApiProductFullSchema = ApiProductSchema.extend({
-    categoria: apiCategorySchema, // Forzamos a que no sea string ni opcional
+    categoria: apiCategorySchema,
 });
 
 export type TApiProductFull = z.infer<typeof ApiProductFullSchema>;
@@ -459,6 +474,7 @@ END END END
 
 
 *************************************************
+******************************************
 */
 
 // CART
