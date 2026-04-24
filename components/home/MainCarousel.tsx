@@ -113,7 +113,6 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                             </Link>
                         </div>
                     );
-                    
                 })}
             </Carousel>
         </section>

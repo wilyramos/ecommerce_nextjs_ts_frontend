@@ -1,7 +1,7 @@
 import "server-only"
 
 
-import getToken from "@/src/auth/token"
+import { getTokenOptional } from "@/src/auth/dal"
 import { OrdersByCitySchema, OrdersByStatusSchema, OrdersListResponseSchema, OrdersOverTimeSchema, OrdersSummarySchema } from "@/src/schemas";
 
 // === new 
@@ -19,7 +19,7 @@ type GetOrdersParams = {
 
 export const getOrders = async ({ page = 1, limit = 25, ...filters }: GetOrdersParams) => {
 
-    const token = await getToken();
+    const token = await getTokenOptional();
 
     const params = new URLSearchParams();
 
@@ -51,7 +51,7 @@ export const getOrders = async ({ page = 1, limit = 25, ...filters }: GetOrdersP
 }
 
 export const getOrder = async (id: string) => {
-    const token = await getToken();
+    const token = await getTokenOptional();
 
     const url = `${process.env.API_URL}/orders/${id}`;
 
@@ -73,7 +73,7 @@ export const getOrder = async (id: string) => {
 }
 
 export const getOrdersByUser = async ({ page = 1, limit = 5 }) => {
-    const token = await getToken();
+    const token = await getTokenOptional();
     const url = `${process.env.API_URL}/orders/user/me?page=${page}&limit=${limit}`;
 
     const req = await fetch(url, {
@@ -101,7 +101,7 @@ interface GetOrdersReportsParams {
 
 export const getSummaryOrders = async (params: GetOrdersReportsParams) => {
     try {
-        const token = await getToken();
+        const token = await getTokenOptional();
         let { fechaInicio, fechaFin } = params;
 
         const getDate = (daysAgo = 0) => {
@@ -148,7 +148,7 @@ export const getSummaryOrders = async (params: GetOrdersReportsParams) => {
 
 export const getOrdersOverTime = async (params: GetOrdersReportsParams) => {
     try {
-        const token = await getToken();
+        const token = await getTokenOptional();
         let { fechaInicio, fechaFin } = params;
 
         const getDate = (daysAgo = 0) => {
@@ -194,7 +194,7 @@ export const getOrdersOverTime = async (params: GetOrdersReportsParams) => {
 
 export const getReportOrdersByStatus = async (params: GetOrdersReportsParams) => {
     try {
-        const token = await getToken();
+        const token = await getTokenOptional();
         let { fechaInicio, fechaFin } = params;
 
         const getDate = (daysAgo = 0) => {
@@ -240,7 +240,7 @@ export const getReportOrdersByStatus = async (params: GetOrdersReportsParams) =>
 
 export const getReportOrdersByCity = async (params: GetOrdersReportsParams) => {
     try {
-        const token = await getToken();
+        const token = await getTokenOptional();
         let { fechaInicio, fechaFin } = params;
 
         const getDate = (daysAgo = 0) => {
@@ -286,7 +286,7 @@ export const getReportOrdersByCity = async (params: GetOrdersReportsParams) => {
 
 export const updateOrderStatus = async (id: string, status: string) => {
     try {
-        const token = await getToken();
+        const token = await getTokenOptional();
 
         const url = `${process.env.API_URL}/orders/${id}/status`;
 

@@ -1,3 +1,5 @@
+//File: frontend/app/%28store%29/profile/password/page.tsx
+
 import React from 'react'
 
 export default function PasswordProfilePage() {
