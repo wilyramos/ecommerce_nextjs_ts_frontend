@@ -15,7 +15,7 @@ export async function GET(
         const action = searchParams.get("action") || "view";
 
         // Define your backend URL
-        const backendUrl = process.env.NEXT_PUBLIC_API_URL;
+        const backendUrl = process.env.API_URL;
 
         // Optional: Extract auth token from cookies if your backend requires authentication
         // const token = request.cookies.get("session_token")?.value;

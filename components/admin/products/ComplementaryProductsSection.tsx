@@ -152,7 +152,7 @@ export default function ComplementaryProductsSection({ initialItems = [] }: Prop
                                                 <Image src={p.imagenes?.[0] || "/placeholder.png"} alt={p.nombre} fill className="object-contain p-1" unoptimized />
                                             </div>
                                             <div className="flex-1">
-                                                <p className="text-xs text-[var(--color-text-primary)] truncate">{p.nombre}</p>
+                                                <p className="text-xs text-[var(--color-text-primary)]">{p.nombre}</p>
                                                 <p className="text-xs text-[var(--color-text-tertiary)]">S/ {p.precio.toFixed(2)}</p>
                                             </div>
                                             {isSelected && <CheckCircle2 className="w-4 h-4 text-[var(--color-text-primary)]" />}

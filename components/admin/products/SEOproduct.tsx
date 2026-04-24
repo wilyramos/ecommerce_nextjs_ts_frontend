@@ -1,118 +1,168 @@
 "use client";
 
 import { useState } from "react";
-import { Search } from "lucide-react";
-import { Label } from "@/components/ui/label";
+import { Search, Globe, ChevronRight, Edit3 } from "lucide-react";
+
+// UI Components
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { LabelWithTooltip } from "@/components/utils/LabelWithTooltip";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+    DialogFooter
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+
+// Tipos
 import type { TApiProduct } from "@/src/schemas";
-import { Textarea } from "@/components/ui/textarea"
 
 interface SEOProductProps {
     product?: TApiProduct;
 }
 
 export default function SEOProduct({ product }: SEOProductProps) {
+    const [isOpen, setIsOpen] = useState(false);
     const [metaTitle, setMetaTitle] = useState(product?.metaTitle ?? "");
     const [metaDescription, setMetaDescription] = useState(product?.metaDescription ?? "");
 
     const titleLen = metaTitle.length;
     const descLen = metaDescription.length;
 
-    // Adaptando lógica de colores a la paleta de la marca
-    const titleColor =
-        titleLen === 0 ? "text-[var(--color-text-tertiary)]"
-            : titleLen <= 60 ? "text-emerald-600"
-                : "text-[var(--color-accent-warm)]"; // Uso del acento para errores/excesos
+    // Lógica de colores semánticos usando tus variables
+    const getCounterColor = (len: number, max: number) => {
+        if (len === 0) return "text-[var(--color-text-tertiary)]";
+        return len <= max ? "text-[var(--color-success)]" : "text-[var(--color-accent-warm)]";
+    };
 
-    const descColor =
-        descLen === 0 ? "text-[var(--color-text-tertiary)]"
-            : descLen <= 160 ? "text-emerald-600"
-                : "text-[var(--color-accent-warm)]";
+    // Limpieza de HTML para la descripción por defecto
+    const plainDescription = product?.descripcion?.replace(/<[^>]*>/g, "") || "";
 
     return (
-        <div className="p-6 border border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)] space-y-6 mt-4">
+        <div className="p-5 border border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)] rounded-xl space-y-4">
             
-            {/* Header con estilo de Novedades */}
-            <div className="flex items-center gap-2">
-                <div className="p-1.5 bg-[var(--color-accent-warm)]">
-                    <Search className="w-3.5 h-3.5 text-[var(--color-text-inverse)]" />
-                </div>
-                <Label className="text-[10px] font-bold  tracking-[0.2em] text-[var(--color-text-primary)]">
-                    Configuración SEO
-                </Label>
-            </div>
+            {/* Inputs ocultos para que el Server Action reciba los datos */}
+            <input type="hidden" name="metaTitle" value={metaTitle} />
+            <input type="hidden" name="metaDescription" value={metaDescription} />
 
-            {/* Preview Google - Simulación minimalista */}
-            <div className="border border-[var(--color-border-subtle)] bg-[var(--color-bg-secondary)] p-4 space-y-1.5">
-                <p className="text-[9px] font-bold text-[var(--color-text-tertiary)] mb-2">
-                    Vista previa en buscadores
-                </p>
-                <p className="text-[#1a0dab] text-lg font-medium truncate leading-tight hover:underline cursor-pointer">
-                    {metaTitle || product?.nombre || "Título del producto | GoPhone"}
-                </p>
-                <p className="text-[#006621] text-xs flex items-center gap-1">
-                    https://gophone.pe <span className="text-[var(--color-text-tertiary)] text-[10px]">›</span> {product?.slug ?? "producto"}
-                </p>
-                <p className="text-[13px] text-[var(--color-text-secondary)] line-clamp-2 leading-relaxed">
-                    {metaDescription || product?.descripcion?.replace(/<[^>]*>/g, "") || "Optimiza tu presencia en Google con una descripción atractiva..."}
-                </p>
-            </div>
-
-            <div className="grid gap-6">
-                {/* Meta Title */}
-                <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                        <LabelWithTooltip
-                            htmlFor="metaTitle"
-                            label="Meta Title"
-                            tooltip="Título optimizado para SEO (60 caracteres recomendados)."
-                        />
-                        <span className={`text-[10px] font-bold tracking-tighter ${titleColor}`}>
-                            {titleLen} / 60
-                        </span>
+            {/* Header de la sección */}
+            <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                    <div className="p-1.5 bg-[var(--color-bg-tertiary)] rounded-md">
+                        <Globe className="w-4 h-4 text-[var(--color-text-secondary)]" />
                     </div>
-                    <Input
-                        id="metaTitle"
-                        name="metaTitle"
-                        value={metaTitle}
-                        onChange={(e) => setMetaTitle(e.target.value)}
-                        maxLength={70}
-                        placeholder={product?.nombre ?? "Ej: producto abc | GoPhone"}
-                    />
+                    <span className="text-[11px] font-bold uppercase tracking-widest text-[var(--color-text-primary)]">
+                        SEO & Metadatos
+                    </span>
                 </div>
 
-                {/* Meta Description */}
-                <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                        <LabelWithTooltip
-                            htmlFor="metaDescription"
-                            label="Meta Description"
-                            tooltip="Resumen que atrae clics. Máximo 160 caracteres."
-                        />
-                        <span className={`text-[10px] font-bold tracking-tighter ${descColor}`}>
-                            {descLen} / 160
-                        </span>
-                    </div>
-                    <Textarea
-                        id="metaDescription"
-                        name="metaDescription"
-                        value={metaDescription}
-                        onChange={(e) => setMetaDescription(e.target.value)}
-                        maxLength={180}
-                        rows={3}
-                        placeholder="Describe el producto incluyendo palabras clave relevantes..."
-                    />
-                </div>
+                <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                    <DialogTrigger asChild>
+                        <button 
+                            type="button"
+                            className="flex items-center gap-1.5 text-xs font-semibold text-[var(--color-action-primary)] hover:text-[var(--color-action-primary-hover)] transition-colors"
+                        >
+                            <Edit3 className="w-3.5 h-3.5" />
+                            Editar
+                        </button>
+                    </DialogTrigger>
+
+                    <DialogContent className="sm:max-w-2xl bg-[var(--color-bg-primary)] border-[var(--color-border-default)]">
+                        <DialogHeader>
+                            <DialogTitle className="flex items-center gap-2 text-xl font-bold">
+                                <Search className="w-5 h-5 text-[var(--color-accent-warm)]" />
+                                Optimización SEO
+                            </DialogTitle>
+                        </DialogHeader>
+
+                        <div className="space-y-6 py-4">
+                            {/* Vista Previa Google dentro del Modal */}
+                            <div className="border border-[var(--color-border-subtle)] bg-[var(--color-bg-secondary)] p-5 rounded-lg space-y-1">
+                                <p className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-tight mb-2">
+                                    Vista previa en buscadores
+                                </p>
+                                <p className="text-[#1a0dab] text-xl font-medium truncate leading-tight">
+                                    {metaTitle || product?.nombre || "Título del producto | GoPhone"}
+                                </p>
+                                <p className="text-[#006621] text-[14px] flex items-center gap-1">
+                                    https://gophone.pe <ChevronRight className="w-3 h-3 text-[var(--color-text-tertiary)]" /> {product?.slug ?? "producto"}
+                                </p>
+                                <p className="text-[14px] text-[var(--color-text-secondary)] line-clamp-2 leading-relaxed pt-1">
+                                    {metaDescription || plainDescription || "Optimiza tu presencia en Google con una descripción atractiva..."}
+                                </p>
+                            </div>
+
+                            {/* Inputs de edición */}
+                            <div className="space-y-5">
+                                <div className="space-y-2">
+                                    <div className="flex justify-between items-end">
+                                        <LabelWithTooltip 
+                                            htmlFor="metaTitle"
+                                            label="Meta Title" 
+                                            tooltip="Aparece como el título azul en Google." 
+                                        />
+                                        <span className={`text-[10px] font-bold ${getCounterColor(titleLen, 60)}`}>
+                                            {titleLen} / 60
+                                        </span>
+                                    </div>
+                                    <Input 
+                                        value={metaTitle}
+                                        onChange={(e) => setMetaTitle(e.target.value)}
+                                        placeholder="Ej: iPhone 15 Pro Max Titanium | GoPhone"
+                                        className="bg-[var(--color-bg-primary)] border-[var(--color-border-strong)]"
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <div className="flex justify-between items-end">
+                                        <LabelWithTooltip 
+                                            label="Meta Description" 
+                                            tooltip="El texto que convence al usuario de hacer clic."
+                                            htmlFor="metaDescription"
+                                        />
+                                        <span className={`text-[10px] font-bold ${getCounterColor(descLen, 160)}`}>
+                                            {descLen} / 160
+                                        </span>
+                                    </div>
+                                    <Textarea 
+                                        value={metaDescription}
+                                        onChange={(e) => setMetaDescription(e.target.value)}
+                                        rows={4}
+                                        placeholder="Escribe un resumen atractivo del producto..."
+                                        className="bg-[var(--color-bg-primary)] border-[var(--color-border-strong)] resize-none"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <DialogFooter className="border-t border-[var(--color-border-subtle)] pt-4">
+                            <Button 
+                                className="w-full bg-[var(--color-action-primary)] hover:bg-[var(--color-action-primary-hover)] text-[var(--color-text-inverse)]"
+                                onClick={() => setIsOpen(false)}
+                            >
+                                Confirmar Cambios SEO
+                            </Button>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
             </div>
 
-            {/* Nota Informativa */}
-            <div className="pt-2 flex items-start gap-2">
-                <span className="w-1 h-1 rounded-full bg-[var(--color-accent-warm)] mt-1.5 shrink-0" />
-                <p className="text-[11px] text-[var(--color-text-tertiary)] italic">
-                    Si se dejan vacíos, el sistema generará automáticamente los metadatos basados en el nombre y la descripción general del producto.
+            {/* Preview Simplificada en el Formulario Principal */}
+            <div className="p-4 rounded-lg bg-[var(--color-bg-secondary)] border border-dashed border-[var(--color-border-default)]">
+                <p className="text-[13px] font-bold text-[#1a0dab] truncate">
+                    {metaTitle || product?.nombre || "Sin título definido"}
+                </p>
+                <p className="text-[11px] text-[var(--color-text-secondary)] line-clamp-1 mt-1">
+                    {metaDescription || plainDescription || "Sin descripción meta..."}
                 </p>
             </div>
+
+            <p className="text-[10px] text-[var(--color-text-tertiary)] italic leading-tight">
+                * Los metadatos optimizados mejoran el ranking en buscadores y el CTR de tus productos.
+            </p>
         </div>
     );
 }

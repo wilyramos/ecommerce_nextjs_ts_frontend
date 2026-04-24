@@ -16,7 +16,9 @@ const AbsoluteHeaderWrapper = (props: ButtonGroupProps) => {
         <div className="absolute top-0 left-0 right-0 z-20 px-4 md:px-8">
             <HeaderConTituloConControles
                 {...props}
-                title="Productos Nuevos"
+                label="Recién llegados"
+                title={<>Nuevos <span className="text-[var(--color-accent-warm)] font-light italic">ingresos.</span></>}
+                viewAllHref="/novedades"
             />
         </div>
     );
@@ -31,17 +33,15 @@ export default function ClientCarouselProductosNuevos({ products }: Props) {
     };
 
     return (
-        <section className="w-full max-w-7xl mx-auto relative pt-20 md:pt-24 px-4 md:px-8 ">
+        <section className="w-full max-w-7xl mx-auto relative pt-16 md:pt-20 px-4 md:px-8">
             <Carousel
                 responsive={responsive}
                 infinite
                 autoPlay
                 autoPlaySpeed={5000}
-                pauseOnHover
                 arrows={false}
                 renderButtonGroupOutside
                 customButtonGroup={<AbsoluteHeaderWrapper />}
-                containerClass="pb-10"
                 itemClass="px-2 md:px-3 py-4"
                 partialVisible
             >

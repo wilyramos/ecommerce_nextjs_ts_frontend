@@ -27,7 +27,7 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
 
             {/* 1. Breadcrumbs - Estilo minimalista y espaciado */}
             <nav aria-label="Breadcrumb" className="px-1">
-                <ol className="flex items-center flex-wrap gap-x-1.5 text-[10px] uppercase tracking-[0.15em] font-bold text-[var(--color-text-tertiary)]">
+                <ol className="flex items-center flex-wrap gap-x-1.5 text-sm text-[var(--color-text-tertiary)]">
                     {breadcrumbs.map((crumb, index) => {
                         const isLast = index === breadcrumbs.length - 1;
                         const isFirst = index === 0;
