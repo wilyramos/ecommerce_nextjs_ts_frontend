@@ -1,3 +1,5 @@
+//File: line.schema.ts
+
 import { z } from "zod";
 
 // --- Schema de Validación del Formulario ---

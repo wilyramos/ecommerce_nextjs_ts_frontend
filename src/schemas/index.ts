@@ -198,7 +198,7 @@ export const especificacionSchema = z.object({
 // ---------- Dimensiones ----------
 export const dimensionsSchema = z.object({
     length: z.number().min(0, 'El largo no puede ser negativo'),
-    width:  z.number().min(0, 'El ancho no puede ser negativo'),
+    width: z.number().min(0, 'El ancho no puede ser negativo'),
     height: z.number().min(0, 'El alto no puede ser negativo'),
 });
 
@@ -244,16 +244,16 @@ export const productBaseSchema = z.object({
     isFrontPage: z.boolean().optional().default(false),
     line: z.string().optional(),
     complementarios: z.array(z.string()).optional().default([]),
-    tags:            z.array(z.string()).optional().default([]),
-    weight:          z.number().min(0, 'El peso no puede ser negativo').optional(),
-    dimensions:      dimensionsSchema.optional(),
-    metaTitle:       z.string().max(60, 'El metaTitle no puede superar los 60 caracteres').optional(),
+    tags: z.array(z.string()).optional().default([]),
+    weight: z.number().min(0, 'El peso no puede ser negativo').optional(),
+    dimensions: dimensionsSchema.optional(),
+    metaTitle: z.string().max(60, 'El metaTitle no puede superar los 60 caracteres').optional(),
     metaDescription: z.string().max(160, 'La metaDescription no puede superar los 160 caracteres').optional(),
 });
 
 // ---------- Create & Update ----------
 export const createProductSchema = productBaseSchema.extend({
-    nombre:   z.string().min(1, 'El nombre es obligatorio'),
+    nombre: z.string().min(1, 'El nombre es obligatorio'),
     categoria: z.string().min(1, 'La categoría es obligatoria'),
 });
 export const updateProductSchema = productBaseSchema.partial();
@@ -280,36 +280,39 @@ export const ApiProductSchema = productBaseSchema
         slug: z.string(),
         categoria: z.union([z.string(), apiCategorySchema]).optional().nullable(),
         brand: ApiBrandSchema.optional(),
-        line: z.object({
-            _id: z.string().optional(),
-            nombre: z.string(),
-            slug: z.string(),
-        }).optional(),
+        line: z.union([
+            z.string(),
+            z.object({
+                _id: z.string().optional(),
+                nombre: z.string(),
+                slug: z.string(),
+            })
+        ]).optional().nullable(),
         complementarios: z.union([
             z.array(z.string()),
             z.array(ComplementaryProductSchema)
         ]).optional().default([]),
         variants: z.array(ApiVariantSchema).optional(),
-        rating:     z.number().min(0).max(5).default(0),
+        rating: z.number().min(0).max(5).default(0),
         numReviews: z.number().min(0).default(0),
-        deletedAt:  z.string().datetime().optional().nullable(),
-        createdAt:  z.string().datetime().optional(),
-        updatedAt:  z.string().datetime().optional(),
+        deletedAt: z.string().datetime().optional().nullable(),
+        createdAt: z.string().datetime().optional(),
+        updatedAt: z.string().datetime().optional(),
         __v: z.number().optional(),
     });
 
 export const ApiProductsSchema = z.array(ApiProductSchema);
 
 // ---------- Tipos inferidos ----------
-export type TEspecificacion    = z.infer<typeof especificacionSchema>;
-export type TDimensions        = z.infer<typeof dimensionsSchema>;
-export type TVariant           = z.infer<typeof variantSchema>;
-export type TApiVariant        = z.infer<typeof ApiVariantSchema>;
-export type TProductBase       = z.infer<typeof productBaseSchema>;
-export type TCreateProduct     = z.infer<typeof createProductSchema>;
-export type TUpdateProduct     = z.infer<typeof updateProductSchema>;
-export type TApiProduct        = z.infer<typeof ApiProductSchema>;
-export type TApiProducts       = z.infer<typeof ApiProductsSchema>;
+export type TEspecificacion = z.infer<typeof especificacionSchema>;
+export type TDimensions = z.infer<typeof dimensionsSchema>;
+export type TVariant = z.infer<typeof variantSchema>;
+export type TApiVariant = z.infer<typeof ApiVariantSchema>;
+export type TProductBase = z.infer<typeof productBaseSchema>;
+export type TCreateProduct = z.infer<typeof createProductSchema>;
+export type TUpdateProduct = z.infer<typeof updateProductSchema>;
+export type TApiProduct = z.infer<typeof ApiProductSchema>;
+export type TApiProducts = z.infer<typeof ApiProductsSchema>;
 
 export const ApiProductFullSchema = ApiProductSchema.extend({
     categoria: apiCategorySchema,
@@ -400,7 +403,7 @@ export type TFilter = z.infer<typeof filterSchema>;
 export const productsApiResponseWithFilters = productsAPIResponse.extend({
     // CORRECCIÓN AQUÍ: 'filters' es un OBJETO, no un array de objetos.
     // Antes tenías: z.array(filterSchema)
-    filters: filterSchema.optional(), 
+    filters: filterSchema.optional(),
 });
 
 export type TProductsApiResponseWithFilters = z.infer<typeof productsApiResponseWithFilters>;
