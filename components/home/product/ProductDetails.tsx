@@ -152,7 +152,7 @@ export default function ProductDetails({ producto }: Props) {
                                     {producto.brand && producto.line && (
                                         <span className="text-[11px] text-[var(--color-border-default)]">/</span>
                                     )}
-                                    {producto.line && (
+                                    {producto.line && typeof producto.line === 'object' && (
                                         <Link
                                             href={`/catalogo/${producto.line.slug}`}
                                             className="text-[11px] font-medium text-[var(--color-text-tertiary)] hover:text-[var(--color-accent-warm)] transition-colors uppercase tracking-wide"

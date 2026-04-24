@@ -1231,3 +1231,5 @@ export type TPurchaseUpdateInput = z.infer<typeof updatePurchaseSchema>;
 export type TPurchase = z.infer<typeof purchaseSchema>;
 export type TPurchasesResponse = z.infer<typeof purchasesResponseSchema>;
 export type TpurchaseSchemaPopulated = z.infer<typeof purchaseSchemaPopulated>;
+
+// TODO: DADOQ que hay cassos donde tiene que venir populado y no. manejar un schemas robustos y adecuados.
