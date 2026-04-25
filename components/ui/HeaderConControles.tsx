@@ -16,8 +16,8 @@ export default function HeaderConControles({ next, previous }: ButtonGroupProps)
                     bg-[var(--color-bg-primary)]
                     border border-[var(--color-border-subtle)]
                     text-[var(--color-text-secondary)]
-                    hover:border-[var(--color-action-primary)]
-                    hover:text-[var(--color-action-primary)]
+                    hover:border-[var(--color-accent-warm)]
+                    hover:text-[var(--color-accent-warm)]
                     transition-all duration-300
                     active:scale-90
                 "
@@ -39,8 +39,8 @@ export default function HeaderConControles({ next, previous }: ButtonGroupProps)
                     bg-[var(--color-bg-primary)]
                     border border-[var(--color-border-subtle)]
                     text-[var(--color-text-secondary)]
-                    hover:border-[var(--color-action-primary)]
-                    hover:text-[var(--color-action-primary)]
+                    hover:border-[var(--color-accent-warm)]
+                    hover:text-[var(--color-accent-warm)]
                     transition-all duration-300
                     active:scale-90
                 "

@@ -143,6 +143,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                             <button
                                 key={`${img}-${idx}`}
                                 onClick={() => setSelectedIndex(idx)}
+                                onMouseEnter={() => setSelectedIndex(idx)}
                                 className={cn(
                                     "relative aspect-square w-full shrink-0 overflow-hidden border-r-[3px] transition-all duration-300 ease-in-out",
                                     selectedIndex === idx
@@ -238,6 +239,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                             <button
                                 key={idx}
                                 onClick={() => setSelectedIndex(idx)}
+                                onMouseEnter={() => setSelectedIndex(idx)}
                                 className={`transition-all duration-500 rounded-full
                                     ${selectedIndex === idx
                                         ? "w-8 h-1 bg-[var(--color-text-primary)]"

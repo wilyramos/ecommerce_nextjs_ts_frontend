@@ -10,17 +10,16 @@ import CheckoutYape from "./mercadopago/CheckoutYape";
 export default function PaymentMethodsAccordion({ order }: { order: TOrderPopulated }) {
 
     // Clases comunes para los items del acordeón
-    const itemBaseClass = "group border border-[var(--store-border)] rounded-xl bg-[var(--store-surface)] overflow-hidden transition-all duration-300";
-    const triggerClass = "px-5 py-5 hover:no-underline hover:bg-[var(--store-surface-hover)] transition-colors";
-    const contentClass = "border-t border-[var(--store-border)] bg-[var(--store-bg)]";
-    const textTitleClass = "text-sm font-semibold text-[var(--store-text)]";
-    const textSubtitleClass = "text-xs text-[var(--store-text-muted)] font-medium mt-0.5";
-
+    const itemBaseClass = "group border border-[var(--color-border-subtle)] rounded-xl bg-transparent overflow-hidden transition-all duration-300";
+    const triggerClass = "px-5 py-5 hover:no-underline hover:bg-[var(--color-bg-secondary)] transition-colors";
+    const contentClass = "border-t border-[var(--color-border-subtle)] bg-transparent";
+    const textTitleClass = "text-sm font-semibold text-foreground";
+    const textSubtitleClass = "text-xs text-muted-foreground font-medium mt-0.5";
     return (
         <section className="w-full">
             <p className="text-sm text-[var(--store-text-muted)] mb-4">
                 Selecciona tu metodo de pago:
-                
+
             </p>
 
             <Accordion type="single" collapsible className="flex flex-col gap-3">
@@ -28,14 +27,14 @@ export default function PaymentMethodsAccordion({ order }: { order: TOrderPopula
                 {/* IZIPAY */}
                 <AccordionItem
                     value="izipay"
-                    className={`${itemBaseClass} data-[state=open]:border-[var(--store-text)] data-[state=open]:shadow-md`}
+                    className={`${itemBaseClass} data-[state=open]:border-[var(--color-accent-warm)] data-[state=open]:shadow-md`}
                 >
                     <AccordionTrigger className={triggerClass}>
                         <div className="flex items-center w-full justify-between gap-4">
                             <div className="flex items-center gap-4">
                                 {/* Custom Radio UI */}
-                                <div className="relative flex items-center justify-center w-5 h-5 shrink-0 border border-[var(--store-border)] rounded-full transition-colors group-data-[state=open]:border-[var(--store-text)]">
-                                    <div className="w-2.5 h-2.5 rounded-full bg-[var(--store-text)] scale-0 transition-transform duration-200 group-data-[state=open]:scale-100" />
+                                <div className="relative flex items-center justify-center w-5 h-5 shrink-0 border border-[var(--color-border-subtle)] rounded-full transition-colors group-data-[state=open]:border-[var(--color-accent-warm)]">
+                                    <div className="w-2.5 h-2.5 rounded-full bg-[var(--color-accent-warm)] scale-0 transition-transform duration-200 group-data-[state=open]:scale-100" />
                                 </div>
 
                                 <div className="flex flex-col text-left">

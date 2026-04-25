@@ -60,7 +60,7 @@ export default function ResumenCarrito() {
                         <li>
                             <div className="flex justify-between items-center">
                                 <span>Tarifa de envío</span>
-                                <span className="text-[10px] md:text-xs font-bold uppercase text-[var(--color-action-primary)] bg-[var(--color-action-primary-light)] rounded-2xl px-2 py-1">
+                                <span className="text-[10px] md:text-xs font-bold uppercase text-[var(--color-accent-warm)] bg-[var(--color-action-primary-light)] rounded-2xl px-2 py-1">
                                     Gratis
                                 </span>
                             </div>
@@ -97,9 +97,9 @@ export default function ResumenCarrito() {
 
                     <Button
                         onClick={handleContinuar}
-                        className="w-full text-sm md:text-base cursor-pointer bg-[var(--color-bg-inverse)] hover:bg-[var(--color-action-primary-hover)] text-[var(--color-text-inverse)] border-none shadow-sm"
+                        variant="accent"
                     >
-                        Realizar pedido
+                        Finalizar Compra
                     </Button>
                 </div>
             </div>

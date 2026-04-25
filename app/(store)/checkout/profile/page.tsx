@@ -8,15 +8,22 @@ export default async function ProfilePageCheckout() {
     if (!user) redirect("/auth/login?redirect=/checkout/profile");
 
     return (
-        <div className="max-w-2xl mx-auto bg-[var(--store-surface)] p-6 md:p-8 rounded-2xl border border-[var(--store-border)] shadow-sm">
-            <div className="flex items-center gap-3 mb-6 pb-4 border-b border-[var(--store-border)]">
-                <div className="w-8 h-8 rounded-full bg-[var(--store-bg)] flex items-center justify-center text-[var(--store-text)]">
-                    <FiUser size={18} />
+        <div className="max-w-2xl mx-auto bg-[var(--color-bg-primary)] p-6 md:p-10 border border-[var(--color-border-subtle)]">
+            <header className="flex flex-col gap-1 mb-8 pb-6 border-b border-[var(--color-border-subtle)]">
+                {/* Label minimalista */}
+                <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">
+                    Paso 01
+                </span>
+                
+                <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-[var(--color-bg-secondary)] flex items-center justify-center text-[var(--color-text-primary)]">
+                        <FiUser size={16} strokeWidth={1.5} />
+                    </div>
+                    <h2 className="text-xl font-bold tracking-tight text-[var(--color-accent-warm)]">
+                        Información personal
+                    </h2>
                 </div>
-                <h2 className="text-lg font-semibold text-[var(--store-text)]">
-                    Información personal
-                </h2>
-            </div>
+            </header>
             
             <IdentificacionForm user={user} />
         </div>

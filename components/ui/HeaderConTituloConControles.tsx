@@ -34,7 +34,7 @@ export default function HeaderConTituloConControles({ title, next, previous, vie
                     {viewAllHref && (
                         <Link 
                             href={viewAllHref} 
-                            className="hidden md:flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-[var(--color-action-tertiary)] hover:opacity-70 transition-opacity"
+                            className="hidden md:flex items-center gap-1 text-sm text-[var(--color-action-tertiary)] hover:opacity-70 transition-opacity"
                         >
                             Ver todo
                             <ChevronRight size={12} strokeWidth={3} />
@@ -48,7 +48,7 @@ export default function HeaderConTituloConControles({ title, next, previous, vie
             {viewAllHref && (
                 <Link 
                     href={viewAllHref} 
-                    className="md:hidden text-[10px] font-bold tracking-widest text-[var(--color-action-tertiary)] flex items-center gap-1"
+                    className="md:hidden text-sm text-[var(--color-action-tertiary)] flex items-center gap-1"
                 >
                     Ver todo <ChevronRight size={10} strokeWidth={3} />
                 </Link>

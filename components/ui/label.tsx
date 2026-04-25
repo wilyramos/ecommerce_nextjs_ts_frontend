@@ -1,24 +1,43 @@
+"use client"
+
 import * as React from "react"
 import * as LabelPrimitive from "@radix-ui/react-label"
 
 import { cn } from "@/lib/utils"
 
+// Extendemos las props para incluir el booleano 'required'
+interface LabelProps extends React.ComponentProps<typeof LabelPrimitive.Root> {
+  required?: boolean
+}
+
 function Label({
   className,
+  children,
+  required,
   ...props
-}: React.ComponentProps<typeof LabelPrimitive.Root>) {
+}: LabelProps) {
   return (
     <LabelPrimitive.Root
       data-slot="label"
       className={cn(
-        "flex items-center gap-2 text-sm leading-none font-medium select-none",
+        "flex items-center gap-1 text-sm leading-none font-medium select-none",
         "text-[var(--color-text-primary)]",
         "group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50",
         "peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
         className
       )}
       {...props}
-    />
+    >
+      {children}
+      {required && (
+        <span 
+          className="text-[var(--color-error)] text-xs font-bold ml-0.5" 
+          aria-hidden="true"
+        >
+          *
+        </span>
+      )}
+    </LabelPrimitive.Root>
   )
 }
 

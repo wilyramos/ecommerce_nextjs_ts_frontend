@@ -56,12 +56,10 @@ export default function ButtonShowCart() {
                 {/* Header */}
                 <SheetHeader className="p-6 border-b border-[var(--color-border-subtle)]">
                     <div className="flex flex-col gap-1">
-                        <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]">
-                            Resumen de compra
-                        </span>
+                       
                         <div className="flex items-center justify-between">
-                            <SheetTitle className="text-xl font-bold tracking-tight text-[var(--color-text-primary)]">
-                                Tu Bolsa
+                            <SheetTitle className="text-xl font-semibold text-[var(--color-text-primary)]">
+                                Carrito
                             </SheetTitle>
                             <span className="bg-[var(--color-bg-tertiary)] px-2.5 py-0.5 rounded-full text-[10px] font-bold text-[var(--color-text-secondary)] uppercase">
                                 {carrito.length} {carrito.length === 1 ? 'Ítem' : 'Ítems'}
@@ -87,11 +85,11 @@ export default function ButtonShowCart() {
                             </div>
                         </div>
                     ) : (
-                        <div className="divide-y divide-[var(--color-border-subtle)]">
+                        <div className="">
                             {carrito.map((item) => (
                                 <div 
                                     key={`${item._id}-${item.variant?._id ?? "no-variant"}`} 
-                                    className="py-6 w-full overflow-hidden"
+                                    className="py-2 w-full overflow-hidden"
                                 >
                                     <ItemCarrito item={item} />
                                 </div>

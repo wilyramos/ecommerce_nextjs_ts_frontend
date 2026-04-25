@@ -2,13 +2,13 @@
 "use client";
 
 import type { CatalogResponse } from "@/src/schemas/catalog";
-import CatalogHeader from "./CatalogHeader";
+import CatalogHeader, { TitlePart } from "./CatalogHeader";
 import CatalogSidebar from "./CatalogSidebar";
 import CatalogMobileFilters from "./CatalogMobileFilters";
 import CatalogGrid from "./CatalogGrid";
 import CatalogPagination from "./CatalogPagination";
+import CatalogMobileSort from "./CatalogMobileSort";
 
-// Definimos las props basándonos en la respuesta de la API
 interface CatalogLayoutProps {
     products: CatalogResponse['products'];
     filters: CatalogResponse['filters'];
@@ -25,24 +25,33 @@ export default function CatalogLayout({
     isFallback
 }: CatalogLayoutProps) {
 
-    // --- 1. Generar Título SEO/Visual Dinámico ---
-    const getTitle = () => {
-        // Caso A: Búsqueda por texto (prioridad alta)
-        if (context.searchQuery) return `Resultados para "${context.searchQuery}"`;
+    // Title builder
+    const getTitle = (): TitlePart[] => {
+        if (context.searchQuery) {
+            return [
+                { text: "Resultados para" },
+                { text: `"${context.searchQuery}"`, italic: true },
+            ];
+        }
 
-        // Caso B: Navegación jerárquica (Ej: "Celulares Samsung Galaxy S")
-        const parts = [];
-        if (context.categoryName) parts.push(context.categoryName);
-        if (context.brandName) parts.push(context.brandName);
-        if (context.lineName) parts.push(context.lineName); // <--- Incluimos la línea
+        const parts: TitlePart[] = [];
 
-        return parts.length > 0 ? parts.join(" ") : "Catálogo";
+        if (context.categoryName) {
+            parts.push({ text: context.categoryName });
+        }
+
+        if (context.brandName) {
+            parts.push({ text: context.brandName, italic: true });
+        }
+
+        if (context.lineName) {
+            parts.push({ text: context.lineName, italic: true });
+        }
+
+        return parts.length > 0 ? parts : [{ text: "Catálogo" }];
     };
 
-    // --- 2. Generar Breadcrumbs ---
-    // Nota: Usamos href="#" para indicar la posición actual o jerarquía. 
-    // El componente CatalogHeader renderiza estos elementos como texto no clicable (span)
-    // para evitar recargas innecesarias, ya que la navegación real se hace vía Sidebar.
+    // Breadcrumbs
     const breadcrumbs = [
         { label: "Inicio", href: "/" },
         { label: "Catálogo", href: "/catalogo" },
@@ -61,7 +70,6 @@ export default function CatalogLayout({
     return (
         <section className="container mx-auto px-4 md:px-6 max-w-[1440px] pb-10">
 
-            {/* Header Global (Título + Breadcrumbs + Contador Total) */}
             <div className="pt-4">
                 <CatalogHeader
                     title={getTitle()}
@@ -70,33 +78,23 @@ export default function CatalogLayout({
                 />
             </div>
 
-            {/* Layout Principal (Grid 12 columnas) */}
-            <div className="flex flex-col lg:grid lg:grid-cols-12 gap-2  relative">
+            <div className="flex flex-col lg:grid lg:grid-cols-12 gap-2 relative">
 
-                {/* --- SIDEBAR (Desktop) --- */}
-                {/* Oculto en móvil, visible en lg (col-span-3 o 2 dependiendo del diseño) */}
                 <aside className="hidden lg:block lg:col-span-3 xl:col-span-2 md:pr-6 border-r">
                     <div className="sticky top-24">
-                        {/* Pasamos TODOS los filtros (incluyendo líneas) */}
                         <CatalogSidebar filters={filters} />
                     </div>
                 </aside>
 
-                {/* --- CONTENIDO PRINCIPAL --- */}
-                <main className="lg:col-span-9 xl:col-span-10 flex flex-col ">
+                <main className="lg:col-span-9 xl:col-span-10 flex flex-col">
 
-                    {/* Toolbar Mobile (Contador + Botón Filtros Drawer) */}
-                    {/* Solo visible en pantallas pequeñas */}
-                    <div className="lg:hidden flex justify-between items-center sticky top-12 z-10 bg-[var(--color-bg-primary)] py-2">
-                        {/* Pasamos los filtros al Drawer móvil */}
+                    <div className="lg:hidden flex items-center justify-between sticky top-11 z-10 bg-[var(--color-bg-primary)] py-2 border-b border-[var(--color-border-subtle)]">
                         <CatalogMobileFilters filters={filters} />
+                        <CatalogMobileSort />
                     </div>
 
-                    {/* Grid de Productos (o Mensaje de Fallback si no hay exactos) */}
                     <CatalogGrid products={products} isFallback={isFallback} />
 
-                    {/* Paginación */}
-                    {/* Solo se muestra si NO estamos en modo fallback y hay más de 1 página */}
                     {!isFallback && pagination.totalPages > 1 && (
                         <div className="mt-auto pt-8 border-t border-[var(--color-border)]">
                             <CatalogPagination

@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { Check } from "lucide-react"; // Opcional: para pasos completados
 
 const steps = [
     { label: "Identificación", path: "/checkout/profile" },
@@ -13,52 +14,53 @@ const steps = [
 export default function CheckoutSteps() {
     const pathname = usePathname();
 
+    // Encontrar el índice actual para determinar qué pasos están completados
+    const currentStepIndex = steps.findIndex((s) => s.path === pathname);
+
     return (
-        <div className="flex md:items-center md:justify-between mx-auto w-full max-w-3xl py-4 px-2">
+        <nav className="flex items-center justify-between mx-auto w-full max-w-2xl py-6 px-4">
             {steps.map((step, index) => {
-                // Lógica de estado
-                const isActive = pathname.startsWith(step.path);
-                const currentStepIndex = steps.findIndex((s) => s.path === pathname);
+                const isActive = pathname === step.path;
                 const isCompleted = currentStepIndex > index;
 
                 const StepContent = (
-                    <div className="flex-1 flex items-center gap-2 md:pb-2">
+                    <div className="flex items-center gap-3 relative group">
                         {/* Círculo indicador */}
                         <div
                             className={cn(
-                                "w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 border",
+                                "w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-500 border-2",
                                 isCompleted
-                                    ? "bg-[var(--store-text)] border-[var(--store-text)] text-[var(--store-surface)]" // Completado (Negro sólido)
+                                    ? "bg-[var(--color-bg-inverse)] border-[var(--color-bg-inverse)] text-[var(--color-text-inverse)]"
                                     : isActive
-                                        ? "bg-[var(--store-text)] border-[var(--store-text)] text-[var(--store-surface)] scale-110" // Activo (Negro resaltado)
-                                        : "bg-[var(--store-bg)] border-[var(--store-border)] text-[var(--store-text-muted)]" // Pendiente (Gris sutil)
+                                        ? "bg-[var(--color-bg-primary)] border-[var(--color-action-primary)] text-[var(--color-action-primary)] scale-110 shadow-sm"
+                                        : "bg-[var(--color-bg-tertiary)] border-[var(--color-border-default)] text-[var(--color-text-tertiary)]"
                             )}
                         >
-                            {index + 1}
+                            {isCompleted ? <Check size={14} strokeWidth={3} /> : index + 1}
                         </div>
 
-                        {/* Etiqueta de texto */}
-                        <span
-                            className={cn(
-                                "text-xs md:text-sm transition-colors font-medium hidden md:block",
-                                isActive
-                                    ? "text-[var(--store-text)] font-semibold" // Activo
-                                    : isCompleted
-                                        ? "text-[var(--store-text)] cursor-pointer" // Completado
-                                        : "text-[var(--store-text-muted)]" // Pendiente
-                            )}
-                        >
-                            {step.label}
-                        </span>
+                        {/* Etiqueta de texto - Minimalista */}
+                        <div className="flex flex-col">
+                            <span
+                                className={cn(
+                                    "text-[9px] uppercase tracking-[0.15em] font-bold transition-colors hidden md:block",
+                                    isActive || isCompleted
+                                        ? "text-[var(--color-text-primary)]"
+                                        : "text-[var(--color-text-tertiary)]"
+                                )}
+                            >
+                                {step.label}
+                            </span>
+                        </div>
 
-                        {/* Línea divisoria (conector) */}
+                        {/* Línea divisoria (Conector) */}
                         {index < steps.length - 1 && (
                             <div
                                 className={cn(
-                                    "flex-1 h-[1px] mx-2 md:mx-4 transition-colors",
+                                    "hidden md:block w-12 lg:w-20 h-[2px] mx-2 transition-all duration-700",
                                     isCompleted
-                                        ? "bg-[var(--store-text)]"
-                                        : "bg-[var(--store-border)]"
+                                        ? "bg-[var(--color-bg-inverse)]"
+                                        : "bg-[var(--color-border-subtle)]"
                                 )}
                             />
                         )}
@@ -66,15 +68,19 @@ export default function CheckoutSteps() {
                 );
 
                 return (
-                    <div key={step.path} className={index === steps.length - 1 ? "flex-none" : "flex-1"}>
+                    <div key={step.path} className="flex items-center">
                         {isCompleted ? (
-                            <Link href={step.path}>{StepContent}</Link>
+                            <Link href={step.path} className="cursor-pointer hover:opacity-80 transition-opacity">
+                                {StepContent}
+                            </Link>
                         ) : (
-                            StepContent
+                            <div className="cursor-default">
+                                {StepContent}
+                            </div>
                         )}
                     </div>
                 );
             })}
-        </div>
+        </nav>
     );
 }

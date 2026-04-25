@@ -43,7 +43,7 @@ export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {
                     <Link 
                         key={b._id} 
                         href={routes.catalog({ brand: b.slug })}
-                        className="group relative flex items-center justify-center aspect-square rounded-2xl bg-[var(--color-bg-primary)] border border-[var(--color-border-subtle)] transition-all duration-300 hover:border-[var(--color-action-primary)] hover:shadow-lg hover:shadow-[var(--color-action-primary)]/5"
+                        className="group relative flex items-center justify-center aspect-square bg-[var(--color-bg-primary)] transition-all duration-300 hover:border-[var(--color-accent-warm)] hover:shadow-lg hover:shadow-[var(--color-accent-warm)]/5"
                     >
                         {/* Contenedor del Logo */}
                         <div className="relative w-full h-full p-6 md:p-8 flex items-center justify-center">

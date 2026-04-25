@@ -25,7 +25,12 @@ export default function HeroFlashSale() {
     if (!mounted) return <div className="min-h-[360px] bg-[var(--color-bg-secondary)]" />;
 
     return (
-        <div className="relative flex flex-col justify-center p-10 md:p-14 bg-[var(--color-bg-primary)] border-b md:border-b-0 md:border-r border-[var(--color-border-default)] min-h-[360px]">
+        <Link
+
+            href="/ofertas"
+            className="group relative flex flex-col justify-center p-10 md:p-14 bg-[var(--color-bg-primary)] min-h-[360px] overflow-hidden"
+
+        >
             <div className="space-y-5">
                 <div className="inline-flex items-center gap-2 text-[var(--color-accent-warm)] font-semibold text-xs uppercase tracking-tight">
                     <Timer className="w-4 h-4" /> Oferta del día
@@ -33,16 +38,13 @@ export default function HeroFlashSale() {
 
                 <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-[var(--color-text-primary)] leading-[1.1]">
                     Precios fugaces. <br />
-                    <span className="text-[var(--color-text-tertiary)]">Oportunidad única.</span>
+                    <span className="text-[var(--color-text-tertiary)] group-hover:text-[var(--color-text-primary)] transition-colors">Oportunidad única.</span>
                 </h2>
 
                 <div className="flex items-center gap-8 pt-4">
-                    <Link 
-                        href="/ofertas" 
-                        className="px-4 py-1 bg-[var(--color-accent-warm)] text-[var(--color-text-inverse)] font-medium transition-all hover:bg-[var(--color-accent-warm-hover)] hover:scale-[1.02] text-xs shadow-sm"
-                    >
-                        Ver ofertas
-                    </Link>
+                    <span className="text-[var(--color-text-primary)] font-medium">
+                        ver ofertas
+                    </span>
                     <div className="flex gap-4 border-l border-[var(--color-border-default)] pl-8">
                         <TimeBox val={timeLeft.hours} unit="H" />
                         <TimeBox val={timeLeft.minutes} unit="M" />
@@ -50,7 +52,8 @@ export default function HeroFlashSale() {
                     </div>
                 </div>
             </div>
-        </div>
+
+        </Link>
     );
 }
 

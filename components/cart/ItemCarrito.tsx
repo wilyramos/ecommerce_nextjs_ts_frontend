@@ -1,7 +1,7 @@
 import Image from "next/image";
 import type { CartItem } from "@/src/schemas";
 import { useCartStore } from "@/src/store/cartStore";
-import { FiTrash2 } from "react-icons/fi";
+import { Minus, Plus, Trash2 } from "lucide-react";
 import { MdOutlineImageNotSupported } from "react-icons/md";
 
 export default function ItemCarrito({ item }: { item: CartItem }) {
@@ -13,87 +13,86 @@ export default function ItemCarrito({ item }: { item: CartItem }) {
     const imageSrc = item.variant?.imagenes?.[0] ?? item.imagenes?.[0];
     const price = item.variant?.precio ?? item.precio ?? 0;
     const subtotal = price * item.cantidad;
+    const stockMax = item.variant?.stock ?? item.stock ?? 0;
+
+    const atributos = item.variant?.atributos
+        ? Object.values(item.variant.atributos).join(" · ")
+        : null;
+
     return (
-        <li className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4 border-b border-gray-200 last:border-none">
-            {/* Imagen + información del producto */}
-            <div className="flex items-start gap-4 flex-1">
+        <div className="flex flex-col py-2 gap-2 ">
+            {/* Nombre ocupa todo el ancho superior */}
+            <p className="text-[13px] font-medium leading-tight text-[var(--color-text-primary)]">
+                {item.nombre}
+            </p>
+
+            <div className="flex gap-3 items-center">
                 {/* Imagen */}
-                <div className="relative w-16 h-16 flex-shrink-0 overflow-hidden rounded-md border border-gray-100 bg-gray-50">
+                <div className="relative w-14 h-14 flex-shrink-0 overflow-hidden bg-[var(--color-bg-secondary)]">
                     {imageSrc ? (
                         <Image
                             src={imageSrc}
                             alt={item.variant?.nombre ?? item.nombre}
-                            width={64}
-                            height={64}
-                            className="object-cover w-full h-full"
-                            quality={40}
+                            fill
+                            className="object-cover"
+                            quality={60}
+                            unoptimized
                         />
                     ) : (
-                        <div className="flex items-center justify-center w-full h-full ">
-                            <MdOutlineImageNotSupported size={18} />
-
+                        <div className="flex items-center justify-center w-full h-full text-[var(--color-text-tertiary)]">
+                            <MdOutlineImageNotSupported size={16} />
                         </div>
                     )}
                 </div>
 
-                {/* Detalles */}
-                <div className="flex flex-col flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-gray-800 line-clamp-2 ">
-                        {item.nombre}
-                    </p>
-
-                    {item.variant?.nombre && (
-                        <p className="text-xs text-gray-500 mt-0.5">
-                            {Object.entries(item.variant.atributos)
-                                .map(([k, v]) => `${k}: ${v}`)
-                                .join(" • ")}
+                {/* Info al costado de la imagen */}
+                <div className="flex flex-col flex-1 min-w-0 gap-2">
+                    {/* Atributos */}
+                    {atributos && (
+                        <p className="text-[11px] text-[var(--color-text-tertiary)] -mt-1">
+                            {atributos}
                         </p>
                     )}
 
-                    {/* Controles cantidad + eliminar */}
-                    <div className="flex items-center gap-2 mt-2">
-                        {/* Cantidad */}
-                        <div className="flex items-center border border-gray-300 rounded-md overflow-hidden">
-                            <button
-                                onClick={() => updateQuantity(productId, item.cantidad - 1, variantId)}
-                                disabled={item.cantidad <= 1}
-                                className="w-8 h-8 text-gray-600 text-lg flex items-center justify-center hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
-                            >
-                                -
-                            </button>
-                            <span className="w-8 text-center text-sm font-medium text-gray-800 select-none">
-                                {item.cantidad}
+                    {/* Cantidad + Precio Unitario + Eliminar */}
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-2">
+                                <button
+                                    onClick={() => updateQuantity(productId, item.cantidad - 1, variantId)}
+                                    disabled={item.cantidad <= 1}
+                                    className="w-5 h-5 flex items-center justify-center border border-[var(--color-border-default)] bg-[var(--color-bg-primary)] text-[var(--color-text-secondary)] disabled:opacity-30 disabled:cursor-not-allowed hover:border-[var(--color-border-strong)] transition-colors"
+                                >
+                                    <Minus size={8} strokeWidth={2.5} />
+                                </button>
+                                <span className="text-[12px] font-medium text-[var(--color-text-primary)] tabular-nums min-w-[12px] text-center">
+                                    {item.cantidad}
+                                </span>
+                                <button
+                                    onClick={() => updateQuantity(productId, item.cantidad + 1, variantId)}
+                                    disabled={item.cantidad >= stockMax}
+                                    className="w-5 h-5 flex items-center justify-center border border-[var(--color-border-default)] bg-[var(--color-bg-primary)] text-[var(--color-text-secondary)] disabled:opacity-30 disabled:cursor-not-allowed hover:border-[var(--color-border-strong)] transition-colors"
+                                >
+                                    <Plus size={8} strokeWidth={2.5} />
+                                </button>
+                            </div>
+                            
+                            {/* Precio al costado de las cantidades */}
+                            <span className="text-[12px] font-semibold text-[var(--color-text-primary)]">
+                                S/ {subtotal.toFixed(2)}
                             </span>
-                            <button
-                                onClick={() => updateQuantity(productId, item.cantidad + 1, variantId)}
-                                disabled={item.cantidad >= (item.variant?.stock ?? item.stock ?? 0)}
-                                className="w-8 h-8 text-gray-600 text-lg flex items-center justify-center hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
-                            >
-                                +
-                            </button>
                         </div>
 
-                        {/* Eliminar */}
                         <button
                             onClick={() => removeFromCart(productId, variantId)}
-                            className="p-2 rounded-md text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
                             aria-label={`Eliminar ${item.nombre}`}
+                            className="p-1 text-[var(--color-text-tertiary)] hover:text-red-500 transition-colors"
                         >
-                            <FiTrash2 size={18} />
+                            <Trash2 size={14} strokeWidth={1.5} />
                         </button>
                     </div>
                 </div>
             </div>
-
-            {/* Precio total */}
-            <div className="text-right sm:min-w-[80px]">
-                <span className="text-sm font-semibold text-gray-900 block">
-                    S/. {subtotal.toFixed(2)}
-                </span>
-                <span className="text-xs text-gray-500">
-                    S/. {price.toFixed(2)} c/u
-                </span>
-            </div>
-        </li>
+        </div>
     );
 }

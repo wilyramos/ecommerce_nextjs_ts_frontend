@@ -54,7 +54,7 @@ export default async function OrderProfilePage({ params }: { params: Params }) {
             </div>
 
             {/* Progreso */}
-            <section className="bg-white border rounded-xl p-4 shadow-sm">
+            <section className="bg-white border rounded-xl p-4 ">
                 <h2 className="text-base font-semibold text-gray-900 mb-3">Progreso del pedido</h2>
                 <OrderStepper status={order.status} />
             </section>
@@ -62,7 +62,7 @@ export default async function OrderProfilePage({ params }: { params: Params }) {
             {/* Grid estado/envío/totales */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Estado y pago */}
-                <div className="bg-white border rounded-xl p-5 shadow-sm space-y-3">
+                <div className="bg-white border rounded-xl p-5  space-y-3">
                     <h2 className="text-base font-semibold text-gray-900">Estado del pago</h2>
                     <div className="flex items-center gap-2 text-sm">
                         <PaymentStatusBadge status={order.payment.status} />
@@ -94,7 +94,7 @@ export default async function OrderProfilePage({ params }: { params: Params }) {
                 </div>
 
                 {/* Dirección de envío */}
-                <div className="bg-white border rounded-xl p-5 shadow-sm">
+                <div className="bg-white border rounded-xl p-5 ">
                     <h2 className="text-base font-semibold text-gray-900 mb-2">Dirección de envío</h2>
                     <div className="text-sm text-gray-700 leading-6">
                         <p>
@@ -113,7 +113,7 @@ export default async function OrderProfilePage({ params }: { params: Params }) {
                 </div>
 
                 {/* Totales */}
-                <div className="bg-white border rounded-xl p-5 shadow-sm">
+                <div className="bg-white border rounded-xl p-5 ">
                     <h2 className="text-base font-semibold text-gray-900 mb-2">Resumen</h2>
                     <div className="text-sm space-y-1 text-gray-600">
                         <div className="flex justify-between">
@@ -134,7 +134,7 @@ export default async function OrderProfilePage({ params }: { params: Params }) {
 
             {/* Productos */}
             {/* Productos */}
-            <div className="bg-white border rounded-xl p-5 shadow-sm">
+            <div className="bg-white border rounded-xl p-5 ">
                 <h2 className="text-base font-semibold text-gray-900 mb-4">Productos comprados</h2>
                 <ul className="divide-y divide-gray-200">
                     {order.items.map((item, i) => {
