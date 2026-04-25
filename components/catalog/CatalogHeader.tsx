@@ -101,13 +101,30 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
                                 <SelectValue placeholder="Ordenar por" />
                             </SelectTrigger>
 
+
                             <SelectContent
                                 align="end"
                                 className="bg-[var(--color-bg-primary)] border-[var(--color-border-default)] rounded-xl p-1"
                             >
+                                {/* RELEVANCIA: Solo útil si hay una búsqueda activa */}
+                                <SelectItem value="relevancia" className="rounded-lg text-[13px] focus:bg-[var(--color-bg-secondary)]">
+                                    Relevancia
+                                </SelectItem>
+
                                 <SelectItem value="recientes" className="rounded-lg text-[13px] focus:bg-[var(--color-bg-secondary)]">
                                     Más Recientes
                                 </SelectItem>
+
+                                {/* VALORACIÓN: Basado en reviews/rating */}
+                                <SelectItem value="rating" className="rounded-lg text-[13px] focus:bg-[var(--color-bg-secondary)]">
+                                    Mejor Valorados
+                                </SelectItem>
+
+                                {/* DESCUENTO: Ideal para captar atención en ofertas */}
+                                <SelectItem value="discount" className="rounded-lg text-[13px] focus:bg-[var(--color-bg-secondary)]">
+                                    Mayor Descuento
+                                </SelectItem>
+
                                 <SelectItem value="price-asc" className="rounded-lg text-[13px] focus:bg-[var(--color-bg-secondary)]">
                                     Precio: Menor a Mayor
                                 </SelectItem>

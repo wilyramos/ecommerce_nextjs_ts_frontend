@@ -45,10 +45,38 @@ export default function CatalogMobileSort() {
                     align="end"
                     className="bg-[var(--color-bg-primary)] border-[var(--color-border-default)] rounded-xl p-1"
                 >
-                    <SelectItem value="recientes" className="rounded-lg text-[13px]">Más Recientes</SelectItem>
-                    <SelectItem value="price-asc" className="rounded-lg text-[13px]">Menor Precio</SelectItem>
-                    <SelectItem value="price-desc" className="rounded-lg text-[13px]">Mayor Precio</SelectItem>
-                    <SelectItem value="name-asc" className="rounded-lg text-[13px]">A - Z</SelectItem>
+                    {/* RELEVANCIA */}
+                    <SelectItem value="relevancia" className="rounded-lg text-[13px]">
+                        Relevancia
+                    </SelectItem>
+
+                    {/* RECIENTES */}
+                    <SelectItem value="recientes" className="rounded-lg text-[13px]">
+                        Más Recientes
+                    </SelectItem>
+
+                    {/* VALORACIÓN */}
+                    <SelectItem value="rating" className="rounded-lg text-[13px]">
+                        Mejor Valorados
+                    </SelectItem>
+
+                    {/* DESCUENTO */}
+                    <SelectItem value="discount" className="rounded-lg text-[13px]">
+                        Mayor Descuento
+                    </SelectItem>
+
+                    {/* PRECIO */}
+                    <SelectItem value="price-asc" className="rounded-lg text-[13px]">
+                        Menor Precio
+                    </SelectItem>
+                    <SelectItem value="price-desc" className="rounded-lg text-[13px]">
+                        Mayor Precio
+                    </SelectItem>
+
+                    {/* ALFABÉTICO */}
+                    <SelectItem value="name-asc" className="rounded-lg text-[13px]">
+                        Nombre: A - Z
+                    </SelectItem>
                 </SelectContent>
             </Select>
         </div>

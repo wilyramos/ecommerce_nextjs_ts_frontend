@@ -77,7 +77,7 @@ export const getCatalogDataOffers = async (
         const res = await fetch(url, {
             method: "GET",
             cache: "no-store",
-            next: { revalidate: 60 * 30 },
+            // next: { revalidate: 60 * 30 },
         });
 
         if (!res.ok) {
@@ -115,7 +115,7 @@ export const getCatalogDataNewArrivals = async (
         const res = await fetch(url, {
             method: "GET",
             // Novedades no cambia cada minuto, podemos cachear un poco más
-            next: { revalidate: 3600 } // 1 hora
+            // next: { revalidate: 3600 } // 1 hora
         });
 
         if (!res.ok) return null;
