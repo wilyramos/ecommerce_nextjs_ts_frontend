@@ -38,7 +38,7 @@ export default function ProductSwitches({ product }: { product?: ProductWithCate
     ]
 
     return (
-        <div className="space-y-4 border-l bg-white  rounded-md p-6 text-sm font-medium black">
+        <div className="space-y-4  p-2 text-sm font-medium ">
             {switches.map(({ id, label, state, setter }) => (
                 <div key={id} className="flex items-center  justify-between">
                     <label htmlFor={id}>{label}</label>

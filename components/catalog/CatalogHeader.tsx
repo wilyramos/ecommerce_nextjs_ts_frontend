@@ -90,48 +90,48 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
                 <div className="hidden md:flex items-center gap-4">
                     <div className="group relative flex items-center">
                         <div className="absolute left-3 z-10 pointer-events-none">
-                            <ArrowUpDown className="w-3.5 h-3.5 text-[var(--color-text-tertiary)] group-focus-within:text-[var(--color-action-primary)] transition-colors" />
+                            <ArrowUpDown className="w-3.5 h-3.5 text-[var(--color-text-tertiary)] group-focus-within:text-[var(--color-accent-warm)] transition-colors" />
                         </div>
 
                         <Select
                             value={currentSort}
                             onValueChange={(val) => updateFilter("sort", val)}
                         >
-                            <SelectTrigger className="w-[200px] h-11 pl-9 pr-4 border-[var(--color-border-default)] bg-[var(--color-bg-primary)] text-[13px] font-semibold text-[var(--color-text-primary)] focus:ring-2 focus:ring-[var(--color-action-primary-light)] focus:border-[var(--color-action-primary)] transition-all hover:bg-[var(--color-bg-secondary)]">
+                            <SelectTrigger className="w-[200px] h-11 pl-9 pr-4 border-[var(--color-border-default)] bg-[var(--color-bg-primary)] text-[13px] font-semibold text-[var(--color-text-secondary)] focus:ring-2 focus:ring-[var(--color-action-primary-light)] focus:border-[var(--color-accent-warm)] transition-all hover:bg-[var(--color-bg-secondary)]">
                                 <SelectValue placeholder="Ordenar por" />
                             </SelectTrigger>
 
 
                             <SelectContent
                                 align="end"
-                                className="bg-[var(--color-bg-primary)] border-[var(--color-border-default)] rounded-xl p-1"
+                                className="bg-[var(--color-bg-primary)] border-[var(--color-border-default)]  p-1"
                             >
                                 {/* RELEVANCIA: Solo útil si hay una búsqueda activa */}
-                                <SelectItem value="relevancia" className="rounded-lg text-[13px] focus:bg-[var(--color-bg-secondary)]">
+                                <SelectItem value="relevancia" >
                                     Relevancia
                                 </SelectItem>
 
-                                <SelectItem value="recientes" className="rounded-lg text-[13px] focus:bg-[var(--color-bg-secondary)]">
+                                <SelectItem value="recientes" >
                                     Más Recientes
                                 </SelectItem>
 
                                 {/* VALORACIÓN: Basado en reviews/rating */}
-                                <SelectItem value="rating" className="rounded-lg text-[13px] focus:bg-[var(--color-bg-secondary)]">
+                                <SelectItem value="rating" >
                                     Mejor Valorados
                                 </SelectItem>
 
                                 {/* DESCUENTO: Ideal para captar atención en ofertas */}
-                                <SelectItem value="discount" className="rounded-lg text-[13px] focus:bg-[var(--color-bg-secondary)]">
+                                <SelectItem value="discount" >
                                     Mayor Descuento
                                 </SelectItem>
 
-                                <SelectItem value="price-asc" className="rounded-lg text-[13px] focus:bg-[var(--color-bg-secondary)]">
+                                <SelectItem value="price-asc" >
                                     Precio: Menor a Mayor
                                 </SelectItem>
-                                <SelectItem value="price-desc" className="rounded-lg text-[13px] focus:bg-[var(--color-bg-secondary)]">
+                                <SelectItem value="price-desc" >
                                     Precio: Mayor a Menor
                                 </SelectItem>
-                                <SelectItem value="name-asc" className="rounded-lg text-[13px] focus:bg-[var(--color-bg-secondary)]">
+                                <SelectItem value="name-asc" >
                                     Nombre: A - Z
                                 </SelectItem>
                             </SelectContent>

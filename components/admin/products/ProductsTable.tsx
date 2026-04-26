@@ -67,7 +67,7 @@ export default function ProductsTable({ products, categories, brands }: {
     };
 
     return (
-        <div className="w-full overflow-x-auto pb-2 text-xs text-zinc-600 bg-gray-50">
+        <div className="w-full h-full overflow-auto pb-2 text-xs text-zinc-600 bg-gray-50">
             <div className="flex justify-end my-1 pr-1">
                 <button
                     onClick={clearFilters}

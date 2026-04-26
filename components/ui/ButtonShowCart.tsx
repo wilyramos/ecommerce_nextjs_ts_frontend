@@ -4,7 +4,7 @@ import {
     Sheet,
     SheetContent,
     SheetHeader,
-    SheetTitle, 
+    SheetTitle,
     SheetTrigger
 } from "@/components/ui/sheet";
 
@@ -36,10 +36,10 @@ export default function ButtonShowCart() {
         <Sheet open={isCartOpen} onOpenChange={setCartOpen}>
             <SheetTrigger asChild>
                 <button className="relative p-2.5 rounded-full transition-all duration-300 hover:bg-[var(--color-bg-tertiary)] group cursor-pointer active:scale-90">
-                    <ShoppingCart 
-                        size={20} 
-                        strokeWidth={1.5} 
-                        className="text-[var(--color-text-primary)]" 
+                    <ShoppingCart
+                        size={20}
+                        strokeWidth={1.5}
+                        className="text-[var(--color-text-primary)]"
                     />
                     {carrito.length > 0 && (
                         <span className="absolute top-1 right-1 bg-[var(--color-accent-warm)] text-[var(--color-text-inverse)] text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center shadow-md">
@@ -49,14 +49,14 @@ export default function ButtonShowCart() {
                 </button>
             </SheetTrigger>
 
-            <SheetContent 
+            <SheetContent
                 side="right"
                 className="flex flex-col h-full  p-0 border-l border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)] overflow-hidden"
             >
                 {/* Header */}
                 <SheetHeader className="p-6 border-b border-[var(--color-border-subtle)]">
                     <div className="flex flex-col gap-1">
-                       
+
                         <div className="flex items-center justify-between">
                             <SheetTitle className="text-xl font-semibold text-[var(--color-text-primary)]">
                                 Carrito
@@ -87,8 +87,8 @@ export default function ButtonShowCart() {
                     ) : (
                         <div className="">
                             {carrito.map((item) => (
-                                <div 
-                                    key={`${item._id}-${item.variant?._id ?? "no-variant"}`} 
+                                <div
+                                    key={`${item._id}-${item.variant?._id ?? "no-variant"}`}
                                     className="py-2 w-full overflow-hidden"
                                 >
                                     <ItemCarrito item={item} />
@@ -102,15 +102,15 @@ export default function ButtonShowCart() {
                 {carrito.length > 0 && (
                     <div className="p-6 bg-[var(--color-bg-primary)] border-t border-[var(--color-border-default)]">
                         <div className="space-y-4 mb-6">
-                          
-                            
+
+
                             <div className="flex justify-between items-baseline pt-4 border-t border-[var(--color-border-subtle)]">
                                 <span className="text-lg font-bold tracking-tight text-[var(--color-text-primary)]">Total</span>
                                 <div className="text-right">
                                     <span className="text-xl text-[var(--color-text-primary)] tracking-tighter">
                                         S/ {total}
                                     </span>
-                                  
+
                                 </div>
                             </div>
                         </div>
@@ -122,8 +122,8 @@ export default function ButtonShowCart() {
                             >
                                 Finalizar Pedido <ArrowRight size={18} />
                             </Button>
-                            
-                            <button 
+
+                            <button
                                 onClick={() => setCartOpen(false)}
                                 className="w-full py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] transition-colors"
                             >

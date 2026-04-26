@@ -31,23 +31,23 @@ export default async function ProductsResultsAdmin({
     const brands = await getBrands();
 
     // console.log("Products data:", productsData);
-
-    return (
-        <>
-            <ProductsTable 
-                products={productsData} 
-                categories={categories} 
+return (
+    <div className="flex flex-col flex-1 min-h-0">
+        <div className="flex-1 min-h-0 overflow-hidden">
+            <ProductsTable
+                products={productsData}
+                categories={categories}
                 brands={brands}
             />
-            <div className="py-2">
-
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={productsData?.totalPages ?? 1}
-                    limit={itemsPerPage}
-                    pathname="/admin/products"
-                />
-            </div>
-        </>
-    );
+        </div>
+        <div className="py-2 shrink-0">
+            <Pagination
+                currentPage={currentPage}
+                totalPages={productsData?.totalPages ?? 1}
+                limit={itemsPerPage}
+                pathname="/admin/products"
+            />
+        </div>
+    </div>
+);
 }

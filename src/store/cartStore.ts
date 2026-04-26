@@ -71,10 +71,6 @@ export const useCartStore = create<Store>()(
                 addToCart: (item, variant) => {
                     const cart = get().cart;
 
-                    const alreadyInCart = cart.find((cartItem) => cartItem._id === item._id);
-                    if (alreadyInCart && variant && alreadyInCart.variant?._id !== variant._id) {
-                        return;
-                    }
                     const productInCart = cart.find((cartItem) =>
                         variant
                             ? cartItem._id === item._id && cartItem.variant?._id === variant._id
@@ -83,7 +79,6 @@ export const useCartStore = create<Store>()(
 
                     const stock = variant?.stock ?? item.stock ?? 0;
                     const precio = variant?.precio ?? item.precio ?? 0;
-                    console.log("Añadiendo al carrito:", { item, variant });
                     const imagenes =
                         variant?.imagenes && variant.imagenes.length > 0
                             ? variant.imagenes
@@ -91,7 +86,6 @@ export const useCartStore = create<Store>()(
 
                     if (productInCart) {
                         if (productInCart.cantidad >= stock) return;
-
                         set({
                             cart: cart.map((cartItem) =>
                                 cartItem === productInCart
@@ -122,7 +116,7 @@ export const useCartStore = create<Store>()(
                                             precio: variant.precio,
                                             atributos: variant.atributos ?? {},
                                             stock: variant.stock,
-                                            imagenes: 
+                                            imagenes:
                                                 variant.imagenes && variant.imagenes.length > 0
                                                     ? variant.imagenes
                                                     : undefined,
@@ -145,6 +139,7 @@ export const useCartStore = create<Store>()(
                     );
 
                     if (!productInCart) return;
+                    if (quantity < 1) return;
                     if (quantity > (productInCart.stock ?? 0)) return;
 
                     set({
@@ -154,6 +149,8 @@ export const useCartStore = create<Store>()(
                                 : cartItem
                         ),
                     });
+
+                    get().calculateTotal();
                 },
 
                 removeFromCart: (id, variantId) => {

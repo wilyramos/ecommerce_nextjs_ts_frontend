@@ -11,6 +11,9 @@ import ProductForm from "./ProductForm";
 import type { ProductWithCategoryResponse, CategoryListResponse } from "@/src/schemas";
 import type { TBrand } from "@/src/schemas/brands";
 import type { ProductLine } from "@/src/schemas/line.schema"; 
+
+
+
 interface EditProductFormProps {
     product: ProductWithCategoryResponse;
     categorias: CategoryListResponse;
@@ -55,7 +58,7 @@ export default function EditProductForm({ product, categorias, brands, lines }: 
 
     return (
         <form
-            className="flex flex-col gap-2 w-full max-w-7xl mx-auto mt-8 bg-white rounded-lg"
+            className="flex flex-col gap-2 w-full "
             noValidate
             action={dispatch}
             onSubmit={handleSubmit}
@@ -71,7 +74,7 @@ export default function EditProductForm({ product, categorias, brands, lines }: 
                 <input
                     type="submit"
                     value="Actualizar Producto"
-                    className='bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800 cursor-pointer inline-block w-full sm:w-auto'
+                    className='bg-[var(--color-accent-warm)] text-white px-4 py-2  hover:bg-[var(--color-accent-warm-hover)] cursor-pointer inline-block w-full sm:w-auto'
                 />
             </div>
         </form>

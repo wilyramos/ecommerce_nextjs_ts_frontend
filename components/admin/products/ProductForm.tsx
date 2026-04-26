@@ -70,7 +70,7 @@ export default function ProductForm({
                 <section className="p-6 border border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)] space-y-6">
                     <div className="flex items-center gap-2 mb-2">
                         <Info className="w-4 h-4 text-[var(--color-accent-warm)]" />
-                        <h2 className="text-[11px] font-bold uppercase tracking-widest">Información General</h2>
+                        <h2 className="text-[11px] font-bold ">Información General</h2>
                     </div>
 
                     <div className="space-y-4">
@@ -115,7 +115,7 @@ export default function ProductForm({
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                             <ImageIcon className="w-4 h-4 text-[var(--color-text-secondary)]" />
-                            <h2 className="text-[11px] font-bold uppercase tracking-widest">Galería Multimedia</h2>
+                            <h2 className="text-[11px] font-bold ">Galería Multimedia</h2>
                         </div>
                         <MediaLibraryDialog
                             selectedImages={masterImages}
@@ -150,7 +150,7 @@ export default function ProductForm({
 
                 {/* 3. DESCRIPCIÓN ENRIQUECIDA */}
                 <section className="p-6 border border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)] space-y-3">
-                    <Label className="text-[11px] font-bold uppercase tracking-widest">Descripción Detallada</Label>
+                    <Label className="text-[11px] font-bold ">Descripción Detallada</Label>
                     <ProductDescriptionEditor initialHTML={product?.descripcion || ""} />
                 </section>
 
@@ -195,7 +195,7 @@ export default function ProductForm({
                 <section className="p-6 border border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)]">
                     <div className="flex items-center gap-2 mb-4">
                         <LayoutGrid className="w-4 h-4 text-[var(--color-text-secondary)]" />
-                        <h2 className="text-[11px] font-bold uppercase tracking-widest">Variantes de Producto</h2>
+                        <h2 className="text-[11px] font-bold ">Variantes de Producto</h2>
                     </div>
                     <ProductVariantsForm
                         product={product}

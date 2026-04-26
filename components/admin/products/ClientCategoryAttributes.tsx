@@ -128,7 +128,7 @@ export default function ClientCategoryAttributes({
                             <DialogTrigger asChild>
                                 <button
                                     type="button"
-                                    className="flex items-center gap-1.5 text-xs font-semibold text-[var(--color-action-primary)] hover:text-[var(--color-action-primary-hover)] transition-colors"
+                                    className="flex items-center gap-1.5 text-xs font-semibold text-[var(--color-action-primary)] hover:text-[var(--color-action-primary-hover)] transition-colors cursor-pointer"
                                 >
                                     <Settings2 className="w-3.5 h-3.5" />
                                     Configurar
