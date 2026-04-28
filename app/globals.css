@@ -181,7 +181,7 @@
   --color-bg-primary: #FFFFFF;        /* Fondo principal */
   --color-bg-secondary: #f6f6f6;      /* Fondo secundario (secciones) */
   --color-bg-tertiary: #F2F2F2;       /* Fondo terciario (cards, elementos) */
-  --color-bg-inverse: #232323;  /* Fondo  */
+  --color-bg-inverse: #000000;  /* Fondo  */
   
   /* --- SUPERFICIES INTERACTIVAS --- */
   --color-surface-hover: #E8E8E8;     /* Hover en elementos */

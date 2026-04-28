@@ -14,6 +14,22 @@ const responsive = {
     mobile:  { breakpoint: { max: 768,  min: 0 },    items: 1 },
 };
 
+const darkSlide = {
+    wrapper:  "bg-[var(--color-bg-inverse)]",
+    heading:  "text-[var(--color-text-inverse)]",
+    muted:    "text-[var(--color-text-inverse)]/40",
+    price:    "text-[var(--color-text-inverse)]",
+    divider:  "bg-[var(--color-text-inverse)]/10",
+};
+
+const lightSlide = {
+    wrapper:  "bg-[var(--color-bg-secondary)]",
+    heading:  "text-[var(--color-text-primary)]",
+    muted:    "text-[var(--color-text-tertiary)]",
+    price:    "text-[var(--color-text-primary)]",
+    divider:  "bg-[var(--color-border-subtle)]",
+};
+
 export default function MainCarousel({ products }: { products: ProductResponse[] }) {
     if (!products?.length) return null;
 
@@ -34,19 +50,10 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                 dotListClass="!bottom-4 md:!bottom-6"
             >
                 {products.map((product, index) => {
-                    const imageUrl = product.imagenes?.[0] || "/logo.svg";
-                    
-                    const isDark = index % 2 === 0;
-                    const bgColor = isDark ? "#0a0a0a" : "#ffffff";
-                    const textColor = isDark ? "rgba(255,255,255,0.96)" : "#0f0f0f";
-                    const subTextColor = isDark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.5)";
-                    const borderColor = isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.06)";
-                    
-                    const hasDiscount =
-                        product.precioComparativo &&
-                        product.precioComparativo > (product.precio ?? 0);
-                    
-                    const discount = hasDiscount
+                    const imageUrl    = product.imagenes?.[0] || "/logo.svg";
+                    const t           = index % 2 === 0 ? darkSlide : lightSlide;
+                    const hasDiscount = product.precioComparativo && product.precioComparativo > (product.precio ?? 0);
+                    const discount    = hasDiscount
                         ? Math.round(((product.precioComparativo! - product.precio!) / product.precioComparativo!) * 100)
                         : null;
 
@@ -54,135 +61,106 @@ export default function MainCarousel({ products }: { products: ProductResponse[]
                         <div key={product._id} className="w-full">
                             <Link
                                 href={`/productos/${product.slug}`}
-                                className="relative flex items-center justify-center w-full group outline-none overflow-hidden transition-colors duration-500"
-                                style={{
-                                    backgroundColor: bgColor,
-                                    // Height reduced here
-                                    minHeight: "clamp(380px, 55vh, 500px)",
-                                }}
+                                className={`relative flex items-center justify-center w-full min-h-[360px] md:min-h-[460px] lg:min-h-[520px] group outline-none overflow-hidden ${t.wrapper}`}
                             >
-                                {/* ── BACKGROUND GLOW ── */}
-                                <div
-                                    aria-hidden
-                                    className="absolute inset-0 pointer-events-none"
-                                    style={{
-                                        background: isDark 
-                                            ? "radial-gradient(circle at 50% 50%, rgba(255,100,20,0.1) 0%, transparent 40%)"
-                                            : "radial-gradient(circle at 50% 50%, rgba(255,80,20,0.04) 0%, transparent 40%)",
-                                    }}
-                                />
+                                {/* Glow central */}
+                                <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_60%_70%_at_50%_55%,rgba(249,115,22,0.12)_0%,transparent_70%)]" />
 
-                                {/* ── RESPONSIVE GRID ── */}
-                                <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-16 flex flex-col md:grid md:grid-cols-[1fr_1.2fr_1fr] items-center gap-4 md:gap-4 py-8 md:py-0">
+                                {/* ── GRID 3 COLUMNAS ── */}
+                                <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-20 grid grid-cols-1 md:grid-cols-[1fr_1.6fr_1fr] items-center gap-6 md:gap-0 py-10 md:py-0">
 
-                                    {/* — COLUMN: Info — */}
-                                    <div className="flex flex-col gap-2 md:gap-3 order-2 md:order-1 text-center md:text-left w-full">
+                                    {/* COL 1 — Texto */}
+                                    <div className="flex flex-col gap-3 order-2 md:order-1 text-center md:text-left md:pr-6">
+
                                         {product.brand?.nombre && (
-                                            <div className="flex items-center justify-center md:justify-start gap-2">
-                                                <span
-                                                    className="text-[10px] font-black uppercase tracking-[0.2em]"
-                                                    style={{ color: subTextColor }}
-                                                >
-                                                    {product.brand.nombre}
-                                                </span>
-                                                <span className="hidden md:block flex-1 h-px" style={{ background: borderColor }} />
-                                            </div>
+                                            <span className={`text-[9px] font-black uppercase tracking-[0.28em] ${t.muted}`}>
+                                                {product.brand.nombre}
+                                            </span>
                                         )}
 
-                                        <h2
-                                            className="font-black leading-[1.1] tracking-tighter"
-                                            style={{
-                                                fontSize: "clamp(1.5rem, 3.5vw, 2.5rem)",
-                                                color: textColor,
-                                            }}
-                                        >
+                                        <h2 className={`font-semibold leading-tight tracking-tighter text-[clamp(1.4rem,3vw,2.4rem)] line-clamp-3 ${t.heading}`}>
                                             {product.nombre}
                                         </h2>
 
-                                        <div className="flex items-center justify-center md:justify-start gap-3 flex-wrap">
-                                            <div className="flex items-start gap-0.5">
-                                                <span className="font-bold text-xs md:text-sm mt-1" style={{ color: subTextColor }}>S/</span>
-                                                <span className="font-black text-3xl md:text-5xl tracking-tighter" style={{ color: textColor }}>
+                                        {/* Precio */}
+                                        <div className="flex items-end justify-center md:justify-start gap-3 flex-wrap mt-1">
+                                            <div className="flex items-start gap-0.5 leading-none">
+                                                <span className={`text-xs font-semibold mt-1.5 ${t.muted}`}>S/</span>
+                                                <span className={`font-semibold tracking-tighter text-[clamp(2.2rem,4.5vw,3.6rem)] leading-none ${t.price}`}>
                                                     {product.precio?.toFixed(2)}
                                                 </span>
                                             </div>
 
                                             {hasDiscount && (
-                                                <div className="flex flex-col items-start leading-none">
-                                                    <span className="text-xs line-through opacity-50" style={{ color: textColor }}>
+                                                <div className="flex flex-col items-start gap-0.5 mb-1">
+                                                    <span className={`text-xs line-through ${t.muted}`}>
                                                         S/ {product.precioComparativo?.toFixed(2)}
                                                     </span>
-                                                    <span className="bg-[#F5470E] text-white text-[10px] font-black px-1.5 py-0.5 mt-0.5">
+                                                    <span className="text-[10px] font-black px-1.5 py-[3px] rounded-sm bg-[var(--color-accent-warm)] text-[var(--color-text-inverse)] tracking-wider">
                                                         −{discount}%
                                                     </span>
                                                 </div>
                                             )}
                                         </div>
+
+                                        {/* CTA */}
+                                        <div className={`inline-flex items-center gap-1.5 mt-1 mx-auto md:mx-0 w-fit text-[0.7rem] font-black uppercase tracking-[0.16em] transition-colors duration-200 group-hover:text-[var(--color-accent-warm)] ${t.muted}`}>
+                                            <span>Ver producto</span>
+                                            <svg
+                                                width="11" height="11" viewBox="0 0 11 11"
+                                                fill="none" stroke="currentColor" strokeWidth="2.3"
+                                                strokeLinecap="round" strokeLinejoin="round"
+                                                className="transition-transform duration-300 group-hover:translate-x-1"
+                                            >
+                                                <path d="M1.5 5.5h8M5.5 1.5l4 4-4 4" />
+                                            </svg>
+                                        </div>
                                     </div>
 
-                                    {/* — COLUMN: Image — */}
-                                    <div
-                                        className="relative flex items-center justify-center order-1 md:order-2 w-full"
-                                        style={{
-                                            // Image height reduced to fit the smaller container
-                                            height: "clamp(220px, 40vh, 400px)",
-                                        }}
-                                    >
-                                        <div
-                                            className="absolute w-3/4 h-3/4 rounded-full blur-[80px] opacity-30 pointer-events-none"
-                                            style={{
-                                                background: isDark ? "rgba(255,80,0,0.12)" : "rgba(255,120,0,0.06)",
-                                            }}
-                                        />
+                                    {/* COL 2 — Imagen (máximo tamaño) */}
+                                    <div className="relative order-1 md:order-2 w-full h-[260px] sm:h-[320px] md:h-[420px] lg:h-[500px] flex items-center justify-center">
+                                        {/* Halo detrás del producto */}
+                                        <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_52%,rgba(249,115,22,0.13)_0%,transparent_65%)]" />
 
-                                        <div className="relative w-full h-full transition-transform duration-1000 ease-out group-hover:scale-[1.03]">
+                                        <div className="relative w-full h-full transition-transform duration-700 ease-out group-hover:scale-[1.04] drop-shadow-2xl">
                                             <Image
                                                 src={imageUrl}
                                                 alt={product.nombre || "Producto"}
                                                 fill
                                                 className="object-contain"
-                                                sizes="(max-width: 900px) 90vw, (max-width: 1600px) 70vw, 60vw"
+                                                sizes="(max-width: 768px) 90vw, 50vw"
                                                 priority
                                                 unoptimized
                                             />
                                         </div>
                                     </div>
 
-                                    {/* — COLUMN: Promo Label — */}
-                                    <div className="flex flex-col gap-4 order-3 md:items-end w-full">
-                                        {hasDiscount && (
-                                            <div className="relative w-full max-w-[150px] h-[60px] mx-auto md:mr-0">
-                                                <div
-                                                    className="absolute top-0 right-0 flex items-center bg-[#F5470E] text-white font-black text-lg uppercase px-3 py-1 z-[2]"
-                                                    style={{ transform: "rotate(2deg)" }}
-                                                >
-                                                    OFERTA
-                                                </div>
-                                                <div
-                                                    className="absolute bottom-0 right-2 bg-black text-white dark:bg-white dark:text-black font-black text-sm uppercase px-3 py-1 z-[1]"
-                                                    style={{ transform: "rotate(-2deg)" }}
-                                                >
-                                                    LIMITADA
-                                                </div>
+                                    {/* COL 3 — Promo */}
+                                    <div className="hidden md:flex flex-col items-end gap-3 order-3 md:pl-6">
+                                        {hasDiscount ? (
+                                            <div className="flex flex-col items-end gap-1">
+                                                <span className={`text-[9px] font-black uppercase tracking-[0.28em] ${t.muted}`}>
+                                                    Oferta especial
+                                                </span>
+                                                <p className="font-black leading-none tracking-tighter| text-[clamp(1.4rem,2.4vw,2rem)] text-[var(--color-accent-warm)] border px-2 py-1 rounded-4xl border-[var(--color-accent-warm-light)]">
+                                                    PRECIO
+                                                </p>
+                                                <p className={`font-black leading-none tracking-tighter rounded-4xl border px-3 py-1 border-[var(--color-accent-warm)] text-[clamp(1.4rem,2.4vw,2rem)] ${t.heading}`}>
+                                                    INCREÍBLE
+                                                </p>
                                             </div>
+                                        ) : (
+                                            <span className={`text-[9px] font-black uppercase tracking-[0.28em] ${t.muted}`}>
+                                                Nuevo
+                                            </span>
                                         )}
+
                                         
-                                        <div className="hidden md:flex flex-col items-end">
-                                             <p className="text-[9px] font-bold uppercase tracking-widest opacity-40" style={{ color: textColor }}>
-                                                Envío gratis a todo el país
-                                            </p>
-                                        </div>
                                     </div>
                                 </div>
 
-                                {/* ── BOTTOM DECORATIVE LINE ── */}
-                                <div
-                                    aria-hidden
-                                    className="absolute bottom-0 left-0 right-0 h-[1px] opacity-10"
-                                    style={{
-                                        background: `linear-gradient(90deg, transparent, ${isDark ? '#fff' : '#000'}, transparent)`,
-                                    }}
-                                />
+                                {/* Línea inferior */}
+                                <div className={`absolute bottom-0 left-0 right-0 h-px pointer-events-none ${t.divider}`} />
                             </Link>
                         </div>
                     );
