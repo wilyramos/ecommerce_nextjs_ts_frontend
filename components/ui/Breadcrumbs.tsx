@@ -1,3 +1,5 @@
+//File: frontend/components/ui/Breadcrumbs.tsx
+
 import Link from "next/link";
 import { ChevronRight, Home, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -97,7 +99,6 @@ export default function Breadcrumbs({ items, current, className }: Props) {
                 {/* Actual */}
                 {current && (
                     <li className="sr-only" aria-current="page">
-                        {/* <ChevronRight className="w-3 h-3 mx-2 text-gray-300 shrink-0" /> */}
                         {current}
                     </li>
                 )}

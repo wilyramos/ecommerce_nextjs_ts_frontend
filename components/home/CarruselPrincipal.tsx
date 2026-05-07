@@ -1,31 +1,11 @@
-// import ClientCarouselMain from "./ClientCarouselMain";
-import { getFrontPageProducts } from "@/src/services/products";
-import MainCarousel from "./MainCarousel";
+import { SliderService } from "@/src/services/slider-service";
+import SliderBannerCarousel from '../banner/SliderBannerCarousel';
 
 
-export default async function CarruselPrincipal() {
+export default async function Carruselprincipal() {
 
-    // Get the products for the carousel
-    const products = await getFrontPageProducts();
-
-    if (!products || products.products.length === 0) {
-        return (
-            null
-        );
-    }
-    
-
+    const banners = await SliderService.getActive();
     return (
-        <div className="mx-auto ">
-
-            {/* <ClientCarouselMain
-                products={products.products}
-            /> */}
-
-            <MainCarousel
-                products={products.products}
-            />
-            
-        </div>
-    );
+        <SliderBannerCarousel banners={banners} />
+    )
 }

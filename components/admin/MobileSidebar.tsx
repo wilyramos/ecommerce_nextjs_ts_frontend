@@ -28,6 +28,8 @@ export default function MobileSidebar({ user }: { user: User }) {
         { href: "/admin/orders", icon: Receipt, label: "Órdenes" },
         { href: "/admin/reports", icon: BarChart3, label: "Reportes" },
         { href: "/admin/brands", icon: Tag, label: "Marcas" },
+        { href: "/admin/lines", icon: Tag, label: "Líneas" },
+        { href: "/admin/slider", icon: Package, label: "Slider" },
         {
             icon: Users,
             label: "Usuarios",

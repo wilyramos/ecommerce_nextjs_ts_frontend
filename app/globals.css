@@ -223,4 +223,24 @@
   --color-border-default: rgba(0, 0, 0, 0.12);
   --color-border-strong: rgba(0, 0, 0, 0.20);
 
+
+  
+  /* --- SLIDER / BANNER SHELL --- */
+--sl-bg:           var(--color-bg-inverse);          /* #000 */
+--sl-surface:      rgba(255,255,255,0.05);            /* superficie glass */
+--sl-border:       rgba(255,255,255,0.10);            /* borde sutil dark */
+
+/* Badge paletas predefinidas */
+--sl-badge-sale-bg:     #FF3B30;   /* rojo Apple */
+--sl-badge-sale-fg:     #FFFFFF;
+--sl-badge-new-bg:      #34C759;   /* verde Apple */
+--sl-badge-new-fg:      #FFFFFF;
+--sl-badge-hot-bg:      #FF9500;   /* naranja Apple */
+--sl-badge-hot-fg:      #FFFFFF;
+--sl-badge-default-bg:  #1A1A1A;   /* neutro oscuro */
+--sl-badge-default-fg:  #FFFFFF;
+
+/* Accent del banner (sobreescribible por inline style) */
+--sl-accent:    var(--color-action-primary);  /* #0071E3 */
+--sl-accent-fg: #FFFFFF;
 }

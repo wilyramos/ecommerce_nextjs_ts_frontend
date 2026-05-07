@@ -14,7 +14,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     return (
         <>
             {/* MOBILE TOPBAR FIXED */}
-            <div className="md:hidden fixed top-0 inset-x-0 z-40 h-12 px-2 border-b flex items-center justify-between bg-white">
+            <div className="md:hidden fixed top-0 inset-x-0 z-40 h-12 px-2 border-b flex items-center justify-between">
                 <div className="flex items-center">
                     <MobileSidebar user={user} />
                 </div>
@@ -31,11 +31,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
                 <div className="border-r h-screen sticky top-0">
                     <AdminSidebar user={user} />
                 </div>
-                <main className="overflow-y-auto p-4">{children}</main>
+                <main className="overflow-y-auto ">{children}</main>
             </div>
 
             {/* MOBILE CONTENT (OFFSET POR TOPBAR) */}
-            <div className="md:hidden pt-14 p-4">
+            <div className="md:hidden pt-14 p-2">
                 {children}
             </div>
 

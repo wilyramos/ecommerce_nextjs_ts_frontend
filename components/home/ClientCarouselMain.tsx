@@ -5,7 +5,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import type { ProductResponse } from "@/src/schemas";
 import Link from "next/link";
-import { CustomDot } from "../ui/CustomDot";
+import { CarouselDot } from "../banner/CarouselDot";
 
 const responsive = {
     superLargeDesktop: { breakpoint: { max: 3000, min: 2000 }, items: 1 },
@@ -24,7 +24,7 @@ export default function ClientCarouselMain({ products }: { products: ProductResp
                 autoPlaySpeed={6000}
                 arrows={false}
                 showDots
-                customDot={<CustomDot />}
+                customDot={<CarouselDot />}
                 containerClass=""
             >
                 {products.map((product) => (

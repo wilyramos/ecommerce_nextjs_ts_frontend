@@ -37,7 +37,7 @@ const links: NavLink[] = [
     { href: "/admin/products", icon: ShoppingBag, label: "Productos" },
     { href: "/admin/clients", icon: Users, label: "Clientes" },
     { href: "/admin/orders", icon: ClipboardList, label: "Órdenes" },
-    
+    { href: "/admin/slider", icon: ShoppingBag, label: "Slider" },
     // --- BLOQUE DE CATALOGO ---
     { href: "/admin/brands", icon: Briefcase, label: "Marcas" },
     { href: "/admin/lines", icon: Tags, label: "Líneas" }, // <--- NUEVA RUTA

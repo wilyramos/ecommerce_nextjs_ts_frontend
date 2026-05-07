@@ -1,12 +1,13 @@
-// components/ui/ErrorMessage.tsx
+//File: frontend/components/ui/Alert.tsx
+
 import { ExclamationTriangleIcon, InformationCircleIcon, CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { X } from "lucide-react";
 import type { ReactNode } from "react";
 
 type Variant = "error" | "warning" | "success" | "info";
-type Mode    = "inline" | "banner";
+type Mode = "inline" | "banner";
 
-interface ErrorMessageProps {
+interface AlertProps {
     children: ReactNode;
     variant?: Variant;
     mode?: Mode;
@@ -20,40 +21,39 @@ const CONFIG: Record<Variant, {
     color: string;
 }> = {
     error: {
-        icon:   XCircleIcon,
-        bg:     "var(--color-error-light)",
+        icon: XCircleIcon,
+        bg: "var(--color-error-light)",
         border: "var(--color-error)",
-        color:  "var(--color-error)",
+        color: "var(--color-error)",
     },
     warning: {
-        icon:   ExclamationTriangleIcon,
-        bg:     "var(--color-warning-light)",
+        icon: ExclamationTriangleIcon,
+        bg: "var(--color-warning-light)",
         border: "var(--color-warning)",
-        color:  "var(--color-warning)",
+        color: "var(--color-warning)",
     },
     success: {
-        icon:   CheckCircleIcon,
-        bg:     "var(--color-success-light)",
+        icon: CheckCircleIcon,
+        bg: "var(--color-success-light)",
         border: "var(--color-success)",
-        color:  "var(--color-success)",
+        color: "var(--color-success)",
     },
     info: {
-        icon:   InformationCircleIcon,
-        bg:     "var(--color-action-primary-light)",
+        icon: InformationCircleIcon,
+        bg: "var(--color-action-primary-light)",
         border: "var(--color-action-primary)",
-        color:  "var(--color-action-primary)",
+        color: "var(--color-action-primary)",
     },
 };
 
-export default function ErrorMessage({
+export default function Alert({
     children,
-    variant  = "error",
-    mode     = "inline",
+    variant = "error",
+    mode = "inline",
     onDismiss,
-}: ErrorMessageProps) {
+}: AlertProps) {
     const { icon: Icon, bg, border, color } = CONFIG[variant];
 
-    // ── Inline: pequeño, debajo de un campo ──────────────────
     if (mode === "inline") {
         return (
             <div className="flex items-center gap-1.5 text-sm mt-1" style={{ color }}>
@@ -63,7 +63,6 @@ export default function ErrorMessage({
         );
     }
 
-    // ── Banner: bloque completo con dismiss opcional ──────────
     return (
         <div
             role="alert"

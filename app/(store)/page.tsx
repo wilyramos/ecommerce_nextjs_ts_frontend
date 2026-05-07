@@ -2,7 +2,6 @@
 
 import { Metadata } from "next";
 import { metadata as globalMetadata } from "@/app/layout";
-import CarruselPrincipal from "@/components/home/CarruselPrincipal";
 import ProductosNuevos from "@/components/home/ProductosNuevos";
 import ProductosDestacados from "@/components/home/ProductosDestacados";
 import CategoriasDestacadasWrapper from "@/components/home/CategoriasDestacadasWrapper";
@@ -11,6 +10,7 @@ import BrandsList from "@/components/home/BrandsList";
 import Advertisement from "@/components/home/Advertisement";
 import HeroNewArrivals from "@/components/catalog/HeroNewArrivals";
 import HeroFlashSale from "@/components/home/FlashSaleBanner";
+import Carruselprincipal from "@/components/home/Carruselprincipal";
 
 // Metadata for SEO and social sharing
 export const metadata: Metadata = {
@@ -69,18 +69,18 @@ export const metadata: Metadata = {
 export default function HomePage() {
     return (
         <>
+
             <section className="">
                 <Advertisement />
             </section>
-
-            <section className=" ">
-                <CarruselPrincipal />
+            <section>
+                <Carruselprincipal />
             </section>
+
             <div className="grid grid-cols-1 md:grid-cols-2 overflow-hidden max-w-7xl mx-auto">
                 <HeroFlashSale />
                 <HeroNewArrivals />
             </div>
-
 
             <section>
                 <ProductosDestacados />
