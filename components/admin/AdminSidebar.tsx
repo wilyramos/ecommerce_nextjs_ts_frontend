@@ -9,16 +9,17 @@ import AdminMenu from "./AdminMenu";
 import Logo from "../ui/Logo";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
-    LayoutDashboard, // Dashboard
-    ShoppingBag,     // Productos
-    Users,           // Clientes
-    ClipboardList,   // Órdenes
-    Briefcase,       // Marcas
-    Tags,            // <--- ICONO PARA LÍNEAS
-    Layers,          // Categorías
-    LineChart,       // Reportes
-    UserCog,         // Usuarios Sistema
-    Store,           // Punto de Venta
+    LayoutDashboard,
+    Package2,          // Productos
+    Users2,            // Clientes
+    ReceiptText,       // Órdenes
+    BadgeDollarSign,   // Slider
+    Building2,         // Marcas
+    GitBranch,         // Líneas
+    Shapes,            // Categorías
+    BarChart3,         // Reportes
+    ShieldCheck,       // Usuarios
+    Store,
     ChevronDown,
     ChevronRight,
 } from "lucide-react";
@@ -34,25 +35,35 @@ type NavLink = {
 
 const links: NavLink[] = [
     { href: "/admin", icon: LayoutDashboard, label: "Dashboard" },
-    { href: "/admin/products", icon: ShoppingBag, label: "Productos" },
-    { href: "/admin/clients", icon: Users, label: "Clientes" },
-    { href: "/admin/orders", icon: ClipboardList, label: "Órdenes" },
-    { href: "/admin/slider", icon: ShoppingBag, label: "Slider" },
-    // --- BLOQUE DE CATALOGO ---
-    { href: "/admin/brands", icon: Briefcase, label: "Marcas" },
-    { href: "/admin/lines", icon: Tags, label: "Líneas" }, // <--- NUEVA RUTA
-    { href: "/admin/products/category", icon: Layers, label: "Categorías" },
-    // --------------------------
 
-    { href: "/admin/reports", icon: LineChart, label: "Reportes" },
+    { href: "/admin/products", icon: Package2, label: "Productos" },
+
+    { href: "/admin/clients", icon: Users2, label: "Clientes" },
+
+    { href: "/admin/orders", icon: ReceiptText, label: "Órdenes" },
+
+    { href: "/admin/slider", icon: BadgeDollarSign, label: "Slider" },
+
+    // --- CATÁLOGO ---
+    { href: "/admin/brands", icon: Building2, label: "Marcas" },
+
+    { href: "/admin/lines", icon: GitBranch, label: "Líneas" },
+
+    { href: "/admin/products/category", icon: Shapes, label: "Categorías" },
+
+    // ----------------
+
+    { href: "/admin/reports", icon: BarChart3, label: "Reportes" },
+
     {
-        icon: UserCog,
+        icon: ShieldCheck,
         label: "Usuarios",
         children: [
             { href: "/admin/users", label: "Lista de usuarios" },
             { href: "/admin/users/roles", label: "Roles y permisos" },
         ],
     },
+
     { href: "/pos", icon: Store, label: "Punto de Venta" },
 ];
 
@@ -89,8 +100,8 @@ export default function AdminSidebar({ user }: Props) {
 
                 {/* Logo Area */}
                 <div className={cn("flex h-20 items-center px-6 transition-all", expanded ? "justify-start" : "justify-center")}>
-                    <div className={cn("transition-opacity duration-300", expanded ? "opacity-100" : "opacity-100 scale-90")}> 
-                        <Logo /> 
+                    <div className={cn("transition-opacity duration-300", expanded ? "opacity-100" : "opacity-100 scale-90")}>
+                        <Logo />
                     </div>
                 </div>
 
@@ -145,8 +156,8 @@ export default function AdminSidebar({ user }: Props) {
                                                             href={sub.href}
                                                             className={cn(
                                                                 "block rounded-md px-3 py-1.5 text-sm transition-colors",
-                                                                isActive 
-                                                                    ? "bg-zinc-200 text-black font-semibold" 
+                                                                isActive
+                                                                    ? "bg-zinc-200 text-black font-semibold"
                                                                     : "text-zinc-500 hover:text-black hover:bg-zinc-100"
                                                             )}
                                                         >
@@ -172,8 +183,8 @@ export default function AdminSidebar({ user }: Props) {
                                         className={cn(
                                             "group flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-all",
                                             // Estilo Activo: Negro Sólido (Apple style focus)
-                                            isActive 
-                                                ? "bg-black text-white shadow-sm" 
+                                            isActive
+                                                ? "bg-black text-white shadow-sm"
                                                 : "text-zinc-500 hover:text-black hover:bg-zinc-200"
                                         )}
                                     >

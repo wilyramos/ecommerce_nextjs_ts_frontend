@@ -10,7 +10,7 @@ import BrandsList from "@/components/home/BrandsList";
 import Advertisement from "@/components/home/Advertisement";
 import HeroNewArrivals from "@/components/catalog/HeroNewArrivals";
 import HeroFlashSale from "@/components/home/FlashSaleBanner";
-import CarruselPrincipal from "@/components/home/Carruselprincipal";
+import CarruselPrincipal from "@/components/home/CarruselPrincipal";
 
 // Metadata for SEO and social sharing
 export const metadata: Metadata = {
