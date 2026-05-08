@@ -10,7 +10,7 @@ import BrandsList from "@/components/home/BrandsList";
 import Advertisement from "@/components/home/Advertisement";
 import HeroNewArrivals from "@/components/catalog/HeroNewArrivals";
 import HeroFlashSale from "@/components/home/FlashSaleBanner";
-import Carruselprincipal from "@/components/home/Carruselprincipal";
+import CarruselPrincipal from "@/components/home/Carruselprincipal";
 
 // Metadata for SEO and social sharing
 export const metadata: Metadata = {
@@ -73,7 +73,7 @@ export default function HomePage() {
                 <Advertisement />
             </section>
             <section>
-                <Carruselprincipal />
+                <CarruselPrincipal />
             </section>
 
             <div className="grid grid-cols-1 md:grid-cols-2 overflow-hidden max-w-7xl mx-auto">
