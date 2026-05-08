@@ -4,6 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SliderContentTypeEnum, SliderObjectFitEnum, SliderBorderStyleEnum, type SliderBanner } from "@/src/schemas/slider.schema";
+import ProductReferenceSelector from "../../shared/ProductReferenceSelector";
 
 interface SectionProps {
     initialData?: SliderBanner;
@@ -47,12 +48,23 @@ export default function GeneralSection({ initialData, fields, fieldErrors }: Sec
                     </div>
 
                     <div className="space-y-2">
-                        <Label>ID de Referencia (MongoID)</Label>
-                        <Input
+                        <ProductReferenceSelector
                             name="referenceId"
-                            defaultValue={currentReferenceId}
-                            placeholder="ID del producto / marca..."
-                            className={err("product") || err("brand") || err("category") ? "border-red-500" : ""}
+                            initialId={currentReferenceId}
+                            initialProduct={
+                                initialData?.product &&
+                                    typeof initialData.product === "object" &&
+                                    "_id" in initialData.product &&
+                                    "nombre" in initialData.product &&
+                                    "precio" in initialData.product
+                                    ? {
+                                        _id: initialData.product._id,
+                                        nombre: initialData.product.nombre,
+                                        precio: initialData.product.precio,
+                                        imagenes: initialData.product.imagenes,
+                                    }
+                                    : null
+                            }
                         />
                     </div>
                 </div>
@@ -86,7 +98,7 @@ export default function GeneralSection({ initialData, fields, fieldErrors }: Sec
             {/* MULTIMEDIA */}
             <section className="p-6 border rounded-lg space-y-4 ">
                 <div className="flex items-center gap-2">
-                    <ImageIcon className="w-4 h-4 text-gray-400" />
+                    <ImageIcon className="w-4 h-4 " />
                     <h2 className="text-[11px] font-bold uppercase tracking-wider">Multimedia</h2>
                 </div>
 
