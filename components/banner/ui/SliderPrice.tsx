@@ -7,46 +7,46 @@ interface Props {
 const borderClass: Record<string, string> = {
     none: "",
 
-    // Estilo "Sello": El acento se mantiene en el color de marca, el resto hereda contraste
+    // "Sello": solo esquina top-left
     simple:
-        "relative px-6 py-3 border-[0.5px] border-[var(--color-accent-warm)]/30 rounded-tl-4xl rounded-br-xs " +
+        "relative px-6 py-3 border-[0.5px] border-[var(--color-accent-warm)]/30 rounded-tl-4xl " +
         "before:content-[''] before:absolute before:pointer-events-none " +
         "before:-left-1 before:-bottom-1 before:w-full before:h-full " +
         "before:border-l-4 before:border-b-2 before:border-[var(--color-accent-warm)] before:rounded-tl-4xl before:-z-10",
 
-    // Estilo "Hoja de Cristal": Línea desfasada adaptativa (border-current)
+    // "Hoja de Cristal": solo esquina top-right
     double:
-        "relative px-8 py-3 rounded-tr-full rounded-br-none border border-[var(--color-accent-warm)] " +
+        "relative px-8 py-3 rounded-tr-full border border-[var(--color-accent-warm)] " +
         "before:content-[''] before:absolute before:pointer-events-none " +
         "before:-left-2 before:bottom-[-6px] before:w-[calc(100%+8px)] before:h-[calc(100%+6px)] " +
-        "before:border-l-1 before:border-b-1 before:border-current before:opacity-30 before:rounded-none before:-z-10",
+        "before:border-l-1 before:border-b-1 before:border-current before:opacity-30 before:-z-10",
 
-    // Estilo "Ticket Tech": Estética de puntos/guiones que cambian con el tema
+    // "Ticket Tech": solo esquina top-right
     "rounded-all":
-        "relative px-8 py-4 border-2 border-dashed border-[var(--color-accent-warm)]/40 rounded-tr-4xl rounded-bl-4xl " +
+        "relative px-8 py-4 border-2 border-dashed border-[var(--color-accent-warm)]/40 rounded-tr-4xl " +
         "before:content-[''] before:absolute before:pointer-events-none " +
         "before:top-1 before:left-1 before:w-full before:h-full " +
-        "before:border-r-2 before:border-t-2 before:border-dashed before:border-current before:opacity-20 before:rounded-tr-4xl before:rounded-bl-4xl before:-z-10",
+        "before:border-r-2 before:border-t-2 before:border-dashed before:border-current before:opacity-20 before:rounded-tr-4xl before:-z-10",
 
-    // Estilo "Geometría Abstracta": Esquinas marcadas con el color de contraste actual
+    // "Geometría Abstracta": solo esquina top-left
     dashed:
-        "relative px-6 py-3 border-[0.5px] border-[var(--color-accent-warm)]/40 rounded-tl-3xl rounded-br-4xl " +
+        "relative px-6 py-3 border-[0.5px] border-[var(--color-accent-warm)]/40 rounded-tl-3xl " +
         "after:content-[''] after:absolute after:top-[-4px] after:right-[-4px] after:w-8 after:h-8 after:border-t-2 after:border-r-2 after:border-current " +
         "before:content-[''] before:absolute before:bottom-[-4px] before:left-[-4px] before:w-8 before:h-8 before:border-b-2 before:border-current",
 
-    // Estilo "Corte de Precisión": Regla superior/inferior industrial
+    // "Corte de Precisión": solo esquina top-left
     dotted:
-        "relative px-6 py-2 border-x-[0.5px] border-x-[var(--color-accent-warm)]/30 rounded-tl-2xl rounded-br-2xl " +
+        "relative px-6 py-2 border-x-[0.5px] border-x-[var(--color-accent-warm)]/30 rounded-tl-2xl " +
         "before:content-[''] before:absolute before:top-[-2px] before:left-0 before:w-full before:h-[calc(100%+4px)] " +
-        "before:border-y-2 before:border-dotted before:border-current before:opacity-40 before:rounded-tl-2xl before:rounded-br-2xl before:-z-10",
+        "before:border-y-2 before:border-dotted before:border-current before:opacity-40 before:rounded-tl-2xl before:-z-10",
 
-    // Estilo "Cyber Frame": Marco minimalista con offset
+    // "Cyber Frame": solo esquina top-left
     "double-corner":
-        "relative px-7 py-4 border border-[var(--color-accent-warm)] rounded-tl-4xl rounded-br-3xl " +
+        "relative px-7 py-4 border border-[var(--color-accent-warm)] rounded-tl-4xl " +
         "before:content-[''] before:absolute before:inset-0 before:translate-x-1 before:translate-y-1 " +
-        "before:border before:border-current before:opacity-25 before:rounded-tl-4xl before:rounded-br-3xl before:-z-10",
+        "before:border before:border-current before:opacity-25 before:rounded-tl-4xl before:-z-10",
 
-    // Estilo "Bloque Moderno": El pilar (bg-current) se vuelve blanco en dark y negro en light
+    // "Bloque Moderno": solo esquina top-left
     "thick-solid":
         "relative px-7 py-3 border-[0.5px] border-[var(--color-accent-warm)]/30 rounded-tl-4xl " +
         "before:content-[''] before:absolute before:top-0 before:left-[-12px] before:w-[12px] before:h-full " +
@@ -87,18 +87,22 @@ export default function SliderPrice({ price }: Props) {
 
                 {/* Label encima del precio comparativo, todo alineado al fondo */}
                 {price.compare && (
-                    <div className="flex flex-col items-start gap-1 pb-0.5">
+                    <div className="flex flex-col items-start gap-0.5 pb-1">
                         {price.label && (
                             <span className="
-                    text-[10px] md:text-xs font-black uppercase text-white
-                    bg-[var(--color-accent-warm)] border-[var(--color-accent-warm)]/40 border-2
-                    px-2.5 py-0.5
-                    -rotate-3 transform origin-left
-                ">
+                text-[11px] font-black uppercase tracking-wider
+                text-[var(--color-accent-warm)]
+                leading-none mb-1
+            ">
                                 {price.label}
                             </span>
                         )}
-                        <span className="text-xs md:text-sm line-through opacity-30 decoration-current decoration-[1.5px] leading-none">
+                        <span className="
+            text-base md:text-lg font-medium
+            line-through opacity-25
+            decoration-current decoration-[1.5px]
+            leading-none tracking-tight
+        ">
                             {price.currency}{price.compare.toFixed(2)}
                         </span>
                     </div>

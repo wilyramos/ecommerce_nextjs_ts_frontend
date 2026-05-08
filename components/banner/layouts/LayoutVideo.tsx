@@ -1,6 +1,6 @@
 "use client";
 
-import Link  from "next/link";
+import Link from "next/link";
 import Image from "next/image";
 import { useRef, useState, useEffect, useMemo } from "react";
 import SliderPrice from "../ui/SliderPrice";
@@ -9,16 +9,16 @@ import type { SliderBanner } from "@/src/schemas/slider.schema";
 export default function LayoutVideo({ banner }: { banner: SliderBanner }) {
     const { design, media, title, subtitle, description, price, destUrl } = banner;
     const videoRef = useRef<HTMLVideoElement>(null);
-    const [loaded, setLoaded]   = useState(false);
+    const [loaded, setLoaded] = useState(false);
 
     const isDark = design.theme !== "light";
 
     const colors = useMemo(() => ({
-        text:      design.textColor      ?? (isDark ? "#ffffff"              : "#0f172a"),
+        text: design.textColor ?? (isDark ? "#ffffff" : "#0f172a"),
         textMuted: design.textMutedColor ?? (isDark ? "rgba(255,255,255,0.6)" : "rgba(15,23,42,0.6)"),
-        accent:    design.accentColor    ?? (isDark ? "#fbbf24"              : "#f59e0b"),
-        bg:        design.bgColor        ?? (isDark ? "#050505"              : "#f8f8f8"),
-        overlay:   isDark
+        accent: design.accentColor ?? (isDark ? "#fbbf24" : "#f59e0b"),
+        bg: design.bgColor ?? (isDark ? "#050505" : "#f8f8f8"),
+        overlay: isDark
             ? "from-black/80 via-black/20 to-transparent"
             : "from-white/90 via-white/30 to-transparent",
     }), [design, isDark]);
@@ -27,17 +27,12 @@ export default function LayoutVideo({ banner }: { banner: SliderBanner }) {
 
     return (
         <div
-            /**
-             * Responsive heights:
-             *   mobile  → 360 px
-             *   sm      → 460 px
-             *   md+     → 600 px
-             */
+
             className="relative w-full h-[360px] sm:h-[460px] md:h-[600px] overflow-hidden group"
             style={{
                 backgroundColor: colors.bg,
                 color: colors.text,
-                "--color-accent-warm":       colors.accent,
+                "--color-accent-warm": colors.accent,
                 "--color-accent-warm-light": `${colors.accent}33`,
             } as React.CSSProperties}
         >
@@ -75,22 +70,19 @@ export default function LayoutVideo({ banner }: { banner: SliderBanner }) {
                  * Mobile  : padding lateral pequeño, pb-8
                  * sm+     : padding lateral mayor, pb-12/16
                  */
-                className="absolute inset-0 z-10 flex flex-col justify-end
-                            px-5 pb-8
-                            sm:px-8 sm:pb-12
-                            md:px-16 md:pb-16"
+                className="absolute inset-0 z-10 flex flex-col items-center justify-center
+            px-5 sm:px-8 md:px-16"
             >
                 {/*
                  * Mobile  : stack vertical (flex-col)
                  * md+     : texto a la izquierda + precio a la derecha (flex-row)
                  */}
-                <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between md:gap-8">
+                <div className="flex flex-col items-center gap-5">
 
                     {/* Bloque de texto */}
                     <div
-                        className="flex flex-col gap-2 sm:gap-3 max-w-xl"
-                        style={{
-                            opacity:   loaded ? 1 : 0,
+                        className="flex flex-col items-center text-center gap-2 sm:gap-3 max-w-xl" style={{
+                            opacity: loaded ? 1 : 0,
                             transform: loaded ? "translateY(0)" : "translateY(20px)",
                             transition: "all 0.8s cubic-bezier(0.2,0.8,0.2,1) 0.2s",
                         }}
@@ -98,8 +90,8 @@ export default function LayoutVideo({ banner }: { banner: SliderBanner }) {
                         {subtitle && (
                             <span
                                 className="text-[10px] font-black uppercase tracking-[0.4em]
-                                            self-start px-2.5 py-1 border border-current rounded-full
-                                            -rotate-1 origin-left"
+            px-2.5 py-1 border border-current rounded-full"
+
                                 style={{ color: colors.accent }}
                             >
                                 {subtitle}
@@ -132,7 +124,7 @@ export default function LayoutVideo({ banner }: { banner: SliderBanner }) {
                         <div
                             className="shrink-0 transition-all duration-700 delay-500"
                             style={{
-                                opacity:   loaded ? 1 : 0,
+                                opacity: loaded ? 1 : 0,
                                 transform: loaded ? "scale(1)" : "scale(0.9) translateY(10px)",
                             }}
                         >

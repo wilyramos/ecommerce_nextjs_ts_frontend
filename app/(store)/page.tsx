@@ -69,7 +69,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
     return (
         <>
-            <section className="">
+            <section>
                 <Advertisement />
             </section>
             <section>

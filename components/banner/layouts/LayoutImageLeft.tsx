@@ -1,7 +1,7 @@
 "use client";
 
-import Link        from "next/link";
-import Image       from "next/image";
+import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import SliderPrice from "../ui/SliderPrice";
 import type { SliderBanner } from "@/src/schemas/slider.schema";
@@ -15,12 +15,12 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
         return () => clearTimeout(t);
     }, []);
 
-    const isDark      = design.theme !== "light";
-    const bg          = design.bgColor        ?? (isDark ? "#000000" : "#ffffff");
-    const text        = design.textColor      ?? (isDark ? "#f5f5f7" : "#1d1d1f");
-    const muted       = design.textMutedColor ?? (isDark ? "#86868b" : "#6e6e73");
-    const accent      = design.accentColor    ?? (isDark ? "#2997ff" : "#0071e3");
-    const glassBg     = isDark ? "rgba(28,28,30,0.75)"    : "rgba(255,255,255,0.72)";
+    const isDark = design.theme !== "light";
+    const bg = design.bgColor ?? (isDark ? "#000000" : "#ffffff");
+    const text = design.textColor ?? (isDark ? "#f5f5f7" : "#1d1d1f");
+    const muted = design.textMutedColor ?? (isDark ? "#86868b" : "#6e6e73");
+    const accent = design.accentColor ?? (isDark ? "#2997ff" : "#0071e3");
+    const glassBg = isDark ? "rgba(28,28,30,0.75)" : "rgba(255,255,255,0.72)";
     const glassBorder = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)";
 
     return (
@@ -54,7 +54,7 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
             <div
                 className={[
                     /* posición & dimensiones */
-                    "absolute flex flex-col justify-center gap-3",
+                    "absolute flex flex-col items-center justify-center text-center gap-3",
                     /* mobile: franja inferior */
                     "bottom-0 left-0 right-0 px-5 py-5 border-t",
                     /* sm+: panel lateral derecho */
@@ -65,19 +65,18 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
                 ].join(" ")}
                 style={{
                     backgroundColor: glassBg,
-                    borderColor:     glassBorder,
-                    backdropFilter:         "blur(24px) saturate(180%)",
-                    WebkitBackdropFilter:   "blur(24px) saturate(180%)",
-                    color:     text,
-                    opacity:   loaded ? 1 : 0,
+                    borderColor: glassBorder,
+                    backdropFilter: "blur(24px) saturate(180%)",
+                    WebkitBackdropFilter: "blur(24px) saturate(180%)",
+                    color: text,
+                    opacity: loaded ? 1 : 0,
                     transform: loaded ? "translateX(0)" : "translateX(20px)",
                     transition: "opacity 0.7s ease 0.1s, transform 0.7s cubic-bezier(0.16,1,0.3,1) 0.1s",
                 }}
             >
                 {subtitle && (
                     <p
-                        className="text-[10px] font-semibold uppercase tracking-[0.35em] truncate"
-                        style={{ color: accent }}
+                        className="text-[10px] font-semibold uppercase tracking-[0.35em]" style={{ color: accent }}
                     >
                         {subtitle}
                     </p>

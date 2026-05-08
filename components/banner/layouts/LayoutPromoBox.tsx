@@ -69,7 +69,7 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
                     <div className="w-full h-[3px] flex-shrink-0" style={{ backgroundColor: accent }} />
 
                     {/* Contenido */}
-                    <div className="flex flex-col gap-4 px-7 py-7 flex-1">
+<div className="flex flex-col items-center text-center gap-4 px-7 py-7 flex-1">
 
                         {/* Eyebrow */}
                         {subtitle && (
@@ -103,7 +103,7 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
 
                         {/* Precio */}
                         {price?.current !== undefined && (
-                            <div className="flex items-end gap-3 flex-wrap mt-auto pt-2">
+<div className="flex items-center gap-3 flex-wrap mt-auto pt-2 justify-center">
                                 <div className="flex items-start gap-0.5 leading-none">
                                     <span className="text-xs font-semibold mt-1.5" style={{ color: muted }}>
                                         {price.currency ?? "S/"}
@@ -117,7 +117,7 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
                                 </div>
 
                                 {hasDiscount && (
-                                    <div className="flex flex-col items-start gap-1 mb-0.5">
+<div className="flex flex-col items-center gap-1 mb-0.5">
                                         <span className="text-xs line-through" style={{ color: muted }}>
                                             {price.currency ?? "S/"} {price.compare?.toFixed(2)}
                                         </span>

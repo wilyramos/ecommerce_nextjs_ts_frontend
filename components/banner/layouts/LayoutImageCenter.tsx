@@ -24,12 +24,7 @@ export default function LayoutImageCenter({ banner }: { banner: SliderBanner }) 
     return (
         <Link
             href={destUrl}
-            /**
-             * Responsive heights:
-             *   mobile  → 360 px
-             *   sm      → 440 px
-             *   md+     → 540 px
-             */
+
             className="relative flex flex-col items-center justify-center w-full h-[360px] sm:h-[460px] md:h-[600px] overflow-hidden group text-center"
             style={{ backgroundColor: bg }}
         >

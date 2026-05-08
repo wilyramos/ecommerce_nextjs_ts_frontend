@@ -89,7 +89,7 @@ export default function ProductForm({
                             <div className="space-y-1">
                                 <LabelWithTooltip htmlFor="line" label="Línea / Familia" tooltip="La línea o familia a la que pertenece el producto." />
                                 <Select key={selectedBrandId} name="line" defaultValue={initialLineId}>
-                                    <SelectTrigger disabled={!selectedBrandId || filteredLines.length === 0} className="h-10">
+                                    <SelectTrigger disabled={!selectedBrandId || filteredLines.length === 0} >
                                         <SelectValue placeholder={!selectedBrandId ? "Selecciona marca" : "Selecciona línea"} />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -167,7 +167,7 @@ export default function ProductForm({
                         </div>
                         <div className="space-y-1">
                             <LabelWithTooltip htmlFor="costo" label="Costo Unitario" tooltip="El costo unitario del producto." />
-                            <Input type="number" id="costo" name="costo" defaultValue={product?.costo} className="h-10" />
+                            <Input type="number" id="costo" name="costo" defaultValue={product?.costo}  />
                         </div>
                     </div>
 

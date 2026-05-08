@@ -1,7 +1,7 @@
 "use client";
 
-import Link        from "next/link";
-import Image       from "next/image";
+import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import SliderPrice from "../ui/SliderPrice";
 import type { SliderBanner } from "@/src/schemas/slider.schema";
@@ -13,9 +13,9 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
     useEffect(() => { const t = setTimeout(() => setLoaded(true), 80); return () => clearTimeout(t); }, []);
 
     const isDark = design.theme !== "light";
-    const bg     = design.bgColor     ?? (isDark ? "#000000" : "#ffffff");
-    const text   = design.textColor   ?? (isDark ? "#f5f5f7" : "#1d1d1f");
-    const muted  = design.textMutedColor ?? (isDark ? "#86868b" : "#6e6e73");
+    const bg = design.bgColor ?? (isDark ? "#000000" : "#ffffff");
+    const text = design.textColor ?? (isDark ? "#f5f5f7" : "#1d1d1f");
+    const muted = design.textMutedColor ?? (isDark ? "#86868b" : "#6e6e73");
     const accent = design.accentColor ?? (isDark ? "#F97316" : "#0071e3");
 
     return (
@@ -38,8 +38,8 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
             <div
                 className="absolute right-0 top-0 h-full w-[52%]"
                 style={{
-                    opacity:    loaded ? 1 : 0,
-                    transform:  loaded ? "translateX(0) scale(1)" : "translateX(30px) scale(0.97)",
+                    opacity: loaded ? 1 : 0,
+                    transform: loaded ? "translateX(0) scale(1)" : "translateX(30px) scale(0.97)",
                     transition: "opacity 0.8s ease 0.1s, transform 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s",
                 }}
             >
@@ -53,25 +53,31 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
             </div>
 
             {/* Panel texto — izquierda */}
-            <div className="relative z-10 flex flex-col gap-3 pl-10 md:pl-16 max-w-[52%]" style={{ color: text }}>
+            <div className="relative z-10 flex flex-col items-center text-center gap-3 px-10 md:px-16 max-w-[52%]" style={{ color: text }}>
                 {subtitle && (
-                    <p className="text-xs font-semibold" style={{ color: accent,
+                    <p className="text-xs font-semibold" style={{
+                        color: accent,
                         opacity: loaded ? 1 : 0, transform: loaded ? "none" : "translateY(8px)",
-                        transition: "all 0.5s ease 0.2s" }}>
+                        transition: "all 0.5s ease 0.2s"
+                    }}>
                         {subtitle}
                     </p>
                 )}
                 {title && (
                     <h2 className="text-[2.6rem] md:text-[3.4rem] font-semibold leading-[1.0] tracking-tight"
-                        style={{ opacity: loaded ? 1 : 0, transform: loaded ? "none" : "translateY(12px)",
-                        transition: "all 0.6s ease 0.28s" }}>
+                        style={{
+                            opacity: loaded ? 1 : 0, transform: loaded ? "none" : "translateY(12px)",
+                            transition: "all 0.6s ease 0.28s"
+                        }}>
                         {title}
                     </h2>
                 )}
                 {description && (
-                    <p className="text-[13px] md:text-sm leading-relaxed mt-1" style={{ color: muted,
+                    <p className="text-[13px] md:text-sm leading-relaxed mt-1" style={{
+                        color: muted,
                         opacity: loaded ? 1 : 0, transform: loaded ? "none" : "translateY(8px)",
-                        transition: "all 0.55s ease 0.36s" }}>
+                        transition: "all 0.55s ease 0.36s"
+                    }}>
                         {description}
                     </p>
                 )}
@@ -80,7 +86,7 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                         <SliderPrice price={price} />
                     </div>
                 )}
-               
+
             </div>
         </Link>
     );

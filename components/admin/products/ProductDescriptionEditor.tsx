@@ -28,10 +28,6 @@ const editorConfig: InitialConfigType = {
     nodes: [HeadingNode, QuoteNode, ListNode, ListItemNode, TableNode, TableCellNode, TableRowNode, LinkNode, ImageNode],
 };
 
-/**
- * 🛠️ DOM Preprocessor V2 (Type Safe)
- * Utiliza getPropertyValue y setProperty para evitar errores de índice en TS.
- */
 const moveStylesToSpans = (dom: Document) => {
     const doc = dom;
 

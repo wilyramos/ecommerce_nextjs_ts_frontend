@@ -43,7 +43,7 @@ export default function LayoutSplitDiagonal({ banner }: { banner: SliderBanner }
             </svg>
 
             {/* Panel texto izquierdo */}
-            <div className="relative z-10 flex flex-col justify-center gap-3.5 pl-10 md:pl-14 pr-6 max-w-[50%]"
+<div className="relative z-10 flex flex-col items-center justify-center text-center gap-3.5 px-10 md:px-14 max-w-[50%]"
                 style={{ color: text }}>
                 {subtitle && (
                     <p className="text-[10px] font-semibold uppercase tracking-[0.38em]"
@@ -61,8 +61,7 @@ export default function LayoutSplitDiagonal({ banner }: { banner: SliderBanner }
                     </h2>
                 )}
                 {description && (
-                    <p className="text-[13px] leading-relaxed max-w-[22ch]"
-                        style={{ color: muted, opacity: loaded ? 1 : 0,
+<p className="text-[13px] leading-relaxed"                        style={{ color: muted, opacity: loaded ? 1 : 0,
                         transition: "opacity 0.55s ease 0.28s" }}>
                         {description}
                     </p>
