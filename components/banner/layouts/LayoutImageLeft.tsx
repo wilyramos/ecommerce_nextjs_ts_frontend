@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useState } from "react";
+import ImageBorder from "../ui/ImageBorder";
 import SliderPrice from "../ui/SliderPrice";
 import type { SliderBanner } from "@/src/schemas/slider.schema";
 
@@ -16,14 +16,14 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
     }, []);
 
     const isDark = design.theme !== "light";
-    const bg     = design.bgColor        ?? (isDark ? "#0a0a0a" : "#f5f5f7");
-    const text   = design.textColor      ?? (isDark ? "#f5f5f7" : "#1d1d1f");
-    const muted  = design.textMutedColor ?? (isDark ? "#888888" : "#6e6e73");
-    const accent = design.accentColor    ?? (isDark ? "#2997ff" : "#0071e3");
+    const bg = design.bgColor ?? (isDark ? "#0a0a0a" : "#f5f5f7");
+    const text = design.textColor ?? (isDark ? "#f5f5f7" : "#1d1d1f");
+    const muted = design.textMutedColor ?? (isDark ? "#888888" : "#6e6e73");
+    const accent = design.accentColor ?? (isDark ? "#2997ff" : "#0071e3");
 
     const fadeUp = (delay: number) => ({
-        opacity:    loaded ? 1 : 0,
-        transform:  loaded ? "translateY(0px)" : "translateY(14px)",
+        opacity: loaded ? 1 : 0,
+        transform: loaded ? "translateY(0px)" : "translateY(14px)",
         transition: `opacity 0.65s ease ${delay}s, transform 0.65s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
     });
 
@@ -42,28 +42,31 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
                 {/* ── Columna imagen ── */}
                 {/* Mobile: altura fija proporcional. Desktop: h-full hereda del grid */}
                 <div className="relative w-full h-[55%] md:h-full overflow-hidden">
-                    <Image
-                        src={media.imageUrl}
-                        alt={media.altText}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 58vw"
-                        className={`
-                            object-${media.objectFit ?? "cover"}
-                            transition-transform duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)]
-                            group-hover:scale-[1.04]
-                        `}
-                        priority
-                    />
+                    <div className="absolute inset-0 w-full h-full z-0">
+                        <ImageBorder
+                            src={media.imageUrl}
+                            alt={media.altText}
+                            fill
+                            objectFit={media.objectFit ?? "cover"}
+                            borderStyle={media.border ?? "none"}
+                            sizes="(max-width: 768px) 100vw, 58vw"
+                            className={`
+                                transition-transform duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)]
+                                group-hover:scale-[1.04]
+                            `}
+                            priority
+                        />
+                    </div>
 
                     {/* Fade derecho — funde con panel de texto (solo desktop) */}
                     <div
-                        className="absolute inset-y-0 right-0 w-28 hidden md:block pointer-events-none"
+                        className="absolute inset-y-0 right-0 w-28 hidden md:block pointer-events-none z-10"
                         style={{ background: `linear-gradient(to right, transparent, ${bg})` }}
                     />
 
                     {/* Velo inferior — solo mobile */}
                     <div
-                        className="absolute inset-x-0 bottom-0 h-2/5 md:hidden pointer-events-none"
+                        className="absolute inset-x-0 bottom-0 h-2/5 md:hidden pointer-events-none z-10"
                         style={{ background: `linear-gradient(to top, ${bg}, transparent)` }}
                     />
                 </div>
@@ -71,14 +74,14 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
                 {/* ── Columna texto ── */}
                 <div
                     className="
-                        relative z-10
-                        flex flex-col justify-center
-                        -mt-8 px-6 pb-9
-                        sm:-mt-10 sm:px-9 sm:pb-11
-                        md:mt-0 md:px-10 md:py-14
-                        lg:px-14 lg:py-16
-                        xl:px-16
-                    "
+                        relative z-10
+                        flex flex-col justify-center
+                        -mt-8 px-6 pb-9
+                        sm:-mt-10 sm:px-9 sm:pb-11
+                        md:mt-0 md:px-10 md:py-14
+                        lg:px-14 lg:py-16
+                        xl:px-16
+                    "
                     style={{ color: text }}
                 >
                     {subtitle && (
@@ -86,9 +89,9 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
                             <span
                                 className="inline-block text-[10px] font-bold tracking-[0.3em] uppercase px-3 py-[5px] rounded-full"
                                 style={{
-                                    color:      accent,
+                                    color: accent,
                                     background: `${accent}18`,
-                                    border:     `1px solid ${accent}30`,
+                                    border: `1px solid ${accent}30`,
                                 }}
                             >
                                 {subtitle}
@@ -99,11 +102,11 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
                     {title && (
                         <h2
                             className="
-                                font-semibold leading-[1.06] tracking-[-0.03em]
-                                text-[clamp(1.65rem,4.2vw,3.4rem)]
-                                mb-3 md:mb-4
-                                max-w-[15ch]
-                            "
+                                font-semibold leading-[1.06] tracking-[-0.03em]
+                                text-[clamp(1.65rem,4.2vw,3.4rem)]
+                                mb-3 md:mb-4
+                                max-w-[15ch]
+                            "
                             style={fadeUp(0.13)}
                         >
                             {title}
@@ -113,8 +116,8 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
                     <div
                         className="mb-3 md:mb-5 h-px w-10 rounded-full"
                         style={{
-                            background:  accent,
-                            opacity:     loaded ? 0.75 : 0,
+                            background: accent,
+                            opacity: loaded ? 0.75 : 0,
                             transition: "opacity 0.5s ease 0.22s",
                         }}
                     />

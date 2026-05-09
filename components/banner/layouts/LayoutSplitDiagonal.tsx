@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useState } from "react";
+import ImageBorder from "../ui/ImageBorder";
 import SliderPrice from "../ui/SliderPrice";
 import type { SliderBanner } from "@/src/schemas/slider.schema";
 
@@ -16,14 +16,14 @@ export default function LayoutSplitDiagonal({ banner }: { banner: SliderBanner }
     }, []);
 
     const isDark = design.theme !== "light";
-    const bg     = design.bgColor        ?? (isDark ? "#080808" : "#f5f5f7");
-    const text   = design.textColor      ?? (isDark ? "#f5f5f7" : "#1d1d1f");
-    const muted  = design.textMutedColor ?? (isDark ? "#888888" : "#6e6e73");
-    const accent = design.accentColor    ?? (isDark ? "#2997ff" : "#0071e3");
+    const bg = design.bgColor ?? (isDark ? "#080808" : "#f5f5f7");
+    const text = design.textColor ?? (isDark ? "#f5f5f7" : "#1d1d1f");
+    const muted = design.textMutedColor ?? (isDark ? "#888888" : "#6e6e73");
+    const accent = design.accentColor ?? (isDark ? "#2997ff" : "#0071e3");
 
     const fadeUp = (delay: number): React.CSSProperties => ({
-        opacity:    loaded ? 1 : 0,
-        transform:  loaded ? "translateY(0px)" : "translateY(12px)",
+        opacity: loaded ? 1 : 0,
+        transform: loaded ? "translateY(0px)" : "translateY(12px)",
         transition: `opacity 0.65s ease ${delay}s, transform 0.65s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
     });
 
@@ -36,7 +36,7 @@ export default function LayoutSplitDiagonal({ banner }: { banner: SliderBanner }
         >
             {/* ── Imagen con diagonal ── */}
             <div
-                className="absolute inset-0"
+                className="absolute inset-0 z-0"
                 style={{ clipPath: "polygon(60% 0, 100% 0, 100% 100%, 44% 100%)" }}
             >
                 {/* Desktop */}
@@ -44,32 +44,36 @@ export default function LayoutSplitDiagonal({ banner }: { banner: SliderBanner }
                     className="absolute inset-0 hidden sm:block"
                     style={{ clipPath: "polygon(45% 0, 100% 0, 100% 100%, 28% 100%)" }}
                 >
-                    <Image
+                    <ImageBorder
                         src={media.imageUrl}
                         alt={media.altText}
                         fill
+                        objectFit={media.objectFit ?? "cover"}
+                        borderStyle={media.border ?? "none"}
                         sizes="(max-width: 640px) 50vw, 60vw"
-                        className={`object-${media.objectFit ?? "cover"} transition-transform duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]`}
+                        className="transition-transform duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
                         priority
                     />
                     <div
-                        className="absolute inset-0 pointer-events-none"
+                        className="absolute inset-0 pointer-events-none z-20"
                         style={{ background: `linear-gradient(to right, ${bg} 0%, transparent 22%)` }}
                     />
                 </div>
 
                 {/* Mobile */}
                 <div className="absolute inset-0 sm:hidden">
-                    <Image
+                    <ImageBorder
                         src={media.imageUrl}
                         alt={media.altText}
                         fill
+                        objectFit={media.objectFit ?? "cover"}
+                        borderStyle={media.border ?? "none"}
                         sizes="60vw"
-                        className={`object-${media.objectFit ?? "cover"} transition-transform duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]`}
+                        className="transition-transform duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
                         priority
                     />
                     <div
-                        className="absolute inset-0 pointer-events-none"
+                        className="absolute inset-0 pointer-events-none z-20"
                         style={{ background: `linear-gradient(to right, ${bg} 0%, transparent 28%)` }}
                     />
                 </div>
@@ -100,15 +104,15 @@ export default function LayoutSplitDiagonal({ banner }: { banner: SliderBanner }
             {/* ── Contenido ── */}
             <div
                 className="
-                    relative z-10
-                    flex flex-col justify-center
-                    w-[55%] sm:w-[44%]
-                    pl-6 pr-4
-                    sm:pl-10 sm:pr-6
-                    md:pl-14 md:pr-8
-                    lg:pl-20
-                    gap-2.5 sm:gap-3
-                "
+                    relative z-30
+                    flex flex-col justify-center
+                    w-[55%] sm:w-[44%]
+                    pl-6 pr-4
+                    sm:pl-10 sm:pr-6
+                    md:pl-14 md:pr-8
+                    lg:pl-20
+                    gap-2.5 sm:gap-3
+                "
                 style={{ color: text }}
             >
                 {subtitle && (
@@ -116,9 +120,9 @@ export default function LayoutSplitDiagonal({ banner }: { banner: SliderBanner }
                         <span
                             className="inline-block text-[9px] sm:text-[10px] font-bold tracking-[0.3em] uppercase px-2.5 py-[4px] rounded-full"
                             style={{
-                                color:      accent,
+                                color: accent,
                                 background: `${accent}18`,
-                                border:     `1px solid ${accent}30`,
+                                border: `1px solid ${accent}30`,
                             }}
                         >
                             {subtitle}
@@ -138,8 +142,8 @@ export default function LayoutSplitDiagonal({ banner }: { banner: SliderBanner }
                 <div
                     className="h-px w-9 rounded-full"
                     style={{
-                        background:  accent,
-                        opacity:     loaded ? 0.7 : 0,
+                        background: accent,
+                        opacity: loaded ? 0.7 : 0,
                         transition: "opacity 0.5s ease 0.24s",
                     }}
                 />

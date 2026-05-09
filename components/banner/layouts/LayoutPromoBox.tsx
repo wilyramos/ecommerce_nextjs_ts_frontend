@@ -1,10 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useState } from "react";
+import ImageBorder from "../ui/ImageBorder";
+import SliderPrice from "../ui/SliderPrice";
 import type { SliderBanner } from "@/src/schemas/slider.schema";
 
+/**
+ * LayoutPromoBox: Rediseño enfocado en un concepto de "Product Showcase" 
+ * con profundidad, texturas y un enfoque tipográfico premium.
+ */
 export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
     const { design, media, title, subtitle, description, price, destUrl } = banner;
     const [loaded, setLoaded] = useState(false);
@@ -14,189 +19,150 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
         return () => clearTimeout(t);
     }, []);
 
-    const isDark     = design.theme !== "light";
-    const bg         = design.bgColor        ?? (isDark ? "#0d0d0d" : "#e8e8e6");
-    const accent     = design.accentColor    ?? (isDark ? "#f97316" : "#e55a00");
-    const text       = design.textColor      ?? (isDark ? "#f0f0ef" : "#111110");
-    const muted      = design.textMutedColor ?? (isDark ? "#6b6b6b" : "#909090");
-    const cardBg     = isDark ? "#161616" : "#ffffff";
-    const cardBorder = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
+    const isDark = design.theme !== "light";
+    const bg = design.bgColor ?? (isDark ? "#0d0d0d" : "#f4f4f2");
+    const accent = design.accentColor ?? (isDark ? "#f97316" : "#e55a00");
+    const text = design.textColor ?? (isDark ? "#f0f0ef" : "#111110");
+    const muted = design.textMutedColor ?? (isDark ? "#888" : "#777");
 
-    const hasDiscount = price?.compare && price.compare > (price.current ?? 0);
-    const discount    = hasDiscount
-        ? Math.round(((price!.compare! - price!.current!) / price!.compare!) * 100)
-        : null;
+    const cardBg = isDark ? "#111111" : "#ffffff";
+    const cardBorder = isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.05)";
 
     const fadeUp = (delay: number): React.CSSProperties => ({
-        opacity:    loaded ? 1 : 0,
-        transform:  loaded ? "translateY(0px)" : "translateY(12px)",
-        transition: `opacity 0.6s ease ${delay}s, transform 0.65s cubic-bezier(0.22,1,0.36,1) ${delay}s`,
+        opacity: loaded ? 1 : 0,
+        transform: loaded ? "translateY(0px)" : "translateY(20px)",
+        transition: `opacity 0.8s ease ${delay}s, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
     });
 
     return (
         <Link
             href={destUrl}
             aria-label={title ?? "Ver oferta"}
-            // banner-slot reemplaza: h-[360px] sm:h-[460px] md:h-[600px]
             className="banner-slot group relative flex items-center justify-center w-full overflow-hidden"
             style={{ backgroundColor: bg }}
         >
-            {/* Textura de ruido */}
+            {/* ── Fondo Atmosférico: Noise + Gradientes ── */}
             <div
-                className="absolute inset-0 pointer-events-none opacity-[0.025]"
+                className="absolute inset-0 pointer-events-none opacity-[0.03] mix-blend-overlay"
                 style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-                    backgroundSize: "180px",
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
                 }}
             />
 
-            <div className="relative z-10 w-full h-full max-w-6xl mx-auto px-5 sm:px-8 md:px-12 lg:px-16 flex items-center justify-between gap-6 md:gap-10">
+            {/* Círculo de luz difusa ambiental */}
+            <div
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] aspect-square opacity-20 blur-[120px] pointer-events-none"
+                style={{ background: `radial-gradient(circle, ${accent} 0%, transparent 70%)` }}
+            />
 
-                {/* Imagen de fondo mobile */}
+            <div className="relative z-10 w-full h-full max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between gap-12 py-10 md:py-0">
+
+                {/* ── Bloque de Información (The "Box" Content) ── */}
                 <div
-                    className="sm:hidden absolute inset-0 pointer-events-none"
-                    style={fadeUp(0.04)}
+                    className="relative flex-shrink-0 w-full max-w-[340px] md:max-w-[380px] lg:max-w-[420px] z-20"
+                    style={fadeUp(0.1)}
                 >
-                    <Image
-                        src={media.imageUrl}
-                        alt={media.altText}
-                        fill
-                        sizes="100vw"
-                        className={`object-${media.objectFit ?? "contain"} opacity-10`}
-                        priority
-                    />
                     <div
-                        className="absolute inset-0"
+                        className="relative p-8 md:p-10 overflow-hidden"
                         style={{
-                            background: `radial-gradient(circle at 70% 50%, ${accent}15 0%, transparent 65%)`,
+                            backgroundColor: cardBg,
+                            border: `1px solid ${cardBorder}`,
+                            boxShadow: isDark
+                                ? "0 40px 80px -20px rgba(0,0,0,0.8)"
+                                : "0 40px 80px -20px rgba(0,0,0,0.15)"
                         }}
-                    />
-                </div>
+                    >
+                        {/* Acento decorativo esquinero */}
+                        <div
+                            className="absolute top-0 left-0 w-12 h-12 border-t-2 border-l-2"
+                            style={{ borderColor: accent }}
+                        />
 
-                {/* ── Card de producto ── */}
-                <div
-                    className="
-                        relative flex-shrink-0 flex flex-col justify-between overflow-hidden
-                        w-full max-w-[320px] mx-auto
-                        sm:mx-0 sm:w-[300px] md:w-[340px] lg:w-[380px]
-                        h-[78%] sm:h-[82%] md:h-[80%]
-                    "
-                    style={{
-                        backgroundColor: cardBg,
-                        border: `1px solid ${cardBorder}`,
-                        boxShadow: isDark
-                            ? "0 24px 64px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.04) inset"
-                            : "0 24px 64px rgba(0,0,0,0.12), 0 1px 0 rgba(255,255,255,0.9) inset",
-                        ...fadeUp(0.1),
-                    }}
-                >
-                    {/* Franja accent superior */}
-                    <div
-                        className="w-full flex-shrink-0"
-                        style={{
-                            height: "3px",
-                            background: `linear-gradient(to right, ${accent}, ${accent}88)`,
-                        }}
-                    />
-
-                    {/* Contenido */}
-                    <div className="flex flex-col items-center text-center gap-3 px-6 sm:px-7 py-6 sm:py-7 flex-1 min-h-0">
-
-                        {subtitle && (
-                            <span
-                                className="text-[9px] font-black uppercase tracking-[0.22em]"
-                                style={{ color: accent }}
-                            >
-                                {subtitle}
-                            </span>
-                        )}
-
-                        {title && (
-                            <h2
-                                className="font-semibold leading-[1.1] tracking-tight text-[clamp(1.15rem,2.6vw,1.75rem)] line-clamp-3"
-                                style={{ color: text }}
-                            >
-                                {title}
-                            </h2>
-                        )}
-
-                        {description && (
-                            <p
-                                className="text-[11px] sm:text-[12px] leading-relaxed line-clamp-2"
-                                style={{ color: muted }}
-                            >
-                                {description}
-                            </p>
-                        )}
-
-                        {price?.current !== undefined && (
-                            <div className="flex items-center gap-3 flex-wrap mt-auto pt-2 justify-center">
-                                <div className="flex items-start gap-0.5 leading-none">
-                                    <span
-                                        className="text-xs font-semibold mt-[7px]"
-                                        style={{ color: muted }}
-                                    >
-                                        {price.currency ?? "S/"}
-                                    </span>
-                                    <span
-                                        className="font-bold tracking-tighter text-[clamp(1.9rem,3.8vw,2.8rem)] leading-none"
-                                        style={{ color: text }}
-                                    >
-                                        {price.current.toFixed(2)}
+                        <div className="flex flex-col gap-6">
+                            {subtitle && (
+                                <div className="flex items-center gap-3">
+                                    <div className="w-6 h-px bg-current" style={{ color: accent }} />
+                                    <span className="text-[10px] font-black uppercase tracking-[0.3em]" style={{ color: accent }}>
+                                        {subtitle}
                                     </span>
                                 </div>
+                            )}
 
-                                {hasDiscount && (
-                                    <div className="flex flex-col items-center gap-1">
-                                        <span
-                                            className="text-[11px] line-through"
-                                            style={{ color: muted }}
-                                        >
-                                            {price.currency ?? "S/"} {price.compare?.toFixed(2)}
-                                        </span>
-                                        <span
-                                            className="text-[10px] font-black px-1.5 py-[3px] tracking-wider"
-                                            style={{ backgroundColor: accent, color: "#fff" }}
-                                        >
-                                            −{discount}%
-                                        </span>
-                                    </div>
-                                )}
+                            {title && (
+                                <h2 className="text-[clamp(1.5rem,3vw,2.5rem)] font-bold leading-[1.1] tracking-tight" style={{ color: text }}>
+                                    {title}
+                                </h2>
+                            )}
+
+                            {description && (
+                                <p className="text-sm leading-relaxed opacity-80" style={{ color: muted }}>
+                                    {description}
+                                </p>
+                            )}
+
+                            {price?.current !== undefined && (
+                                <div className="pt-4 flex flex-col gap-1">
+                                    <span className="text-[10px] font-bold uppercase tracking-widest opacity-40" style={{ color: text }}>
+                                        Precio exclusivo
+                                    </span>
+                                    <SliderPrice price={price} />
+                                </div>
+                            )}
+
+                            {/* Botón Simulado (CTA) */}
+                            <div className="pt-4">
+                                <div
+                                    className="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-widest pb-1 border-b-2 transition-all duration-300 group-hover:gap-5"
+                                    style={{ borderColor: accent, color: text }}
+                                >
+                                    Descubrir
+                                    <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 1L17 6L12 11M1 6H17H1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </div>
                             </div>
-                        )}
+                        </div>
                     </div>
 
-                    {/* Divisor */}
-                    <div className="mx-6 sm:mx-7 h-px flex-shrink-0" style={{ backgroundColor: cardBorder }} />
+                    {/* Elemento decorativo flotante detrás de la card */}
+                    <div
+                        className="absolute -bottom-4 -right-4 w-full h-full -z-10 border opacity-20"
+                        style={{ borderColor: accent }}
+                    />
                 </div>
 
-                {/* ── Imagen del producto — solo desktop ── */}
+                {/* ── Visual Showcase (The Media) ── */}
                 <div
-                    className="hidden sm:flex relative flex-1 h-full items-center justify-center"
-                    style={fadeUp(0.05)}
+                    className="relative flex-1 w-full h-[350px] md:h-[80%] flex items-center justify-center"
+                    style={fadeUp(0.2)}
                 >
+                    {/* Anillo decorativo rotatorio en hover */}
                     <div
-                        className="absolute inset-0 pointer-events-none"
-                        style={{
-                            background: `radial-gradient(circle at 50% 52%, ${accent}22 0%, transparent 60%)`,
-                        }}
+                        className="absolute w-[80%] aspect-square border rounded-full opacity-[0.05] transition-transform duration-[2000ms] group-hover:rotate-180"
+                        style={{ borderColor: text }}
                     />
 
-                    <div
-                        className="relative w-full h-[75%] transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                        style={{ filter: "drop-shadow(0 32px 48px rgba(0,0,0,0.35))" }}
-                    >
-                        <Image
+                    <div className="relative w-full h-full z-10 transition-transform duration-700 ease-out group-hover:scale-[1.05]">
+                        <ImageBorder
                             src={media.imageUrl}
                             alt={media.altText}
                             fill
-                            className={`object-${media.objectFit ?? "contain"}`}
-                            sizes="45vw"
+                            objectFit={media.objectFit ?? "contain"}
+                            borderStyle={media.border ?? "none"}
+                            sizes="(max-width: 768px) 100vw, 50vw"
                             priority
+                            className="drop-shadow-[0_30px_60px_rgba(0,0,0,0.25)]"
                         />
                     </div>
+
+                    {/* Sombra de base */}
+                    <div
+                        className="absolute bottom-[10%] w-[60%] h-10 bg-black/20 blur-2xl rounded-[100%] transition-opacity duration-700 group-hover:opacity-40"
+                    />
                 </div>
             </div>
+
+
         </Link>
     );
 }

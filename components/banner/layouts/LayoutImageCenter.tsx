@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useState } from "react";
+import ImageBorder from "../ui/ImageBorder";
 import SliderPrice from "../ui/SliderPrice";
 import type { SliderBanner } from "@/src/schemas/slider.schema";
 
@@ -16,14 +16,14 @@ export default function LayoutImageCenter({ banner }: { banner: SliderBanner }) 
     }, []);
 
     const isDark = design.theme !== "light";
-    const bg     = design.bgColor        ?? (isDark ? "#080808" : "#f5f5f7");
-    const text   = design.textColor      ?? (isDark ? "#f5f5f7" : "#1d1d1f");
-    const muted  = design.textMutedColor ?? (isDark ? "#999"    : "#6e6e73");
-    const accent = design.accentColor    ?? (isDark ? "#2997ff" : "#0071e3");
+    const bg = design.bgColor ?? (isDark ? "#080808" : "#f5f5f7");
+    const text = design.textColor ?? (isDark ? "#f5f5f7" : "#1d1d1f");
+    const muted = design.textMutedColor ?? (isDark ? "#999" : "#6e6e73");
+    const accent = design.accentColor ?? (isDark ? "#2997ff" : "#0071e3");
 
     const fadeUp = (delay: number, extra?: React.CSSProperties): React.CSSProperties => ({
-        opacity:    loaded ? 1 : 0,
-        transform:  loaded ? "translateY(0px)" : "translateY(16px)",
+        opacity: loaded ? 1 : 0,
+        transform: loaded ? "translateY(0px)" : "translateY(16px)",
         transition: `opacity 0.7s ease ${delay}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
         ...extra,
     });
@@ -39,39 +39,38 @@ export default function LayoutImageCenter({ banner }: { banner: SliderBanner }) 
             style={{ backgroundColor: bg }}
         >
             {/* ── Imagen a sangre completa ── */}
-            <Image
-                src={media.imageUrl}
-                alt={media.altText}
-                fill
-                sizes="100vw"
-                className={`
-                    object-${media.objectFit ?? "cover"}
-                    transition-transform duration-[1800ms] ease-[cubic-bezier(0.16,1,0.3,1)]
-                    group-hover:scale-[1.05]
-                `}
-                style={{ opacity: imgOpacity }}
-                priority
-            />
+            <div className="absolute inset-0 w-full h-full z-0" style={{ opacity: imgOpacity }}>
+                <ImageBorder
+                    src={media.imageUrl}
+                    alt={media.altText}
+                    fill
+                    objectFit={media.objectFit ?? "cover"}
+                    borderStyle={media.border ?? "none"}
+                    sizes="100vw"
+                    className="transition-transform duration-[1800ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.05]"
+                    priority
+                />
+            </div>
 
             {/* Viñeta radial */}
             <div
-                className="absolute inset-0 pointer-events-none"
+                className="absolute inset-0 pointer-events-none z-10"
                 style={{
                     background: isDark
                         ? `radial-gradient(ellipse 80% 75% at 50% 50%,
-                              transparent 20%,
-                              ${bg}55 65%,
-                              ${bg}cc 100%)`
+                              transparent 20%,
+                              ${bg}55 65%,
+                              ${bg}cc 100%)`
                         : `radial-gradient(ellipse 80% 75% at 50% 50%,
-                              transparent 20%,
-                              ${bg}44 65%,
-                              ${bg}bb 100%)`,
+                              transparent 20%,
+                              ${bg}44 65%,
+                              ${bg}bb 100%)`,
                 }}
             />
 
             {/* Rampa inferior */}
             <div
-                className="absolute inset-x-0 bottom-0 pointer-events-none"
+                className="absolute inset-x-0 bottom-0 pointer-events-none z-10"
                 style={{
                     height: "65%",
                     background: isDark
@@ -82,20 +81,20 @@ export default function LayoutImageCenter({ banner }: { banner: SliderBanner }) 
 
             {/* ── Contenido ── */}
             <div className="
-                relative z-10 w-full
-                flex flex-col items-center justify-end text-center
-                px-6 pb-10
-                sm:px-10 sm:pb-12
-                md:justify-center md:pb-0
-                md:px-12
-            ">
+                relative z-20 w-full
+                flex flex-col items-center justify-end text-center
+                px-6 pb-10
+                sm:px-10 sm:pb-12
+                md:justify-center md:pb-0
+                md:px-12
+            ">
                 <div
                     className="
-                        flex flex-col items-center
-                        w-full
-                        max-w-[20rem] sm:max-w-[34rem] md:max-w-2xl lg:max-w-3xl
-                        md:translate-y-[10%]
-                    "
+                        flex flex-col items-center
+                        w-full
+                        max-w-[20rem] sm:max-w-[34rem] md:max-w-2xl lg:max-w-3xl
+                        md:translate-y-[10%]
+                    "
                     style={{ color: text }}
                 >
                     {subtitle && (
@@ -103,9 +102,9 @@ export default function LayoutImageCenter({ banner }: { banner: SliderBanner }) 
                             <span
                                 className="inline-block text-[10px] font-bold tracking-[0.32em] uppercase px-3 py-[5px] rounded-full"
                                 style={{
-                                    color:          accent,
-                                    background:     `${accent}20`,
-                                    border:         `1px solid ${accent}35`,
+                                    color: accent,
+                                    background: `${accent}20`,
+                                    border: `1px solid ${accent}35`,
                                     backdropFilter: "blur(8px)",
                                 }}
                             >
@@ -122,7 +121,7 @@ export default function LayoutImageCenter({ banner }: { banner: SliderBanner }) 
                                     ? "translateY(0px) scale(1)"
                                     : "translateY(18px) scale(0.96)",
                                 transition: `opacity 0.8s ease 0.15s,
-                                             transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.15s`,
+                                             transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.15s`,
                             })}
                         >
                             {title}

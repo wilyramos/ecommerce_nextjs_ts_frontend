@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useState } from "react";
+import ImageBorder from "../ui/ImageBorder";
 import SliderPrice from "../ui/SliderPrice";
 import type { SliderBanner } from "@/src/schemas/slider.schema";
 
@@ -16,14 +16,14 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
     }, []);
 
     const isDark = design.theme !== "light";
-    const bg     = design.bgColor        ?? (isDark ? "#080808" : "#f5f5f7");
-    const text   = design.textColor      ?? (isDark ? "#f5f5f7" : "#1d1d1f");
-    const muted  = design.textMutedColor ?? (isDark ? "#86868b" : "#6e6e73");
-    const accent = design.accentColor    ?? (isDark ? "#2997ff" : "#0071e3");
+    const bg = design.bgColor ?? (isDark ? "#080808" : "#f5f5f7");
+    const text = design.textColor ?? (isDark ? "#f5f5f7" : "#1d1d1f");
+    const muted = design.textMutedColor ?? (isDark ? "#86868b" : "#6e6e73");
+    const accent = design.accentColor ?? (isDark ? "#2997ff" : "#0071e3");
 
     const fadeUp = (delay: number): React.CSSProperties => ({
-        opacity:    loaded ? 1 : 0,
-        transform:  loaded ? "translateY(0px)" : "translateY(14px)",
+        opacity: loaded ? 1 : 0,
+        transform: loaded ? "translateY(0px)" : "translateY(14px)",
         transition: `opacity 0.7s ease ${delay}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
     });
 
@@ -41,7 +41,6 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                 }}
             />
 
-            {/* ── Columna 1: Contenido (Izquierda) - Ocupa 1/2 espacio ── */}
             <div
                 className="
                     relative z-10
@@ -66,7 +65,7 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                 )}
 
                 <div
-                    className="h-[2px] w-8 sm:w-14 rounded-full flex-none"
+                    className="h-[2px] w-8 sm:w-14 flex-none"
                     style={{
                         background: accent,
                         opacity: loaded ? 0.8 : 0,
@@ -90,46 +89,50 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                 )}
             </div>
 
-            {/* ── Columna 2: Imagen y Título (Derecha) - Ocupa 1/2 espacio y centrado ── */}
             <div
                 className="
                     relative z-10
-                    flex flex-col justify-center items-center // <--- Centrado vertical y horizontal
+                    flex flex-col justify-center items-center
                     w-1/2 h-full
-                    p-3 sm:p-6 lg:p-8 // <--- Padding reducido en móvil para dar espacio a la img
+                    p-6 sm:p-10 lg:p-12
                     pointer-events-none
-                    overflow-hidden
                 "
                 style={{
-                    opacity:    loaded ? 1 : 0,
-                    transform:  loaded ? "translateX(0) scale(1)" : "translateX(20px) scale(0.95)",
+                    opacity: loaded ? 1 : 0,
+                    transform: loaded ? "translateX(0) scale(1)" : "translateX(20px) scale(0.95)",
                     transition: "opacity 1s ease 0.1s, transform 1.2s cubic-bezier(0.16,1,0.3,1) 0.1s",
                 }}
             >
-              
-                <div className="relative w-full h-full max-h-[70%] sm:max-h-[75%] min-h-0">
-                    <Image
+                <div className="relative aspect-square h-full max-h-[60%] sm:max-h-[65%] min-h-0 flex items-center justify-center">
+                    <ImageBorder
                         src={media.imageUrl}
                         alt={media.altText}
                         fill
-                        className={`
-                            object-${media.objectFit ?? "contain"}
-                            object-center // <--- Centrado dentro de su espacio
-                            drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)]
-                            transition-transform duration-[2000ms] ease-out
-                            group-hover:scale-[1.03]
-                        `}
+                        objectFit={media.objectFit ?? "cover"}
+                        borderStyle={media.border ?? "curved-frame"}
                         sizes="(max-width: 640px) 50vw, 50vw"
                         priority
                     />
                 </div>
+
                 {title && (
-                    <h2
-                        className="flex-none font-semibold leading-tight tracking-[-0.02em] text-[clamp(0,8rem,2vw,1,5rem)] text-center items-center max-w-full line-clamp-2 mt-1 sm:mt-2"
-                        style={{ color: text }}
-                    >
-                        {title}
-                    </h2>
+                    <div className="flex flex-col items-center gap-2 mt-4 sm:mt-6">
+                        <h2
+                            className="flex-none font-semibold leading-tight tracking-[-0.02em] text-[clamp(0.8rem,2vw,1.5rem)] text-center items-center max-w-full line-clamp-2"
+                            style={{ color: text }}
+                        >
+                            {title}
+                        </h2>
+                        <div
+                            className="h-[2px] w-8 sm:w-12 rounded-full flex-none"
+                            style={{
+                                background: accent,
+                                opacity: loaded ? 0.6 : 0,
+                                transition: "opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s",
+                                transform: loaded ? "scaleX(1)" : "scaleX(0)",
+                            }}
+                        />
+                    </div>
                 )}
             </div>
         </Link>

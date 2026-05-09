@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useState } from "react";
+import ImageBorder from "../ui/ImageBorder";
 import SliderPrice from "../ui/SliderPrice";
 import type { SliderBanner } from "@/src/schemas/slider.schema";
 
@@ -15,22 +15,22 @@ export default function LayoutImageCenterSplit({ banner }: { banner: SliderBanne
         return () => clearTimeout(t);
     }, []);
 
-    const isDark   = design.theme !== "light";
-    const bg       = design.bgColor        ?? (isDark ? "#080808" : "#f5f5f7");
-    const text     = design.textColor      ?? (isDark ? "#f5f5f7" : "#1d1d1f");
-    const muted    = design.textMutedColor ?? (isDark ? "#86868b" : "#6e6e73");
-    const accent   = design.accentColor    ?? (isDark ? "#2997ff" : "#0071e3");
-    const divider  = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
+    const isDark = design.theme !== "light";
+    const bg = design.bgColor ?? (isDark ? "#080808" : "#f5f5f7");
+    const text = design.textColor ?? (isDark ? "#f5f5f7" : "#1d1d1f");
+    const muted = design.textMutedColor ?? (isDark ? "#86868b" : "#6e6e73");
+    const accent = design.accentColor ?? (isDark ? "#2997ff" : "#0071e3");
+    const divider = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
 
-    const leftFields  = design.contentDistribution?.leftSide  ?? ["subtitle", "title"];
+    const leftFields = design.contentDistribution?.leftSide ?? ["subtitle", "title"];
     const rightFields = design.contentDistribution?.rightSide ?? ["description", "price"];
 
     const fadeSlide = (side: "left" | "right" | "up", delay: number): React.CSSProperties => ({
-        opacity:    loaded ? 1 : 0,
-        transform:  loaded 
-            ? "translate(0px, 0px)" 
-            : side === "up" 
-                ? "translateY(14px)" 
+        opacity: loaded ? 1 : 0,
+        transform: loaded
+            ? "translate(0px, 0px)"
+            : side === "up"
+                ? "translateY(14px)"
                 : `translateX(${side === "left" ? "-16px" : "16px"})`,
         transition: `opacity 0.7s ease ${delay}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
     });
@@ -96,7 +96,7 @@ export default function LayoutImageCenterSplit({ banner }: { banner: SliderBanne
 
                 {/* Panel izquierdo */}
                 <div
-                    className="h-full flex flex-col items-center justify-center text-center gap-3 md:gap-4 flex-shrink-0 z-10 overflow-hidden"
+                    className="h-full flex flex-col items-center justify-center text-center gap-3 md:gap-4 flex-shrink-0 z-20 overflow-hidden"
                     style={{ width: "28%", borderColor: divider, paddingInline: "3%" }}
                 >
                     {leftFields.map((f, i) => renderField(f, "left", i))}
@@ -104,41 +104,43 @@ export default function LayoutImageCenterSplit({ banner }: { banner: SliderBanne
 
                 {/* Imagen central */}
                 <div className="relative flex-1 h-full overflow-hidden bg-black/5">
-                    <Image
-                        src={media.imageUrl}
-                        alt={media.altText}
-                        fill
-                        sizes="50vw"
-                        className={`object-${media.objectFit ?? "cover"} object-center transition-transform duration-[2000ms] ease-out group-hover:scale-[1.03]`}
-                        priority
-                    />
+                    <div className="absolute inset-0 w-full h-full z-0">
+                        <ImageBorder
+                            src={media.imageUrl}
+                            alt={media.altText}
+                            fill
+                            objectFit={media.objectFit ?? "cover"}
+                            borderStyle={media.border ?? "none"}
+                            sizes="50vw"
+                            className="transition-transform duration-[2000ms] ease-out group-hover:scale-[1.03]"
+                            priority
+                        />
+                    </div>
                     {/* Fusión de bordes con el fondo */}
                     <div
-                        className="absolute inset-y-0 left-0 w-24 md:w-32 pointer-events-none"
+                        className="absolute inset-y-0 left-0 w-24 md:w-32 pointer-events-none z-10"
                         style={{ background: `linear-gradient(to right, ${bg}, transparent)` }}
                     />
                     <div
-                        className="absolute inset-y-0 right-0 w-24 md:w-32 pointer-events-none"
+                        className="absolute inset-y-0 right-0 w-24 md:w-32 pointer-events-none z-10"
                         style={{ background: `linear-gradient(to left, ${bg}, transparent)` }}
                     />
 
                     {/* CTA central */}
                     <div
-                        className="absolute bottom-6 left-0 right-0 flex flex-col items-center gap-2"
+                        className="absolute bottom-6 left-0 right-0 flex flex-col items-center gap-2 z-10"
                         style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.8s ease 0.6s" }}
                     >
                         <div
                             className="w-px h-6 md:h-8"
                             style={{ background: `linear-gradient(to bottom, transparent, ${accent}80)` }}
                         />
-                       
-                    
                     </div>
                 </div>
 
                 {/* Panel derecho */}
                 <div
-                    className="h-full flex flex-col items-center justify-center text-center gap-3 md:gap-4 flex-shrink-0 z-10 overflow-hidden"
+                    className="h-full flex flex-col items-center justify-center text-center gap-3 md:gap-4 flex-shrink-0 z-20 overflow-hidden"
                     style={{ width: "28%", borderColor: divider, paddingInline: "3%" }}
                 >
                     {rightFields.map((f, i) => renderField(f, "right", i))}
@@ -147,27 +149,28 @@ export default function LayoutImageCenterSplit({ banner }: { banner: SliderBanne
 
             {/* ── Mobile (< sm): imagen de fondo + contenido superpuesto ── */}
             <div className="sm:hidden absolute inset-0 w-full h-full">
-                <Image
-                    src={media.imageUrl}
-                    alt={media.altText}
-                    fill
-                    className={`object-${media.objectFit ?? "cover"} object-center transition-transform duration-[1500ms] group-hover:scale-105`}
-                    priority
-                />
+                <div className="absolute inset-0 w-full h-full z-0">
+                    <ImageBorder
+                        src={media.imageUrl}
+                        alt={media.altText}
+                        fill
+                        objectFit={media.objectFit ?? "cover"}
+                        borderStyle={media.border ?? "none"}
+                        sizes="100vw"
+                        className="transition-transform duration-[1500ms] group-hover:scale-105"
+                        priority
+                    />
+                </div>
                 <div
-                    className="absolute inset-0"
+                    className="absolute inset-0 z-10 pointer-events-none"
                     style={{ background: `linear-gradient(to top, ${bg} 20%, ${bg}d9 55%, transparent 100%)` }}
                 />
             </div>
 
             <div
-                className="sm:hidden relative z-10 flex flex-col justify-end items-center text-center gap-2.5 px-6 pb-5 pt-16 h-full w-full overflow-hidden"
+                className="sm:hidden relative z-20 flex flex-col justify-end items-center text-center gap-2.5 px-6 pb-5 pt-16 h-full w-full overflow-hidden"
                 style={{ color: text }}
             >
-                {/* 
-                    En móvil, se usa "up" en lugar de "left"/"right" para la animación.
-                    Evita que los elementos se desborden horizontalmente al aparecer.
-                */}
                 {[...leftFields, ...rightFields].map((f, i) => renderField(f, "up", i))}
             </div>
         </Link>

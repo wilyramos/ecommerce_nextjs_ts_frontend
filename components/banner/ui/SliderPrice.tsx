@@ -7,51 +7,33 @@ interface Props {
 const borderClass: Record<string, string> = {
     none: "",
 
-    // "Sello": solo esquina top-left
+    // "Sello": Línea fina izquierda y superior, sutil
     simple:
-        "relative px-6 py-3 border-[0.5px] border-[var(--color-accent-warm)]/30 rounded-tl-xs " +
-        "before:content-[''] before:absolute before:pointer-events-none " +
-        "before:-left-1 before:-bottom-1 before:w-full before:h-full " +
-        "before:border-l-4 before:border-b-2 before:border-[var(--color-accent-warm)] before:rounded-tl-xs before:-z-10",
+        "relative pl-4 pt-2 border-l-1 border-t-1 border-[var(--color-accent-warm)]/30 rounded-tl-md",
 
-    // "Hoja de Cristal": solo esquina top-right
+    // "Hoja de Cristal": Borde superior y derecho muy limpio
     double:
-        "relative px-8 py-3 rounded-tr-xs border border-[var(--color-accent-warm)] " +
-        "before:content-[''] before:absolute before:pointer-events-none " +
-        "before:-left-2 before:bottom-[-6px] before:w-[calc(100%+8px)] before:h-[calc(100%+6px)] " +
-        "before:border-l-1 before:border-b-1 before:border-current before:opacity-30 before:-z-10",
+        "relative pr-5 pt-2 border-r-1 border-t-1 border-[var(--color-accent-warm)]/30 rounded-tr-md",
 
-    // "Ticket Tech": solo esquina top-right
+    // "Ticket Tech": Borde completo redondeado con opacidad mínima
     "rounded-all":
-        "relative px-8 py-4 border-2 border-dashed border-[var(--color-accent-warm)]/40 rounded-tr-xs " +
-        "before:content-[''] before:absolute before:pointer-events-none " +
-        "before:top-1 before:left-1 before:w-full before:h-full " +
-        "before:border-r-2 before:border-t-2 before:border-dashed before:border-current before:opacity-20 before:rounded-tr-xs before:-z-10",
+        "relative px-5 py-3 border-1 border-[var(--color-accent-warm)]/20 rounded-lg bg-[var(--color-accent-warm)]/[0.02]",
 
-    // "Geometría Abstracta": solo esquina top-left
+    // "Geometría Abstracta": Subrayado minimalista a trazos
     dashed:
-        "relative px-6 py-3 border-[0.5px] border-[var(--color-accent-warm)]/40 rounded-tl-xs " +
-        "after:content-[''] after:absolute after:top-[-4px] after:right-[-4px] after:w-8 after:h-8 after:border-t-2 after:border-r-2 after:border-current " +
-        "before:content-[''] before:absolute before:bottom-[-4px] before:left-[-4px] before:w-8 before:h-8 before:border-b-2 before:border-current",
+        "relative pb-2 border-b-1 border-dashed border-[var(--color-accent-warm)]/40",
 
-    // "Corte de Precisión": solo esquina top-left
+    // "Corte de Precisión": Borde punteado delicado alrededor
     dotted:
-        "relative px-6 py-2 border-x-[0.5px] border-x-[var(--color-accent-warm)]/30 rounded-tl-xs " +
-        "before:content-[''] before:absolute before:top-[-2px] before:left-0 before:w-full before:h-[calc(100%+4px)] " +
-        "before:border-y-2 before:border-dotted before:border-current before:opacity-40 before:rounded-tl-2xs before:-z-10",
+        "relative px-4 py-2 border-1 border-dotted border-[var(--color-accent-warm)]/40 rounded-sm",
 
-    // "Cyber Frame": solo esquina top-left
+    // "Cyber Frame": Acento de esquina mínimo (solo dos líneas cortas top-left)
     "double-corner":
-        "relative px-2 py-4 border border-[var(--color-accent-warm)] rounded-tl-xs " +
-        "before:content-[''] before:absolute before:inset-0 before:translate-x-1 before:translate-y-1 " +
-        "before:border before:border-current before:opacity-25 before:rounded-tl-xs before:-z-10",
+        "relative pl-3 pt-3 before:content-[''] before:absolute before:top-0 before:left-0 before:w-3 before:h-3 before:border-t-[1px] before:border-l-[1px] before:border-[var(--color-accent-warm)]/50",
 
-    // "Bloque Moderno": solo esquina top-left
+    // "Bloque Moderno": Línea única a la izquierda, limpia y sin sombras
     "thick-solid":
-        "relative px-7 py-3 border-[0.5px] border-[var(--color-accent-warm)]/30 rounded-tl-xs " +
-        "before:content-[''] before:absolute before:top-0 before:left-[-12px] before:w-[12px] before:h-full " +
-        "before:bg-current before:opacity-100 before:rounded-l-sm " +
-        "after:content-[''] after:absolute after:inset-0 after:shadow-[6px_6px_0px_0px_var(--color-accent-warm-light)] after:-z-20",
+        "relative pl-4 py-1 border-l-2 border-[var(--color-accent-warm)]/60",
 };
 
 export default function SliderPrice({ price }: Props) {
@@ -66,7 +48,6 @@ export default function SliderPrice({ price }: Props) {
             `}
             style={{ color: "inherit" }}
         >
-            {/* Bloque Principal del Precio */}
             <div className="flex items-end gap-2 sm:gap-3">
                 {price.current !== undefined && (
                     <span
@@ -77,7 +58,7 @@ export default function SliderPrice({ price }: Props) {
                     >
                         <span
                             className="
-                                mr-1 align-top font-bold opacity-60
+                                mr-1 align-top font-medium opacity-50
                                 text-[0.28em]
                             "
                         >
@@ -91,9 +72,9 @@ export default function SliderPrice({ price }: Props) {
                                 className="
                                     ml-1.5 sm:ml-2
                                     text-[0.22em]
-                                    font-bold uppercase
+                                    font-medium uppercase
                                     tracking-[0.18em]
-                                    opacity-50
+                                    opacity-40
                                 "
                             >
                                 {price.suffix}
@@ -102,16 +83,15 @@ export default function SliderPrice({ price }: Props) {
                     </span>
                 )}
 
-                {/* Comparativo */}
                 {price.compare && (
                     <div className="flex flex-col items-start gap-0.5 pb-1">
                         {price.label && (
                             <span
                                 className="
                                     text-[9px] sm:text-[11px]
-                                    font-black uppercase
-                                    tracking-wider leading-none
-                                    text-[var(--color-accent-warm)]
+                                    font-bold uppercase
+                                    tracking-widest leading-none
+                                    text-[var(--color-accent-warm)]/80
                                 "
                             >
                                 {price.label}
@@ -121,11 +101,11 @@ export default function SliderPrice({ price }: Props) {
                         <span
                             className="
                                 text-xs sm:text-sm md:text-lg
-                                font-medium leading-none
-                                tracking-tight opacity-25
+                                font-light leading-none
+                                tracking-tight opacity-30
                                 line-through
                                 decoration-current
-                                decoration-[1.5px]
+                                decoration-[1px]
                             "
                         >
                             {price.currency}
@@ -135,13 +115,12 @@ export default function SliderPrice({ price }: Props) {
                 )}
             </div>
 
-            {/* Nota */}
             {price.note && (
                 <span
                     className="
                         mt-1
                         text-[8px] sm:text-[10px]
-                        font-bold uppercase
+                        font-medium uppercase
                         tracking-[0.15em]
                         opacity-40
                     "
