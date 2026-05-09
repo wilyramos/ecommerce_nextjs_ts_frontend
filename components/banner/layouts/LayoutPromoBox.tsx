@@ -3,7 +3,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import SliderPrice from "../ui/SliderPrice";
 import type { SliderBanner } from "@/src/schemas/slider.schema";
 
 export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
@@ -40,7 +39,6 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
             className="group relative flex items-center justify-center w-full overflow-hidden h-[360px] sm:h-[460px] md:h-[600px]"
             style={{ backgroundColor: bg }}
         >
-            {/* ── Ruido de textura sutil ─────────────────────────────── */}
             <div
                 className="absolute inset-0 pointer-events-none opacity-[0.025]"
                 style={{
@@ -49,14 +47,7 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
                 }}
             />
 
-            {/* ════════════════════════════════════════════════════════
-                LAYOUT INTERIOR — card + imagen
-                Mobile : card centrada, imagen de fondo semitransparente
-                Desktop: card izq. | imagen der. en fila
-            ════════════════════════════════════════════════════════ */}
             <div className="relative z-10 w-full h-full max-w-6xl mx-auto px-5 sm:px-8 md:px-12 lg:px-16 flex items-center justify-between gap-6 md:gap-10">
-
-                {/* ── Imagen de fondo mobile — detrás de la card ──────── */}
                 <div
                     className="sm:hidden absolute inset-0 pointer-events-none"
                     style={fadeUp(0.04)}
@@ -78,7 +69,6 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
                     />
                 </div>
 
-                {/* ── CARD DE PROMOCIÓN ───────────────────────────────── */}
                 <div
                     className="
                         relative flex-shrink-0 flex flex-col justify-between
