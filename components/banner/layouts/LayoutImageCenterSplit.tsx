@@ -103,7 +103,7 @@ export default function LayoutImageCenterSplit({ banner }: { banner: SliderBanne
                 </div>
 
                 {/* Imagen central */}
-                <div className="relative flex-1 h-full overflow-hidden bg-black/5">
+                <div className="relative flex-1 h-full overflow-hidden">
                     <div className="absolute inset-0 w-full h-full z-0">
                         <ImageBorder
                             src={media.imageUrl}
@@ -116,26 +116,9 @@ export default function LayoutImageCenterSplit({ banner }: { banner: SliderBanne
                             priority
                         />
                     </div>
-                    {/* Fusión de bordes con el fondo */}
-                    <div
-                        className="absolute inset-y-0 left-0 w-24 md:w-32 pointer-events-none z-10"
-                        style={{ background: `linear-gradient(to right, ${bg}, transparent)` }}
-                    />
-                    <div
-                        className="absolute inset-y-0 right-0 w-24 md:w-32 pointer-events-none z-10"
-                        style={{ background: `linear-gradient(to left, ${bg}, transparent)` }}
-                    />
+                   
 
-                    {/* CTA central */}
-                    <div
-                        className="absolute bottom-6 left-0 right-0 flex flex-col items-center gap-2 z-10"
-                        style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.8s ease 0.6s" }}
-                    >
-                        <div
-                            className="w-px h-6 md:h-8"
-                            style={{ background: `linear-gradient(to bottom, transparent, ${accent}80)` }}
-                        />
-                    </div>
+                    
                 </div>
 
                 {/* Panel derecho */}

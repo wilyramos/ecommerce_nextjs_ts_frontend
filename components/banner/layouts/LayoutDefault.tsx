@@ -35,13 +35,6 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
             style={{ backgroundColor: bg }}
         >
             <div
-                className="absolute right-0 top-0 w-[70%] h-full pointer-events-none"
-                style={{
-                    background: `radial-gradient(circle at 70% 50%, ${accent}12 0%, transparent 70%)`,
-                }}
-            />
-
-            <div
                 className="
                     relative z-10
                     flex flex-col justify-center items-center
@@ -100,7 +93,6 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                 style={{
                     opacity: loaded ? 1 : 0,
                     transform: loaded ? "translateX(0) scale(1)" : "translateX(20px) scale(0.95)",
-                    transition: "opacity 1s ease 0.1s, transform 1.2s cubic-bezier(0.16,1,0.3,1) 0.1s",
                 }}
             >
                 <div className="relative aspect-square h-full max-h-[60%] sm:max-h-[65%] min-h-0 flex items-center justify-center">

@@ -65,16 +65,7 @@ export default function LayoutBackgroundMedia({ banner }: { banner: SliderBanner
                 </div>
             )}
 
-            {/* Viñeta perimetral */}
-            <div
-                className="absolute inset-0 pointer-events-none z-10"
-                style={{
-                    background: `radial-gradient(ellipse 90% 80% at 50% 40%,
-                        transparent 30%,
-                        rgba(0,0,0,0.25) 65%,
-                        rgba(0,0,0,0.55) 100%)`,
-                }}
-            />
+          
 
             {/* Rampa inferior — zona de texto */}
             <div

@@ -38,7 +38,7 @@ const borderClasses: Record<string, string> = {
 
     "rounded-all":
         "relative " +
-        "before:content-[''] before:absolute before:w-[85%] before:h-[85%] before:-top-4 before:-left-4 before:border-[2px] before:border-[var(--color-accent-warm)] before:bg-[var(--color-accent-warm)]/10 before:-z-10 " +
+        "before:content-[''] before:absolute before:w-[85%] before:h-[85%] before:-top-4 before:-left-4 before:border-[2px] before:border-[var(--color-text-primary)]  before:-z-10 " +
         "after:content-[''] after:absolute after:w-[85%] after:h-[85%] after:-bottom-4 after:-right-4 after:border-[2px] after:border-[var(--color-accent-warm)]/40  after:-z-20",
 
     dashed:

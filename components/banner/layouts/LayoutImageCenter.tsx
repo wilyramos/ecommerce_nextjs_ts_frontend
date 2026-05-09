@@ -52,21 +52,6 @@ export default function LayoutImageCenter({ banner }: { banner: SliderBanner }) 
                 />
             </div>
 
-            {/* Viñeta radial */}
-            <div
-                className="absolute inset-0 pointer-events-none z-10"
-                style={{
-                    background: isDark
-                        ? `radial-gradient(ellipse 80% 75% at 50% 50%,
-                              transparent 20%,
-                              ${bg}55 65%,
-                              ${bg}cc 100%)`
-                        : `radial-gradient(ellipse 80% 75% at 50% 50%,
-                              transparent 20%,
-                              ${bg}44 65%,
-                              ${bg}bb 100%)`,
-                }}
-            />
 
             {/* Rampa inferior */}
             <div

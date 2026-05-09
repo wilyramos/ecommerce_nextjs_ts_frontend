@@ -49,11 +49,7 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
                 }}
             />
 
-            {/* Círculo de luz difusa ambiental */}
-            <div
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] aspect-square opacity-20 blur-[120px] pointer-events-none"
-                style={{ background: `radial-gradient(circle, ${accent} 0%, transparent 70%)` }}
-            />
+            
 
             <div className="relative z-10 w-full h-full max-w-7xl mx-auto px-6 sm:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-between gap-12 py-10 md:py-0">
 
