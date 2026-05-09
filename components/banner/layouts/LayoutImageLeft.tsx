@@ -11,96 +11,159 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
-        const t = setTimeout(() => setLoaded(true), 80);
+        const t = setTimeout(() => setLoaded(true), 60);
         return () => clearTimeout(t);
     }, []);
 
     const isDark = design.theme !== "light";
-    const bg = design.bgColor ?? (isDark ? "#000000" : "#ffffff");
-    const text = design.textColor ?? (isDark ? "#f5f5f7" : "#1d1d1f");
-    const muted = design.textMutedColor ?? (isDark ? "#86868b" : "#6e6e73");
-    const accent = design.accentColor ?? (isDark ? "#2997ff" : "#0071e3");
-    const glassBg = isDark ? "rgba(28,28,30,0.75)" : "rgba(255,255,255,0.72)";
-    const glassBorder = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)";
+    const bg     = design.bgColor        ?? (isDark ? "#0a0a0a" : "#f5f5f7");
+    const text   = design.textColor      ?? (isDark ? "#f5f5f7" : "#1d1d1f");
+    const muted  = design.textMutedColor ?? (isDark ? "#888888" : "#6e6e73");
+    const accent = design.accentColor    ?? (isDark ? "#2997ff" : "#0071e3");
+
+    /* ─── Helpers de animación staggered ─────────────────────────── */
+    const fadeUp = (delay: number) => ({
+        opacity:   loaded ? 1 : 0,
+        transform: loaded ? "translateY(0px)" : "translateY(14px)",
+        transition: `opacity 0.65s ease ${delay}s, transform 0.65s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
+    });
 
     return (
         <Link
             href={destUrl}
-            /**
-             * Responsive heights:
-             *   mobile  (< sm)  → 300 px  — imagen ocupa toda la altura; panel ocupa el 50 %
-             *   tablet  (sm–md) → 380 px
-             *   desktop (md+)   → 500 px
-             *
-             * En mobile el panel se convierte en una franja horizontal en la parte inferior
-             * (position absolute, inset-x-0 bottom-0) para no tapar la imagen por completo.
-             */
-            className="relative flex items-stretch w-full h-[360px] sm:h-[460px] md:h-[600px] overflow-hidden group"
+            className="group relative w-full overflow-hidden block"
             style={{ backgroundColor: bg }}
         >
-            {/* Imagen a sangre completa */}
-            <Image
-                src={media.imageUrl}
-                alt={media.altText}
-                fill
-                className={`object-${media.objectFit ?? "cover"} transition-transform duration-[1100ms] ease-out group-hover:scale-[1.04]`}
-                priority
-            />
+           
+            <div className="flex flex-col md:grid md:grid-cols-[58fr_42fr] md:items-stretch">
 
-            {/* ── Panel glass ──────────────────────────────────────────────────
-                Mobile  : franja inferior (80 % ancho, centrada, borde superior)
-                Desktop : columna derecha fija (40 % ancho)
-            ───────────────────────────────────────────────────────────────── */}
-            <div
-                className={[
-                    /* posición & dimensiones */
-                    "absolute flex flex-col items-center justify-center text-center gap-3",
-                    /* mobile: franja inferior */
-                    "bottom-0 left-0 right-0 px-5 py-5 border-t",
-                    /* sm+: panel lateral derecho */
-                    "sm:inset-y-0 sm:left-auto sm:right-0 sm:bottom-auto sm:top-0",
-                    "sm:w-[46%] sm:px-7 sm:py-0 sm:border-t-0 sm:border-l",
-                    /* md+: panel un poco más estrecho */
-                    "md:w-[40%] md:px-10 md:gap-4",
-                ].join(" ")}
-                style={{
-                    backgroundColor: glassBg,
-                    borderColor: glassBorder,
-                    backdropFilter: "blur(24px) saturate(180%)",
-                    WebkitBackdropFilter: "blur(24px) saturate(180%)",
-                    color: text,
-                    opacity: loaded ? 1 : 0,
-                    transform: loaded ? "translateX(0)" : "translateX(20px)",
-                    transition: "opacity 0.7s ease 0.1s, transform 0.7s cubic-bezier(0.16,1,0.3,1) 0.1s",
-                }}
-            >
-                {subtitle && (
-                    <p
-                        className="text-[10px] font-semibold uppercase tracking-[0.35em]" style={{ color: accent }}
-                    >
-                        {subtitle}
-                    </p>
-                )}
+                {/* ── Columna imagen ──────────────────────────────────── */}
+                <div
+                    className="relative w-full overflow-hidden"
+                    style={{ height: "clamp(220px, 46vw, 620px)" }}
+                >
+                    <Image
+                        src={media.imageUrl}
+                        alt={media.altText}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 58vw"
+                        className={`
+                            object-${media.objectFit ?? "cover"}
+                            transition-transform duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)]
+                            group-hover:scale-[1.04]
+                        `}
+                        priority
+                    />
 
-                {title && (
-                    <h2 className="text-lg sm:text-xl md:text-[2rem] font-semibold leading-[1.15] tracking-tight line-clamp-3">
-                        {title}
-                    </h2>
-                )}
+                    {/* Fade derecho — funde imagen con el panel de texto (solo desktop) */}
+                    <div
+                        className="absolute inset-y-0 right-0 w-28 hidden md:block pointer-events-none"
+                        style={{ background: `linear-gradient(to right, transparent, ${bg})` }}
+                    />
 
-                {description && (
-                    <p
-                        className="text-[11px] md:text-[12px] leading-relaxed line-clamp-3"
-                        style={{ color: muted }}
-                    >
-                        {description}
-                    </p>
-                )}
+                    {/* Velo inferior — solo mobile, suaviza la unión con el texto */}
+                    <div
+                        className="absolute inset-x-0 bottom-0 h-2/5 md:hidden pointer-events-none"
+                        style={{ background: `linear-gradient(to top, ${bg}, transparent)` }}
+                    />
+                </div>
 
-                {price?.current !== undefined && <SliderPrice price={price} />}
+                {/* ── Columna texto ───────────────────────────────────── */}
+                <div
+                    className="
+                        relative z-10
+                        flex flex-col justify-center
+                        -mt-8 px-6 pb-9
+                        sm:-mt-10 sm:px-9 sm:pb-11
+                        md:mt-0 md:px-10 md:py-14
+                        lg:px-14 lg:py-16
+                        xl:px-16
+                    "
+                    style={{ color: text }}
+                >
+                    {/* Eyebrow / subtítulo */}
+                    {subtitle && (
+                        <div className="mb-3 md:mb-4" style={fadeUp(0.06)}>
+                            <span
+                                className="inline-block text-[10px] font-bold tracking-[0.3em] uppercase px-3 py-[5px] rounded-full"
+                                style={{
+                                    color:      accent,
+                                    background: `${accent}18`,
+                                    border:     `1px solid ${accent}30`,
+                                }}
+                            >
+                                {subtitle}
+                            </span>
+                        </div>
+                    )}
 
-                {/* Separador */}
-                <div className="h-px w-full" style={{ backgroundColor: glassBorder }} />
+                    {/* Título */}
+                    {title && (
+                        <h2
+                            className="
+                                font-semibold leading-[1.06] tracking-[-0.03em]
+                                text-[clamp(1.65rem,4.2vw,3.4rem)]
+                                mb-3 md:mb-4
+                                max-w-[15ch]
+                            "
+                            style={fadeUp(0.13)}
+                        >
+                            {title}
+                        </h2>
+                    )}
+
+                    {/* Línea decorativa accent */}
+                    <div
+                        className="mb-3 md:mb-5 h-px w-10 rounded-full"
+                        style={{
+                            background:  accent,
+                            opacity:     loaded ? 0.75 : 0,
+                            transition: "opacity 0.5s ease 0.22s",
+                        }}
+                    />
+
+                    {/* Descripción */}
+                    {description && (
+                        <p
+                            className="text-[12px] sm:text-[13px] leading-[1.75] max-w-[36ch] line-clamp-3 mb-4 md:mb-6"
+                            style={{ color: muted, ...fadeUp(0.28) }}
+                        >
+                            {description}
+                        </p>
+                    )}
+
+                    {/* Precio */}
+                    {price?.current !== undefined && (
+                        <div className="mb-5 md:mb-7" style={fadeUp(0.35)}>
+                            <SliderPrice price={price} />
+                        </div>
+                    )}
+
+                    {/* CTA */}
+                    <div style={fadeUp(0.42)}>
+                        <span
+                            className="
+                                inline-flex items-center gap-2
+                                text-[13px] font-semibold tracking-wide
+                                transition-all duration-300 ease-out
+                                group-hover:gap-[10px]
+                            "
+                            style={{ color: accent }}
+                        >
+                            Ver más
+                            <svg
+                                width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                className="transition-transform duration-300 group-hover:translate-x-[3px]"
+                            >
+                                <path
+                                    d="M1 7h12M7.5 1.5L13 7l-5.5 5.5"
+                                    stroke="currentColor" strokeWidth="1.6"
+                                    strokeLinecap="round" strokeLinejoin="round"
+                                />
+                            </svg>
+                        </span>
+                    </div>
+                </div>
             </div>
         </Link>
     );

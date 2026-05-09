@@ -42,13 +42,13 @@ const borderClass: Record<string, string> = {
 
     // "Cyber Frame": solo esquina top-left
     "double-corner":
-        "relative px-7 py-4 border border-[var(--color-accent-warm)] rounded-tl-4xl " +
+        "relative px-2 py-4 border border-[var(--color-accent-warm)] rounded-tl-xl " +
         "before:content-[''] before:absolute before:inset-0 before:translate-x-1 before:translate-y-1 " +
-        "before:border before:border-current before:opacity-25 before:rounded-tl-4xl before:-z-10",
+        "before:border before:border-current before:opacity-25 before:rounded-tl-xl before:-z-10",
 
     // "Bloque Moderno": solo esquina top-left
     "thick-solid":
-        "relative px-7 py-3 border-[0.5px] border-[var(--color-accent-warm)]/30 rounded-tl-4xl " +
+        "relative px-7 py-3 border-[0.5px] border-[var(--color-accent-warm)]/30 rounded-tl-2xl " +
         "before:content-[''] before:absolute before:top-0 before:left-[-12px] before:w-[12px] before:h-full " +
         "before:bg-current before:opacity-100 before:rounded-l-sm " +
         "after:content-[''] after:absolute after:inset-0 after:shadow-[6px_6px_0px_0px_var(--color-accent-warm-light)] after:-z-20",

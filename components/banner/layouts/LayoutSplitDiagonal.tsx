@@ -1,7 +1,7 @@
 "use client";
 
-import Link        from "next/link";
-import Image       from "next/image";
+import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import SliderPrice from "../ui/SliderPrice";
 import type { SliderBanner } from "@/src/schemas/slider.schema";
@@ -10,69 +10,174 @@ export default function LayoutSplitDiagonal({ banner }: { banner: SliderBanner }
     const { design, media, title, subtitle, description, price, destUrl } = banner;
     const [loaded, setLoaded] = useState(false);
 
-    useEffect(() => { const t = setTimeout(() => setLoaded(true), 80); return () => clearTimeout(t); }, []);
+    useEffect(() => {
+        const t = setTimeout(() => setLoaded(true), 80);
+        return () => clearTimeout(t);
+    }, []);
 
     const isDark = design.theme !== "light";
-    const bg     = design.bgColor ?? (isDark ? "#000000" : "#ffffff");
-    const text   = design.textColor ?? (isDark ? "#f5f5f7" : "#1d1d1f");
-    const muted  = design.textMutedColor ?? (isDark ? "#86868b" : "#6e6e73");
-    const accent = design.accentColor ?? (isDark ? "#2997ff" : "#0071e3");
+    const bg     = design.bgColor        ?? (isDark ? "#080808" : "#f5f5f7");
+    const text   = design.textColor      ?? (isDark ? "#f5f5f7" : "#1d1d1f");
+    const muted  = design.textMutedColor ?? (isDark ? "#888888" : "#6e6e73");
+    const accent = design.accentColor    ?? (isDark ? "#2997ff" : "#0071e3");
+
+    const fadeUp = (delay: number): React.CSSProperties => ({
+        opacity:    loaded ? 1 : 0,
+        transform:  loaded ? "translateY(0px)" : "translateY(12px)",
+        transition: `opacity 0.65s ease ${delay}s, transform 0.65s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
+    });
+
+    /*
+     * Diagonal: en mobile más vertical (55%/38%) para que la imagen
+     * no tape el texto. En desktop más abierta (45%/30%).
+     * Se controla con dos clipPath vía CSS custom property.
+     */
 
     return (
-        <Link href={destUrl}
-            className="relative flex items-stretch w-full h-[360px] sm:h-[460px] md:h-[600px] overflow-hidden group"
-            style={{ backgroundColor: bg }}>
+        <Link
+            href={destUrl}
+            className="group relative flex items-stretch w-full overflow-hidden h-[360px] sm:h-[460px] md:h-[600px]"
+            style={{ backgroundColor: bg }}
+        >
+            {/* ════════════════════════════════════════════════════════
+                IMAGEN — lado derecho con diagonal
+                Mobile  : corte en 60%/44% — deja suficiente espacio al texto
+                Desktop : corte en 45%/28% — imagen más protagonista
+            ════════════════════════════════════════════════════════ */}
+            <div
+                className="absolute inset-0"
+                style={{
+                    clipPath: "polygon(60% 0, 100% 0, 100% 100%, 44% 100%)",
+                }}
+            >
+                {/* Versión desktop — clipPath más abierta */}
+                <div
+                    className="absolute inset-0 hidden sm:block"
+                    style={{ clipPath: "polygon(45% 0, 100% 0, 100% 100%, 28% 100%)" }}
+                >
+                    <Image
+                        src={media.imageUrl}
+                        alt={media.altText}
+                        fill
+                        sizes="(max-width: 640px) 50vw, 60vw"
+                        className={`object-${media.objectFit ?? "cover"} transition-transform duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]`}
+                        priority
+                    />
+                    {/* Fade izquierdo — fusión con el panel de texto */}
+                    <div
+                        className="absolute inset-0 pointer-events-none"
+                        style={{ background: `linear-gradient(to right, ${bg} 0%, transparent 22%)` }}
+                    />
+                </div>
 
-            {/* Imagen — lado derecho con clipPath */}
-            <div className="absolute inset-0"
-                style={{ clipPath: "polygon(42% 0, 100% 0, 100% 100%, 28% 100%)" }}>
-                <Image src={media.imageUrl} alt={media.altText} fill
-                    className={`object-${media.objectFit ?? "cover"} transition-transform duration-700 group-hover:scale-[1.03]`}
-                    priority />
-                {/* Fade izquierdo sobre la imagen */}
-                <div className="absolute inset-0 pointer-events-none"
-                    style={{ background: `linear-gradient(to right, ${bg} 0%, transparent 25%)` }} />
+                {/* Versión mobile */}
+                <div className="absolute inset-0 sm:hidden">
+                    <Image
+                        src={media.imageUrl}
+                        alt={media.altText}
+                        fill
+                        sizes="60vw"
+                        className={`object-${media.objectFit ?? "cover"} transition-transform duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]`}
+                        priority
+                    />
+                    <div
+                        className="absolute inset-0 pointer-events-none"
+                        style={{ background: `linear-gradient(to right, ${bg} 0%, transparent 28%)` }}
+                    />
+                </div>
             </div>
 
-            {/* Línea de corte — SVG preciso */}
-            <svg className="absolute inset-0 z-20 w-full h-full pointer-events-none"
-                preserveAspectRatio="none" viewBox="0 0 100 100">
-                <line x1="42" y1="0" x2="28" y2="100"
-                    stroke={isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)"}
-                    strokeWidth="0.2" vectorEffect="non-scaling-stroke" />
+            {/* ── Línea de corte diagonal — SVG preciso ───────────────── */}
+            {/* Desktop */}
+            <svg
+                className="absolute inset-0 z-20 w-full h-full pointer-events-none hidden sm:block"
+                preserveAspectRatio="none" viewBox="0 0 100 100"
+            >
+                <line
+                    x1="45" y1="0" x2="28" y2="100"
+                    stroke={isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)"}
+                    strokeWidth="0.25" vectorEffect="non-scaling-stroke"
+                />
+            </svg>
+            {/* Mobile */}
+            <svg
+                className="absolute inset-0 z-20 w-full h-full pointer-events-none sm:hidden"
+                preserveAspectRatio="none" viewBox="0 0 100 100"
+            >
+                <line
+                    x1="60" y1="0" x2="44" y2="100"
+                    stroke={isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)"}
+                    strokeWidth="0.25" vectorEffect="non-scaling-stroke"
+                />
             </svg>
 
-            {/* Panel texto izquierdo */}
-<div className="relative z-10 flex flex-col items-center justify-center text-center gap-3.5 px-10 md:px-14 max-w-[50%]"
-                style={{ color: text }}>
+            <div
+                className="
+                    relative z-10
+                    flex flex-col justify-center
+                    w-[55%] sm:w-[44%]
+                    pl-6 pr-4
+                    sm:pl-10 sm:pr-6
+                    md:pl-14 md:pr-8
+                    lg:pl-20
+                    gap-2.5 sm:gap-3
+                "
+                style={{ color: text }}
+            >
+                {/* Eyebrow */}
                 {subtitle && (
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.38em]"
-                        style={{ color: accent, opacity: loaded ? 1 : 0,
-                        transform: loaded ? "none" : "translateY(8px)",
-                        transition: "all 0.5s ease 0.1s" }}>
-                        {subtitle}
-                    </p>
+                    <div style={fadeUp(0.08)}>
+                        <span
+                            className="inline-block text-[9px] sm:text-[10px] font-bold tracking-[0.3em] uppercase px-2.5 py-[4px] rounded-full"
+                            style={{
+                                color:      accent,
+                                background: `${accent}18`,
+                                border:     `1px solid ${accent}30`,
+                            }}
+                        >
+                            {subtitle}
+                        </span>
+                    </div>
                 )}
+
+                {/* Título */}
                 {title && (
-                    <h2 className="text-4xl md:text-[3rem] font-semibold leading-[1.0] tracking-tight"
-                        style={{ opacity: loaded ? 1 : 0, transform: loaded ? "none" : "translateY(12px)",
-                        transition: "all 0.6s cubic-bezier(0.16,1,0.3,1) 0.18s" }}>
+                    <h2
+                        className="font-semibold leading-[1.06] tracking-[-0.03em] text-[clamp(1.5rem,3.8vw,3.2rem)] max-w-[12ch]"
+                        style={fadeUp(0.15)}
+                    >
                         {title}
                     </h2>
                 )}
+
+                {/* Línea decorativa */}
+                <div
+                    className="h-px w-9 rounded-full"
+                    style={{
+                        background:  accent,
+                        opacity:     loaded ? 0.7 : 0,
+                        transition: "opacity 0.5s ease 0.24s",
+                    }}
+                />
+
+                {/* Descripción */}
                 {description && (
-<p className="text-[13px] leading-relaxed"                        style={{ color: muted, opacity: loaded ? 1 : 0,
-                        transition: "opacity 0.55s ease 0.28s" }}>
+                    <p
+                        className="text-[11px] sm:text-[12px] leading-[1.75] max-w-[28ch] line-clamp-3"
+                        style={{ color: muted, ...fadeUp(0.28) }}
+                    >
                         {description}
                     </p>
                 )}
+
+                {/* Precio */}
                 {price?.current !== undefined && (
-                    <div style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.5s ease 0.34s" }}>
+                    <div style={fadeUp(0.35)}>
                         <SliderPrice price={price} />
                     </div>
-                )}
-               
+                )}        
             </div>
+
         </Link>
     );
 }

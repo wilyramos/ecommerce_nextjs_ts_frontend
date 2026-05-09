@@ -2,137 +2,177 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useRef, useState, useEffect, useMemo } from "react";
+import { useEffect, useRef, useState } from "react";
 import SliderPrice from "../ui/SliderPrice";
 import type { SliderBanner } from "@/src/schemas/slider.schema";
 
 export default function LayoutVideo({ banner }: { banner: SliderBanner }) {
     const { design, media, title, subtitle, description, price, destUrl } = banner;
-    const videoRef = useRef<HTMLVideoElement>(null);
     const [loaded, setLoaded] = useState(false);
+    const videoRef = useRef<HTMLVideoElement>(null);
 
+    useEffect(() => {
+        const t = setTimeout(() => setLoaded(true), 80);
+        return () => clearTimeout(t);
+    }, []);
+
+    /* ─── Tokens de diseño estandarizados ────────────────────────── */
     const isDark = design.theme !== "light";
+    const bg     = design.bgColor        ?? "#000000";
+    const text   = design.textColor      ?? "#f5f5f7";
+    const muted  = design.textMutedColor ?? (isDark ? "#aaaaaa" : "#d0d0d5");
+    const accent = design.accentColor    ?? (isDark ? "#2997ff" : "#0071e3");
 
-    const colors = useMemo(() => ({
-        text: design.textColor ?? (isDark ? "#ffffff" : "#0f172a"),
-        textMuted: design.textMutedColor ?? (isDark ? "rgba(255,255,255,0.6)" : "rgba(15,23,42,0.6)"),
-        accent: design.accentColor ?? (isDark ? "#fbbf24" : "#f59e0b"),
-        bg: design.bgColor ?? (isDark ? "#050505" : "#f8f8f8"),
-        overlay: isDark
-            ? "from-black/80 via-black/20 to-transparent"
-            : "from-white/90 via-white/30 to-transparent",
-    }), [design, isDark]);
+    /* ─── Animación staggered consistente ───────────────────────── */
+    const fadeUp = (delay: number, extra?: React.CSSProperties): React.CSSProperties => ({
+        opacity:    loaded ? 1 : 0,
+        transform:  loaded ? "translateY(0px)" : "translateY(14px)",
+        transition: `opacity 0.7s ease ${delay}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
+        ...extra,
+    });
 
-    useEffect(() => { setLoaded(true); }, []);
+    const isVideo = Boolean(media.videoUrl);
 
     return (
-        <div
-
-            className="relative w-full h-[360px] sm:h-[460px] md:h-[600px] overflow-hidden group"
-            style={{
-                backgroundColor: colors.bg,
-                color: colors.text,
-                "--color-accent-warm": colors.accent,
-                "--color-accent-warm-light": `${colors.accent}33`,
-            } as React.CSSProperties}
+        <Link
+            href={destUrl}
+            className="group relative w-full overflow-hidden flex items-center justify-center text-center h-[360px] sm:h-[460px] md:h-[600px]"
+            style={{ backgroundColor: bg }}
         >
-            {/* ── Media ───────────────────────────────────────────────── */}
+            {/* ════════════════════════════════════════════════════════
+                MEDIA: Video o Imagen a sangre completa
+            ════════════════════════════════════════════════════════ */}
             <div className="absolute inset-0">
-                {media.videoUrl ? (
+                {isVideo ? (
                     <video
                         ref={videoRef}
                         src={media.videoUrl}
                         poster={media.videoPoster ?? media.imageUrl}
-                        autoPlay muted loop playsInline
-                        className="w-full h-full object-cover transition-transform duration-[10000ms] ease-out"
-                        style={{ transform: loaded ? "scale(1)" : "scale(1.1)" }}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        className="w-full h-full object-cover transition-transform duration-[1800ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.03]"
                     />
                 ) : (
                     <Image
                         src={media.imageUrl}
                         alt={media.altText}
                         fill
-                        className={`object-${media.objectFit ?? "cover"} transition-transform duration-[10000ms]`}
-                        style={{ transform: loaded ? "scale(1)" : "scale(1.1)" }}
+                        sizes="100vw"
+                        className={`object-${media.objectFit ?? "cover"} transition-transform duration-[1800ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]`}
                         priority
                     />
                 )}
             </div>
 
-            {/* ── Overlays ────────────────────────────────────────────── */}
-            <div className={`absolute inset-0 bg-gradient-to-t ${colors.overlay} opacity-80 md:opacity-100`} />
-            <div className={`absolute inset-0 bg-gradient-to-r ${isDark ? "from-black/40" : "from-white/40"} via-transparent to-transparent`} />
+            {/* ════════════════════════════════════════════════════════
+                OVERLAYS: Capas de gradiente para legibilidad
+            ════════════════════════════════════════════════════════ */}
+            {/* Capa de oscuridad general */}
+            <div 
+                className="absolute inset-0 pointer-events-none transition-opacity duration-700"
+                style={{ 
+                    background: isDark 
+                        ? 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%)'
+                        : 'linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.5) 100%)',
+                    opacity: loaded ? 1 : 0 
+                }} 
+            />
 
-            {/* ── Contenido ───────────────────────────────────────────── */}
-            <Link
-                href={destUrl}
-                /**
-                 * Mobile  : padding lateral pequeño, pb-8
-                 * sm+     : padding lateral mayor, pb-12/16
-                 */
-                className="absolute inset-0 z-10 flex flex-col items-center justify-center
-            px-5 sm:px-8 md:px-16"
+            {/* Viñeta perimetral */}
+            <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                    background: `radial-gradient(circle at 50% 50%, transparent 20%, rgba(0,0,0,0.4) 100%)`,
+                }}
+            />
+
+            {/* ════════════════════════════════════════════════════════
+                CONTENIDO: Centrado con impacto visual
+            ════════════════════════════════════════════════════════ */}
+            <div
+                className="
+                    relative z-10 
+                    flex flex-col items-center 
+                    w-full max-w-[22rem] sm:max-w-xl md:max-w-2xl lg:max-w-4xl
+                    px-6
+                "
+                style={{ color: text }}
             >
-                {/*
-                 * Mobile  : stack vertical (flex-col)
-                 * md+     : texto a la izquierda + precio a la derecha (flex-row)
-                 */}
-                <div className="flex flex-col items-center gap-5">
-
-                    {/* Bloque de texto */}
-                    <div
-                        className="flex flex-col items-center text-center gap-2 sm:gap-3 max-w-xl" style={{
-                            opacity: loaded ? 1 : 0,
-                            transform: loaded ? "translateY(0)" : "translateY(20px)",
-                            transition: "all 0.8s cubic-bezier(0.2,0.8,0.2,1) 0.2s",
-                        }}
-                    >
-                        {subtitle && (
-                            <span
-                                className="text-[10px] font-black uppercase tracking-[0.4em]
-            px-2.5 py-1 border border-current rounded-full"
-
-                                style={{ color: colors.accent }}
-                            >
-                                {subtitle}
-                            </span>
-                        )}
-
-                        {title && (
-                            <h2
-                                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl
-                                            font-bold leading-[0.95] tracking-tighter line-clamp-3"
-                                style={{ color: colors.text }}
-                            >
-                                {title}
-                            </h2>
-                        )}
-
-                        {description && (
-                            <p
-                                className="text-[12px] sm:text-sm leading-relaxed
-                                            max-w-xs sm:max-w-md opacity-90 line-clamp-2 sm:line-clamp-3"
-                                style={{ color: colors.textMuted }}
-                            >
-                                {description}
-                            </p>
-                        )}
-                    </div>
-
-                    {/* Precio */}
-                    {price?.current !== undefined && (
-                        <div
-                            className="shrink-0 transition-all duration-700 delay-500"
-                            style={{
-                                opacity: loaded ? 1 : 0,
-                                transform: loaded ? "scale(1)" : "scale(0.9) translateY(10px)",
+                {/* Eyebrow / Subtitle */}
+                {subtitle && (
+                    <div style={fadeUp(0.1)}>
+                        <span 
+                            className="inline-block text-[10px] font-bold tracking-[0.35em] uppercase px-3 py-[5px] rounded-full"
+                            style={{ 
+                                color: accent, 
+                                background: `${accent}22`,
+                                border: `1px solid ${accent}40`,
+                                backdropFilter: "blur(8px)"
                             }}
                         >
-                            <SliderPrice price={price} />
-                        </div>
-                    )}
+                            {subtitle}
+                        </span>
+                    </div>
+                )}
+
+                {/* Título Impactante */}
+                {title && (
+                    <h2 
+                        className="font-black leading-[1.03] tracking-[-0.04em] text-[clamp(2.2rem,7vw,5rem)] mt-4 mb-2"
+                        style={fadeUp(0.2, {
+                            transform: loaded 
+                                ? "translateY(0px) scale(1)" 
+                                : "translateY(18px) scale(0.96)"
+                        })}
+                    >
+                        {title}
+                    </h2>
+                )}
+
+                {/* Descripción */}
+                {description && (
+                    <p 
+                        className="text-[13px] sm:text-[15px] md:text-[17px] leading-relaxed max-w-[38ch] line-clamp-2"
+                        style={{ 
+                            color: muted, 
+                            textShadow: isDark ? "0 2px 10px rgba(0,0,0,0.3)" : "none",
+                            ...fadeUp(0.3) 
+                        }}
+                    >
+                        {description}
+                    </p>
+                )}
+
+                {/* Precio */}
+                {price?.current !== undefined && (
+                    <div className="mt-4" style={fadeUp(0.4)}>
+                        <SliderPrice price={price} />
+                    </div>
+                )}
+
+                {/* CTA Botón / Link */}
+                <div style={fadeUp(0.5)} className="mt-6">
+                    <span 
+                        className="
+                            inline-flex items-center gap-2 
+                            text-[13px] sm:text-[14px] font-semibold tracking-wide
+                            transition-all duration-300 group-hover:gap-3
+                        "
+                        style={{ color: accent }}
+                    >
+                        Ver ahora
+                        <svg 
+                            width="16" height="16" viewBox="0 0 24 24" fill="none" 
+                            stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                            className="transition-transform duration-300 group-hover:translate-x-1"
+                        >
+                            <path d="M5 12h14m-7-7 7 7-7 7"/>
+                        </svg>
+                    </span>
                 </div>
-            </Link>
-        </div>
+            </div>
+        </Link>
     );
 }
