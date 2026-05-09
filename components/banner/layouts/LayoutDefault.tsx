@@ -31,11 +31,9 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
         <Link
             href={destUrl}
             aria-label={title ?? "Ver oferta"}
-            // banner-slot provee la altura desde el carrusel
             className="banner-slot group relative flex flex-row items-center w-full overflow-hidden"
             style={{ backgroundColor: bg }}
         >
-            {/* ── Gradiente radial de fondo ── */}
             <div
                 className="absolute right-0 top-0 w-[70%] h-full pointer-events-none"
                 style={{
@@ -47,7 +45,7 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
             <div
                 className="
                     relative z-10
-                    flex flex-col justify-center
+                    flex flex-col justify-center items-center
                     w-1/2 h-full
                     pl-4 sm:pl-8 md:pl-16 lg:pl-24
                     pr-2 sm:pr-4
@@ -127,9 +125,7 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                 </div>
                 {title && (
                     <h2
-                        // flex-none: no se estira ni encoge.
-                        // mt-1 sm:mt-2: Margen superior pequeño para estar "muy pegado".
-                        className="flex-none font-semibold leading-tight tracking-[-0.02em] text-[clamp(0,8rem,2vw,1,5rem)] text-center max-w-full line-clamp-2 mt-1 sm:mt-2"
+                        className="flex-none font-semibold leading-tight tracking-[-0.02em] text-[clamp(0,8rem,2vw,1,5rem)] text-center items-center max-w-full line-clamp-2 mt-1 sm:mt-2"
                         style={{ color: text }}
                     >
                         {title}

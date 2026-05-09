@@ -106,12 +106,11 @@ export default function LayoutMinimal({ banner }: Props) {
                 </div>
             </div>
 
-            {/* ── Contenido: Mobile abajo / Desktop izquierda ── */}
             <div
                 className="
                     relative z-10
                     order-2 lg:order-1
-                    flex flex-col items-center lg:items-start justify-center
+                    flex flex-col items-center justify-center
                     w-full lg:w-[48%]
                     px-6 sm:px-10 lg:px-12 xl:px-16
                     pb-8 lg:pb-0
