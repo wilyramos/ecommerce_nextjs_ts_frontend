@@ -16,14 +16,12 @@ export default function LayoutVideo({ banner }: { banner: SliderBanner }) {
         return () => clearTimeout(t);
     }, []);
 
-    /* ─── Tokens de diseño estandarizados ────────────────────────── */
     const isDark = design.theme !== "light";
     const bg     = design.bgColor        ?? "#000000";
     const text   = design.textColor      ?? "#f5f5f7";
     const muted  = design.textMutedColor ?? (isDark ? "#aaaaaa" : "#d0d0d5");
     const accent = design.accentColor    ?? (isDark ? "#2997ff" : "#0071e3");
 
-    /* ─── Animación staggered consistente ───────────────────────── */
     const fadeUp = (delay: number, extra?: React.CSSProperties): React.CSSProperties => ({
         opacity:    loaded ? 1 : 0,
         transform:  loaded ? "translateY(0px)" : "translateY(14px)",
@@ -36,12 +34,12 @@ export default function LayoutVideo({ banner }: { banner: SliderBanner }) {
     return (
         <Link
             href={destUrl}
-            className="group relative w-full overflow-hidden flex items-center justify-center text-center h-[360px] sm:h-[460px] md:h-[600px]"
+            aria-label={title ?? "Ver oferta"}
+            // banner-slot reemplaza: h-[360px] sm:h-[460px] md:h-[600px]
+            className="banner-slot group relative w-full overflow-hidden flex items-center justify-center text-center"
             style={{ backgroundColor: bg }}
         >
-            {/* ════════════════════════════════════════════════════════
-                MEDIA: Video o Imagen a sangre completa
-            ════════════════════════════════════════════════════════ */}
+            {/* ── Media a sangre completa ── */}
             <div className="absolute inset-0">
                 {isVideo ? (
                     <video
@@ -66,18 +64,15 @@ export default function LayoutVideo({ banner }: { banner: SliderBanner }) {
                 )}
             </div>
 
-            {/* ════════════════════════════════════════════════════════
-                OVERLAYS: Capas de gradiente para legibilidad
-            ════════════════════════════════════════════════════════ */}
-            {/* Capa de oscuridad general */}
-            <div 
+            {/* Overlay general */}
+            <div
                 className="absolute inset-0 pointer-events-none transition-opacity duration-700"
-                style={{ 
-                    background: isDark 
-                        ? 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%)'
-                        : 'linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.5) 100%)',
-                    opacity: loaded ? 1 : 0 
-                }} 
+                style={{
+                    background: isDark
+                        ? "linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%)"
+                        : "linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.5) 100%)",
+                    opacity: loaded ? 1 : 0,
+                }}
             />
 
             {/* Viñeta perimetral */}
@@ -88,28 +83,25 @@ export default function LayoutVideo({ banner }: { banner: SliderBanner }) {
                 }}
             />
 
-            {/* ════════════════════════════════════════════════════════
-                CONTENIDO: Centrado con impacto visual
-            ════════════════════════════════════════════════════════ */}
+            {/* ── Contenido centrado ── */}
             <div
                 className="
-                    relative z-10 
-                    flex flex-col items-center 
+                    relative z-10
+                    flex flex-col items-center
                     w-full max-w-[22rem] sm:max-w-xl md:max-w-2xl lg:max-w-4xl
                     px-6
                 "
                 style={{ color: text }}
             >
-                {/* Eyebrow / Subtitle */}
                 {subtitle && (
                     <div style={fadeUp(0.1)}>
-                        <span 
+                        <span
                             className="inline-block text-[10px] font-bold tracking-[0.35em] uppercase px-3 py-[5px] rounded-full"
-                            style={{ 
-                                color: accent, 
-                                background: `${accent}22`,
-                                border: `1px solid ${accent}40`,
-                                backdropFilter: "blur(8px)"
+                            style={{
+                                color:          accent,
+                                background:     `${accent}22`,
+                                border:         `1px solid ${accent}40`,
+                                backdropFilter: "blur(8px)",
                             }}
                         >
                             {subtitle}
@@ -117,58 +109,54 @@ export default function LayoutVideo({ banner }: { banner: SliderBanner }) {
                     </div>
                 )}
 
-                {/* Título Impactante */}
                 {title && (
-                    <h2 
+                    <h2
                         className="font-black leading-[1.03] tracking-[-0.04em] text-[clamp(2.2rem,7vw,5rem)] mt-4 mb-2"
                         style={fadeUp(0.2, {
-                            transform: loaded 
-                                ? "translateY(0px) scale(1)" 
-                                : "translateY(18px) scale(0.96)"
+                            transform: loaded
+                                ? "translateY(0px) scale(1)"
+                                : "translateY(18px) scale(0.96)",
                         })}
                     >
                         {title}
                     </h2>
                 )}
 
-                {/* Descripción */}
                 {description && (
-                    <p 
+                    <p
                         className="text-[13px] sm:text-[15px] md:text-[17px] leading-relaxed max-w-[38ch] line-clamp-2"
-                        style={{ 
-                            color: muted, 
+                        style={{
+                            color:      muted,
                             textShadow: isDark ? "0 2px 10px rgba(0,0,0,0.3)" : "none",
-                            ...fadeUp(0.3) 
+                            ...fadeUp(0.3),
                         }}
                     >
                         {description}
                     </p>
                 )}
 
-                {/* Precio */}
                 {price?.current !== undefined && (
                     <div className="mt-4" style={fadeUp(0.4)}>
                         <SliderPrice price={price} />
                     </div>
                 )}
 
-                {/* CTA Botón / Link */}
                 <div style={fadeUp(0.5)} className="mt-6">
-                    <span 
+                    <span
                         className="
-                            inline-flex items-center gap-2 
+                            inline-flex items-center gap-2
                             text-[13px] sm:text-[14px] font-semibold tracking-wide
                             transition-all duration-300 group-hover:gap-3
                         "
                         style={{ color: accent }}
                     >
                         Ver ahora
-                        <svg 
-                            width="16" height="16" viewBox="0 0 24 24" fill="none" 
+                        <svg
+                            width="16" height="16" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
                             className="transition-transform duration-300 group-hover:translate-x-1"
                         >
-                            <path d="M5 12h14m-7-7 7 7-7 7"/>
+                            <path d="M5 12h14m-7-7 7 7-7 7" />
                         </svg>
                     </span>
                 </div>

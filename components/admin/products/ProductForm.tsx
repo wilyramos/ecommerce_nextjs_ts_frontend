@@ -212,7 +212,6 @@ export default function ProductForm({
                 </div>
             </div>
 
-            {/* =================== COLUMNA LATERAL (1/4) =================== */}
             <aside className="space-y-6">
                 <div className="sticky top-6 space-y-6">
 

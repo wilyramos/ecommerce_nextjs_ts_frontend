@@ -244,3 +244,13 @@
 --sl-accent:    var(--color-action-primary);  /* #0071E3 */
 --sl-accent-fg: #FFFFFF;
 }
+
+.banner-slot {
+    height: var(--banner-h-mobile, 440px);
+}
+
+@media (min-width: 1024px) {
+    .banner-slot {
+        height: var(--banner-h, 480px);
+    }
+}

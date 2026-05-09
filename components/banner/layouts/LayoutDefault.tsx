@@ -15,14 +15,12 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
         return () => clearTimeout(t);
     }, []);
 
-    /* ─── Tokens de diseño estandarizados ────────────────────────── */
     const isDark = design.theme !== "light";
     const bg     = design.bgColor        ?? (isDark ? "#080808" : "#f5f5f7");
     const text   = design.textColor      ?? (isDark ? "#f5f5f7" : "#1d1d1f");
     const muted  = design.textMutedColor ?? (isDark ? "#86868b" : "#6e6e73");
     const accent = design.accentColor    ?? (isDark ? "#2997ff" : "#0071e3");
 
-    /* ─── Función de animación consistente ──────────────────────── */
     const fadeUp = (delay: number): React.CSSProperties => ({
         opacity:    loaded ? 1 : 0,
         transform:  loaded ? "translateY(0px)" : "translateY(14px)",
@@ -32,12 +30,12 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
     return (
         <Link
             href={destUrl}
-            className="group relative flex items-center w-full overflow-hidden h-[360px] sm:h-[460px] md:h-[600px]"
+            aria-label={title ?? "Ver oferta"}
+            // banner-slot provee la altura desde el carrusel
+            className="banner-slot group relative flex flex-row items-center w-full overflow-hidden"
             style={{ backgroundColor: bg }}
         >
-            {/* ════════════════════════════════════════════════════════
-                FONDO: Gradiente radial sutil para dar profundidad
-            ════════════════════════════════════════════════════════ */}
+            {/* ── Gradiente radial de fondo ── */}
             <div
                 className="absolute right-0 top-0 w-[70%] h-full pointer-events-none"
                 style={{
@@ -45,50 +43,23 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                 }}
             />
 
-            {/* ════════════════════════════════════════════════════════
-                IMAGEN: Posicionada a la derecha con efecto flotante
-            ════════════════════════════════════════════════════════ */}
+            {/* ── Columna 1: Contenido (Izquierda) - Ocupa 1/2 espacio ── */}
             <div
-                className="absolute right-0 top-0 h-full w-[50%] sm:w-[55%] pointer-events-none"
-                style={{
-                    opacity:    loaded ? 1 : 0,
-                    transform:  loaded ? "translateX(0) scale(1)" : "translateX(40px) scale(0.95)",
-                    transition: "opacity 1s ease 0.1s, transform 1.2s cubic-bezier(0.16,1,0.3,1) 0.1s",
-                }}
-            >
-                <Image
-                    src={media.imageUrl}
-                    alt={media.altText}
-                    fill
-                    className={`
-                        object-${media.objectFit ?? "contain"} 
-                        drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)]
-                        transition-transform duration-[2000ms] ease-out
-                        group-hover:scale-[1.03]
-                    `}
-                    sizes="50vw"
-                    priority
-                />
-            </div>
-
-            {/* ════════════════════════════════════════════════════════
-                CONTENIDO: Panel de texto a la izquierda
-            ════════════════════════════════════════════════════════ */}
-            <div 
                 className="
-                    relative z-10 
-                    flex flex-col 
-                    pl-7 sm:pl-12 md:pl-20 lg:pl-32 
-                    w-full max-w-[60%] sm:max-w-[55%] 
-                    gap-2 sm:gap-4
+                    relative z-10
+                    flex flex-col justify-center
+                    w-1/2 h-full
+                    pl-4 sm:pl-8 md:pl-16 lg:pl-24
+                    pr-2 sm:pr-4
+                    gap-2 sm:gap-3 md:gap-4
+                    overflow-hidden
                 "
                 style={{ color: text }}
             >
-                {/* Eyebrow / Subtitle */}
                 {subtitle && (
-                    <div style={fadeUp(0.1)}>
-                        <span 
-                            className="inline-block text-[10px] sm:text-[11px] font-bold tracking-[0.25em] uppercase"
+                    <div style={fadeUp(0.1)} className="flex-none">
+                        <span
+                            className="inline-block text-[9px] sm:text-[11px] font-bold tracking-[0.2em] uppercase line-clamp-1"
                             style={{ color: accent }}
                         >
                             {subtitle}
@@ -96,63 +67,74 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                     </div>
                 )}
 
-                {/* Título - Impacto visual con clamp */}
-                {title && (
-                    <h2 
-                        className="font-bold leading-[1.05] tracking-[-0.03em] text-[clamp(1.8rem,5vw,4.2rem)] max-w-[12ch]"
-                        style={fadeUp(0.2)}
-                    >
-                        {title}
-                    </h2>
-                )}
-
-                {/* Línea decorativa minimalista */}
-                <div 
-                    className="h-[2px] w-10 sm:w-14 rounded-full"
-                    style={{ 
+                <div
+                    className="h-[2px] w-8 sm:w-14 rounded-full flex-none"
+                    style={{
                         background: accent,
                         opacity: loaded ? 0.8 : 0,
-                        transition: "opacity 0.5s ease 0.3s"
+                        transition: "opacity 0.5s ease 0.2s",
                     }}
                 />
 
-                {/* Descripción */}
                 {description && (
-                    <p 
-                        className="text-[12px] sm:text-[14px] md:text-[16px] leading-relaxed max-w-[32ch] line-clamp-3"
+                    <p
+                        className="text-[11px] sm:text-[13px] md:text-[15px] leading-snug sm:leading-relaxed line-clamp-3 sm:line-clamp-4 min-h-0"
                         style={{ color: muted, ...fadeUp(0.3) }}
                     >
                         {description}
                     </p>
                 )}
 
-                {/* Precio */}
                 {price?.current !== undefined && (
-                    <div style={fadeUp(0.4)}>
+                    <div style={fadeUp(0.4)} className="flex-none origin-left scale-[0.85] sm:scale-100">
                         <SliderPrice price={price} />
                     </div>
                 )}
+            </div>
 
-                {/* CTA Botón / Link */}
-                <div style={fadeUp(0.5)} className="mt-2">
-                    <span 
-                        className="
-                            inline-flex items-center gap-2 
-                            text-[13px] sm:text-[14px] font-semibold 
-                            transition-all duration-300 group-hover:gap-3
-                        "
-                        style={{ color: accent }}
-                    >
-                        Ver detalles
-                        <svg 
-                            width="16" height="16" viewBox="0 0 24 24" fill="none" 
-                            stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
-                            className="transition-transform duration-300 group-hover:translate-x-1"
-                        >
-                            <path d="M5 12h14m-7-7 7 7-7 7"/>
-                        </svg>
-                    </span>
+            {/* ── Columna 2: Imagen y Título (Derecha) - Ocupa 1/2 espacio y centrado ── */}
+            <div
+                className="
+                    relative z-10
+                    flex flex-col justify-center items-center // <--- Centrado vertical y horizontal
+                    w-1/2 h-full
+                    p-3 sm:p-6 lg:p-8 // <--- Padding reducido en móvil para dar espacio a la img
+                    pointer-events-none
+                    overflow-hidden
+                "
+                style={{
+                    opacity:    loaded ? 1 : 0,
+                    transform:  loaded ? "translateX(0) scale(1)" : "translateX(20px) scale(0.95)",
+                    transition: "opacity 1s ease 0.1s, transform 1.2s cubic-bezier(0.16,1,0.3,1) 0.1s",
+                }}
+            >
+              
+                <div className="relative w-full h-full max-h-[70%] sm:max-h-[75%] min-h-0">
+                    <Image
+                        src={media.imageUrl}
+                        alt={media.altText}
+                        fill
+                        className={`
+                            object-${media.objectFit ?? "contain"}
+                            object-center // <--- Centrado dentro de su espacio
+                            drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)]
+                            transition-transform duration-[2000ms] ease-out
+                            group-hover:scale-[1.03]
+                        `}
+                        sizes="(max-width: 640px) 50vw, 50vw"
+                        priority
+                    />
                 </div>
+                {title && (
+                    <h2
+                        // flex-none: no se estira ni encoge.
+                        // mt-1 sm:mt-2: Margen superior pequeño para estar "muy pegado".
+                        className="flex-none font-semibold leading-tight tracking-[-0.02em] text-[clamp(0,8rem,2vw,1,5rem)] text-center max-w-full line-clamp-2 mt-1 sm:mt-2"
+                        style={{ color: text }}
+                    >
+                        {title}
+                    </h2>
+                )}
             </div>
         </Link>
     );

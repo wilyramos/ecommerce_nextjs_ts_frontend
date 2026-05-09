@@ -21,27 +21,27 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
     const muted  = design.textMutedColor ?? (isDark ? "#888888" : "#6e6e73");
     const accent = design.accentColor    ?? (isDark ? "#2997ff" : "#0071e3");
 
-    /* ─── Helpers de animación staggered ─────────────────────────── */
     const fadeUp = (delay: number) => ({
-        opacity:   loaded ? 1 : 0,
-        transform: loaded ? "translateY(0px)" : "translateY(14px)",
+        opacity:    loaded ? 1 : 0,
+        transform:  loaded ? "translateY(0px)" : "translateY(14px)",
         transition: `opacity 0.65s ease ${delay}s, transform 0.65s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
     });
 
     return (
         <Link
             href={destUrl}
-            className="group relative w-full overflow-hidden block"
+            aria-label={title ?? "Ver oferta"}
+            // banner-slot provee la altura desde el carrusel.
+            // El grid interno usa h-full para que la imagen llene esa altura.
+            className="banner-slot group relative block w-full overflow-hidden"
             style={{ backgroundColor: bg }}
         >
-           
-            <div className="flex flex-col md:grid md:grid-cols-[58fr_42fr] md:items-stretch">
+            {/* Grid ocupa todo el alto del banner-slot */}
+            <div className="flex flex-col md:grid md:grid-cols-[58fr_42fr] md:items-stretch h-full">
 
-                {/* ── Columna imagen ──────────────────────────────────── */}
-                <div
-                    className="relative w-full overflow-hidden"
-                    style={{ height: "clamp(220px, 46vw, 620px)" }}
-                >
+                {/* ── Columna imagen ── */}
+                {/* Mobile: altura fija proporcional. Desktop: h-full hereda del grid */}
+                <div className="relative w-full h-[55%] md:h-full overflow-hidden">
                     <Image
                         src={media.imageUrl}
                         alt={media.altText}
@@ -55,20 +55,20 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
                         priority
                     />
 
-                    {/* Fade derecho — funde imagen con el panel de texto (solo desktop) */}
+                    {/* Fade derecho — funde con panel de texto (solo desktop) */}
                     <div
                         className="absolute inset-y-0 right-0 w-28 hidden md:block pointer-events-none"
                         style={{ background: `linear-gradient(to right, transparent, ${bg})` }}
                     />
 
-                    {/* Velo inferior — solo mobile, suaviza la unión con el texto */}
+                    {/* Velo inferior — solo mobile */}
                     <div
                         className="absolute inset-x-0 bottom-0 h-2/5 md:hidden pointer-events-none"
                         style={{ background: `linear-gradient(to top, ${bg}, transparent)` }}
                     />
                 </div>
 
-                {/* ── Columna texto ───────────────────────────────────── */}
+                {/* ── Columna texto ── */}
                 <div
                     className="
                         relative z-10
@@ -81,7 +81,6 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
                     "
                     style={{ color: text }}
                 >
-                    {/* Eyebrow / subtítulo */}
                     {subtitle && (
                         <div className="mb-3 md:mb-4" style={fadeUp(0.06)}>
                             <span
@@ -97,7 +96,6 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
                         </div>
                     )}
 
-                    {/* Título */}
                     {title && (
                         <h2
                             className="
@@ -112,7 +110,6 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
                         </h2>
                     )}
 
-                    {/* Línea decorativa accent */}
                     <div
                         className="mb-3 md:mb-5 h-px w-10 rounded-full"
                         style={{
@@ -122,7 +119,6 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
                         }}
                     />
 
-                    {/* Descripción */}
                     {description && (
                         <p
                             className="text-[12px] sm:text-[13px] leading-[1.75] max-w-[36ch] line-clamp-3 mb-4 md:mb-6"
@@ -132,37 +128,11 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
                         </p>
                     )}
 
-                    {/* Precio */}
                     {price?.current !== undefined && (
                         <div className="mb-5 md:mb-7" style={fadeUp(0.35)}>
                             <SliderPrice price={price} />
                         </div>
                     )}
-
-                    {/* CTA */}
-                    <div style={fadeUp(0.42)}>
-                        <span
-                            className="
-                                inline-flex items-center gap-2
-                                text-[13px] font-semibold tracking-wide
-                                transition-all duration-300 ease-out
-                                group-hover:gap-[10px]
-                            "
-                            style={{ color: accent }}
-                        >
-                            Ver más
-                            <svg
-                                width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                className="transition-transform duration-300 group-hover:translate-x-[3px]"
-                            >
-                                <path
-                                    d="M1 7h12M7.5 1.5L13 7l-5.5 5.5"
-                                    stroke="currentColor" strokeWidth="1.6"
-                                    strokeLinecap="round" strokeLinejoin="round"
-                                />
-                            </svg>
-                        </span>
-                    </div>
                 </div>
             </div>
         </Link>

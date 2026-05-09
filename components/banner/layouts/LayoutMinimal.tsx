@@ -2,136 +2,162 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+
 import SliderPrice from "../ui/SliderPrice";
 import type { SliderBanner } from "@/src/schemas/slider.schema";
 
-export default function LayoutMinimal({ banner }: { banner: SliderBanner }) {
+type Props = {
+    banner: SliderBanner;
+};
+
+export default function LayoutMinimal({ banner }: Props) {
     const { design, media, title, subtitle, description, price, destUrl } = banner;
-    const [loaded, setLoaded] = useState(false);
 
-    useEffect(() => {
-        const t = setTimeout(() => setLoaded(true), 80);
-        return () => clearTimeout(t);
-    }, []);
-
-    /* ─── Tokens de diseño estandarizados ────────────────────────── */
     const isDark = design.theme !== "light";
-    const bg     = design.bgColor        ?? (isDark ? "#050505" : "#ffffff");
-    const text   = design.textColor      ?? (isDark ? "#f5f5f7" : "#1d1d1f");
-    const muted  = design.textMutedColor ?? (isDark ? "#86868b" : "#6e6e73");
-    const accent = design.accentColor    ?? (isDark ? "#2997ff" : "#0071e3");
 
-    const fadeUp = (delay: number): React.CSSProperties => ({
-        opacity:    loaded ? 1 : 0,
-        transform:  loaded ? "translateY(0px)" : "translateY(15px)",
-        transition: `opacity 0.8s ease ${delay}s, transform 0.8s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
-    });
+    const colors = {
+        bg: design.bgColor ?? (isDark ? "#0a0a0f" : "#f8f8fc"),
+        text: design.textColor ?? (isDark ? "#f0f0f5" : "#0d0d14"),
+        muted: design.textMutedColor ?? (isDark ? "#7a7a8a" : "#6b6b80"),
+        accent: "var(--color-accent-warm)",
+    };
+
+    const discountPct =
+        price?.compare && price?.current
+            ? Math.round(((price.compare - price.current) / price.compare) * 100)
+            : null;
 
     return (
         <Link
             href={destUrl}
-            className="group relative flex flex-col sm:flex-row items-center w-full overflow-hidden h-[420px] sm:h-[460px] md:h-[600px]"
-            style={{ backgroundColor: bg }}
+            aria-label={title ?? "Ver oferta"}
+            // banner-slot reemplaza las alturas fijas anteriores
+            className="banner-slot group relative overflow-hidden flex flex-col lg:flex-row items-center w-full"
+            style={{ backgroundColor: colors.bg }}
         >
-            {/* ════════════════════════════════════════════════════════
-                FONDO: Resplandor (Glow) sutil detrás del producto
-            ════════════════════════════════════════════════════════ */}
-            <div 
-                className="absolute right-0 sm:right-[10%] top-1/2 -translate-y-1/2 w-[80%] sm:w-[45%] aspect-square rounded-full pointer-events-none blur-[120px]"
+            {/* ── Fondo atmosférico ── */}
+            <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 z-0"
                 style={{
-                    background: `${accent}${isDark ? "12" : "08"}`,
-                    opacity: loaded ? 1 : 0,
-                    transition: "opacity 1.5s ease 0.3s",
-                }} 
+                    background: isDark
+                        ? `radial-gradient(ellipse 60% 60% at 75% 50%, rgba(255,100,20,0.07) 0%, transparent 70%),
+                           radial-gradient(ellipse 40% 50% at 20% 80%, rgba(80,60,255,0.05) 0%, transparent 60%)`
+                        : `radial-gradient(ellipse 60% 60% at 75% 50%, rgba(255,100,20,0.06) 0%, transparent 70%),
+                           radial-gradient(ellipse 40% 50% at 10% 90%, rgba(100,80,255,0.04) 0%, transparent 60%)`,
+                }}
             />
 
-            {/* ════════════════════════════════════════════════════════
-                CONTENIDO: Posicionamiento reordenado
-            ════════════════════════════════════════════════════════ */}
-            <div 
+            {/* ── Grid decorativo (solo dark) ── */}
+            {isDark && (
+                <div
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 z-0 opacity-[0.03]"
+                    style={{
+                        backgroundImage: `
+                            linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)
+                        `,
+                        backgroundSize: "40px 40px",
+                    }}
+                />
+            )}
+
+            {/* ── Imagen: Mobile arriba / Desktop derecha ── */}
+            <div
                 className="
-                    relative z-20 
-                    flex flex-col 
-                    items-center text-center
-                    sm:items-start sm:text-left
-                    w-full sm:w-[50%] 
-                    px-8 sm:pl-12 md:pl-20 lg:pl-32
-                    mt-12 sm:mt-0
-                    order-2 sm:order-1
+                    relative z-10
+                    order-1 lg:order-2
+                    w-full lg:w-[52%]
+                    h-[55%] lg:h-full
+                    flex items-center justify-center
+                    overflow-hidden
                 "
-                style={{ color: text }}
             >
-                {subtitle && (
-                    <div style={fadeUp(0.1)}>
-                        <span 
-                            className="text-[10px] font-black uppercase tracking-[0.35em]"
-                            style={{ color: accent }}
-                        >
+                <div
+                    aria-hidden
+                    className="
+                        absolute top-1/2 left-1/2
+                        -translate-x-1/2 -translate-y-1/2
+                        w-[55%] aspect-square rounded-full blur-3xl
+                        opacity-20 transition-opacity duration-700
+                        group-hover:opacity-30
+                    "
+                    style={{ backgroundColor: colors.accent }}
+                />
+
+                <div
+                    className="
+                        relative
+                        w-[75%] sm:w-[65%] lg:w-[80%]
+                        h-[90%]
+                        transition-transform duration-700 ease-out
+                        group-hover:scale-[1.03]
+                    "
+                >
+                    <Image
+                        src={media.imageUrl}
+                        alt={media.altText}
+                        fill
+                        priority
+                        sizes="(max-width: 1024px) 75vw, 45vw"
+                        className={`object-${media.objectFit ?? "contain"} select-none drop-shadow-2xl`}
+                    />
+                </div>
+            </div>
+
+            {/* ── Contenido: Mobile abajo / Desktop izquierda ── */}
+            <div
+                className="
+                    relative z-10
+                    order-2 lg:order-1
+                    flex flex-col items-center lg:items-start justify-center
+                    w-full lg:w-[48%]
+                    px-6 sm:px-10 lg:px-12 xl:px-16
+                    pb-8 lg:pb-0
+                    gap-4 lg:gap-5
+                    text-center lg:text-left
+                "
+            >
+                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2">
+                    {subtitle && (
+                        <span className="inline-flex items-center rounded-full bg-[var(--color-accent-warm)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-white">
                             {subtitle}
                         </span>
-                    </div>
-                )}
+                    )}
+                    {discountPct && (
+                        <span
+                            className="inline-flex items-center rounded-full border border-current px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] opacity-60"
+                            style={{ color: colors.text }}
+                        >
+                            −{discountPct}%
+                        </span>
+                    )}
+                </div>
 
                 {title && (
-                    <h2 
-                        className="mt-2 sm:mt-4 font-bold leading-[1.1] tracking-tight text-[clamp(1.8rem,5vw,3.2rem)] max-w-[15ch]"
-                        style={fadeUp(0.2)}
+                    <h2
+                        className="w-full text-[clamp(1.9rem,5.5vw,3.8rem)] font-semibold leading-[0.92] tracking-[-0.04em] break-words"
+                        style={{ color: colors.text }}
                     >
                         {title}
                     </h2>
                 )}
 
                 {description && (
-                    <p 
-                        className="mt-3 sm:mt-5 text-[13px] sm:text-[15px] leading-relaxed max-w-[34ch] line-clamp-2"
-                        style={{ color: muted, ...fadeUp(0.3) }}
+                    <p
+                        className="max-w-[38ch] text-sm sm:text-[0.95rem] leading-relaxed opacity-70"
+                        style={{ color: colors.muted }}
                     >
                         {description}
                     </p>
                 )}
 
-                <div 
-                    className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-center gap-6"
-                    style={fadeUp(0.4)}
-                >
-                    {price?.current !== undefined && (
+                {price?.current !== undefined && (
+                    <div className="mt-1">
                         <SliderPrice price={price} />
-                    )}
-                </div>
-            </div>
-
-            {/* ════════════════════════════════════════════════════════
-                IMAGEN: El héroe visual
-            ════════════════════════════════════════════════════════ */}
-            <div 
-                className="
-                    relative sm:absolute 
-                    right-0 sm:right-8 md:right-16 lg:right-24
-                    w-[70%] sm:w-[45%]
-                    h-[200px] sm:h-[80%]
-                    order-1 sm:order-2
-                    flex items-center justify-center
-                "
-                style={{
-                    opacity:    loaded ? 1 : 0,
-                    transform:  loaded ? "scale(1) translateX(0)" : "scale(0.9) translateX(20px)",
-                    transition: "opacity 1s ease 0.15s, transform 1.2s cubic-bezier(0.16,1,0.3,1) 0.15s",
-                }}
-            >
-                <Image 
-                    src={media.imageUrl} 
-                    alt={media.altText} 
-                    fill
-                    className={`
-                        object-${media.objectFit ?? "contain"} 
-                        drop-shadow-[0_20px_40px_rgba(0,0,0,0.12)]
-                        transition-transform duration-[2000ms] ease-out
-                        group-hover:scale-[1.04]
-                    `}
-                    sizes="(max-width: 640px) 80vw, 45vw"
-                    priority 
-                />
+                    </div>
+                )}
             </div>
         </Link>
     );

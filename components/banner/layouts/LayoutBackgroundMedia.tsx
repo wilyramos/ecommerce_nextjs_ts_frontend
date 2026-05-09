@@ -16,14 +16,12 @@ export default function LayoutBackgroundMedia({ banner }: { banner: SliderBanner
         return () => clearTimeout(t);
     }, []);
 
-    /* ─── Tokens de color ───────────────────────────────────────── */
     const isDark = design.theme !== "light";
-    const bg = design.bgColor ?? "#000000";
-    const text = design.textColor ?? "#f5f5f7";
-    const muted = design.textMutedColor ?? (isDark ? "#aaaaaa" : "#d0d0d5");
-    const accent = design.accentColor ?? (isDark ? "#2997ff" : "#0071e3");
+    const bg     = design.bgColor         ?? "#000000";
+    const text   = design.textColor       ?? "#f5f5f7";
+    const muted  = design.textMutedColor  ?? (isDark ? "#aaaaaa" : "#d0d0d5");
+    const accent = design.accentColor     ?? (isDark ? "#2997ff" : "#0071e3");
 
-    /* ─── Animación staggered ───────────────────────────────────── */
     const fadeUp = (delay: number, extra?: React.CSSProperties): React.CSSProperties => ({
         opacity: loaded ? 1 : 0,
         transform: loaded ? "translateY(0px)" : "translateY(14px)",
@@ -36,15 +34,13 @@ export default function LayoutBackgroundMedia({ banner }: { banner: SliderBanner
     return (
         <Link
             href={destUrl}
-            className="group relative w-full overflow-hidden flex items-end justify-center text-center h-[360px] sm:h-[460px] md:h-[600px]"
-            style={{
-                backgroundColor: bg,
-                minHeight: "clamp(340px, 54vw, 700px)",
-            }}
+            aria-label={title ?? "Ver oferta"}
+            // banner-slot reemplaza las alturas fijas anteriores:
+            // antes: h-[360px] sm:h-[460px] md:h-[600px]
+            className="banner-slot group relative w-full overflow-hidden flex items-end justify-center text-center"
+            style={{ backgroundColor: bg }}
         >
-            {/* ════════════════════════════════════════════════════════
-                MEDIA — imagen o vídeo a sangre completa
-            ════════════════════════════════════════════════════════ */}
+            {/* ── Media: imagen o video a sangre completa ── */}
             {isVideo ? (
                 <video
                     ref={videoRef}
@@ -66,12 +62,6 @@ export default function LayoutBackgroundMedia({ banner }: { banner: SliderBanner
                     priority
                 />
             )}
-
-            {/* ════════════════════════════════════════════════════════
-                CAPAS DE GRADIENTE
-                1. Viñeta perimetral suave — esquinas oscuras, centro limpio
-                2. Rampa inferior profunda — zona de lectura garantizada
-            ════════════════════════════════════════════════════════ */}
 
             {/* Viñeta perimetral */}
             <div
@@ -97,11 +87,7 @@ export default function LayoutBackgroundMedia({ banner }: { banner: SliderBanner
                 }}
             />
 
-            {/* ════════════════════════════════════════════════════════
-                CONTENIDO — anclado a la parte inferior
-                  Mobile : pb-9, bien pegado al fondo
-                  Desktop: pb-12 md:pb-16, con más margen
-            ════════════════════════════════════════════════════════ */}
+            {/* ── Contenido anclado al fondo ── */}
             <div
                 className="
                     relative z-10
@@ -113,7 +99,6 @@ export default function LayoutBackgroundMedia({ banner }: { banner: SliderBanner
                 "
                 style={{ color: text }}
             >
-                {/* Eyebrow — píldora */}
                 {subtitle && (
                     <div className="mb-3 md:mb-4" style={fadeUp(0.08)}>
                         <span
@@ -130,7 +115,6 @@ export default function LayoutBackgroundMedia({ banner }: { banner: SliderBanner
                     </div>
                 )}
 
-                {/* Título — máximo impacto visual */}
                 {title && (
                     <h2
                         className="font-black leading-[1.03] tracking-[-0.04em] text-[clamp(2.2rem,7vw,5.5rem)] mb-0"
@@ -146,7 +130,6 @@ export default function LayoutBackgroundMedia({ banner }: { banner: SliderBanner
                     </h2>
                 )}
 
-                {/* Descripción */}
                 {description && (
                     <p
                         className="mt-3 md:mt-4 text-[12px] sm:text-[13px] md:text-[14px] leading-[1.7] max-w-[34ch] line-clamp-2"
@@ -156,14 +139,12 @@ export default function LayoutBackgroundMedia({ banner }: { banner: SliderBanner
                     </p>
                 )}
 
-                {/* Precio */}
                 {price?.current !== undefined && (
                     <div className="mt-3 md:mt-4" style={fadeUp(0.35)}>
                         <SliderPrice price={price} />
                     </div>
                 )}
             </div>
-
         </Link>
     );
 }

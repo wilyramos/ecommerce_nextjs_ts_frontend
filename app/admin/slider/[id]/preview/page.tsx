@@ -122,11 +122,11 @@ export default async function SliderBannerPreviewPage({ params }: Props) {
                     </div>
 
                     {/* Contenido */}
-                    <div className="rounded-lg bg-zinc-900 border border-zinc-800 p-5 space-y-3">
+                    <div className="rounded-lg bg-zinc-900 border border-zinc-800 p-5 space-y-3 max-w-2xl">
                         <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">
                             Contenido
                         </p>
-                        <div className="space-y-2">
+                        <div className="space-y-2 truncate">
                             <Row label="Tipo"      value={banner.contentType.toUpperCase()} />
                             {banner.title       && <Row label="Título"      value={banner.title} />}
                             {banner.subtitle    && <Row label="Subtítulo"   value={banner.subtitle} />}

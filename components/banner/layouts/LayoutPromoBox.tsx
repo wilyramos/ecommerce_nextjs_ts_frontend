@@ -36,9 +36,12 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
     return (
         <Link
             href={destUrl}
-            className="group relative flex items-center justify-center w-full overflow-hidden h-[360px] sm:h-[460px] md:h-[600px]"
+            aria-label={title ?? "Ver oferta"}
+            // banner-slot reemplaza: h-[360px] sm:h-[460px] md:h-[600px]
+            className="banner-slot group relative flex items-center justify-center w-full overflow-hidden"
             style={{ backgroundColor: bg }}
         >
+            {/* Textura de ruido */}
             <div
                 className="absolute inset-0 pointer-events-none opacity-[0.025]"
                 style={{
@@ -48,6 +51,8 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
             />
 
             <div className="relative z-10 w-full h-full max-w-6xl mx-auto px-5 sm:px-8 md:px-12 lg:px-16 flex items-center justify-between gap-6 md:gap-10">
+
+                {/* Imagen de fondo mobile */}
                 <div
                     className="sm:hidden absolute inset-0 pointer-events-none"
                     style={fadeUp(0.04)}
@@ -60,7 +65,6 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
                         className={`object-${media.objectFit ?? "contain"} opacity-10`}
                         priority
                     />
-                    {/* Halo accent detrás */}
                     <div
                         className="absolute inset-0"
                         style={{
@@ -69,15 +73,12 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
                     />
                 </div>
 
+                {/* ── Card de producto ── */}
                 <div
                     className="
-                        relative flex-shrink-0 flex flex-col justify-between
-                         overflow-hidden
-                        /* mobile: ocupa casi todo el ancho centrado */
+                        relative flex-shrink-0 flex flex-col justify-between overflow-hidden
                         w-full max-w-[320px] mx-auto
-                        /* desktop: ancho fijo, sin centrado */
                         sm:mx-0 sm:w-[300px] md:w-[340px] lg:w-[380px]
-                        /* altura proporcional al banner */
                         h-[78%] sm:h-[82%] md:h-[80%]
                     "
                     style={{
@@ -98,10 +99,9 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
                         }}
                     />
 
-                    {/* Contenido principal */}
+                    {/* Contenido */}
                     <div className="flex flex-col items-center text-center gap-3 px-6 sm:px-7 py-6 sm:py-7 flex-1 min-h-0">
 
-                        {/* Eyebrow */}
                         {subtitle && (
                             <span
                                 className="text-[9px] font-black uppercase tracking-[0.22em]"
@@ -111,7 +111,6 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
                             </span>
                         )}
 
-                        {/* Título */}
                         {title && (
                             <h2
                                 className="font-semibold leading-[1.1] tracking-tight text-[clamp(1.15rem,2.6vw,1.75rem)] line-clamp-3"
@@ -121,7 +120,6 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
                             </h2>
                         )}
 
-                        {/* Descripción */}
                         {description && (
                             <p
                                 className="text-[11px] sm:text-[12px] leading-relaxed line-clamp-2"
@@ -131,7 +129,6 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
                             </p>
                         )}
 
-                        {/* Precio */}
                         {price?.current !== undefined && (
                             <div className="flex items-center gap-3 flex-wrap mt-auto pt-2 justify-center">
                                 <div className="flex items-start gap-0.5 leading-none">
@@ -171,16 +168,13 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
 
                     {/* Divisor */}
                     <div className="mx-6 sm:mx-7 h-px flex-shrink-0" style={{ backgroundColor: cardBorder }} />
-
-                   
                 </div>
 
-                {/* ── IMAGEN DEL PRODUCTO — solo desktop ──────────────── */}
+                {/* ── Imagen del producto — solo desktop ── */}
                 <div
                     className="hidden sm:flex relative flex-1 h-full items-center justify-center"
                     style={fadeUp(0.05)}
                 >
-                    {/* Halo accent detrás de la imagen */}
                     <div
                         className="absolute inset-0 pointer-events-none"
                         style={{
@@ -202,7 +196,6 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
                         />
                     </div>
                 </div>
-
             </div>
         </Link>
     );

@@ -21,7 +21,6 @@ export function CarouselDot({ onClick, active, autoPlaySpeed = 5000 }: DotProps)
         if (active) {
             bar.style.transition = "none";
             bar.style.transform = "scaleX(0)";
-            bar.style.transformOrigin = "left";
 
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
@@ -41,30 +40,17 @@ export function CarouselDot({ onClick, active, autoPlaySpeed = 5000 }: DotProps)
             aria-label={active ? "Slide actual" : "Ir a slide"}
             className={`
                 relative overflow-hidden rounded-full cursor-pointer
-                transition-all duration-500 ease-out
+                transition-all duration-300 ease-in-out
                 ${active
-                    ? "w-8 md:w-10 h-[5px] md:h-[6px]"
-                    : "w-[5px] md:w-[6px] h-[5px] md:h-[6px] hover:scale-125"
+                    ? "w-8 h-1.5 bg-white/20" 
+                    : "w-1.5 h-1.5 bg-white/40 hover:bg-white/70"
                 }
             `}
-            style={{
-                backgroundColor: active
-                    ? "rgba(255,255,255,0.35)"
-                    : "rgba(255,255,255,0.25)",
-                backdropFilter: "blur(4px)",
-                border: "1px solid rgba(255,255,255,0.2)",
-            }}
         >
-            {/* Barra de progreso interna */}
             <div
                 ref={barRef}
-                className="absolute inset-0 rounded-full"
-                style={{
-                    backgroundColor: "rgba(255,255,255,0.9)",
-                    transform: "scaleX(0)",
-                    transformOrigin: "left",
-                    willChange: "transform",
-                }}
+                className="absolute inset-0 bg-white origin-left rounded-full will-change-transform"
+                style={{ transform: "scaleX(0)" }}
             />
         </button>
     );

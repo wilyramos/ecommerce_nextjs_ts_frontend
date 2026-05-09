@@ -64,53 +64,88 @@ export default function SliderPrice({ price }: Props) {
                 transition-all duration-500 ease-in-out
                 ${borderStyle}
             `}
-            style={{ color: 'inherit' }}
+            style={{ color: "inherit" }}
         >
-
             {/* Bloque Principal del Precio */}
-            <div className="flex items-end gap-3">
+            <div className="flex items-end gap-2 sm:gap-3">
                 {price.current !== undefined && (
-                    <span className="font-bold tracking-tighter text-[clamp(1.75rem,4.5vw,3.5rem)] leading-none">
-                        <span className="text-sm font-bold mr-1.5 opacity-60 align-top">
+                    <span
+                        className="
+                            font-bold tracking-tighter leading-none
+                            text-[clamp(1.4rem,6vw,3.5rem)]
+                        "
+                    >
+                        <span
+                            className="
+                                mr-1 align-top font-bold opacity-60
+                                text-[0.28em]
+                            "
+                        >
                             {price.currency}
                         </span>
 
                         {price.current.toFixed(2)}
 
                         {price.suffix && (
-                            <span className="text-[0.22em] font-bold ml-2 opacity-50 tracking-[0.2em] uppercase">
+                            <span
+                                className="
+                                    ml-1.5 sm:ml-2
+                                    text-[0.22em]
+                                    font-bold uppercase
+                                    tracking-[0.18em]
+                                    opacity-50
+                                "
+                            >
                                 {price.suffix}
                             </span>
                         )}
                     </span>
                 )}
 
-                {/* Label encima del precio comparativo, todo alineado al fondo */}
+                {/* Comparativo */}
                 {price.compare && (
                     <div className="flex flex-col items-start gap-0.5 pb-1">
                         {price.label && (
-                            <span className="
-                text-[11px] font-black uppercase tracking-wider
-                text-[var(--color-accent-warm)]
-                leading-none mb-1
-            ">
+                            <span
+                                className="
+                                    text-[9px] sm:text-[11px]
+                                    font-black uppercase
+                                    tracking-wider leading-none
+                                    text-[var(--color-accent-warm)]
+                                "
+                            >
                                 {price.label}
                             </span>
                         )}
-                        <span className="
-            text-base md:text-lg font-medium
-            line-through opacity-25
-            decoration-current decoration-[1.5px]
-            leading-none tracking-tight
-        ">
-                            {price.currency}{price.compare.toFixed(2)}
+
+                        <span
+                            className="
+                                text-xs sm:text-sm md:text-lg
+                                font-medium leading-none
+                                tracking-tight opacity-25
+                                line-through
+                                decoration-current
+                                decoration-[1.5px]
+                            "
+                        >
+                            {price.currency}
+                            {price.compare.toFixed(2)}
                         </span>
                     </div>
                 )}
             </div>
-            {/* Nota Inferior */}
+
+            {/* Nota */}
             {price.note && (
-                <span className="text-[9px] md:text-[10px] font-bold opacity-40 tracking-[0.15em] mt-1.5 uppercase">
+                <span
+                    className="
+                        mt-1
+                        text-[8px] sm:text-[10px]
+                        font-bold uppercase
+                        tracking-[0.15em]
+                        opacity-40
+                    "
+                >
                     {price.note}
                 </span>
             )}
