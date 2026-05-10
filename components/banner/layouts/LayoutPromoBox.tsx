@@ -108,19 +108,6 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
                                     </div>
                                 </div>
                             )}
-
-                            {/* CTA */}
-                            <div className="pt-2 sm:pt-3 hidden sm:block">
-                                <div
-                                    className="inline-flex items-center gap-3 text-[9px] md:text-[10px] font-black uppercase tracking-widest pb-1 border-b-2 transition-all duration-300 group-hover:gap-6"
-                                    style={{ borderColor: accent, color: text }}
-                                >
-                                    Ver detalles
-                                    <svg width="14" height="10" viewBox="0 0 18 12" fill="none" className="md:w-[18px]">
-                                        <path d="M12 1L17 6L12 11M1 6H17H1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                </div>
-                            </div>
                         </div>
                     </div>
 

@@ -14,8 +14,19 @@ export default function SliderPrice({
     isDark,
 }: Props) {
     const borderStyles: Record<string, React.CSSProperties> = {
+        // Sin decoración
         none: {},
 
+        // Marco curvado: bordes redondeados con fondo sutil
+        "curved-frame": {
+            border: `1px solid ${accentColor}${isDark ? "44" : "33"}`,
+            borderRadius: "0.5rem",
+            background: `${accentColor}${isDark ? "08" : "04"}`,
+            padding: "0.75rem 1rem",
+            boxShadow: `inset 0 0 8px ${accentColor}${isDark ? "08" : "04"}`,
+        },
+
+        // Marco simple: bordes izquierdo y superior
         simple: {
             borderLeft: `1px solid ${accentColor}${isDark ? "55" : "35"}`,
             borderTop: `1px solid ${accentColor}${isDark ? "55" : "35"}`,
@@ -24,14 +35,28 @@ export default function SliderPrice({
             paddingTop: "0.5rem",
         },
 
+        // Marco doble: bordes derecho y superior con grosor variable
         double: {
             borderRight: `1px solid ${accentColor}${isDark ? "55" : "35"}`,
-            borderTop: `1px solid ${accentColor}${isDark ? "55" : "35"}`,
+            borderTop: `2px solid ${accentColor}${isDark ? "55" : "35"}`,
             borderTopRightRadius: "0.375rem",
             paddingRight: "1.25rem",
             paddingTop: "0.5rem",
         },
 
+        // Marco redondeado superior: solo redondeado arriba
+        "rounded-top": {
+            borderTop: `1px solid ${accentColor}${isDark ? "44" : "33"}`,
+            borderLeft: `1px solid ${accentColor}${isDark ? "44" : "33"}`,
+            borderRight: `1px solid ${accentColor}${isDark ? "44" : "33"}`,
+            borderTopLeftRadius: "0.5rem",
+            borderTopRightRadius: "0.5rem",
+            paddingTop: "0.75rem",
+            paddingLeft: "0.75rem",
+            paddingRight: "0.75rem",
+        },
+
+        // Marco completamente redondeado: círculo/óvalo
         "rounded-all": {
             border: `1px solid ${accentColor}${isDark ? "33" : "22"}`,
             background: `${accentColor}${isDark ? "08" : "05"}`,
@@ -39,33 +64,90 @@ export default function SliderPrice({
             padding: "0.75rem 1.25rem",
         },
 
+        // Líneas punteadas: bordes discontinuos
         dashed: {
-            paddingBottom: "0.7rem",
-            backgroundImage: `
-        linear-gradient(
-            to right,
-            ${accentColor}${isDark ? "88" : "66"} 0%,
-            ${accentColor}${isDark ? "88" : "66"} 55%,
-            transparent 55%,
-            transparent 100%
-        )
-    `,
-            backgroundSize: "14px 1px",
-            backgroundRepeat: "repeat-x",
-            backgroundPosition: "left bottom",
+            borderLeft: `2px dashed ${accentColor}${isDark ? "66" : "44"}`,
+            borderBottom: `1px dashed ${accentColor}${isDark ? "55" : "33"}`,
+            paddingLeft: "1rem",
+            paddingBottom: "0.5rem",
         },
 
+        // Puntos: bordes punteados
         dotted: {
             border: `1px dotted ${accentColor}${isDark ? "66" : "44"}`,
             borderRadius: "0.125rem",
             padding: "0.5rem 1rem",
         },
 
-        "thick-solid": {
-            borderLeft: `2px solid ${accentColor}${isDark ? "aa" : "88"}`,
-            paddingLeft: "1rem",
-            paddingTop: "0.25rem",
-            paddingBottom: "0.25rem",
+        // Esquinas dobles: solo esquinas
+        "double-corner": {
+            borderTop: `2px solid ${accentColor}${isDark ? "55" : "35"}`,
+            borderRight: `2px solid ${accentColor}${isDark ? "55" : "35"}`,
+            borderBottomLeftRadius: "0.375rem",
+            padding: "0.75rem 1rem",
+        },
+
+        // Efecto flotante: sombra sutil sin bordes
+        floating: {
+            background: `${accentColor}${isDark ? "06" : "03"}`,
+            borderRadius: "0.5rem",
+            padding: "0.75rem 1.25rem",
+            boxShadow: `0 4px 12px ${accentColor}${isDark ? "15" : "08"}`,
+        },
+
+        // Marco de película: fondo sólido con múltiples capas
+        "film-frame": {
+            background: `${accentColor}${isDark ? "12" : "08"}`,
+            border: `1px solid ${accentColor}${isDark ? "44" : "33"}`,
+            borderRadius: "0.375rem",
+            padding: "1rem 1.25rem",
+            boxShadow: `
+                inset 0 0 0 1px ${accentColor}${isDark ? "22" : "11"},
+                0 2px 8px ${accentColor}${isDark ? "12" : "06"}
+            `,
+        },
+
+        // Asimétrico: bordes en esquinas opuestas
+        asymmetric: {
+            borderLeft: `2px solid ${accentColor}${isDark ? "55" : "35"}`,
+            borderBottom: `2px solid ${accentColor}${isDark ? "55" : "35"}`,
+            borderBottomLeftRadius: "0.5rem",
+            padding: "0.75rem 1rem 1rem 1.25rem",
+        },
+
+        // Efecto vidrio: bordes con desenfoque de fondo
+        "glass-effect": {
+            border: `1px solid ${accentColor}${isDark ? "44" : "33"}`,
+            background: `${accentColor}${isDark ? "06" : "03"}`,
+            backdropFilter: "blur(4px)",
+            borderRadius: "0.5rem",
+            padding: "0.75rem 1.25rem",
+        },
+
+        // Brillo neón: bordes con resplandor
+        "neon-glow": {
+            border: `1px solid ${accentColor}${isDark ? "66" : "44"}`,
+            borderRadius: "0.375rem",
+            padding: "0.75rem 1.25rem",
+            boxShadow: `
+                0 0 8px ${accentColor}${isDark ? "33" : "22"},
+                inset 0 0 8px ${accentColor}${isDark ? "11" : "08"}
+            `,
+        },
+
+        // Marco minimalista: línea muy sutil
+        "minimal-frame": {
+            borderBottom: `1px solid ${accentColor}${isDark ? "22" : "11"}`,
+            paddingBottom: "0.5rem",
+        },
+
+        // Corte diagonal: bordes en diagonal
+        "diagonal-cut": {
+            borderTop: `2px solid ${accentColor}${isDark ? "55" : "35"}`,
+            borderLeft: `2px solid ${accentColor}${isDark ? "55" : "35"}`,
+            borderRadius: "0.375rem",
+            padding: "0.75rem 1rem",
+            transform: "skewX(-5deg)",
         },
     };
 

@@ -13,83 +13,136 @@ interface Props {
     priority?: boolean;
 }
 
+/**
+ * Border styles: decoraciones visuales posicionadas detrás de la imagen
+ * Utilizan pseudo-elementos before/after para crear efectos de marco
+ * - before: elemento decorativo principal (más visible)
+ * - after: elemento decorativo secundario (más sutil)
+ * Todos posicionados con z-index negativo (-z-10) para estar detrás de la imagen (z-10)
+ */
 const borderClasses: Record<string, string> = {
     none: "",
 
     "curved-frame":
         "relative " +
-        "before:content-[''] before:absolute before:w-[85%] before:h-[85%] before:-top-4 before:-right-4 before:border-[2px] before:border-[var(--color-accent-warm)]  before:-z-10 " +
-        "after:content-[''] after:absolute after:w-[75%] after:h-[75%] after:-top-8 after:-right-8 after:border-[2px] after:border-[var(--color-accent-warm)]/50  after:-z-20",
+        "before:content-[''] before:absolute before:w-[58%] before:h-[58%] before:top-1/2 before:left-1/2 " +
+        "before:-translate-x-1/2 before:-translate-y-[40%] before:border-2 before:border-[var(--color-accent-warm)] " +
+        "before:rounded-lg before:-z-10 " +
+        "after:content-[''] after:absolute after:w-[48%] after:h-[48%] after:top-1/2 after:left-1/2 " +
+        "after:-translate-x-1/2 after:translate-y-[20%] after:border-2 after:border-[var(--color-text-secondary)]/50 " +
+        "after:rounded-lg after:-z-10",
 
     simple:
         "relative " +
-        "before:content-[''] before:absolute before:w-[90%] before:h-[90%] before:-bottom-4 before:-left-4 before:border-[2px] before:border-[var(--color-accent-warm)]  before:-z-10 " +
-        "after:content-[''] after:absolute after:w-[80%] after:h-[80%] before:-bottom-8 before:-left-8 after:border-[2px] after:border-[var(--color-accent-warm)]/50  after:-z-20",
+        "before:content-[''] before:absolute before:w-[55%] before:h-[55%] before:bottom-1 before:left-1 " +
+        "before:border-2 before:border-[var(--color-accent-warm)] before:-z-10 " +
+        "after:content-[''] after:absolute after:w-[45%] after:h-[45%] after:bottom-3 after:left-3 " +
+        "after:border-2 after:border-[var(--color-text-secondary)]/50 after:-z-10",
 
     double:
         "relative " +
-        "before:content-[''] before:absolute before:w-[92%] before:h-[92%] before:-bottom-3 before:-right-3 before:border-[2px] before:border-[var(--color-accent-warm)]  before:-z-10 " +
-        "after:content-[''] after:absolute after:w-[85%] after:h-[85%] after:-bottom-6 after:-right-6 after:border-[2px] after:border-[var(--color-accent-warm)]/40  after:-z-20",
+        "before:content-[''] before:absolute before:w-[56%] before:h-[56%] before:bottom-1 before:right-1 " +
+        "before:border-2 before:border-[var(--color-accent-warm)] before:-z-10 " +
+        "after:content-[''] after:absolute after:w-[46%] after:h-[46%] after:bottom-3 after:right-3 " +
+        "after:border before:border-[var(--color-text-secondary)]/50 after:-z-10",
 
     "rounded-top":
         "relative " +
-        "before:content-[''] before:absolute before:w-[85%] before:h-[85%] before:-top-4 before:-right-4 before:border-[2px] before: before:border-[var(--color-accent-warm)] before:-z-10 " +
-        "after:content-[''] after:absolute after:w-[75%] after:h-[75%] after:-top-8 after:-right-8 after:border-[2px] after: after:border-[var(--color-accent-warm)]/40 after:-z-20",
+        "before:content-[''] before:absolute before:w-[58%] before:h-[48%] before:top-1 before:right-1 " +
+        "before:border-2 before:border-[var(--color-accent-warm)] before:rounded-t-3xl before:-z-10 " +
+        "after:content-[''] after:absolute after:w-[48%] after:h-[38%] after:top-3 after:right-3 " +
+        "after:border-2 after:border-[var(--color-text-secondary)]/50 after:rounded-t-3xl after:-z-10",
 
     "rounded-all":
         "relative " +
-        "before:content-[''] before:absolute before:w-[85%] before:h-[85%] before:-top-4 before:-left-4 before:border-[2px] before:border-[var(--color-text-primary)]  before:-z-10 " +
-        "after:content-[''] after:absolute after:w-[85%] after:h-[85%] after:-bottom-4 after:-right-4 after:border-[2px] after:border-[var(--color-accent-warm)]/40  after:-z-20",
+        "before:content-[''] before:absolute before:w-[58%] before:h-[58%] before:top-1/2 before:left-1/2 " +
+        "before:-translate-x-1/2 before:-translate-y-1/2 before:border-2 before:border-[var(--color-accent-warm)] " +
+        "before:rounded-full before:-z-10 " +
+        "after:content-[''] after:absolute after:w-[48%] after:h-[48%] after:top-1/2 after:left-1/2 " +
+        "after:-translate-x-1/2 after:-translate-y-1/2 after:border-2 after:border-[var(--color-text-secondary)]/40 " +
+        "after:rounded-full after:-z-10",
 
     dashed:
         "relative " +
-        "before:content-[''] before:absolute before:w-[90%] before:h-[90%] before:-top-4 before:-right-4 before:border-[2px] before: before:border-[var(--color-text-secondary)]/60 before:-z-10 " +
-        "after:content-[''] after:absolute after:w-[85%] after:h-[85%] after:-bottom-4 after:-left-4 after:border-[2px] after: after:border-[var(--color-accent-warm)]/70 after:-z-20",
+        "before:content-[''] before:absolute before:w-[56%] before:h-[56%] before:top-1 before:right-1 " +
+        "before:border-2 before:border-dashed before:border-[var(--color-accent-warm)] before:-z-10 " +
+        "after:content-[''] after:absolute after:w-[46%] after:h-[46%] after:bottom-1 after:left-1 " +
+        "after:border-2 after:border-dashed after:border-[var(--color-text-secondary)]/60 after:-z-10",
 
     dotted:
         "relative " +
-        "before:content-[''] before:absolute before:w-[90%] before:h-[90%] before:translate-x-4 before:translate-y-4 before:border-[3px] before:border-dotted before:border-[var(--color-accent-warm)] before:-z-10 " +
-        "after:content-[''] after:absolute after:w-[80%] after:h-[80%] after:translate-x-8 after:translate-y-8 after:border-[3px] after:border-dotted after:border-[var(--color-accent-warm)]/50 after:-z-20",
+        "before:content-[''] before:absolute before:w-[60%] before:h-[60%] before:top-1 before:left-1 " +
+        "before:border before:border-dotted before:border-[var(--color-accent-warm)] before:-z-10 " +
+        "after:content-[''] after:absolute after:w-[36%] after:h-[42%] after:bottom-1 after:right-1 " +
+        "after:border-2 after:border-dotted after:border-[var(--color-text-secondary)]/50 after:-z-10",
 
     "double-corner":
         "relative " +
-        "before:content-[''] before:absolute before:w-[90%] before:h-[90%] before:-top-4 before:-left-4 before:border-l-[4px] before:border-b-[4px] before:border-[var(--color-accent-warm)] before:-z-10 " +
-        "after:content-[''] after:absolute after:w-[80%] after:h-[80%] after:-top-8 after:-left-8 after:border-l-[4px] after:border-b-[4px] after:border-[var(--color-accent-warm)]/40 after:-z-20",
+        "before:content-[''] before:absolute before:w-[52%] before:h-[52%] before:top-1 before:left-1 " +
+        "before:border-l-4 before:border-t-4 before:border-[var(--color-accent-warm)] before:-z-10 " +
+        "after:content-[''] after:absolute after:w-[42%] after:h-[42%] after:bottom-1 after:right-1 " +
+        "after:border-r-4 after:border-b-4 after:border-[var(--color-text-secondary)]/50 after:-z-10",
 
     floating:
         "relative " +
-        "before:content-[''] before:absolute before:w-[90%] before:h-[90%] before:-bottom-4 before:-right-4 before:bg-[var(--color-accent-warm)]/20 before:backdrop-blur-sm before:-z-10 " +
-        "after:content-[''] after:absolute after:w-[80%] after:h-[80%] after:-bottom-8 after:-right-8 after:bg-[var(--color-accent-warm)]/10 after:-z-20",
+        "before:content-[''] before:absolute before:w-[56%] before:h-[56%] before:top-1/2 before:left-1/2 " +
+        "before:-translate-x-1/2 before:-translate-y-1/2 before:translate-y-1 before:translate-x-1 " +
+        "before:bg-[var(--color-accent-warm)]/20 before:rounded-lg before:blur-md before:-z-10 " +
+        "after:content-[''] after:absolute after:w-[46%] after:h-[46%] after:top-1/2 after:left-1/2 " +
+        "after:-translate-x-1/2 after:-translate-y-1/2 after:translate-y-2 after:translate-x-2 " +
+        "after:bg-[var(--color-text-secondary)]/15 after:rounded-lg after:blur-lg after:-z-10",
 
     "film-frame":
         "relative " +
-        "before:content-[''] before:absolute before:w-[95%] before:h-[95%] before:translate-x-3 before:translate-y-3 before:bg-[var(--color-accent-warm)]/90 before:-z-10 " +
-        "after:content-[''] after:absolute after:w-[90%] after:h-[90%] after:translate-x-6 after:translate-y-6 after:bg-[var(--color-accent-warm)]/40 after:-z-20",
+        "before:content-[''] before:absolute before:w-[58%] before:h-[58%] before:top-1/2 before:left-1/2 " +
+        "before:-translate-x-1/2 before:-translate-y-1/2 before:translate-x-1 before:translate-y-1 " +
+        "before:bg-[var(--color-accent-warm)]/85 before:rounded-md before:-z-10 " +
+        "after:content-[''] after:absolute after:w-[48%] after:h-[48%] after:top-1/2 after:left-1/2 " +
+        "after:-translate-x-1/2 after:-translate-y-1/2 after:translate-x-2 after:translate-y-2 " +
+        "after:bg-[var(--color-text-secondary)]/25 after:rounded-md after:-z-10",
 
     asymmetric:
         "relative " +
-        "before:content-[''] before:absolute before:w-[85%] before:h-[85%] before:-top-4 before:-right-4  before:border-t-[4px] before:border-r-[4px] before:border-[var(--color-accent-warm)] before:-z-10 " +
-        "after:content-[''] after:absolute after:w-[85%] after:h-[85%] after:-bottom-4 after:-left-4  after:border-b-[4px] after:border-l-[4px] after:border-[var(--color-accent-warm)]/60 after:-z-20",
+        "before:content-[''] before:absolute before:w-[54%] before:h-[54%] before:top-1 before:right-1 " +
+        "before:border-t-4 before:border-r-4 before:border-[var(--color-accent-warm)] before:-z-10 " +
+        "after:content-[''] after:absolute after:w-[44%] after:h-[44%] after:bottom-1 after:left-1 " +
+        "after:border-b-4 after:border-l-4 after:border-[var(--color-text-secondary)]/60 after:-z-10",
 
     "glass-effect":
         "relative " +
-        "before:content-[''] before:absolute before:w-[90%] before:h-[90%] before:-top-4 before:-left-4 before:border-[2px] before:border-[var(--color-accent-warm)]/80  before:backdrop-blur-md before:-z-10 " +
-        "after:content-[''] after:absolute after:w-[80%] after:h-[80%] after:-top-8 after:-left-8 after:border-[2px] after:border-[var(--color-accent-warm)]/30  after:-z-20",
+        "before:content-[''] before:absolute before:w-[56%] before:h-[56%] before:top-1/2 before:left-1/2 " +
+        "before:-translate-x-1/2 before:-translate-y-[40%] before:border-2 before:border-[var(--color-accent-warm)]/80 " +
+        "before:rounded-xl before:backdrop-blur-sm before:-z-10 " +
+        "after:content-[''] after:absolute after:w-[46%] after:h-[46%] after:top-1/2 before:left-1/2 " +
+        "after:-translate-x-1/2 after:translate-y-[20%] after:border-2 after:border-[var(--color-text-secondary)]/40 " +
+        "after:rounded-xl after:-z-10",
 
     "neon-glow":
         "relative " +
-        "before:content-[''] before:absolute before:w-[92%] before:h-[92%] before:translate-x-3 before:translate-y-3 before:border-[2px] before:border-[var(--color-accent-warm)] before:shadow-[0_0_20px_var(--color-accent-warm)] before:-z-10 " +
-        "after:content-[''] after:absolute after:w-[85%] after:h-[85%] after:translate-x-6 after:translate-y-6 after:border-[2px] after:border-[var(--color-accent-warm)]/40 after:shadow-[0_0_30px_var(--color-accent-warm)] after:-z-20",
+        "before:content-[''] before:absolute before:w-[55%] before:h-[55%] before:top-1/2 before:left-1/2 " +
+        "before:-translate-x-1/2 before:-translate-y-1/2 before:translate-x-1 before:translate-y-1 " +
+        "before:border-2 before:border-[var(--color-accent-warm)] before:rounded-lg " +
+        "before:shadow-[0_0_12px_var(--color-accent-warm)] before:-z-10 " +
+        "after:content-[''] after:absolute after:w-[45%] after:h-[45%] after:top-1/2 after:left-1/2 " +
+        "after:-translate-x-1/2 after:-translate-y-1/2 after:translate-x-2 after:translate-y-2 " +
+        "after:border-2 after:border-[var(--color-text-secondary)]/40 after:rounded-lg " +
+        "after:shadow-[0_0_14px_var(--color-text-secondary)]/30 after:-z-10",
 
     "minimal-frame":
         "relative " +
-        "before:content-[''] before:absolute before:w-[88%] before:h-[88%] before:-bottom-3 before:-right-3  before:-z-10 " +
-        "after:content-[''] after:absolute after:w-[78%] after:h-[78%] after:-bottom-6 after:-right-6  after:-z-20",
+        "before:content-[''] before:absolute before:w-[50%] before:h-[50%] before:top-1/2 before:left-1/2 " +
+        "before:-translate-x-1/2 before:-translate-y-1/2 before:border before:border-[var(--color-accent-warm)]/40 " +
+        "before:-z-10 " +
+        "after:content-[''] after:absolute after:w-[42%] after:h-[42%] after:top-1/2 after:left-1/2 " +
+        "after:-translate-x-1/2 after:-translate-y-1/2 after:border after:border-[var(--color-text-secondary)]/20 " +
+        "after:-z-10",
 
     "diagonal-cut":
         "relative " +
-        "before:content-[''] before:absolute before:w-[85%] before:h-[85%] before:-top-4 before:-right-4  before:border-[2px] before:border-[var(--color-accent-warm)] before:-z-10 " +
-        "after:content-[''] after:absolute after:w-[85%] after:h-[85%] after:-bottom-4 after:-left-4  after:border-[2px] after:border-[var(--color-accent-warm)]/60 after:-z-20",
+        "before:content-[''] before:absolute before:w-[54%] before:h-[54%] before:top-1 before:right-1 " +
+        "before:border-2 before:border-[var(--color-accent-warm)] before:rounded-tr-3xl before:-z-10 " +
+        "after:content-[''] after:absolute after:w-[44%] after:h-[44%] after:bottom-1 after:left-1 " +
+        "after:border-2 after:border-[var(--color-text-secondary)]/60 after:rounded-bl-3xl after:-z-10",
 };
 
 export default function ImageBorder({

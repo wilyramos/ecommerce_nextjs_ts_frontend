@@ -3,7 +3,7 @@
 import { z } from "zod";
 
 // ─────────────────────────────────────────────────────────────
-// ENUMS — sincronizados con sliderbanner.model.ts
+// ENUMS — sincronizados con sliderbanner.model.ts y ImageBorder.tsx
 // ─────────────────────────────────────────────────────────────
 
 export const SliderLayoutEnum = z.enum([
@@ -15,9 +15,25 @@ export const SliderLayoutEnum = z.enum([
 export const SliderThemeEnum = z.enum(["dark", "light", "custom"]);
 export const SliderContentTypeEnum = z.enum(["product", "brand", "category", "campaign", "custom"]);
 export const SliderObjectFitEnum = z.enum(["contain", "cover", "fill"]);
+
+// SINCRONIZADO: Incluye todos los border styles disponibles en ImageBorder.tsx
 export const SliderBorderStyleEnum = z.enum([
-    "none", "simple", "double", "rounded-top", "rounded-all",
-    "dashed", "dotted", "double-corner", "thick-solid",
+    "none",
+    "curved-frame",
+    "simple",
+    "double",
+    "rounded-top",
+    "rounded-all",
+    "dashed",
+    "dotted",
+    "double-corner",
+    "floating",
+    "film-frame",
+    "asymmetric",
+    "glass-effect",
+    "neon-glow",
+    "minimal-frame",
+    "diagonal-cut",
 ]);
 
 // ─────────────────────────────────────────────────────────────

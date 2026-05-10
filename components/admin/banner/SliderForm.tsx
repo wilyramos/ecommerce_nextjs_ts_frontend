@@ -25,12 +25,12 @@ export default function SliderForm({
 }: SliderFormProps) {
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-4">
             {generalError && (
                 <Alert variant="error" mode="banner">{generalError}</Alert>
             )}
 
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 p-6">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 p-2">
                 {/* COLUMNA PRINCIPAL */}
                 <div className="lg:col-span-3 space-y-6">
                     <GeneralSection initialData={initialData} fields={fields} fieldErrors={fieldErrors} />

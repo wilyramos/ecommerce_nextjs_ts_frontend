@@ -41,7 +41,7 @@ export default function CreateSliderBannerForm() {
                 fields={state.success ? undefined : state.fields}
                 fieldErrors={state.success ? undefined : state.fieldErrors}
             />
-            <div className="flex justify-end px-6 py-4 bg-gray-50 border-t sticky bottom-0 z-10">
+            <div className="flex justify-end py-4 bg-gray-50 border-t sticky bottom-0 z-10">
                 <button
                     type="submit"
                     disabled={isPending}
