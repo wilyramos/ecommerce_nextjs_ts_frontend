@@ -13,13 +13,6 @@ interface Props {
     priority?: boolean;
 }
 
-/**
- * Border styles: decoraciones visuales posicionadas detrás de la imagen
- * Utilizan pseudo-elementos before/after para crear efectos de marco
- * - before: elemento decorativo principal (más visible)
- * - after: elemento decorativo secundario (más sutil)
- * Todos posicionados con z-index negativo (-z-10) para estar detrás de la imagen (z-10)
- */
 const borderClasses: Record<string, string> = {
     none: "",
 
@@ -49,9 +42,9 @@ const borderClasses: Record<string, string> = {
     "rounded-top":
         "relative " +
         "before:content-[''] before:absolute before:w-[58%] before:h-[48%] before:top-1 before:right-1 " +
-        "before:border-2 before:border-[var(--color-accent-warm)] before:rounded-t-md before:-z-10 " +
+        "before:border-2 before:border-[var(--color-accent-warm)] before:rounded-t-xs before:-z-10 " +
         "after:content-[''] after:absolute after:w-[48%] after:h-[38%] after:top-3 after:right-3 " +
-        "after:border-2 after:border-[var(--color-text-secondary)]/50 after:rounded-t-md after:-z-10",
+        "after:border-2 after:border-[var(--color-text-secondary)]/50 after:rounded-t-xs after:-z-10",
 
     "rounded-all":
         "relative " +
