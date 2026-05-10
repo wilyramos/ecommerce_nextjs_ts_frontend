@@ -27,10 +27,10 @@ const borderClasses: Record<string, string> = {
         "relative " +
         "before:content-[''] before:absolute before:w-[58%] before:h-[58%] before:top-1/2 before:left-1/2 " +
         "before:-translate-x-1/2 before:-translate-y-[40%] before:border-2 before:border-[var(--color-accent-warm)] " +
-        "before:rounded-lg before:-z-10 " +
+        "before:rounded-xs before:-z-10 " +
         "after:content-[''] after:absolute after:w-[48%] after:h-[48%] after:top-1/2 after:left-1/2 " +
         "after:-translate-x-1/2 after:translate-y-[20%] after:border-2 after:border-[var(--color-text-secondary)]/50 " +
-        "after:rounded-lg after:-z-10",
+        "after:rounded-xs after:-z-10",
 
     simple:
         "relative " +
@@ -49,9 +49,9 @@ const borderClasses: Record<string, string> = {
     "rounded-top":
         "relative " +
         "before:content-[''] before:absolute before:w-[58%] before:h-[48%] before:top-1 before:right-1 " +
-        "before:border-2 before:border-[var(--color-accent-warm)] before:rounded-t-3xl before:-z-10 " +
+        "before:border-2 before:border-[var(--color-accent-warm)] before:rounded-t-md before:-z-10 " +
         "after:content-[''] after:absolute after:w-[48%] after:h-[38%] after:top-3 after:right-3 " +
-        "after:border-2 after:border-[var(--color-text-secondary)]/50 after:rounded-t-3xl after:-z-10",
+        "after:border-2 after:border-[var(--color-text-secondary)]/50 after:rounded-t-md after:-z-10",
 
     "rounded-all":
         "relative " +
@@ -87,19 +87,19 @@ const borderClasses: Record<string, string> = {
         "relative " +
         "before:content-[''] before:absolute before:w-[56%] before:h-[56%] before:top-1/2 before:left-1/2 " +
         "before:-translate-x-1/2 before:-translate-y-1/2 before:translate-y-1 before:translate-x-1 " +
-        "before:bg-[var(--color-accent-warm)]/20 before:rounded-lg before:blur-md before:-z-10 " +
+        "before:bg-[var(--color-accent-warm)]/20 before:rounded-xs before:blur-md before:-z-10 " +
         "after:content-[''] after:absolute after:w-[46%] after:h-[46%] after:top-1/2 after:left-1/2 " +
         "after:-translate-x-1/2 after:-translate-y-1/2 after:translate-y-2 after:translate-x-2 " +
-        "after:bg-[var(--color-text-secondary)]/15 after:rounded-lg after:blur-lg after:-z-10",
+        "after:bg-[var(--color-text-secondary)]/15 after:rounded-xs after:blur-lg after:-z-10",
 
     "film-frame":
         "relative " +
         "before:content-[''] before:absolute before:w-[58%] before:h-[58%] before:top-1/2 before:left-1/2 " +
         "before:-translate-x-1/2 before:-translate-y-1/2 before:translate-x-1 before:translate-y-1 " +
-        "before:bg-[var(--color-accent-warm)]/85 before:rounded-md before:-z-10 " +
+        "before:bg-[var(--color-accent-warm)]/85 before:rounded-xs before:-z-10 " +
         "after:content-[''] after:absolute after:w-[48%] after:h-[48%] after:top-1/2 after:left-1/2 " +
         "after:-translate-x-1/2 after:-translate-y-1/2 after:translate-x-2 after:translate-y-2 " +
-        "after:bg-[var(--color-text-secondary)]/25 after:rounded-md after:-z-10",
+        "after:bg-[var(--color-text-secondary)]/25 after:rounded-xs after:-z-10",
 
     asymmetric:
         "relative " +
@@ -112,20 +112,20 @@ const borderClasses: Record<string, string> = {
         "relative " +
         "before:content-[''] before:absolute before:w-[56%] before:h-[56%] before:top-1/2 before:left-1/2 " +
         "before:-translate-x-1/2 before:-translate-y-[40%] before:border-2 before:border-[var(--color-accent-warm)]/80 " +
-        "before:rounded-xl before:backdrop-blur-sm before:-z-10 " +
+        "before:rounded-xs before:backdrop-blur-sm before:-z-10 " +
         "after:content-[''] after:absolute after:w-[46%] after:h-[46%] after:top-1/2 before:left-1/2 " +
         "after:-translate-x-1/2 after:translate-y-[20%] after:border-2 after:border-[var(--color-text-secondary)]/40 " +
-        "after:rounded-xl after:-z-10",
+        "after:rounded-xs after:-z-10",
 
     "neon-glow":
         "relative " +
         "before:content-[''] before:absolute before:w-[55%] before:h-[55%] before:top-1/2 before:left-1/2 " +
         "before:-translate-x-1/2 before:-translate-y-1/2 before:translate-x-1 before:translate-y-1 " +
-        "before:border-2 before:border-[var(--color-accent-warm)] before:rounded-lg " +
+        "before:border-2 before:border-[var(--color-accent-warm)] before:rounded-xs " +
         "before:shadow-[0_0_12px_var(--color-accent-warm)] before:-z-10 " +
         "after:content-[''] after:absolute after:w-[45%] after:h-[45%] after:top-1/2 after:left-1/2 " +
         "after:-translate-x-1/2 after:-translate-y-1/2 after:translate-x-2 after:translate-y-2 " +
-        "after:border-2 after:border-[var(--color-text-secondary)]/40 after:rounded-lg " +
+        "after:border-2 after:border-[var(--color-text-secondary)]/40 after:rounded-xs " +
         "after:shadow-[0_0_14px_var(--color-text-secondary)]/30 after:-z-10",
 
     "minimal-frame":
@@ -140,9 +140,9 @@ const borderClasses: Record<string, string> = {
     "diagonal-cut":
         "relative " +
         "before:content-[''] before:absolute before:w-[54%] before:h-[54%] before:top-1 before:right-1 " +
-        "before:border-2 before:border-[var(--color-accent-warm)] before:rounded-tr-3xl before:-z-10 " +
+        "before:border-2 before:border-[var(--color-accent-warm)] before:rounded-tr-xs before:-z-10 " +
         "after:content-[''] after:absolute after:w-[44%] after:h-[44%] after:bottom-1 after:left-1 " +
-        "after:border-2 after:border-[var(--color-text-secondary)]/60 after:rounded-bl-3xl after:-z-10",
+        "after:border-2 after:border-[var(--color-text-secondary)]/60 after:rounded-bl-xs after:-z-10",
 };
 
 export default function ImageBorder({
