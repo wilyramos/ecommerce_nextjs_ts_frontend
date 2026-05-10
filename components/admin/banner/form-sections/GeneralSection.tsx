@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Info, ImageIcon, Link as LinkIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -5,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SliderContentTypeEnum, SliderObjectFitEnum, SliderBorderStyleEnum, type SliderBanner } from "@/src/schemas/slider.schema";
 import ProductReferenceSelector from "../../shared/ProductReferenceSelector";
+import MediaLibraryDialog from "@/components/admin/products/MediaLibraryDialog";
 
 interface SectionProps {
     initialData?: SliderBanner;
@@ -13,6 +17,13 @@ interface SectionProps {
 }
 
 export default function GeneralSection({ initialData, fields, fieldErrors }: SectionProps) {
+    const [availableImages, setAvailableImages] = useState<string[]>(
+        initialData?.media.imageUrl ? [initialData.media.imageUrl] : []
+    );
+    const [selectedImageUrl, setSelectedImageUrl] = useState<string>(
+        fields?.["media.imageUrl"] || initialData?.media.imageUrl || ""
+    );
+
     const val = (name: string, fallback?: string) => fields?.[name] ?? fallback ?? "";
     const err = (name: string) => fieldErrors?.[name]?.[0];
 
@@ -22,6 +33,24 @@ export default function GeneralSection({ initialData, fields, fieldErrors }: Sec
     };
 
     const currentReferenceId = fields?.referenceId || getRefId(initialData?.product) || getRefId(initialData?.brand) || getRefId(initialData?.category);
+
+    const handleUploadSuccess = (newImages: string[]) => {
+        setAvailableImages(prev => [...prev, ...newImages]);
+    };
+
+    const handleConfirmSelection = (selectedImages: string[]) => {
+        if (selectedImages.length > 0) {
+            const selectedUrl = selectedImages[0];
+            setSelectedImageUrl(selectedUrl);
+
+            // Actualizar el input hidden del formulario
+            const imageInput = document.querySelector('input[name="media.imageUrl"]') as HTMLInputElement;
+            if (imageInput) {
+                imageInput.value = selectedUrl;
+                imageInput.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        }
+    };
 
     return (
         <div className="space-y-6">
@@ -97,23 +126,52 @@ export default function GeneralSection({ initialData, fields, fieldErrors }: Sec
 
             {/* MULTIMEDIA */}
             <section className="p-6 border rounded-lg space-y-4 ">
-                <div className="flex items-center gap-2">
-                    <ImageIcon className="w-4 h-4 " />
+                <div className="flex items-center gap-2 mb-4">
+                    <ImageIcon className="w-4 h-4" />
                     <h2 className="text-[11px] font-bold uppercase tracking-wider">Multimedia</h2>
                 </div>
 
+                {/* Input oculto para el formulario */}
+                <input
+                    type="hidden"
+                    name="media.imageUrl"
+                    value={selectedImageUrl}
+                />
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
+                    <div className="space-y-2 col-span-2 border rounded-md p-4">
                         <Label>URL Imagen (Obligatorio)</Label>
-                        <Input name="media.imageUrl" defaultValue={val("media.imageUrl", initialData?.media.imageUrl)} className={err("media.imageUrl") ? "border-red-500" : ""} />
+                        <div className="flex gap-2 items-end">
+                            <div className="flex-1 space-y-1">
+                                <div className="bg-muted/50 p-2 rounded-md min-h-[40px] flex items-center text-sm break-words">
+                                    {selectedImageUrl ? (
+                                        <span className="text-foreground">{selectedImageUrl}</span>
+                                    ) : (
+                                        <span className="text-muted-foreground">Sin imagen seleccionada</span>
+                                    )}
+                                </div>
+                                {err("media.imageUrl") && <p className="text-red-500 text-xs">{err("media.imageUrl")}</p>}
+                            </div>
+                            <MediaLibraryDialog
+                                selectedImages={selectedImageUrl ? [selectedImageUrl] : []}
+                                globalImagesPool={availableImages}
+                                onConfirmSelection={handleConfirmSelection}
+                                onUploadSuccess={handleUploadSuccess}
+                                allowMultiple={false}
+                                triggerLabel="Seleccionar"
+                                triggerVariant="outline"
+                                size="sm"
+                            />
+                        </div>
                     </div>
+
                     <div className="space-y-2">
                         <Label>Texto Alternativo (Alt)</Label>
                         <Input name="media.altText" defaultValue={val("media.altText", initialData?.media.altText)} className={err("media.altText") ? "border-red-500" : ""} />
                     </div>
                 </div>
 
-                {/* NUEVOS: Campos de Video */}
+                {/* Campos de Video */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                         <Label>URL Video (Opcional)</Label>

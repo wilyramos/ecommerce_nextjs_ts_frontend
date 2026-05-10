@@ -155,7 +155,7 @@ export default function BannerRow({
 
             {/* Acciones */}
             <TableCell className="text-right">
-                <div className="flex items-center justify-end gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="flex items-center justify-end gap-0.5 ">
                     <ActionIcon href={`/admin/slider/${banner._id}/preview`} label="Preview">
                         <Eye className="h-3.5 w-3.5" />
                     </ActionIcon>
