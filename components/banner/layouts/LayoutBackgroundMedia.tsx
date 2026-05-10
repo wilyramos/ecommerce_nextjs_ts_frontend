@@ -19,8 +19,8 @@ export default function LayoutBackgroundMedia({ banner }: { banner: SliderBanner
     const isDark = design.theme !== "light";
     const bg     = design.bgColor         ?? "#000000";
     const text   = design.textColor       ?? "#f5f5f7";
-    const muted  = design.textMutedColor  ?? (isDark ? "#aaaaaa" : "#d0d0d5");
-    const accent = design.accentColor     ?? (isDark ? "#2997ff" : "#0071e3");
+    const muted = design.textMutedColor ?? (isDark ? "#f5f5f7" : "#5A5A5A");
+    const accent = design.accentColor ?? (isDark ? "#F97316" : "#F97316");
 
     const fadeUp = (delay: number, extra?: React.CSSProperties): React.CSSProperties => ({
         opacity: loaded ? 1 : 0,
@@ -133,10 +133,15 @@ export default function LayoutBackgroundMedia({ banner }: { banner: SliderBanner
                 )}
 
                 {price?.current !== undefined && (
-                    <div className="mt-3 md:mt-4" style={fadeUp(0.35)}>
-                        <SliderPrice price={price} />
-                    </div>
-                )}
+    <div className="mt-3 md:mt-4" style={fadeUp(0.35)}>
+        <SliderPrice 
+            price={price} 
+            color={text} 
+            accentColor={accent} 
+            isDark={isDark} 
+        />
+    </div>
+)}
             </div>
         </Link>
     );

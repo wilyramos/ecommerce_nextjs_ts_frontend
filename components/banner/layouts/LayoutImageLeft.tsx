@@ -18,8 +18,9 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
     const isDark = design.theme !== "light";
     const bg = design.bgColor ?? (isDark ? "#0a0a0a" : "#f5f5f7");
     const text = design.textColor ?? (isDark ? "#f5f5f7" : "#1d1d1f");
-    const muted = design.textMutedColor ?? (isDark ? "#888888" : "#6e6e73");
-    const accent = design.accentColor ?? (isDark ? "#2997ff" : "#0071e3");
+
+    const muted = design.textMutedColor ?? (isDark ? "#f5f5f7" : "#5A5A5A");
+    const accent = design.accentColor ?? (isDark ? "#F97316" : "#F97316");
 
     const fadeUp = (delay: number) => ({
         opacity: loaded ? 1 : 0,
@@ -31,16 +32,12 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
         <Link
             href={destUrl}
             aria-label={title ?? "Ver oferta"}
-            // banner-slot provee la altura desde el carrusel.
-            // El grid interno usa h-full para que la imagen llene esa altura.
             className="banner-slot group relative block w-full overflow-hidden"
             style={{ backgroundColor: bg }}
         >
-            {/* Grid ocupa todo el alto del banner-slot */}
             <div className="flex flex-col md:grid md:grid-cols-[58fr_42fr] md:items-stretch h-full">
 
                 {/* ── Columna imagen ── */}
-                {/* Mobile: altura fija proporcional. Desktop: h-full hereda del grid */}
                 <div className="relative w-full h-[55%] md:h-full overflow-hidden">
                     <div className="absolute inset-0 w-full h-full z-0">
                         <ImageBorder
@@ -50,21 +47,18 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
                             objectFit={media.objectFit ?? "cover"}
                             borderStyle={media.border ?? "none"}
                             sizes="(max-width: 768px) 100vw, 58vw"
-                            className={`
-                                transition-transform duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)]
-                                group-hover:scale-[1.04]
-                            `}
+                            className="transition-transform duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
                             priority
                         />
                     </div>
 
-                    {/* Fade derecho — funde con panel de texto (solo desktop) */}
+                    {/* Fade derecho (Desktop) */}
                     <div
-                        className="absolute inset-y-0 right-0 w-28 hidden md:block pointer-events-none z-10"
+                        className="absolute inset-y-0 right-0 w-32 hidden md:block pointer-events-none z-10"
                         style={{ background: `linear-gradient(to right, transparent, ${bg})` }}
                     />
 
-                    {/* Velo inferior — solo mobile */}
+                    {/* Velo inferior (Mobile) */}
                     <div
                         className="absolute inset-x-0 bottom-0 h-2/5 md:hidden pointer-events-none z-10"
                         style={{ background: `linear-gradient(to top, ${bg}, transparent)` }}
@@ -74,24 +68,28 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
                 {/* ── Columna texto ── */}
                 <div
                     className="
-                        relative z-10
-                        flex flex-col justify-center
-                        -mt-8 px-6 pb-9
-                        sm:-mt-10 sm:px-9 sm:pb-11
-                        md:mt-0 md:px-10 md:py-14
-                        lg:px-14 lg:py-16
-                        xl:px-16
-                    "
+                        relative z-10
+                        flex flex-col justify-center
+                        -mt-8 px-6 pb-9
+                        sm:-mt-10 sm:px-9 sm:pb-11
+                        md:mt-0 md:px-10 md:py-14
+                        lg:px-14 lg:py-16
+                        xl:px-20
+                    "
                     style={{ color: text }}
                 >
                     {subtitle && (
-                        <div className="mb-3 md:mb-4" style={fadeUp(0.06)}>
+                        <div className="mb-4 md:mb-6" style={fadeUp(0.06)}>
                             <span
-                                className="inline-block text-[10px] font-bold tracking-[0.3em] uppercase px-3 py-[5px] rounded-full"
+                                className="
+                                    inline-block 
+                                    text-xs font-black uppercase 
+                                    px-3 py-1.5 
+                                "
                                 style={{
-                                    color: accent,
-                                    background: `${accent}18`,
-                                    border: `1px solid ${accent}30`,
+                                    color: isDark ? "#000" : "#fff",
+                                    background: accent,
+                                    boxShadow: `4px 4px 0px ${accent}44`
                                 }}
                             >
                                 {subtitle}
@@ -102,29 +100,32 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
                     {title && (
                         <h2
                             className="
-                                font-semibold leading-[1.06] tracking-[-0.03em]
-                                text-[clamp(1.65rem,4.2vw,3.4rem)]
-                                mb-3 md:mb-4
-                                max-w-[15ch]
-                            "
+                                font-bold leading-[1.1] tracking-[-0.03em]
+                                text-[clamp(1.8rem,4.5vw,3.5rem)]
+                                mb-4 md:mb-5
+                                max-w-[15ch]
+                            "
                             style={fadeUp(0.13)}
                         >
                             {title}
                         </h2>
                     )}
 
+                    {/* Línea decorativa minimalista */}
                     <div
-                        className="mb-3 md:mb-5 h-px w-10 rounded-full"
+                        className="mb-5 md:mb-7 h-[2px] w-12"
                         style={{
                             background: accent,
-                            opacity: loaded ? 0.75 : 0,
-                            transition: "opacity 0.5s ease 0.22s",
+                            opacity: loaded ? 1 : 0,
+                            transform: loaded ? "scaleX(1)" : "scaleX(0)",
+                            transformOrigin: "left",
+                            transition: "opacity 0.5s ease 0.22s, transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.22s",
                         }}
                     />
 
                     {description && (
                         <p
-                            className="text-[12px] sm:text-[13px] leading-[1.75] max-w-[36ch] line-clamp-3 mb-4 md:mb-6"
+                            className="text-[13px] sm:text-[14px] leading-[1.8] max-w-[38ch] line-clamp-3 mb-6 md:mb-8 font-medium"
                             style={{ color: muted, ...fadeUp(0.28) }}
                         >
                             {description}
@@ -132,8 +133,13 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
                     )}
 
                     {price?.current !== undefined && (
-                        <div className="mb-5 md:mb-7" style={fadeUp(0.35)}>
-                            <SliderPrice price={price} />
+                        <div className="mb-2" style={fadeUp(0.4)}>
+                            <SliderPrice
+                                price={price}
+                                color={text}
+                                accentColor={accent}
+                                isDark={isDark}
+                            />
                         </div>
                     )}
                 </div>

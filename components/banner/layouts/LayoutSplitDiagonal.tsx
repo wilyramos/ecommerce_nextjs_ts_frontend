@@ -18,8 +18,8 @@ export default function LayoutSplitDiagonal({ banner }: { banner: SliderBanner }
     const isDark = design.theme !== "light";
     const bg = design.bgColor ?? (isDark ? "#080808" : "#f5f5f7");
     const text = design.textColor ?? (isDark ? "#f5f5f7" : "#1d1d1f");
-    const muted = design.textMutedColor ?? (isDark ? "#888888" : "#6e6e73");
-    const accent = design.accentColor ?? (isDark ? "#2997ff" : "#0071e3");
+    const muted = design.textMutedColor ?? (isDark ? "#f5f5f7" : "#5A5A5A");
+    const accent = design.accentColor ?? (isDark ? "#F97316" : "#F97316");
 
     const fadeUp = (delay: number): React.CSSProperties => ({
         opacity: loaded ? 1 : 0,
@@ -51,12 +51,12 @@ export default function LayoutSplitDiagonal({ banner }: { banner: SliderBanner }
                         objectFit={media.objectFit ?? "cover"}
                         borderStyle={media.border ?? "none"}
                         sizes="(max-width: 640px) 50vw, 60vw"
-                        className="transition-transform duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
+                        className="transition-transform duration-[1800ms] ease-in-out group-hover:scale-110 group-hover:rotate-1"
                         priority
                     />
                     <div
                         className="absolute inset-0 pointer-events-none z-20"
-                        style={{ background: `linear-gradient(to right, ${bg} 0%, transparent 22%)` }}
+                        style={{ background: `linear-gradient(to right, ${bg} 0%, transparent 25%)` }}
                     />
                 </div>
 
@@ -69,70 +69,70 @@ export default function LayoutSplitDiagonal({ banner }: { banner: SliderBanner }
                         objectFit={media.objectFit ?? "cover"}
                         borderStyle={media.border ?? "none"}
                         sizes="60vw"
-                        className="transition-transform duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
+                        className="transition-transform duration-[1400ms] ease-in-out group-hover:scale-105"
                         priority
                     />
                     <div
                         className="absolute inset-0 pointer-events-none z-20"
-                        style={{ background: `linear-gradient(to right, ${bg} 0%, transparent 28%)` }}
+                        style={{ background: `linear-gradient(to right, ${bg} 0%, transparent 35%)` }}
                     />
                 </div>
             </div>
 
-            {/* ── Línea diagonal SVG ── */}
+            {/* ── Línea diagonal SVG (Animada) ── */}
             <svg
-                className="absolute inset-0 z-20 w-full h-full pointer-events-none hidden sm:block"
+                className="absolute inset-0 z-20 w-full h-full pointer-events-none"
                 preserveAspectRatio="none" viewBox="0 0 100 100"
             >
                 <line
-                    x1="45" y1="0" x2="28" y2="100"
-                    stroke={isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)"}
-                    strokeWidth="0.25" vectorEffect="non-scaling-stroke"
-                />
-            </svg>
-            <svg
-                className="absolute inset-0 z-20 w-full h-full pointer-events-none sm:hidden"
-                preserveAspectRatio="none" viewBox="0 0 100 100"
-            >
-                <line
-                    x1="60" y1="0" x2="44" y2="100"
-                    stroke={isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)"}
-                    strokeWidth="0.25" vectorEffect="non-scaling-stroke"
+                    className="transition-all duration-1000 ease-out"
+                    x1={loaded ? "45" : "100"} y1="0" 
+                    x2={loaded ? "28" : "100"} y2="100"
+                    stroke={accent}
+                    strokeWidth="0.5"
+                    strokeOpacity={isDark ? "0.4" : "0.3"}
+                    vectorEffect="non-scaling-stroke"
                 />
             </svg>
 
             {/* ── Contenido ── */}
             <div
                 className="
-                    relative z-30
-                    flex flex-col justify-center
-                    w-[55%] sm:w-[44%]
-                    pl-6 pr-4
-                    sm:pl-10 sm:pr-6
-                    md:pl-14 md:pr-8
-                    lg:pl-20
-                    gap-2.5 sm:gap-3
-                "
+                    relative z-30
+                    flex flex-col justify-center
+                    w-[58%] sm:w-[45%]
+                    pl-6 pr-4
+                    sm:pl-10 sm:pr-6
+                    md:pl-14 md:pr-8
+                    lg:pl-24
+                    gap-3 sm:gap-4
+                "
                 style={{ color: text }}
             >
                 {subtitle && (
                     <div style={fadeUp(0.08)}>
                         <span
-                            className="inline-block text-[9px] sm:text-[10px] font-bold tracking-[0.3em] uppercase px-2.5 py-[4px] rounded-full"
+                            className="
+                                inline-block 
+                                text-[10px] sm:text-[11px] 
+                                font-black tracking-[0.2em] uppercase 
+                                px-3 py-1 
+                                skew-x-[-12deg]
+                            "
                             style={{
-                                color: accent,
-                                background: `${accent}18`,
-                                border: `1px solid ${accent}30`,
+                                color: isDark ? "#fff" : text,
+                                background: `${accent}${isDark ? "bb" : "22"}`,
+                                borderRight: `4px solid ${accent}`,
                             }}
                         >
-                            {subtitle}
+                            <span className="inline-block skew-x-[12deg]">{subtitle}</span>
                         </span>
                     </div>
                 )}
 
                 {title && (
                     <h2
-                        className="font-semibold leading-[1.06] tracking-[-0.03em] text-[clamp(1.5rem,3.8vw,3.2rem)] max-w-[12ch]"
+                        className="font-black leading-[1] tracking-[-0.04em] text-[clamp(1.6rem,4.5vw,3.5rem)] max-w-[14ch] uppercase"
                         style={fadeUp(0.15)}
                     >
                         {title}
@@ -140,17 +140,19 @@ export default function LayoutSplitDiagonal({ banner }: { banner: SliderBanner }
                 )}
 
                 <div
-                    className="h-px w-9 rounded-full"
+                    className="h-[3px] w-12 rounded-full"
                     style={{
                         background: accent,
-                        opacity: loaded ? 0.7 : 0,
-                        transition: "opacity 0.5s ease 0.24s",
+                        opacity: loaded ? 1 : 0,
+                        transform: loaded ? "scaleX(1)" : "scaleX(0)",
+                        transformOrigin: "left",
+                        transition: "opacity 0.5s ease 0.3s, transform 0.6s cubic-bezier(0.16,1,0.3,1) 0.3s",
                     }}
                 />
 
                 {description && (
                     <p
-                        className="text-[11px] sm:text-[12px] leading-[1.75] max-w-[28ch] line-clamp-3"
+                        className="text-[12px] sm:text-[13px] leading-[1.6] max-w-[30ch] line-clamp-3 font-medium italic"
                         style={{ color: muted, ...fadeUp(0.28) }}
                     >
                         {description}
@@ -158,8 +160,13 @@ export default function LayoutSplitDiagonal({ banner }: { banner: SliderBanner }
                 )}
 
                 {price?.current !== undefined && (
-                    <div style={fadeUp(0.35)}>
-                        <SliderPrice price={price} />
+                    <div style={fadeUp(0.4)} className="mt-1">
+                        <SliderPrice 
+                            price={price} 
+                            color={text} 
+                            accentColor={accent} 
+                            isDark={isDark} 
+                        />
                     </div>
                 )}
             </div>

@@ -18,8 +18,8 @@ export default function LayoutImageCenterSplit({ banner }: { banner: SliderBanne
     const isDark = design.theme !== "light";
     const bg = design.bgColor ?? (isDark ? "#080808" : "#f5f5f7");
     const text = design.textColor ?? (isDark ? "#f5f5f7" : "#1d1d1f");
-    const muted = design.textMutedColor ?? (isDark ? "#86868b" : "#6e6e73");
-    const accent = design.accentColor ?? (isDark ? "#2997ff" : "#0071e3");
+    const muted = design.textMutedColor ?? (isDark ? "#f5f5f7" : "#5A5A5A");
+    const accent = design.accentColor ?? (isDark ? "#F97316" : "#F97316");
     const divider = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
 
     const leftFields = design.contentDistribution?.leftSide ?? ["subtitle", "title"];
@@ -43,8 +43,8 @@ export default function LayoutImageCenterSplit({ banner }: { banner: SliderBanne
                 return subtitle && (
                     <div key="subtitle" style={fadeSlide(animationSide, delay)} className="flex-none max-w-full">
                         <span
-                            className="inline-block text-[9px] sm:text-[10px] font-bold tracking-[0.25em] uppercase px-3 py-1.5 rounded-full line-clamp-1 truncate"
-                            style={{ color: accent, background: `${accent}15`, border: `1px solid ${accent}25` }}
+                            className="inline-block -rotate-4 text-xs sm:text-sm font-black uppercase px-2 py-1 rounded-4xl truncate "
+                            style={{ color: text, background: `${accent}` }}
                         >
                             {subtitle}
                         </span>
@@ -65,7 +65,7 @@ export default function LayoutImageCenterSplit({ banner }: { banner: SliderBanne
                 return description && (
                     <div key="description" style={fadeSlide(animationSide, delay)} className="flex-none max-w-full min-h-0">
                         <p
-                            className="text-[11px] sm:text-[13px] leading-relaxed line-clamp-3 sm:line-clamp-4 max-w-[28ch] mx-auto"
+                            className="text-[11px] sm:text-[13px] leading-relaxed line-clamp-3 sm:line-clamp-4 max-w-[28ch] mx-auto border-r-2 pr-2"
                             style={{ color: muted }}
                         >
                             {description}
@@ -75,7 +75,7 @@ export default function LayoutImageCenterSplit({ banner }: { banner: SliderBanne
             case "price":
                 return price?.current !== undefined && (
                     <div key="price" style={fadeSlide(animationSide, delay)} className="flex-none scale-[0.9] sm:scale-100">
-                        <SliderPrice price={price} />
+                        <SliderPrice price={price} color={text} accentColor={accent} isDark={isDark} />
                     </div>
                 );
             default:
@@ -116,9 +116,9 @@ export default function LayoutImageCenterSplit({ banner }: { banner: SliderBanne
                             priority
                         />
                     </div>
-                   
 
-                    
+
+
                 </div>
 
                 {/* Panel derecho */}

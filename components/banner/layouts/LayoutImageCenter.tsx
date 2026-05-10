@@ -18,8 +18,8 @@ export default function LayoutImageCenter({ banner }: { banner: SliderBanner }) 
     const isDark = design.theme !== "light";
     const bg = design.bgColor ?? (isDark ? "#080808" : "#f5f5f7");
     const text = design.textColor ?? (isDark ? "#f5f5f7" : "#1d1d1f");
-    const muted = design.textMutedColor ?? (isDark ? "#999" : "#6e6e73");
-    const accent = design.accentColor ?? (isDark ? "#2997ff" : "#0071e3");
+    const muted = design.textMutedColor ?? (isDark ? "#f5f5f7" : "#5A5A5A");
+    const accent = design.accentColor ?? (isDark ? "#F97316" : "#F97316");
 
     const fadeUp = (delay: number, extra?: React.CSSProperties): React.CSSProperties => ({
         opacity: loaded ? 1 : 0,
@@ -34,7 +34,6 @@ export default function LayoutImageCenter({ banner }: { banner: SliderBanner }) 
         <Link
             href={destUrl}
             aria-label={title ?? "Ver oferta"}
-            // banner-slot provee la altura desde el carrusel
             className="banner-slot group relative flex w-full overflow-hidden"
             style={{ backgroundColor: bg }}
         >
@@ -52,45 +51,49 @@ export default function LayoutImageCenter({ banner }: { banner: SliderBanner }) 
                 />
             </div>
 
-
-            {/* Rampa inferior */}
+            {/* Rampa inferior de contraste mejorada */}
             <div
                 className="absolute inset-x-0 bottom-0 pointer-events-none z-10"
                 style={{
-                    height: "65%",
-                    background: isDark
-                        ? `linear-gradient(to top, ${bg}f2 0%, ${bg}bb 35%, transparent 100%)`
-                        : `linear-gradient(to top, ${bg}f0 0%, ${bg}aa 35%, transparent 100%)`,
+                    height: "75%",
+                    background: `linear-gradient(to top, 
+                        ${bg} 0%, 
+                        ${bg}cc 40%, 
+                        ${bg}44 70%, 
+                        transparent 100%)`,
                 }}
             />
 
-            {/* ── Contenido ── */}
+            {/* ── Contenido Centrado ── */}
             <div className="
-                relative z-20 w-full
-                flex flex-col items-center justify-end text-center
-                px-6 pb-10
-                sm:px-10 sm:pb-12
-                md:justify-center md:pb-0
-                md:px-12
-            ">
+                relative z-20 w-full
+                flex flex-col items-center justify-end text-center
+                px-6 pb-12
+                sm:px-10 sm:pb-16
+                md:justify-center md:pb-0
+            ">
                 <div
                     className="
-                        flex flex-col items-center
-                        w-full
-                        max-w-[20rem] sm:max-w-[34rem] md:max-w-2xl lg:max-w-3xl
-                        md:translate-y-[10%]
-                    "
+                        flex flex-col items-center
+                        w-full
+                        max-w-[22rem] sm:max-w-[36rem] md:max-w-2xl lg:max-w-3xl
+                        md:translate-y-[15%]
+                    "
                     style={{ color: text }}
                 >
                     {subtitle && (
-                        <div className="mb-3 md:mb-4" style={fadeUp(0.08)}>
+                        <div className="mb-2" style={fadeUp(0.1)}>
                             <span
-                                className="inline-block text-[10px] font-bold tracking-[0.32em] uppercase px-3 py-[5px] rounded-full"
+                                className="
+                                    inline-block 
+                                    text-[10px] sm:text-[12px] 
+                                    font-black uppercase 
+                                    px-2 py-1
+                
+                                "
                                 style={{
-                                    color: accent,
-                                    background: `${accent}20`,
-                                    border: `1px solid ${accent}35`,
-                                    backdropFilter: "blur(8px)",
+                                    color: isDark ? "#fff" : text,
+                                    background: `${accent}`,
                                 }}
                             >
                                 {subtitle}
@@ -100,13 +103,12 @@ export default function LayoutImageCenter({ banner }: { banner: SliderBanner }) 
 
                     {title && (
                         <h2
-                            className="font-semibold leading-[1.03] tracking-[-0.04em] text-[clamp(2.1rem,6.8vw,5rem)] mb-0"
-                            style={fadeUp(0.15, {
+                            className="font-black leading-[1] tracking-[-0.05em] text-[clamp(2.3rem,8vw,5.5rem)] mb-0"
+                            style={fadeUp(0.2, {
                                 transform: loaded
                                     ? "translateY(0px) scale(1)"
-                                    : "translateY(18px) scale(0.96)",
-                                transition: `opacity 0.8s ease 0.15s,
-                                             transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.15s`,
+                                    : "translateY(25px) scale(0.94)",
+                                transition: `opacity 0.9s ease 0.2s, transform 0.9s cubic-bezier(0.16,1,0.3,1) 0.2s`,
                             })}
                         >
                             {title}
@@ -115,24 +117,48 @@ export default function LayoutImageCenter({ banner }: { banner: SliderBanner }) 
 
                     {description && (
                         <p
-                            className="mt-3 md:mt-4 text-[12px] sm:text-[13px] md:text-[14px] leading-[1.75] max-w-[34ch] line-clamp-2"
-                            style={{ color: muted, ...fadeUp(0.28) }}
+                            className="
+                                mt-2 md:mt-4 
+                                text-[13px] sm:text-[15px] md:text-[17px] 
+                                leading-relaxed max-w-[38ch] 
+                                line-clamp-2 font-medium
+                            "
+                            style={{
+                                color: muted,
+                                ...fadeUp(0.35),
+                                textShadow: isDark ? '0 2px 10px rgba(0,0,0,0.3)' : 'none'
+                            }}
                         >
                             {description}
                         </p>
                     )}
 
                     {price?.current !== undefined && (
-                        <div className="mt-3 md:mt-4" style={fadeUp(0.36)}>
-                            <SliderPrice price={price} />
+                        <div className="mt-2 md:mt-4" style={fadeUp(0.45)}>
+                            <SliderPrice
+                                price={price}
+                                color={text}
+                                accentColor={accent}
+                                isDark={isDark}
+                            />
                         </div>
                     )}
 
-                    <div className="mt-5 md:mt-6 flex flex-col items-center gap-3" style={fadeUp(0.44)}>
+                    {/* Elemento decorativo inferior */}
+                    <div className="mt-8 md:mt-10" style={fadeUp(0.55)}>
                         <div
-                            className="w-8 h-px rounded-full"
-                            style={{ background: `${accent}80` }}
-                        />
+                            className="w-12 h-1 rounded-full overflow-hidden"
+                            style={{ background: `${accent}30` }}
+                        >
+                            <div
+                                className="h-full w-full"
+                                style={{
+                                    background: accent,
+                                    transform: loaded ? 'translateX(0)' : 'translateX(-100%)',
+                                    transition: 'transform 1s ease 0.8s'
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

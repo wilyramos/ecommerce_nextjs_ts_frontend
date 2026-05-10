@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import ImageBorder from "../ui/ImageBorder";
 import SliderPrice from "../ui/SliderPrice";
 import type { SliderBanner } from "@/src/schemas/slider.schema";
@@ -11,15 +12,29 @@ type Props = {
 
 export default function LayoutMinimal({ banner }: Props) {
     const { design, media, title, subtitle, description, price, destUrl } = banner;
+    const [loaded, setLoaded] = useState(false);
+
+    useEffect(() => {
+        const t = setTimeout(() => setLoaded(true), 80);
+        return () => clearTimeout(t);
+    }, []);
 
     const isDark = design.theme !== "light";
 
     const colors = {
         bg: design.bgColor ?? (isDark ? "#0a0a0f" : "#f8f8fc"),
         text: design.textColor ?? (isDark ? "#f0f0f5" : "#0d0d14"),
-        muted: design.textMutedColor ?? (isDark ? "#7a7a8a" : "#6b6b80"),
-        accent: "var(--color-accent-warm)",
+        muted: design.textMutedColor ?? (isDark ? "#f5f5f7" : "#5A5A5A"),
+        accent: design.accentColor ?? (isDark ? "#F97316" : "#F97316"),
     };
+
+    
+
+    const fadeUp = (delay: number): React.CSSProperties => ({
+        opacity: loaded ? 1 : 0,
+        transform: loaded ? "translateY(0px)" : "translateY(12px)",
+        transition: `opacity 0.6s ease ${delay}s, transform 0.6s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
+    });
 
     const discountPct =
         price?.compare && price?.current
@@ -30,29 +45,31 @@ export default function LayoutMinimal({ banner }: Props) {
         <Link
             href={destUrl}
             aria-label={title ?? "Ver oferta"}
-            // banner-slot reemplaza las alturas fijas anteriores
             className="banner-slot group relative overflow-hidden flex flex-col lg:flex-row items-center w-full"
             style={{ backgroundColor: colors.bg }}
         >
-            
+            {/* ── Columna Imagen (Orden 2 en LG para que aparezca a la derecha) ── */}
             <div
                 className="
-                    relative z-10
-                    order-1 lg:order-2
-                    w-full lg:w-[52%]
-                    h-[55%] lg:h-full
-                    flex items-center justify-center
-                    overflow-hidden
-                "
+                    relative z-10
+                    order-1 lg:order-2
+                    w-full lg:w-[52%]
+                    h-[50%] lg:h-full
+                    flex items-center justify-center
+                    overflow-hidden
+                "
             >
                 <div
                     className="
-                        relative
-                        w-[75%] sm:w-[65%] lg:w-[80%]
-                        h-[90%]
-                        transition-transform duration-700 ease-out
-                        group-hover:scale-[1.03]
-                    "
+                        relative
+                        w-[70%] sm:w-[60%] lg:w-[85%]
+                        h-[85%]
+                        transition-all duration-1000 ease-out
+                    "
+                    style={{
+                        opacity: loaded ? 1 : 0,
+                        transform: loaded ? "scale(1) rotate(0deg)" : "scale(0.9) rotate(-2deg)",
+                    }}
                 >
                     <ImageBorder
                         src={media.imageUrl}
@@ -62,43 +79,54 @@ export default function LayoutMinimal({ banner }: Props) {
                         borderStyle={media.border ?? "none"}
                         priority
                         sizes="(max-width: 1024px) 75vw, 45vw"
-                        className="select-none drop-shadow-2xl"
+                        className="select-none drop-shadow-xl group-hover:drop-shadow-2xl transition-all duration-500"
                     />
                 </div>
             </div>
 
+            {/* ── Columna Texto ── */}
             <div
                 className="
-                    relative z-10
-                    order-2 lg:order-1
-                    flex flex-col items-center justify-center
-                    w-full lg:w-[48%]
-                    px-6 sm:px-10 lg:px-12 xl:px-16
-                    pb-8 lg:pb-0
-                    gap-4 lg:gap-5
-                    text-center lg:text-left
-                "
+                    relative z-10
+                    order-2 lg:order-1
+                    flex flex-col items-center justify-center
+                    w-full lg:w-[48%]
+                    px-8 sm:px-12 lg:px-16 xl:px-24
+                    pb-10 lg:pb-0
+                    text-center lg:text-left
+                "
+                style={{ color: colors.text }}
             >
-                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2">
+                {/* Badges Minimalistas */}
+                <div
+                    className="flex flex-wrap items-center justify-center lg:justify-start gap-3 mb-5 md:mb-6"
+                    style={fadeUp(0.1)}
+                >
                     {subtitle && (
-                        <span className="inline-flex items-center rounded-full bg-[var(--color-accent-warm)] px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-white">
+                        <span
+                            className="text-[10px] font-black uppercase tracking-[0.25em] py-1 border-b-2"
+                            style={{ borderColor: colors.accent }}
+                        >
                             {subtitle}
                         </span>
                     )}
                     {discountPct && (
                         <span
-                            className="inline-flex items-center rounded-full border border-current px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] opacity-60"
-                            style={{ color: colors.text }}
+                            className="text-[10px] font-bold px-2 py-0.5 rounded"
+                            style={{
+                                backgroundColor: isDark ? "#ffffff20" : "#00000010",
+                                color: colors.text
+                            }}
                         >
-                            −{discountPct}%
+                            {discountPct}% OFF
                         </span>
                     )}
                 </div>
 
                 {title && (
                     <h2
-                        className="w-full text-[clamp(1.9rem,5.5vw,3.8rem)] font-semibold leading-[0.92] tracking-[-0.04em] break-words"
-                        style={{ color: colors.text }}
+                        className="w-full text-[clamp(1.8rem,5vw,3.5rem)] font-bold leading-[1.05] tracking-[-0.04em] mb-4 md:mb-6"
+                        style={{ color: colors.text, ...fadeUp(0.2) }}
                     >
                         {title}
                     </h2>
@@ -106,16 +134,21 @@ export default function LayoutMinimal({ banner }: Props) {
 
                 {description && (
                     <p
-                        className="max-w-[38ch] text-sm sm:text-[0.95rem] leading-relaxed opacity-70"
-                        style={{ color: colors.muted }}
+                        className="max-w-[40ch] text-[14px] sm:text-[15px] leading-relaxed mb-6 md:mb-8 font-light"
+                        style={{ color: colors.muted, ...fadeUp(0.3) }}
                     >
                         {description}
                     </p>
                 )}
 
                 {price?.current !== undefined && (
-                    <div className="mt-1">
-                        <SliderPrice price={price} />
+                    <div style={fadeUp(0.4)} className="flex-none lg:self-start">
+                        <SliderPrice
+                            price={price}
+                            color={colors.text}
+                            accentColor={colors.accent}
+                            isDark={isDark}
+                        />
                     </div>
                 )}
             </div>
