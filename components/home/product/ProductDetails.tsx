@@ -392,7 +392,7 @@ export default function ProductDetails({ producto }: Props) {
                     <section className="md:col-span-12 mt-6 pt-4">
                         {producto.complementarios && producto.complementarios.length > 0 && (
                             <div className="space-y-2 border-t">
-                                <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">
+                                <h3 className="text-md  tracking-tighter text-[var(--color-text-primary)]">
                                     Completa tu compra:
                                 </h3>
 

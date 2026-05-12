@@ -24,7 +24,7 @@ export default function RecentViewed({ currentProduct }: { currentProduct: Produ
         <section className=" bg-[var(--color-bg-primary)]">
             <header className="mb-8 px-2">
                 
-                <p className="text-[18px] font-bold tracking-tighter text-[var(--color-text-primary)] ">
+                <p className="text-md  tracking-tighter text-[var(--color-text-primary)] ">
                     Vistos recientemente
                 </p>
                 <div>

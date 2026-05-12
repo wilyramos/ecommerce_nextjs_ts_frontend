@@ -15,7 +15,7 @@ export default async function ProductosRelated({ slug }: { slug: string }) {
 
     return (
         <section className=" flex flex-col  mx-auto ">
-            <h2 className="text-[18px] font-bold tracking-tighter text-[var(--color-text-primary)] ">
+            <h2 className="text-md  tracking-tighter text-[var(--color-text-primary)] ">
                 Tambien te puede interesar
             </h2>
             <div>

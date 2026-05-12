@@ -1,33 +1,42 @@
 import "server-only"
 
-
 import { getTokenOptional } from "@/src/auth/dal"
-import { OrdersByCitySchema, OrdersByStatusSchema, OrdersListResponseSchema, OrdersOverTimeSchema, OrdersSummarySchema } from "@/src/schemas";
-
-// === new 
-import { OrderPopulatedSchema } from "@/src/schemas";
-
+import {
+    OrdersByCitySchema,
+    OrdersByStatusSchema,
+    OrdersListResponseSchema,
+    OrdersOverTimeSchema,
+    OrdersSummarySchema,
+    OrderPopulatedSchema
+} from "@/src/schemas";
 
 type GetOrdersParams = {
     page?: number;
     limit?: number;
     pedido?: string;
     fecha?: string;
+    fechaFin?: string;
     estadoPago?: string;
     estadoEnvio?: string;
+    montoMin?: string;
+    montoMax?: string;
 }
 
-export const getOrders = async ({ page = 1, limit = 25, ...filters }: GetOrdersParams) => {
-
+export const getOrders = async ({
+    page = 1,
+    limit = 25,
+    ...filters
+}: GetOrdersParams) => {
     const token = await getTokenOptional();
 
     const params = new URLSearchParams();
 
-    for (const [key, value] of Object.entries(filters)) {
-        if (value) {
-            params.append(key, value);
+    // Agregar filtros dinámicamente
+    Object.entries(filters).forEach(([key, value]) => {
+        if (value && String(value).trim() !== '') {
+            params.append(key, String(value));
         }
-    }
+    });
 
     params.set('page', page.toString());
     params.set('limit', limit.toString());
@@ -67,7 +76,6 @@ export const getOrder = async (id: string) => {
     }
 
     const json = await req.json();
-
     const order = OrderPopulatedSchema.parse(json);
     return order;
 }
@@ -92,8 +100,6 @@ export const getOrdersByUser = async ({ page = 1, limit = 5 }) => {
     return orders;
 }
 
-
-
 interface GetOrdersReportsParams {
     fechaInicio?: string;
     fechaFin?: string;
@@ -112,7 +118,6 @@ export const getSummaryOrders = async (params: GetOrdersReportsParams) => {
 
         if (!fechaInicio) fechaInicio = getDate(7);
         if (!fechaFin) fechaFin = getDate(0);
-
 
         const queryParams = new URLSearchParams();
         if (fechaInicio) {
@@ -136,9 +141,7 @@ export const getSummaryOrders = async (params: GetOrdersReportsParams) => {
         }
 
         const json = await req.json();
-        console.log("Sales summary:", json);
         const summary = OrdersSummarySchema.parse(json);
-        console.log("Parsed summary:", summary);
         return summary;
     } catch (error) {
         console.error("Error fetching sales summary:", error);
@@ -182,9 +185,7 @@ export const getOrdersOverTime = async (params: GetOrdersReportsParams) => {
         }
 
         const json = await req.json();
-        console.log("Sales over time:", json);
         const ordersOverTime = OrdersOverTimeSchema.array().parse(json);
-        console.log("Parsed orders over time:", ordersOverTime);
         return ordersOverTime;
     } catch (error) {
         console.error("Error fetching sales over time:", error);
@@ -228,9 +229,7 @@ export const getReportOrdersByStatus = async (params: GetOrdersReportsParams) =>
         }
 
         const json = await req.json();
-        console.log("Orders by status:", json);
         const ordersByStatus = OrdersByStatusSchema.array().parse(json);
-        console.log("Parsed orders by status:", ordersByStatus);
         return ordersByStatus;
     } catch (error) {
         console.error("Error fetching orders by status:", error);
@@ -274,9 +273,7 @@ export const getReportOrdersByCity = async (params: GetOrdersReportsParams) => {
         }
 
         const json = await req.json();
-        console.log("Orders by city:", json);
         const ordersByCity = OrdersByCitySchema.array().parse(json);
-        console.log("Parsed orders by city:", ordersByCity);
         return ordersByCity;
     } catch (error) {
         console.error("Error fetching orders by city:", error);

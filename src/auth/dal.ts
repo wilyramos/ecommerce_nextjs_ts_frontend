@@ -26,7 +26,7 @@ export const verifySession = cache(async () => {
     }
 })
 
-// 👇 Para rutas que NO requieren auth (checkout, profile público, etc.)
+// Para rutas que NO requieren auth (checkout, profile público, etc.)
 export const getTokenOptional = cache(async (): Promise<string | undefined> => {
     const token = (await cookies()).get("ecommerce-token")?.value
     return token

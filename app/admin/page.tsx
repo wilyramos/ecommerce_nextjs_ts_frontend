@@ -19,7 +19,7 @@ export default async function AdminPage() {
         { href: "/admin/orders", label: "Órdenes", icon: Receipt },
         { href: "/admin/reports", label: "Reportes", icon: BarChart3 },
         { href: "/admin/brands", label: "Marcas", icon: Tag },
-        { href: "/pos", label: "POS", icon: ShoppingCart },
+        { href: "/terminal", label: "POS", icon: ShoppingCart },
     ];
 
     return (

@@ -10,7 +10,6 @@ import {
     receiptTypeSchema,
 } from '@/src/schemas';
 import { saveCartToDB } from '@/lib/api/cart';
-//TODO: Revisar el codigo para manejar 2 o mas opciones en los atributos de las variantes
 
 
 interface Store {

@@ -63,9 +63,9 @@ export default function ButtonShowSheetMobile({ categories }: Props) {
 
             <SheetContent
                 side="left"
-                className="flex flex-col h-full w-[85vw] sm:w-[380px] p-0 bg-[var(--color-bg-primary)] border-r border-[var(--color-border-subtle)] shadow-md outline-none"
+                className="flex flex-col p-0"
             >
-                <div className="px-8 pt-6 border-b border-[var(--color-border-subtle)]">
+                <div className="px-4 pt-3 border-b border-[var(--color-border-subtle)]">
                     <SheetHeader className="text-left">
                         <SheetTitle>
                             <Logo />
@@ -73,7 +73,7 @@ export default function ButtonShowSheetMobile({ categories }: Props) {
                     </SheetHeader>
                 </div>
 
-                <ScrollArea className="flex-1 px-4">
+                <ScrollArea className="flex-1">
                     <div className="grid grid-cols-1 gap-1 mb-8">
                         {mainLinks.map((link) => {
                             const isActive = pathname === link.href;
@@ -141,16 +141,15 @@ export default function ButtonShowSheetMobile({ categories }: Props) {
                 </ScrollArea>
 
                 {/* Footer (Login / Cuenta) */}
-                <div className="mt-auto border-t border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)] p-6">
+                <div className="mt-auto border-t border-[var(--color-border-subtle)] p-6">
                     <Button
                         asChild
-                        variant="default"
-                        size="default"
+                        variant="accent"
                         className="w-full"
                     >
                         <Link href="/auth/registro" className="flex items-center justify-center gap-2">
                             <User className="h-4 w-4" />
-                            Iniciar sesión / Registrarse
+                            Iniciar Sesión / Registrarse
                         </Link>
                     </Button>
                 </div>
