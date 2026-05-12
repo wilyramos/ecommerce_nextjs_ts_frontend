@@ -60,7 +60,8 @@ function getErrorMessage(error: unknown): string {
 
 function formString(formData: FormData, key: string): string | undefined {
     const val = formData.get(key);
-    return typeof val === "string" && val.trim() !== "" ? val : undefined;
+    if (val === null) return undefined;
+    return typeof val === "string" ? val.trim() : undefined;
 }
 
 function formNumber(formData: FormData, key: string): number | undefined {

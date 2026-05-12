@@ -38,7 +38,7 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
             <div
                 className="
                     relative z-10
-                    flex flex-col justify-center items-start
+                    flex flex-col justify-center items-center
                     w-1/2 h-full
                     pl-6 sm:pl-12 md:pl-20 lg:pl-28
                     pr-4
@@ -52,7 +52,7 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                         <span
                             className="
                                 inline-block 
-                                text-[10px] sm:text-[11px] 
+                                text-sm md:text-base
                                 font-bold uppercase 
                                 px-2.5 py-1 
                             "
@@ -66,7 +66,6 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                     </div>
                 )}
 
-                {/* Divider decorativo animado */}
                 <div
                     className="h-[1px] w-12 sm:w-20 flex-none"
                     style={{
@@ -84,7 +83,6 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                                 leading-relaxed 
                                 line-clamp-3 sm:line-clamp-4 
                                 max-w-[32ch]
-                                italic
                             "
                             style={{ color: muted }}
                         >
@@ -111,7 +109,7 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                     relative z-10
                     flex flex-col justify-center items-center
                     w-1/2 h-full
-                    p-6 sm:p-10 lg:p-12
+                    p-1 sm:p-2 lg:p-2
                     pointer-events-none
                 "
                 style={{
@@ -134,12 +132,12 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                 </div>
 
                 {title && (
-                    <div className="flex flex-col items-center gap-2 mt-4 sm:mt-6 max-w-full">
+                    <div className="flex flex-col items-center gap-2 mt-2 sm:mt-5 max-w-full">
                         <h2
                             className="
                                 flex-none font-semibold 
                                 leading-[1.1] tracking-[-0.03em] 
-                                text-[clamp(1rem,2.5vw,2rem)] 
+                                text-[clamp(0,8rem,2vw,1,5rem)] 
                                 text-center
                                 line-clamp-2
                             "
