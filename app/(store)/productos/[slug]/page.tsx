@@ -3,10 +3,11 @@
 import { GetProductsBySlug } from '@/src/services/products';
 import ProductPageServer from '@/components/home/product/ProductPageServer';
 import { Suspense } from 'react';
-import SpinnerLoading from '@/components/ui/SpinnerLoading';
 import type { Metadata } from "next";
 import { notFound } from 'next/navigation';
 import ProductJsonLd from '@/components/seo/ProductJsonLd';
+import { ProductDetailsSkeleton } from '@/src/components/skeletons/product/ProductDetailsSkeleton';
+
 
 type Params = Promise<{ slug: string }>;
 
@@ -105,9 +106,9 @@ export default async function pageProduct({ params }: { params: Params }) {
     return (
         <main className='md:max-w-screen-2xl mx-auto'>
             <ProductJsonLd producto={producto} />
-            <Suspense fallback={<SpinnerLoading />}>
-                <ProductPageServer producto={producto} />
-            </Suspense>
+             <Suspense fallback={<ProductDetailsSkeleton />}>
+          <ProductPageServer producto={producto} />
+        </Suspense>
         </main>
     );
 }
