@@ -16,7 +16,7 @@ const responsive = {
 
 export default function ClientCarouselMain({ products }: { products: ProductResponse[] }) {
     return (
-        <div className="w-full max-w-screen-2xl mx-auto">
+        <div className="w-full z mx-auto">
             <Carousel
                 responsive={responsive}
                 autoPlay

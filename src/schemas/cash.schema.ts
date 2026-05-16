@@ -30,3 +30,19 @@ export const cashSummarySchema = z.object({
 
 export type CashShift = z.infer<typeof cashShiftSchema>;
 export type CashSummary = z.infer<typeof cashSummarySchema>;
+
+// frontend/src/schemas/cash.schema.ts
+
+export const cashMovementSchema = z.object({
+    _id: z.string(),
+    shiftId: z.string(),
+    type: MovementTypeEnum,
+    amount: z.number(),
+    reason: z.string(),
+    createdAt: z.coerce.date(),
+});
+
+// Exportamos el esquema del array para no tener que usar z.array() en el servicio
+export const cashMovementsArraySchema = z.array(cashMovementSchema);
+
+export type CashMovement = z.infer<typeof cashMovementSchema>;

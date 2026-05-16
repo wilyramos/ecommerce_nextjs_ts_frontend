@@ -77,9 +77,9 @@ export default function DateRangeDropdown() {
             {/* Calendario flotante adaptable */}
             {open && (
                 <div
-                    className="absolute mt-2 bg-white shadow-lg rounded-lg p-2 border"
+                    className="absolute mt-2 bg-white shadow-lg rounded-lg p-2 border z-50"
                     style={{
-                        right: 0, // 👈 se alinea a la derecha del botón
+                        right: 0, //
                         minWidth: isMobile ? "320px" : "600px",
                         maxWidth: "90vw" // evita overflow
                     }}

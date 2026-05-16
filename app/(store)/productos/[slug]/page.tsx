@@ -8,8 +8,6 @@ import type { Metadata } from "next";
 import { notFound } from 'next/navigation';
 import ProductJsonLd from '@/components/seo/ProductJsonLd';
 
-// TODO: skeletons o loading en productos
-
 type Params = Promise<{ slug: string }>;
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {

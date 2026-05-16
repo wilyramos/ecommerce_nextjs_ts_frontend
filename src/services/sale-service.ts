@@ -1,9 +1,7 @@
 /*  
-    File: frontend/src/actions/sale-actions.ts 
+    File: frontend/src/services/sale-service.ts
     @Author: whramos 
-    @Date: 11-04-2024
-    @Last Modified by: whramos
-    @Last Modified time: 11-04-2024
+    @Date: 11-05-2024
 */
 
 import "server-only";
@@ -22,45 +20,69 @@ export interface PaginatedSales {
     currentPage: number;
 }
 
+export interface SaleFilters {
+    page?: number;
+    limit?: number;
+    search?: string;
+    startDate?: string;
+    endDate?: string;
+    status?: string;
+    cashShiftId?: string;
+}
+
 /**
  * SERVICIO DE VENTAS (SERVER-ONLY)
  */
 export const SaleService = {
-    
+
     /**
      * Obtiene el historial de ventas con filtros y paginación
      */
-    getHistory: async (page: number = 1, limit: number = 10, search: string = ""): Promise<PaginatedSales> => {
+    getHistory: async (filters: SaleFilters = {}): Promise<PaginatedSales> => {
         const token = await getToken();
-        const params = new URLSearchParams({
-            page: page.toString(),
-            limit: limit.toString(),
-            ...(search && { search })
-        });
+
+        const queryParams: Record<string, string> = {
+            page: (filters.page || 1).toString(),
+            limit: (filters.limit || 10).toString(),
+        };
+
+        if (filters.search) queryParams.search = filters.search;
+        if (filters.startDate) queryParams.startDate = filters.startDate;
+        if (filters.endDate) queryParams.endDate = filters.endDate;
+        if (filters.status) queryParams.status = filters.status;
+        if (filters.cashShiftId) queryParams.cashShiftId = filters.cashShiftId;
+
+        const params = new URLSearchParams(queryParams);
 
         const res = await fetch(`${process.env.API_URL}/sales/v2?${params.toString()}`, {
-            headers: { 
+            headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
-            next: { 
-                tags: ['sales'], // Permite revalidar todas las ventas
-                revalidate: 30   // Cache de 30 segundos para datos frescos
+            next: {
+                tags: ['sales'],
+                revalidate: 10
             }
         });
 
         if (!res.ok) throw new Error("Error al obtener historial de ventas");
-        
+
         const data = await res.json();
-        
-        // Validamos el array de ventas con Zod para asegurar integridad
+
         const validatedSales = z.array(saleSchema).safeParse(data.sales);
-        
+
         if (!validatedSales.success) {
+            console.log("Datos de ventas recibidos:", data.sales);
             console.error("Zod Validation Error (Sales History):", validatedSales.error.format());
         }
 
-        return data as PaginatedSales;
+        return {
+            success: true,
+            sales: validatedSales.success ? validatedSales.data : (data.sales as Sale[]),
+            total: Number(data.total) || 0,
+            totalPages: Number(data.totalPages) || 1,
+            currentPage: Number(data.currentPage) || 1
+        };
     },
 
     /**
@@ -68,8 +90,7 @@ export const SaleService = {
      */
     getById: async (id: string): Promise<Sale | null> => {
         const token = await getToken();
-        
-        // Nota: Si tu backend no tiene un GET /:id, este servicio consumirá el endpoint de ticket o detalle
+
         const res = await fetch(`${process.env.API_URL}/sales/v2/${id}`, {
             headers: { 'Authorization': `Bearer ${token}` },
             next: { tags: [`sale-${id}`] }
@@ -96,9 +117,9 @@ export const SaleService = {
 
         const res = await fetch(`${process.env.API_URL}/sales/v2/quotes`, {
             headers: { 'Authorization': `Bearer ${token}` },
-            next: { 
+            next: {
                 tags: ['quotes'],
-                revalidate: 0 // Las proformas suelen ser volátiles, no cachear
+                revalidate: 0
             }
         });
 
@@ -107,6 +128,23 @@ export const SaleService = {
         const data = await res.json();
         const validated = z.array(saleSchema).safeParse(data.quotes);
 
-        return validated.success ? validated.data : [];
+        return validated.success ? validated.data : (data.quotes as Sale[]);
+    },
+
+    /**
+     * Genera la URL para exportación sin usar 'any'
+     */
+    getExportUrl: (filters: Omit<SaleFilters, 'page' | 'limit'>): string => {
+        const cleanFilters: Record<string, string> = {};
+
+        // Mapeo seguro de filtros para URLSearchParams
+        Object.entries(filters).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && value !== '') {
+                cleanFilters[key] = String(value);
+            }
+        });
+
+        const params = new URLSearchParams(cleanFilters);
+        return `${process.env.API_URL}/sales/v2/export?${params.toString()}`;
     }
 };

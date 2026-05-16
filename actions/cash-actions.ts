@@ -17,47 +17,60 @@ export type CashActionState = {
     data?: CashShift;
 };
 
-/**
- * ABRE UN NUEVO TURNO DE CAJA
- */
 export async function openCashAction(
     _prevState: CashActionState,
-    payload: { initialBalance: number; userId: string }
+    formData: FormData
 ): Promise<CashActionState> {
-    
-    if (payload.initialBalance < 0) {
-        return { success: false, message: "El saldo inicial no puede ser negativo" };
+    const initialBalance = Number(formData.get("initialBalance"));
+    const userId = String(formData.get("userId"));
+
+    if (initialBalance < 0) {
+        return {
+            success: false,
+            message: "El saldo inicial no puede ser negativo",
+        };
     }
 
     try {
-        const res = await apiServerClient<{ success: boolean; shift: CashShift; message?: string }>(
-            "/cash/v2/open", 
-            {
-                method: "POST",
-                body: JSON.stringify(payload),
-            }
-        );
+        const res = await apiServerClient<{
+            success: boolean;
+            shift: CashShift;
+            message?: string;
+        }>("/cash/v2/open", {
+            method: "POST",
+            body: JSON.stringify({
+                initialBalance,
+                userId,
+            }),
+        });
 
         if (res.success) {
-            // Forzamos la actualización de todos los componentes que dependen del estado de caja
             revalidateTag("cash-status");
-            revalidatePath("/terminal");
-            
+            revalidatePath("/");
+
             return {
                 success: true,
                 message: "Caja abierta correctamente",
-                data: res.shift
+                data: res.shift,
             };
         }
 
-        return { success: false, message: res.message || "Error al abrir caja" };
-
+        return {
+            success: false,
+            message: res.message || "Error al abrir caja",
+        };
     } catch (error: unknown) {
-        const msg = error instanceof Error ? error.message : "Error crítico de conexión";
-        return { success: false, message: msg };
+        const msg =
+            error instanceof Error
+                ? error.message
+                : "Error crítico de conexión";
+
+        return {
+            success: false,
+            message: msg,
+        };
     }
 }
-
 
 /**
  * CIERRA EL TURNO DE CAJA ACTUAL
@@ -78,9 +91,9 @@ export async function closeCashAction(
         if (res.success) {
             revalidateTag("cash-status");
             revalidatePath("/terminaltres");
-            return { 
-                success: true, 
-                message: "Caja cerrada y arqueo registrado" 
+            return {
+                success: true,
+                message: "Caja cerrada y arqueo registrado"
             };
         }
 
@@ -98,5 +111,46 @@ export async function getCashSummaryAction(shiftId: string) {
     } catch (error) {
         console.error("Error fetching cash summary:", error);
         return { success: false, message: "No se pudo cargar el resumen" };
+    }
+}
+
+/**
+ * REGISTRA UN MOVIMIENTO MANUAL (INGRESO/EGRESO)
+ */
+export async function addCashMovementAction(payload: {
+    shiftId: string;
+    type: "INCOME" | "EXPENSE";
+    amount: number;
+    reason: string;
+}): Promise<CashActionState> {
+
+    if (payload.amount <= 0) {
+        return { success: false, message: "El monto debe ser mayor a cero" };
+    }
+
+    try {
+        const res = await apiServerClient<{ success: boolean; message?: string }>(
+            "/cash/v2/movement", // Verifica que este sea tu endpoint en el backend
+            {
+                method: "POST",
+                body: JSON.stringify(payload),
+            }
+        );
+
+        if (res.success) {
+            // Revalidamos la ruta actual para que el MovementLog y CashStats se actualicen
+            revalidatePath("/cash-shift");
+
+            return {
+                success: true,
+                message: "Movimiento registrado correctamente"
+            };
+        }
+
+        return { success: false, message: res.message || "Error al registrar movimiento" };
+
+    } catch (error: unknown) {
+        const msg = error instanceof Error ? error.message : "Error de conexión al registrar movimiento";
+        return { success: false, message: msg };
     }
 }

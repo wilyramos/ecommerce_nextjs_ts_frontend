@@ -93,9 +93,11 @@ export default function RootLayout({
                     <MercadoPagoProvider />
                     {children}
                     <Toaster
-                        theme="dark"
+                        theme="light"
                         expand
+                        position="top-center"
                         duration={5000}
+                        richColors={true}
                     />
                 </GoogleOAuthProvider>
             </body>

@@ -6,7 +6,16 @@ import SidebarProfileNav from '@/components/profile/SidebarProfileNav';
 
 export default async function ProfileLayout({ children }: { children: React.ReactNode }) {
     const { user } = await verifySession();
-    if (!user) redirect('/auth/login');
+
+    // Validar que el usuario exista
+    if (!user) {
+        redirect('/auth/login');
+    }
+
+    // Redireccionar a admin si el usuario es administrador
+    if (user.rol === 'administrador') {
+        redirect('/admin');
+    }
 
     return (
         <div className="flex flex-col md:flex-row bg-[var(--color-bg-primary)]">
@@ -22,6 +31,10 @@ export default async function ProfileLayout({ children }: { children: React.Reac
                             <p className="text-xs font-medium text-[var(--color-text-tertiary)] truncate">
                                 {user.email}
                             </p>
+                            {/* Badge del rol */}
+                            <span className="inline-block mt-2 px-2 py-1 text-xs font-semibold rounded-full bg-[var(--color-bg-tertiary)] text-[var(--color-text-secondary)]">
+                                {user.rol === 'cliente' ? 'Cliente' : user.rol === 'vendedor' ? 'Vendedor' : user.rol}
+                            </span>
                         </div>
 
                         {/* Botón Cerrar Sesión */}

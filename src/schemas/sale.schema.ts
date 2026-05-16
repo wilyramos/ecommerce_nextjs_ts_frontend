@@ -68,13 +68,14 @@ export const saleItemSchema = z.object({
     quantity: z.number().min(1, "Quantity must be at least 1"),
     price: z.number().min(0, "Price cannot be negative"),
     discount: z.number().default(0),
-    cost: z.number().default(0), // Crucial for profit reporting
+    cost: z.number().default(0),
 });
 
 export const statusHistorySchema = z.object({
     status: SaleStatusEnum,
     changedAt: z.coerce.date(),
-});
+    _id: z.string().optional(),
+}).passthrough();
 
 /**
  * MAIN SALE SCHEMA
@@ -85,7 +86,7 @@ export const saleSchema = z.object({
     // Relations
     customer: populatedField.optional().nullable(),
     customerSnapshot: customerSnapshotSchema.optional(),
-    employee: populatedField,
+    employee: populatedField.optional().nullable(),
     cashShiftId: z.union([z.string(), z.object({ _id: z.string() }).passthrough()]),
 
     // Items
@@ -103,8 +104,7 @@ export const saleSchema = z.object({
 
     // State
     status: SaleStatusEnum.default('COMPLETED'),
-    statusHistory: z.array(statusHistorySchema).default([]),
-
+    statusHistory: z.array(statusHistorySchema).optional().default([]),
     // Payment
     paymentMethod: PaymentMethodEnum.default('CASH'),
     paymentStatus: PaymentStatusEnum.default('approved'),

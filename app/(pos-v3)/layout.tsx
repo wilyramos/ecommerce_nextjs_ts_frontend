@@ -25,15 +25,14 @@ export default async function PosV3Layout({
     }
 
     return (
-        <div className="flex h-screen w-full overflow-hidden ">
-            {/* Sidebar fijo (Navegación) */}
+        <div className="flex h-screen w-full overflow-hidden">
             <Sidebar user={user} />
 
             <div className="flex flex-1 flex-col overflow-hidden">
-                {/* Header (Contexto y Estado de Usuario) */}
                 <Header user={user} />
 
-                <main className="relative flex-1 overflow-hidden">
+                {/* CAMBIO AQUÍ: Cambiamos overflow-hidden por overflow-y-auto */}
+                <main className="relative flex-1 overflow-y-auto">
                     {children}
                 </main>
             </div>

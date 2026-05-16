@@ -3,7 +3,7 @@
     @Author: whramos 
     @Date: 11-04-2024
     @Last Modified by: whramos
-    @Last Modified time: 11-04-2024
+    @Last Modified time: 2026-05-15
 */
 
 "use server";
@@ -93,7 +93,7 @@ export async function createQuoteAction(
             return {
                 success: true,
                 message: "Proforma generada correctamente",
-                data: res.quote // data es de tipo Sale
+                data: res.quote
             };
         }
 
@@ -167,6 +167,39 @@ export async function refundSaleAction(
         return { success: false, message: res.message };
     } catch (error: unknown) {
         const msg = error instanceof Error ? error.message : "Error al anular venta";
+        return { success: false, message: msg };
+    }
+}
+
+/**
+    Detalles completo de una venta
+*/
+
+export async function getSaleDetailsAction(
+    saleId: string
+): Promise<SaleActionState> {
+    try {
+        // Intersección de tipos para soportar si el backend responde { sale: Sale } o el objeto Sale directo
+        const res = await apiServerClient<{ sale?: Sale } & Partial<Sale>>(
+            `/sales/v2/${saleId}`,
+            {
+                method: "GET",
+            }
+        );
+
+        const saleData = res?.sale || (res?._id ? (res as Sale) : null);
+
+        if (saleData) {
+            return {
+                success: true,
+                message: "Detalles de venta obtenidos correctamente",
+                data: saleData
+            };
+        }
+
+        return { success: false, message: "No se encontraron datos para esta venta" };
+    } catch (error: unknown) {
+        const msg = error instanceof Error ? error.message : "Error al obtener los detalles de la venta";
         return { success: false, message: msg };
     }
 }

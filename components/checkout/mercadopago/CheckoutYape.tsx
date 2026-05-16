@@ -144,7 +144,7 @@ export default function CheckoutYape({ order }: { order: TOrderPopulated }) {
                         <InputOTPSlot
                             index={0}
                             className="h-10 w-8 sm:h-12 sm:w-10 text-lg border-gray-300 border-2 rounded-md data-[active=true]:border-[#742284] data-[active=true]:ring-2 data-[active=true]:ring-[#742284]/20"
-/>
+                        />
                         <InputOTPSlot
                             index={1}
                             className="h-10 w-8 sm:h-12 sm:w-10 text-lg border-gray-300 border-2 rounded-md data-[active=true]:border-[#742284] data-[active=true]:ring-2 data-[active=true]:ring-[#742284]/20"
