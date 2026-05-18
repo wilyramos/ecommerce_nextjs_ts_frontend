@@ -43,6 +43,7 @@ const links: NavLink[] = [
     { href: "/admin/orders", icon: ReceiptText, label: "Órdenes" },
 
     { href: "/admin/slider", icon: BadgeDollarSign, label: "Slider" },
+    { href: "/admin/comparisons", icon: BadgeDollarSign, label: "Comparativas" },
 
     // --- CATÁLOGO ---
     { href: "/admin/brands", icon: Building2, label: "Marcas" },

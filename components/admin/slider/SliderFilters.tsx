@@ -10,6 +10,7 @@ import {
     Select, SelectTrigger, SelectValue,
     SelectContent, SelectItem,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 interface Filters {
     search?:      string;
@@ -74,13 +75,13 @@ export default function SliderFilters({ filters }: SliderFiltersProps) {
                     className="pl-9 pr-8"
                 />
                 {searchValue && (
-                    <button
+                    <Button
                         onClick={handleSearchClear}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                        variant="ghost"
                         aria-label="Limpiar búsqueda"
                     >
                         <X className="h-3.5 w-3.5" />
-                    </button>
+                    </Button>
                 )}
             </div>
 

@@ -32,7 +32,7 @@ export default function AnnouncementBar() {
         }
       `}</style>
 
-      <div className="relative h-7 flex items-center">
+      <div className="relative h-8 flex items-center">
         {/* Gradient izquierdo */}
         <div className="absolute left-0 inset-y-0 w-12 bg-gradient-to-r from-[var(--color-bg-inverse)] to-transparent z-10 pointer-events-none" />
 

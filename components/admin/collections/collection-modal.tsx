@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useActionState } from "react";
 import { useRouter } from "next/navigation";
 import { createCollectionAction, updateCollectionAction } from "@/src/actions/collection-action";
 import { Collection } from "@/src/schemas/collection.schema";
@@ -21,16 +21,8 @@ export default function CollectionModal({ isOpen, collectionToEdit }: Props) {
     const [state, formAction, isPending] = useActionState(actionCall, null);
 
     const handleClose = () => {
-        // Cierra el modal limpiando los query parameters de la URL en Next.js
         router.push("/admin/collections");
     };
-
-        // Efecto para cerrar el modal tras una acción exitosa
-    useEffect(() => {
-        if (state?.success) {
-            handleClose();
-        }
-    }, [state?.success]);
 
     if (!isOpen) return null;
 

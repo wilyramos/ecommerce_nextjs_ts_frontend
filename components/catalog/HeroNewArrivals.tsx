@@ -10,7 +10,7 @@ export default function HeroNewArrivals() {
             className="group relative flex flex-col justify-center p-10 md:p-14 bg-[var(--color-bg-inverse)] min-h-[360px] overflow-hidden"
         >
             {/* Subtle depth gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] to-transparent pointer-events-none"/>
 
             <div className="relative z-10 space-y-5">
                 <div className="inline-flex items-center gap-2 text-[var(--color-accent-warm)] font-semibold text-xs uppercase tracking-tight">
