@@ -1,3 +1,5 @@
+//File: frontend/components/admin/products/MediaLibraryDialog.tsx
+
 "use client";
 
 import { useState, useCallback, useEffect } from "react";

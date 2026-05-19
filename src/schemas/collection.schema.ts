@@ -2,19 +2,14 @@
 
 import { z } from "zod";
 
-// Esquema simplificado para los productos devueltos dentro de una colección
 export const collectionProductSchema = z.object({
     _id: z.string(),
-    name: z.string(),
-    price: z.number(),
-    images: z.array(z.string()).default([]),
+    nombre: z.string(), // Cambiado de 'name' a 'nombre'
+    precio: z.number().default(0), // Cambiado de 'price' a 'precio'
+    imagenes: z.array(z.string()).default([]), // Cambiado de 'images' a 'imagenes'
     slug: z.string(),
-    category: z.union([
-        z.string(), 
-        z.object({ _id: z.string(), name: z.string() }).passthrough()
-    ]).optional().nullable(),
+    category: z.any().optional(), // Simplificado para evitar errores de validación complejos
 });
-
 // Esquema principal de la Colección
 export const collectionSchema = z.object({
     _id: z.string(),
@@ -55,6 +50,7 @@ export const createCollectionPayloadSchema = collectionSchema.omit({
 }).partial({
     slug: true, // Puede omitirse si el backend lo autogenera
     isActive: true,
+    order: true,
 });
 
 // Esquema para actualización

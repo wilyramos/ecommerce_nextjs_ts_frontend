@@ -1,125 +1,137 @@
 "use client";
 
-import { useActionState } from "react";
-import { useRouter } from "next/navigation";
+import { useActionState, useEffect, useState } from "react";
 import { createCollectionAction, updateCollectionAction } from "@/src/actions/collection-action";
 import { Collection } from "@/src/schemas/collection.schema";
 
+// UI Components
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import MediaLibraryDialog from "@/components/admin/products/MediaLibraryDialog";
+
 interface Props {
     isOpen: boolean;
+    onClose: () => void;
     collectionToEdit: Collection | null;
 }
 
-export default function CollectionModal({ isOpen, collectionToEdit }: Props) {
-    const router = useRouter();
+export default function CollectionModal({ isOpen, onClose, collectionToEdit }: Props) {
+    // Estado para la imagen seleccionada
+    const [selectedImageUrl, setSelectedImageUrl] = useState<string>(collectionToEdit?.image || "");
+    const [availableImages, setAvailableImages] = useState<string[]>(
+        collectionToEdit?.image ? [collectionToEdit.image] : []
+    );
 
-    // Enlace dinámico del Server Action según operación (Creación vs Edición)
-    const actionCall = collectionToEdit 
-        ? updateCollectionAction.bind(null, collectionToEdit._id) 
+    const actionCall = collectionToEdit
+        ? updateCollectionAction.bind(null, collectionToEdit._id)
         : createCollectionAction;
 
     const [state, formAction, isPending] = useActionState(actionCall, null);
 
-    const handleClose = () => {
-        router.push("/admin/collections");
-    };
-
-    if (!isOpen) return null;
+    useEffect(() => {
+        if (state?.success) onClose();
+    }, [state?.success, onClose]);
 
     return (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 animate-fade-in">
-            <div className="bg-white p-6 rounded-xl max-w-md w-full shadow-lg border border-gray-100">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">
-                    {collectionToEdit ? `Editar ${collectionToEdit.name}` : "Nueva Colección Temática"}
-                </h2>
+        <Dialog open={isOpen} onOpenChange={onClose}>
+            <DialogContent className="sm:max-w-lg bg-background border border-border rounded-sm shadow-xs outline-none">
+                <DialogHeader>
+                    <DialogTitle className="text-xs font-bold uppercase tracking-widest text-foreground">
+                        {collectionToEdit ? `Editar: ${collectionToEdit.name}` : "Nueva Colección"}
+                    </DialogTitle>
+                </DialogHeader>
 
-                <form action={formAction} className="space-y-4">
-                    <div>
-                        <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wider">Nombre de la sección</label>
-                        <input 
-                            name="name" 
-                            type="text" 
-                            defaultValue={collectionToEdit?.name || ""} 
-                            className="w-full border border-gray-200 p-2.5 rounded-md mt-1 text-sm focus:ring-1 focus:ring-black outline-none transition-all"
-                            required 
-                            disabled={isPending}
-                        />
+                <form action={formAction} className="space-y-4 pt-2">
+                    <div className="space-y-1.5">
+                        <Label required>Nombre de la colección</Label>
+                        <Input name="name" defaultValue={collectionToEdit?.name} required disabled={isPending} />
                     </div>
 
-                    <div>
-                        <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wider">Descripción corta</label>
-                        <textarea 
-                            name="description" 
-                            defaultValue={collectionToEdit?.description || ""} 
-                            className="w-full border border-gray-200 p-2.5 rounded-md mt-1 text-sm focus:ring-1 focus:ring-black outline-none transition-all"
-                            rows={3}
-                            disabled={isPending}
-                        />
+                    {/* Imagen con MediaLibraryDialog */}
+                    <div className="space-y-1.5">
+                        <Label>Imagen destacada</Label>
+                        <div className="flex gap-2">
+                            <Input 
+                                name="image" 
+                                value={selectedImageUrl} 
+                                readOnly 
+                                placeholder="Selecciona una imagen..." 
+                                disabled={isPending}
+                            />
+                            <MediaLibraryDialog
+                                selectedImages={selectedImageUrl ? [selectedImageUrl] : []}
+                                globalImagesPool={availableImages}
+                                onConfirmSelection={(imgs) => setSelectedImageUrl(imgs[0] || "")}
+                                onUploadSuccess={(newImgs) => setAvailableImages(prev => [...prev, ...newImgs])}
+                                allowMultiple={false}
+                                triggerLabel="Elegir"
+                                triggerVariant="outline"
+                                size="sm"
+                            />
+                        </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wider">Color Hex (Opcional)</label>
-                            <input 
-                                name="color" 
-                                type="text" 
-                                defaultValue={collectionToEdit?.color || ""} 
-                                placeholder="#ffffff"
-                                className="w-full border border-gray-200 p-2.5 rounded-md mt-1 text-sm focus:ring-1 focus:ring-black outline-none font-mono transition-all"
-                                disabled={isPending}
-                            />
+                        <div className="space-y-1.5">
+                            <Label>Color Hex</Label>
+                            <Input name="color" defaultValue={collectionToEdit?.color || ""} placeholder="#ffffff" disabled={isPending} />
                         </div>
-                        <div>
-                            <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wider">Orden de prioridad</label>
-                            <input 
-                                name="order" 
-                                type="number" 
-                                defaultValue={collectionToEdit?.order ?? 0} 
-                                className="w-full border border-gray-200 p-2.5 rounded-md mt-1 text-sm focus:ring-1 focus:ring-black outline-none transition-all"
-                                disabled={isPending}
-                            />
+                        <div className="space-y-1.5">
+                            <Label>Orden de prioridad</Label>
+                            <Input name="order" type="number" defaultValue={collectionToEdit?.order ?? 0} disabled={isPending} />
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-2 pt-2">
-                        <input
+                    <div className="space-y-1.5">
+                        <Label>Descripción corta</Label>
+                        <Textarea name="description" defaultValue={collectionToEdit?.description || ""} rows={2} disabled={isPending} />
+                    </div>
+
+                    <div className="border-t border-border/40 pt-4 space-y-3">
+                        <Label className="text-[10px] uppercase tracking-wider text-muted-foreground">Configuración SEO</Label>
+                        <div className="space-y-1.5">
+                            <Label>Título SEO</Label>
+                            <Input name="seoTitle" defaultValue={collectionToEdit?.seoTitle || ""} disabled={isPending} />
+                        </div>
+                        <div className="space-y-1.5">
+                            <Label>Descripción SEO</Label>
+                            <Textarea name="seoDescription" defaultValue={collectionToEdit?.seoDescription || ""} rows={2} disabled={isPending} />
+                        </div>
+                    </div>
+
+                    
+                    <div className="flex items-center justify-between pt-2">
+                        <Label htmlFor="isActive">Colección activa</Label>
+                        <input type="hidden" name="isActive" value={String(collectionToEdit?.isActive ?? true)} />
+                        <Switch 
                             id="isActive"
-                            name="isActive"
-                            type="checkbox"
-                            defaultChecked={collectionToEdit ? collectionToEdit.isActive : true}
-                            className="h-4 w-4 rounded border-gray-300 text-black focus:ring-black"
+                            defaultChecked={collectionToEdit?.isActive ?? true}
+                            onCheckedChange={(checked) => {
+                                const input = document.querySelector('input[name="isActive"]') as HTMLInputElement;
+                                if (input) input.value = String(checked);
+                            }}
                             disabled={isPending}
                         />
-                        <label htmlFor="isActive" className="text-sm font-medium text-gray-700 select-none">
-                            Colección activa y visible en la tienda
-                        </label>
                     </div>
 
                     {state?.error && (
-                        <div className="text-xs text-red-500 bg-red-50 border border-red-200 p-2.5 rounded-md mt-2">
-                            {state.error}
-                        </div>
+                        <p className="text-[10px] font-bold text-destructive">{state.error}</p>
                     )}
 
-                    <div className="flex justify-end gap-2 mt-6 pt-2 border-t border-gray-100">
-                        <button 
-                            type="button" 
-                            onClick={handleClose} 
-                            className="px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors" 
-                            disabled={isPending}
-                        >
+                    <div className="flex justify-end gap-2 pt-4">
+                        <Button type="button" variant="ghost" onClick={onClose} disabled={isPending} className="text-xs">
                             Cancelar
-                        </button>
-                        <button 
-                            type="submit" 
-                            className="px-4 py-2 bg-black hover:bg-gray-800 text-white rounded-md text-sm font-medium transition-colors" 
-                            disabled={isPending}
-                        >
-                            {isPending ? "Guardando..." : "Guardar Sección"}
-                        </button>
+                        </Button>
+                        <Button type="submit" disabled={isPending} className="text-xs font-bold px-6">
+                            {isPending ? "Guardando..." : "Guardar Colección"}
+                        </Button>
                     </div>
                 </form>
-            </div>
-        </div>
+            </DialogContent>
+        </Dialog>
     );
 }

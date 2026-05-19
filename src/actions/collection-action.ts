@@ -24,20 +24,28 @@ const getErrorMessage = (error: unknown): string => {
     return "Error desconocido";
 };
 
+/**
+ * Procesa los campos comunes del FormData de una colección.
+ * IMPORTANTE: isActive debe leerse con `has()` porque un checkbox desmarcado
+ * no envía ningún campo en FormData — sin este fix siempre sería false al editar.
+ */
+function processCollectionFormData(formData: FormData) {
+    const rawData = Object.fromEntries(formData.entries());
+
+    return {
+        ...rawData,
+        order: rawData.order ? Number(rawData.order) : undefined,
+        // Un checkbox desmarcado no aparece en FormData, por eso usamos has()
+        isActive: formData.has("isActive"),
+    };
+}
 
 export async function createCollectionAction(
     prevState: ActionResponse<Collection> | null,
     formData: FormData
 ): Promise<ActionResponse<Collection>> {
     try {
-        const rawData = Object.fromEntries(formData.entries());
-
-        const processedData = {
-            ...rawData,
-            order: rawData.order ? Number(rawData.order) : undefined,
-            isActive: rawData.isActive === "true" || rawData.isActive === "on",
-        };
-
+        const processedData = processCollectionFormData(formData);
         const validatedFields = createCollectionPayloadSchema.parse(processedData);
         const newCollection = await collectionService.create(validatedFields);
 
@@ -56,14 +64,7 @@ export async function updateCollectionAction(
     formData: FormData
 ): Promise<ActionResponse<Collection>> {
     try {
-        const rawData = Object.fromEntries(formData.entries());
-
-        const processedData = {
-            ...rawData,
-            order: rawData.order ? Number(rawData.order) : undefined,
-            isActive: rawData.isActive === "true" || rawData.isActive === "on",
-        };
-
+        const processedData = processCollectionFormData(formData);
         const validatedFields = updateCollectionPayloadSchema.parse(processedData);
         const updatedCollection = await collectionService.update(id, validatedFields);
 
@@ -78,10 +79,6 @@ export async function updateCollectionAction(
     }
 }
 
-/**
- * 2. ENFOQUE PROGRAMÁTICO (Funciones limpias sin prevState)
- * Diseñado para eventos directos (onClick, botones) ejecutados dentro de useTransition
- */
 export async function deleteCollectionAction(id: string, slug: string): Promise<ActionResponse> {
     try {
         await collectionService.delete(id);
@@ -90,7 +87,7 @@ export async function deleteCollectionAction(id: string, slug: string): Promise<
         revalidateTag(`collection-${slug}`);
         revalidateTag("collections-list");
 
-        return { success: true, message: "Colección desactivada correctamente" };
+        return { success: true, message: "Colección eliminada correctamente" };
     } catch (error) {
         return { success: false, error: getErrorMessage(error) };
     }

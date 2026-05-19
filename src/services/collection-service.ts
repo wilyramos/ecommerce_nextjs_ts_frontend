@@ -1,8 +1,6 @@
-//File: frontend/src/services/collection-service.ts
-
-import { 
-    collectionsArraySchema, 
-    collectionDetailResponseSchema, 
+import {
+    collectionsArraySchema,
+    collectionDetailResponseSchema,
     collectionSchema,
     Collection,
     CollectionDetailResponse,
@@ -13,7 +11,6 @@ import { verifySession } from "../auth/dal";
 
 const API_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
 
-// Helper centralizado para cabeceras de autenticación en el Service
 async function authHeaders(includeContentType = true): Promise<HeadersInit> {
     const session = await verifySession();
     if (!session || !session.token) {
@@ -34,25 +31,32 @@ async function authHeaders(includeContentType = true): Promise<HeadersInit> {
 export const collectionService = {
     async getAll(active?: boolean): Promise<Collection[]> {
         const queryParams = active !== undefined ? `?active=${active}` : "";
-        const res = await fetch(`${API_URL}/collections${queryParams}`, {
+        const url = `${API_URL}/collections${queryParams}`;
+
+        // Petición pública: solo colecciones activas, se puede cachear
+        if (active === true) {
+            const res = await fetch(url, { next: { tags: ["collections-list"] } });
+            if (!res.ok) throw new Error("Error al obtener las colecciones");
+            return collectionsArraySchema.parse(await res.json());
+        }
+
+        // Petición admin: incluye auth para ver también las inactivas
+        const res = await fetch(url, {
+            headers: await authHeaders(false),
             cache: "no-store",
         });
-
         if (!res.ok) throw new Error("Error al obtener las colecciones");
-        const data = await res.json();
-        
-        return collectionsArraySchema.parse(data);
+        return collectionsArraySchema.parse(await res.json());
     },
 
     async getBySlug(slug: string, page = 1, limit = 20): Promise<CollectionDetailResponse> {
-        const res = await fetch(`${API_URL}/collections/${slug}?page=${page}&limit=${limit}`, {
-            next: { tags: [`collection-${slug}`] }
-        });
+        const res = await fetch(
+            `${API_URL}/collections/${slug}?page=${page}&limit=${limit}`,
+            { next: { tags: [`collection-${slug}`] } }
+        );
 
         if (!res.ok) throw new Error("Error al obtener la colección");
-        const data = await res.json();
-
-        return collectionDetailResponseSchema.parse(data);
+        return collectionDetailResponseSchema.parse(await res.json());
     },
 
     async create(payload: CreateCollectionPayload): Promise<Collection> {
@@ -66,9 +70,8 @@ export const collectionService = {
             const errorData = await res.json().catch(() => ({}));
             throw new Error(errorData.message || "Error al crear la colección");
         }
-        const data = await res.json();
 
-        return collectionSchema.parse(data);
+        return collectionSchema.parse(await res.json());
     },
 
     async update(id: string, payload: UpdateCollectionPayload): Promise<Collection> {
@@ -82,9 +85,8 @@ export const collectionService = {
             const errorData = await res.json().catch(() => ({}));
             throw new Error(errorData.message || "Error al actualizar la colección");
         }
-        const data = await res.json();
 
-        return collectionSchema.parse(data);
+        return collectionSchema.parse(await res.json());
     },
 
     async delete(id: string): Promise<Collection> {
@@ -96,7 +98,8 @@ export const collectionService = {
         if (!res.ok) throw new Error("Error al eliminar la colección");
         const data = await res.json();
 
-        return collectionSchema.parse(data.collection);
+        // El backend puede devolver { collection } o la colección directamente
+        return collectionSchema.parse(data.collection ?? data);
     },
 
     async addProducts(id: string, productIds: string[]): Promise<void> {
@@ -116,5 +119,5 @@ export const collectionService = {
         });
 
         if (!res.ok) throw new Error("Error al remover el producto de la colección");
-    }
+    },
 };

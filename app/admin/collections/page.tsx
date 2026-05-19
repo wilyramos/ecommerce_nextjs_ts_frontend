@@ -1,9 +1,11 @@
-//File: frontend/app/admin/collections/page.tsx
-
 import { collectionService } from "@/src/services/collection-service";
+import AdminPageWrapper from "@/components/admin/AdminPageWrapper";
 import DeleteCollectionButton from "@/components/admin/collections/delete-button";
-import CollectionModal from "@/components/admin/collections/collection-modal";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Table, TableHeader, TableBody, TableRow, TableCell, TableHead } from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import CollectionModalWrapper from "@/components/admin/collections/CollectionModalWrapper";
 
 export const dynamic = "force-dynamic";
 
@@ -13,11 +15,8 @@ interface Props {
 
 export default async function AdminCollectionsPage({ searchParams }: Props) {
     const { modal, editId } = await searchParams;
-
-    // Obtener todas las colecciones desde el servicio
     const collections = await collectionService.getAll();
 
-    // Filtrar en memoria la colección a editar para reutilizar el método getAll existente
     const collectionToEdit = editId
         ? collections.find((c) => c._id === editId) || null
         : null;
@@ -25,92 +24,71 @@ export default async function AdminCollectionsPage({ searchParams }: Props) {
     const isModalOpen = modal === "new" || !!editId;
 
     return (
-        <div className="p-6">
-            <div className="flex justify-between items-center mb-6">
-                <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Colecciones Temáticas</h1>
-                    <p className="text-sm text-gray-500 mt-1">
-                        Gestiona secciones horizontales y estilos del catálogo (Ej: Spiderman, Navidad, Hello Kitty).
-                    </p>
-                </div>
-                <Link
-                    href="/admin/collections?modal=new"
-                    className="bg-black hover:bg-gray-800 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-                >
-                    + Nueva Colección
+        <AdminPageWrapper
+            title="Colecciones Temáticas"
+            
+            actions={
+                <Link href="/admin/collections?modal=new">
+                    <Button size="sm" className="text-xs font-bold uppercase tracking-wider">
+                        + Nueva Colección
+                    </Button>
                 </Link>
-            </div>
-
-            <div className="border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm">
-                <table className="w-full text-left border-collapse">
-                    <thead>
-                        <tr className="bg-gray-50 border-b border-gray-200">
-                            <th className="p-4 font-semibold text-sm text-gray-600">Nombre</th>
-                            <th className="p-4 font-semibold text-sm text-gray-600">Slug</th>
-                            <th className="p-4 font-semibold text-sm text-gray-600">Prioridad</th>
-                            <th className="p-4 font-semibold text-sm text-gray-600">Estado</th>
-                            <th className="p-4 font-semibold text-sm text-gray-600 text-right">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
+            }
+        >
+            <div className="border border-border/60 bg-background rounded-sm overflow-hidden">
+                <Table>
+                    <TableHeader className="bg-background-secondary/50">
+                        <TableRow className="hover:bg-transparent border-border/60">
+                            <TableHead className="font-bold text-xs uppercase text-foreground">Nombre</TableHead>
+                            <TableHead className="font-bold text-xs uppercase text-foreground">Slug</TableHead>
+                            <TableHead className="font-bold text-xs uppercase text-foreground">Prioridad</TableHead>
+                            <TableHead className="font-bold text-xs uppercase text-foreground">Estado</TableHead>
+                            <TableHead className="text-right font-bold text-xs uppercase text-foreground">Acciones</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody className="divide-y divide-border/40">
                         {collections.length === 0 ? (
-                            <tr>
-                                <td colSpan={5} className="p-8 text-center text-sm text-gray-400">
+                            <TableRow>
+                                <TableCell colSpan={5} className="h-24 text-center text-muted-foreground text-xs font-medium">
                                     No hay colecciones creadas actualmente.
-                                </td>
-                            </tr>
+                                </TableCell>
+                            </TableRow>
                         ) : (
                             collections.map((col) => (
-                                <tr key={col._id} className="hover:bg-gray-50 transition-colors">
-                                    <td className="p-4 font-medium text-gray-900 flex items-center gap-3">
+                                <TableRow key={col._id} className="hover:bg-background-secondary/40 transition-colors">
+                                    <TableCell className="font-bold text-sm text-foreground flex items-center gap-3">
                                         {col.color && (
-                                            <span
-                                                className="w-3 h-3 rounded-full border border-gray-300 inline-block"
-                                                style={{ backgroundColor: col.color }}
-                                            />
+                                            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: col.color }} />
                                         )}
-                                        {/* {col.nombre} */}
-                                    </td>
-                                    <td className="p-4 text-gray-500 text-sm">{col.slug}</td>
-                                    <td className="p-4 text-sm text-gray-700">{col.order}</td>
-                                    <td className="p-4">
-                                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${col.isActive
-                                                ? "bg-green-100 text-green-800"
-                                                : "bg-red-100 text-red-800"
-                                            }`}>
+                                        {col.name}
+                                    </TableCell>
+                                    <TableCell className="text-xs text-muted-foreground font-mono">{col.slug}</TableCell>
+                                    <TableCell className="text-sm text-foreground">{col.order}</TableCell>
+                                    <TableCell>
+                                        <Badge variant={col.isActive ? "default" : "destructive"} className="text-[10px] uppercase">
                                             {col.isActive ? "Activo" : "Inactivo"}
-                                        </span>
-                                    </td>
-                                    <td className="p-4 text-right space-x-4 text-sm">
-                                        <Link
-                                            href={`/admin/collections/${col._id}/products`}
-                                            className="text-blue-600 hover:text-blue-900 font-medium"
-                                        >
-                                            Asignar Productos
-                                        </Link>
-                                        <Link
-                                            href={`/admin/collections?editId=${col._id}`}
-                                            className="text-gray-600 hover:text-gray-900 font-medium"
-                                        >
-                                            Editar
-                                        </Link>
-                                        {col.isActive && (
-                                            <DeleteCollectionButton id={col._id} slug={col.slug} />
-                                        )}
-                                    </td>
-                                </tr>
+                                        </Badge>
+                                    </TableCell>
+                                    <TableCell className="text-right space-x-2">
+                                        <Button variant="ghost" size="sm" className="text-xs h-8" asChild>
+                                            <Link href={`/admin/collections/${col._id}/products`}>Productos</Link>
+                                        </Button>
+                                        <Button variant="ghost" size="sm" className="text-xs h-8" asChild>
+                                            <Link href={`/admin/collections?editId=${col._id}`}>Editar</Link>
+                                        </Button>
+                                        {col.isActive && <DeleteCollectionButton id={col._id} slug={col.slug} />}
+                                    </TableCell>
+                                </TableRow>
                             ))
                         )}
-                    </tbody>
-                </table>
+                    </TableBody>
+                </Table>
             </div>
 
-            {isModalOpen && (
-                <CollectionModal
-                    isOpen={isModalOpen}
-                    collectionToEdit={collectionToEdit}
-                />
-            )}
-        </div>
+         <CollectionModalWrapper
+                isOpen={isModalOpen}
+                collectionToEdit={collectionToEdit}
+            />
+        </AdminPageWrapper>
     );
 }
