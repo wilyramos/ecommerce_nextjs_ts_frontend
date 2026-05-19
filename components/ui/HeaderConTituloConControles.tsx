@@ -20,11 +20,11 @@ export default function HeaderConTituloConControles({ title, next, previous, vie
                 {/* Título y Label */}
                 <div className="flex flex-col">
                     {label && (
-                        <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] mb-0.5">
+                        <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-0.5">
                             {label}
                         </span>
                     )}
-                    <h2 className="text-lg md:text-xl font-bold tracking-tight text-[var(--color-text-primary)]">
+                    <h2 className="text-lg md:text-xl font-bold tracking-tight text-foreground">
                         {title}
                     </h2>
                 </div>
@@ -34,7 +34,7 @@ export default function HeaderConTituloConControles({ title, next, previous, vie
                     {viewAllHref && (
                         <Link 
                             href={viewAllHref} 
-                            className="hidden md:flex items-center gap-1 text-sm text-[var(--color-action-tertiary)] hover:opacity-70 transition-opacity"
+                            className="hidden md:flex items-center gap-1 text-sm text-foreground hover:text-action-cta font-medium transition-colors duration-200"
                         >
                             Ver todo
                             <ChevronRight size={12} strokeWidth={3} />
@@ -48,7 +48,7 @@ export default function HeaderConTituloConControles({ title, next, previous, vie
             {viewAllHref && (
                 <Link 
                     href={viewAllHref} 
-                    className="md:hidden text-sm text-[var(--color-action-tertiary)] flex items-center gap-1"
+                    className="md:hidden text-sm text-foreground active:text-action-cta flex items-center gap-1 font-medium transition-colors"
                 >
                     Ver todo <ChevronRight size={10} strokeWidth={3} />
                 </Link>

@@ -1,6 +1,7 @@
 import { Comparison, ComparisonFormValues } from "../schemas/comparison.schema";
+import { verifySession } from "../auth/dal";
 
-const API_URL = process.env.API_URL;
+const API_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
 
 export class ComparisonService {
     /**
@@ -17,7 +18,7 @@ export class ComparisonService {
         const res = await fetch(`${API_URL}/comparisons?${params.toString()}`, {
             method: "GET",
             headers: { "Content-Type": "application/json" },
-            next: { tags: ["comparisons"] } // Next.js 15 Cache Tag
+            next: { tags: ["comparisons"] }
         });
 
         if (!res.ok) throw new Error("Error al obtener las comparativas");
@@ -31,7 +32,25 @@ export class ComparisonService {
         const res = await fetch(`${API_URL}/comparisons/slug/${slug}?isPublic=${isPublic}`, {
             method: "GET",
             headers: { "Content-Type": "application/json" },
-            next: { tags: [`comparison-${slug}`], revalidate: 3600 } // Caché de 1 hora o bajo demanda
+            next: { tags: [`comparison-${slug}`], revalidate: 3600 }
+        });
+
+        if (!res.ok) throw new Error("Comparativa no encontrada");
+        return await res.json();
+    }
+
+    /**
+     * Recupera una comparativa específica mediante su ID único (Para administración).
+     */
+    static async getById(id: string): Promise<{ status: string; data: Comparison }> {
+        const session = await verifySession();
+        const res = await fetch(`${API_URL}/comparisons/${id}`, {
+            method: "GET",
+            headers: { 
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${session.token}`
+            },
+            next: { tags: [`comparison-${id}`] }
         });
 
         if (!res.ok) throw new Error("Comparativa no encontrada");
@@ -54,14 +73,15 @@ export class ComparisonService {
     }
 
     /**
-     * Envía la petición de creación al backend con el token de autorización JWT.
+     * Envía la petición de creación al backend resolviendo la sesión internamente.
      */
-    static async create(data: ComparisonFormValues, token: string) {
+    static async create(data: ComparisonFormValues) {
+        const session = await verifySession();
         const res = await fetch(`${API_URL}/comparisons`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${session.token}`
             },
             body: JSON.stringify(data)
         });
@@ -72,14 +92,15 @@ export class ComparisonService {
     }
 
     /**
-     * Envía la petición de actualización al backend.
+     * Envía la petición de actualización al backend resolviendo la sesión internamente.
      */
-    static async update(id: string, data: Partial<ComparisonFormValues>, token: string) {
+    static async update(id: string, data: Partial<ComparisonFormValues>) {
+        const session = await verifySession();
         const res = await fetch(`${API_URL}/comparisons/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${session.token}`
             },
             body: JSON.stringify(data)
         });
@@ -90,13 +111,14 @@ export class ComparisonService {
     }
 
     /**
-     * Ejecuta el borrado lógico en el backend.
+     * Ejecuta el borrado lógico en el backend resolviendo la sesión internamente.
      */
-    static async delete(id: string, token: string) {
+    static async delete(id: string) {
+        const session = await verifySession();
         const res = await fetch(`${API_URL}/comparisons/${id}`, {
             method: "DELETE",
             headers: {
-                "Authorization": `Bearer ${token}`
+                "Authorization": `Bearer ${session.token}`
             }
         });
 

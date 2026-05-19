@@ -1,4 +1,3 @@
-// File: src/components/catalog/CatalogHeader.tsx
 "use client";
 
 import Link from "next/link";
@@ -29,11 +28,11 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
     const currentSort = searchParams.get("sort") || "recientes";
 
     return (
-        <div className="w-full flex flex-col gap-8 pt-4 pb-6 border-b border-[var(--color-border-subtle)]">
+        <div className="w-full flex flex-col gap-8 pt-4 pb-6 border-b border-border">
 
             {/* Breadcrumbs */}
             <nav aria-label="Breadcrumb" className="px-1">
-                <ol className="flex items-center flex-wrap gap-x-1.5 text-sm text-[var(--color-text-tertiary)]">
+                <ol className="flex items-center flex-wrap gap-x-1.5 text-sm text-muted-foreground">
                     {breadcrumbs.map((crumb, index) => {
                         const isLast = index === breadcrumbs.length - 1;
                         const isFirst = index === 0;
@@ -45,13 +44,13 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
                                 )}
 
                                 {isLast ? (
-                                    <span className="text-[var(--color-text-primary)]" aria-current="page">
+                                    <span className="text-foreground font-medium" aria-current="page">
                                         {crumb.label}
                                     </span>
                                 ) : (
                                     <Link
                                         href={crumb.href}
-                                        className="flex items-center gap-1 hover:text-[var(--color-text-primary)] transition-colors duration-200"
+                                        className="flex items-center gap-1 hover:text-foreground transition-colors duration-200"
                                     >
                                         {isFirst && <Home className="w-2.5 h-2.5 mb-0.5" />}
                                         {crumb.label}
@@ -67,20 +66,20 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 px-1">
                 <div className="space-y-1.5">
                     <div className="flex items-baseline gap-4">
-                        <h1 className="text-xl md:text-2xl font-semibold tracking-tighter text-[var(--color-text-primary)] uppercase">
+                        <h1 className="text-xl md:text-2xl font-semibold tracking-tighter text-foreground uppercase">
                             {title.map((part, i) => (
                                 <span
                                     key={i}
-                                    className={part.italic ? "font-light italic " : ""}
+                                    className={part.italic ? "font-light italic" : ""}
                                 >
                                     {part.text}{" "}
                                 </span>
                             ))}
                         </h1>
 
-                        <span className="h-6 w-[1px] bg-[var(--color-border-default)] hidden sm:block" />
+                        <span className="h-6 w-[1px] bg-border hidden sm:block" />
 
-                        <span className="text-[11px] font-bold tracking-widest text-[var(--color-accent-warm)]">
+                        <span className="text-[11px] font-bold tracking-widest text-action-cta uppercase">
                             {totalProducts} Items
                         </span>
                     </div>
@@ -90,48 +89,46 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
                 <div className="hidden md:flex items-center gap-4">
                     <div className="group relative flex items-center">
                         <div className="absolute left-3 z-10 pointer-events-none">
-                            <ArrowUpDown className="w-3.5 h-3.5 text-[var(--color-text-tertiary)] group-focus-within:text-[var(--color-accent-warm)] transition-colors" />
+                            <ArrowUpDown className="w-3.5 h-3.5 text-muted-foreground group-focus-within:text-action-cta transition-colors" />
                         </div>
 
                         <Select
                             value={currentSort}
                             onValueChange={(val) => updateFilter("sort", val)}
                         >
-                            <SelectTrigger className="w-[200px] h-11 pl-9 pr-4 border-[var(--color-border-default)] bg-[var(--color-bg-primary)] text-[13px] font-semibold text-[var(--color-text-secondary)] focus:ring-2 focus:ring-[var(--color-action-primary-light)] focus:border-[var(--color-accent-warm)] transition-all hover:bg-[var(--color-bg-secondary)]">
+                            <SelectTrigger className="w-[200px] h-11 pl-9 pr-4 border-border bg-background text-[13px] font-semibold text-foreground focus:ring-2 focus:ring-ring focus:border-border-hover transition-all hover:bg-background-secondary">
                                 <SelectValue placeholder="Ordenar por" />
                             </SelectTrigger>
 
-
                             <SelectContent
                                 align="end"
-                                className="bg-[var(--color-bg-primary)] border-[var(--color-border-default)]  p-1"
+                                className="bg-background border-border p-1 text-foreground"
                             >
-                                {/* RELEVANCIA: Solo útil si hay una búsqueda activa */}
-                                <SelectItem value="relevancia" >
+                                <SelectItem value="relevancia">
                                     Relevancia
                                 </SelectItem>
 
-                                <SelectItem value="recientes" >
+                                <SelectItem value="recientes">
                                     Más Recientes
                                 </SelectItem>
 
-                                {/* VALORACIÓN: Basado en reviews/rating */}
-                                <SelectItem value="rating" >
+                                <SelectItem value="rating">
                                     Mejor Valorados
                                 </SelectItem>
 
-                                {/* DESCUENTO: Ideal para captar atención en ofertas */}
-                                <SelectItem value="discount" >
+                                <SelectItem value="discount">
                                     Mayor Descuento
                                 </SelectItem>
 
-                                <SelectItem value="price-asc" >
+                                <SelectItem value="price-asc">
                                     Precio: Menor a Mayor
                                 </SelectItem>
-                                <SelectItem value="price-desc" >
+                                
+                                <SelectItem value="price-desc">
                                     Precio: Mayor a Menor
                                 </SelectItem>
-                                <SelectItem value="name-asc" >
+                                
+                                <SelectItem value="name-asc">
                                     Nombre: A - Z
                                 </SelectItem>
                             </SelectContent>

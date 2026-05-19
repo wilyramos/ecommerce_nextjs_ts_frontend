@@ -1,7 +1,6 @@
-//File: frontend/components/ui/Breadcrumbs.tsx
+// File: frontend/components/ui/Breadcrumbs.tsx
 
 import Link from "next/link";
-import { ChevronRight, Home, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface BreadcrumbItem {
@@ -18,7 +17,7 @@ interface Props {
 export default function Breadcrumbs({ items, current, className }: Props) {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://gophone.pe";
     
-    // Lógica de colapso: si hay más de 3 items, mostramos el primero, ... y el último
+    // Lógica de colapso: si hay más de 4 items, mostramos el primero, la elipsis y el último
     const shouldCollapse = items.length > 4;
     const displayItems = shouldCollapse 
         ? [items[0], { label: "...", href: "#" }, items[items.length - 1]] 
@@ -44,7 +43,7 @@ export default function Breadcrumbs({ items, current, className }: Props) {
             "@type": "ListItem",
             "position": schemaItems.length + 1,
             "name": current,
-            "item": typeof window !== 'undefined' ? window.location.href : `${baseUrl}/#`
+            "item": typeof window !== "undefined" ? window.location.href : `${baseUrl}/#`
         });
     }
 
@@ -57,38 +56,38 @@ export default function Breadcrumbs({ items, current, className }: Props) {
     return (
         <nav
             aria-label="Breadcrumb"
-            className={cn("w-full overflow-hidden px-2", className)}
+            className={cn("w-full overflow-hidden", className)}
         >
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
 
-            <ol className="flex items-center whitespace-nowrap overflow-hidden py-2 text-xs text-[var(--store-text-muted)]">
+            <ol className="flex items-center whitespace-nowrap overflow-hidden text-xs text-muted-foreground/80 font-medium">
                 {/* Home */}
                 <li className="flex items-center shrink-0">
                     <Link
                         href="/"
-                        className="flex items-center gap-1 hover:text-[var(--store-primary)] transition-colors"
+                        className="hover:text-action-cta transition-colors"
                         title="Ir al inicio"
                     >
-                        <Home className="w-3.5 h-3.5 mb-0.5" />
-                        <span className="sr-only">Inicio</span>
+                        Inicio
                     </Link>
                 </li>
 
-                {/* Items con lógica de elipsis */}
+                {/* Items con lógica de elipsis de texto */}
                 {displayItems.map((item, index) => (
                     <li key={`${item.label}-${index}`} className="flex items-center min-w-0">
-                        <ChevronRight className="w-3 h-3 mx-2 text-gray-300 shrink-0" />
+                        {/* Divisor tipográfico limpio sin icono */}
+                        <span className="mx-2 text-muted-foreground/40 select-none">/</span>
                         {item.label === "..." ? (
-                            <span className="flex items-center justify-center w-6 h-6 rounded-md hover:bg-gray-100 transition-colors cursor-default">
-                                <MoreHorizontal className="w-4 h-4" />
+                            <span className="cursor-default tracking-widest text-muted-foreground/40 px-1">
+                                ...
                             </span>
                         ) : (
                             <Link
                                 href={item.href}
-                                className="font-medium hover:text-[var(--store-primary)] hover:underline decoration-1 underline-offset-2 truncate min-w-0 max-w-[100px] sm:max-w-[180px]"
+                                className="hover:text-action-cta truncate min-w-0 max-w-[100px] sm:max-w-[180px] transition-colors"
                             >
                                 {item.label}
                             </Link>
@@ -96,10 +95,13 @@ export default function Breadcrumbs({ items, current, className }: Props) {
                     </li>
                 ))}
 
-                {/* Actual */}
+                {/* Separador e indicador textual para el Item Actual (Visible de forma profesional) */}
                 {current && (
-                    <li className="sr-only" aria-current="page">
-                        {current}
+                    <li className="flex items-center min-w-0 text-foreground font-semibold">
+                        <span className="mx-2 text-muted-foreground/40 select-none">/</span>
+                        <span className="truncate min-w-0 max-w-[150px] sm:max-w-[240px]" aria-current="page">
+                            {current}
+                        </span>
                     </li>
                 )}
             </ol>

@@ -1,4 +1,3 @@
-// File: src/components/catalog/CatalogLayout.tsx
 "use client";
 
 import type { CatalogResponse } from "@/src/schemas/catalog";
@@ -68,7 +67,7 @@ export default function CatalogLayout({
     }
 
     return (
-        <section className="container mx-auto px-4 md:px-6 max-w-[1440px] pb-10">
+        <section className="container mx-auto px-4 md:px-6 max-w-[1440px] pb-10 text-foreground bg-background">
 
             <div className="pt-4">
                 <CatalogHeader
@@ -80,7 +79,8 @@ export default function CatalogLayout({
 
             <div className="flex flex-col lg:grid lg:grid-cols-12 gap-2 relative">
 
-                <aside className="hidden lg:block lg:col-span-3 xl:col-span-2 md:pr-6 border-r">
+                {/* Sidebar Desktop con estilos de panel lateral del sistema */}
+                <aside className="hidden lg:block lg:col-span-3 xl:col-span-2 md:pr-6 border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
                     <div className="sticky top-24">
                         <CatalogSidebar filters={filters} />
                     </div>
@@ -88,7 +88,8 @@ export default function CatalogLayout({
 
                 <main className="lg:col-span-9 xl:col-span-10 flex flex-col">
 
-                    <div className="lg:hidden flex items-center justify-between sticky top-11 z-10 bg-[var(--color-bg-primary)] py-2 border-b border-[var(--color-border-subtle)]">
+                    {/* Barra de Filtros Mobile integrada al ecosistema de color */}
+                    <div className="lg:hidden flex items-center justify-between sticky top-11 z-10 bg-background py-2 border-b border-border">
                         <CatalogMobileFilters filters={filters} />
                         <CatalogMobileSort />
                     </div>
@@ -96,7 +97,7 @@ export default function CatalogLayout({
                     <CatalogGrid products={products} isFallback={isFallback} />
 
                     {!isFallback && pagination.totalPages > 1 && (
-                        <div className="mt-auto pt-8 border-t border-[var(--color-border)]">
+                        <div className="mt-auto pt-8 border-t border-border">
                             <CatalogPagination
                                 currentPage={pagination.currentPage}
                                 totalPages={pagination.totalPages}

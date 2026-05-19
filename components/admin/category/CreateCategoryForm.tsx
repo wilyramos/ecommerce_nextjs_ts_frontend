@@ -5,7 +5,7 @@ import CategoryForm from "./CategoryForm"
 import { createCategoryAction } from "@/actions/category/create-category-action"
 import { useActionState, useEffect } from "react"
 import { toast } from 'react-toastify'
-import type { CategoryResponse } from "@/src/schemas"
+import type { CategoryResponse } from "@/src/schemas/category.schema";
 
 
 export default function CreateCategoryForm({ categories }: { categories: CategoryResponse[] }) {

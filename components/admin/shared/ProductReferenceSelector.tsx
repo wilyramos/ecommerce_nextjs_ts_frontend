@@ -1,4 +1,5 @@
-// File: frontend/src/components/admin/shared/ProductReferenceSelector.tsx
+//File: frontend/components/admin/shared/ProductReferenceSelector.tsx
+
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
@@ -35,6 +36,7 @@ interface Props {
     initialProduct?: Product | null;
     initialId?: string;
     label?: string;
+    onSelect?: (id: string) => void;
 }
 
 export default function ProductReferenceSelector({
@@ -42,6 +44,7 @@ export default function ProductReferenceSelector({
     initialProduct = null,
     initialId,
     label = "Producto Vinculado",
+    onSelect,
 }: Props) {
     const [open, setOpen] = useState(false);
     const [search, setSearch] = useState("");
@@ -128,7 +131,7 @@ export default function ProductReferenceSelector({
                     </div>
 
                     <div className="flex-1 min-w-0">
-                        <p className="text-sm truncate">{selected.nombre}</p>
+                        <p className="text-xs">{selected.nombre}</p>
                         <p className="text-xs text-muted-foreground">
                             S/ {selected.precio.toFixed(2)}
                         </p>
@@ -136,7 +139,10 @@ export default function ProductReferenceSelector({
 
                     <button
                         type="button"
-                        onClick={() => setSelected(null)}
+                        onClick={() => {
+                            setSelected(null);
+                            if (onSelect) onSelect("");
+                        }}
                         className="p-1 hover:opacity-70"
                     >
                         <X className="w-4 h-4" />
@@ -196,6 +202,7 @@ export default function ProductReferenceSelector({
                                         onClick={() => {
                                             setSelected(product);
                                             setOpen(false);
+                                            if (onSelect) onSelect(product._id);
                                         }}
                                         className={cn(
                                             "w-full flex items-center gap-4 p-2 border-b text-left transition-colors",

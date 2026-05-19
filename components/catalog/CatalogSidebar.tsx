@@ -43,19 +43,21 @@ export default function CatalogSidebar({ filters }: Props) {
     }), [filters]);
 
     const triggerClass =
-        "text-[11px] font-medium uppercase tracking-[0.06em] text-[var(--color-text-tertiary)] hover:no-underline py-3 px-0 border-b border-[var(--color-border-subtle)] hover:text-[var(--color-text-secondary)]";
+        "text-[11px] font-medium uppercase tracking-[0.06em] text-sidebar-foreground/70 hover:no-underline py-3 px-0 border-b border-sidebar-border hover:text-sidebar-foreground transition-colors";
 
     const row =
-        "flex items-center gap-2 px-2 py-[5px] rounded cursor-pointer transition-colors hover:bg-[var(--color-bg-secondary)]";
+        "flex items-center gap-2 px-2 py-[5px] rounded cursor-pointer transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground";
 
     const checkboxClass =
-        "w-3.5 h-3.5 rounded-[3px] border-[var(--color-border-default)] " +
-        "data-[state=checked]:bg-[var(--color-accent-warm)] " +
-        "data-[state=checked]:border-[var(--color-accent-warm)] " +
+        "w-3.5 h-3.5 rounded-[3px] border-sidebar-border " +
+        "data-[state=checked]:bg-sidebar-primary " +
+        "data-[state=checked]:border-sidebar-primary " +
+        "data-[state=checked]:text-sidebar-primary-foreground " +
+        "focus-visible:ring-sidebar-ring " +
         "transition-colors duration-150";
 
     return (
-        <div className="w-full pb-20 select-none">
+        <div className="w-full pb-20 select-none bg-sidebar text-sidebar-foreground">
             <ActiveFiltersSidebar />
 
             <Accordion
@@ -78,10 +80,10 @@ export default function CatalogSidebar({ filters }: Props) {
                                             <button
                                                 onClick={() => setCategory(cat.slug)}
                                                 className={cn(
-                                                    "w-full text-left px-2 py-[5px] text-[13px] rounded transition-colors duration-150",
+                                                    "w-full text-left px-2 py-[5px] text-[13px] rounded transition-colors duration-150 outline-none",
                                                     active
-                                                        ? "text-[var(--color-accent-warm)] font-medium"
-                                                        : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
+                                                        ? "bg-sidebar-accent text-sidebar-accent-foreground font-bold"
+                                                        : "text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
                                                 )}
                                             >
                                                 {cat.nombre}
@@ -101,25 +103,23 @@ export default function CatalogSidebar({ filters }: Props) {
                             Marcas
                         </AccordionTrigger>
                         <AccordionContent className="pt-1.5 pb-0">
-                            <div className="space-y-0 max-h-[220px] overflow-y-auto pr-1">
+                            <div className="space-y-0 max-h-[220px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-sidebar-border">
                                 {sortedFilters.brands.map((brand) => {
                                     const active = isBrandActive(brand.slug);
                                     return (
                                         <div
                                             key={brand.id}
                                             onClick={() => setBrand(brand.slug)}
-                                            className={row}
+                                            className={cn(
+                                                row,
+                                                active && "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                                            )}
                                         >
                                             <Checkbox
                                                 checked={active}
                                                 className={checkboxClass}
                                             />
-                                            <span className={cn(
-                                                "text-[13px] transition-colors duration-150",
-                                                active
-                                                    ? "text-[var(--color-text-primary)]"
-                                                    : "text-[var(--color-text-secondary)]"
-                                            )}>
+                                            <span className="text-[13px] transition-colors duration-150">
                                                 {brand.nombre}
                                             </span>
                                         </div>
@@ -137,25 +137,23 @@ export default function CatalogSidebar({ filters }: Props) {
                             Modelos
                         </AccordionTrigger>
                         <AccordionContent className="pt-1.5 pb-0">
-                            <div className="space-y-0 max-h-[220px] overflow-y-auto pr-1">
+                            <div className="space-y-0 max-h-[220px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-sidebar-border">
                                 {sortedFilters.lines.map((line) => {
                                     const active = isLineActive(line.slug);
                                     return (
                                         <div
                                             key={line.id}
                                             onClick={() => setLine(line.slug)}
-                                            className={row}
+                                            className={cn(
+                                                row,
+                                                active && "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                                            )}
                                         >
                                             <Checkbox
                                                 checked={active}
                                                 className={checkboxClass}
                                             />
-                                            <span className={cn(
-                                                "text-[13px] transition-colors duration-150",
-                                                active
-                                                    ? "text-[var(--color-text-primary)]"
-                                                    : "text-[var(--color-text-secondary)]"
-                                            )}>
+                                            <span className="text-[13px] transition-colors duration-150">
                                                 {line.nombre}
                                             </span>
                                         </div>
@@ -176,7 +174,7 @@ export default function CatalogSidebar({ filters }: Props) {
                                 {attr.name}
                             </AccordionTrigger>
                             <AccordionContent className="pt-1.5 pb-0">
-                                <div className="space-y-0 max-h-[220px] overflow-y-auto pr-1">
+                                <div className="space-y-0 max-h-[220px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-sidebar-border">
                                     {attr.values.map((val) => {
                                         const isChecked = searchParams.getAll(attr.name).includes(val);
 
@@ -184,7 +182,10 @@ export default function CatalogSidebar({ filters }: Props) {
                                             <div
                                                 key={val}
                                                 onClick={() => updateFilter(attr.name, val)}
-                                                className={row}
+                                                className={cn(
+                                                    row,
+                                                    isChecked && "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                                                )}
                                             >
                                                 <Checkbox
                                                     checked={isChecked}
@@ -194,12 +195,7 @@ export default function CatalogSidebar({ filters }: Props) {
                                                     {isColorAttr && (
                                                         <ColorCircle color={val} size={12} />
                                                     )}
-                                                    <span className={cn(
-                                                        "text-[13px] capitalize transition-colors duration-150",
-                                                        isChecked
-                                                            ? "text-[var(--color-text-primary)]"
-                                                            : "text-[var(--color-text-secondary)]"
-                                                    )}>
+                                                    <span className="text-[13px] capitalize transition-colors duration-150">
                                                         {val}
                                                     </span>
                                                 </div>

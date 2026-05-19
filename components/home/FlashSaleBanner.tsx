@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Timer } from "lucide-react";
@@ -22,46 +23,45 @@ export default function HeroFlashSale() {
         return () => clearInterval(timer);
     }, []);
 
-    if (!mounted) return <div className="min-h-[360px] bg-[var(--color-bg-secondary)]" />;
+    if (!mounted) return <div className="min-h-[360px] bg-background-secondary" />;
 
     return (
         <Link
-
             href="/ofertas"
-            className="group relative flex flex-col justify-center p-10 md:p-14 bg-[var(--color-bg-primary)] min-h-[360px] overflow-hidden"
-
+            className="group relative flex flex-col justify-center p-6 bg-background min-h-[360px] overflow-hidden border border-border"
         >
             <div className="space-y-5">
-                <div className="inline-flex items-center gap-2 text-[var(--color-accent-warm)] font-semibold text-xs uppercase tracking-tight">
-                    <Timer className="w-4 h-4" /> Oferta del día
+                <div className="inline-flex items-center gap-2 text-action-cta font-semibold text-xs uppercase tracking-tight">
+                    <Timer className="w-4 h-4 animate-pulse" /> Oferta del día
                 </div>
 
-                <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-[var(--color-text-primary)] leading-[1.1]">
+                <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground leading-[1.1]">
                     Precios fugaces. <br />
-                    <span className="text-[var(--color-text-tertiary)] group-hover:text-[var(--color-text-primary)] transition-colors">Oportunidad única.</span>
+                    <span className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                        Oportunidad única.
+                    </span>
                 </h2>
 
                 <div className="flex items-center gap-8 pt-4">
-                    <span className="text-[var(--color-text-primary)] font-medium">
-                        ver ofertas
+                    <span className="text-foreground font-medium group-hover:text-action-cta transition-colors duration-300 underline underline-offset-4 decoration-border group-hover:decoration-action-cta">
+                        Ver ofertas
                     </span>
-                    <div className="flex gap-4 border-l border-[var(--color-border-default)] pl-8">
+                    <div className="flex gap-4 border-l border-border pl-8">
                         <TimeBox val={timeLeft.hours} unit="H" />
                         <TimeBox val={timeLeft.minutes} unit="M" />
                         <TimeBox val={timeLeft.seconds} unit="S" active />
                     </div>
                 </div>
             </div>
-
         </Link>
     );
 }
 
 const TimeBox = ({ val, unit, active }: { val: number; unit: string; active?: boolean }) => (
     <div className="text-center">
-        <div className={`text-xl font-bold tabular-nums ${active ? "text-[var(--color-accent-warm)]" : "text-[var(--color-text-primary)]"}`}>
+        <div className={`text-xl font-bold tabular-nums ${active ? "text-action-cta" : "text-foreground"}`}>
             {val.toString().padStart(2, "0")}
         </div>
-        <div className="text-[10px] text-[var(--color-text-tertiary)] font-bold">{unit}</div>
+        <div className="text-[10px] text-muted-foreground font-bold">{unit}</div>
     </div>
 );

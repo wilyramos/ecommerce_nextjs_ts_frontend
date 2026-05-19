@@ -30,19 +30,22 @@ export default function CatalogMobileFilters({ filters }: Props) {
                         flex items-center gap-2
                         px-3 py-2
                         text-[13px]
+                        font-medium
                         rounded-md
-                        border border-[var(--color-border-subtle)]
-                        bg-[var(--color-bg-primary)]
-                        text-[var(--color-text-primary)]
+                        border border-border
+                        bg-background
+                        text-foreground
                         transition-colors
-                        hover:bg-[var(--color-bg-secondary)]
+                        hover:bg-background-secondary
+                        active:scale-95
+                        outline-none
                     "
                 >
-                    <LuListFilter className="w-4 h-4 text-[var(--color-text-secondary)]" />
+                    <LuListFilter className="w-4 h-4 text-muted-foreground" />
                     Filtros
 
                     {hasFilters && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent-warm)] ml-1" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-action-cta ml-1 animate-pulse" />
                     )}
                 </button>
             </DrawerTrigger>
@@ -51,9 +54,9 @@ export default function CatalogMobileFilters({ filters }: Props) {
             <DrawerContent
                 className="
                     h-[88vh]
-                    bg-[var(--color-bg-primary)]
+                    bg-background
                     flex flex-col
-                    border-t border-[var(--color-border-subtle)]
+                    border-t border-border
                 "
             >
                 {/* Header */}
@@ -61,26 +64,28 @@ export default function CatalogMobileFilters({ filters }: Props) {
                     className="
                         px-4 py-3
                         flex items-center justify-between
-                        border-b border-[var(--color-border-subtle)]
+                        border-b border-border
                         shrink-0
                     "
                 >
-                    <DrawerTitle className="text-sm font-medium text-[var(--color-text-primary)]">
+                    <DrawerTitle className="text-sm font-semibold text-foreground">
                         Filtros
                     </DrawerTitle>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-4">
                         {hasFilters && (
                             <button
                                 onClick={clearFilters}
                                 className="
                                     text-[12px]
-                                    text-[var(--color-text-tertiary)]
-                                    hover:text-[var(--color-text-primary)]
+                                    font-semibold
+                                    text-muted-foreground
+                                    hover:text-action-cta
                                     transition-colors
+                                    outline-none
                                 "
                             >
-                                Limpiar
+                                Limpiar todo
                             </button>
                         )}
 
@@ -89,9 +94,11 @@ export default function CatalogMobileFilters({ filters }: Props) {
                                 className="
                                     p-1.5
                                     rounded-md
-                                    text-[var(--color-text-tertiary)]
-                                    hover:bg-[var(--color-bg-secondary)]
+                                    text-muted-foreground
+                                    hover:bg-background-secondary
+                                    hover:text-foreground
                                     transition-colors
+                                    outline-none
                                 "
                             >
                                 <LuX className="w-4 h-4" />
@@ -101,7 +108,7 @@ export default function CatalogMobileFilters({ filters }: Props) {
                 </DrawerHeader>
 
                 {/* Body */}
-                <div className="flex-1 overflow-y-auto px-4 py-3">
+                <div className="flex-1 overflow-y-auto px-4 py-3 scrollbar-thin scrollbar-thumb-border">
                     <CatalogSidebar filters={filters} />
                 </div>
             </DrawerContent>

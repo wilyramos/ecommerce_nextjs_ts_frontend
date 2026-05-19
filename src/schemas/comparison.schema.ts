@@ -1,5 +1,3 @@
-// File: frontend/src/schemas/comparison.schema.ts
-
 import { z } from "zod";
 
 // ─────────────────────────────────────────────────────────────
@@ -8,8 +6,16 @@ import { z } from "zod";
 
 const optionalString = z.string().optional().or(z.literal(""));
 
+// Convertidor flexible para soportar tanto IDs puros (string) como Objetos Populados de Mongoose
+const idOrPopulatedId = z
+    .union([
+        z.string().min(1, "ID inválido"),
+        z.object({ _id: z.string() }).passthrough()
+    ])
+    .transform((val) => (typeof val === "string" ? val : (val._id as string)));
+
 // ─────────────────────────────────────────────────────────────
-// SUB-SCHEMAS — Sincronizados con backend/src/models/Comparison.ts
+// SUB-SCHEMAS — Sincronizados con backend/src/modules/comparison/comparison.model.ts
 // ─────────────────────────────────────────────────────────────
 
 export const ComparisonSpecSchema = z.object({
@@ -21,10 +27,10 @@ export const ComparisonSpecSchema = z.object({
 });
 
 export const ProductEditorialSchema = z.object({
-    product: z.string().min(1, "El ID del producto es requerido"),
+    product: idOrPopulatedId.nullable().optional().or(z.literal("")),
     resumenIdoneidad: z.string()
         .trim()
-        .min(50, "El resumen de idoneidad debe tener al menos 50 caracteres")
+        .min(10, "El resumen de idoneidad debe tener al menos 50 caracteres")
         .max(300, "El resumen de idoneidad no debe superar los 300 caracteres"),
     pros: z.array(z.string().trim().min(10, "Cada punto a favor debe tener al menos 10 caracteres")),
     contras: z.array(z.string().trim().min(10, "Cada contra debe tener al menos 10 caracteres")),
@@ -45,22 +51,21 @@ export const BaseComparisonSchema = z.object({
         .trim()
         .min(20, "El título principal debe tener al menos 20 caracteres")
         .max(100, "El título principal no debe superar los 100 caracteres"),
-    slug: optionalString, // Autogenerable por el servicio si se omite en el formulario
+    slug: optionalString,
     metaTitle: z.string().trim().max(60, "El Meta Title SEO no debe superar los 60 caracteres").optional(),
     metaDescription: z.string().trim().max(160, "La Meta Description SEO no debe superar los 160 caracteres").optional(),
-    
-    // Lista de ObjectIds de productos (mínimo 2)
-    products: z.array(z.string().min(1, "ID de producto inválido")),
-    
+
+    products: z.array(idOrPopulatedId),
+
     introduccion: z.string().trim().min(150, "La introducción editorial debe tener al menos 150 caracteres para SEO"),
     veredictoRapido: optionalString,
     conclusion: z.string().trim().min(150, "La conclusión final debe tener al menos 150 caracteres para SEO"),
-    
+
     especificaciones: z.array(ComparisonSpecSchema).default([]),
     analisisEditorial: z.array(ProductEditorialSchema).default([]),
     palabrasClaveSecundarias: z.array(z.string().trim()).default([]),
     faqItems: z.array(ComparisonFAQSchema).default([]),
-    
+
     isActive: z.boolean().default(true),
     isFeatured: z.boolean().default(false),
 });
@@ -77,7 +82,7 @@ export const ComparisonSchema = BaseComparisonSchema.superRefine((data, ctx) => 
             message: "Se requieren al menos 2 productos para realizar una comparativa técnica",
             path: ["products"],
         });
-        return; 
+        return;
     }
 
     // 2. Unicidad de productos implicados
@@ -105,7 +110,6 @@ export const ComparisonSchema = BaseComparisonSchema.superRefine((data, ctx) => 
     if (data.analisisEditorial.length > 0) {
         const editorialIds = data.analisisEditorial.map((e) => e.product);
 
-        // Validar que cada producto seleccionado tenga exactamente un bloque editorial
         data.products.forEach((prodId) => {
             const count = editorialIds.filter((id) => id === prodId).length;
             if (count === 0) {
@@ -123,9 +127,8 @@ export const ComparisonSchema = BaseComparisonSchema.superRefine((data, ctx) => 
             }
         });
 
-        // Validar que no existan IDs en editorial que no pertenezcan a la comparativa
         data.analisisEditorial.forEach((edit, index) => {
-            if (!uniqueProducts.has(edit.product)) {
+            if (!uniqueProducts.has(edit.product?.toString() || "")) {
                 ctx.addIssue({
                     code: z.ZodIssueCode.custom,
                     message: "El análisis hace referencia a un producto que fue removido de la comparativa",
@@ -140,6 +143,13 @@ export const ComparisonSchema = BaseComparisonSchema.superRefine((data, ctx) => 
 // RESPONSE SCHEMA — Para datos que llegan populados desde el backend
 // ─────────────────────────────────────────────────────────────
 
+export const PopulatedProductSchema = z.object({
+    _id: z.string(),
+    nombre: z.string(),
+    imagenes: z.array(z.string()).optional(),
+    precio: z.union([z.number(), z.string()]).optional(),
+}).passthrough(); // Permite propiedades adicionales del producto sin romper el esquema
+
 export const ComparisonResponseSchema = BaseComparisonSchema.extend({
     _id: z.string(),
     slug: z.string(),
@@ -148,10 +158,8 @@ export const ComparisonResponseSchema = BaseComparisonSchema.extend({
     createdAt: z.string(),
     updatedAt: z.string(),
     deletedAt: z.string().nullable().optional(),
-    
-    // Flexibilidad para recibir los productos como strings (ObjectIds) o cargados como objetos completos
-    products: z.array(z.union([z.string(), z.record(z.any())])),
-    analisisEditorial: z.array(
+
+    products: z.array(z.union([z.string(), PopulatedProductSchema])), analisisEditorial: z.array(
         ProductEditorialSchema.extend({
             product: z.union([z.string(), z.record(z.any())]),
         })
@@ -168,3 +176,5 @@ export type Comparison = z.infer<typeof ComparisonResponseSchema>;
 export type ComparisonSpec = z.infer<typeof ComparisonSpecSchema>;
 export type ProductEditorial = z.infer<typeof ProductEditorialSchema>;
 export type ComparisonFAQ = z.infer<typeof ComparisonFAQSchema>;
+
+export type PopulatedProduct = z.infer<typeof PopulatedProductSchema>;

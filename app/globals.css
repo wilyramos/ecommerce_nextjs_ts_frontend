@@ -1,82 +1,81 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* 
----break--- */
-
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --radius: 0.625rem;
+  /* --- BASE DE DISEÑO / LIGHT MODE ÚNICO --- */
+  --background: oklch(1 0 0);               /* #FFFFFF */
+  --background-secondary: oklch(0.96 0 0);   /* #F6F6F6 - Segunda opción de fondo general */
+  --foreground: oklch(0.10 0 0);            /* Neutro oscuro absoluto para máxima legibilidad */
+  --radius: 0.5rem;
+
+  /* --- COMPONENTES SHADCN --- */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.10 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --popover-foreground: oklch(0.10 0 0);
+  
+  /* Identidad Base Estructural (Negro Absoluto) */
+  --primary: oklch(0 0 0);                  /* #000000 */
+  --primary-foreground: oklch(1 0 0);       /* Texto blanco sobre elementos oscuros */
+  
+  /* Fondo Secundario de la Marca con Naranja Claro (#FFEDD5) */
+  --secondary: oklch(0.95 0.04 48.0);       /* #FFEDD5 - Exclusivo para fondos de bloques y contenedores */
+  --secondary-foreground: oklch(0.15 0 0);  /* Gris ultra oscuro neutro (sin matiz naranja) para alta legibilidad */
+
+  --muted: oklch(81.719% 0.00009 271.152);           /* #FFEDD5 */
+  --muted-foreground: oklch(0.45 0 0);      /* Gris neutro medio para descripciones secundarias y metadatos */
+
+  /* Estructura y Formularios */
+  --border: oklch(0.90 0 0);                /* Gris neutro sutil para líneas divisorias y bordes */
+  --border-hover: hwb(0 62% 38%);          /* Estado hover de bordes neutros */
+  --input: oklch(0.90 0 0);
+  --ring: oklch(0.65 0.22 43.3);            /* Enfoque visual con el naranja principal */
+
+  /* Fondos Alternativos no enlazados a la marca */
+  --muted-neutral: oklch(0.97 0 0);         /* Para elementos deshabilitados o filas de tablas */
+  --muted-neutral-foreground: oklch(0.45 0 0);
+
+  /* --- ACCIONES FOCALIZADAS DE E-COMMERCE --- */
+  /* El Naranja del Logo exclusivo para  Conversión (Botón de Compra / Carrito) */
+  --action-cta: #f54e00;      /* #F97316 - Alta visibilidad de acción principal */
+  --action-cta-hover: oklch(0.58 0.23 39.4);/* #EA580C - Estado hover de conversión */
+  --action-cta-foreground: oklch(1 0 0);    /* Texto blanco sobre el botón naranja */
+
+  /* Estado Informativo Neutro */
+  --info: oklch(0.53 0.20 253.3);           /* Para estados logísticos o informativos */
+  --info-foreground: oklch(1 0 0);
+
+  /* Estados Críticos de Transacción y Catálogo */
+  --success: oklch(0.63 0.19 148.6);        /* #10B981 - Stock Disponible / Éxito */
+  --warning: oklch(0.77 0.18 73.6);         /* #F59E0B - Últimas Unidades */
+  --destructive: oklch(0.58 0.23 26.9);     /* #EF4444 - Etiquetas de Descuento */
+  --destructive-foreground: oklch(1 0 0);
+
+  /* Analítica y Métricas */
+  --chart-1: oklch(0.65 0.22 43.3);
+  --chart-2: oklch(0.30 0 0);
+  
+  /* Paneles de Filtros y Dashboard de Usuario */
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.10 0 0);
+  --sidebar-primary: oklch(0 0 0);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.95 0.04 48.0);  /* #FFEDD5 para selección en barra lateral */
+  --sidebar-accent-foreground: oklch(0.10 0 0); /* Texto oscuro neutro en elemento activo */
+  --sidebar-border: oklch(0.90 0 0);
+  --sidebar-ring: oklch(0.65 0.22 43.3);
 }
 
 @theme {
-  /* --- CONFIGURACIÓN DE RADIOS --- */
+  /* --- ASIGNACIÓN DE TOKENS TAILWIND V4 --- */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 
-  /* --- PALETA SEMÁNTICA POS (Uso Obligatorio) --- */
-  
-  /* Superficies */
-  --color-bg-primary: var(--color-bg-primary);
-  --color-bg-secondary: var(--color-bg-secondary);
-  --color-bg-tertiary: var(--color-bg-tertiary);
-  --color-bg-inverse: var(--color-bg-inverse);
-
-  /* Tipografía */
-  --color-text-primary: var(--color-text-primary);
-  --color-text-secondary: var(--color-text-secondary);
-  --color-text-tertiary: var(--color-text-tertiary);
-  --color-text-inverse: var(--color-text-inverse);
-
-  /* Acciones y Accent Warm */
-  --color-accent-warm: var(--color-accent-warm);
-  --color-accent-warm-hover: var(--color-accent-warm-hover);
-  --color-accent-warm-light: var(--color-accent-warm-light);
-
-  /* Estados y Semántica */
-  --color-success: var(--color-success);
-  --color-warning: var(--color-warning);
-  --color-error: var(--color-error);
-
-  /* Bordes */
-  --color-border-subtle: var(--color-border-subtle);
-  --color-border-default: var(--color-border-default);
-  --color-border-strong: var(--color-border-strong);
-
-  /* --- COMPATIBILIDAD SHADCN / OKLCH --- */
+  /* Variables del Sistema */
   --color-background: var(--background);
+  --color-background-secondary: var(--background-secondary);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
@@ -88,13 +87,27 @@
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
   --color-border: var(--border);
+  --color-border-hover: var(--border-hover);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  
+
+  /* Nuevos Mapeos de Utilidades */
+  --color-muted-neutral: var(--muted-neutral);
+  --color-muted-neutral-foreground: var(--muted-neutral-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
+  /* Utilidades del E-commerce */
+  --color-action-cta: var(--action-cta);
+  --color-action-cta-hover: var(--action-cta-hover);
+  --color-action-cta-foreground: var(--action-cta-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  /* Panel Lateral */
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -104,163 +117,14 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 }
-/* 
----break--- */
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-/* 
---- For RICH TEXT EDITOR --- */
-/* --- For RICH TEXT EDITOR & Display --- */
-
-
-/* Contenedor del editor */
-.editor-content {
-  min-height: 200px;
-  padding: 0.75rem;
-  outline: none;
-  font-size: 1rem;
-  line-height: 1.5;
-}
-
-/* Toolbar */
-.editor-toolbar {
-  display: flex;
-  gap: 0.25rem;
-  padding: 0.25rem;
-  background: #f9fafb; /* gray-50 */
-  border-bottom: 1px solid #d1d5db; /* gray-300 */
-}
-
-/* Botones */
-.editor-btn {
-  width: 2rem;
-  height: 2rem;
-  padding: 0.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #d1d5db;
-  border-radius: 0.375rem;
-  background: white;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.editor-btn:hover {
-  background: #e5e7eb; /* gray-200 */
-}
-
-.editor-btn.active {
-  background: #d1d5db; /* gray-300 */
-}
-
+/* --- CONTENEDORES MULTIMEDIA --- */
 .banner-slot {
-    height: var(--banner-h-mobile, 440px);
+  height: var(--banner-h-mobile, 400px);
 }
 
 @media (min-width: 1024px) {
-    .banner-slot {
-        height: var(--banner-h, 480px);
-    }
-}
-
-
-:root {
-
-  /* --- FONDOS Y SUPERFICIES --- */
-  --color-bg-primary: #FFFFFF;        /* Fondo principal */
-  --color-bg-secondary: #f6f6f6;      /* Fondo secundario (secciones) */
-  --color-bg-tertiary: #F2F2F2;       /* Fondo terciario (cards, elementos) */
-  --color-bg-inverse: #000000;  /* Fondo  */
-  
-  /* --- SUPERFICIES INTERACTIVAS --- */
-  --color-surface-hover: #E8E8E8;     /* Hover en elementos */
-  --color-surface-active: #DEDEDE;    /* Estado activo */
-  
-
-  /* --- TIPOGRAFÍA --- */
-  --color-text-primary: #1A1A1A;      /* Texto principal (headings, body) */
-  --color-text-secondary: #5A5A5A;    /* Texto secundario (descripciones) */
-  --color-text-tertiary: #9A9A9A;     /* Texto terciario (hints, metadata) */
-  --color-text-inverse: #FFFFFF;      /* Texto sobre fondos oscuros */
-
-
-  /* --- ACCIONES Y ESTADO --- */
-  /* Azul Primario */
-  --color-action-primary: #0071E3;
-  --color-action-primary-hover: #0077ED;
-  --color-action-primary-light: #E8F4FF;
-
-  /* Naranja Cálido (Color Vibrante) */
-  --color-accent-warm: #F97316;       /* Naranja principal */
-  --color-accent-warm-hover: #EA580C; /* Naranja hover */
-  --color-accent-warm-light: #FFEDD5; /* Fondo naranja sutil */
-
-
-  /* --- ESTADOS Y SEMÁNTICA --- */
-  --color-success: #10B981;           /* Verde - Éxito/Stock */
-  --color-success-light: #D1FAE5;
-  
-  --color-warning: #F59E0B;           /* Ámbar - Advertencia */
-  --color-warning-light: #FEF3C7;
-  
-  --color-error: #EF4444;             /* Rojo - Error/Crítico */
-  --color-error-light: #FEE2E2;
-
-
-  /* --- BORDES Y DIVISORES --- */
-  --color-border-subtle: rgba(0, 0, 0, 0.06);
-  --color-border-default: rgba(0, 0, 0, 0.12);
-  --color-border-strong: rgba(0, 0, 0, 0.20);
-
-  /* --- SLIDER / BANNER SHELL --- */
---sl-bg:           var(--color-bg-inverse);          /* #000 */
---sl-surface:      rgba(255,255,255,0.05);            /* superficie glass */
---sl-border:       rgba(255,255,255,0.10);            /* borde sutil dark */
-
-/* Badge paletas predefinidas */
---sl-badge-sale-bg:     #FF3B30;   /* rojo Apple */
---sl-badge-sale-fg:     #FFFFFF;
---sl-badge-new-bg:      #34C759;   /* verde Apple */
---sl-badge-new-fg:      #FFFFFF;
---sl-badge-hot-bg:      #FF9500;   /* naranja Apple */
---sl-badge-hot-fg:      #FFFFFF;
---sl-badge-default-bg:  #1A1A1A;   /* neutro oscuro */
---sl-badge-default-fg:  #FFFFFF;
-
-/* Accent del banner (sobreescribible por inline style) */
---sl-accent:    var(--color-action-primary);  /* #0071E3 */
---sl-accent-fg: #FFFFFF;
+  .banner-slot {
+    height: var(--banner-h, 520px);
+  }
 }

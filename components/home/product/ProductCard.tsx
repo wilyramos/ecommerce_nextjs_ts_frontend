@@ -121,7 +121,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
 
     return (
         <div
-            className="group relative flex flex-col transform transition-transform duration-500 bg-[var(--color-bg-primary)] rounded"
+            className="group relative flex flex-col transform transition-transform duration-500 bg-background rounded border border-border"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onTouchStart={handleTouchStart}
@@ -132,9 +132,9 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
             <Link href={`/productos/${product.slug}`} className="flex flex-col h-full">
 
                 {/* --- IMAGEN --- */}
-                <div className="relative w-full aspect-square bg-[var(--color-bg-secondary)] overflow-hidden ">
+                <div className="relative w-full aspect-square bg-background-secondary overflow-hidden">
                     {previewImages.length > 0 ? (
-                        <div className="relative w-full h-full  overflow-hidden">
+                        <div className="relative w-full h-full overflow-hidden">
                             <div
                                 className="flex w-full h-full transition-transform duration-500 ease-in-out"
                                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -157,22 +157,22 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                             {/* Controles Desktop */}
                             {previewImages.length > 1 && (
                                 <>
-                                    <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); prevImage(); }} className="absolute left-2 top-1/2 -translate-y-1/2 bg-[var(--color-bg-primary)]/80 backdrop-blur-sm text-[var(--color-text-primary)] p-1.5 rounded-full opacity-0 md:group-hover:opacity-100 transition shadow-sm hover:scale-110 z-10">
+                                    <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); prevImage(); }} className="absolute left-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm text-foreground p-1.5 rounded-full opacity-0 md:group-hover:opacity-100 transition shadow-sm hover:scale-110 z-10 border border-border">
                                         <ChevronLeft size={16} />
                                     </button>
-                                    <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); nextImage(); }} className="absolute right-2 top-1/2 -translate-y-1/2 bg-[var(--color-bg-primary)]/80 backdrop-blur-sm text-[var(--color-text-primary)] p-1.5 rounded-full opacity-0 md:group-hover:opacity-100 transition shadow-sm hover:scale-110 z-10">
+                                    <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); nextImage(); }} className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm text-foreground p-1.5 rounded-full opacity-0 md:group-hover:opacity-100 transition shadow-sm hover:scale-110 z-10 border border-border">
                                         <ChevronRight size={16} />
                                     </button>
                                     <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5 pointer-events-none">
                                         {previewImages.map((_, idx) => (
-                                            <span key={idx} className={`h-1.5 rounded-full transition-all duration-300 opacity-0 md:group-hover:opacity-100 ${idx === currentIndex ? "w-4 bg-[var(--color-text-primary)]" : "w-1.5 bg-[var(--color-text-primary)]/30"}`} />
+                                            <span key={idx} className={`h-1.5 rounded-full transition-all duration-300 opacity-0 md:group-hover:opacity-100 ${idx === currentIndex ? "w-4 bg-foreground" : "w-1.5 bg-foreground/30"}`} />
                                         ))}
                                     </div>
                                 </>
                             )}
                         </div>
                     ) : (
-                        <div className="flex items-center justify-center w-full h-full text-[var(--color-text-tertiary)] opacity-50">
+                        <div className="flex items-center justify-center w-full h-full text-muted-foreground opacity-50">
                             <MdOutlineImageNotSupported size={20} />
                         </div>
                     )}
@@ -180,7 +180,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                     {/* Badges: Descuento y Nuevo */}
                     <div className="absolute top-2 left-2 pointer-events-none flex flex-col gap-1">
                         {(product.precioComparativo ?? 0) > 0 && (
-                            <span className="px-1 py-0.5 bg-[var(--color-accent-warm)] text-[var(--color-text-inverse)] text-[10px] font-bold uppercase tracking-wider">
+                            <span className="px-1 py-0.5 bg-destructive text-destructive-foreground text-[10px] font-bold uppercase tracking-wider">
                                 -{Math.round(discountedPrice)}%
                             </span>
                         )}
@@ -188,11 +188,11 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                 </div>
 
                 {/* --- INFO --- */}
-                <div className="flex flex-col flex-1 p-3 md:p-4 bg-[var(--color-bg-primary)]">
+                <div className="flex flex-col flex-1 p-3 md:p-4 bg-background">
                     <div className="flex flex-col gap-1 h-[4.5rem] md:h-[5rem]">
 
                         <div className="h-5 shrink-0 flex justify-between items-center mb-1">
-                            <span className="text-[10px] font-bold tracking-[0.15em] text-[var(--color-text-secondary)] uppercase truncate max-w-[50%]">
+                            <span className="text-[10px] font-bold tracking-[0.15em] text-muted-foreground uppercase truncate max-w-[50%]">
                                 {product.brand?.nombre || ""}
                             </span>
 
@@ -215,7 +215,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                                                 className={cn(
                                                     "relative transition-transform duration-200 outline-none rounded-full",
                                                     isSelected
-                                                        ? " scale-110 ring-1 ring-offset-1 ring-[var(--color-text-primary)]/30"
+                                                        ? "scale-110 ring-1 ring-offset-1 ring-foreground/30"
                                                         : "hover:scale-110 hover:z-20"
                                                 )}
                                                 aria-label={`Seleccionar color ${c}`}
@@ -225,7 +225,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                                         );
                                     })}
                                     {uniqueColors.length > 4 && (
-                                        <span className="text-[9px] text-[var(--color-text-tertiary)] pl-1 font-medium">
+                                        <span className="text-[9px] text-muted-foreground pl-1 font-medium">
                                             +{uniqueColors.length - 4}
                                         </span>
                                     )}
@@ -233,31 +233,31 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                             )}
                         </div>
 
-                        <h3 className="text-[13px] text-[var(--color-text-primary)] leading-[1.3] line-clamp-3 min-h-[3.5rem] md:min-h-[3.5rem]">
+                        <h3 className="text-[13px] text-foreground leading-[1.3] line-clamp-3 min-h-[3.5rem] md:min-h-[3.5rem]">
                             {product.nombre}
                         </h3>
 
                         {/* Overlay Hover Sutil */}
-                        <div className="absolute inset-0 bg-[var(--color-text-primary)] opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none" />
+                        <div className="absolute inset-0 bg-foreground opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none" />
                     </div>
 
-                    <div className="flex items-end justify-between mt-auto pt-2 group-hover:border-[var(--color-border-default)] transition-colors">
+                    <div className="flex items-end justify-between mt-auto pt-2 group-hover:border-border transition-colors">
                         <div className="flex flex-col w-full">
                             {stock > 0 ? (
                                 <div className="flex flex-row items-start gap-2">
                                     {/* Precio Actual */}
-                                    <span className="text-sm md:text-[15px] text-[var(--color-text-primary)]">
+                                    <span className="text-sm md:text-[15px] text-foreground">
                                         S/ {precio.toFixed(2)}
                                     </span>
                                     {/* Precio anterior */}
                                     {(product.precioComparativo ?? 0) > 0 && (
-                                        <span className="text-[10px] md:text-[13px] text-[var(--color-text-tertiary)] line-through mb-0.5">
+                                        <span className="text-[10px] md:text-[13px] text-muted-foreground line-through mb-0.5">
                                             S/ {product.precioComparativo!.toFixed(2)}
                                         </span>
                                     )}
                                 </div>
                             ) : (
-                                <span className="text-[10px] font-bold  px-2 py-1  self-start">
+                                <span className="text-[10px] font-bold px-2 py-1 bg-background-secondary text-muted-foreground self-start rounded-sm border border-border">
                                     Agotado
                                 </span>
                             )}

@@ -4,13 +4,13 @@ import { FiTrash } from "react-icons/fi";
 import { useActionState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { DeleteCategoryAction } from "@/actions/category/delete-category-action";
+import { deleteCategoryAction } from "@/actions/category/create-category-action";
 
 
 export default function DeleteCategoryButton({ categoryId }: { categoryId: string }) {
 
     const router = useRouter();
-    const deleteCategoryWithId = DeleteCategoryAction.bind(null, categoryId);
+    const deleteCategoryWithId = deleteCategoryAction.bind(null, categoryId);
     const [state, dispatch] = useActionState(deleteCategoryWithId, {
         errors: [],
         success: ""

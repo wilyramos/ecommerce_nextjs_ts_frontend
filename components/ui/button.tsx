@@ -7,36 +7,51 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-    "inline-flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer text-sm font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-[var(--color-action-primary)] focus-visible:ring-offset-2",
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer text-sm font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
     {
         variants: {
             variant: {
+                // Botón Identidad de Marca (#F97316)
                 default:
-                    "bg-[var(--color-bg-inverse)] text-[var(--color-text-inverse)] shadow-sm hover:bg-[var(--color-text-primary)]",
+                    "bg-primary text-primary-foreground shadow-sm hover:opacity-95 hover:shadow-md",
+                
+                // Botón de Conversión Exclusivo / Carrito (#EA580C)
                 primary:
-                    "bg-[var(--color-action-primary)] text-[var(--color-text-inverse)] shadow-sm hover:bg-[var(--color-action-primary-hover)]",
+                    "bg-action-cta text-action-cta-foreground shadow-md font-semibold hover:bg-action-cta-hover focus-visible:ring-action-cta",
+                
+                // Botón de Contraste Oscuro
                 accent:
-                    "bg-[var(--color-accent-warm)] text-[var(--color-text-inverse)] shadow-sm hover:bg-[var(--color-accent-warm-hover)]",
+                    "bg-foreground text-background shadow-sm hover:opacity-90",
+                
+                // Botón Suave sobre Fondo Claro de Marca (#FFEDD5)
                 secondary:
-                    "bg-[var(--color-bg-tertiary)] text-[var(--color-text-primary)] border border-[var(--color-border-default)] shadow-sm hover:bg-[var(--color-surface-hover)] hover:border-[var(--color-border-strong)]",
+                    "bg-secondary text-secondary-foreground border border-border/40 shadow-sm hover:bg-secondary/80",
+                
+                // Botón de Contorno Estructural
                 outline:
-                    "bg-transparent text-[var(--color-text-primary)] border border-[var(--color-border-default)] hover:bg-[var(--color-bg-secondary)] hover:border-[var(--color-border-strong)]",
+                    "bg-transparent text-foreground border border-border hover:bg-secondary hover:text-secondary-foreground",
+                
+                // Botón Limpio sin Fondo
                 ghost:
-                    "text-[var(--color-text-primary)] hover:bg-[var(--color-surface-hover)] active:bg-[var(--color-surface-active)]",
+                    "text-foreground hover:bg-secondary hover:text-secondary-foreground active:bg-muted",
+                
+                // Enlace de Conversión Focalizado
                 link:
-                    "text-[var(--color-action-primary)] underline-offset-4 hover:underline",
+                    "text-action-cta underline-offset-4 hover:underline font-medium",
+                
+                // Estados de Transacción y Catálogo
                 success:
-                    "bg-[var(--color-success)] text-[var(--color-text-inverse)] shadow-sm hover:opacity-90",
+                    "bg-success text-primary-foreground shadow-sm hover:opacity-90 focus-visible:ring-success",
                 warning:
-                    "bg-[var(--color-warning)] text-[var(--color-text-inverse)] shadow-sm hover:opacity-90",
+                    "bg-warning text-primary-foreground shadow-sm hover:opacity-90 focus-visible:ring-warning",
                 destructive:
-                    "bg-[var(--color-error)] text-[var(--color-text-inverse)] shadow-sm hover:opacity-90",
+                    "bg-destructive text-destructive-foreground shadow-sm hover:opacity-90 focus-visible:ring-destructive",
             },
             size: {
-                default: "h-10 px-4 py-2",
-                sm: "h-8 gap-1.5 px-3 text-xs",
-                lg: "h-12 px-8 text-base",
-                icon: "size-10 ",
+                default: "h-10 px-4 py-2 rounded-md",
+                sm: "h-8 gap-1.5 px-3 text-xs rounded-sm",
+                lg: "h-12 px-8 text-base rounded-lg",
+                icon: "size-10 rounded-md",
             },
         },
         defaultVariants: {

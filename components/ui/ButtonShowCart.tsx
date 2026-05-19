@@ -35,14 +35,14 @@ export default function ButtonShowCart() {
     return (
         <Sheet open={isCartOpen} onOpenChange={setCartOpen}>
             <SheetTrigger asChild>
-                <button className="relative p-2.5 rounded-full transition-all duration-300 hover:bg-[var(--color-bg-tertiary)] group cursor-pointer active:scale-90">
+                <button className="relative p-2.5 rounded-full transition-all duration-300 hover:bg-background-secondary group cursor-pointer active:scale-90">
                     <ShoppingCart
                         size={20}
                         strokeWidth={1.5}
-                        className="text-[var(--color-text-primary)]"
+                        className="text-foreground group-hover:text-action-cta transition-colors"
                     />
                     {carrito.length > 0 && (
-                        <span className="absolute top-1 right-1 bg-[var(--color-accent-warm)] text-[var(--color-text-inverse)] text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center shadow-md">
+                        <span className="absolute top-1 right-1 bg-action-cta text-action-cta-foreground text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center shadow-md animate-in zoom-in-50 duration-200">
                             {carrito.length}
                         </span>
                     )}
@@ -51,45 +51,44 @@ export default function ButtonShowCart() {
 
             <SheetContent
                 side="right"
-                className="flex flex-col h-full  p-0 border-l border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)] overflow-hidden"
+                className="flex flex-col h-full p-0 border-l border-border bg-background overflow-hidden"
             >
                 {/* Header */}
-                <SheetHeader className="p-6 border-b border-[var(--color-border-subtle)]">
+                <SheetHeader className="p-6 border-b border-border">
                     <div className="flex flex-col gap-1">
-
                         <div className="flex items-center justify-between">
-                            <SheetTitle className="text-xl font-semibold text-[var(--color-text-primary)]">
+                            <SheetTitle className="text-xl font-semibold text-foreground">
                                 Carrito
                             </SheetTitle>
-                            <span className="bg-[var(--color-bg-tertiary)] px-2.5 py-0.5 rounded-full text-[10px] font-bold text-[var(--color-text-secondary)] uppercase">
+                            <span className="bg-background-secondary px-2.5 py-0.5 rounded-full text-[10px] font-bold text-muted-foreground uppercase border border-border">
                                 {carrito.length} {carrito.length === 1 ? 'Ítem' : 'Ítems'}
                             </span>
                         </div>
                     </div>
                 </SheetHeader>
 
-                {/* Lista de productos (Sin Scroll X) */}
-                <div className="flex-1 overflow-y-auto overflow-x-hidden px-6 py-2 scrollbar-hide">
+                {/* Lista de productos */}
+                <div className="flex-1 overflow-y-auto overflow-x-hidden px-6 py-2 scrollbar-thin scrollbar-thumb-border">
                     {carrito.length === 0 ? (
-                        <div className="h-full flex flex-col items-center justify-center space-y-6">
-                            <div className="p-8 rounded-full bg-[var(--color-bg-secondary)] text-[var(--color-text-tertiary)]">
+                        <div className="h-full flex flex-col items-center justify-center space-y-4">
+                            <div className="p-8 rounded-full bg-background-secondary text-muted-foreground border border-border">
                                 <ShoppingBag size={48} strokeWidth={1} />
                             </div>
                             <div className="text-center">
-                                <h3 className="text-lg font-bold text-[var(--color-text-primary)] tracking-tight">
+                                <h3 className="text-lg font-bold text-foreground tracking-tight">
                                     Tu bolsa está vacía
                                 </h3>
-                                <p className="text-sm text-[var(--color-text-secondary)] max-w-[220px] mx-auto mt-2">
+                                <p className="text-sm text-muted-foreground max-w-[220px] mx-auto mt-1">
                                     Explora nuestra tienda y añade los mejores productos.
                                 </p>
                             </div>
                         </div>
                     ) : (
-                        <div className="">
+                        <div className="divide-y divide-border/40">
                             {carrito.map((item) => (
                                 <div
                                     key={`${item._id}-${item.variant?._id ?? "no-variant"}`}
-                                    className="py-2 w-full overflow-hidden"
+                                    className="py-3 w-full overflow-hidden"
                                 >
                                     <ItemCarrito item={item} />
                                 </div>
@@ -100,17 +99,14 @@ export default function ButtonShowCart() {
 
                 {/* Footer y Acciones */}
                 {carrito.length > 0 && (
-                    <div className="p-6 bg-[var(--color-bg-primary)] border-t border-[var(--color-border-default)]">
+                    <div className="p-6 bg-background border-t border-border">
                         <div className="space-y-4 mb-6">
-
-
-                            <div className="flex justify-between items-baseline pt-4 border-t border-[var(--color-border-subtle)]">
-                                <span className="text-lg font-bold tracking-tight text-[var(--color-text-primary)]">Total</span>
+                            <div className="flex justify-between items-baseline pt-2">
+                                <span className="text-lg font-bold tracking-tight text-foreground">Total</span>
                                 <div className="text-right">
-                                    <span className="text-xl text-[var(--color-text-primary)] tracking-tighter">
+                                    <span className="text-xl font-extrabold text-foreground tracking-tighter">
                                         S/ {total}
                                     </span>
-
                                 </div>
                             </div>
                         </div>
@@ -118,14 +114,14 @@ export default function ButtonShowCart() {
                         <div className="grid gap-3">
                             <Button
                                 onClick={handleCheckout}
-                                variant="accent"
+                                className="w-full bg-action-cta hover:bg-action-cta-hover text-action-cta-foreground font-semibold flex items-center justify-center gap-2"
                             >
                                 Finalizar Pedido <ArrowRight size={18} />
                             </Button>
 
                             <button
                                 onClick={() => setCartOpen(false)}
-                                className="w-full py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] transition-colors"
+                                className="w-full py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground transition-colors"
                             >
                                 Continuar Explorando
                             </button>

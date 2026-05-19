@@ -26,6 +26,7 @@ export default function Footer() {
         { label: "Contacto y soporte", href: "/hc/contacto-y-soporte" },
         { label: "Garantías y devoluciones", href: "/hc/garantias-y-devoluciones" },
         { label: "Preguntas frecuentes", href: "/hc/preguntas-frecuentes" },
+        { label: "Comparador de productos", href: "/comparativas" },
     ];
 
     const legalLinks = [
@@ -40,7 +41,7 @@ export default function Footer() {
     ];
 
     return (
-        <footer className="bg-[var(--color-bg-primary)] border-t border-[var(--color-border-default)]">
+        <footer className="bg-background border-t border-border">
             <div className="max-w-7xl mx-auto px-6 py-14 lg:py-20">
                 <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-12">
 
@@ -50,7 +51,7 @@ export default function Footer() {
                             <div className="w-28">
                                 <Logo color="black" />
                             </div>
-                            <p className="text-[14px] leading-relaxed max-w-sm text-[var(--color-text-secondary)]">
+                            <p className="text-[14px] leading-relaxed max-w-sm text-muted-foreground">
                                 Elevando tu experiencia digital. Descubre la selección más curada de tecnología y accesorios premium en Cañete.
                             </p>
                             <div className="flex gap-5">
@@ -61,7 +62,7 @@ export default function Footer() {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         aria-label={name}
-                                        className="text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] transition-all duration-300 transform hover:-translate-y-1 hover:scale-110"
+                                        className="text-muted-foreground hover:text-action-cta transition-all duration-300 transform hover:-translate-y-1 hover:scale-110"
                                     >
                                         {icon}
                                     </a>
@@ -75,13 +76,13 @@ export default function Footer() {
 
                         {/* Column: Explorar */}
                         <nav className="flex flex-col gap-5">
-                            <h3 className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--color-text-primary)]">
+                            <h3 className="text-[11px] uppercase tracking-[0.2em] font-bold text-foreground">
                                 Explorar
                             </h3>
                             <ul className="flex flex-col gap-3">
                                 {shopLinks.map(({ label, href }) => (
                                     <li key={label}>
-                                        <Link href={href} className="text-[13px] text-[var(--color-text-secondary)] hover:text-[var(--color-action-primary)] hover:underline transition-colors decoration-1 underline-offset-4">
+                                        <Link href={href} className="text-[13px] text-muted-foreground hover:text-action-cta hover:underline transition-colors decoration-1 underline-offset-4">
                                             {label}
                                         </Link>
                                     </li>
@@ -91,13 +92,13 @@ export default function Footer() {
 
                         {/* Column: Marcas */}
                         <nav className="flex flex-col gap-5">
-                            <h3 className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--color-text-primary)]">
+                            <h3 className="text-[11px] uppercase tracking-[0.2em] font-bold text-foreground">
                                 Marcas
                             </h3>
                             <ul className="flex flex-col gap-3">
                                 {brandLinks.map(({ label, href }) => (
                                     <li key={label}>
-                                        <Link href={href} className="text-[13px] text-[var(--color-text-secondary)] hover:text-[var(--color-action-primary)] hover:underline transition-colors decoration-1 underline-offset-4">
+                                        <Link href={href} className="text-[13px] text-muted-foreground hover:text-action-cta hover:underline transition-colors decoration-1 underline-offset-4">
                                             {label}
                                         </Link>
                                     </li>
@@ -107,13 +108,13 @@ export default function Footer() {
 
                         {/* Column: Ayuda */}
                         <nav className="flex flex-col gap-5">
-                            <h3 className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--color-text-primary)]">
+                            <h3 className="text-[11px] uppercase tracking-[0.2em] font-bold text-foreground">
                                 Ayuda
                             </h3>
                             <ul className="flex flex-col gap-3">
                                 {helpCenterLinks.map(({ label, href }) => (
                                     <li key={href}>
-                                        <Link href={href} className="text-[13px] text-[var(--color-text-secondary)] hover:text-[var(--color-action-primary)] transition-colors">
+                                        <Link href={href} className="text-[13px] text-muted-foreground hover:text-action-cta transition-colors">
                                             {label}
                                         </Link>
                                     </li>
@@ -123,10 +124,10 @@ export default function Footer() {
 
                         {/* Column: Visítanos */}
                         <div className="flex flex-col gap-5">
-                            <h3 className="text-[11px] uppercase tracking-[0.2em] font-bold text-[var(--color-text-primary)]">
+                            <h3 className="text-[11px] uppercase tracking-[0.2em] font-bold text-foreground">
                                 Visítanos
                             </h3>
-                            <div className="text-[13px] text-[var(--color-text-secondary)] leading-relaxed space-y-1">
+                            <div className="text-[13px] text-muted-foreground leading-relaxed space-y-1">
                                 <p>Jr. O Higgins 120</p>
                                 <p>San Vicente de Cañete</p>
                             </div>
@@ -135,12 +136,12 @@ export default function Footer() {
                 </div>
 
                 {/* Bottom Bar: Legal & Global */}
-                <div className="mt-16 pt-8 border-t border-[var(--color-border-default)]">
+                <div className="mt-16 pt-8 border-t border-border">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-6">
 
                         <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8 order-2 md:order-1">
                             <span 
-                                className="text-[11px] text-[var(--color-text-tertiary)] font-medium"
+                                className="text-[11px] text-muted-foreground font-medium"
                                 suppressHydrationWarning
                             >
                                 © {new Date().getFullYear()} GoPhone Inc.
@@ -150,12 +151,12 @@ export default function Footer() {
                                     <div key={link.href} className="flex items-center gap-4">
                                         <Link
                                             href={link.href}
-                                            className="text-[11px] text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] transition-colors"
+                                            className="text-[11px] text-muted-foreground hover:text-foreground transition-colors"
                                         >
                                             {link.label}
                                         </Link>
                                         {index < legalLinks.length - 1 && (
-                                            <span className="w-px h-2.5 bg-[var(--color-border-default)]" />
+                                            <span className="w-px h-2.5 bg-border" />
                                         )}
                                     </div>
                                 ))}

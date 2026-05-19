@@ -12,7 +12,7 @@ import ButtonSearchMobile from "./ButtonSearchMobile";
 export default function NavBar() {
     return (
         <NavBarClient>
-            <header className="sticky top-0 z-50 h-12 flex flex-col justify-center text-[var(--color-text-primary)] bg-[var(--color-bg-primary)] border-b border-[var(--color-border-subtle)] transition-colors duration-300 ">
+            <header className="sticky top-0 z-50 h-12 flex flex-col justify-center text-foreground bg-background border-b border-border transition-colors duration-300">
                 <div className="max-w-screen-2xl w-full mx-auto grid grid-cols-3 items-center px-4 md:px-6">
 
                     {/* Left column */}
@@ -38,10 +38,10 @@ export default function NavBar() {
                         <div className="hidden md:flex items-center gap-1">
                             <Link
                                 href="/auth/registro"
-                                className="flex items-center gap-1 text-[var(--color-text-primary)] rounded-full transition-colors duration-200 hover:text-[var(--color-action-primary)]"
+                                className="flex items-center gap-1 text-foreground rounded-full transition-colors duration-200 hover:text-action-cta"
                                 aria-label="Cuenta"
                             >
-                                <div className="hover:bg-[var(--color-surface-hover)] rounded-full p-2 transition-colors duration-200">
+                                <div className="hover:bg-background-secondary rounded-full p-2 transition-colors duration-200">
                                     <AiOutlineUser className="h-6 w-6" />
                                 </div>
                             </Link>
@@ -58,7 +58,7 @@ export default function NavBar() {
                 </div>
             </header>
 
-            <div className="hidden md:block sticky z-40 w-full border-b border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)] transition-colors duration-300">
+            <div className="hidden md:block sticky z-40 w-full border-b border-border bg-background transition-colors duration-300">
                 <div className="max-w-screen-2xl mx-auto px-4 md:px-6 flex items-center">
                     <ServerCategorias />
                 </div>

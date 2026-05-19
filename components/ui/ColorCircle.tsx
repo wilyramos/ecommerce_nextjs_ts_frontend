@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 
-// El diccionario se mantiene fuera para no recargarlo en cada render
 const diccionarioColores: Record<string, string> = {
     amarillo: "bg-[#FFFF00]",
     "amarillo claro": "bg-[#FFFACD]",
@@ -83,7 +82,7 @@ const diccionarioColores: Record<string, string> = {
     "morado pastel": "bg-[#C8A2C8]",
     "violeta oscuro": "bg-[#5D3FD3]",
     "violeta claro": "bg-[#D2B7FF]",
-    uva: "bg-[#580F41]",
+    upa: "bg-[#580F41]",
     ciruela: "bg-[#8E4585]",
     berenjena: "bg-[#311432]",
     "azul petróleo": "bg-[#084C61]",
@@ -152,24 +151,17 @@ export default function ColorCircle({
     color: string;
     size?: number;
 }) {
-    const bgClass = diccionarioColores[color?.trim().toLowerCase()] ?? "bg-gray-200";
+    const bgClass = diccionarioColores[color?.trim().toLowerCase()] ?? "bg-muted";
 
     return (
-        <div className="border p-0.2 rounded-full">
+        <div className="border p-0.2 rounded-full border-foreground/20">
             <div
                 title={color}
                 style={{ width: size, height: size }}
                 className={cn(
                     "rounded-full shrink-0",
-                    // BORDE: Negro al 10% de opacidad. 
-                    // Esto es crucial para que colores como 'blanco' o 'crema' 
-                    // no desaparezcan sobre fondos blancos.
-                    "border border-black/10",
-
-                    // SOMBRA INTERNA: Da el efecto de "pastilla" o material físico
-                    // en lugar de un círculo plano digital.
-                    "shadow-[inset_0_1px_1px_rgba(0,0,0,0.1)]",
-
+                    "border border-foreground/10",
+                    "shadow-[inset_0_1px_1px_rgba(0,0,0,0.08)]",
                     bgClass
                 )}
             />

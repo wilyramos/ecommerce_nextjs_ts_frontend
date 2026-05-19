@@ -1,101 +1,139 @@
-"use server"
+"use server";
 
-import { createCategorySchema, SuccessResponse, categoryAttributesArraySchema } from "@/src/schemas";
-import { revalidatePath } from "next/cache"
-import { cookies } from "next/headers"
+import {
+    categoryFormSchema
+} from "@/src/schemas/category.schema";
+import { SuccessResponse, ErrorResponse } from "@/src/schemas";
+import { revalidatePath } from "next/cache";
+import getToken from "@/src/auth/token";
 
+export type ActionStateType = {
+    errors: string[];
+    success: string;
+};
 
-type ActionStateType = {
-    errors: string[],
-    success: string
-}
-
-export async function createCategoryAction(prevState: ActionStateType, formData: FormData) {
-
-    // parsear los atributos del formData
+/**
+ * Server Action para registrar una nueva categoría.
+ */
+export async function createCategoryAction(prevState: ActionStateType, formData: FormData): Promise<ActionStateType> {
     const rawAttributes = formData.get("attributes");
-    console.log("Raw Attributes:", rawAttributes);
+    let parsedAttributes: unknown[] = [];
 
-    let attributesData;
     if (rawAttributes) {
         try {
             const parsed = JSON.parse(rawAttributes as string);
-            const result = categoryAttributesArraySchema.safeParse(parsed);
-            if (!result.success) {
+            if (!Array.isArray(parsed)) {
                 return {
-                    errors: result.error.errors.map(error => error.message),
+                    errors: ["Los atributos deben estructurarse dentro de una lista válida."],
                     success: ""
                 };
             }
-
-            // Normalizar a minúscula las claves y valores
-            attributesData = result.data.map(attr => ({
-                name: attr.name.toLowerCase(),
-                values: attr.values.map(v => v.toLowerCase()),
-                isVariant: attr.isVariant || false,
-            }));
-
+            parsedAttributes = parsed;
         } catch (error) {
-            console.log("Error parsing attributes:", error);
             return {
-                errors: ["Los atributos tienen un formato inválido."],
+                errors: ["Los atributos tienen un formato JSON inválido.", error instanceof Error ? error.message : "Error desconocido."],
                 success: ""
             };
         }
-    } else {
-        attributesData = undefined;
     }
 
-    const category = createCategorySchema.safeParse({
-        nombre: formData.get("name"),
-        descripcion: formData.get("description"),
-        parent: formData.get("parent") || undefined,
-        attributes: attributesData,
-        image: formData.get("image") || undefined,
-    })
+    // Validación e inferencia estricta usando el esquema de formulario corregido
+    const categoryValidation = categoryFormSchema.safeParse({
+        nombre: formData.get("nombre"),
+        descripcion: formData.get("descripcion"),
+        parent: formData.get("parent"),
+        order: formData.get("order"),
+        image: formData.get("image"),
+        isActive: formData.get("isActive") === "true" || formData.get("isActive") === "on",
+        attributes: parsedAttributes,
+    });
 
-    console.log("imagen", formData.get("image"))
-
-    if (!category.success) {
+    if (!categoryValidation.success) {
         return {
-            errors: category.error.errors.map((error) => error.message),
+            errors: categoryValidation.error.errors.map((error) => error.message),
             success: ""
-        }
+        };
     }
 
-    const token = (await cookies()).get('ecommerce-token')?.value
-    const url = `${process.env.API_URL}/category/create`
-    const req = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-            nombre: category.data.nombre,
-            descripcion: category.data.descripcion,
-            parent: category.data.parent ? category.data.parent : undefined,
-            attributes: category.data.attributes,
-            image: category.data.image,
-        })
-    })
+    try {
+        const token = await getToken();
+        const url = `${process.env.API_URL}/category/create`;
+        
+        const req = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(categoryValidation.data)
+        });
 
-    const json = await req.json()
-    const success = SuccessResponse.parse(json)
-    if (!req.ok) {
+        const json = await req.json();
+
+        if (!req.ok) {
+            const errorParsed = ErrorResponse.safeParse(json);
+            const errorMessage = errorParsed.success ? errorParsed.data.message : "Error interno en el servidor remoto.";
+            return {
+                errors: [errorMessage],
+                success: ""
+            };
+        }
+
+        const successParsed = SuccessResponse.parse(json);
+        
+        revalidatePath("/admin/category");
+
         return {
-            errors: [success.message],
+            errors: [],
+            success: successParsed.message
+        };
+    } catch (error) {
+        return {
+            errors: ["No se pudo establecer conexión con el servidor de datos.", error instanceof Error ? error.message : "Error desconocido."],
             success: ""
-        }
+        };
     }
+}
 
-    // Revalidate for redirect
-    revalidatePath("/admin/category")
+/**
+ * Server Action para aplicar borrado lógico (Soft Delete) a una categoría.
+ */
+export async function deleteCategoryAction(categoryId: string, prevState: ActionStateType): Promise<ActionStateType> {
+    try {
+        const token = await getToken();
+        const url = `${process.env.API_URL}/category/${categoryId}`;
+        
+        const req = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
 
-    // console.log("category", category.data)
+        const json = await req.json();
 
-    return {
-        errors: [],
-        success: success.message
+        if (!req.ok) {
+            const errorParsed = ErrorResponse.safeParse(json);
+            const errorMessage = errorParsed.success ? errorParsed.data.message : "Conflicto al intentar remover la categoría.";
+            return {
+                errors: [errorMessage],
+                success: ""
+            };
+        }
+
+        const successParsed = SuccessResponse.parse(json);
+        
+        revalidatePath('/admin/category');
+        
+        return {
+            errors: [],
+            success: successParsed.message
+        };
+    } catch (error) {
+        return {
+            errors: ["Error crítico de red al procesar la baja de la entidad.", error instanceof Error ? error.message : "Error desconocido."],
+            success: ""
+        };
     }
 }

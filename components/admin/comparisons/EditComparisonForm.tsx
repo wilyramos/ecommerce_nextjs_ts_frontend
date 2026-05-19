@@ -15,7 +15,7 @@ interface EditComparisonFormProps {
 export default function EditComparisonForm({ comparison }: EditComparisonFormProps) {
     const router = useRouter();
 
-    // Se vinculan los parámetros fijos identificadores de la entidad (id, slug) vía .bind()
+    // Vinculación estricta de parámetros fijos de la entidad para el Server Action
     const boundUpdateAction = updateComparisonAction.bind(null, comparison._id, comparison.slug);
 
     const [state, dispatch, isPending] = useActionState(boundUpdateAction, {
@@ -41,7 +41,9 @@ export default function EditComparisonForm({ comparison }: EditComparisonFormPro
                 fieldErrors={state.errors}
                 generalError={!state.success && state.message ? state.message : undefined}
             />
-            <div className="flex justify-end py-4 bg-[var(--color-bg-secondary)] border-t sticky bottom-0 z-10 px-6 rounded-b-xl">
+            
+            {/* Purificación de variables CSS nativas a clases semánticas globales del tema */}
+            <div className="flex justify-end py-4 bg-background-secondary border-t border-border sticky bottom-0 z-10 px-6 rounded-b-xl">
                 <Button type="submit" disabled={isPending} className="px-8 font-semibold">
                     {isPending ? "Guardando..." : "Guardar Cambios"}
                 </Button>

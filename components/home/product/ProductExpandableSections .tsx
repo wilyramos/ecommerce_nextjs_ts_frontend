@@ -19,7 +19,7 @@ export default function ProductExpandableSections({ producto }: Props) {
     const descripcionRaw = producto.descripcion ?? "";
     const specsArray = producto.especificaciones ?? [];
 
-    // ← Campos nuevos
+    // Campos físicos
     const hasWeight = Boolean(producto.weight);
     const hasDimensions = Boolean(
         producto.dimensions?.length ||
@@ -42,14 +42,14 @@ export default function ProductExpandableSections({ producto }: Props) {
             <div
                 className="
                     prose prose-sm max-w-none 
-                    text-[var(--color-text-secondary)] 
-                    prose-headings:text-[var(--color-text-primary)] 
-                    prose-headings:font-semibold
-                    prose-strong:text-[var(--color-text-primary)]
-                    prose-strong:font-semibold
+                    text-muted-foreground 
+                    prose-headings:text-foreground 
+                    prose-headings:font-bold
+                    prose-strong:text-foreground
+                    prose-strong:font-bold
                     prose-p:leading-relaxed
-                    prose-a:text-[var(--color-accent-warm)]
-                    prose-a:hover:text-[var(--color-accent-warm-hover)]
+                    prose-a:text-action-cta
+                    prose-a:hover:text-action-cta-hover
                     text-sm md:text-base
                 "
                 dangerouslySetInnerHTML={{ __html: descripcionRaw }}
@@ -59,24 +59,24 @@ export default function ProductExpandableSections({ producto }: Props) {
 
     const SpecsComponent = (
         <div className="lg:col-span-5 space-y-4">
-            {/* Especificaciones técnicas existentes */}
+            {/* Especificaciones técnicas */}
             {specsArray.length > 0 && (
-                <div className="overflow-hidden border border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)]">
+                <div className="overflow-hidden border border-border bg-background rounded-sm">
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr>
-                                <th colSpan={2} className="px-5 py-4 text-[11px] font-bold uppercase tracking-[0.1em] text-[var(--color-text-primary)] border-b border-[var(--color-border-subtle)] bg-[var(--color-bg-secondary)]">
+                                <th colSpan={2} className="px-5 py-4 text-[11px] font-bold uppercase tracking-[0.1em] text-foreground border-b border-border bg-background-secondary">
                                     Especificaciones técnicas
                                 </th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-[var(--color-border-subtle)]">
+                        <tbody className="divide-y divide-border/60">
                             {specsArray.map((spec) => (
-                                <tr key={spec.key} className="group hover:bg-[var(--color-bg-secondary)] transition-colors">
-                                    <td className="px-5 py-3 text-xs font-medium text-[var(--color-text-secondary)] w-[40%]">
+                                <tr key={spec.key} className="group hover:bg-background-secondary transition-colors">
+                                    <td className="px-5 py-3 text-xs font-semibold text-muted-foreground w-[40%]">
                                         {spec.key}
                                     </td>
-                                    <td className="px-5 py-3 text-sm font-semibold text-[var(--color-text-primary)] w-[60%]">
+                                    <td className="px-5 py-3 text-sm font-bold text-foreground w-[60%]">
                                         {spec.value}
                                     </td>
                                 </tr>
@@ -86,13 +86,13 @@ export default function ProductExpandableSections({ producto }: Props) {
                 </div>
             )}
 
-            {/* ← Peso y dimensiones si existen */}
+            {/* Peso y dimensiones */}
             {hasPhysicalData && (
-                <div className="overflow-hidden border border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)]">
+                <div className="overflow-hidden border border-border bg-background rounded-sm">
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr>
-                                <th colSpan={2} className="px-5 py-4 text-[11px] font-bold uppercase tracking-[0.1em] text-[var(--color-text-primary)] border-b border-[var(--color-border-subtle)] bg-[var(--color-bg-secondary)]">
+                                <th colSpan={2} className="px-5 py-4 text-[11px] font-bold uppercase tracking-[0.1em] text-foreground border-b border-border bg-background-secondary">
                                     <div className="flex items-center gap-2">
                                         <Package size={13} />
                                         Físico y embalaje
@@ -100,28 +100,28 @@ export default function ProductExpandableSections({ producto }: Props) {
                                 </th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-[var(--color-border-subtle)]">
+                        <tbody className="divide-y divide-border/60">
                             {hasWeight && (
-                                <tr className="group hover:bg-[var(--color-bg-secondary)] transition-colors">
-                                    <td className="px-5 py-3 text-xs font-medium text-[var(--color-text-secondary)] w-[40%]">
+                                <tr className="group hover:bg-background-secondary transition-colors">
+                                    <td className="px-5 py-3 text-xs font-semibold text-muted-foreground w-[40%]">
                                         Peso
                                     </td>
-                                    <td className="px-5 py-3 text-sm font-semibold text-[var(--color-text-primary)] w-[60%]">
+                                    <td className="px-5 py-3 text-sm font-bold text-foreground w-[60%]">
                                         {producto.weight} kg
                                     </td>
                                 </tr>
                             )}
                             {hasDimensions && (
-                                <tr className="group hover:bg-[var(--color-bg-secondary)] transition-colors">
-                                    <td className="px-5 py-3 text-xs font-medium text-[var(--color-text-secondary)] w-[40%]">
+                                <tr className="group hover:bg-background-secondary transition-colors">
+                                    <td className="px-5 py-3 text-xs font-semibold text-muted-foreground w-[40%]">
                                         <div className="flex items-center gap-1.5">
                                             <Ruler size={11} />
                                             Dimensiones
                                         </div>
                                     </td>
-                                    <td className="px-5 py-3 text-sm font-semibold text-[var(--color-text-primary)] w-[60%]">
+                                    <td className="px-5 py-3 text-sm font-bold text-foreground w-[60%]">
                                         {producto.dimensions?.length} × {producto.dimensions?.width} × {producto.dimensions?.height} cm
-                                        <span className="ml-1.5 text-[10px] font-normal text-[var(--color-text-tertiary)]">
+                                        <span className="ml-1.5 text-[10px] font-medium text-muted-foreground">
                                             (largo × ancho × alto)
                                         </span>
                                     </td>
@@ -135,14 +135,14 @@ export default function ProductExpandableSections({ producto }: Props) {
     );
 
     return (
-        <Accordion type="multiple" className="w-full space-y-1 bg-[var(--color-bg-primary)] pt-4">
+        <Accordion type="multiple" className="w-full space-y-1 bg-background pt-4 text-foreground">
 
             {/* SECCIÓN 1: INFORMACIÓN */}
-            <AccordionItem value="info" className="border-b border-[var(--color-border-subtle)]">
-                <AccordionTrigger className="py-6 hover:no-underline group px-1">
+            <AccordionItem value="info" className="border-b border-border">
+                <AccordionTrigger className="py-6 hover:no-underline group px-1 outline-none">
                     <div className="flex items-center gap-3">
-                        <Info size={20} className="text-[var(--color-text-secondary)] group-hover:text-[var(--color-accent-warm)] transition-colors" />
-                        <span className="text-base font-semibold tracking-tight text-[var(--color-text-primary)]">
+                        <Info size={20} className="text-muted-foreground group-hover:text-action-cta transition-colors" />
+                        <span className="text-base font-bold tracking-tight text-foreground">
                             Información del producto
                         </span>
                     </div>
@@ -165,50 +165,49 @@ export default function ProductExpandableSections({ producto }: Props) {
             </AccordionItem>
 
             {/* SECCIÓN 2: ENVÍOS */}
-            <AccordionItem value="envios" className="border-b border-[var(--color-border-subtle)]">
-                <AccordionTrigger className="py-6 hover:no-underline group px-1">
+            <AccordionItem value="envios" className="border-b border-border">
+                <AccordionTrigger className="py-6 hover:no-underline group px-1 outline-none">
                     <div className="flex items-center gap-3">
-                        <Truck size={20} className="text-[var(--color-text-secondary)] group-hover:text-[var(--color-accent-warm)] transition-colors" />
-                        <span className="text-base font-semibold tracking-tight text-[var(--color-text-primary)]">
+                        <Truck size={20} className="text-muted-foreground group-hover:text-action-cta transition-colors" />
+                        <span className="text-base font-bold tracking-tight text-foreground">
                             Entrega y Devoluciones
                         </span>
                     </div>
                 </AccordionTrigger>
                 <AccordionContent className="pb-10 pt-2 px-1">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Card Fecha Estimada */}
-                        <div className="bg-[var(--color-bg-secondary)] border border-[var(--color-border-subtle)] p-6 hover:border-[var(--color-border-default)] hover:shadow-sm transition-all">
-                            <h4 className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase mb-4 tracking-widest">
+                        <div className="bg-background-secondary border border-border p-6 hover:border-border-hover rounded-sm transition-all">
+                            <h4 className="text-[10px] font-bold text-muted-foreground uppercase mb-4 tracking-widest">
                                 Fecha estimada
                             </h4>
-                            <p className="text-3xl font-light text-[var(--color-text-primary)] tracking-tight">
+                            <p className="text-3xl font-extrabold text-foreground tracking-tight">
                                 {getDeliveryRange(producto.diasEnvio || 1)}
                             </p>
-                            <div className="mt-3 h-px bg-[var(--color-border-subtle)]" />
-                            <p className="text-xs text-[var(--color-text-secondary)] mt-3">
+                            <div className="mt-3 h-px bg-border/60" />
+                            <p className="text-xs text-muted-foreground font-medium mt-3">
                                 Tiempo estimado de llegada a tu domicilio
                             </p>
-                            {/* ← Peso visible en sección envío si existe */}
                             {hasWeight && (
-                                <p className="text-xs text-[var(--color-text-tertiary)] mt-1">
-                                    Peso del paquete: <span className="font-medium text-[var(--color-text-secondary)]">{producto.weight} kg</span>
+                                <p className="text-xs text-muted-foreground mt-1 font-medium">
+                                    Peso del paquete: <span className="font-bold text-foreground">{producto.weight} kg</span>
                                 </p>
                             )}
                         </div>
 
                         {/* Card Política Devoluciones */}
-                        <div className="flex flex-col justify-center space-y-5 border border-[var(--color-border-subtle)] p-6 bg-[var(--color-bg-secondary)] hover:border-[var(--color-border-default)] hover:shadow-sm transition-all">
+                        <div className="flex flex-col justify-center space-y-5 border border-border p-6 bg-background-secondary hover:border-border-hover rounded-sm transition-all">
                             <div className="space-y-2">
-                                <h4 className="text-sm font-semibold text-[var(--color-text-primary)]">
+                                <h4 className="text-sm font-bold text-foreground">
                                     Política de devoluciones
                                 </h4>
-                                <p className="text-sm text-[var(--color-text-secondary)] leading-snug">
-                                    Periodo de <span className="text-[var(--color-text-primary)] font-semibold">7 días</span> para gestionar cambios por fallas técnicas de origen.
+                                <p className="text-sm text-muted-foreground font-medium leading-snug">
+                                    Periodo de <span className="text-foreground font-bold">7 días</span> para gestionar cambios por fallas técnicas de origen.
                                 </p>
                             </div>
                             <Link
                                 href="/hc/garantias-y-devoluciones"
-                                className="inline-flex items-center text-sm font-semibold text-[var(--color-accent-warm)] hover:text-[var(--color-accent-warm-hover)] transition-colors group/link"
+                                className="inline-flex items-center text-sm font-bold text-action-cta hover:text-action-cta-hover transition-colors group/link outline-none"
                             >
                                 <FileText size={16} className="mr-2" />
                                 Leer términos
@@ -221,22 +220,22 @@ export default function ProductExpandableSections({ producto }: Props) {
 
             {/* SECCIÓN 3: GARANTÍA */}
             <AccordionItem value="garantia" className="border-b-0">
-                <AccordionTrigger className="py-6 hover:no-underline group px-1">
+                <AccordionTrigger className="py-6 hover:no-underline group px-1 outline-none">
                     <div className="flex items-center gap-3">
-                        <ShieldCheck size={20} className="text-[var(--color-text-secondary)] group-hover:text-[var(--color-accent-warm)] transition-colors" />
-                        <span className="text-base font-semibold tracking-tight text-[var(--color-text-primary)]">
+                        <ShieldCheck size={20} className="text-muted-foreground group-hover:text-action-cta transition-colors" />
+                        <span className="text-base font-bold tracking-tight text-foreground">
                             Garantía
                         </span>
                     </div>
                 </AccordionTrigger>
                 <AccordionContent className="pb-10 pt-2 px-1">
-                    <div className="max-w-7xl border-l-4 border-[var(--color-accent-warm)] pl-6 py-2 bg-[var(--color-accent-warm-light)] rounded-r-lg px-4">
-                        <p className="text-sm md:text-base text-[var(--color-text-secondary)] leading-relaxed">
-                            Todos los productos son <span className="text-[var(--color-text-primary)] font-semibold">100% originales.</span> Generalmente para la mayoría de productos, la garantía es de <span className="text-[var(--color-text-primary)] font-semibold">12 meses</span> por fallas técnicas de origen, pero puede variar dependiendo del tipo de producto. Cuentan con respaldo oficial de hardware válido directamente de la misma marca.
+                    <div className="max-w-7xl border-l-4 border-ring pl-6 py-3 bg-secondary rounded-r-sm">
+                        <p className="text-sm md:text-base text-secondary-foreground font-medium leading-relaxed">
+                            Todos los productos son <span className="text-foreground font-bold">100% originales.</span> Generalmente para la mayoría de productos, la garantía es de <span className="text-foreground font-bold">12 meses</span> por fallas técnicas de origen, pero puede variar dependiendo del tipo de producto. Cuentan con respaldo oficial de hardware válido directamente de la misma marca.
                         </p>
                     </div>
-                    <div className="mt-6 p-4 bg-[var(--color-bg-secondary)] border border-[var(--color-border-subtle)]">
-                        <p className="text-sm text-[var(--color-text-secondary)]">
+                    <div className="mt-6 p-4 bg-background-secondary border border-border rounded-sm">
+                        <p className="text-sm text-muted-foreground font-semibold">
                             Conservar el comprobante para cambios, garantías y devoluciones.
                         </p>
                     </div>

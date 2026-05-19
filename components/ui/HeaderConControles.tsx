@@ -13,13 +13,14 @@ export default function HeaderConControles({ next, previous }: ButtonGroupProps)
                     group
                     p-2
                     rounded-full
-                    bg-[var(--color-bg-primary)]
-                    border border-[var(--color-border-subtle)]
-                    text-[var(--color-text-secondary)]
-                    hover:border-[var(--color-accent-warm)]
-                    hover:text-[var(--color-accent-warm)]
+                    bg-background
+                    border border-border
+                    text-muted-foreground
+                    hover:border-action-cta
+                    hover:text-action-cta
                     transition-all duration-300
                     active:scale-90
+                    outline-none
                 "
                 aria-label="Anterior"
             >
@@ -36,13 +37,14 @@ export default function HeaderConControles({ next, previous }: ButtonGroupProps)
                     group
                     p-2
                     rounded-full
-                    bg-[var(--color-bg-primary)]
-                    border border-[var(--color-border-subtle)]
-                    text-[var(--color-text-secondary)]
-                    hover:border-[var(--color-accent-warm)]
-                    hover:text-[var(--color-accent-warm)]
+                    bg-background
+                    border border-border
+                    text-muted-foreground
+                    hover:border-action-cta
+                    hover:text-action-cta
                     transition-all duration-300
                     active:scale-90
+                    outline-none
                 "
                 aria-label="Siguiente"
             >

@@ -6,6 +6,7 @@ import NuevaComparativa from "@/components/admin/comparisons/NuevaComparativa";
 import ComparisonFilters from "@/components/admin/comparisons/ComparisonFilters";
 import ComparisonTable from "@/components/admin/comparisons/ComparisonTable";
 import Pagination from "@/components/ui/Pagination";
+import { Comparison } from "@/src/schemas/comparison.schema";
 
 interface SearchParams {
     page?: string;
@@ -19,37 +20,36 @@ interface PageProps {
     searchParams: Promise<SearchParams>;
 }
 
-/**
- * SERVER COMPONENT: Procesa los parámetros de la URL, consulta el servicio persistido
- * en caché e inyecta la data limpia directamente a los componentes visuales del cliente.
- */
 export default async function ComparisonsPage({ searchParams }: PageProps) {
-    // En Next.js 15, searchParams se trata explícitamente como una Promesa asíncrona
     const params = await searchParams;
 
-    // Sanitización exhaustiva de parámetros numéricos y de texto para evitar fallos de ejecución
     const page = Math.max(1, Number(params.page ?? 1));
     const limit = Math.max(1, Number(params.limit ?? 10));
     const search = params.search?.trim() || undefined;
 
     const isActive =
         params.isActive === "true" ? true :
-            params.isActive === "false" ? false :
-                undefined;
+        params.isActive === "false" ? false :
+        undefined;
 
     const isFeatured =
         params.isFeatured === "true" ? true :
-            params.isFeatured === "false" ? false :
-                undefined;
+        params.isFeatured === "false" ? false :
+        undefined;
 
-    // Consumo del servicio del lado del servidor (Aprovecha next.tags de forma nativa)
-    const { comparisons, total, pages } = await ComparisonService.getAll({
+    // Adaptado estrictamente para leer la nueva estructura JSON encapsulada en la respuesta
+    const res = await ComparisonService.getAll({
         page,
         limit,
         search,
         isActive,
         isFeatured
     });
+
+    // Desestructuramos el contenido paginado que viaja dentro del objeto unificado de respuesta
+    const comparisons = (res?.data || []) as Comparison[];
+    const total = Number(res?.total ?? 0);
+    const pages = Math.max(1, Number(res?.pages ?? 1));
 
     return (
         <AdminPageWrapper
@@ -71,8 +71,8 @@ export default async function ComparisonsPage({ searchParams }: PageProps) {
                 <ComparisonTable comparisons={comparisons} />
 
                 {total > 0 && (
-                    <div className="flex flex-col items-center gap-3 pt-4 border-t border-[var(--color-border-subtle)]">
-                        <p className="text-xs text-[var(--color-text-tertiary)] uppercase ">
+                    <div className="flex flex-col items-center gap-3 pt-6 border-t border-border">
+                        <p className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
                             Mostrando {comparisons.length} de {total} resultados
                         </p>
                         <Pagination
