@@ -16,11 +16,12 @@ export default function LayoutVideo({ banner }: { banner: SliderBanner }) {
         return () => clearTimeout(t);
     }, []);
 
+    // Alineación estricta con los tokens CSS mapeados a variables semánticas
     const isDark = design.theme !== "light";
-    const bg = design.bgColor ?? "#000000";
-    const text = design.textColor ?? "#f5f5f7";
-    const muted = design.textMutedColor ?? (isDark ? "#f5f5f7" : "#5A5A5A");
-    const accent = design.accentColor ?? (isDark ? "#F97316" : "#F97316");
+    const bg = isDark ? "var(--color-primary)" : "var(--color-background)";
+    const text = isDark ? "var(--color-primary-foreground)" : "var(--color-foreground)";
+    const muted = "var(--color-muted-foreground)";
+    const accent = "var(--color-action-cta)";
 
     const fadeUp = (delay: number, extra?: React.CSSProperties): React.CSSProperties => ({
         opacity: loaded ? 1 : 0,
@@ -35,7 +36,7 @@ export default function LayoutVideo({ banner }: { banner: SliderBanner }) {
         <Link
             href={destUrl}
             aria-label={title ?? "Ver oferta"}
-            className="banner-slot group relative w-full overflow-hidden flex items-center justify-center text-center"
+            className="banner-slot group relative w-full overflow-hidden flex items-center justify-center text-center border border-border h-[var(--banner-h-mobile)] md:h-[var(--banner-h)]"
             style={{ backgroundColor: bg }}
         >
             {/* ── Media a sangre completa ── */}
@@ -84,75 +85,64 @@ export default function LayoutVideo({ banner }: { banner: SliderBanner }) {
                 }}
             />
 
-            {/* ── Contenido centrado ── */}
-            <div
-                className="
-                    relative z-20
-                    flex flex-col items-center
-                    w-full max-w-[22rem] sm:max-w-xl md:max-w-2xl lg:max-w-4xl
-                    px-6
-                "
-                style={{ color: text }}
-            >
-                {subtitle && (
-                    <div style={fadeUp(0.1)} className="mb-2">
-                        <span
-                            className="
-                                inline-block 
-                                text-[10px] font-bold tracking-[0.4em] uppercase 
-                                px-4 py-1.5 
-                                rounded-full
-                                backdrop-blur-md
-                            "
+            {/* ── Contenido: Limitado a max-w-6xl y centrado horizontalmente ── */}
+            <div className="relative z-20 w-full max-w-6xl mx-auto px-6 h-full flex flex-col items-center justify-center">
+                <div
+                    className="
+                        flex flex-col items-center
+                        w-full max-w-[22rem] sm:max-w-xl md:max-w-2xl lg:max-w-4xl
+                    "
+                    style={{ color: text }}
+                >
+                    {subtitle && (
+                        <div style={fadeUp(0.1)} className="mb-2">
+                            <span
+                                className="inline-block text-[10px] font-bold tracking-wider uppercase px-3 py-1 border-l-2"
+                                style={{ color: accent, borderColor: accent }}
+                            >
+                                {subtitle}
+                            </span>
+                        </div>
+                    )}
+
+                    {title && (
+                        <h2
+                            className="font-black leading-[1.05] tracking-[-0.05em] text-[clamp(2rem,5vw,3.5rem)] mt-2 mb-4 uppercase"
+                            style={fadeUp(0.2, {
+                                transform: loaded
+                                    ? "translateY(0px) scale(1)"
+                                    : "translateY(20px) scale(0.95)",
+                                transition: "opacity 0.8s ease 0.2s, transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s"
+                            })}
+                        >
+                            {title}
+                        </h2>
+                    )}
+
+                    {description && (
+                        <p
+                            className="text-[14px] sm:text-[16px] md:text-[18px] leading-relaxed max-w-[40ch] line-clamp-2 font-medium"
                             style={{
-                                color: text,
-                                background: `${accent}${isDark ? "33" : "22"}`,
-                                border: `1px solid ${accent}50`,
-                                boxShadow: `0 0 20px ${accent}20`
+                                color: muted,
+                                textShadow: isDark ? "0 2px 15px rgba(0,0,0,0.5)" : "none",
+                                ...fadeUp(0.35),
                             }}
                         >
-                            {subtitle}
-                        </span>
-                    </div>
-                )}
+                            {description}
+                        </p>
+                    )}
 
-                {title && (
-                    <h2
-                        className="font-black leading-[1.05] tracking-[-0.05em] text-[clamp(2rem,5vw,3.5rem)] mt-2 mb-4 uppercase"
-                        style={fadeUp(0.2, {
-                            transform: loaded
-                                ? "translateY(0px) scale(1)"
-                                : "translateY(20px) scale(0.95)",
-                            transition: "opacity 0.8s ease 0.2s, transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.2s"
-                        })}
-                    >
-                        {title}
-                    </h2>
-                )}
-
-                {description && (
-                    <p
-                        className="text-[14px] sm:text-[16px] md:text-[18px] leading-relaxed max-w-[40ch] line-clamp-2 font-medium"
-                        style={{
-                            color: muted,
-                            textShadow: isDark ? "0 2px 15px rgba(0,0,0,0.5)" : "none",
-                            ...fadeUp(0.35),
-                        }}
-                    >
-                        {description}
-                    </p>
-                )}
-
-                {price?.current !== undefined && (
-                    <div className="mt-6 md:mt-8" style={fadeUp(0.45)}>
-                        <SliderPrice
-                            price={price}
-                            color={text}
-                            accentColor={accent}
-                            isDark={isDark}
-                        />
-                    </div>
-                )}
+                    {price?.current !== undefined && (
+                        <div className="mt-6 md:mt-8" style={fadeUp(0.45)}>
+                            <SliderPrice
+                                price={price}
+                                color={text}
+                                accentColor={accent}
+                                isDark={isDark}
+                            />
+                        </div>
+                    )}
+                </div>
             </div>
         </Link>
     );

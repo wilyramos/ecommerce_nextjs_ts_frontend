@@ -46,8 +46,6 @@ export default function ProductSwitches({ product }: { product?: ProductWithCate
                         id={id}
                         onChange={setter}
                         checked={state}
-                        onColor="#000000"  // black
-                        offColor="#e5e5e5" // neutral-200
                         uncheckedIcon={false}   
                         checkedIcon={false}
                         height={20}

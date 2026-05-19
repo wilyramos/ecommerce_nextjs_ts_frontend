@@ -10,8 +10,8 @@ import ProductForm from "./ProductForm";
 // Tipos
 import type { ProductWithCategoryResponse, CategoryListResponse } from "@/src/schemas";
 import type { TBrand } from "@/src/schemas/brands";
-import type { ProductLine } from "@/src/schemas/line.schema"; 
-
+import type { ProductLine } from "@/src/schemas/line.schema";
+import { Button } from "@/components/ui/button";
 
 
 interface EditProductFormProps {
@@ -71,11 +71,7 @@ export default function EditProductForm({ product, categorias, brands, lines }: 
                 lines={lines} // Pasamos las líneas al formulario genérico
             />
             <div className="p-4">
-                <input
-                    type="submit"
-                    value="Actualizar Producto"
-                    className='bg-[var(--color-accent-warm)] text-white px-4 py-2  hover:bg-[var(--color-accent-warm-hover)] cursor-pointer inline-block w-full sm:w-auto'
-                />
+                <Button type="submit">Actualizar Producto</Button>
             </div>
         </form>
     );

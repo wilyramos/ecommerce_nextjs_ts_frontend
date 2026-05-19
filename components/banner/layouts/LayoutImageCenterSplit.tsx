@@ -15,12 +15,12 @@ export default function LayoutImageCenterSplit({ banner }: { banner: SliderBanne
         return () => clearTimeout(t);
     }, []);
 
+    // Alineación estricta con los tokens CSS mapeados a variables semánticas
     const isDark = design.theme !== "light";
-    const bg = design.bgColor ?? (isDark ? "#080808" : "#f5f5f7");
-    const text = design.textColor ?? (isDark ? "#f5f5f7" : "#1d1d1f");
-    const muted = design.textMutedColor ?? (isDark ? "#f5f5f7" : "#5A5A5A");
-    const accent = design.accentColor ?? (isDark ? "#F97316" : "#F97316");
-    const divider = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
+    const bg = isDark ? "var(--color-primary)" : "var(--color-background)";
+    const text = isDark ? "var(--color-primary-foreground)" : "var(--color-foreground)";
+    const muted = "var(--color-muted-foreground)";
+    const accent = "var(--color-action-cta)";
 
     const leftFields = design.contentDistribution?.leftSide ?? ["subtitle", "title"];
     const rightFields = design.contentDistribution?.rightSide ?? ["description", "price"];
@@ -43,8 +43,8 @@ export default function LayoutImageCenterSplit({ banner }: { banner: SliderBanne
                 return subtitle && (
                     <div key="subtitle" style={fadeSlide(animationSide, delay)} className="flex-none max-w-full">
                         <span
-                            className="inline-block -rotate-4 text-xs sm:text-sm font-black uppercase px-2 py-1 rounded-4xl truncate "
-                            style={{ color: text, background: `${accent}` }}
+                            className="inline-block text-xs sm:text-sm font-bold uppercase tracking-wider px-3 py-1 border-l-2"
+                            style={{ color: accent, borderColor: accent }}
                         >
                             {subtitle}
                         </span>
@@ -65,7 +65,7 @@ export default function LayoutImageCenterSplit({ banner }: { banner: SliderBanne
                 return description && (
                     <div key="description" style={fadeSlide(animationSide, delay)} className="flex-none max-w-full min-h-0">
                         <p
-                            className="text-[11px] sm:text-[13px] leading-relaxed line-clamp-3 sm:line-clamp-4 max-w-[28ch] mx-auto border-r-2 pr-2"
+                            className="text-[11px] sm:text-[13px] leading-relaxed line-clamp-3 sm:line-clamp-4 max-w-[28ch] mx-auto"
                             style={{ color: muted }}
                         >
                             {description}
@@ -87,17 +87,16 @@ export default function LayoutImageCenterSplit({ banner }: { banner: SliderBanne
         <Link
             href={destUrl}
             aria-label={title ?? "Ver oferta"}
-            // banner-slot provee la altura desde el carrusel.
-            className="banner-slot group relative block w-full overflow-hidden"
+            className="banner-slot group relative block w-full overflow-hidden border border-border h-[var(--banner-h-mobile)] md:h-[var(--banner-h)]"
             style={{ backgroundColor: bg }}
         >
-            {/* ── Desktop (≥ sm): 3 columnas ── */}
-            <div className="hidden sm:flex absolute inset-0 w-full h-full">
+            {/* ── Contenido Desktop (≥ sm): Limitado a max-w-6xl y centrado horizontalmente ── */}
+            <div className="hidden sm:flex absolute inset-0 w-full max-w-6xl mx-auto h-full z-10">
 
                 {/* Panel izquierdo */}
                 <div
                     className="h-full flex flex-col items-center justify-center text-center gap-3 md:gap-4 flex-shrink-0 z-20 overflow-hidden"
-                    style={{ width: "28%", borderColor: divider, paddingInline: "3%" }}
+                    style={{ width: "28%", paddingInline: "3%" }}
                 >
                     {leftFields.map((f, i) => renderField(f, "left", i))}
                 </div>
@@ -116,15 +115,12 @@ export default function LayoutImageCenterSplit({ banner }: { banner: SliderBanne
                             priority
                         />
                     </div>
-
-
-
                 </div>
 
                 {/* Panel derecho */}
                 <div
                     className="h-full flex flex-col items-center justify-center text-center gap-3 md:gap-4 flex-shrink-0 z-20 overflow-hidden"
-                    style={{ width: "28%", borderColor: divider, paddingInline: "3%" }}
+                    style={{ width: "28%", paddingInline: "3%" }}
                 >
                     {rightFields.map((f, i) => renderField(f, "right", i))}
                 </div>

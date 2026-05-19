@@ -18,11 +18,12 @@ export default function LayoutCountdown({ banner }: { banner: SliderBanner }) {
 
     if (!countdown?.endsAt) return null;
 
+    // Alineación estricta con los tokens CSS mapeados a variables semánticas
     const isDark = design.theme !== "light";
-    const bg = design.bgColor ?? (isDark ? "#080808" : "#f5f5f7");
-    const text = design.textColor ?? (isDark ? "#f5f5f7" : "#1d1d1f");
-    const muted = design.textMutedColor ?? (isDark ? "#f5f5f7" : "#5A5A5A");
-    const accent = design.accentColor ?? (isDark ? "#F97316" : "#F97316");
+    const bg = isDark ? "var(--color-primary)" : "var(--color-background)";
+    const text = isDark ? "var(--color-primary-foreground)" : "var(--color-foreground)";
+    const muted = "var(--color-muted-foreground)";
+    const accent = "var(--color-action-cta)";
 
     const fadeUp = (delay: number): React.CSSProperties => ({
         opacity: loaded ? 1 : 0,
@@ -34,11 +35,10 @@ export default function LayoutCountdown({ banner }: { banner: SliderBanner }) {
         <Link
             href={destUrl}
             aria-label={title ?? "Ver oferta"}
-            // banner-slot: hereda altura definida en el carrusel via CSS variable
-            className="banner-slot group relative flex items-stretch w-full overflow-hidden"
+            className="banner-slot group relative flex items-stretch w-full overflow-hidden h-[var(--banner-h-mobile)] md:h-[var(--banner-h)] border border-border"
             style={{ backgroundColor: bg }}
         >
-            {/* ── Imagen de fondo con fusión adaptativa ── */}
+            {/* ── Imagen de fondo: Se mantiene relativa al ancho total de la pantalla ── */}
             <div
                 className="absolute inset-0 sm:left-auto sm:right-0 sm:top-0 sm:h-full sm:w-[50%] z-0"
                 style={{
@@ -60,14 +60,12 @@ export default function LayoutCountdown({ banner }: { banner: SliderBanner }) {
                     />
                 </div>
 
-                {/* Overlay móvil: gradiente desde abajo */}
                 <div
                     className="absolute inset-0 pointer-events-none sm:hidden z-10"
                     style={{
                         background: `linear-gradient(to top, ${bg} 10%, ${bg}b3 40%, transparent 100%)`,
                     }}
                 />
-                {/* Overlay desktop: gradiente desde la izquierda */}
                 <div
                     className="absolute inset-0 pointer-events-none hidden sm:block z-10"
                     style={{
@@ -76,79 +74,81 @@ export default function LayoutCountdown({ banner }: { banner: SliderBanner }) {
                 />
             </div>
 
-            {/* ── Contenido ── */}
-            <div
-                className="
-                    relative z-20
-                    flex flex-col items-center justify-center text-center
-                    w-full px-6
-                    sm:w-[55%] sm:items-start sm:text-left sm:pl-12 md:pl-20 lg:pl-32
-                    gap-3 sm:gap-4
-                "
-                style={{ color: text }}
-            >
-                {/* Badge */}
-                {subtitle && (
-                    <div style={fadeUp(0.1)}>
-                        <span
-                            className="inline-block text-[10px] sm:text-[11px] font-bold tracking-[0.25em] uppercase px-3 py-[5px] rounded-full"
-                            style={{
-                                color: accent,
-                                background: `${accent}15`,
-                                border: `1px solid ${accent}30`,
-                                backdropFilter: "blur(4px)",
-                            }}
-                        >
-                            {subtitle}
-                        </span>
-                    </div>
-                )}
-
-                {/* Título */}
-                {title && (
-                    <h2
-                        className="font-bold leading-[1.05] tracking-[-0.03em] text-[clamp(1.8rem,5vw,3.8rem)] max-w-[15ch]"
-                        style={fadeUp(0.2)}
-                    >
-                        {title}
-                    </h2>
-                )}
-
-                {/* Descripción */}
-                {description && (
-                    <p
-                        className="text-[12px] sm:text-[14px] leading-relaxed max-w-[35ch] line-clamp-2 sm:line-clamp-3"
-                        style={{ color: muted, ...fadeUp(0.3) }}
-                    >
-                        {description}
-                    </p>
-                )}
-
-                {/* Timer */}
+            {/* ── Capa de Contenido: Restringida a max-w-6xl ── */}
+            <div className="relative z-20 w-full max-w-6xl mx-auto px-6 h-full flex flex-col justify-center items-center sm:items-start">
+                
                 <div
-                    className="my-1 sm:my-2 w-full flex justify-center sm:justify-start"
-                    style={fadeUp(0.4)}
+                    className="
+                        flex flex-col items-center text-center
+                        sm:w-[55%] sm:items-start sm:text-left
+                        gap-3 sm:gap-4
+                    "
+                    style={{ color: text }}
                 >
-                    <SliderCountdownTimer
-                        endsAt={countdown.endsAt}
-                        label={countdown.label}
-                        showDays={countdown.showDays}
-                        theme={design.theme}
-                        accentColor={accent}
-                    />
-                </div>
-
-                <div
-                    className="flex flex-col items-center sm:items-start gap-4 mt-2"
-                    style={fadeUp(0.5)}
-                >
-                    {price?.current !== undefined && (
-                        <SliderPrice price={price}
-                            color={text}
-                            accentColor={accent}
-                            isDark={isDark}
-                        />
+                    {/* Badge */}
+                    {subtitle && (
+                        <div style={fadeUp(0.1)}>
+                            <span
+                                className="inline-block text-[10px] sm:text-[11px] font-bold tracking-[0.25em] uppercase px-3 py-[5px] rounded-full"
+                                style={{
+                                    color: accent,
+                                    background: `${accent}15`,
+                                    border: `1px solid ${accent}30`,
+                                    backdropFilter: "blur(4px)",
+                                }}
+                            >
+                                {subtitle}
+                            </span>
+                        </div>
                     )}
+
+                    {/* Título */}
+                    {title && (
+                        <h2
+                            className="font-bold leading-[1.05] tracking-[-0.03em] text-[clamp(1.8rem,5vw,3.8rem)] max-w-[15ch]"
+                            style={fadeUp(0.2)}
+                        >
+                            {title}
+                        </h2>
+                    )}
+
+                    {/* Descripción */}
+                    {description && (
+                        <p
+                            className="text-[12px] sm:text-[14px] leading-relaxed max-w-[35ch] line-clamp-2 sm:line-clamp-3"
+                            style={{ color: muted, ...fadeUp(0.3) }}
+                        >
+                            {description}
+                        </p>
+                    )}
+
+                    {/* Timer */}
+                    <div
+                        className="my-1 sm:my-2 w-full flex justify-center sm:justify-start"
+                        style={fadeUp(0.4)}
+                    >
+                        <SliderCountdownTimer
+                            endsAt={countdown.endsAt}
+                            label={countdown.label}
+                            showDays={countdown.showDays}
+                            theme={design.theme}
+                            accentColor={accent}
+                        />
+                    </div>
+
+                    <div
+                        className="flex flex-col items-center sm:items-start gap-4 mt-2"
+                        style={fadeUp(0.5)}
+                    >
+                        {price?.current !== undefined && (
+                            <SliderPrice 
+                                price={price}
+                                color={text}
+                                accentColor={accent}
+                                isDark={isDark}
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
         </Link>

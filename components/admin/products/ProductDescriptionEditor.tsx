@@ -30,8 +30,6 @@ const editorConfig: InitialConfigType = {
 
 const moveStylesToSpans = (dom: Document) => {
     const doc = dom;
-
-    // Lista de propiedades CSS. Usamos kebab-case (ej: background-color) que funciona con getPropertyValue
     const stylesToTransfer = [
         'color',
         'background-color',
@@ -46,7 +44,6 @@ const moveStylesToSpans = (dom: Document) => {
     elements.forEach((el) => {
         if (!(el instanceof HTMLElement)) return;
 
-        // getPropertyValue devuelve string vacío si no existe, lo cual es falsy
         const hasStyles = stylesToTransfer.some(style => el.style.getPropertyValue(style));
 
         if (hasStyles) {
@@ -55,12 +52,10 @@ const moveStylesToSpans = (dom: Document) => {
             if (childNodes.length === 0) return;
 
             childNodes.forEach(child => {
-                // Caso 1: Es Texto -> Envolver en Span
                 if (child.nodeType === Node.TEXT_NODE && child.textContent?.trim()) {
                     const span = doc.createElement('span');
                     span.textContent = child.textContent;
 
-                    // Copiar estilos usando la API estándar
                     stylesToTransfer.forEach(style => {
                         const val = el.style.getPropertyValue(style);
                         if (val) {
@@ -70,13 +65,11 @@ const moveStylesToSpans = (dom: Document) => {
 
                     el.replaceChild(span, child);
                 }
-                // Caso 2: Es otro Elemento HTML -> Fusionar estilos
                 else if (child instanceof HTMLElement) {
                     stylesToTransfer.forEach(style => {
                         const parentVal = el.style.getPropertyValue(style);
                         const childVal = child.style.getPropertyValue(style);
 
-                        // Solo aplicamos si el padre tiene valor y el hijo NO (la cascada gana)
                         if (parentVal && !childVal) {
                             child.style.setProperty(style, parentVal);
                         }
@@ -122,7 +115,7 @@ export default function ProductDescriptionEditor({ initialHTML = "" }) {
     const [isHTMLMode, setIsHTMLMode] = useState(false);
 
     return (
-        <div className="border border-gray-300 rounded-lg overflow-hidden bg-white shadow-sm">
+        <div className="w-full border border-border/60 rounded-sm overflow-hidden bg-background shadow-3xs text-foreground">
             <input type="hidden" name="descripcion" value={html} />
 
             <LexicalComposer initialConfig={editorConfig}>
@@ -130,20 +123,23 @@ export default function ProductDescriptionEditor({ initialHTML = "" }) {
 
                 {isHTMLMode ? (
                     <textarea
-                        className="w-full h-[400px] p-4 font-mono text-xs bg-slate-50 border-t outline-none resize-none text-slate-800"
+                        className="w-full h-[320px] p-4 font-mono text-xs bg-background-secondary border-t border-border/40 text-foreground outline-none resize-none"
                         value={html}
                         onChange={(e) => setHtml(e.target.value)}
                     />
                 ) : (
-                    <div className="relative">
+                    <div className="relative border-t border-border/40">
                         <RichTextPlugin
                             contentEditable={
                                 <ContentEditable
-                                    className="min-h-[300px] max-h-[600px] overflow-y-auto p-6 outline-none prose max-w-none"
-                                    style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}
+                                    className="min-h-[320px] max-h-[600px] overflow-y-auto p-4 md:p-5 outline-none prose prose-sm max-w-none dark:prose-invert"
                                 />
                             }
-                            placeholder={<div className="absolute top-6 left-6 text-gray-400 pointer-events-none select-none">Escribe una descripción detallada...</div>}
+                            placeholder={
+                                <div className="absolute top-4 left-4 md:top-5 md:left-5 text-xs text-muted-foreground/50 pointer-events-none select-none font-medium">
+                                    Escribe una descripción detallada...
+                                </div>
+                            }
                             ErrorBoundary={LexicalErrorBoundary}
                         />
                         <InitialHTMLPlugin html={initialHTML} />

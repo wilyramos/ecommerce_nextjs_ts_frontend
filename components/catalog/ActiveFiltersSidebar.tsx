@@ -18,23 +18,17 @@ export default function ActiveFiltersSidebar() {
     if (!hasFilters) return null;
 
     return (
-        <div className="mb-6">
+        <div className="mb-6 select-none">
             <div className="flex items-center justify-between mb-3">
-                <span
-                    className="text-[11px] uppercase tracking-[0.06em]"
-                    style={{ color: "var(--color-text-tertiary)" }}
-                >
+                <span className="text-[11px] uppercase tracking-[0.08em] font-bold text-muted-foreground">
                     Filtros activos
                 </span>
 
                 <button
                     onClick={clearFilters}
-                    className="flex items-center gap-1 text-[12px] transition-colors duration-150"
-                    style={{ color: "var(--color-text-tertiary)" }}
-                    onMouseEnter={e => (e.currentTarget.style.color = "var(--color-accent-warm)")}
-                    onMouseLeave={e => (e.currentTarget.style.color = "var(--color-text-tertiary)")}
+                    className="flex items-center gap-1 text-[11px] font-medium text-muted-foreground hover:text-action-cta transition-colors duration-150 outline-none"
                 >
-                    <RotateCcw className="w-[11px] h-[11px]" />
+                    <RotateCcw className="w-3 h-3" />
                     Limpiar
                 </button>
             </div>
@@ -69,10 +63,7 @@ export default function ActiveFiltersSidebar() {
                 })}
             </div>
 
-            <div
-                className="mt-5 border-t"
-                style={{ borderColor: "var(--color-border-subtle)" }}
-            />
+            <div className="mt-5 border-t border-border" />
         </div>
     );
 }
@@ -81,26 +72,12 @@ function Chip({ label, onRemove }: { label: string; onRemove: () => void }) {
     return (
         <button
             onClick={onRemove}
-            className="group inline-flex items-center gap-1.5 pl-3 pr-2.5 py-[5px] text-[12px] rounded transition-all duration-150"
-            style={{
-                color: "var(--color-text-primary)",
-                background: "var(--color-bg-primary)",
-                border: "1px solid var(--color-border-default)",
-            }}
-            onMouseEnter={e => {
-                (e.currentTarget.style.borderColor = "var(--color-border-strong)");
-            }}
-            onMouseLeave={e => {
-                (e.currentTarget.style.borderColor = "var(--color-border-default)");
-            }}
+            className="group inline-flex items-center gap-2 pl-3 pr-2 py-1.5 text-[12px] font-medium text-foreground bg-background-secondary border border-border rounded-sm hover:border-muted-foreground hover:bg-background transition-colors duration-150 outline-none"
         >
             <span className="capitalize truncate max-w-[160px] leading-none">
                 {label}
             </span>
-            <X
-                className="w-[10px] h-[10px] flex-shrink-0 transition-colors duration-150"
-                style={{ color: "var(--color-text-tertiary)" }}
-            />
+            <X className="w-3 h-3 flex-shrink-0 text-muted-foreground group-hover:text-foreground transition-colors duration-150" />
         </button>
     );
 }

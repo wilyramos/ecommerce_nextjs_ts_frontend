@@ -17,7 +17,7 @@ import {
     BarChart3,
     Settings,
     LogOut,
-    LucideIcon
+    type LucideIcon
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCashStore } from "@/src/store/useCashStore";
@@ -60,17 +60,17 @@ export const Sidebar = ({ user }: { user: User }) => {
     );
 
     return (
-        <aside className="hidden lg:flex h-screen w-20 flex-col items-center border-r py-6 bg-text-inverse border-accent-warm-light">
+        <aside className="hidden lg:flex h-screen w-[72px] flex-col items-center border-r border-border bg-background py-4 select-none">
 
             {/* Brand Logo Container */}
-            <div className="mb-6 flex h-10 w-10 items-center justify-center">
-                <Logo size={20} />
+            <div className="mb-4 flex h-10 w-10 items-center justify-center transition-transform duration-200 hover:scale-95">
+                <Logo />
             </div>
 
-            <div className="mb-6 w-10 h-px bg-accent-warm-light" />
+            <div className="mb-4 w-8 h-px bg-border/60" />
 
             {/* Navigation Flow */}
-            <nav className="flex flex-1 flex-col gap-3">
+            <nav className="flex flex-1 flex-col gap-1 w-full px-2">
                 {filteredRoutes.map((route) => {
                     const isActive = pathname.startsWith(route.href);
                     return (
@@ -78,15 +78,15 @@ export const Sidebar = ({ user }: { user: User }) => {
                             key={route.href}
                             href={route.href}
                             className={cn(
-                                "group flex flex-col items-center justify-center gap-1 w-14 h-14 rounded-sm transition-all",
+                                "group flex flex-col items-center justify-center gap-1 w-full aspect-square rounded-sm transition-colors outline-none",
                                 isActive
-                                    ? "bg-accent-warm text-text-inverse"
-                                    : "text-text-tertiary hover:bg-accent-warm-light hover:text-accent-warm"
+                                    ? "bg-foreground text-background font-bold shadow-2xs"
+                                    : "text-muted-foreground hover:bg-background-secondary/60 hover:text-foreground"
                             )}
                             title={route.label}
                         >
-                            <route.icon size={20} strokeWidth={isActive ? 2.5 : 2} />
-                            <span className="text-[8px] font-black uppercase tracking-tighter leading-none">
+                            <route.icon size={18} strokeWidth={isActive ? 2.5 : 2} className="shrink-0" />
+                            <span className="text-[9px] font-bold uppercase tracking-tight leading-none">
                                 {route.label}
                             </span>
                         </Link>
@@ -94,17 +94,19 @@ export const Sidebar = ({ user }: { user: User }) => {
                 })}
             </nav>
 
-            <div className="mt-auto w-10 h-px bg-accent-warm-light mb-6" />
+            <div className="mt-auto w-8 h-px bg-border/60 mb-4" />
 
             {/* System Termination Action */}
-            <button
-                onClick={handleLogout}
-                className="group flex flex-col items-center justify-center gap-1 w-14 h-14 rounded-sm text-text-tertiary hover:bg-accent-warm-light hover:text-accent-warm-hover transition-colors cursor-pointer"
-                title="Cerrar sesión"
-            >
-                <LogOut size={20} />
-                <span className="text-[8px] font-black uppercase">Salir</span>
-            </button>
+            <div className="w-full px-2">
+                <button
+                    onClick={handleLogout}
+                    className="group flex flex-col items-center justify-center gap-1 w-full aspect-square rounded-sm text-muted-foreground hover:bg-background-secondary/60 hover:text-foreground transition-colors cursor-pointer outline-none"
+                    title="Cerrar sesión"
+                >
+                    <LogOut size={18} className="shrink-0" />
+                    <span className="text-[9px] font-bold uppercase tracking-tight leading-none">Salir</span>
+                </button>
+            </div>
         </aside>
     );
 };

@@ -29,7 +29,7 @@
   --border: oklch(0.90 0 0);                /* Gris neutro sutil para líneas divisorias y bordes */
   --border-hover: hwb(0 62% 38%);          /* Estado hover de bordes neutros */
   --input: oklch(0.90 0 0);
-  --ring: oklch(0.65 0.22 43.3);            /* Enfoque visual con el naranja principal */
+  --ring: #ff6000;            /* Enfoque visual con el naranja principal */
 
   /* Fondos Alternativos no enlazados a la marca */
   --muted-neutral: oklch(0.97 0 0);         /* Para elementos deshabilitados o filas de tablas */
@@ -37,7 +37,7 @@
 
   /* --- ACCIONES FOCALIZADAS DE E-COMMERCE --- */
   /* El Naranja del Logo exclusivo para  Conversión (Botón de Compra / Carrito) */
-  --action-cta: #f54e00;      /* #F97316 - Alta visibilidad de acción principal */
+  --action-cta: #ff6000;      /* #F97316 - Alta visibilidad de acción principal */
   --action-cta-hover: oklch(0.58 0.23 39.4);/* #EA580C - Estado hover de conversión */
   --action-cta-foreground: oklch(1 0 0);    /* Texto blanco sobre el botón naranja */
 

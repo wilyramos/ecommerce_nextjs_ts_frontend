@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, KeyboardEvent } from "react";
+import { useState } from "react";
+import type { KeyboardEvent } from "react";
 import { X, Tag, Plus } from "lucide-react";
 import { LabelWithTooltip } from "@/components/utils/LabelWithTooltip";
 
@@ -37,9 +38,9 @@ export default function TagsInput({ initial = [] }: TagsInputProps) {
 
     return (
         <div className="space-y-3">
-            {/* Header Estilizado */}
+            {/* Header */}
             <div className="flex items-center gap-2">
-                <Tag className="w-3.5 h-3.5 text-[var(--color-text-secondary)]" />
+                <Tag className="w-3.5 h-3.5 text-muted-foreground" />
                 <LabelWithTooltip
                     htmlFor="tags-input"
                     label="Etiquetas / Tags"
@@ -48,19 +49,17 @@ export default function TagsInput({ initial = [] }: TagsInputProps) {
             </div>
 
             {/* Contenedor de Tags e Input */}
-            <div
-                className="group flex flex-wrap gap-2 min-h-[44px] w-full border border-[var(--color-border-default)] bg-[var(--color-bg-primary)] px-3 py-2 transition-all focus-within:border-[var(--color-accent-warm)] focus-within:ring-1 focus-within:ring-[var(--color-accent-warm)]"
-            >
+            <div className="flex flex-wrap gap-2 min-h-[44px] w-full border border-border/60 bg-background rounded-sm px-3 py-2 focus-within:border-muted-foreground/60 transition-colors">
                 {tags.map(tag => (
                     <span
                         key={tag}
-                        className="inline-flex items-center gap-1.5 bg-[var(--color-bg-secondary)] border border-[var(--color-border-subtle)] text-[var(--color-text-primary)] px-2 py-1 text-[11px] font-bold uppercase tracking-tight"
+                        className="inline-flex items-center gap-1.5 bg-background-secondary border border-border/60 text-foreground px-2 py-1 text-[10px] font-bold uppercase tracking-wider rounded-sm"
                     >
                         {tag}
                         <button
                             type="button"
                             onClick={() => removeTag(tag)}
-                            className="text-[var(--color-text-tertiary)] hover:text-[var(--color-accent-warm)] transition-colors"
+                            className="text-muted-foreground hover:text-destructive transition-colors outline-none"
                             aria-label={`Eliminar ${tag}`}
                         >
                             <X size={12} strokeWidth={2.5} />
@@ -68,42 +67,41 @@ export default function TagsInput({ initial = [] }: TagsInputProps) {
                     </span>
                 ))}
 
-                <div className="flex-1 min-w-[150px] flex items-center gap-2">
-                    {tags.length > 0 && <Plus className="w-3 h-3 text-[var(--color-text-tertiary)]" />}
+                <div className="flex-1 min-w-[120px] flex items-center gap-1">
+                    {tags.length > 0 && <Plus className="w-3.5 h-3.5 text-muted-foreground/50" />}
                     <input
                         id="tags-input"
                         type="text"
                         value={inputValue}
                         onChange={e => setInputValue(e.target.value)}
                         onKeyDown={handleKeyDown}
-                        placeholder={tags.length === 0 ? "Ej: iPhone, Premium, Oferta..." : "Añadir más..."}
-                        className="w-full bg-transparent outline-none placeholder:text-[var(--color-text-tertiary)] text-[13px] font-medium"
+                        placeholder={tags.length === 0 ? "Ej: iPhone, Premium..." : "Añadir..."}
+                        className="w-full bg-transparent outline-none placeholder:text-muted-foreground/50 text-xs font-medium text-foreground"
                     />
                 </div>
             </div>
 
-            {/* Info y Ayuda */}
-            <div className="flex justify-between items-center px-1">
-                <p className="text-[10px] text-[var(--color-text-tertiary)] italic">
+            {/* Info y Acciones */}
+            <div className="flex justify-between items-center px-0.5">
+                <p className="text-[10px] font-medium text-muted-foreground italic">
                     {tags.length > 0
                         ? `${tags.length} etiquetas añadidas`
-                        : "Presiona Enter o Coma ( , ) para confirmar cada tag."
+                        : "Presiona Enter o Coma ( , ) para confirmar."
                     }
                 </p>
                 {tags.length > 0 && (
                     <button
                         type="button"
                         onClick={() => setTags([])}
-                        className="text-[10px] font-bold uppercase tracking-tighter text-[var(--color-accent-warm)] hover:underline"
+                        className="text-[10px] font-bold uppercase tracking-tight text-action-cta hover:underline outline-none"
                     >
                         Limpiar todo
                     </button>
                 )}
             </div>
 
-            {/* Serialización para el Formulario */}
+            {/* Serialización */}
             <input type="hidden" name="tags" value={JSON.stringify(tags)} />
-
         </div>
     );
 }

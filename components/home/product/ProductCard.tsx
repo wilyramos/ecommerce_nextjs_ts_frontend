@@ -1,3 +1,5 @@
+//File: frontend/components/home/product/ProductCard.tsx
+
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
@@ -121,7 +123,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
 
     return (
         <div
-            className="group relative flex flex-col transform transition-transform duration-500 bg-background rounded border border-border"
+            className="group relative flex flex-col transform transition-transform duration-500 bg-background "
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onTouchStart={handleTouchStart}

@@ -15,11 +15,11 @@ export default function LayoutSplitDiagonal({ banner }: { banner: SliderBanner }
         return () => clearTimeout(t);
     }, []);
 
+    // Alineación estricta con los tokens CSS mapeados a variables semánticas
     const isDark = design.theme !== "light";
-    const bg = design.bgColor ?? (isDark ? "#080808" : "#f5f5f7");
-    const text = design.textColor ?? (isDark ? "#f5f5f7" : "#1d1d1f");
-    const muted = design.textMutedColor ?? (isDark ? "#f5f5f7" : "#5A5A5A");
-    const accent = design.accentColor ?? (isDark ? "#F97316" : "#F97316");
+    const bg = isDark ? "var(--color-primary)" : "var(--color-background)";
+    const text = isDark ? "var(--color-primary-foreground)" : "var(--color-foreground)";
+    const accent = "var(--color-action-cta)";
 
     const fadeUp = (delay: number): React.CSSProperties => ({
         opacity: loaded ? 1 : 0,
@@ -31,7 +31,7 @@ export default function LayoutSplitDiagonal({ banner }: { banner: SliderBanner }
         <Link
             href={destUrl}
             aria-label={title ?? "Ver oferta"}
-            className="banner-slot group relative flex items-stretch w-full overflow-hidden"
+            className="banner-slot group relative flex items-stretch w-full overflow-hidden border border-border"
             style={{ backgroundColor: bg }}
         >
             {/* ── Imagen con diagonal ── */}
@@ -95,80 +95,79 @@ export default function LayoutSplitDiagonal({ banner }: { banner: SliderBanner }
                 />
             </svg>
 
-            {/* ── Contenido ── */}
-            <div
-                className="
-                    relative z-30
-                    flex flex-col justify-center
-                    w-[58%] sm:w-[45%]
-                    pl-6 pr-4
-                    sm:pl-10 sm:pr-6
-                    md:pl-14 md:pr-8
-                    lg:pl-24
-                    gap-3 sm:gap-4
-                "
-                style={{ color: text }}
-            >
-                {subtitle && (
-                    <div style={fadeUp(0.08)}>
-                        <span
-                            className="
-                                inline-block 
-                                text-[10px] sm:text-[11px] 
-                                font-black tracking-[0.2em] uppercase 
-                                px-3 py-1 
-                                skew-x-[-12deg]
-                            "
-                            style={{
-                                color: isDark ? "#fff" : text,
-                                background: `${accent}${isDark ? "bb" : "22"}`,
-                                borderRight: `4px solid ${accent}`,
-                            }}
-                        >
-                            <span className="inline-block skew-x-[12deg]">{subtitle}</span>
-                        </span>
-                    </div>
-                )}
-
-                {title && (
-                    <h2
-                        className="font-black leading-[1] tracking-[-0.04em] text-[clamp(1.6rem,4.5vw,3.5rem)] max-w-[14ch] uppercase"
-                        style={fadeUp(0.15)}
-                    >
-                        {title}
-                    </h2>
-                )}
-
+            {/* ── Contenido: Limitado a max-w-6xl y centrado horizontalmente ── */}
+            <div className="relative z-30 w-full max-w-6xl mx-auto h-full flex items-center">
                 <div
-                    className="h-[3px] w-12 rounded-full"
-                    style={{
-                        background: accent,
-                        opacity: loaded ? 1 : 0,
-                        transform: loaded ? "scaleX(1)" : "scaleX(0)",
-                        transformOrigin: "left",
-                        transition: "opacity 0.5s ease 0.3s, transform 0.6s cubic-bezier(0.16,1,0.3,1) 0.3s",
-                    }}
-                />
+                    className="
+                        flex flex-col justify-center
+                        w-[58%] sm:w-[45%]
+                        pl-6 pr-4
+                        sm:pl-10 sm:pr-6
+                        md:pl-14 md:pr-8
+                        gap-3 sm:gap-4
+                    "
+                    style={{ color: text }}
+                >
+                    {subtitle && (
+                        <div style={fadeUp(0.08)}>
+                            <span
+                                className="
+                                    inline-block 
+                                    text-[10px] sm:text-[11px] 
+                                    font-bold tracking-wider uppercase 
+                                    px-3 py-1 
+                                    border-r-2
+                                "
+                                style={{
+                                    color: accent,
+                                    borderColor: accent
+                                }}
+                            >
+                                {subtitle}
+                            </span>
+                        </div>
+                    )}
 
-                {description && (
-                    <p
-                        className="text-[12px] sm:text-[13px] leading-[1.6] max-w-[30ch] line-clamp-3 font-medium italic"
-                        style={{ color: muted, ...fadeUp(0.28) }}
-                    >
-                        {description}
-                    </p>
-                )}
+                    {title && (
+                        <h2
+                            className="font-bold leading-[1] tracking-[-0.04em] text-[clamp(1.6rem,4.5vw,3.5rem)] max-w-[14ch] uppercase"
+                            style={fadeUp(0.15)}
+                        >
+                            {title}
+                        </h2>
+                    )}
 
-                {price?.current !== undefined && (
-                    <div style={fadeUp(0.4)} className="mt-1">
-                        <SliderPrice 
-                            price={price} 
-                            color={text} 
-                            accentColor={accent} 
-                            isDark={isDark} 
-                        />
-                    </div>
-                )}
+                    <div
+                        className="h-[2px] w-12 rounded-full"
+                        style={{
+                            background: accent,
+                            opacity: loaded ? 1 : 0,
+                            transform: loaded ? "scaleX(1)" : "scaleX(0)",
+                            transformOrigin: "left",
+                            transition: "opacity 0.5s ease 0.3s, transform 0.6s cubic-bezier(0.16,1,0.3,1) 0.3s",
+                        }}
+                    />
+
+                    {description && (
+                        <p
+                            className="text-[12px] sm:text-[13px] leading-[1.6] max-w-[30ch] line-clamp-3 font-medium text-muted-foreground"
+                            style={fadeUp(0.28)}
+                        >
+                            {description}
+                        </p>
+                    )}
+
+                    {price?.current !== undefined && (
+                        <div style={fadeUp(0.4)} className="mt-1">
+                            <SliderPrice 
+                                price={price} 
+                                color={text} 
+                                accentColor={accent} 
+                                isDark={isDark} 
+                            />
+                        </div>
+                    )}
+                </div>
             </div>
         </Link>
     );

@@ -28,7 +28,6 @@ import SEOProduct from "./SEOproduct";
 import TagsInput from "./TagsInput";
 import ShippingDimensions from "./ShippingDimensions";
 
-
 export default function ProductForm({
     product,
     categorias,
@@ -40,8 +39,8 @@ export default function ProductForm({
     brands: TBrand[];
     lines: ProductLine[];
 }) {
-    const initialBrandId = typeof product?.brand === 'object' ? product?.brand?._id : product?.brand;
-    const initialLineId = typeof product?.line === 'object' ? product?.line?._id : product?.line;
+    const initialBrandId = typeof product?.brand === "object" ? product?.brand?._id : product?.brand;
+    const initialLineId = typeof product?.line === "object" ? product?.line?._id : product?.line;
 
     const [selectedCategoryId, setSelectedCategoryId] = useState<string | undefined>(product?.categoria?._id);
     const [selectedBrandId, setSelectedBrandId] = useState<string | undefined>(initialBrandId);
@@ -53,7 +52,7 @@ export default function ProductForm({
 
     const filteredLines = lines.filter(line => {
         if (!selectedBrandId) return false;
-        const lineBrandId = typeof line.brand === 'object' ? line.brand._id : line.brand;
+        const lineBrandId = typeof line.brand === "object" ? line.brand._id : line.brand;
         return lineBrandId === selectedBrandId;
     });
 
@@ -61,22 +60,22 @@ export default function ProductForm({
     const dynamicCategoryAttributes = currentCategory?.attributes || [];
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 p-6 bg-[var(--color-bg-secondary)] min-h-screen">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 p-0 select-none bg-background text-foreground">
 
             {/* =================== COLUMNA PRINCIPAL (3/4) =================== */}
-            <div className="lg:col-span-3 space-y-6">
+            <div className="lg:col-span-3 space-y-4">
 
                 {/* 1. INFORMACIÓN BÁSICA Y CATEGORIZACIÓN */}
-                <section className="p-6 border border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)] space-y-6">
-                    <div className="flex items-center gap-2 mb-2">
-                        <Info className="w-4 h-4 text-[var(--color-accent-warm)]" />
-                        <h2 className="text-[11px] font-bold ">Información General</h2>
+                <section className="p-5 border border-border/60 bg-background rounded-sm space-y-5">
+                    <div className="flex items-center gap-2 mb-1">
+                        <Info className="w-4 h-4 text-action-cta" />
+                        <h2 className="text-[11px] font-bold uppercase tracking-wider text-foreground">Información General</h2>
                     </div>
 
                     <div className="space-y-4">
                         <div className="space-y-1">
                             <LabelWithTooltip htmlFor="nombre" label="Nombre del Producto" required tooltip="El nombre del producto que se mostrará en la tienda." />
-                            <Input id="nombre" name="nombre" defaultValue={product?.nombre} className="h-11 text-sm font-medium" />
+                            <Input id="nombre" name="nombre" defaultValue={product?.nombre} className="h-10 text-xs font-medium bg-background-secondary border border-border/40 focus:border-muted-foreground/60 transition-colors rounded-sm" />
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -89,10 +88,10 @@ export default function ProductForm({
                             <div className="space-y-1">
                                 <LabelWithTooltip htmlFor="line" label="Línea / Familia" tooltip="La línea o familia a la que pertenece el producto." />
                                 <Select key={selectedBrandId} name="line" defaultValue={initialLineId}>
-                                    <SelectTrigger disabled={!selectedBrandId || filteredLines.length === 0} >
+                                    <SelectTrigger disabled={!selectedBrandId || filteredLines.length === 0} className="h-10 text-xs bg-background-secondary border border-border/40 rounded-sm">
                                         <SelectValue placeholder={!selectedBrandId ? "Selecciona marca" : "Selecciona línea"} />
                                     </SelectTrigger>
-                                    <SelectContent>
+                                    <SelectContent className="bg-background border border-border rounded-sm text-foreground">
                                         {filteredLines.map((line) => (
                                             <SelectItem key={line._id} value={line._id}>{line.nombre}</SelectItem>
                                         ))}
@@ -111,11 +110,11 @@ export default function ProductForm({
                 </section>
 
                 {/* 2. CONTENIDO VISUAL (GALERÍA) */}
-                <section className="p-6 border border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)] space-y-4">
+                <section className="p-5 border border-border/60 bg-background rounded-sm space-y-4">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                            <ImageIcon className="w-4 h-4 text-[var(--color-text-secondary)]" />
-                            <h2 className="text-[11px] font-bold ">Galería Multimedia</h2>
+                            <ImageIcon className="w-4 h-4 text-muted-foreground/80" />
+                            <h2 className="text-[11px] font-bold uppercase tracking-wider text-foreground">Galería Multimedia</h2>
                         </div>
                         <MediaLibraryDialog
                             selectedImages={masterImages}
@@ -126,22 +125,22 @@ export default function ProductForm({
                         />
                     </div>
 
-                    <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-3 p-4 border-2 border-dashed border-[var(--color-border-default)]">
+                    <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-3 p-4 border border-dashed border-border/60 bg-background-secondary/30 rounded-sm">
                         {masterImages.map((img) => (
-                            <div key={img} className="relative aspect-square border group bg-white overflow-hidden">
-                                <Image src={img} alt="Product" fill className="object-cover" unoptimized />
+                            <div key={img} className="relative aspect-square border border-border/40 bg-background rounded-sm overflow-hidden group">
+                                <Image src={img} alt="Product" fill className="object-contain p-1 mix-blend-multiply" unoptimized />
                                 <button
                                     type="button"
                                     onClick={() => setMasterImages(prev => prev.filter(i => i !== img))}
-                                    className="absolute top-1 right-1 bg-black/70 text-white p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                    className="absolute top-1 right-1 bg-foreground/80 text-background p-1 opacity-0 group-hover:opacity-100 transition-opacity rounded-full outline-none cursor-pointer"
                                 >
-                                    <X size={12} />
+                                    <X size={10} />
                                 </button>
                                 <input type="hidden" name="imagenes[]" value={img} />
                             </div>
                         ))}
                         {masterImages.length === 0 && (
-                            <div className="col-span-full py-8 text-center text-[var(--color-text-tertiary)] italic">
+                            <div className="col-span-full py-6 text-center text-muted-foreground/60 text-xs font-medium">
                                 No hay imágenes seleccionadas
                             </div>
                         )}
@@ -149,53 +148,53 @@ export default function ProductForm({
                 </section>
 
                 {/* 3. DESCRIPCIÓN ENRIQUECIDA */}
-                <section className="p-6 border border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)] space-y-3">
-                    <Label className="text-[11px] font-bold ">Descripción Detallada</Label>
+                <section className="p-5 border border-border/60 bg-background rounded-sm space-y-3">
+                    <Label className="text-[11px] font-bold uppercase tracking-wider text-foreground">Descripción Detallada</Label>
                     <ProductDescriptionEditor initialHTML={product?.descripcion || ""} />
                 </section>
 
                 {/* 4. PRECIOS, INVENTARIO E IDENTIFICACIÓN */}
-                <section className="p-6 border border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)]">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <section className="p-5 border border-border/60 bg-background rounded-sm">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
                         <div className="space-y-1">
                             <LabelWithTooltip htmlFor="precio" label="Precio Venta" tooltip="El precio de venta del producto." />
-                            <Input type="number" id="precio" name="precio" defaultValue={product?.precio} className="h-10 font-bold text-emerald-600" />
+                            <Input type="number" id="precio" name="precio" defaultValue={product?.precio} className="h-10 font-bold text-foreground bg-background-secondary border border-border/40 focus:border-muted-foreground/60 rounded-sm text-xs" />
                         </div>
                         <div className="space-y-1">
                             <LabelWithTooltip htmlFor="precioComparativo" label="Precio Regular (Tachado)" tooltip="El precio regular del producto antes de la oferta." />
-                            <Input type="number" id="precioComparativo" name="precioComparativo" defaultValue={product?.precioComparativo} className="h-10 opacity-70" />
+                            <Input type="number" id="precioComparativo" name="precioComparativo" defaultValue={product?.precioComparativo} className="h-10 text-muted-foreground/80 bg-background-secondary border border-border/40 focus:border-muted-foreground/60 rounded-sm text-xs" />
                         </div>
                         <div className="space-y-1">
                             <LabelWithTooltip htmlFor="costo" label="Costo Unitario" tooltip="El costo unitario del producto." />
-                            <Input type="number" id="costo" name="costo" defaultValue={product?.costo}  />
+                            <Input type="number" id="costo" name="costo" defaultValue={product?.costo} className="h-10 bg-background-secondary border border-border/40 focus:border-muted-foreground/60 rounded-sm text-xs" />
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-[var(--color-border-default)]">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-border/40">
                         <div className="space-y-1">
                             <LabelWithTooltip htmlFor="stock" label="Stock Global" tooltip="La cantidad disponible del producto en inventario." />
-                            <Input type="number" id="stock" name="stock" defaultValue={product?.stock} />
+                            <Input type="number" id="stock" name="stock" defaultValue={product?.stock} className="h-10 bg-background-secondary border border-border/40 focus:border-muted-foreground/60 rounded-sm text-xs" />
                         </div>
                         <div className="space-y-1">
                             <LabelWithTooltip htmlFor="sku" label="SKU" tooltip="El código de identificación único del producto." />
-                            <Input id="sku" name="sku" defaultValue={product?.sku} placeholder="Ejem: IPH-15-TI" />
+                            <Input id="sku" name="sku" defaultValue={product?.sku} placeholder="Ejem: IPH-15-TI" className="h-10 bg-background-secondary border border-border/40 focus:border-muted-foreground/60 rounded-sm text-xs font-mono" />
                         </div>
                         <div className="space-y-1">
                             <LabelWithTooltip htmlFor="barcode" label="Código de Barras" tooltip="El código de barras del producto." />
-                            <Input id="barcode" name="barcode" defaultValue={product?.barcode} />
+                            <Input id="barcode" name="barcode" defaultValue={product?.barcode} className="h-10 bg-background-secondary border border-border/40 focus:border-muted-foreground/60 rounded-sm text-xs font-mono" />
                         </div>
                         <div className="space-y-1">
                             <LabelWithTooltip htmlFor="diasEnvio" label="Días de despacho" tooltip="El número de días que toma el envío del producto." />
-                            <Input type="number" id="diasEnvio" name="diasEnvio" defaultValue={product?.diasEnvio ?? 1} />
+                            <Input type="number" id="diasEnvio" name="diasEnvio" defaultValue={product?.diasEnvio ?? 1} className="h-10 bg-background-secondary border border-border/40 focus:border-muted-foreground/60 rounded-sm text-xs" />
                         </div>
                     </div>
                 </section>
 
-                {/* 5. VARIANTES (AL FINAL POR SU COMPLEJIDAD) */}
-                <section className="p-6 border border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)]">
-                    <div className="flex items-center gap-2 mb-4">
-                        <LayoutGrid className="w-4 h-4 text-[var(--color-text-secondary)]" />
-                        <h2 className="text-[11px] font-bold ">Variantes de Producto</h2>
+                {/* 5. VARIANTES */}
+                <section className="p-5 border border-border/60 bg-background rounded-sm">
+                    <div className="flex items-center gap-2 mb-3">
+                        <LayoutGrid className="w-4 h-4 text-muted-foreground/80" />
+                        <h2 className="text-[11px] font-bold uppercase tracking-wider text-foreground">Variantes de Producto</h2>
                     </div>
                     <ProductVariantsForm
                         product={product}
@@ -206,22 +205,23 @@ export default function ProductForm({
                 </section>
 
                 {/* 6. DETALLES TÉCNICOS Y RELACIONADOS */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <SpecificationsSection initial={product?.especificaciones} />
                     <ComplementaryProductsSection initialItems={product?.complementarios || []} />
                 </div>
             </div>
 
-            <aside className="space-y-6">
-                <div className="sticky top-6 space-y-6">
+            {/* =================== COLUMNA LATERAL (1/4) =================== */}
+            <aside className="space-y-4">
+                <div className="sticky top-6 space-y-4">
 
                     {/* Estatus y Visibilidad */}
-                    <div className="p-4 border border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)]">
+                    <div className="p-4 border border-border/60 bg-background rounded-sm">
                         <ProductSwitches product={product} />
                     </div>
 
                     {/* Organización */}
-                    <div className="p-4 border border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)]">
+                    <div className="p-4 border border-border/60 bg-background rounded-sm">
                         <TagsInput initial={product?.tags || []} />
                     </div>
 

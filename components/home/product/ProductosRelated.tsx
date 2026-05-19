@@ -1,3 +1,5 @@
+//File: frontend/components/home/product/ProductosRelated.tsx
+
 import ProductCard from "./ProductCard";
 import { getProductsRelated } from "@/src/services/products";
 

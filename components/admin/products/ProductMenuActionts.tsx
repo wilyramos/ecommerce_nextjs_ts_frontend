@@ -2,75 +2,60 @@
 
 import { Fragment } from 'react'
 import { Popover, PopoverButton, PopoverPanel, Transition } from '@headlessui/react'
-import {
-    PencilSquareIcon
-} from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { SlOptions } from "react-icons/sl"
+import { RiEditLine, RiExternalLinkLine } from "react-icons/ri"
 import DeleteProductForm from './DeleteProductButton'
-
 
 interface Props {
     productId: string
     isFeatured?: boolean
+    productSlug?: string
 }
 
-export default function ProductMenuAction({ productId, isFeatured }: Props) {
-
-
-    console.log({ productId, isFeatured })
-
+export default function ProductMenuAction({ productId, productSlug }: Props) {
     return (
-        <Popover className="relative" >
-            <PopoverButton className="p-1.5 rounded-md text-gray-500 hover:text-gray-950  transition">
-                <SlOptions className="w-4 h-4" />
+        <Popover className="relative">
+            <PopoverButton className="p-1.5 rounded-sm text-muted-foreground hover:text-foreground hover:bg-background-secondary/80 transition-colors outline-none cursor-pointer">
+                <SlOptions className="w-3.5 h-3.5" />
             </PopoverButton>
 
             <Transition
                 as={Fragment}
                 enter="transition ease-out duration-100"
-                enterFrom="opacity-0 translate-y-1"
-                enterTo="opacity-100 translate-y-0"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
                 leave="transition ease-in duration-75"
-                leaveFrom="opacity-100 translate-y-0"
-                leaveTo="opacity-0 translate-y-1"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
             >
-                <PopoverPanel className="absolute right-0 z-20 mt-2 w-52 origin-top-right rounded-xl border border-gray-200 bg-white shadow-sm">
-                    <div className="py-2 text-sm text-gray-700">
+                <PopoverPanel className="absolute right-0 mountaineer z-20 mt-1 w-44 origin-top-right rounded-sm border border-border bg-background shadow-xs outline-none">
+                    <div className="py-1 text-[13px] font-medium text-foreground">
                         <Link
                             href={`/admin/products/${productId}`}
-                            className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50"
+                            className="flex items-center gap-2 px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-background-secondary/60 transition-colors outline-none"
                         >
-                            <PencilSquareIcon className="w-4 h-4 text-gray-500" />
-                            Editar
+                            <RiEditLine className="w-4 h-4 text-muted-foreground/70" />
+                            <span>Editar</span>
                         </Link>
 
-                        {/* <button
-                            onClick={toggleFeatured}
-                            className="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-50"
-                        >
-                            <StarIcon className={`w-4 h-4 ${isFeatured ? 'text-yellow-500' : 'text-gray-400'}`} />
-                            {isFeatured ? 'Quitar destacado' : 'Destacar'}
-                        </button>
+                        {productSlug && (
+                            <Link
+                                href={`/productos/${productSlug}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-background-secondary/60 transition-colors outline-none"
+                            >
+                                <RiExternalLinkLine className="w-4 h-4 text-muted-foreground/70" />
+                                <span>Ver en tienda</span>
+                            </Link>
+                        )}
 
-                        <button
-                            onClick={handleAdjustStock}
-                            className="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-50"
-                        >
-                            <SquaresPlusIcon className="w-4 h-4 text-gray-500" />
-                            Ajustar stock
-                        </button> */}
-
-                        {/* <button
-                            onClick={handleDisableProduct}
-                            className="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-50"
-                        >
-                            <XCircleIcon className="w-4 h-4 text-gray-500" />
-                            Desactivar producto
-                        </button> */}
-
-                        <div className="border-t border-gray-100 my-1" />
-                        <DeleteProductForm productId={productId} />
+                        <div className="border-t border-border/60 my-1" />
+                        
+                        <div className="px-1.5 py-0.5">
+                            <DeleteProductForm productId={productId} />
+                        </div>
                     </div>
                 </PopoverPanel>
             </Transition>

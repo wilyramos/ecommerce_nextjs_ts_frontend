@@ -7,7 +7,7 @@ export default function HeroNewArrivals() {
     return (
         <Link 
             href="/novedades" 
-            className="group relative flex flex-col justify-center p-6 bg-primary min-h-[360px] overflow-hidden border border-border"
+            className="group relative flex flex-col justify-center p-6 bg-primary min-h-[360px] overflow-hidden "
         >
             {/* Subtle depth gradient sobre fondo oscuro */}
             <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent pointer-events-none"/>

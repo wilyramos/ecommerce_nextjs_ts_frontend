@@ -31,8 +31,8 @@ interface CategoryAttr {
 interface Props {
     product?: ProductWithCategoryResponse;
     categoryAttributes: CategoryAttr[];
-    globalImagesPool: string[];     // Pool de imágenes del padre
-    onUploadToPool: (urls: string[]) => void; // Función para subir al padre
+    globalImagesPool: string[];
+    onUploadToPool: (urls: string[]) => void;
 }
 
 export default function ProductVariantsForm({ 
@@ -155,33 +155,33 @@ export default function ProductVariantsForm({
 
     if (!variantAttributes?.length) {
         return (
-            <div className="mt-6 p-4 border rounded-lg bg-gray-50 text-sm text-gray-500 italic text-center">
+            <div className="text-xs italic text-muted-foreground/60 font-medium text-center py-4 bg-background-secondary/30 border border-border/40 rounded-sm">
                 La categoría seleccionada no tiene atributos configurados para generar variantes.
             </div>
         );
     }
 
     return (
-        <div className="space-y-4 my-4 border rounded-xl p-6 bg-white shadow-sm">
-            <div className="flex justify-between items-center border-b pb-4">
+        <div className="space-y-4 p-0 bg-background text-foreground">
+            <div className="flex justify-between items-center border-b border-border/40 pb-3">
                 <div className="space-y-0.5">
-                    <h3 className="text-sm font-bold uppercase tracking-tight">Variantes del Producto</h3>
-                    <p className="text-[10px] text-muted-foreground">Gestiona precios, stock y fotos específicas por combinación.</p>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-foreground">Variantes del Producto</h3>
+                    <p className="text-[11px] text-muted-foreground font-medium">Gestiona precios, stock y fotos específicas por combinación.</p>
                 </div>
 
                 {variants.length > 1 && (
-                    <div className="flex items-center gap-2">
-                        <ArrowUpDown className="w-3.5 h-3.5 text-muted-foreground" />
+                    <div className="flex items-center gap-1.5">
+                        <ArrowUpDown className="w-3.5 h-3.5 text-muted-foreground/60" />
                         <Select value={sortMethod} onValueChange={handleSort}>
-                            <SelectTrigger className="h-8 w-[160px] text-[10px] uppercase font-bold">
+                            <SelectTrigger className="h-8 w-[150px] text-[10px] uppercase font-bold bg-background border border-border/40 rounded-sm outline-none">
                                 <SelectValue placeholder="Ordenar" />
                             </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="default">Orden original</SelectItem>
-                                <SelectItem value="incomplete">Incompletas primero</SelectItem>
-                                <SelectItem value="alphabetical">Alfabético</SelectItem>
-                                <SelectItem value="price">Menor Precio</SelectItem>
-                                <SelectItem value="stock">Menor Stock</SelectItem>
+                            <SelectContent className="bg-background border border-border rounded-sm text-foreground">
+                                <SelectItem value="default" className="text-xs">Orden original</SelectItem>
+                                <SelectItem value="incomplete" className="text-xs">Incompletas primero</SelectItem>
+                                <SelectItem value="alphabetical" className="text-xs">Alfabético</SelectItem>
+                                <SelectItem value="price" className="text-xs">Menor Precio</SelectItem>
+                                <SelectItem value="stock" className="text-xs">Menor Stock</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
@@ -189,18 +189,18 @@ export default function ProductVariantsForm({
             </div>
 
             {errors.length > 0 && (
-                <div className="bg-destructive/10 border border-destructive/20 text-destructive p-3 rounded-lg text-[11px] space-y-1">
-                    <div className="flex items-center gap-2 font-black uppercase">
-                        <AlertCircle className="w-3.5 h-3.5" /> Errores de configuración:
+                <div className="bg-destructive/5 border border-destructive/10 text-destructive p-3 rounded-sm text-[11px] space-y-1">
+                    <div className="flex items-center gap-1.5 font-bold uppercase tracking-wide">
+                        <AlertCircle className="w-3.5 h-3.5" /> <span>Errores de configuración:</span>
                     </div>
-                    <ul className="list-disc list-inside opacity-90 font-medium">
+                    <ul className="list-disc list-inside opacity-90 font-medium pl-0.5">
                         {errors.slice(0, 3).map((err, i) => <li key={i}>{err}</li>)}
                         {errors.length > 3 && <li>... y {errors.length - 3} avisos más.</li>}
                     </ul>
                 </div>
             )}
 
-            <Accordion type="multiple" value={openItems} onValueChange={setOpenItems} className="space-y-3">
+            <Accordion type="multiple" value={openItems} onValueChange={setOpenItems} className="space-y-2">
                 {variants.map((variant, index) => {
                     const isIncomplete = variantAttributes.some(attr => !variant.atributos[attr.name]);
                     const summary = variantAttributes
@@ -212,61 +212,62 @@ export default function ProductVariantsForm({
                         <AccordionItem
                             key={variant._id}
                             value={variant._id!}
-                            className={`border rounded-lg px-4 overflow-hidden transition-colors ${isIncomplete ? "bg-red-50/30 border-red-100" : "bg-card"}`}
+                            className={`border rounded-sm px-3 overflow-hidden transition-colors outline-none ${isIncomplete ? "bg-destructive/3 border-destructive/20" : "bg-background border-border/60"}`}
                         >
-                            <AccordionTrigger className="hover:no-underline py-4">
+                            <AccordionTrigger className="hover:no-underline py-3.5 outline-none focus-visible:text-action-cta">
                                 <div className="flex w-full items-center justify-between gap-4">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded bg-muted flex items-center justify-center border overflow-hidden relative">
+                                        <div className="w-8 h-8 rounded-sm bg-background-secondary flex items-center justify-center border border-border/40 overflow-hidden relative">
                                             {variant.imagenes?.[0] ? (
-                                                <Image src={variant.imagenes[0]} alt="" fill className="object-cover" unoptimized />
+                                                <Image src={variant.imagenes[0]} alt="" fill className="object-contain p-0.5 mix-blend-multiply" unoptimized />
                                             ) : (
-                                                <span className="text-[10px] font-bold text-muted-foreground/50">#{(index + 1)}</span>
+                                                <span className="text-[10px] font-bold text-muted-foreground/40">#{(index + 1)}</span>
                                             )}
                                         </div>
-                                        <div className="text-left">
-                                            <p className={`text-[11px] font-black uppercase tracking-wider ${!summary ? 'text-muted-foreground italic' : ''}`}>
+                                        <div className="text-start">
+                                            <p className={`text-xs font-bold uppercase tracking-wide ${!summary ? 'text-muted-foreground/60 italic' : 'text-foreground'}`}>
                                                 {summary || "Variante nueva"}
                                             </p>
                                             <p className="text-[10px] text-muted-foreground font-medium">SKU: {variant.sku || '—'}</p>
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-tighter pr-4">
+                                    <div className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-wider pr-2">
                                         <div className="flex flex-col items-end">
-                                            <span className="text-muted-foreground">Precio</span>
-                                            <span>S/ {variant.precio || '0.00'}</span>
+                                            <span className="text-muted-foreground/60 font-semibold">Precio</span>
+                                            <span className="text-foreground">S/ {variant.precio || '0.00'}</span>
                                         </div>
-                                        <div className="flex flex-col items-end border-l pl-4">
-                                            <span className="text-muted-foreground">Stock</span>
-                                            <span className={variant.stock === 0 ? 'text-destructive' : ''}>{variant.stock}</span>
+                                        <div className="flex flex-col items-end border-l border-border/40 pl-4">
+                                            <span className="text-muted-foreground/60 font-semibold">Stock</span>
+                                            <span className={variant.stock === 0 ? 'text-destructive font-black' : 'text-foreground'}>{variant.stock}</span>
                                         </div>
                                     </div>
                                 </div>
                             </AccordionTrigger>
 
-                            <AccordionContent className="pt-2 pb-6 space-y-6">
+                            <AccordionContent className="pt-2 pb-5 space-y-4 border-t border-border/40">
                                 {/* MULTIMEDIA DE LA VARIANTE */}
-                                <div className="p-4 rounded-xl border border-dashed bg-muted/20 space-y-3">
+                                <div className="p-3 rounded-sm border border-dashed border-border/60 bg-background-secondary/20 space-y-3">
                                     <div className="flex items-center justify-between">
-                                        <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Multimedia Específica</Label>
+                                        <Label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Multimedia Específica</Label>
                                         <MediaLibraryDialog 
                                             selectedImages={variant.imagenes || []}
                                             globalImagesPool={globalImagesPool}
                                             onConfirmSelection={(imgs) => updateVariant(index, "imagenes", imgs)}
                                             onUploadSuccess={onUploadToPool}
                                             triggerLabel="Asignar Fotos"
+                                            triggerVariant="outline"
                                         />
                                     </div>
-                                    <div className="flex flex-wrap gap-2 min-h-[48px] items-center">
+                                    <div className="flex flex-wrap gap-2 min-h-[40px] items-center">
                                         {variant.imagenes && variant.imagenes.length > 0 ? (
                                             variant.imagenes.map((url, i) => (
-                                                <div key={i} className="relative w-12 h-12 rounded-lg border bg-white overflow-hidden shadow-sm group">
-                                                    <Image src={url} alt="" fill className="object-cover" unoptimized />
+                                                <div key={i} className="relative w-10 h-10 rounded-sm border border-border/40 bg-background overflow-hidden p-0.5">
+                                                    <Image src={url} alt="" fill className="object-contain p-0.5 mix-blend-multiply" unoptimized />
                                                 </div>
                                             ))
                                         ) : (
-                                            <p className="text-[10px] text-muted-foreground italic pl-1">Esta variante usa la imagen principal o no tiene fotos asignadas.</p>
+                                            <p className="text-[10px] text-muted-foreground/60 italic font-medium pl-0.5">Esta variante usa la imagen principal o no tiene fotos asignadas.</p>
                                         )}
                                     </div>
                                 </div>
@@ -274,21 +275,21 @@ export default function ProductVariantsForm({
                                 {/* ATRIBUTOS */}
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                     {variantAttributes.map((attr) => (
-                                        <div key={attr.name} className="space-y-1.5">
-                                            <Label className={`text-[10px] font-bold uppercase ${!variant.atributos[attr.name] ? 'text-destructive' : ''}`}>
+                                        <div key={attr.name} className="space-y-1">
+                                            <Label className={`text-[10px] font-bold uppercase tracking-wider ${!variant.atributos[attr.name] ? 'text-destructive' : 'text-muted-foreground'}`}>
                                                 {attr.name}
                                             </Label>
                                             <Select
                                                 value={variant.atributos[attr.name] || ""}
                                                 onValueChange={(val) => updateAttribute(index, attr.name, val === "__none__" ? "" : val)}
                                             >
-                                                <SelectTrigger className="h-9 text-xs font-medium">
+                                                <SelectTrigger className="h-9 text-xs bg-background-secondary border border-border/40 rounded-sm text-foreground outline-none">
                                                     <SelectValue placeholder="Seleccionar..." />
                                                 </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="__none__">— Ninguno —</SelectItem>
+                                                <SelectContent className="bg-background border border-border rounded-sm text-foreground">
+                                                    <SelectItem value="__none__" className="text-xs italic text-muted-foreground/60">— Ninguno —</SelectItem>
                                                     {attr.values.map((val) => (
-                                                        <SelectItem key={val} value={val}>{val}</SelectItem>
+                                                        <SelectItem key={val} value={val} className="text-xs">{val}</SelectItem>
                                                     ))}
                                                 </SelectContent>
                                             </Select>
@@ -297,53 +298,53 @@ export default function ProductVariantsForm({
                                 </div>
 
                                 {/* DATOS COMERCIALES */}
-                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-2">
-                                    <div className="space-y-1.5">
-                                        <Label className="text-[10px] font-bold uppercase">Precio Venta</Label>
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-1">
+                                    <div className="space-y-1">
+                                        <Label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Precio Venta</Label>
                                         <Input
                                             type="number"
-                                            className="h-9"
+                                            className="h-9 bg-background-secondary border border-border/40 rounded-sm text-xs text-foreground font-semibold"
                                             value={variant.precio}
                                             onChange={(e) => updateVariant(index, "precio", Number(e.target.value))}
                                         />
                                     </div>
-                                    <div className="space-y-1.5">
-                                        <Label className="text-[10px] font-bold uppercase">Precio Comparativo</Label>
+                                    <div className="space-y-1">
+                                        <Label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Precio Comparativo</Label>
                                         <Input
                                             type="number"
-                                            className="h-9"
+                                            className="h-9 bg-background-secondary border border-border/40 rounded-sm text-xs text-muted-foreground/80"
                                             value={variant.precioComparativo}
                                             onChange={(e) => updateVariant(index, "precioComparativo", Number(e.target.value))}
                                         />
                                     </div>
-                                    <div className="space-y-1.5">
-                                        <Label className="text-[10px] font-bold uppercase">Stock Disponible</Label>
+                                    <div className="space-y-1">
+                                        <Label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Stock Disponible</Label>
                                         <Input
                                             type="number"
-                                            className="h-9"
+                                            className="h-9 bg-background-secondary border border-border/40 rounded-sm text-xs text-foreground font-semibold"
                                             value={variant.stock}
                                             onChange={(e) => updateVariant(index, "stock", Number(e.target.value))}
                                         />
                                     </div>
-                                    <div className="space-y-1.5">
-                                        <Label className="text-[10px] font-bold uppercase">SKU Variante</Label>
+                                    <div className="space-y-1">
+                                        <Label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">SKU Variante</Label>
                                         <Input
-                                            className="h-9 uppercase text-[11px] font-bold tracking-wider"
+                                            className="h-9 bg-background-secondary border border-border/40 rounded-sm uppercase text-xs font-bold tracking-wider text-foreground font-mono"
                                             value={variant.sku}
                                             onChange={(e) => updateVariant(index, "sku", e.target.value)}
                                         />
                                     </div>
                                 </div>
 
-                                <div className="flex justify-end border-t pt-4 mt-2">
+                                <div className="flex justify-end border-t border-border/40 pt-3 mt-1">
                                     <Button
                                         variant="ghost"
                                         size="sm"
                                         onClick={() => removeVariant(index)}
-                                        className="h-8 text-[10px] font-bold uppercase text-destructive hover:bg-destructive/10 hover:text-destructive"
+                                        className="h-8 text-[10px] font-bold uppercase tracking-wide text-destructive hover:bg-destructive/5 rounded-sm outline-none cursor-pointer"
                                     >
-                                        <Trash2 className="w-3.5 h-3.5 mr-2" />
-                                        Eliminar Variante
+                                        <Trash2 className="w-3.5 h-3.5 mr-1.5" />
+                                        <span>Eliminar Variante</span>
                                     </Button>
                                 </div>
                             </AccordionContent>
@@ -352,18 +353,17 @@ export default function ProductVariantsForm({
                 })}
             </Accordion>
 
-            <div className="pt-4 flex gap-3">
+            <div className="pt-2 flex gap-3">
                 <Button 
                     onClick={addVariant} 
                     size="sm" 
-                    variant="default" 
-                    className="flex-1 h-10 gap-2 border-dashed border-2 font-bold uppercase text-[11px]"
+                    variant="outline" 
+                    className="flex-1 h-10 gap-1.5 border-dashed border border-border/80 font-bold uppercase text-xs rounded-sm cursor-pointer hover:bg-background-secondary/40"
                 >
-                    <Plus className="w-4 h-4" /> Añadir Nueva Variante
+                    <Plus className="w-4 h-4 text-action-cta" /> <span>Añadir Nueva Variante</span>
                 </Button>
             </div>
 
-            {/* PERSISTENCIA DE DATOS PARA EL FORMULARIO */}
             <input type="hidden" name="variants" value={errors.length === 0 ? JSON.stringify(variantsToSubmit) : "[]"} />
             <input type="hidden" name="variants_error" value={errors.length > 0 ? "true" : "false"} />
         </div>

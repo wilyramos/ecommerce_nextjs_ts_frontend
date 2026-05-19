@@ -1,23 +1,23 @@
-"use client"
+"use client";
 
-import { useActionState, useEffect } from 'react'
-import ProductForm from './ProductForm'
-import { useRouter } from 'next/navigation'
-import { createProduct } from '@/actions/product/add-product-action'
-import { toast } from 'sonner'
-import type { CategoryListResponse, ProductWithCategoryResponse } from '@/src/schemas'
-import type { TBrand } from '@/src/schemas/brands'
-import type { ProductLine } from '@/src/schemas/line.schema' // Importamos tipo Line
+import { useActionState, useEffect } from "react";
+import ProductForm from "./ProductForm";
+import { useRouter } from "next/navigation";
+import { createProduct } from "@/actions/product/add-product-action";
+import { toast } from "sonner";
+import type { CategoryListResponse, ProductWithCategoryResponse } from "@/src/schemas";
+import type { TBrand } from "@/src/schemas/brands";
+import type { ProductLine } from "@/src/schemas/line.schema";
+import { Button } from "@/components/ui/button";
 
 interface CreateProductFormProps {
     categorias: CategoryListResponse;
     brands: TBrand[];
-    lines: ProductLine[]; // Nueva prop
-    initialData?: ProductWithCategoryResponse
+    lines: ProductLine[];
+    initialData?: ProductWithCategoryResponse;
 }
 
 export default function CreateProductForm({ categorias, brands, lines, initialData }: CreateProductFormProps) {
-
     const router = useRouter();
 
     const [state, dispatch] = useActionState(createProduct, {
@@ -27,23 +27,23 @@ export default function CreateProductForm({ categorias, brands, lines, initialDa
 
     useEffect(() => {
         if (state.success) {
-            toast.success(state.success)
-            router.push("/admin/products")
+            toast.success(state.success);
+            router.push("/admin/products");
         }
         if (state.errors) {
             state.errors.forEach((error) => {
-                toast.error(error)
-            })
+                toast.error(error);
+            });
         }
-    }, [state, router])
+    }, [state, router]);
 
     const categoriasOrdenadas = [...categorias].sort((a, b) =>
-        a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' })
+        a.nombre.localeCompare(b.nombre, "es", { sensitivity: "base" })
     );
 
     return (
         <form
-            className="flex flex-col gap-2 w-full max-w-7xl mx-auto mt-8"
+            className="flex flex-col gap-4 w-full max-w-5xl mx-auto select-none bg-background text-foreground"
             noValidate
             action={dispatch}
         >
@@ -51,13 +51,10 @@ export default function CreateProductForm({ categorias, brands, lines, initialDa
                 product={initialData}
                 categorias={categoriasOrdenadas}
                 brands={brands}
-                lines={lines} // Pasamos las líneas
+                lines={lines}
             />
-            <input
-                type='submit'
-                className='bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800 cursor-pointer inline-block'
-                value={"Crear producto"}
-            />
+            <Button type="submit">Crear producto</Button>
+            
         </form>
-    )
+    );
 }

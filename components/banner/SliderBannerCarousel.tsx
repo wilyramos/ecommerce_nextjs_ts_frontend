@@ -4,7 +4,6 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { SliderBannerSlide } from "./SliderBannerSlide";
 import type { SliderBanner } from "@/src/schemas/slider.schema";
-import { CarouselDot } from "./CarouselDot";
 import { CarouselArrow } from "./CarouselArrow";
 
 interface Props {
@@ -30,7 +29,7 @@ export default function SliderBannerCarousel({
 
     return (
         <div
-            className="relative w-full max-w-7xl mx-auto"
+            className="relative w-full"
             style={{
                 "--banner-h-mobile": height.mobile,
                 "--banner-h": height.desktop,
@@ -42,10 +41,8 @@ export default function SliderBannerCarousel({
                 autoPlay
                 autoPlaySpeed={autoPlaySpeed}
                 arrows={banners.length > 1}
-                showDots={banners.length > 1}
+                showDots={false}
                 containerClass="w-full"
-                dotListClass="!bottom-4 md:!bottom-6"
-                customDot={<CarouselDot autoPlaySpeed={autoPlaySpeed} />}
                 customLeftArrow={<CarouselArrow direction="left" />}
                 customRightArrow={<CarouselArrow direction="right" />}
             >

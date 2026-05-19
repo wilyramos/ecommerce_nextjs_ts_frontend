@@ -15,13 +15,14 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
         return () => clearTimeout(t);
     }, []);
 
+    // Alineación estricta con los tokens CSS mapeados a variables semánticas
     const isDark = design.theme !== "light";
-    const bg = design.bgColor ?? (isDark ? "#0d0d0d" : "#f4f4f2");
-    const accent = design.accentColor ?? (isDark ? "#F97316" : "#F97316");
-    const text = design.textColor ?? (isDark ? "#f0f0ef" : "#111110");
-    const muted = design.textMutedColor ?? (isDark ? "#f5f5f7" : "#5A5A5A");
-    const cardBg = isDark ? "#111111" : "#ffffff";
-    const cardBorder = isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.05)";
+    const bg = isDark ? "var(--color-primary)" : "var(--color-background)";
+    const text = isDark ? "var(--color-primary-foreground)" : "var(--color-foreground)";
+    const muted = "var(--color-muted-foreground)";
+    const accent = "var(--color-action-cta)";
+    const cardBg = isDark ? "var(--color-background)" : "var(--color-background-secondary)";
+    const cardBorder = "var(--color-border)";
 
     const fadeUp = (delay: number): React.CSSProperties => ({
         opacity: loaded ? 1 : 0,
@@ -33,7 +34,7 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
         <Link
             href={destUrl}
             aria-label={title ?? "Ver oferta"}
-            className="banner-slot group relative flex items-center justify-center w-full overflow-hidden"
+            className="banner-slot group relative flex items-center justify-center w-full overflow-hidden border border-border"
             style={{ backgroundColor: bg }}
         >
             {/* Background Texture */}
@@ -44,7 +45,8 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
                 }}
             />
 
-            <div className="relative z-10 w-full h-full max-w-7xl mx-auto px-4 sm:px-10 md:px-12 lg:px-20 flex flex-col md:flex-row items-center justify-center md:justify-between gap-6 sm:gap-8 md:gap-12 py-6 md:py-0">
+            {/* ── Contenido: Limitado a max-w-6xl y centrado horizontalmente ── */}
+            <div className="relative z-10 w-full h-full max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-center md:justify-between gap-6 sm:gap-8 md:gap-12 py-6 md:py-0">
 
                 {/* ── INFO BLOCK (CARD) ── */}
                 <div
@@ -56,13 +58,10 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
                     style={fadeUp(0.1)}
                 >
                     <div
-                        className="relative p-5 sm:p-7 md:p-10 overflow-hidden"
+                        className="relative p-5 sm:p-7 md:p-10 overflow-hidden border"
                         style={{
                             backgroundColor: cardBg,
-                            border: `1px solid ${cardBorder}`,
-                            boxShadow: isDark
-                                ? "0 25px 50px -12px rgba(0,0,0,0.7)"
-                                : "0 25px 50px -12px rgba(0,0,0,0.12)"
+                            borderColor: cardBorder,
                         }}
                     >
                         {/* Corner Accent */}
@@ -75,7 +74,7 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
                             {subtitle && (
                                 <div className="flex items-center justify-center md:justify-start gap-2 sm:gap-3">
                                     <div className="w-4 md:w-6 h-px bg-current" style={{ color: accent }} />
-                                    <span className="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] md:tracking-[0.3em]" style={{ color: accent }}>
+                                    <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.2em]" style={{ color: accent }}>
                                         {subtitle}
                                     </span>
                                 </div>
@@ -88,7 +87,7 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
                             )}
 
                             {description && (
-                                <p className="text-[11px] sm:text-xs md:text-sm leading-relaxed opacity-80 line-clamp-2 md:line-clamp-none" style={{ color: muted }}>
+                                <p className="text-[11px] sm:text-xs md:text-sm leading-relaxed font-medium line-clamp-2 md:line-clamp-none" style={{ color: muted }}>
                                     {description}
                                 </p>
                             )}
@@ -121,7 +120,7 @@ export default function LayoutPromoBox({ banner }: { banner: SliderBanner }) {
                 {/* ── MEDIA SHOWCASE ── */}
                 <div
                     className="
-                        relative flex-1 
+                        relative flex-shrink-0 lg:flex-1 
                         w-full h-[180px] sm:h-[240px] md:h-[75%] lg:h-[85%] 
                         flex items-center justify-center 
                         order-1 md:order-2

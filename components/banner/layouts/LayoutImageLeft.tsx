@@ -15,12 +15,12 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
         return () => clearTimeout(t);
     }, []);
 
+    // Alineación estricta con los tokens CSS mapeados a variables semánticas
     const isDark = design.theme !== "light";
-    const bg = design.bgColor ?? (isDark ? "#0a0a0a" : "#f5f5f7");
-    const text = design.textColor ?? (isDark ? "#f5f5f7" : "#1d1d1f");
-
-    const muted = design.textMutedColor ?? (isDark ? "#f5f5f7" : "#5A5A5A");
-    const accent = design.accentColor ?? (isDark ? "#F97316" : "#F97316");
+    const bg = isDark ? "var(--color-primary)" : "var(--color-background)";
+    const text = isDark ? "var(--color-primary-foreground)" : "var(--color-foreground)";
+    const muted = "var(--color-muted-foreground)";
+    const accent = "var(--color-action-cta)";
 
     const fadeUp = (delay: number) => ({
         opacity: loaded ? 1 : 0,
@@ -32,10 +32,11 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
         <Link
             href={destUrl}
             aria-label={title ?? "Ver oferta"}
-            className="banner-slot group relative block w-full overflow-hidden"
+            className="banner-slot group relative block w-full overflow-hidden border border-border"
             style={{ backgroundColor: bg }}
         >
-            <div className="flex flex-col md:grid md:grid-cols-[58fr_42fr] md:items-stretch h-full">
+            {/* ── Contenedor de contenido: Limitado a max-w-6xl y centrado horizontalmente ── */}
+            <div className="w-full max-w-6xl mx-auto h-full flex flex-col md:grid md:grid-cols-[58fr_42fr] md:items-stretch">
 
                 {/* ── Columna imagen ── */}
                 <div className="relative w-full h-[55%] md:h-full overflow-hidden">
@@ -81,16 +82,8 @@ export default function LayoutImageLeft({ banner }: { banner: SliderBanner }) {
                     {subtitle && (
                         <div className="mb-4 md:mb-6" style={fadeUp(0.06)}>
                             <span
-                                className="
-                                    inline-block 
-                                    text-xs font-black uppercase 
-                                    px-3 py-1.5 
-                                "
-                                style={{
-                                    color: isDark ? "#000" : "#fff",
-                                    background: accent,
-                                    boxShadow: `4px 4px 0px ${accent}44`
-                                }}
+                                className="inline-block text-xs font-bold uppercase tracking-wider px-3 py-1 border-l-2"
+                                style={{ color: accent, borderColor: accent }}
                             >
                                 {subtitle}
                             </span>

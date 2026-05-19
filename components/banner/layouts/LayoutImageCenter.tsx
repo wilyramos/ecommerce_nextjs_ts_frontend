@@ -15,11 +15,12 @@ export default function LayoutImageCenter({ banner }: { banner: SliderBanner }) 
         return () => clearTimeout(t);
     }, []);
 
+    // Alineación estricta con los tokens CSS mapeados a variables semánticas
     const isDark = design.theme !== "light";
-    const bg = design.bgColor ?? (isDark ? "#080808" : "#f5f5f7");
-    const text = design.textColor ?? (isDark ? "#f5f5f7" : "#1d1d1f");
-    const muted = design.textMutedColor ?? (isDark ? "#f5f5f7" : "#5A5A5A");
-    const accent = design.accentColor ?? (isDark ? "#F97316" : "#F97316");
+    const bg = isDark ? "var(--color-primary)" : "var(--color-background)";
+    const text = isDark ? "var(--color-primary-foreground)" : "var(--color-foreground)";
+    const muted = "var(--color-muted-foreground)";
+    const accent = "var(--color-action-cta)";
 
     const fadeUp = (delay: number, extra?: React.CSSProperties): React.CSSProperties => ({
         opacity: loaded ? 1 : 0,
@@ -34,7 +35,7 @@ export default function LayoutImageCenter({ banner }: { banner: SliderBanner }) 
         <Link
             href={destUrl}
             aria-label={title ?? "Ver oferta"}
-            className="banner-slot group relative flex w-full overflow-hidden"
+            className="banner-slot group relative flex w-full overflow-hidden border border-border h-[var(--banner-h-mobile)] md:h-[var(--banner-h)]"
             style={{ backgroundColor: bg }}
         >
             {/* ── Imagen a sangre completa ── */}
@@ -64,9 +65,9 @@ export default function LayoutImageCenter({ banner }: { banner: SliderBanner }) 
                 }}
             />
 
-            {/* ── Contenido Centrado ── */}
+            {/* ── Contenido Centrado Limitado a max-w-6xl ── */}
             <div className="
-                relative z-20 w-full
+                relative z-20 w-full max-w-6xl mx-auto
                 flex flex-col items-center justify-end text-center
                 px-6 pb-12
                 sm:px-10 sm:pb-16
@@ -89,10 +90,9 @@ export default function LayoutImageCenter({ banner }: { banner: SliderBanner }) 
                                     text-[10px] sm:text-[12px] 
                                     font-black uppercase 
                                     px-2 py-1
-                
                                 "
                                 style={{
-                                    color: isDark ? "#fff" : text,
+                                    color: isDark ? "var(--color-primary-foreground)" : text,
                                     background: `${accent}`,
                                 }}
                             >

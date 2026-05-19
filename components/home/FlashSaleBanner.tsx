@@ -28,7 +28,7 @@ export default function HeroFlashSale() {
     return (
         <Link
             href="/ofertas"
-            className="group relative flex flex-col justify-center p-6 bg-background min-h-[360px] overflow-hidden border border-border"
+            className="group relative flex flex-col justify-center p-6 bg-background min-h-[360px] overflow-hidden "
         >
             <div className="space-y-5">
                 <div className="inline-flex items-center gap-2 text-action-cta font-semibold text-xs uppercase tracking-tight">

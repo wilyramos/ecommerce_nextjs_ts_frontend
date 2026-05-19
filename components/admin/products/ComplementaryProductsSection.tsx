@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { Label } from "@/components/ui/label";
 
 interface SelectedProduct {
     _id: string;
@@ -96,45 +97,40 @@ export default function ComplementaryProductsSection({ initialItems = [] }: Prop
     };
 
     return (
-        <div className="space-y-4 border p-4">
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                    <Package className="w-4 h-4 text-[var(--color-text-tertiary)]" />
-                    <div>
-                        <h3 className="text-sm text-[var(--color-text-primary)]">Complementarios</h3>
-                        <p className="text-[var(--color-text-tertiary)]">
-                            {selectedProducts.length} vinculados
-                        </p>
-                    </div>
+        <div className="p-5 border border-border/60 bg-background rounded-sm space-y-4 w-full">
+            <div className="flex items-center justify-between border-b border-border/40 pb-3">
+                <div className="flex items-center gap-2">
+                    <Package className="w-3.5 h-3.5 text-muted-foreground/80" />
+                    <Label className="text-[11px] font-bold uppercase tracking-wider text-foreground">Complementarios ({selectedProducts.length})</Label>
                 </div>
 
                 <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
                     <DialogTrigger asChild>
-                        <Button variant="outline" size="sm" className="h-8 text-xs gap-1 px-3">
-                            <Plus className="w-3 h-3" /> Vincular
+                        <Button variant="outline" size="sm" className="h-8 text-[11px] font-bold uppercase tracking-wider gap-1.5 px-3 rounded-sm">
+                            <Plus className="w-3.5 h-3.5" /> Vincular
                         </Button>
                     </DialogTrigger>
                     
-                    <DialogContent className="max-w-2xl p-0 overflow-hidden border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)] shadow-none">
-                        <DialogHeader className="p-6 pb-0">
-                            <DialogTitle className="text-base font-normal text-[var(--color-text-primary)]">
-                                Catálogo de Productos
+                    <DialogContent className="max-w-2xl bg-background border border-border rounded-sm shadow-xs outline-none">
+                        <DialogHeader>
+                            <DialogTitle className="text-sm font-bold uppercase tracking-wider text-foreground">
+                                Buscar Productos
                             </DialogTitle>
-                            <div className="relative mt-4">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--color-text-tertiary)]" />
+                            <div className="relative mt-2">
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                                 <Input 
-                                    placeholder="Buscar productos..." 
-                                    className="h-10 pl-10 bg-[var(--color-bg-secondary)] border-none text-sm focus-visible:ring-1 focus-visible:ring-[var(--color-border-default)]"
+                                    placeholder="Escribe para buscar..." 
+                                    className="h-10 pl-9 bg-background-secondary border-border/40 rounded-sm text-xs focus:border-muted-foreground/60 outline-none"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
                             </div>
                         </DialogHeader>
 
-                        <div className="h-[50vh] overflow-y-auto p-6 space-y-1">
+                        <div className="h-[300px] overflow-y-auto space-y-1 py-2">
                             {loadingSearch ? (
-                                <div className="h-full flex flex-col items-center justify-center">
-                                    <Loader2 className="animate-spin w-5 h-5 text-[var(--color-text-tertiary)]" />
+                                <div className="h-full flex items-center justify-center">
+                                    <Loader2 className="animate-spin w-5 h-5 text-muted-foreground" />
                                 </div>
                             ) : searchResults.length > 0 ? (
                                 searchResults.map((p) => {
@@ -144,53 +140,53 @@ export default function ComplementaryProductsSection({ initialItems = [] }: Prop
                                             key={p._id} 
                                             onClick={() => toggleProduct(p)}
                                             className={cn(
-                                                "flex items-center gap-4 p-2 transition-colors cursor-pointer border-b border-[var(--color-border-subtle)] last:border-0",
-                                                isSelected ? "bg-[var(--color-bg-secondary)]" : "hover:bg-[var(--color-bg-secondary)]/50"
+                                                "flex items-center gap-3 p-2 rounded-sm transition-colors cursor-pointer border border-transparent",
+                                                isSelected ? "bg-background-secondary border-action-cta/20" : "hover:bg-background-secondary/60"
                                             )}
                                         >
-                                            <div className="relative w-10 h-10 bg-white border border-[var(--color-border-subtle)] shrink-0">
-                                                <Image src={p.imagenes?.[0] || "/placeholder.png"} alt={p.nombre} fill className="object-contain p-1" unoptimized />
+                                            <div className="relative w-10 h-10 bg-background border border-border/40 rounded-sm overflow-hidden flex items-center justify-center shrink-0">
+                                                <Image src={p.imagenes?.[0] || "/placeholder.png"} alt={p.nombre} fill className="object-contain p-0.5 mix-blend-multiply" unoptimized />
                                             </div>
-                                            <div className="flex-1">
-                                                <p className="text-xs text-[var(--color-text-primary)]">{p.nombre}</p>
-                                                <p className="text-xs text-[var(--color-text-tertiary)]">S/ {p.precio.toFixed(2)}</p>
+                                            <div className="flex-1 text-xs">
+                                                <p className="font-bold text-foreground">{p.nombre}</p>
+                                                <p className="text-muted-foreground">S/ {p.precio.toFixed(2)}</p>
                                             </div>
-                                            {isSelected && <CheckCircle2 className="w-4 h-4 text-[var(--color-text-primary)]" />}
+                                            {isSelected && <CheckCircle2 className="w-4 h-4 text-action-cta" />}
                                         </div>
                                     );
                                 })
                             ) : (
-                                <div className="h-full flex items-center justify-center text-xs text-[var(--color-text-tertiary)]">
-                                    {searchTerm.length >= 2 ? "Sin resultados" : "Escribe para buscar"}
+                                <div className="h-full flex items-center justify-center text-xs text-muted-foreground/60 font-medium">
+                                    {searchTerm.length >= 2 ? "Sin resultados" : "Escribe para buscar productos"}
                                 </div>
                             )}
                         </div>
 
-                        <div className="p-4 border-t border-[var(--color-border-subtle)] flex justify-end">
-                            <Button onClick={() => setIsModalOpen(false)} size="sm" className="px-6 h-8 text-xs">Cerrar</Button>
+                        <div className="flex justify-end pt-2 border-t border-border/40">
+                            <Button onClick={() => setIsModalOpen(false)} size="sm" className="text-xs font-bold rounded-sm px-6">Cerrar</Button>
                         </div>
                     </DialogContent>
                 </Dialog>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {loadingInitial ? (
-                    <div className="col-span-full py-6 flex flex-col items-center justify-center">
-                        <Loader2 className="animate-spin w-4 h-4 text-[var(--color-text-tertiary)]" />
+                    <div className="col-span-full py-4 flex justify-center">
+                        <Loader2 className="animate-spin w-4 h-4 text-muted-foreground" />
                     </div>
                 ) : selectedProducts.map((p) => (
-                    <div key={`sel-${p._id}`} className="group relative flex items-center gap-3 p-2 border border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)]">
-                        <div className="relative w-8 h-8 bg-white border border-[var(--color-border-subtle)]">
-                            <Image src={p.imagenes?.[0] || "/placeholder.png"} alt={p.nombre} fill className="object-contain p-1" unoptimized />
+                    <div key={`sel-${p._id}`} className="flex items-center gap-3 p-2 border border-border/40 bg-background-secondary/30 rounded-sm group">
+                        <div className="relative w-8 h-8 bg-background border border-border/40 rounded-sm overflow-hidden flex-shrink-0">
+                            <Image src={p.imagenes?.[0] || "/placeholder.png"} alt={p.nombre} fill className="object-contain p-0.5 mix-blend-multiply" unoptimized />
                         </div>
-                        <div className="flex-1 min-w-0">
-                            <p className="text-xs text-[var(--color-text-primary)] truncate">{p.nombre}</p>
-                            <p className="text-[9px] text-[var(--color-text-tertiary)]">S/ {p.precio.toFixed(2)}</p>
+                        <div className="flex-1 min-w-0 text-[11px]">
+                            <p className="font-bold text-foreground truncate">{p.nombre}</p>
+                            <p className="text-muted-foreground">S/ {p.precio.toFixed(2)}</p>
                         </div>
                         <button
                             type="button"
                             onClick={() => setSelectedProducts(prev => prev.filter(i => i._id !== p._id))}
-                            className="p-1 opacity-0 group-hover:opacity-100 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] transition-all"
+                            className="p-1 text-muted-foreground hover:text-destructive transition-colors outline-none"
                         >
                             <X className="w-3.5 h-3.5" />
                         </button>
@@ -199,9 +195,9 @@ export default function ComplementaryProductsSection({ initialItems = [] }: Prop
                 ))}
 
                 {!loadingInitial && selectedProducts.length === 0 && (
-                    <div className="col-span-full p-6 border border-dashed border-[var(--color-border-subtle)] flex flex-col items-center justify-center opacity-50 bg-[var(--color-bg-secondary)]/30">
-                        <AlertCircle className="w-4 h-4 mb-1 text-[var(--color-text-tertiary)]" />
-                        <span className="text-xs text-[var(--color-text-tertiary)]">Sin vinculaciones</span>
+                    <div className="col-span-full p-4 border border-dashed border-border/60 flex items-center justify-center gap-2 bg-background-secondary/20">
+                        <AlertCircle className="w-3.5 h-3.5 text-muted-foreground/60" />
+                        <span className="text-[10px] font-bold uppercase text-muted-foreground/60">Sin productos vinculados</span>
                     </div>
                 )}
             </div>

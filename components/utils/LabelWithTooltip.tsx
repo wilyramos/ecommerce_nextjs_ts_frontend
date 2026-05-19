@@ -1,5 +1,3 @@
-//File: frontend/components/utils/LabelWithTooltip.tsx
-
 import { Label } from "@/components/ui/label";
 import {
     Tooltip,
@@ -23,23 +21,22 @@ export function LabelWithTooltip({
     tooltip,
 }: LabelWithTooltipProps) {
     return (
-        <div className="flex items-center gap-1">
-            <Label htmlFor={htmlFor}>
+        <div className="flex items-center gap-2">
+            <Label htmlFor={htmlFor} required={required}>
                 {label}
-                {required && <span className="text-red-500 ml-0.5">*</span>}
             </Label>
 
             <TooltipProvider>
-                <Tooltip>
+                <Tooltip delayDuration={200}>
                     <TooltipTrigger asChild>
                         <button
                             type="button"
-                            className="text-muted-foreground hover:text-foreground"
+                            className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors outline-none"
                         >
                             <Info className="h-3 w-3" />
                         </button>
                     </TooltipTrigger>
-                    <TooltipContent className="max-w-xs text-xs">
+                    <TooltipContent className="max-w-xs text-[11px] font-medium bg-foreground text-background border-none px-2.5 py-1.5 rounded-sm">
                         {tooltip}
                     </TooltipContent>
                 </Tooltip>

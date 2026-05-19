@@ -85,7 +85,6 @@ export default function HomePage() {
                 <ProductosDestacados />
             </section>
 
-
             <section>
                 <ProductosNuevos />
             </section>

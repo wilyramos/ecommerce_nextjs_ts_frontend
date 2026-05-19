@@ -1,3 +1,5 @@
+//File: frontend/components/home/product/ProductCardHome.tsx
+
 "use client"
 
 import Image from "next/image"

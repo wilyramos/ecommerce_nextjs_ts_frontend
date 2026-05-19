@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Settings2, Tag } from "lucide-react";
 import type { CategoryListResponse } from "@/src/schemas";
 
-// UI Components (Shadcn/Radix)
+// UI Components
 import {
     Select,
     SelectContent,
@@ -77,8 +77,6 @@ export default function ClientCategoryAttributes({
     };
 
     const selectedCategory = categorias.find((c) => c._id === selectedCategoryId);
-
-    // Obtenemos solo los atributos que pertenecen a la categoría actual para mostrar y guardar
     const activeEntries = Object.entries(selectedAttributes).filter(([key]) =>
         categoryDefinitions.some(def => def.name === key)
     );
@@ -86,27 +84,27 @@ export default function ClientCategoryAttributes({
     const validAtributosJSON = JSON.stringify(Object.fromEntries(activeEntries));
 
     return (
-        <div className="space-y-4 p-5 border border-[var(--color-border-default)] bg-[var(--color-bg-primary)] rounded-xl">
+        <div className="space-y-4 p-0 bg-background text-foreground">
 
             {/* --- SELECCIÓN DE CATEGORÍA --- */}
-            <div className="space-y-2">
-                <label className="text-sm font-semibold text-[var(--color-text-primary)]">
-                    Categoría <span className="text-[var(--color-error)]">*</span>
+            <div className="space-y-1">
+                <label className="text-xs font-bold text-foreground">
+                    Categoría <span className="text-destructive">*</span>
                 </label>
 
                 <input type="hidden" name="categoria" value={selectedCategoryId} />
                 <input type="hidden" name="atributos" value={validAtributosJSON} />
 
                 <Select value={selectedCategoryId} onValueChange={handleCategorySelect}>
-                    <SelectTrigger className="h-11 w-full bg-[var(--color-bg-primary)] border-[var(--color-border-strong)] text-[var(--color-text-primary)]">
+                    <SelectTrigger className="h-10 w-full bg-background-secondary border border-border/40 text-foreground rounded-sm text-xs outline-none">
                         <SelectValue placeholder="Seleccionar categoría..." />
                     </SelectTrigger>
-                    <SelectContent className="bg-[var(--color-bg-primary)] border-[var(--color-border-default)]">
+                    <SelectContent className="bg-background border border-border rounded-sm text-foreground">
                         {categorias.map((cat) => (
                             <SelectItem
                                 key={cat._id}
                                 value={cat._id}
-                                className="focus:bg-[var(--color-surface-hover)] focus:text-[var(--color-text-primary)] cursor-pointer"
+                                className="cursor-pointer text-xs focus:bg-background-secondary focus:text-foreground"
                             >
                                 {cat.nombre}
                             </SelectItem>
@@ -117,10 +115,9 @@ export default function ClientCategoryAttributes({
 
             {/* --- VISTA PREVIA Y ACCIÓN (Solo si hay categoría) --- */}
             {selectedCategoryId && categoryDefinitions.length > 0 && (
-                <div className="pt-4 border-t border-[var(--color-border-subtle)] space-y-3">
-
+                <div className="pt-4 border-t border-border/40 space-y-3">
                     <div className="flex items-center justify-between">
-                        <span className="text-sm font-semibold text-[var(--color-text-primary)]">
+                        <span className="text-xs font-bold text-foreground">
                             Atributos Seleccionados
                         </span>
 
@@ -128,39 +125,39 @@ export default function ClientCategoryAttributes({
                             <DialogTrigger asChild>
                                 <button
                                     type="button"
-                                    className="flex items-center gap-1.5 text-xs font-semibold text-[var(--color-action-primary)] hover:text-[var(--color-action-primary-hover)] transition-colors cursor-pointer"
+                                    className="flex items-center gap-1.5 text-xs font-bold text-action-cta hover:opacity-80 transition-opacity cursor-pointer outline-none"
                                 >
                                     <Settings2 className="w-3.5 h-3.5" />
-                                    Configurar
+                                    <span>Configurar</span>
                                 </button>
                             </DialogTrigger>
 
-                            <DialogContent className="sm:max-w-xl bg-[var(--color-bg-primary)] border-[var(--color-border-default)]">
+                            <DialogContent className="sm:max-w-xl bg-background border border-border rounded-sm shadow-xs outline-none">
                                 <DialogHeader>
-                                    <DialogTitle className="text-lg text-[var(--color-text-primary)]">
-                                        Atributos de <span className="text-[var(--color-action-primary)]">{selectedCategory?.nombre}</span>
+                                    <DialogTitle className="text-sm font-bold tracking-tight text-foreground uppercase">
+                                        Atributos de <span className="text-action-cta font-black">{selectedCategory?.nombre}</span>
                                     </DialogTitle>
                                 </DialogHeader>
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 py-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
                                     {categoryDefinitions.map((attr) => (
-                                        <div key={attr.name} className="space-y-1.5">
-                                            <label className="text-[10px] font-bold uppercase text-[var(--color-text-secondary)]">
+                                        <div key={attr.name} className="space-y-1">
+                                            <label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
                                                 {attr.name}
                                             </label>
                                             <Select
                                                 value={selectedAttributes[attr.name] || "_none"}
                                                 onValueChange={(val) => handleAttributeChange(attr.name, val)}
                                             >
-                                                <SelectTrigger className="h-10 bg-[var(--color-bg-secondary)] border-[var(--color-border-subtle)]">
+                                                <SelectTrigger className="h-10 bg-background-secondary border border-border/40 rounded-sm text-xs text-foreground outline-none">
                                                     <SelectValue placeholder="No definido" />
                                                 </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="_none" className="italic text-[var(--color-text-tertiary)]">
+                                                <SelectContent className="bg-background border border-border rounded-sm text-foreground">
+                                                    <SelectItem value="_none" className="italic text-muted-foreground/60 text-xs">
                                                         Sin especificar
                                                     </SelectItem>
                                                     {attr.values.map((val) => (
-                                                        <SelectItem key={val} value={val}>{val}</SelectItem>
+                                                        <SelectItem key={val} value={val} className="text-xs">{val}</SelectItem>
                                                     ))}
                                                 </SelectContent>
                                             </Select>
@@ -170,7 +167,7 @@ export default function ClientCategoryAttributes({
 
                                 <DialogFooter>
                                     <Button
-                                        className="w-full bg-[var(--color-action-primary)] hover:bg-[var(--color-action-primary-hover)] text-[var(--color-text-inverse)]"
+                                        className="w-full sm:w-auto bg-foreground text-background text-xs font-bold px-6 py-2.5 rounded-full hover:bg-action-cta hover:text-primary-foreground transition-colors outline-none cursor-pointer"
                                         onClick={() => setIsOpen(false)}
                                     >
                                         Guardar Atributos
@@ -186,15 +183,15 @@ export default function ClientCategoryAttributes({
                             activeEntries.map(([key, value]) => (
                                 <div
                                     key={key}
-                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[var(--color-action-primary-light)] border border-[var(--color-action-primary)]/10 text-[var(--color-action-primary)] text-xs font-medium shadow-sm"
+                                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-sm bg-background-secondary border border-border/40 text-foreground text-xs font-medium"
                                 >
-                                    <Tag className="w-3 h-3 opacity-60" />
-                                    <span className="opacity-70">{key}:</span>
-                                    <span className="font-bold">{value}</span>
+                                    <Tag className="w-3 h-3 text-muted-foreground/60" />
+                                    <span className="text-muted-foreground font-semibold">{key}:</span>
+                                    <span className="font-bold text-action-cta">{value}</span>
                                 </div>
                             ))
                         ) : (
-                            <p className="text-xs italic text-[var(--color-text-tertiary)] py-2">
+                            <p className="text-xs italic text-muted-foreground/60 font-medium py-1">
                                 No se han configurado atributos específicos todavía.
                             </p>
                         )}

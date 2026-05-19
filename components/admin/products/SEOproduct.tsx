@@ -32,29 +32,24 @@ export default function SEOProduct({ product }: SEOProductProps) {
     const titleLen = metaTitle.length;
     const descLen = metaDescription.length;
 
-    // Lógica de colores semánticos usando tus variables
     const getCounterColor = (len: number, max: number) => {
-        if (len === 0) return "text-[var(--color-text-tertiary)]";
-        return len <= max ? "text-[var(--color-success)]" : "text-[var(--color-accent-warm)]";
+        if (len === 0) return "text-muted-foreground";
+        return len <= max ? "text-green-600" : "text-destructive";
     };
 
-    // Limpieza de HTML para la descripción por defecto
     const plainDescription = product?.descripcion?.replace(/<[^>]*>/g, "") || "";
 
     return (
-        <div className="p-5 border border-[var(--color-border-subtle)] bg-[var(--color-bg-primary)] rounded-xl space-y-4">
+        <div className="p-4 border border-border/60 bg-background rounded-sm space-y-4">
             
-            {/* Inputs ocultos para que el Server Action reciba los datos */}
             <input type="hidden" name="metaTitle" value={metaTitle} />
             <input type="hidden" name="metaDescription" value={metaDescription} />
 
-            {/* Header de la sección */}
+            {/* Header */}
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                    <div className="p-1.5 bg-[var(--color-bg-tertiary)] rounded-md">
-                        <Globe className="w-4 h-4 text-[var(--color-text-secondary)]" />
-                    </div>
-                    <span className="text-[11px] font-bold uppercase tracking-widest text-[var(--color-text-primary)]">
+                    <Globe className="w-3.5 h-3.5 text-muted-foreground/80" />
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-foreground">
                         SEO & Metadatos
                     </span>
                 </div>
@@ -63,42 +58,41 @@ export default function SEOProduct({ product }: SEOProductProps) {
                     <DialogTrigger asChild>
                         <button 
                             type="button"
-                            className="flex items-center gap-1.5 text-xs font-semibold text-[var(--color-action-primary)] hover:text-[var(--color-action-primary-hover)] transition-colors"
+                            className="flex items-center gap-1.5 text-xs font-bold text-action-cta hover:opacity-80 transition-opacity outline-none"
                         >
-                            <Edit3 className="w-3.5 h-3.5" />
+                            <Edit3 className="w-3 h-3" />
                             Editar
                         </button>
                     </DialogTrigger>
 
-                    <DialogContent className="sm:max-w-2xl bg-[var(--color-bg-primary)] border-[var(--color-border-default)]">
+                    <DialogContent className="sm:max-w-2xl bg-background border border-border rounded-sm shadow-xs outline-none">
                         <DialogHeader>
-                            <DialogTitle className="flex items-center gap-2 text-xl font-bold">
-                                <Search className="w-5 h-5 text-[var(--color-accent-warm)]" />
-                                Optimización SEO
+                            <DialogTitle className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-foreground">
+                                <Search className="w-4 h-4" /> Optimización SEO
                             </DialogTitle>
                         </DialogHeader>
 
                         <div className="space-y-6 py-4">
-                            {/* Vista Previa Google dentro del Modal */}
-                            <div className="border border-[var(--color-border-subtle)] bg-[var(--color-bg-secondary)] p-5 rounded-lg space-y-1">
-                                <p className="text-[10px] font-bold text-[var(--color-text-tertiary)] uppercase tracking-tight mb-2">
+                            {/* Vista Previa */}
+                            <div className="border border-border/40 bg-background-secondary/30 p-4 rounded-sm space-y-0.5">
+                                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2">
                                     Vista previa en buscadores
                                 </p>
-                                <p className="text-[#1a0dab] text-xl font-medium truncate leading-tight">
+                                <p className="text-lg font-medium text-blue-700 truncate leading-tight">
                                     {metaTitle || product?.nombre || "Título del producto | GoPhone"}
                                 </p>
-                                <p className="text-[#006621] text-[14px] flex items-center gap-1">
-                                    https://gophone.pe <ChevronRight className="w-3 h-3 text-[var(--color-text-tertiary)]" /> {product?.slug ?? "producto"}
+                                <p className="text-xs text-green-700 flex items-center gap-1 font-medium">
+                                    https://gophone.pe <ChevronRight className="w-3 h-3 text-muted-foreground" /> {product?.slug ?? "producto"}
                                 </p>
-                                <p className="text-[14px] text-[var(--color-text-secondary)] line-clamp-2 leading-relaxed pt-1">
+                                <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed pt-0.5">
                                     {metaDescription || plainDescription || "Optimiza tu presencia en Google con una descripción atractiva..."}
                                 </p>
                             </div>
 
-                            {/* Inputs de edición */}
+                            {/* Inputs */}
                             <div className="space-y-5">
-                                <div className="space-y-2">
-                                    <div className="flex justify-between items-end">
+                                <div className="space-y-1.5">
+                                    <div className="flex justify-between items-center">
                                         <LabelWithTooltip 
                                             htmlFor="metaTitle"
                                             label="Meta Title" 
@@ -112,12 +106,12 @@ export default function SEOProduct({ product }: SEOProductProps) {
                                         value={metaTitle}
                                         onChange={(e) => setMetaTitle(e.target.value)}
                                         placeholder="Ej: iPhone 15 Pro Max Titanium | GoPhone"
-                                        className="bg-[var(--color-bg-primary)] border-[var(--color-border-strong)]"
+                                        className="bg-background-secondary border-border/40 rounded-sm text-xs"
                                     />
                                 </div>
 
-                                <div className="space-y-2">
-                                    <div className="flex justify-between items-end">
+                                <div className="space-y-1.5">
+                                    <div className="flex justify-between items-center">
                                         <LabelWithTooltip 
                                             label="Meta Description" 
                                             tooltip="El texto que convence al usuario de hacer clic."
@@ -132,35 +126,35 @@ export default function SEOProduct({ product }: SEOProductProps) {
                                         onChange={(e) => setMetaDescription(e.target.value)}
                                         rows={4}
                                         placeholder="Escribe un resumen atractivo del producto..."
-                                        className="bg-[var(--color-bg-primary)] border-[var(--color-border-strong)] resize-none"
+                                        className="bg-background-secondary border-border/40 rounded-sm text-xs resize-none"
                                     />
                                 </div>
                             </div>
                         </div>
 
-                        <DialogFooter className="border-t border-[var(--color-border-subtle)] pt-4">
+                        <DialogFooter className="border-t border-border/40 pt-4">
                             <Button 
-                                className="w-full bg-[var(--color-action-primary)] hover:bg-[var(--color-action-primary-hover)] text-[var(--color-text-inverse)]"
+                                className="w-full sm:w-auto text-xs font-bold rounded-sm px-6"
                                 onClick={() => setIsOpen(false)}
                             >
-                                Confirmar Cambios SEO
+                                Confirmar Cambios
                             </Button>
                         </DialogFooter>
                     </DialogContent>
                 </Dialog>
             </div>
 
-            {/* Preview Simplificada en el Formulario Principal */}
-            <div className="p-4 rounded-lg bg-[var(--color-bg-secondary)] border border-dashed border-[var(--color-border-default)]">
-                <p className="text-[13px] font-bold text-[#1a0dab] truncate">
+            {/* Preview Simplificada */}
+            <div className="p-3 rounded-sm bg-background-secondary/30 border border-border/40 space-y-0.5">
+                <p className="text-xs font-bold text-blue-700 truncate">
                     {metaTitle || product?.nombre || "Sin título definido"}
                 </p>
-                <p className="text-[11px] text-[var(--color-text-secondary)] line-clamp-1 mt-1">
+                <p className="text-[10px] text-muted-foreground line-clamp-1">
                     {metaDescription || plainDescription || "Sin descripción meta..."}
                 </p>
             </div>
 
-            <p className="text-[10px] text-[var(--color-text-tertiary)] italic leading-tight">
+            <p className="text-[10px] text-muted-foreground italic leading-tight">
                 * Los metadatos optimizados mejoran el ranking en buscadores y el CTR de tus productos.
             </p>
         </div>

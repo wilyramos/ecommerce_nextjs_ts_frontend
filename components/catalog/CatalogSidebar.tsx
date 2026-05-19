@@ -42,27 +42,28 @@ export default function CatalogSidebar({ filters }: Props) {
             })),
     }), [filters]);
 
+    // Alineación estricta con variables semánticas globales para un entorno minimalista
     const triggerClass =
-        "text-[11px] font-medium uppercase tracking-[0.06em] text-sidebar-foreground/70 hover:no-underline py-3 px-0 border-b border-sidebar-border hover:text-sidebar-foreground transition-colors";
+        "text-[11px] font-bold uppercase tracking-[0.08em] text-muted-foreground hover:no-underline py-3 px-0 border-b border-border hover:text-foreground transition-colors";
 
     const row =
-        "flex items-center gap-2 px-2 py-[5px] rounded cursor-pointer transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground";
+        "flex items-center gap-2.5 px-2 py-2 rounded-sm cursor-pointer transition-colors hover:bg-background-secondary hover:text-foreground";
 
     const checkboxClass =
-        "w-3.5 h-3.5 rounded-[3px] border-sidebar-border " +
-        "data-[state=checked]:bg-sidebar-primary " +
-        "data-[state=checked]:border-sidebar-primary " +
-        "data-[state=checked]:text-sidebar-primary-foreground " +
-        "focus-visible:ring-sidebar-ring " +
+        "w-3.5 h-3.5 rounded-sm border-border " +
+        "data-[state=checked]:bg-action-cta " +
+        "data-[state=checked]:border-action-cta " +
+        "data-[state=checked]:text-primary-foreground " +
+        "focus-visible:ring-offset-0 focus-visible:ring-0 " +
         "transition-colors duration-150";
 
     return (
-        <div className="w-full pb-20 select-none bg-sidebar text-sidebar-foreground">
+        <div className="w-full pb-20 select-none bg-background text-foreground">
             <ActiveFiltersSidebar />
 
             <Accordion
                 type="multiple"
-                className="w-full mt-4 space-y-3"
+                className="w-full mt-4 space-y-2"
                 defaultValue={["item-categories", "item-brands"]}
             >
                 {/* CATEGORÍAS */}
@@ -71,8 +72,8 @@ export default function CatalogSidebar({ filters }: Props) {
                         <AccordionTrigger className={triggerClass}>
                             Categorías
                         </AccordionTrigger>
-                        <AccordionContent className="pt-1.5 pb-0">
-                            <ul className="space-y-0">
+                        <AccordionContent className="pt-2 pb-0">
+                            <ul className="space-y-0.5">
                                 {sortedFilters.categories.map((cat) => {
                                     const active = isCategoryActive(cat.slug);
                                     return (
@@ -80,10 +81,10 @@ export default function CatalogSidebar({ filters }: Props) {
                                             <button
                                                 onClick={() => setCategory(cat.slug)}
                                                 className={cn(
-                                                    "w-full text-left px-2 py-[5px] text-[13px] rounded transition-colors duration-150 outline-none",
+                                                    "w-full text-left px-2 py-2 text-[13px] rounded-sm transition-colors duration-150 outline-none font-medium",
                                                     active
-                                                        ? "bg-sidebar-accent text-sidebar-accent-foreground font-bold"
-                                                        : "text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+                                                        ? "bg-background-secondary text-action-cta font-bold"
+                                                        : "text-muted-foreground hover:bg-background-secondary/60 hover:text-foreground"
                                                 )}
                                             >
                                                 {cat.nombre}
@@ -102,8 +103,8 @@ export default function CatalogSidebar({ filters }: Props) {
                         <AccordionTrigger className={triggerClass}>
                             Marcas
                         </AccordionTrigger>
-                        <AccordionContent className="pt-1.5 pb-0">
-                            <div className="space-y-0 max-h-[220px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-sidebar-border">
+                        <AccordionContent className="pt-2 pb-0">
+                            <div className="space-y-0.5 max-h-[220px] overflow-y-auto pr-1 scrollbar-none">
                                 {sortedFilters.brands.map((brand) => {
                                     const active = isBrandActive(brand.slug);
                                     return (
@@ -112,14 +113,17 @@ export default function CatalogSidebar({ filters }: Props) {
                                             onClick={() => setBrand(brand.slug)}
                                             className={cn(
                                                 row,
-                                                active && "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                                                active && "bg-background-secondary text-foreground font-semibold"
                                             )}
                                         >
                                             <Checkbox
                                                 checked={active}
                                                 className={checkboxClass}
                                             />
-                                            <span className="text-[13px] transition-colors duration-150">
+                                            <span className={cn(
+                                                "text-[13px] font-medium transition-colors duration-150",
+                                                active ? "text-foreground" : "text-muted-foreground"
+                                            )}>
                                                 {brand.nombre}
                                             </span>
                                         </div>
@@ -136,8 +140,8 @@ export default function CatalogSidebar({ filters }: Props) {
                         <AccordionTrigger className={triggerClass}>
                             Modelos
                         </AccordionTrigger>
-                        <AccordionContent className="pt-1.5 pb-0">
-                            <div className="space-y-0 max-h-[220px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-sidebar-border">
+                        <AccordionContent className="pt-2 pb-0">
+                            <div className="space-y-0.5 max-h-[220px] overflow-y-auto pr-1 scrollbar-none">
                                 {sortedFilters.lines.map((line) => {
                                     const active = isLineActive(line.slug);
                                     return (
@@ -146,14 +150,17 @@ export default function CatalogSidebar({ filters }: Props) {
                                             onClick={() => setLine(line.slug)}
                                             className={cn(
                                                 row,
-                                                active && "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                                                active && "bg-background-secondary text-foreground font-semibold"
                                             )}
                                         >
                                             <Checkbox
                                                 checked={active}
                                                 className={checkboxClass}
                                             />
-                                            <span className="text-[13px] transition-colors duration-150">
+                                            <span className={cn(
+                                                "text-[13px] font-medium transition-colors duration-150",
+                                                active ? "text-foreground" : "text-muted-foreground"
+                                            )}>
                                                 {line.nombre}
                                             </span>
                                         </div>
@@ -173,8 +180,8 @@ export default function CatalogSidebar({ filters }: Props) {
                             <AccordionTrigger className={triggerClass}>
                                 {attr.name}
                             </AccordionTrigger>
-                            <AccordionContent className="pt-1.5 pb-0">
-                                <div className="space-y-0 max-h-[220px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-sidebar-border">
+                            <AccordionContent className="pt-2 pb-0">
+                                <div className="space-y-0.5 max-h-[220px] overflow-y-auto pr-1 scrollbar-none">
                                     {attr.values.map((val) => {
                                         const isChecked = searchParams.getAll(attr.name).includes(val);
 
@@ -184,7 +191,7 @@ export default function CatalogSidebar({ filters }: Props) {
                                                 onClick={() => updateFilter(attr.name, val)}
                                                 className={cn(
                                                     row,
-                                                    isChecked && "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+                                                    isChecked && "bg-background-secondary text-foreground font-semibold"
                                                 )}
                                             >
                                                 <Checkbox
@@ -195,7 +202,10 @@ export default function CatalogSidebar({ filters }: Props) {
                                                     {isColorAttr && (
                                                         <ColorCircle color={val} size={12} />
                                                     )}
-                                                    <span className="text-[13px] capitalize transition-colors duration-150">
+                                                    <span className={cn(
+                                                        "text-[13px] font-medium capitalize transition-colors duration-150",
+                                                        isChecked ? "text-foreground" : "text-muted-foreground"
+                                                    )}>
                                                         {val}
                                                     </span>
                                                 </div>

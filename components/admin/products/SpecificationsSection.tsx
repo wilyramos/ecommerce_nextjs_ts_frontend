@@ -1,7 +1,11 @@
 "use client";
-import { Label } from "@/components/ui/label";
+
 import { useState } from "react";
 import type { KeyboardEvent, ClipboardEvent, ChangeEvent } from "react";
+import { Label } from "@/components/ui/label";
+import { Trash2, SlidersHorizontal, Plus } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 type SpecItem = { key: string; value: string };
 
@@ -32,7 +36,6 @@ export default function SpecificationsSection({ initial = [] }: Props) {
 
     const removeRow = (idx: number) => setItems(items.filter((_, i) => i !== idx));
 
-    // --- Manejo de pegado desde tabla o texto con ":" ---
     const handlePaste = (e: ClipboardEvent<HTMLInputElement>) => {
         e.preventDefault();
         const pasteData = e.clipboardData.getData("text");
@@ -71,7 +74,6 @@ export default function SpecificationsSection({ initial = [] }: Props) {
         if (newItems.length > 0) setItems([...items, ...newItems]);
     };
 
-    // --- Manejo de Enter para nueva fila ---
     const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>, index: number) => {
         if (e.key === "Enter") {
             e.preventDefault();
@@ -79,11 +81,9 @@ export default function SpecificationsSection({ initial = [] }: Props) {
         }
     };
 
-    // --- Manejo automático del ":" al escribir ---
     const handleChange = (e: ChangeEvent<HTMLInputElement>, idx: number, field: "key" | "value") => {
         const value = e.target.value;
 
-        // Si el usuario está escribiendo en "key" y pone ":", dividimos automáticamente
         if (field === "key" && value.includes(":")) {
             const [k, ...v] = value.split(":");
             const key = k.trim();
@@ -97,37 +97,52 @@ export default function SpecificationsSection({ initial = [] }: Props) {
     };
 
     return (
-        <div className="py-2 border p-2">
-            <Label className="mb-2">Especificaciones: </Label>
+        <div className="p-5 border border-border/60 bg-background rounded-sm space-y-4 w-full">
+            <div className="flex items-center gap-2 border-b border-border/40 pb-3">
+                <SlidersHorizontal className="w-3.5 h-3.5 text-muted-foreground/80" />
+                <Label className="text-[11px] font-bold uppercase tracking-wider text-foreground">Especificaciones Técnicas</Label>
+            </div>
 
-            {items.map((item, i) => (
-                <div key={i} className="flex ">
-                    <input
-                        type="text"
-                        placeholder="Clave"
-                        className="border-2  p-2 w-1/2 font-bold text-gray-600"
-                        value={item.key}
-                        onChange={(e) => handleChange(e, i, "key")}
-                        onPaste={handlePaste}
-                        onKeyDown={(e) => handleKeyDown(e, i)}
-                    />
-                    <input
-                        type="text"
-                        placeholder="Valor"
-                        className="border-2  p-2 w-1/2 "
-                        value={item.value}
-                        onChange={(e) => handleChange(e, i, "value")}
-                        onKeyDown={(e) => handleKeyDown(e, i)}
-                    />
-                    <button
-                        type="button"
-                        onClick={() => removeRow(i)}
-                        className="text-red-500 font-bold px-2"
-                    >
-                        ×
-                    </button>
-                </div>
-            ))}
+            <div className="space-y-2">
+                {items.map((item, i) => (
+                    <div key={i} className="flex gap-2 items-center group">
+                        <Input
+                            placeholder="Característica (Ej: Pantalla)"
+                            className="h-9 text-xs font-bold bg-background-secondary border-border/40 focus:border-muted-foreground/60 rounded-sm"
+                            value={item.key}
+                            onChange={(e) => handleChange(e, i, "key")}
+                            onPaste={handlePaste}
+                            onKeyDown={(e) => handleKeyDown(e, i)}
+                        />
+                        <Input
+                            placeholder="Detalle (Ej: 6.7 pulgadas)"
+                            className="h-9 text-xs font-medium bg-background-secondary border-border/40 focus:border-muted-foreground/60 rounded-sm"
+                            value={item.value}
+                            onChange={(e) => handleChange(e, i, "value")}
+                            onKeyDown={(e) => handleKeyDown(e, i)}
+                        />
+                        <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => removeRow(i)}
+                            className="h-9 w-9 shrink-0 text-muted-foreground/50 hover:text-destructive transition-colors"
+                        >
+                            <Trash2 size={14} />
+                        </Button>
+                    </div>
+                ))}
+            </div>
+
+            <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="w-full h-9 text-xs font-bold uppercase border-dashed border-border/80 hover:bg-background-secondary/60 rounded-sm"
+                onClick={() => addRow()}
+            >
+                <Plus size={14} className="mr-2" /> Agregar fila
+            </Button>
 
             <input type="hidden" name="especificaciones" value={jsonString} />
         </div>

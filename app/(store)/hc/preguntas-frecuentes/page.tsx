@@ -1,3 +1,5 @@
+"use client";
+
 import {
     Accordion,
     AccordionContent,
@@ -6,6 +8,7 @@ import {
 } from "@/components/ui/accordion";
 import { HelpCircle, ArrowRight, MessageCircle } from "lucide-react";
 import Link from "next/link";
+import { H1, H3, Lead, Muted } from "@/components/ui/Typography";
 
 export default function PreguntasFrecuentesPage() {
     const faqs = [
@@ -18,7 +21,7 @@ export default function PreguntasFrecuentesPage() {
             answer: "Sí. Realizamos despachos a nivel nacional a través de couriers certificados. Los tiempos de entrega varían entre 24h para Cañete y de 48h a 72h para el resto de provincias."
         },
         {
-            question: "¿Qué hago si mi producto llega con daños estéticos o de fábrica?",
+            question: "¿Qué hago si mi producto llega con daños de fábrica?",
             answer: "La calidad es nuestra prioridad. Si el producto presenta fallas, puedes solicitar un cambio o devolución dentro de los primeros 3 días hábiles tras la entrega. Es indispensable conservar el empaque original, sellos y accesorios."
         },
         {
@@ -30,39 +33,43 @@ export default function PreguntasFrecuentesPage() {
             answer: "No. Por políticas de seguridad y garantía de marca, los dispositivos que han sido abiertos, encendidos o activados no admiten devolución por arrepentimiento de compra. Solo aplican devoluciones por fallas técnicas demostrables."
         },
         {
-            question: "¿Cuál es el horario de atención en tiendas?",
+            question: "¿Cuál es el horario de atención?",
             answer: "Nuestro equipo de soporte está disponible de Lunes a Sábado de 10:00 am a 7:00 pm. Fuera de ese horario, puedes dejarnos un mensaje por WhatsApp y te contactaremos a primera hora."
         }
     ];
 
     return (
-        <section className="max-w-4xl mx-auto px-4 py-12 md:py-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <section className="max-w-4xl mx-auto px-4 py-12 md:py-16 select-none bg-background text-foreground">
 
-            {/* --- HEADER EDITORIAL --- */}
-            <header className="mb-16 text-center md:text-left">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--store-primary)]/10 text-[var(--store-primary)] text-[10px] font-bold uppercase tracking-widest mb-6">
-                    <HelpCircle size={14} />
-                    <span>Centro de Soporte</span>
+            {/* --- CABECERA EDITORIAL --- */}
+            <header className="mb-14 text-start">
+                <div className="inline-flex items-center gap-2 border-l-2 border-action-cta pl-2.5 py-0.5 mb-5">
+                    <HelpCircle size={12} className="text-action-cta" />
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-action-cta">
+                        Centro de Soporte
+                    </span>
                 </div>
-                <h1 className="text-4xl md:text-5xl font-bold text-[var(--store-text)] tracking-tight mb-4">
-                    Preguntas frecuentes. <br />
-                    <span className="text-[var(--store-text-muted)] text-3xl md:text-4xl">Todo lo que necesitas saber.</span>
-                </h1>
+                <H1 className="text-3xl md:text-5xl font-black tracking-tight leading-[1.1] mb-2">
+                    Preguntas frecuentes.
+                </H1>
+                <Lead className="text-lg md:text-2xl font-medium text-muted-foreground">
+                    Todo lo que necesitas saber.
+                </Lead>
             </header>
 
             {/* --- CONTENEDOR DE ACORDEÓN --- */}
-            <div className="bg-[var(--store-surface)] border border-[var(--store-border)] rounded-[2.5rem] p-6 md:p-10 shadow-sm overflow-hidden">
-                <Accordion type="single" collapsible className="w-full border-none">
+            <div className="bg-background border border-border/60 rounded-sm p-4 md:p-8">
+                <Accordion type="single" collapsible className="w-full">
                     {faqs.map((faq, index) => (
                         <AccordionItem
                             key={index}
                             value={`item-${index}`}
-                            className="border-b border-[var(--store-border)] last:border-0 py-2"
+                            className="border-b border-border/40 last:border-none py-1"
                         >
-                            <AccordionTrigger className="text-left text-base md:text-lg font-semibold text-[var(--store-text)] hover:text-[var(--store-primary)] transition-colors py-6 hover:no-underline">
+                            <AccordionTrigger className="text-left text-[14px] md:text-[15px] font-bold text-foreground hover:text-action-cta transition-colors py-4 hover:no-underline outline-none focus-visible:text-action-cta">
                                 {faq.question}
                             </AccordionTrigger>
-                            <AccordionContent className="text-[var(--store-text-muted)] text-sm md:text-base leading-relaxed pb-8 max-w-3xl">
+                            <AccordionContent className="text-muted-foreground text-xs md:text-sm leading-relaxed pb-5 max-w-3xl font-medium">
                                 {faq.answer}
                             </AccordionContent>
                         </AccordionItem>
@@ -70,52 +77,44 @@ export default function PreguntasFrecuentesPage() {
                 </Accordion>
             </div>
 
-            {/* --- BLOQUE DE AYUDA DIRECTA --- */}
-            <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="p-8 rounded-[2rem] bg-[var(--store-bg)] border border-[var(--store-border)] flex flex-col justify-between group hover:border-[var(--store-primary)]/30 transition-all">
+            {/* --- BLOQUES DE AYUDA DIRECTA --- */}
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-6 md:p-8 rounded-sm bg-background border border-border/60 flex flex-col justify-between group hover:border-border transition-colors duration-200">
                     <div>
-                        <MessageCircle className="text-[var(--store-primary)] mb-4" size={28} />
-                        <h3 className="text-lg font-bold text-[var(--store-text)] mb-2">¿Aún tienes dudas?</h3>
-                        <p className="text-sm text-[var(--store-text-muted)] leading-relaxed mb-6">
+                        <MessageCircle className="text-muted-foreground/80 mb-4 group-hover:text-action-cta transition-colors" size={20} />
+                        <H3 className="text-sm font-bold mb-2 tracking-tight">¿Aún tienes dudas?</H3>
+                        <Muted className="text-xs text-muted-foreground leading-relaxed mb-6 font-medium">
                             Nuestros especialistas en tecnología están listos para asesorarte de forma personalizada.
-                        </p>
+                        </Muted>
                     </div>
                     <Link
                         href="/hc/contacto-y-soporte"
-                        className="flex items-center gap-2 text-sm font-bold text-[var(--store-primary)] group-hover:gap-3 transition-all"
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-action-cta outline-none"
                     >
-                        Chatear ahora <ArrowRight size={16} />
+                        <span>Chatear ahora</span>
+                        <ArrowRight size={12} className="transform transition-transform group-hover:translate-x-0.5" />
                     </Link>
                 </div>
 
-                <div className="p-8 rounded-[2rem] bg-[var(--store-text)] text-[var(--store-surface)] flex flex-col justify-between">
+                <div className="p-6 md:p-8 rounded-sm bg-background-secondary border border-border/60 flex flex-col justify-between">
                     <div>
-                        <h3 className="text-lg font-bold mb-2">Garantía GoPhone</h3>
-                        <p className="text-sm text-gray-400 leading-relaxed mb-6">
+                        <div className="text-foreground mb-4">
+                            <HelpCircle size={20} />
+                        </div>
+                        <H3 className="text-sm font-bold mb-2 tracking-tight">Garantía GoPhone</H3>
+                        <Muted className="text-xs text-muted-foreground leading-relaxed mb-6 font-medium">
                             Todos nuestros productos cuentan con respaldo oficial y garantía local en nuestras tiendas físicas.
-                        </p>
+                        </Muted>
                     </div>
                     <Link
                         href="/hc/garantias-y-devoluciones"
-                        className="flex items-center gap-2 text-sm font-bold text-[var(--store-surface)] hover:text-[var(--store-primary)] transition-colors"
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-foreground hover:text-action-cta transition-colors outline-none"
                     >
-                        Ver términos de garantía <ArrowRight size={16} />
+                        <span>Ver términos de garantía</span>
+                        <ArrowRight size={12} />
                     </Link>
                 </div>
             </div>
-
-            {/* --- FOOTER CTA --- */}
-            <footer className="mt-24 text-center">
-                <Link
-                    href="/"
-                    className="inline-flex items-center justify-center px-10 py-4 bg-[var(--store-primary)] text-white rounded-full font-semibold text-sm hover:bg-[var(--store-primary-hover)] transition-all active:scale-95 shadow-lg shadow-blue-500/10"
-                >
-                    Seguir comprando
-                </Link>
-                <p className="mt-8 text-[10px] text-[var(--store-text-muted)] font-bold tracking-[0.2em] uppercase">
-                    GoPhone · Cañete · Perú
-                </p>
-            </footer>
         </section>
     );
 }

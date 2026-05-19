@@ -1,4 +1,3 @@
-// Neutral palette applied version of ProductsTable
 "use client";
 
 import Link from "next/link";
@@ -67,18 +66,18 @@ export default function ProductsTable({ products, categories, brands }: {
     };
 
     return (
-        <div className="w-full h-full overflow-auto pb-2 text-xs text-zinc-600 bg-gray-50">
-            <div className="flex justify-end my-1 pr-1">
+        <div className="w-full h-full select-none bg-background text-foreground">
+            <div className="flex justify-end mb-2 pr-1">
                 <button
                     onClick={clearFilters}
-                    className="text-[11px] font-semibold text-zinc-600 hover:text-black"
+                    className="text-[11px] font-bold text-muted-foreground hover:text-action-cta transition-colors outline-none"
                 >
                     Limpiar filtros
                 </button>
             </div>
 
-            <Table className="min-w-full table-auto border-separate border-spacing-0 text-zinc-600">
-                <TableHeader className="bg-gray-50 border-b sticky top-0 shadow-sm">
+            <Table className="w-full text-start border-collapse text-xs md:text-sm">
+                <TableHeader className="bg-background-secondary sticky top-0 z-10 border-b border-border">
                     <TableRow>
                         {[
                             nameFilter,
@@ -93,14 +92,14 @@ export default function ProductsTable({ products, categories, brands }: {
                         ].map((filter, i) => (
                             <TableHead
                                 key={i}
-                                className="p-1 text-center bg-gray-50 text-zinc-600"
+                                className="p-1 text-center font-bold text-foreground align-middle"
                             >
                                 {i === 0 && (
                                     <Input
                                         placeholder="Nombre"
                                         value={nameFilter.value}
                                         onChange={(e) => nameFilter.setValue(e.target.value)}
-                                        className="h-8 text-xs focus:border-black bg-gray-50 text-black placeholder:text-zinc-400"
+                                        className="h-8 text-xs bg-background border border-border/60 rounded-sm px-2 text-foreground placeholder-muted-foreground/50 focus:border-muted-foreground/60 transition-colors outline-none"
                                     />
                                 )}
                                 {i === 1 && (
@@ -108,7 +107,7 @@ export default function ProductsTable({ products, categories, brands }: {
                                         placeholder="SKU"
                                         value={skuFilter.value}
                                         onChange={(e) => skuFilter.setValue(e.target.value)}
-                                        className="h-8 text-xs focus:border-black bg-gray-50 text-black placeholder:text-zinc-400"
+                                        className="h-8 text-xs bg-background border border-border/60 rounded-sm px-2 text-foreground placeholder-muted-foreground/50 focus:border-muted-foreground/60 transition-colors outline-none"
                                     />
                                 )}
                                 {i === 2 && (
@@ -116,10 +115,10 @@ export default function ProductsTable({ products, categories, brands }: {
                                         value={priceSort.value || undefined}
                                         onValueChange={priceSort.setValue}
                                     >
-                                        <SelectTrigger className="h-8 text-xs bg-gray-50 text-black">
+                                        <SelectTrigger className="h-8 text-xs bg-background border border-border/60 rounded-sm px-2 text-foreground outline-none">
                                             <SelectValue placeholder="Precio" />
                                         </SelectTrigger>
-                                        <SelectContent className="bg-gray-50 text-black">
+                                        <SelectContent className="bg-background border border-border rounded-sm text-foreground">
                                             <SelectItem value="asc">Asc</SelectItem>
                                             <SelectItem value="desc">Desc</SelectItem>
                                         </SelectContent>
@@ -130,10 +129,10 @@ export default function ProductsTable({ products, categories, brands }: {
                                         value={stockSort.value || undefined}
                                         onValueChange={stockSort.setValue}
                                     >
-                                        <SelectTrigger className="h-8 text-xs bg-gray-50 text-black">
+                                        <SelectTrigger className="h-8 text-xs bg-background border border-border/60 rounded-sm px-2 text-foreground outline-none">
                                             <SelectValue placeholder="Stock" />
                                         </SelectTrigger>
-                                        <SelectContent className="bg-gray-50 text-black">
+                                        <SelectContent className="bg-background border border-border rounded-sm text-foreground">
                                             <SelectItem value="asc">Asc</SelectItem>
                                             <SelectItem value="desc">Desc</SelectItem>
                                         </SelectContent>
@@ -144,10 +143,10 @@ export default function ProductsTable({ products, categories, brands }: {
                                         value={brandFilter.value || undefined}
                                         onValueChange={brandFilter.setValue}
                                     >
-                                        <SelectTrigger className="h-8 text-xs bg-gray-50 text-black">
+                                        <SelectTrigger className="h-8 text-xs bg-background border border-border/60 rounded-sm px-2 text-foreground outline-none">
                                             <SelectValue placeholder="Marca" />
                                         </SelectTrigger>
-                                        <SelectContent className="max-h-60 overflow-auto bg-gray-50 text-black">
+                                        <SelectContent className="max-h-60 overflow-auto bg-background border border-border rounded-sm text-foreground">
                                             {brands.map((b) => (
                                                 <SelectItem key={b._id} value={b._id}>
                                                     {b.nombre}
@@ -161,10 +160,10 @@ export default function ProductsTable({ products, categories, brands }: {
                                         value={categoryFilter.value || undefined}
                                         onValueChange={categoryFilter.setValue}
                                     >
-                                        <SelectTrigger className="h-8 text-xs bg-gray-50 text-black">
+                                        <SelectTrigger className="h-8 text-xs bg-background border border-border/60 rounded-sm px-2 text-foreground outline-none">
                                             <SelectValue placeholder="Categoría" />
                                         </SelectTrigger>
-                                        <SelectContent className="max-h-60 overflow-auto bg-gray-50 text-black">
+                                        <SelectContent className="max-h-60 overflow-auto bg-background border border-border rounded-sm text-foreground">
                                             {categories.map((c) => (
                                                 <SelectItem key={c._id} value={c._id}>
                                                     {c.nombre}
@@ -178,10 +177,10 @@ export default function ProductsTable({ products, categories, brands }: {
                                         value={activeFilter.value || undefined}
                                         onValueChange={activeFilter.setValue}
                                     >
-                                        <SelectTrigger className="h-8 text-xs bg-gray-50 text-black">
+                                        <SelectTrigger className="h-8 text-xs bg-background border border-border/60 rounded-sm px-2 text-foreground outline-none">
                                             <SelectValue placeholder="Estado" />
                                         </SelectTrigger>
-                                        <SelectContent className="bg-gray-50 text-black">
+                                        <SelectContent className="bg-background border border-border rounded-sm text-foreground">
                                             <SelectItem value="true">Activos</SelectItem>
                                             <SelectItem value="false">Inactivos</SelectItem>
                                         </SelectContent>
@@ -192,10 +191,10 @@ export default function ProductsTable({ products, categories, brands }: {
                                         value={nuevoFilter.value || undefined}
                                         onValueChange={nuevoFilter.setValue}
                                     >
-                                        <SelectTrigger className="h-8 text-xs bg-gray-50 text-black">
+                                        <SelectTrigger className="h-8 text-xs bg-background border border-border/60 rounded-sm px-2 text-foreground outline-none">
                                             <SelectValue placeholder="Nuevo" />
                                         </SelectTrigger>
-                                        <SelectContent className="bg-gray-50 text-black">
+                                        <SelectContent className="bg-background border border-border rounded-sm text-foreground">
                                             <SelectItem value="true">Sí</SelectItem>
                                             <SelectItem value="false">No</SelectItem>
                                         </SelectContent>
@@ -206,10 +205,10 @@ export default function ProductsTable({ products, categories, brands }: {
                                         value={destacadoFilter.value || undefined}
                                         onValueChange={destacadoFilter.setValue}
                                     >
-                                        <SelectTrigger className="h-8 text-xs bg-gray-50 text-black">
+                                        <SelectTrigger className="h-8 text-xs bg-background border border-border/60 rounded-sm px-2 text-foreground outline-none">
                                             <SelectValue placeholder="Destacado" />
                                         </SelectTrigger>
-                                        <SelectContent className="bg-gray-50 text-black">
+                                        <SelectContent className="bg-background border border-border rounded-sm text-foreground">
                                             <SelectItem value="true">Sí</SelectItem>
                                             <SelectItem value="false">No</SelectItem>
                                         </SelectContent>
@@ -218,18 +217,18 @@ export default function ProductsTable({ products, categories, brands }: {
                             </TableHead>
                         ))}
 
-                        <TableHead className="p-1 text-xs w-[80px] text-zinc-600 bg-gray-50">
+                        <TableHead className="p-1 text-center font-bold text-foreground align-middle w-[80px]">
                             Acciones
                         </TableHead>
                     </TableRow>
                 </TableHeader>
 
-                <TableBody>
+                <TableBody className="divide-y divide-border/40">
                     {noProducts ? (
                         <TableRow>
                             <TableCell
                                 colSpan={10}
-                                className="text-center py-6 text-sm text-zinc-600"
+                                className="text-center py-8 text-muted-foreground font-medium"
                             >
                                 No se encontraron productos.
                             </TableCell>
@@ -238,87 +237,99 @@ export default function ProductsTable({ products, categories, brands }: {
                         products.products.map((p) => (
                             <TableRow
                                 key={p._id}
-                                className="text-xs border-b hover:bg-gray-50"
+                                className="hover:bg-background-secondary/60 transition-colors"
                             >
-                                <TableCell className="p-2 w-[230px] text-black">
+                                <TableCell className="p-3 w-[230px] font-medium text-foreground">
                                     <Link
                                         href={`/admin/products/${p._id}`}
-                                        className="flex flex-col md:flex-row gap-1"
+                                        className="flex flex-col md:flex-row gap-2.5 items-center outline-none"
                                     >
                                         {p.imagenes?.[0] ? (
-                                            <div className="h-8 w-8">
+                                            <div className="h-8 w-8 relative flex-shrink-0 bg-background-secondary border border-border/40 rounded-sm overflow-hidden flex items-center justify-center p-0.5">
                                                 <Image
                                                     src={p.imagenes[0]}
                                                     alt={p.nombre}
-                                                    width={30}
-                                                    height={30}
-                                                    className="rounded border bg-gray-50 object-cover"
-                                                    quality={1}
+                                                    width={32}
+                                                    height={32}
+                                                    className="object-contain mix-blend-multiply"
+                                                    quality={60}
+                                                    unoptimized
                                                 />
                                             </div>
                                         ) : (
-                                            <div className="
-                                                h-8 w-8 flex items-center justify-center rounded border bg-gray-100 text-zinc-400 text-[10px]
-                                            ">
-                                                no image
+                                            <div className="h-8 w-8 flex-shrink-0 flex items-center justify-center rounded-sm border border-border/40 bg-background-secondary text-muted-foreground/50 text-[9px] font-bold uppercase tracking-wider">
+                                                No img
                                             </div>
                                         )}
-                                        <span className="line-clamp-3 max-w-[180px] text-black">
-                                            {p.isFrontPage && (<span className="italic mr-1 text-orange-400 font-bold">[FrontPage]</span>)}{p.nombre}
+                                        <span className="line-clamp-2 max-w-[180px] text-foreground leading-snug">
+                                            {p.isFrontPage && (
+                                                <span className="text-[10px] font-bold text-action-cta mr-1 tracking-wide">
+                                                    [FRONT]
+                                                </span>
+                                            )}
+                                            {p.nombre}
                                         </span>
                                     </Link>
                                 </TableCell>
 
-                                <TableCell className="p-2 text-center w-[120px] text-zinc-600">
+                                <TableCell className="p-3 text-center w-[120px] font-mono font-medium text-muted-foreground">
                                     {p.sku}
                                 </TableCell>
 
-                                <TableCell className="p-2 text-center w-[90px] text-black">
-                                    S/{p.precio?.toFixed(2)}
+                                <TableCell className="p-3 text-center w-[90px] font-semibold text-foreground">
+                                    S/ {p.precio?.toFixed(2)}
                                 </TableCell>
 
-                                <TableCell className="p-2 text-center w-[90px] text-black">
+                                <TableCell className="p-3 text-center w-[90px] font-semibold text-foreground">
                                     {p.stock}
                                 </TableCell>
 
-                                <TableCell className="p-2 text-center w-[130px] text-zinc-600">
-                                    {p.brand?.nombre || "-"}
+                                <TableCell className="p-3 text-center w-[130px] font-medium text-muted-foreground">
+                                    {p.brand?.nombre || "—"}
                                 </TableCell>
 
-                                <TableCell className="p-2 text-center w-[130px] text-zinc-600">
-                                    -
+                                <TableCell className="p-3 text-center w-[130px] font-medium text-muted-foreground">
+                                    —
                                 </TableCell>
 
                                 {/* Estado */}
-                                <TableCell className="p-2 text-center w-[60px]">
-                                    {p.isActive ? (
-                                        <Check className="w-4 h-4 text-green-600" />
-                                    ) : (
-                                        <X className="w-4 h-4 text-red-600" />
-                                    )}
+                                <TableCell className="p-3 text-center w-[60px]">
+                                    <div className="flex justify-center">
+                                        {p.isActive ? (
+                                            <Check className="w-4 h-4 text-green-600" strokeWidth={2.5} />
+                                        ) : (
+                                            <X className="w-4 h-4 text-destructive" strokeWidth={2.5} />
+                                        )}
+                                    </div>
                                 </TableCell>
 
                                 {/* Nuevo */}
-                                <TableCell className="p-2 text-center w-[60px]">
-                                    {p.esNuevo ? (
-                                        <Check className="w-4 h-4 text-green-600" />
-                                    ) : (
-                                        <X className="w-4 h-4 text-red-600" />
-                                    )}
+                                <TableCell className="p-3 text-center w-[60px]">
+                                    <div className="flex justify-center">
+                                        {p.esNuevo ? (
+                                            <Check className="w-4 h-4 text-green-600" strokeWidth={2.5} />
+                                        ) : (
+                                            <X className="w-4 h-4 text-destructive" strokeWidth={2.5} />
+                                        )}
+                                    </div>
                                 </TableCell>
 
                                 {/* Destacado */}
-                                <TableCell className="p-2 text-center w-[60px]">
-                                    {p.esDestacado ? (
-                                        <Check className="w-4 h-4 text-green-600" />
-                                    ) : (
-                                        <X className="w-4 h-4 text-red-600" />
-                                    )}
+                                <TableCell className="p-3 text-center w-[60px]">
+                                    <div className="flex justify-center">
+                                        {p.esDestacado ? (
+                                            <Check className="w-4 h-4 text-green-600" strokeWidth={2.5} />
+                                        ) : (
+                                            <X className="w-4 h-4 text-destructive" strokeWidth={2.5} />
+                                        )}
+                                    </div>
                                 </TableCell>
 
                                 {/* Acciones */}
-                                <TableCell className="p-2 text-center w-[80px]">
-                                    <ProductMenuAction productId={p._id} />
+                                <TableCell className="p-3 text-center w-[80px]">
+                                    <div className="flex justify-center">
+                                        <ProductMenuAction productId={p._id} productSlug={p.slug} />
+                                    </div>
                                 </TableCell>
                             </TableRow>
                         ))

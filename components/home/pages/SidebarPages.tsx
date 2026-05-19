@@ -36,15 +36,15 @@ export default function SidebarPages() {
     return (
         <>
             {/* 📌 Desktop Sidebar */}
-            <aside className="sticky top-24 hidden md:flex md:flex-col w-72 h-fit">
-                <nav className="flex-1 pr-8 border-r border-[var(--store-border)] space-y-8">
+            <aside className="sticky top-24 hidden md:flex md:flex-col w-64 h-fit bg-background select-none">
+                <nav className="flex-1 pr-6 border-r border-border space-y-6">
 
                     {/* Sección Principal: Información Legal */}
                     <div>
-                        <h2 className="px-4 mb-5 text-[11px] uppercase tracking-[0.25em] font-bold text-[var(--store-text)]">
+                        <h2 className="px-3 mb-3 text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/80">
                             Información Legal
                         </h2>
-                        <div className="space-y-1.5">
+                        <div className="space-y-0.5">
                             {legalNav.map((item) => {
                                 const isActive = pathname === item.href;
                                 const Icon = isActive ? item.iconFill : item.icon;
@@ -53,13 +53,14 @@ export default function SidebarPages() {
                                     <Link
                                         key={item.name}
                                         href={item.href}
-                                        className={`flex items-center gap-3 px-4 py-3 rounded-2xl text-sm transition-all duration-300 group
+                                        className={`flex items-center gap-3 px-3 py-2 rounded-sm text-[13px] font-medium transition-colors duration-200 outline-none
                                             ${isActive
-                                                ? "font-semibold text-[var(--store-primary)] bg-[var(--store-primary)]/5"
-                                                : "text-[var(--store-text-muted)] hover:bg-[var(--store-surface-hover)] hover:text-[var(--store-text)]"}
+                                                ? "text-action-cta bg-background-secondary font-bold"
+                                                : "text-muted-foreground hover:bg-background-secondary/60 hover:text-foreground"
+                                            }
                                         `}
                                     >
-                                        <Icon className={`w-5 h-5 transition-transform group-hover:scale-110 ${isActive ? "text-[var(--store-primary)]" : "opacity-70"}`} />
+                                        <Icon className={`w-4 h-4 transition-transform duration-200 ${isActive ? "text-action-cta" : "text-muted-foreground/70"}`} />
                                         <span>{item.name}</span>
                                     </Link>
                                 );
@@ -67,24 +68,24 @@ export default function SidebarPages() {
                         </div>
                     </div>
 
-                    {/* Sección: Redirección al Centro de Ayuda (Versión Ultra-Simple) */}
+                    {/* Sección: Redirección al Centro de Ayuda */}
                     <div className="pt-2">
                         <Link
                             href="/hc"
-                            className="flex items-center justify-between px-5 py-4 rounded-2xl bg-[var(--store-bg)] border border-[var(--store-border)] group hover:border-[var(--store-primary)] transition-all duration-300"
+                            className="flex items-center justify-between px-3 py-2.5 rounded-sm bg-background-secondary border border-border/60 group hover:border-muted-foreground/50 transition-colors duration-200 outline-none"
                         >
-                            <span className="text-xs font-bold text-[var(--store-text)]">
+                            <span className="text-[12px] font-semibold text-foreground">
                                 Centro de ayuda
                             </span>
-                            <RiExternalLinkLine className="w-4 h-4 text-[var(--store-text-muted)] group-hover:text-[var(--store-primary)] group-hover:rotate-12 transition-all" />
+                            <RiExternalLinkLine className="w-3.5 h-3.5 text-muted-foreground/60 group-hover:text-foreground transition-colors duration-200" />
                         </Link>
                     </div>
                 </nav>
             </aside>
 
             {/* 📌 Mobile Bottom Nav */}
-            <aside className="md:hidden fixed bottom-0 left-0 right-0 bg-[var(--store-surface)]/80 backdrop-blur-xl border-t border-[var(--store-border)] z-50 pb-safe">
-                <nav className="flex justify-around items-center h-16 px-4">
+            <aside className="md:hidden fixed bottom-0 left-0 right-0 bg-background/80 backdrop-blur-md border-t border-border z-50 pb-safe shadow-sm select-none">
+                <nav className="flex justify-around items-center h-14 px-1">
                     {legalNav.map((item) => {
                         const isActive = pathname === item.href;
                         const Icon = isActive ? item.iconFill : item.icon;
@@ -93,11 +94,11 @@ export default function SidebarPages() {
                             <Link
                                 key={item.name}
                                 href={item.href}
-                                className={`flex flex-col items-center justify-center gap-1 w-full h-full transition-all
-                                    ${isActive ? "text-[var(--store-primary)]" : "text-[var(--store-text-muted)]"}
+                                className={`flex flex-col items-center justify-center gap-0.5 w-full h-full outline-none
+                                    ${isActive ? "text-action-cta" : "text-muted-foreground"}
                                 `}
                             >
-                                <Icon className={`w-5 h-5 ${isActive ? "scale-110" : ""} transition-transform`} />
+                                <Icon className="w-4 h-4" />
                                 <span className="text-[9px] font-bold tracking-tight">
                                     {item.name.split(" ")[0]}
                                 </span>
@@ -107,9 +108,9 @@ export default function SidebarPages() {
 
                     <Link
                         href="/hc"
-                        className="flex flex-col items-center justify-center gap-1 w-full h-full text-[var(--store-text-muted)] active:text-[var(--store-primary)]"
+                        className="flex flex-col items-center justify-center gap-0.5 w-full h-full text-muted-foreground outline-none"
                     >
-                        <RiExternalLinkLine className="w-5 h-5" />
+                        <RiExternalLinkLine className="w-4 h-4" />
                         <span className="text-[9px] font-bold tracking-tight">Ayuda</span>
                     </Link>
                 </nav>

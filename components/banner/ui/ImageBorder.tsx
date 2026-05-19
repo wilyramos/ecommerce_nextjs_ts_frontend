@@ -13,8 +13,9 @@ interface Props {
     priority?: boolean;
 }
 
-const FRAME_OUTER = "before:w-[44%] before:h-[44%]";
-const FRAME_INNER = "after:w-[36%] after:h-[36%]";
+// Estructura de tamaños reducida y limpia para un look puramente ecommerce premium
+const FRAME_OUTER = "before:w-[32%] before:h-[32%]";
+const FRAME_INNER = "after:w-[24%] after:h-[24%]";
 
 const borderClasses: Record<string, string> = {
     none: "",
@@ -23,46 +24,46 @@ const borderClasses: Record<string, string> = {
         `relative
         before:content-[''] before:absolute ${FRAME_OUTER}
         before:top-1/2 before:left-1/2
-        before:-translate-x-1/2 before:-translate-y-[42%]
-        before:border before:border-[var(--color-accent-warm)]
+        before:-translate-x-1/2 before:-translate-y-[45%]
+        before:border before:border-[var(--color-action-cta)]/30
         before:rounded-xs before:-z-10
 
         after:content-[''] after:absolute ${FRAME_INNER}
         after:top-1/2 after:left-1/2
-        after:-translate-x-1/2 after:translate-y-[14%]
-        after:border after:border-[var(--color-text-secondary)]/40
+        after:-translate-x-1/2 after:translate-y-[10%]
+        after:border after:border-[var(--color-border)]/50
         after:rounded-xs after:-z-10`,
 
     simple:
         `relative
         before:content-[''] before:absolute ${FRAME_OUTER}
         before:bottom-0.5 before:left-0.5
-        before:border before:border-[var(--color-accent-warm)] before:-z-10
+        before:border before:border-[var(--color-action-cta)]/30 before:-z-10
 
         after:content-[''] after:absolute ${FRAME_INNER}
-        after:bottom-2 after:left-2
-        after:border after:border-[var(--color-text-secondary)]/40 after:-z-10`,
+        after:bottom-1.5 after:left-1.5
+        after:border after:border-[var(--color-border)]/50 after:-z-10`,
 
     double:
         `relative
         before:content-[''] before:absolute ${FRAME_OUTER}
         before:bottom-0.5 before:right-0.5
-        before:border before:border-[var(--color-accent-warm)] before:-z-10
+        before:border before:border-[var(--color-action-cta)]/30 before:-z-10
 
         after:content-[''] after:absolute ${FRAME_INNER}
-        after:bottom-2 after:right-2
-        after:border after:border-[var(--color-text-secondary)]/40 after:-z-10`,
+        after:bottom-1.5 after:right-1.5
+        after:border after:border-[var(--color-border)]/50 after:-z-10`,
 
     "rounded-top":
         `relative
         before:content-[''] before:absolute ${FRAME_OUTER}
         before:top-0.5 before:right-0.5
-        before:border before:border-[var(--color-accent-warm)]
+        before:border before:border-[var(--color-action-cta)]/30
         before:rounded-t-xs before:-z-10
 
         after:content-[''] after:absolute ${FRAME_INNER}
-        after:top-2 after:right-2
-        after:border after:border-[var(--color-text-secondary)]/40
+        after:top-1.5 after:right-1.5
+        after:border after:border-[var(--color-border)]/50
         after:rounded-t-xs after:-z-10`,
 
     "rounded-all":
@@ -70,50 +71,50 @@ const borderClasses: Record<string, string> = {
         before:content-[''] before:absolute ${FRAME_OUTER}
         before:top-1/2 before:left-1/2
         before:-translate-x-1/2 before:-translate-y-1/2
-        before:border before:border-[var(--color-accent-warm)]
+        before:border before:border-[var(--color-action-cta)]/30
         before:rounded-full before:-z-10
 
         after:content-[''] after:absolute ${FRAME_INNER}
         after:top-1/2 after:left-1/2
         after:-translate-x-1/2 after:-translate-y-1/2
-        after:border after:border-[var(--color-text-secondary)]/30
+        after:border after:border-[var(--color-border)]/50
         after:rounded-full after:-z-10`,
 
     dashed:
         `relative
         before:content-[''] before:absolute ${FRAME_OUTER}
         before:top-0.5 before:right-0.5
-        before:border before:border-dashed before:border-[var(--color-accent-warm)]
+        before:border before:border-dashed before:border-[var(--color-action-cta)]/20
         before:-z-10
 
         after:content-[''] after:absolute ${FRAME_INNER}
         after:bottom-0.5 after:left-0.5
-        after:border after:border-dashed after:border-[var(--color-text-secondary)]/50
+        after:border after:border-dashed after:border-[var(--color-border)]/40
         after:-z-10`,
 
     dotted:
         `relative
         before:content-[''] before:absolute ${FRAME_OUTER}
         before:top-0.5 before:left-0.5
-        before:border before:border-dotted before:border-[var(--color-accent-warm)]
+        before:border before:border-dotted before:border-[var(--color-action-cta)]/30
         before:-z-10
 
         after:content-[''] after:absolute ${FRAME_INNER}
         after:bottom-0.5 after:right-0.5
-        after:border after:border-dotted after:border-[var(--color-text-secondary)]/40
+        after:border after:border-dotted after:border-[var(--color-border)]/40
         after:-z-10`,
 
     "double-corner":
         `relative
-        before:content-[''] before:absolute ${FRAME_OUTER}
-        before:top-0.5 before:left-0.5
-        before:border-l-2 before:border-t-2
-        before:border-[var(--color-accent-warm)] before:-z-10
+        before:content-[''] before:absolute before:w-3 before:h-3
+        before:top-0 before:left-0
+        before:border-l before:border-t
+        before:border-[var(--color-action-cta)]/40 before:-z-10
 
-        after:content-[''] after:absolute ${FRAME_INNER}
-        after:bottom-0.5 after:right-0.5
-        after:border-r-2 after:border-b-2
-        after:border-[var(--color-text-secondary)]/40 after:-z-10`,
+        after:content-[''] after:absolute after:w-3 after:h-3
+        after:bottom-0 after:right-0
+        after:border-r before:border-b
+        after:border-[var(--color-border)] after:-z-10`,
 };
 
 export default function ImageBorder({
@@ -134,9 +135,6 @@ export default function ImageBorder({
         ${borderClass}
         ${fill ? "relative w-full h-full" : "relative"}
         aspect-square
-        transition-transform duration-300 ease-out
-        hover:scale-[1.02]
-        group-hover:scale-[1.03]
         z-0
     `.trim();
 

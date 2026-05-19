@@ -18,7 +18,7 @@ export default function AnnouncementBar() {
   const doubled = [...items, ...items];
 
   return (
-    <div className="w-full bg-action-cta border-b border-action-cta-hover sticky top-0 z-10 overflow-hidden">
+    <div className="w-full bg-action-cta sticky top-0 z-10 overflow-hidden">
       <style>{`
         @keyframes slide {
           0%   { transform: translateX(0); }

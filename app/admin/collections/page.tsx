@@ -1,3 +1,5 @@
+//File: frontend/app/admin/collections/page.tsx
+
 import { collectionService } from "@/src/services/collection-service";
 import DeleteCollectionButton from "@/components/admin/collections/delete-button";
 import CollectionModal from "@/components/admin/collections/collection-modal";
