@@ -35,9 +35,9 @@ export default function HeroFlashSale() {
                     <Timer className="w-4 h-4 animate-pulse" /> Oferta del día
                 </div>
 
-                <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground leading-[1.1]">
+                <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-secondary leading-[1.1]">
                     Precios fugaces. <br />
-                    <span className="text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                    <span className="text-muted group-hover:text-foreground transition-colors duration-300">
                         Oportunidad única.
                     </span>
                 </h2>

@@ -60,7 +60,7 @@ export default function ButtonShowCart() {
                             <SheetTitle className="text-xl font-semibold text-foreground">
                                 Carrito
                             </SheetTitle>
-                            <span className="bg-background-secondary px-2.5 py-0.5 rounded-full text-[10px] font-bold text-muted-foreground uppercase border border-border">
+                            <span className="text-sm text-muted">
                                 {carrito.length} {carrito.length === 1 ? 'Ítem' : 'Ítems'}
                             </span>
                         </div>
@@ -114,17 +114,10 @@ export default function ButtonShowCart() {
                         <div className="grid gap-3">
                             <Button
                                 onClick={handleCheckout}
-                                className="w-full bg-action-cta hover:bg-action-cta-hover text-action-cta-foreground font-semibold flex items-center justify-center gap-2"
+                                variant="primary"
                             >
                                 Finalizar Pedido <ArrowRight size={18} />
                             </Button>
-
-                            <button
-                                onClick={() => setCartOpen(false)}
-                                className="w-full py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground hover:text-foreground transition-colors"
-                            >
-                                Continuar Explorando
-                            </button>
                         </div>
                     </div>
                 )}

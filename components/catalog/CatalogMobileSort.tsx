@@ -17,64 +17,38 @@ export default function CatalogMobileSort() {
     return (
         <div className="relative flex items-center">
             <div className="absolute left-3 z-10 pointer-events-none">
-                <ArrowUpDown className="w-3.5 h-3.5 text-[var(--color-text-tertiary)]" />
+                <ArrowUpDown className="w-3.5 h-3.5 text-muted-foreground" />
             </div>
 
             <Select
                 value={currentSort}
                 onValueChange={(val) => updateFilter("sort", val)}
             >
-                <SelectTrigger
-                    className="
-                        h-9 pl-9 pr-3
-                        text-[13px] font-medium
-                        border border-[var(--color-border-subtle)]
-                        bg-[var(--color-bg-primary)]
-                        text-[var(--color-text-primary)]
-                        rounded-md
-                        focus:ring-0 focus:outline-none
-                        hover:bg-[var(--color-bg-secondary)]
-                        transition-colors
-                        w-auto
-                    "
-                >
+                {/* Dejamos solo pl-9 para hacer espacio al icono absoluto de la izquierda */}
+                <SelectTrigger className="w-auto pl-9">
                     <SelectValue placeholder="Ordenar" />
                 </SelectTrigger>
 
-                <SelectContent
-                    align="end"
-                    className="bg-[var(--color-bg-primary)] border-[var(--color-border-default)] rounded-xl p-1"
-                >
-                    {/* RELEVANCIA */}
-                    <SelectItem value="relevancia" className="rounded-lg text-[13px]">
+                <SelectContent align="end">
+                    <SelectItem value="relevancia">
                         Relevancia
                     </SelectItem>
-
-                    {/* RECIENTES */}
-                    <SelectItem value="recientes" className="rounded-lg text-[13px]">
+                    <SelectItem value="recientes">
                         Más Recientes
                     </SelectItem>
-
-                    {/* VALORACIÓN */}
-                    <SelectItem value="rating" className="rounded-lg text-[13px]">
+                    <SelectItem value="rating">
                         Mejor Valorados
                     </SelectItem>
-
-                    {/* DESCUENTO */}
-                    <SelectItem value="discount" className="rounded-lg text-[13px]">
+                    <SelectItem value="discount">
                         Mayor Descuento
                     </SelectItem>
-
-                    {/* PRECIO */}
-                    <SelectItem value="price-asc" className="rounded-lg text-[13px]">
+                    <SelectItem value="price-asc">
                         Menor Precio
                     </SelectItem>
-                    <SelectItem value="price-desc" className="rounded-lg text-[13px]">
+                    <SelectItem value="price-desc">
                         Mayor Precio
                     </SelectItem>
-
-                    {/* ALFABÉTICO */}
-                    <SelectItem value="name-asc" className="rounded-lg text-[13px]">
+                    <SelectItem value="name-asc">
                         Nombre: A - Z
                     </SelectItem>
                 </SelectContent>

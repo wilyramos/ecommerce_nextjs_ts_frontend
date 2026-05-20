@@ -17,12 +17,14 @@ import { routes } from "@/lib/routes";
 import Logo from "../ui/Logo";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import type { Collection } from "@/src/schemas/collection.schema";
 
 interface Props {
     categories: CategoryResponse[];
+    collections: Collection[];
 }
 
-export default function ButtonShowSheetMobile({ categories }: Props) {
+export default function ButtonShowSheetMobile({ categories, collections }: Props) {
     const [open, setOpen] = useState(false);
     const pathname = usePathname();
 
@@ -32,19 +34,23 @@ export default function ButtonShowSheetMobile({ categories }: Props) {
         {
             href: "/novedades",
             label: "Novedades",
-            description: "Lo último en tecnología"
         },
         {
             href: "/ofertas",
             label: "Ofertas",
-            description: "Precios imbatibles"
         },
         {
             href: routes.catalog(),
             label: "Catálogo General",
-            description: "Explora todos los productos"
         },
     ];
+
+    // Corregido para construir la ruta directa de colecciones
+    const collectionsLinks = collections.map(col => ({
+        href: `/colecciones/${col.slug}`,
+        label: col.name,
+        description: `Explora la colección ${col.name}`
+    }));
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
@@ -84,16 +90,36 @@ export default function ButtonShowSheetMobile({ categories }: Props) {
                                     <span className="text-[14px] font-bold uppercase tracking-tight leading-none">
                                         {link.label}
                                     </span>
-                                    <span className={cn(
-                                        "text-[10px] font-medium mt-1.5",
-                                        isActive ? "text-secondary-foreground/80" : "text-muted-foreground"
-                                    )}>
-                                        {link.description}
-                                    </span>
+
                                 </Link>
                             );
                         })}
                     </div>
+
+                    {/* Sección opcional si deseas renderizar los enlaces generados de las colecciones */}
+                    {collectionsLinks.length > 0 && (
+                        <div className="grid grid-cols-1 gap-1 mb-8">
+                            {collectionsLinks.map((link) => {
+                                const isActive = pathname === link.href;
+                                return (
+                                    <Link
+                                        key={link.href}
+                                        href={link.href}
+                                        className={cn(
+                                            "flex flex-col px-4 py-3 transition-all duration-300 border-b border-border/40",
+                                            isActive
+                                                ? "bg-secondary text-secondary-foreground font-bold"
+                                                : "hover:bg-background-secondary text-foreground"
+                                        )}
+                                    >
+                                        <span className="text-[14px] font-bold uppercase  leading-none">
+                                            {link.label}
+                                        </span>
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    )}
 
                     <div className="px-2 pb-10">
                         <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] mb-4 ml-4">

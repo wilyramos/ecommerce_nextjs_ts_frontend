@@ -59,8 +59,15 @@ export const CatalogResponseSchema = z.object({
     context: z.object({
         categoryName: z.string().nullable(),
         brandName: z.string().nullable(),
-        lineName: z.string().nullable(), // <--- Contexto para SEO/Breadcrumbs
+        lineName: z.string().nullable(),
         searchQuery: z.string().nullable(),
+        
+        // AGREGAR ESTOS CAMPOS:
+        collectionName: z.string().optional().nullable(),
+        collectionDesc: z.string().optional().nullable(),
+        collectionImage: z.string().optional().nullable(),
+        collectionColor: z.string().optional().nullable(),
+        collectionIcon: z.string().optional().nullable(),
     }),
     
     isFallback: z.boolean(),

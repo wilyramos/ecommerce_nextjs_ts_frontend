@@ -1,3 +1,5 @@
+//File: frontend/src/services/collection-service.ts
+
 import {
     collectionsArraySchema,
     collectionDetailResponseSchema,
@@ -120,4 +122,15 @@ export const collectionService = {
 
         if (!res.ok) throw new Error("Error al remover el producto de la colección");
     },
+
+    
 };
+
+export async function getActiveCollections(): Promise<Collection[]> {
+    try {
+        return await collectionService.getAll(true);
+    } catch (error) {
+        console.error("Error fetching public active collections:", error);
+        return [];
+    }
+}

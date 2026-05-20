@@ -162,6 +162,7 @@ export default async function OrderProfilePage({ params }: { params: Params }) {
                                                 alt={nombreProducto}
                                                 width={60}
                                                 height={60}
+                                                unoptimized
                                                 className="w-14 h-14 object-cover"
                                             />
                                         ) : (
