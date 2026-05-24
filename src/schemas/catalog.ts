@@ -22,7 +22,7 @@ export const CatalogFiltersSchema = z.object({
     brands: z.array(FilterItemSchema).default([]),
     lines: z.array(FilterItemSchema).default([]), // <--- Filtro de Líneas
     categories: z.array(FilterItemSchema).default([]),
-    
+
     // Atributos dinámicos (Color, Talla, etc.)
     // Estructura: { name: "Color", values: ["Rojo", "Azul"] }
     atributos: z.array(
@@ -31,7 +31,7 @@ export const CatalogFiltersSchema = z.object({
             values: z.array(z.string())
         })
     ).default([]),
-    
+
     // Rango de precio
     price: z.array(
         z.object({
@@ -47,29 +47,39 @@ export const CatalogFiltersSchema = z.object({
 
 export const CatalogResponseSchema = z.object({
     products: z.array(ApiProductSchema),
-    
+
     pagination: z.object({
         currentPage: z.number(),
         totalPages: z.number(),
         totalItems: z.number(),
     }),
-    
+
     filters: CatalogFiltersSchema,
-    
+
     context: z.object({
         categoryName: z.string().nullable(),
         brandName: z.string().nullable(),
         lineName: z.string().nullable(),
         searchQuery: z.string().nullable(),
-        
-        // AGREGAR ESTOS CAMPOS:
+
+        // campos de colección
         collectionName: z.string().optional().nullable(),
         collectionDesc: z.string().optional().nullable(),
         collectionImage: z.string().optional().nullable(),
         collectionColor: z.string().optional().nullable(),
         collectionIcon: z.string().optional().nullable(),
+
+        // nuevos campos
+        collectionType: z.string().optional().nullable(),
+        collectionBannerImage: z.string().optional().nullable(),
+        collectionBadgeLabel: z.string().optional().nullable(),
+        collectionBadgeColor: z.string().optional().nullable(),
+        collectionStartsAt: z.coerce.date().optional().nullable(),
+        collectionEndsAt: z.coerce.date().optional().nullable(),
+        collectionSeoTitle: z.string().optional().nullable(),
+        collectionSeoDesc: z.string().optional().nullable(),
     }),
-    
+
     isFallback: z.boolean(),
 });
 

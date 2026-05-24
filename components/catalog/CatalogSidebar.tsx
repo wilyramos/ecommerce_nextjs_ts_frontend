@@ -1,3 +1,5 @@
+//File: frontend/components/catalog/CatalogSidebar.tsx
+
 "use client";
 
 import { useMemo } from "react";

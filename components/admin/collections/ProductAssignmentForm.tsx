@@ -1,3 +1,5 @@
+//File: frontend/components/admin/collections/ProductAssignmentForm.tsx
+
 "use client";
 
 import { useTransition, useState } from "react";

@@ -1,3 +1,5 @@
+//File: frontend/components/admin/AdminPageWrapper.tsx
+
 import React from "react";
 import BackButton from "@/components/ui/BackButton";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
@@ -28,14 +30,13 @@ export default function AdminPageWrapper({
     const hasBreadcrumb = breadcrumbItems.length > 0 || breadcrumbCurrent;
 
     return (
-        <div className="flex flex-col min-h-screen bg-background text-foreground select-none">
+        <div className="flex flex-col min-h-screen bg-background-secondary text-foreground select-none">
             {/* ── HEADER ── */}
-            <header className="shrink-0 border-b border-border bg-background px-4 py-4 md:px-6">
-                <div className="max-w-screen-2xl mx-auto space-y-3">
-
+            <header className="shrink-0 border-b border-border bg-background px-4 py-5 md:px-8 relative overflow-hidden">
+                <div className="max-w-screen-2xl mx-auto space-y-4">
                     {/* Breadcrumb */}
                     {hasBreadcrumb && (
-                        <div className="text-[11px] font-medium">
+                        <div className="text-[11px] font-medium tracking-wide opacity-90">
                             <Breadcrumbs
                                 items={breadcrumbItems}
                                 current={breadcrumbCurrent}
@@ -44,27 +45,31 @@ export default function AdminPageWrapper({
                     )}
 
                     {/* Title & Actions */}
-                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                        <H1 className="text-xl md:text-2xl tracking-tight border-none pb-0">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        <H1 className="">
                             {title}
                         </H1>
 
-                        <div className="flex items-center gap-2.5 self-end sm:self-auto">
+                        <div className="flex items-center gap-3 self-end sm:self-auto">
                             {actions && (
                                 <div className="flex items-center gap-2">{actions}</div>
                             )}
                             {actions && showBackButton && (
-                                <div className="h-4 w-px bg-border mx-0.5 hidden sm:block" />
+                                <div className="h-5 w-px bg-border mx-1 hidden sm:block" />
                             )}
-                            {showBackButton && <BackButton />}
+                            {showBackButton && (
+                                <div className="transition-transform duration-200 active:scale-95">
+                                    <BackButton />
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
             </header>
 
             {/* ── CONTENT ── */}
-            <main className="flex-1 px-4 py-6 md:px-6">
-                <div className="max-w-6xl mx-auto">
+            <main className="flex-1 px-4 py-8 md:px-8">
+                <div className="max-w-screen-2xl mx-auto">
                     {children}
                 </div>
             </main>

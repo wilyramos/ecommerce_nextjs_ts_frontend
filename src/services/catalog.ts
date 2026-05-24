@@ -1,3 +1,5 @@
+//File: frontend/src/services/catalog.ts
+
 import "server-only"; // Asegura que esto solo corre en el servidor (Next.js)
 import { CatalogResponseSchema, type CatalogResponse } from "@/src/schemas/catalog";
 

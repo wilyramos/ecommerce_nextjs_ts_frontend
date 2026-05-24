@@ -1,25 +1,21 @@
 "use client";
 
-import { useState } from "react";
-import { X } from "lucide-react";
+import * as React from "react";
 
 const items = [
-  { accent: true, text: "Envío gratis" },
+  { accent: false, text: "Envío gratis" },
   { accent: false, text: "Envíos a todo Perú · SHALOM" },
   { accent: false, text: "Paga con tarjeta o Yape" },
   { accent: false, text: "Productos 100% originales" },
-  { accent: false, text: "Atención Lun–Sáb  9am – 7pm" },
+  { accent: false, text: "Atención Lun–Sáb 9am – 7pm" },
 ];
 
 export default function AnnouncementBar() {
-  const [visible, setVisible] = useState(true);
-  if (!visible) return null;
-
   const doubled = [...items, ...items];
 
   return (
-    <div className="w-full bg-action-cta sticky top-0 z-10 overflow-hidden">
-      <style>{`
+    <div className="w-full bg-action-cta sticky top-0 z-10 overflow-hidden border-0">
+      <style jsx>{`
         @keyframes slide {
           0%   { transform: translateX(0); }
           100% { transform: translateX(-50%); }
@@ -37,7 +33,7 @@ export default function AnnouncementBar() {
         <div className="absolute left-0 inset-y-0 w-12 bg-gradient-to-r from-action-cta to-transparent z-10 pointer-events-none" />
 
         {/* Gradient derecho */}
-        <div className="absolute right-9 inset-y-0 w-12 bg-gradient-to-l from-action-cta to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 inset-y-0 w-12 bg-gradient-to-l from-action-cta to-transparent z-10 pointer-events-none" />
 
         {/* Track de items */}
         <div className="bar-track flex items-center whitespace-nowrap">
@@ -58,15 +54,6 @@ export default function AnnouncementBar() {
             </div>
           ))}
         </div>
-
-        {/* Botón cerrar */}
-        <button
-          onClick={() => setVisible(false)}
-          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-action-cta-foreground/60 hover:text-action-cta-foreground transition-all z-20 p-1"
-          aria-label="Cerrar anuncio"
-        >
-          <X size={16} strokeWidth={1.5} />
-        </button>
       </div>
     </div>
   );

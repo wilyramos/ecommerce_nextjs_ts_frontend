@@ -1,3 +1,5 @@
+// File: frontend/src/actions/collection-action.ts
+
 "use server";
 
 import { revalidatePath, revalidateTag } from "next/cache";
@@ -5,7 +7,8 @@ import { collectionService } from "../services/collection-service";
 import {
     createCollectionPayloadSchema,
     updateCollectionPayloadSchema,
-    Collection
+    Collection,
+    CollectionType,
 } from "../schemas/collection.schema";
 import { ZodError } from "zod";
 
@@ -17,27 +20,34 @@ interface ActionResponse<T = undefined> {
 }
 
 const getErrorMessage = (error: unknown): string => {
-    if (error instanceof ZodError) {
-        return error.errors.map(e => e.message).join(", ");
-    }
+    if (error instanceof ZodError) return error.errors.map(e => e.message).join(", ");
     if (error instanceof Error) return error.message;
     return "Error desconocido";
 };
 
-/**
- * Procesa los campos comunes del FormData de una colección.
- * IMPORTANTE: isActive debe leerse con `has()` porque un checkbox desmarcado
- * no envía ningún campo en FormData — sin este fix siempre sería false al editar.
- */
 function processCollectionFormData(formData: FormData) {
     const rawData = Object.fromEntries(formData.entries());
+
+    // Función auxiliar interna para procesar cada fecha de forma segura
+    const parseToISO = (value: unknown): string | undefined => {
+        if (!value || typeof value !== "string" || value.trim() === "") {
+            return undefined;
+        }
+        const date = new Date(value);
+        return isNaN(date.getTime()) ? undefined : date.toISOString();
+    };
 
     return {
         ...rawData,
         order: rawData.order ? Number(rawData.order) : undefined,
-        // Un checkbox desmarcado no aparece en FormData, por eso usamos has()
         isActive: formData.has("isActive"),
+        startsAt: parseToISO(rawData.startsAt),
+        endsAt: parseToISO(rawData.endsAt),
     };
+}
+
+function revalidatePromotion(type?: CollectionType | string) {
+    if (type === "promotion") revalidateTag("promotions-active");
 }
 
 export async function createCollectionAction(
@@ -51,6 +61,7 @@ export async function createCollectionAction(
 
         revalidatePath("/admin/collections");
         revalidateTag("collections-list");
+        revalidatePromotion(validatedFields.type);
 
         return { success: true, data: newCollection, message: "Colección creada con éxito" };
     } catch (error) {
@@ -72,6 +83,7 @@ export async function updateCollectionAction(
         revalidatePath(`/admin/collections/${updatedCollection.slug}`);
         revalidateTag(`collection-${updatedCollection.slug}`);
         revalidateTag("collections-list");
+        revalidatePromotion(updatedCollection.type);
 
         return { success: true, data: updatedCollection, message: "Colección actualizada con éxito" };
     } catch (error) {
@@ -79,13 +91,18 @@ export async function updateCollectionAction(
     }
 }
 
-export async function deleteCollectionAction(id: string, slug: string): Promise<ActionResponse> {
+export async function deleteCollectionAction(
+    id: string,
+    slug: string,
+    type?: CollectionType
+): Promise<ActionResponse> {
     try {
         await collectionService.delete(id);
 
         revalidatePath("/admin/collections");
         revalidateTag(`collection-${slug}`);
         revalidateTag("collections-list");
+        revalidatePromotion(type);
 
         return { success: true, message: "Colección eliminada correctamente" };
     } catch (error) {

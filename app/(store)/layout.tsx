@@ -10,7 +10,7 @@ import WhatsappButton from "@/components/home/WhatsappButton";
 export const metadata: Metadata = {
     ...globalMetadata,
     title: {
-        default: "GoPhone | Calidad a tu alcance",
+        default: "neoshop | Calidad a tu alcance",
         template: "%s | GoPhone"
     },
     description:

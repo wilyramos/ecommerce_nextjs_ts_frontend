@@ -1,13 +1,12 @@
-//File: frontend/components/catalog/ActiveFiltersSidebar.tsx
+// File: frontend/components/collections/ActiveFiltersCollection.tsx
 
 "use client";
 
-import { useCatalogNav } from "./hooks/useCatalogNav";
+import { useCollectionNav } from "./hooks/useCollectionNav";
 import { X, RotateCcw } from "lucide-react";
 
-export default function ActiveFiltersSidebar() {
+export default function ActiveFiltersCollection() {
     const {
-        currentSlugs,
         searchParams,
         setCategory,
         setBrand,
@@ -15,7 +14,7 @@ export default function ActiveFiltersSidebar() {
         updateFilter,
         clearFilters,
         hasFilters,
-    } = useCatalogNav();
+    } = useCollectionNav();
 
     if (!hasFilters) return null;
 
@@ -25,7 +24,6 @@ export default function ActiveFiltersSidebar() {
                 <span className="text-[11px] uppercase tracking-[0.08em] font-bold text-muted-foreground">
                     Filtros activos
                 </span>
-
                 <button
                     onClick={clearFilters}
                     className="flex items-center gap-1 text-[11px] font-medium text-muted-foreground hover:text-action-cta transition-colors duration-150 outline-none"
@@ -36,24 +34,40 @@ export default function ActiveFiltersSidebar() {
             </div>
 
             <div className="flex flex-wrap gap-1.5">
-                {currentSlugs.map((slug) => (
+                {/* Categoría — exclusiva, un solo valor */}
+                {searchParams.getAll("categoria").map((slug) => (
                     <Chip
-                        key={slug}
+                        key={`categoria-${slug}`}
                         label={slug.replace(/-/g, " ")}
-                        onRemove={() => {
-                            setCategory(slug);
-                            setBrand(slug);
-                            setLine(slug);
-                        }}
+                        onRemove={() => setCategory(slug)}
                     />
                 ))}
 
+                {/* Marcas */}
+                {searchParams.getAll("brand").map((slug) => (
+                    <Chip
+                        key={`brand-${slug}`}
+                        label={slug.replace(/-/g, " ")}
+                        onRemove={() => setBrand(slug)}
+                    />
+                ))}
+
+                {/* Líneas */}
+                {searchParams.getAll("line").map((slug) => (
+                    <Chip
+                        key={`line-${slug}`}
+                        label={slug.replace(/-/g, " ")}
+                        onRemove={() => setLine(slug)}
+                    />
+                ))}
+
+                {/* Atributos y resto de filtros */}
                 {Array.from(searchParams.entries()).map(([key, value]) => {
-                    if (["page", "limit", "sort"].includes(key)) return null;
+                    if (["page", "limit", "sort", "categoria", "brand", "line"].includes(key)) return null;
 
                     let label = `${key}: ${value}`;
                     if (key === "priceRange") label = `S/ ${value.replace("-", " – S/ ")}`;
-                    if (key === "query") label = `"${value}"`;
+                    if (key === "query")      label = `"${value}"`;
 
                     return (
                         <Chip

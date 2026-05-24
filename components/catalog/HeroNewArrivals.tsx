@@ -1,35 +1,19 @@
 "use client";
 
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export default function HeroNewArrivals() {
     return (
-        <Link 
-            href="/novedades" 
-            className="group relative flex flex-col justify-center p-6 bg-primary min-h-[360px] overflow-hidden "
-        >
-            {/* Subtle depth gradient sobre fondo oscuro */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/[0.04] to-transparent pointer-events-none"/>
-
-            <div className="relative z-10 space-y-5">
-                <div className="inline-flex items-center gap-2 text-action-cta font-semibold text-xs uppercase tracking-tight">
-                    Recién llegado
-                </div>
-
-                <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-primary-foreground leading-[1.1]">
-                    Lo último en <br />
-                    <span className="text-muted-foreground group-hover:text-primary-foreground transition-colors duration-300">
-                        tecnología.
-                    </span>
+        <Link href="/novedades" className="group flex flex-col justify-center p-8 bg-primary min-h-[360px] transition-opacity hover:opacity-95">
+            <div className="space-y-4">
+                <div className="text-action-cta font-bold text-xs uppercase tracking-widest">Recién llegado</div>
+                <h2 className="text-4xl md:text-5xl font-bold text-white">
+                    Tecnología que <br />
+                    <span className="text-secondary">define el futuro.</span>
                 </h2>
-
-                <p className="text-primary-foreground/70 max-w-xs text-sm leading-relaxed">
-                    Explora la nueva generación de dispositivos diseñados para el futuro.
-                </p>
-
-                <div className="flex items-center gap-2 text-action-cta font-medium pt-4 group-hover:gap-3 transition-all duration-300">
-                    Explorar novedades <ArrowRight className="w-5 h-5" />
+                <div className="mt-6 flex items-center gap-2 text-sm font-bold text-action-cta uppercase tracking-wider group-hover:gap-4 transition-all">
+                    Ver novedades <ArrowRight size={16} />
                 </div>
             </div>
         </Link>

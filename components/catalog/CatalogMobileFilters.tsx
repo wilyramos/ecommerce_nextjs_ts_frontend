@@ -1,3 +1,5 @@
+//File: frontend/components/catalog/CatalogMobileFilters.tsx
+
 "use client";
 
 import { useCatalogNav } from "./hooks/useCatalogNav";

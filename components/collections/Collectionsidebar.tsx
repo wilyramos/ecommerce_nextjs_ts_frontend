@@ -1,12 +1,9 @@
 // File: frontend/components/collections/CollectionSidebar.tsx
-// Sidebar específico para páginas de colección.
-// La diferencia clave con CatalogSidebar: categorías, marcas y líneas
-// se aplican como query params (?categoria=celulares) en lugar de
-// cambiar la ruta, para no salir de /colecciones/[slug].
+
 "use client";
 
-import { useMemo, useCallback } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useMemo } from "react";
+import { useCollectionNav } from "./hooks/useCollectionNav";
 import type { CatalogFilters } from "@/src/schemas/catalog";
 import { cn } from "@/lib/utils";
 import {
@@ -17,46 +14,29 @@ import {
 } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
 import ColorCircle from "@/components/ui/ColorCircle";
+import ActiveFiltersCollection from "./ActiveFiltersCollection";
 
 interface Props {
     filters: CatalogFilters;
 }
 
 export default function CollectionSidebar({ filters }: Props) {
-    const router       = useRouter();
-    const searchParams = useSearchParams();
-
-    // Helper genérico: toggle de un query param, resetea página
-    const toggleParam = useCallback((key: string, value: string) => {
-        const next = new URLSearchParams(searchParams.toString());
-        next.delete("page");
-
-        if (next.has(key, value)) {
-            next.delete(key, value);
-        } else {
-            // Exclusivo para categoria (solo una activa a la vez)
-            if (key === "categoria") next.delete("categoria");
-            next.append(key, value);
-        }
-
-        router.push(`${window.location.pathname}?${next.toString()}`, { scroll: false });
-    }, [searchParams, router]);
-
-    const isActive = useCallback((key: string, value: string) =>
-        searchParams.getAll(key).includes(value),
-    [searchParams]);
-
-    const clearFilters = useCallback(() => {
-        router.push(window.location.pathname);
-    }, [router]);
-
-    const hasActiveFilters = searchParams.toString().length > 0;
+    const {
+        setCategory,
+        setBrand,
+        setLine,
+        updateFilter,
+        isCategoryActive,
+        isBrandActive,
+        isLineActive,
+        searchParams,
+    } = useCollectionNav();
 
     const sortedFilters = useMemo(() => ({
         categories: [...filters.categories].sort((a, b) => a.nombre.localeCompare(b.nombre)),
-        brands:     [...filters.brands].sort((a, b) => a.nombre.localeCompare(b.nombre)),
-        lines:      [...filters.lines].sort((a, b) => a.nombre.localeCompare(b.nombre)),
-        atributos:  [...filters.atributos]
+        brands: [...filters.brands].sort((a, b) => a.nombre.localeCompare(b.nombre)),
+        lines: [...filters.lines].sort((a, b) => a.nombre.localeCompare(b.nombre)),
+        atributos: [...filters.atributos]
             .sort((a, b) => a.name.localeCompare(b.name))
             .map(attr => ({
                 ...attr,
@@ -83,15 +63,8 @@ export default function CollectionSidebar({ filters }: Props) {
     return (
         <div className="w-full pb-20 select-none bg-background text-foreground">
 
-            {/* Filtros activos */}
-            {hasActiveFilters && (
-                <button
-                    onClick={clearFilters}
-                    className="w-full text-left text-xs text-action-cta hover:underline py-2"
-                >
-                    Limpiar filtros
-                </button>
-            )}
+            <ActiveFiltersCollection />
+
 
             <Accordion
                 type="multiple"
@@ -105,11 +78,11 @@ export default function CollectionSidebar({ filters }: Props) {
                         <AccordionContent className="pt-2 pb-0">
                             <ul className="space-y-0.5">
                                 {sortedFilters.categories.map((cat) => {
-                                    const active = isActive("categoria", cat.slug);
+                                    const active = isCategoryActive(cat.slug);
                                     return (
                                         <li key={cat.id}>
                                             <button
-                                                onClick={() => toggleParam("categoria", cat.slug)}
+                                                onClick={() => setCategory(cat.slug)}
                                                 className={cn(
                                                     "w-full text-left px-2 py-2 text-[13px] rounded-sm transition-colors duration-150 outline-none font-medium",
                                                     active
@@ -134,11 +107,11 @@ export default function CollectionSidebar({ filters }: Props) {
                         <AccordionContent className="pt-2 pb-0">
                             <div className="space-y-0.5 max-h-[220px] overflow-y-auto pr-1 scrollbar-none">
                                 {sortedFilters.brands.map((brand) => {
-                                    const active = isActive("brand", brand.slug);
+                                    const active = isBrandActive(brand.slug);
                                     return (
                                         <div
                                             key={brand.id}
-                                            onClick={() => toggleParam("brand", brand.slug)}
+                                            onClick={() => setBrand(brand.slug)}
                                             className={cn(row, active && "bg-background-secondary text-foreground font-semibold")}
                                         >
                                             <Checkbox checked={active} className={checkboxClass} />
@@ -163,11 +136,11 @@ export default function CollectionSidebar({ filters }: Props) {
                         <AccordionContent className="pt-2 pb-0">
                             <div className="space-y-0.5 max-h-[220px] overflow-y-auto pr-1 scrollbar-none">
                                 {sortedFilters.lines.map((line) => {
-                                    const active = isActive("line", line.slug);
+                                    const active = isLineActive(line.slug);
                                     return (
                                         <div
                                             key={line.id}
-                                            onClick={() => toggleParam("line", line.slug)}
+                                            onClick={() => setLine(line.slug)}
                                             className={cn(row, active && "bg-background-secondary text-foreground font-semibold")}
                                         >
                                             <Checkbox checked={active} className={checkboxClass} />
@@ -194,11 +167,11 @@ export default function CollectionSidebar({ filters }: Props) {
                             <AccordionContent className="pt-2 pb-0">
                                 <div className="space-y-0.5 max-h-[220px] overflow-y-auto pr-1 scrollbar-none">
                                     {attr.values.map((val) => {
-                                        const checked = isActive(attr.name, val);
+                                        const checked = searchParams.getAll(attr.name).includes(val);
                                         return (
                                             <div
                                                 key={val}
-                                                onClick={() => toggleParam(attr.name, val)}
+                                                onClick={() => updateFilter(attr.name, val)}
                                                 className={cn(row, checked && "bg-background-secondary text-foreground font-semibold")}
                                             >
                                                 <Checkbox checked={checked} className={checkboxClass} />
