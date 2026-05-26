@@ -67,7 +67,7 @@ export default function CatalogLayout({
     }
 
     return (
-        <section className="container mx-auto px-4 md:px-6 max-w-[1440px] pb-10 text-foreground bg-background">
+        <section className="container mx-auto px-4 md:px-8 max-w-screen-2xl text-foreground bg-background">
 
             <div className="pt-4">
                 <CatalogHeader

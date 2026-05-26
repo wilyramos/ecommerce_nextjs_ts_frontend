@@ -4,6 +4,7 @@ import * as React from "react";
 
 const items = [
   { accent: false, text: "Envío gratis" },
+  { accent: true, text: "Envio a todo Cañete" },
   { accent: false, text: "Envíos a todo Perú · SHALOM" },
   { accent: false, text: "Paga con tarjeta o Yape" },
   { accent: false, text: "Productos 100% originales" },

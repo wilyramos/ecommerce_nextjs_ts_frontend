@@ -116,7 +116,7 @@ function SubcategoryItem({ subcat }: { subcat: CategoryResponse }) {
                 >
                     {subcat.image && (
                         <div className="relative size-8 overflow-hidden">
-                            <Image src={subcat.image} alt={subcat.nombre} fill className="object-cover" sizes="32px" />
+                            <Image src={subcat.image} alt={subcat.nombre} fill className="object-cover" sizes="32px" unoptimized quality={10} />
                         </div>
                     )}
                     <span className="text-sm font-medium truncate">{subcat.nombre}</span>
@@ -132,7 +132,7 @@ function CollectionItem({ col }: { col: Collection }) {
             <NavigationMenuLink asChild>
                 <Link
                     href={`/colecciones/${col.slug}`}
-                    className="group relative flex h-16 w-full items-center overflow-hidden  transition-all hover:ring-2 hover:ring-action-cta/20"
+                    className="group relative flex h-16 w-full items-center overflow-hidden  transition-all hover:ring-2 hover:ring-action-cta/20 flex-col justify-center"
                 >
                     {col.image && (
                         <>
@@ -140,13 +140,15 @@ function CollectionItem({ col }: { col: Collection }) {
                                 src={col.image}
                                 alt={col.name}
                                 fill
-                                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                className="object-cover transition-transform"
                                 sizes="256px"
+                                unoptimized
+                                quality={10}
                             />
                             <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors" />
                         </>
                     )}
-                    <span className="relative z-10 px-4 text-sm font-bold text-white truncate drop-shadow-md">
+                    <span className="relative z-10 px-4 text-sm capitalize font-semibold text-gray-100 truncate drop-shadow-md">
                         {col.name}
                     </span>
                 </Link>

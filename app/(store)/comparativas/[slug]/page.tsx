@@ -89,7 +89,7 @@ export default async function ComparisonDetailPage({ params }: Props) {
                     current={comparison.title}
                     className="p-0 text-muted-foreground"
                 />
-                <H1 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground balance">
+                <H1>
                     {comparison.title}
                 </H1>
             </header>

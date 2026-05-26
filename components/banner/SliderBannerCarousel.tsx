@@ -29,7 +29,7 @@ export default function SliderBannerCarousel({
 
     return (
         <div
-            className="relative w-full"
+            className="relative w-full border-b border-border"
             style={{
                 "--banner-h-mobile": height.mobile,
                 "--banner-h": height.desktop,

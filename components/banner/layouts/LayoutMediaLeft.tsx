@@ -1,4 +1,4 @@
-// File: src/components/banner/layouts/LayoutDefault.tsx
+// File: src/components/banner/layouts/LayoutMediaLeft.tsx
 "use client";
 
 import Link from "next/link";
@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import SliderPrice from "../ui/SliderPrice";
 import type { SliderBanner } from "@/src/schemas/slider.schema";
 
-export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
+export default function LayoutMediaLeft({ banner }: { banner: SliderBanner }) {
     const { design, media, title, subtitle, description, terms, price, destUrl, openInNewTab } = banner;
     const [loaded, setLoaded] = useState(false);
 
@@ -16,11 +16,11 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
         return () => clearTimeout(t);
     }, []);
 
+    // Lógica de colores actualizada
     const isDark = design.theme !== "light";
     const bg = design.bgColor ?? (isDark ? "#000000" : "#ffffff");
     const text = design.textColor ?? (isDark ? "#a8a8a8" : "#0f0f0f");
     const accent = design.accentColor ?? "#ff6000";
-
     const fadeUp = (delay: number): React.CSSProperties => ({
         opacity: loaded ? 1 : 0,
         transform: loaded ? "translateY(0px)" : "translateY(14px)",
@@ -34,9 +34,35 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
         >
             <div className="relative z-10 w-full max-w-6xl mx-auto h-full flex flex-row items-center px-4 sm:px-10">
 
-                {/* ── Texto (izquierda) ─────────────────────────────── */}
+                {/* ── Media (izquierda) ─────────────────────────────── */}
+                {media?.imageUrl && (
+                    <div
+                        className="w-1/2 h-full pointer-events-none"
+                        style={{
+                            opacity: loaded ? 1 : 0,
+                            transform: loaded ? "translateX(0) scale(1)" : "translateX(-20px) scale(0.95)",
+                            transition: "opacity 0.8s ease, transform 0.8s cubic-bezier(0.16,1,0.3,1)",
+                        }}
+                    >
+                        {/* Contenedor relativo al 100% para que la imagen ocupe todo el espacio */}
+                        <div className="relative w-full h-full">
+                            <Image
+                                src={media.imageUrl}
+                                alt={media.altText ?? title ?? ""}
+                                fill
+                                className={`transition-transform duration-[2000ms] group-hover:scale-105
+                           ${media.objectFit === "contain" ? "object-contain" : "object-cover"}`}
+                                sizes="(max-width: 640px) 50vw, 40vw"
+                                priority
+                                unoptimized
+                            />
+                        </div>
+                    </div>
+                )}
+
+                {/* ── Texto (derecha) ───────────────────────────────── */}
                 <div
-                    className="flex flex-col justify-center items-start w-1/2 h-full pr-2 sm:pr-4 gap-2 sm:gap-4 overflow-hidden"
+                    className="flex flex-col justify-center items-center w-1/2 h-full pl-2 sm:pl-4 gap-2 sm:gap-4 overflow-hidden"
                     style={{ color: text }}
                 >
                     {subtitle && (
@@ -92,31 +118,6 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                         </div>
                     )}
                 </div>
-                {/* ── Media (derecha) ───────────────────────────────── */}
-                {media?.imageUrl && (
-                    <div
-                        className="w-1/2 h-full pointer-events-none" // Quitamos flex, justify, items y p-2
-                        style={{
-                            opacity: loaded ? 1 : 0,
-                            transform: loaded ? "translateX(0) scale(1)" : "translateX(20px) scale(0.95)",
-                            transition: "opacity 0.8s ease, transform 0.8s cubic-bezier(0.16,1,0.3,1)",
-                        }}
-                    >
-                        {/* Contenedor relativo que ocupa el 100% del espacio del padre */}
-                        <div className="relative w-full h-full">
-                            <Image
-                                src={media.imageUrl}
-                                alt={media.altText ?? title ?? ""}
-                                fill
-                                className={`transition-transform duration-[2000ms] group-hover:scale-105
-                          ${media.objectFit === "contain" ? "object-contain" : "object-cover"}`}
-                                sizes="(max-width: 640px) 50vw, 40vw"
-                                priority
-                                unoptimized
-                            />
-                        </div>
-                    </div>
-                )}
             </div>
         </div>
     );

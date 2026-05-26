@@ -19,7 +19,7 @@ export default async function ServerCategorias() {
       </div>
 
       {/* Desktop */}
-      <div className="hidden md:block w-full">
+      <div className="hidden md:block">
         <ClientCategoriasDesktop
           categories={categories}
           collections={collections}

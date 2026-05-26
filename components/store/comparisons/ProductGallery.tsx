@@ -1,8 +1,6 @@
-// File: frontend/components/store/comparisons/ProductGallery.tsx
-
 import Image from "next/image";
+import React from "react";
 import { Comparison, PopulatedProduct } from "@/src/schemas/comparison.schema";
-import { Badge } from "@/components/ui/badge";
 
 interface ProductGalleryProps {
     products: Comparison["products"];
@@ -26,52 +24,48 @@ export default function ProductGallery({ products }: ProductGalleryProps) {
 
     if (populated.length === 0) return null;
 
-    // Calcula número de columnas dinámicamente
-    const cols =
-        populated.length === 2
-            ? "grid-cols-2"
-            : populated.length === 3
-            ? "grid-cols-3"
-            : "grid-cols-2 sm:grid-cols-4";
-
     return (
-        <div className={`grid ${cols} gap-px overflow-hidden flex items-center justify-center`}>
-            {populated.map(({ idx, nombre, imagen, precio }) => (
-                <div
-                    key={idx}
-                    className="flex flex-col items-center gap-4  p-6 md:p-8 group"
-                >
-                    {/* Imagen */}
-                    <div className="relative w-full aspect-square max-w-[180px] flex items-center justify-center transition-transform duration-300 group-hover:scale-[1.03]">
-                        <Image
-                            src={imagen!}
-                            alt={nombre}
-                            width={320}
-                            height={320}
-                            unoptimized
-                            priority={idx < 2}
-                            className="object-contain w-full h-full drop-shadow-sm"
-                        />
+        <div className="relative flex flex-row items-center justify-center gap-4 w-full overflow-hidden">
+            {populated.map(({ idx, nombre, imagen, precio }, currentIdx) => (
+                <React.Fragment key={idx}>
+                    <div className="flex-1 flex flex-col items-center gap-4 p-6 md:p-8 group w-full">
+                        {/* Imagen - max-w incrementado de 180px a 280px */}
+                        <div className="relative w-full aspect-square max-w-[280px] flex items-center justify-center transition-transform duration-300 group-hover:scale-[1.03]">
+                            <Image
+                                src={imagen!}
+                                alt={nombre}
+                                width={400}
+                                height={400}
+                                unoptimized
+                                priority={idx < 2}
+                                className="object-contain w-full h-full"
+                            />
+                        </div>
+
+                        {/* Nombre - max-w incrementado para acompañar el tamaño de imagen */}
+                        <p className="text-sm font-semibold text-foreground text-center leading-snug line-clamp-3 max-w-[220px]">
+                            {nombre}
+                        </p>
+
+                        {/* Precio */}
+                        {precio !== null && precio !== undefined && (
+                            <p className="text-sm font-bold text-action-cta">
+                                {precio.toLocaleString("es-PE", {
+                                    style: "currency",
+                                    currency: "PEN",
+                                    maximumFractionDigits: 0,
+                                })}
+                            </p>
+                        )}
                     </div>
 
-                    {/* Nombre */}
-                    <p className="text-sm font-semibold text-foreground text-center leading-snug line-clamp-2 max-w-[160px]">
-                        {nombre}
-                    </p>
-
-                    {/* Precio */}
-                    {precio !== null && precio !== undefined && (
-                        <Badge variant="secondary" className="font-mono text-xs font-semibold">
-                            {typeof precio === "number"
-                                ? precio.toLocaleString("es-PE", {
-                                      style: "currency",
-                                      currency: "PEN",
-                                      maximumFractionDigits: 0,
-                                  })
-                                : precio}
-                        </Badge>
+                    {/* Divisor VS absoluto/intermedio si hay un siguiente producto */}
+                    {currentIdx < populated.length - 1 && (
+                        <div className="absolute left-1/2 top-[40%] -translate-x-1/2 -translate-y-1/2 z-10 flex items-center justify-center bg-background border border-border rounded-full w-10 h-10  pointer-events-none">
+                            <span className="text-xs font-bold text-muted-foreground italic">VS</span>
+                        </div>
                     )}
-                </div>
+                </React.Fragment>
             ))}
         </div>
     );

@@ -12,13 +12,10 @@ const ActionButton = () => (
 
 export default function HeroFlashSale() {
     return (
-        <Link href="/ofertas" className="group flex flex-col justify-center p-8 bg-background-secondary border border-border transition-all hover:border-action-cta min-h-[360px]">
+        <Link href="/ofertas" className="group flex flex-col justify-center p-8   min-h-[120px]">
             <div className="space-y-4">
-                <div className="text-action-cta font-bold text-xs uppercase tracking-widest">Oferta Relámpago</div>
-                <h2 className="text-4xl md:text-5xl font-bold text-foreground">
-                    Precios fugaces, <br />
-                    <span className="text-muted">oportunidades únicas.</span>
-                </h2>
+                <div className="text-action-cta font-bold text-4xl uppercase tracking-widest">Oferta Relámpago</div>
+
                 <ActionButton />
             </div>
         </Link>

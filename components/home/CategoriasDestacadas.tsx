@@ -3,7 +3,7 @@
 import Carousel, { ButtonGroupProps } from "react-multi-carousel";
 import Image from "next/image";
 import Link from "next/link";
-import { ImageOff, ArrowRight } from "lucide-react";
+import { ImageOff } from "lucide-react";
 import HeaderConTituloConControles from "../ui/HeaderConTituloConControles";
 import type { CategoryListResponse } from "@/src/schemas";
 import { routes } from "@/lib/routes";
@@ -29,30 +29,30 @@ export default function ClientCarouselCategorias({ categorias }: { categorias: C
     return (
         <section className="relative max-w-7xl mx-auto px-4 md:px-8 pt-20 md:pt-24 pb-12">
             <Carousel
-                responsive={responsive} 
-                infinite 
-                autoPlaySpeed={6000} 
+                responsive={responsive}
+                infinite
+                autoPlaySpeed={6000}
                 arrows={false}
-                renderButtonGroupOutside 
+                renderButtonGroupOutside
                 customButtonGroup={<AbsoluteHeaderWrapper />}
-                itemClass="px-2 md:px-3 py-4" 
+                itemClass="px-2 md:px-3 py-4"
                 partialVisible
             >
                 {categorias.map(c => (
-                    <Link 
-                        key={c._id} 
+                    <Link
+                        key={c._id}
                         href={routes.catalog({ category: c.slug })}
                         className="group flex flex-col transition-all duration-500"
                     >
                         {/* Contenedor de Imagen: Sin bordes pesados, fondo muy suave */}
-                        <div className="relative aspect-square overflow-hidden rounded-2xl bg-[var(--color-bg-tertiary)] transition-all duration-500 group-hover:shadow-lg group-hover:shadow-[var(--color-action-primary)]/5 group-hover:-translate-y-1">
+                        <div className="relative aspect-square overflow-hidden  ">
                             {c.image ? (
-                                <Image 
-                                    src={c.image} 
-                                    alt={c.nombre} 
-                                    fill 
-                                    className="object-cover transition-transform duration-700 group-hover:scale-110" 
-                                
+                                <Image
+                                    src={c.image}
+                                    alt={c.nombre}
+                                    fill
+                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+
                                 />
                             ) : (
                                 <div className="flex h-full items-center justify-center text-[var(--color-text-tertiary)] opacity-20">
@@ -63,15 +63,12 @@ export default function ClientCarouselCategorias({ categorias }: { categorias: C
 
                         {/* Textos: Jerarquía Pequeño/Normal */}
                         <div className="mt-4 px-1 space-y-0.5">
-                          
+
                             <div className="flex items-center justify-between">
-                                <h3 className="text-sm md:text-base text-[var(--color-text-primary)]">
+                                <h3 className="text-sm md:text-base  hover:text-destructive transition-colors duration-300">
                                     {c.nombre}
                                 </h3>
-                                <ArrowRight 
-                                    size={14} 
-                                    className="text-[var(--color-action-primary)] opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" 
-                                />
+
                             </div>
                         </div>
                     </Link>

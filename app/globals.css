@@ -48,7 +48,7 @@
   /* Estados Críticos de Transacción y Catálogo */
   --success: oklch(0.63 0.19 148.6);        /* #10B981 - Stock Disponible / Éxito */
   --warning: oklch(0.77 0.18 73.6);         /* #F59E0B - Últimas Unidades */
-  --destructive: oklch(0.58 0.23 26.9);     /* #EF4444 - Etiquetas de Descuento */
+  --destructive: #ff6000;     /* #EF4444 - Etiquetas de Descuento */
   --destructive-foreground: oklch(1 0 0);
 
   /* Analítica y Métricas */
@@ -118,13 +118,13 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+
 /* --- CONTENEDORES MULTIMEDIA --- */
 .banner-slot {
-  height: var(--banner-h-mobile, 400px);
-}
-
-@media (min-width: 1024px) {
-  .banner-slot {
-    height: var(--banner-h, 520px);
-  }
+  width: 100%;
+  /* 24/9 o 3/1 lo hará más delgado (menos alto) que 36/9, que es el ratio original del banner */
+  aspect-ratio: var(--banner-ratio, 36 / 9);
+  
+  /* Reducido de 180px a 140px para que no se estire de más en celulares pequeños */
+  min-height: 140px; 
 }

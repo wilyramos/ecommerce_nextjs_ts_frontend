@@ -9,24 +9,32 @@ interface ArrowProps {
 }
 
 export function CarouselArrow({ onClick, direction }: ArrowProps) {
-    const base =
-        "absolute top-1/2 -translate-y-1/2 z-20 bg-[#0a0a0a]/60 text-white  backdrop-blur-md hover:bg-[#FF521A] hover:text-white hover:border-transparent shadow-2xl transition-all duration-300 p-2 md:p-3 cursor-pointer group hidden sm:flex items-center justify-center";
-
-    const position =
+    
+        const position =
         direction === "left"
             ? "left-0 rounded-r-4xl"
             : "right-0 rounded-l-4xl";
-
     return (
         <button
             onClick={onClick}
-            className={`${base} ${position}`}
             aria-label={direction === "left" ? "Anterior" : "Siguiente"}
+            className={`
+                absolute top-1/2 -translate-y-1/2 z-20
+                hidden sm:flex items-center justify-center
+                w-10 h-10
+                border border-white/10
+                bg-white/5 dark:bg-black/20
+                text-white/70
+                backdrop-blur-md
+                hover:bg-white hover:text-black
+                transition-all duration-200
+                ${position}
+            `}
         >
             {direction === "left" ? (
-                <ChevronLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+                <ChevronLeft className="w-4 h-4" />
             ) : (
-                <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                <ChevronRight className="w-4 h-4" />
             )}
         </button>
     );

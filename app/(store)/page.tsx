@@ -76,11 +76,6 @@ export default function HomePage() {
                 <CarruselPrincipal />
             </section>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 overflow-hidden max-w-7xl mx-auto">
-                <HeroFlashSale />
-                <HeroNewArrivals />
-            </div>
-
             <section>
                 <ProductosDestacados />
             </section>
@@ -101,6 +96,13 @@ export default function HomePage() {
             <section>
                 <FeaturesList />
             </section>
+
+
+            <div className="grid grid-cols-1 md:grid-cols-2 overflow-hidden max-w-7xl mx-auto">
+                <HeroFlashSale />
+                <HeroNewArrivals />
+            </div>
+
         </>
     );
 }
