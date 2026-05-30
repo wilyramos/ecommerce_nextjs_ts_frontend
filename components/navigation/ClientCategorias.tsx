@@ -12,13 +12,13 @@ import { PiCaretRightBold } from "react-icons/pi";
 import { RiMenu2Line } from "react-icons/ri";
 import Link from "next/link";
 import { useState } from "react";
-import type { CategoryListResponse, CategoryResponse } from "@/src/schemas";
+import { CategoryResponse } from "@/src/schemas/category.schema";
 import Logo from "../ui/Logo";
 
 export default function ClientCategorias({ categories }: { categories: CategoryResponse[] }) {
     const [open, setOpen] = useState(false);
 
-    const grouped = categories.reduce((acc, category) => {
+   const grouped = categories.reduce((acc, category) => {
         const parentId =
             category.parent && typeof category.parent !== "string"
                 ? category.parent._id
@@ -28,7 +28,7 @@ export default function ClientCategorias({ categories }: { categories: CategoryR
         if (!acc[key]) acc[key] = [];
         acc[key].push(category);
         return acc;
-    }, {} as Record<string, CategoryListResponse>);
+    }, {} as Record<string, CategoryResponse[]>);
 
     const rootCategories = grouped["root"] || [];
 

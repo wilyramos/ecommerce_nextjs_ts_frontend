@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { updateSliderBannerAction, type ActionState } from "@/actions/slider-actions";
 import SliderForm from "./SliderForm";
 import type { SliderBanner } from "@/src/schemas/slider.schema";
+import { Button } from "@/components/ui/button";
 
 interface Props {
     id: string;
@@ -39,7 +40,6 @@ export default function EditSliderBannerForm({ id, initialData }: Props) {
 
         if (state.success) {
             toast.success(state.message ?? "Banner actualizado correctamente.");
-            // router.push("/admin/slider");
             return;
         }
 
@@ -60,27 +60,30 @@ export default function EditSliderBannerForm({ id, initialData }: Props) {
                 fieldErrors={state.success ? undefined : state.fieldErrors}
             />
 
-            <div className="flex items-center justify-between px-6 py-4 bg-white border-t sticky bottom-0 z-10">
+            <div className="flex items-center justify-between px-6 py-4 bg-card border-t border-border sticky bottom-0 z-10 rounded-b-[var(--radius-lg)] text-card-foreground">
                 <Link
                     href={`/admin/slider/${id}/preview`}
-                    className="text-sm text-zinc-500 hover:text-zinc-800 transition-colors"
+                    className="text-xs font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-hidden focus-visible:ring-[3px] focus-visible:ring-ring rounded-[var(--radius-sm)] px-2 py-1"
                 >
                     Ver preview →
                 </Link>
                 <div className="flex items-center gap-3">
-                    <Link
-                        href="/admin/slider"
-                        className="px-5 py-2.5 text-sm text-zinc-600 border border-zinc-200 rounded-md hover:bg-zinc-50 transition-colors"
+                    <Button
+                        type="button"
+                        variant="outline"
+                        asChild
                     >
-                        Cancelar
-                    </Link>
-                    <button
+                        <Link href="/admin/slider">
+                            Cancelar
+                        </Link>
+                    </Button>
+                    <Button
                         type="submit"
                         disabled={isPending}
-                        className="px-8 py-2.5 bg-zinc-900 text-white text-sm font-semibold rounded-md hover:bg-zinc-700 disabled:bg-zinc-300 transition-colors"
+                        className="bg-action-cta hover:bg-action-cta-hover text-action-cta-foreground font-bold px-8"
                     >
                         {isPending ? "Guardando..." : "Guardar cambios"}
-                    </button>
+                    </Button>
                 </div>
             </div>
         </form>

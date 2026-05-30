@@ -1,5 +1,4 @@
-//File: frontend/components/admin/products/Toolbar.tsx
-
+// File: frontend/components/admin/products/Toolbar.tsx
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -28,19 +27,12 @@ import { $setBlocksType } from "@lexical/selection";
 
 // Iconos
 import {
-    Bold, Italic, Underline, Undo2, Redo2, Image as ImageIcon,
+    Bold, Italic, Underline, Undo2, Redo2,
     Code, Table as TableIcon, AlignLeft, AlignCenter, AlignRight,
     List, ListOrdered, Heading1, Palette, Highlighter
 } from "lucide-react";
 
-import { $createImageNode } from "@/components/editor/nodes/ImageNode";
-
 // Componentes UI
-import {
-    Dialog, DialogTrigger, DialogContent, DialogHeader,
-    DialogTitle, DialogFooter, DialogClose
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -52,8 +44,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { $isHeadingNode } from "@lexical/rich-text";
 
+import { FormMediaField } from "@/components/form/FormMediaField";
 
-// --- SUBCOMPONENTE: Selector de Color Avanzado ---
 interface ColorPickerProps {
     icon: React.ReactNode;
     color: string;
@@ -62,7 +54,6 @@ interface ColorPickerProps {
 }
 
 const ColorPicker = ({ icon, color, onChange, title }: ColorPickerProps) => {
-    // Estado local para input manual
     const [localColor, setLocalColor] = useState(color);
 
     useEffect(() => {
@@ -72,7 +63,6 @@ const ColorPicker = ({ icon, color, onChange, title }: ColorPickerProps) => {
     const handleHexChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const val = e.target.value;
         setLocalColor(val);
-        // Validar Hex básico (3 o 6 dígitos)
         if (/^#([0-9A-F]{3}){1,2}$/i.test(val)) {
             onChange(val);
         }
@@ -82,27 +72,25 @@ const ColorPicker = ({ icon, color, onChange, title }: ColorPickerProps) => {
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <button
-                    className="p-1.5 w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100 relative"
+                    type="button"
+                    className="p-1.5 w-8 h-8 flex items-center justify-center rounded hover:bg-gray-100 relative cursor-pointer outline-none"
                     title={title}
                 >
                     {icon}
-                    {/* Línea de color debajo del icono */}
                     <span
                         className="absolute bottom-1 left-1 right-1 h-0.5 rounded-full"
                         style={{ backgroundColor: color !== "transparent" ? color : "#000" }}
                     />
                 </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="p-3 w-56 bg-white" align="start">
+            <DropdownMenuContent className="p-3 w-56 bg-white shadow-md border border-border" align="start">
                 <div className="flex flex-col gap-3">
                     <Label className="text-xs font-semibold text-muted-foreground">{title}</Label>
-
                     <div className="flex items-center gap-2">
-                        {/* Input Nativo (Visual) */}
                         <div className="relative w-8 h-8 rounded-full overflow-hidden border border-gray-200 shadow-sm shrink-0">
                             <input
                                 type="color"
-                                value={localColor.length === 7 ? localColor : "#000000"} // fallback para hex inválidos
+                                value={localColor.length === 7 ? localColor : "#000000"}
                                 onChange={(e) => {
                                     setLocalColor(e.target.value);
                                     onChange(e.target.value);
@@ -110,8 +98,6 @@ const ColorPicker = ({ icon, color, onChange, title }: ColorPickerProps) => {
                                 className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] p-0 border-0 cursor-pointer"
                             />
                         </div>
-
-                        {/* Input Hexadecimal (Texto) */}
                         <div className="flex-1 relative">
                             <Input
                                 value={localColor}
@@ -121,46 +107,29 @@ const ColorPicker = ({ icon, color, onChange, title }: ColorPickerProps) => {
                             />
                         </div>
                     </div>
-
-                    {/* Botón para resetear (opcional) */}
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-6 text-xs w-full"
-                        onClick={() => {
-                            setLocalColor("#000000");
-                            onChange("#000000");
-                        }}
-                    >
-                        Resetear a Negro
-                    </Button>
                 </div>
             </DropdownMenuContent>
         </DropdownMenu>
     );
 };
 
-
-export default function Toolbar({ onToggleHTML, isHTMLMode }: {
+interface ToolbarProps {
     onToggleHTML: () => void;
     isHTMLMode: boolean;
-}) {
+    mediaResetKey: number;
+    onMediaChange: (urls: string[]) => void;
+}
+
+export default function Toolbar({ onToggleHTML, isHTMLMode, mediaResetKey, onMediaChange }: ToolbarProps) {
     const [editor] = useLexicalComposerContext();
 
-    // Estados de formato
     const [isBold, setIsBold] = useState(false);
     const [isItalic, setIsItalic] = useState(false);
     const [isUnderline, setIsUnderline] = useState(false);
 
-    // Estados de color
     const [fontColor, setFontColor] = useState("#000000");
     const [bgColor, setBgColor] = useState("#ffffff");
 
-    // Estados para diálogos
-    const [openImg, setOpenImg] = useState(false);
-    const [imageUrl, setImageUrl] = useState("");
-
-    // Función que lee el estado del editor y actualiza la UI
     const updateToolbar = useCallback(() => {
         editor.getEditorState().read(() => {
             const selection = $getSelection();
@@ -169,7 +138,6 @@ export default function Toolbar({ onToggleHTML, isHTMLMode }: {
                 setIsItalic(selection.hasFormat("italic"));
                 setIsUnderline(selection.hasFormat("underline"));
 
-                // Leer colores actuales de la selección
                 const currentFontColor = $getSelectionStyleValueForProperty(selection, "color", "#000000");
                 const currentBgColor = $getSelectionStyleValueForProperty(selection, "background-color", "#ffffff");
 
@@ -187,21 +155,10 @@ export default function Toolbar({ onToggleHTML, isHTMLMode }: {
         });
     }, [editor, updateToolbar]);
 
-    // Helpers
     const btnClass = (active: boolean) =>
-        `p-1.5 w-8 h-8 flex items-center justify-center rounded transition-colors ${active ? "bg-black text-white" : "hover:bg-gray-100 text-gray-700"
+        `p-1.5 w-8 h-8 flex items-center justify-center rounded transition-colors cursor-pointer outline-none ${
+            active ? "bg-black text-white" : "hover:bg-gray-100 text-gray-700"
         }`;
-
-    const insertImage = () => {
-        if (!imageUrl.trim()) return;
-        editor.update(() => {
-            const node = $createImageNode(imageUrl, "image");
-            const selection = $getSelection();
-            if ($isRangeSelection(selection)) selection.insertNodes([node]);
-        });
-        setImageUrl("");
-        setOpenImg(false);
-    };
 
     const insertTable = () => {
         editor.dispatchCommand(INSERT_TABLE_COMMAND, { columns: "3", rows: "3" });
@@ -213,10 +170,8 @@ export default function Toolbar({ onToggleHTML, isHTMLMode }: {
             if (!$isRangeSelection(selection)) return;
 
             const nodes = selection.getNodes();
-
             nodes.forEach(node => {
                 const parent = node.getParent();
-
                 if (parent && $isHeadingNode(parent)) {
                     parent.setStyle(`${type}: ${color}`);
                 }
@@ -245,9 +200,7 @@ export default function Toolbar({ onToggleHTML, isHTMLMode }: {
     };
 
     return (
-        <div className="flex flex-wrap gap-1 border-b bg-white p-2 sticky top-0 z-10 items-center select-none">
-
-            {/* HTML Switch */}
+        <div className="flex flex-wrap gap-1 bg-white p-2 items-center select-none w-full">
             <button
                 type="button"
                 className={btnClass(isHTMLMode)}
@@ -259,120 +212,109 @@ export default function Toolbar({ onToggleHTML, isHTMLMode }: {
 
             <div className="w-[1px] h-6 bg-gray-200 mx-1" />
 
-            {/* History */}
-            <button type="button" className={btnClass(false)} onClick={() => editor.dispatchCommand(UNDO_COMMAND, undefined)}>
+            <button 
+                type="button" 
+                disabled={isHTMLMode}
+                className={btnClass(false)} 
+                onClick={() => editor.dispatchCommand(UNDO_COMMAND, undefined)}
+                title="Deshacer"
+            >
                 <Undo2 size={16} />
             </button>
-            <button type="button" className={btnClass(false)} onClick={() => editor.dispatchCommand(REDO_COMMAND, undefined)}>
+            <button 
+                type="button" 
+                disabled={isHTMLMode}
+                className={btnClass(false)} 
+                onClick={() => editor.dispatchCommand(REDO_COMMAND, undefined)}
+                title="Rehacer"
+            >
                 <Redo2 size={16} />
             </button>
 
             <div className="w-[1px] h-6 bg-gray-200 mx-1" />
 
-            {/* Headings */}
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <button className={btnClass(false)} title="Estilos de texto">
+                    <button type="button" disabled={isHTMLMode} className={btnClass(false)} title="Estilos de texto">
                         <Heading1 size={16} />
                     </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                    <DropdownMenuItem onClick={() => formatHeading("h1")} className="text-3xl font-bold">Título 1</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => formatHeading("h2")} className="text-2xl font-bold">Título 2</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => formatHeading("h3")} className="text-xl font-bold">Título 3</DropdownMenuItem>
+                <DropdownMenuContent className="bg-white border border-border shadow-md">
+                    <DropdownMenuItem onClick={() => formatHeading("h1")} className="text-3xl font-bold cursor-pointer">Título 1</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => formatHeading("h2")} className="text-2xl font-bold cursor-pointer">Título 2</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => formatHeading("h3")} className="text-xl font-bold cursor-pointer">Título 3</DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => formatQuote()} className="italic border-l-2 pl-2">Cita</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined)}>Párrafo Normal</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => formatQuote()} className="italic border-l-2 pl-2 cursor-pointer">Cita</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined)} className="cursor-pointer">Párrafo Normal</DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Formato Básico */}
-            <button type="button" className={btnClass(isBold)} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold")}>
+            <button type="button" disabled={isHTMLMode} className={btnClass(isBold)} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold")} title="Negrita">
                 <Bold size={16} />
             </button>
-            <button type="button" className={btnClass(isItalic)} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic")}>
+            <button type="button" disabled={isHTMLMode} className={btnClass(isItalic)} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic")} title="Cursiva">
                 <Italic size={16} />
             </button>
-            <button type="button" className={btnClass(isUnderline)} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline")}>
+            <button type="button" disabled={isHTMLMode} className={btnClass(isUnderline)} onClick={() => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline")} title="Subrayado">
                 <Underline size={16} />
             </button>
 
             <div className="w-[1px] h-6 bg-gray-200 mx-1" />
 
-            {/* --- SELECCIÓN DE COLORES --- */}
+            {!isHTMLMode && (
+                <>
+                    <ColorPicker
+                        title="Color de Texto"
+                        icon={<Palette size={16} />}
+                        color={fontColor}
+                        onChange={(c) => applyColor(c, "color")}
+                    />
+                    <ColorPicker
+                        title="Color de Fondo"
+                        icon={<Highlighter size={16} />}
+                        color={bgColor}
+                        onChange={(c) => applyColor(c, "background-color")}
+                    />
+                    <div className="w-[1px] h-6 bg-gray-200 mx-1" />
+                </>
+            )}
 
-            {/* Color de Texto */}
-            <ColorPicker
-                title="Color de Texto"
-                icon={<Palette size={16} />}
-                color={fontColor}
-                onChange={(c) => applyColor(c, "color")}
-            />
-
-            {/* Color de Fondo (Resaltado) */}
-            <ColorPicker
-                title="Color de Fondo"
-                icon={<Highlighter size={16} />}
-                color={bgColor}
-                onChange={(c) => applyColor(c, "background-color")}
-            />
-
-            <div className="w-[1px] h-6 bg-gray-200 mx-1" />
-
-            {/* Alineación */}
-            <button type="button" className={btnClass(false)} onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "left")}>
+            <button type="button" disabled={isHTMLMode} className={btnClass(false)} onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "left")} title="Alinear a la izquierda">
                 <AlignLeft size={16} />
             </button>
-            <button type="button" className={btnClass(false)} onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "center")}>
+            <button type="button" disabled={isHTMLMode} className={btnClass(false)} onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "center")} title="Centrar">
                 <AlignCenter size={16} />
             </button>
-            <button type="button" className={btnClass(false)} onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "right")}>
+            <button type="button" disabled={isHTMLMode} className={btnClass(false)} onClick={() => editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "right")} title="Alinear a la derecha">
                 <AlignRight size={16} />
             </button>
 
             <div className="w-[1px] h-6 bg-gray-200 mx-1" />
 
-            {/* Listas */}
-            <button type="button" className={btnClass(false)} onClick={() => editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined)}>
+            <button type="button" disabled={isHTMLMode} className={btnClass(false)} onClick={() => editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined)} title="Lista con viñetas">
                 <List size={16} />
             </button>
-            <button type="button" className={btnClass(false)} onClick={() => editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined)}>
+            <button type="button" disabled={isHTMLMode} className={btnClass(false)} onClick={() => editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined)} title="Lista numerada">
                 <ListOrdered size={16} />
             </button>
-
-            {/* Tabla */}
-            <button type="button" className={btnClass(false)} onClick={insertTable} title="Insertar Tabla">
+            <button type="button" disabled={isHTMLMode} className={btnClass(false)} onClick={insertTable} title="Insertar Tabla">
                 <TableIcon size={16} />
             </button>
 
-            {/* Imagen */}
-            <Dialog open={openImg} onOpenChange={setOpenImg}>
-                <DialogTrigger asChild>
-                    <button type="button" className={btnClass(false)}>
-                        <ImageIcon size={16} />
-                    </button>
-                </DialogTrigger>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Añadir imagen</DialogTitle>
-                    </DialogHeader>
-                    <div className="py-4">
-                        <Label>URL de la imagen</Label>
-                        <Input
-                            className="mt-2"
-                            placeholder="https://ejemplo.com/imagen.jpg"
-                            value={imageUrl}
-                            onChange={(e) => setImageUrl(e.target.value)}
-                        />
-                    </div>
-                    <DialogFooter>
-                        <DialogClose asChild>
-                            <Button variant="secondary">Cancelar</Button>
-                        </DialogClose>
-                        <Button onClick={insertImage}>Insertar</Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+            {!isHTMLMode && (
+                <div className="inline-block relative shrink-0 [&_label]:hidden [&_.grid_div]:hidden [&_.grid_button_span]:hidden [&_.grid_button]:w-8 [&_.grid_button]:h-8 [&_.grid_button]:border-0 [&_.grid_button]:rounded [&_.grid_button]:bg-transparent [&_.grid_button]:hover:bg-gray-100 [&_.grid_button]:text-gray-700 [&_.grid_button_svg]:m-0 [&_.grid_button_svg]:text-base">
+                    <FormMediaField
+                        key={mediaResetKey}
+                        name="editor_toolbar_media"
+                        folder="products"
+                        defaultValue={[]}
+                        multiple={true}
+                        maxFiles={10}
+                        accept="image"
+                        onChange={onMediaChange}
+                    />
+                </div>
+            )}
         </div>
     );
 }

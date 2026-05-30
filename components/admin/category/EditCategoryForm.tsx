@@ -1,51 +1,54 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import type { CategoryResponse } from "@/src/schemas/category.schema";
+import { editCategoryAction, type ActionStateType } from "@/actions/category/category-action";
 import CategoryForm from "./CategoryForm";
-import { editCategoryAction } from "@/actions/category/edit-category-action";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
-export default function EditCategoryForm({ 
-    category, 
-    categories 
-}: { 
-    category: CategoryResponse; 
-    categories: CategoryResponse[]; 
-}) {
-    const editCategoryWithId = editCategoryAction.bind(null, category._id);
-    const [state, dispatch] = useActionState(editCategoryWithId, {
-        errors: [],
-        success: ""
-    });
+type Props = {
+    category: CategoryResponse;
+    categories: CategoryResponse[];
+};
+
+export default function EditCategoryForm({ category, categories }: Props) {
+    const router = useRouter();
+
+    // Satisface la firma exacta de useActionState (state, payload)
+    // El ID se inyecta por clausura (closure) de JavaScript de forma transparente
+    const [state, dispatch] = useActionState(
+        async (prevState: ActionStateType, formData: FormData) => {
+            return editCategoryAction(category._id, prevState, formData);
+        },
+        {
+            errors: [],
+            success: "",
+        }
+    );
 
     useEffect(() => {
-        if (state.errors && state.errors.length > 0) {
-            state.errors.forEach(error => {
-                toast.error(error);
-            });
-        }
+        state.errors.forEach((e) => toast.error(e));
         if (state.success) {
             toast.success(state.success);
+            router.push("/admin/products/category");
         }
-    }, [state]);
+    }, [state, router]);
 
     return (
-        <form
-            className="flex flex-col gap-4 w-full max-w-2xl mx-auto mt-10"
-            noValidate
-            action={dispatch}
-        >
-            <CategoryForm
-                category={category}
-                categories={categories}
-            />
-
-            <input
-                type="submit"
-                value="Actualizar Categoria"
-                className="bg-blue-500 text-white font-bold py-3 rounded-full w-full hover:bg-blue-600 transition duration-200 ease-in-out cursor-pointer mt-4"
-            />
+        <form noValidate action={dispatch} className="max-w-2xl mx-auto">
+            <Card>
+                <CardContent className="pt-6">
+                    <CategoryForm category={category} categories={categories} />
+                </CardContent>
+                <div className="flex justify-end border-t pt-4 p-6">
+                    <Button type="submit">
+                        Guardar cambios
+                    </Button>
+                </div>
+            </Card>
         </form>
     );
 }

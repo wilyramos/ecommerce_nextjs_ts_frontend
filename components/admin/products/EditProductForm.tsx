@@ -8,20 +8,23 @@ import { EditProduct } from "@/actions/product/edit-product-action";
 import ProductForm from "./ProductForm";
 
 // Tipos
-import type { ProductWithCategoryResponse, CategoryListResponse } from "@/src/schemas";
+import type { ProductWithCategoryResponse } from "@/src/schemas";
+import type { CategoryListResponse } from "@/src/schemas/category.schema";
+
 import type { TBrand } from "@/src/schemas/brands";
 import type { ProductLine } from "@/src/schemas/line.schema";
 import { Button } from "@/components/ui/button";
-
+import type { Collection } from "@/src/schemas/collection.schema";
 
 interface EditProductFormProps {
     product: ProductWithCategoryResponse;
     categorias: CategoryListResponse;
     brands: TBrand[];
-    lines: ProductLine[]; // Agregamos lines a las props
+    lines: ProductLine[];
+    allCollections: Collection[];
 }
 
-export default function EditProductForm({ product, categorias, brands, lines }: EditProductFormProps) {
+export default function EditProductForm({ product, categorias, brands, lines, allCollections }: EditProductFormProps) {
 
     // Bind para pasar el ID al Server Action de forma segura
     const editProductWithId = EditProduct.bind(null, product._id);
@@ -69,6 +72,7 @@ export default function EditProductForm({ product, categorias, brands, lines }: 
                 categorias={categoriasOrdenadas}
                 brands={brands}
                 lines={lines} // Pasamos las líneas al formulario genérico
+                allCollections={allCollections} // Pasamos todas las colecciones al formulario genérico
             />
             <div className="p-4">
                 <Button type="submit">Actualizar Producto</Button>

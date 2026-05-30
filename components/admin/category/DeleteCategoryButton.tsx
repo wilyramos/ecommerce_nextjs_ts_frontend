@@ -1,50 +1,84 @@
-"use client"
+"use client";
 
-import { FiTrash } from "react-icons/fi";
 import { useActionState, useEffect } from "react";
-import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
-import { deleteCategoryAction } from "@/actions/category/create-category-action";
+import { toast } from "react-toastify";
+import { Trash2 } from "lucide-react";
+import { deleteCategoryAction, type ActionStateType } from "@/actions/category/category-action";
+import { Button } from "@/components/ui/button";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 
+type Props = {
+    categoryId: string;
+    categoryName: string;
+};
 
-export default function DeleteCategoryButton({ categoryId }: { categoryId: string }) {
-
+export default function DeleteCategoryButton({ categoryId, categoryName }: Props) {
     const router = useRouter();
-    const deleteCategoryWithId = deleteCategoryAction.bind(null, categoryId);
-    const [state, dispatch] = useActionState(deleteCategoryWithId, {
-        errors: [],
-        success: ""
-    });
 
-    console.log(state);
+    // Adaptación nativa de la firma de useActionState (state, payload) para React 19/Next 15
+    const [state, dispatch] = useActionState(
+        async (prevState: ActionStateType) => {
+            return deleteCategoryAction(categoryId, prevState);
+        },
+        {
+            errors: [],
+            success: "",
+        }
+    );
 
     useEffect(() => {
-        console.log(state);
-        if (state.errors) {
-            state.errors.forEach(error => {
-                toast.error(error);
-            });
-        }
+        state.errors.forEach((e) => toast.error(e));
         if (state.success) {
             toast.success(state.success);
             router.push("/admin/products/category");
         }
     }, [state, router]);
 
-    
     return (
-        <form
-            action={dispatch}
-        >
-            <button
-                type="submit"
-                className="flex items-center gap-2 px-4 py-1 text-sm font-medium text-red-600 border border-red-300 rounded-lg hover:bg-red-100 hover:text-red-700 transition-colors duration-200 cursor-pointer"
-            >
-                <FiTrash className="w-4 h-4" />
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button variant="destructive" size="sm">
+                    <Trash2 className="h-4 w-4 mr-1.5" />
+                    Eliminar
+                </Button>
+            </DialogTrigger>
 
-                Eliminar Categoria
-            </button>
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>¿Eliminar categoría?</DialogTitle>
+                    <DialogDescription>
+                        Estás a punto de eliminar{" "}
+                        <span className="font-semibold text-foreground">
+                            {categoryName}
+                        </span>
+                        . Esta acción no se puede deshacer. Solo es posible si la
+                        categoría no tiene subcategorías ni productos vinculados.
+                    </DialogDescription>
+                </DialogHeader>
 
-        </form>
-    )
+                <DialogFooter className="gap-2 sm:gap-0">
+                    <DialogClose asChild>
+                        <Button type="button" variant="outline">
+                            Cancelar
+                        </Button>
+                    </DialogClose>
+                    <form action={dispatch}>
+                        <Button type="submit" variant="destructive" className="w-full">
+                            Confirmar eliminación
+                        </Button>
+                    </form>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    );
 }

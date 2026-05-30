@@ -8,6 +8,7 @@ import DeleteProductButton from "@/components/admin/products/DeleteProductButton
 import AdminPageWrapper from "@/components/admin/AdminPageWrapper";
 import Link from "next/link";
 import { IoDuplicate } from "react-icons/io5";
+import { getActiveCollections } from "@/src/services/collection-service";
 
 
 type Params = Promise<{
@@ -17,11 +18,12 @@ type Params = Promise<{
 export default async function ProductDetailsPage({ params }: { params: Params }) {
     const { id } = await params;
 
-    const [product, categorias, brands, lines] = await Promise.all([
+    const [product, categorias, brands, lines, collections] = await Promise.all([
         getProduct(id),
         getCategories(),
         getActiveBrands(),
         linesService.getAllActive(),
+        getActiveCollections(),
     ]);
 
     if (!product) {
@@ -59,6 +61,7 @@ export default async function ProductDetailsPage({ params }: { params: Params })
                 categorias={categorias}
                 brands={brands}
                 lines={lines}
+                allCollections={collections}
             />
         </AdminPageWrapper>
     );

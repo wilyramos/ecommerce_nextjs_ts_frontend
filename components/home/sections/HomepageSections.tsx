@@ -1,0 +1,22 @@
+// File: frontend/components/home/HomepageSections.tsx
+
+import { getHomepageSections } from "@/src/services/collection-service";
+import CollectionSection       from "@/components/home/sections/CollectionSection";
+
+export default async function HomepageSections() {
+    const sections = await getHomepageSections();
+
+    if (!sections.length) return null;
+
+    return (
+        <div className="space-y-12 my-10">
+            {sections.map((section) => (
+                <CollectionSection
+                    key={section.collection._id}
+                    slug={section.collection.slug}
+                    section={section}
+                />
+            ))}
+        </div>
+    );
+}

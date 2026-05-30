@@ -1,3 +1,5 @@
+//File: frontend/src/schemas/comparison.schema.ts
+
 import { z } from "zod";
 
 // ─────────────────────────────────────────────────────────────

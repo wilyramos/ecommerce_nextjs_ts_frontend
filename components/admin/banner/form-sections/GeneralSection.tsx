@@ -1,60 +1,36 @@
-"use client";
+'use client';
 
-import { useState } from "react";
 import { Info, ImageIcon, Link as LinkIcon } from "lucide-react";
-import { Input }    from "@/components/ui/input";
-import { Label }    from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { LabelWithTooltip } from "@/components/utils/LabelWithTooltip";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 import { SliderObjectFitEnum, type SliderBanner } from "@/src/schemas/slider.schema";
-import MediaLibraryDialog from "@/components/admin/products/MediaLibraryDialog";
+import { FormMediaField } from "@/components/form/FormMediaField";
 
 interface SectionProps {
-    initialData?:  SliderBanner;
-    fields?:       Record<string, string>;
-    fieldErrors?:  Record<string, string[]>;
+    initialData?: SliderBanner;
+    fields?: Record<string, string>;
+    fieldErrors?: Record<string, string[]>;
 }
 
 export default function GeneralSection({ initialData, fields, fieldErrors }: SectionProps) {
-    const [availableImages, setAvailableImages] = useState<string[]>(
-        initialData?.media?.imageUrl ? [initialData.media.imageUrl] : []
-    );
-    const [selectedImageUrl, setSelectedImageUrl] = useState<string>(
-        fields?.["media.imageUrl"] || initialData?.media?.imageUrl || ""
-    );
-
     const val = (name: string, fallback?: string) => fields?.[name] ?? fallback ?? "";
     const err = (name: string) => fieldErrors?.[name]?.[0];
 
-    const handleUploadSuccess = (newImages: string[]) => {
-        setAvailableImages(prev => [...prev, ...newImages]);
-    };
-
-    const handleConfirmSelection = (selectedImages: string[]) => {
-        if (selectedImages.length > 0) {
-            const url = selectedImages[0];
-            setSelectedImageUrl(url);
-            const input = document.querySelector('input[name="media.imageUrl"]') as HTMLInputElement;
-            if (input) {
-                input.value = url;
-                input.dispatchEvent(new Event("change", { bubbles: true }));
-            }
-        }
-    };
+    const defaultMediaUrl = val("media.imageUrl", initialData?.media?.imageUrl) || val("media.videoUrl", initialData?.media?.videoUrl);
 
     return (
         <div className="space-y-6">
-            {/* ── Información General ───────────────────────────────────── */}
-            <Card>
-                <CardHeader className="flex flex-row items-center gap-2">
+            <Card className="border-[color:var(--color-border)] bg-background">
+                <CardHeader className="flex flex-row items-center gap-2 border-b border-[color:var(--color-border)]/60 pb-4">
                     <Info className="w-3.5 h-3.5 text-muted-foreground/80" />
-                    <CardTitle>Información General</CardTitle>
+                    <CardTitle className="text-xs font-bold uppercase tracking-wider text-foreground">Información General</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-5">
+                <CardContent className="space-y-5 pt-5">
 
-                    {/* Nombre interno */}
                     <div className="space-y-1">
                         <LabelWithTooltip
                             htmlFor="name"
@@ -70,7 +46,6 @@ export default function GeneralSection({ initialData, fields, fieldErrors }: Sec
                         {err("name") && <p className="text-[10px] text-destructive">{err("name")}</p>}
                     </div>
 
-                    {/* Tags */}
                     <div className="space-y-1">
                         <LabelWithTooltip
                             htmlFor="tags"
@@ -85,7 +60,6 @@ export default function GeneralSection({ initialData, fields, fieldErrors }: Sec
                         />
                     </div>
 
-                    {/* Título / Subtítulo */}
                     <div className="space-y-1">
                         <LabelWithTooltip htmlFor="title" label="Título Principal" tooltip="Texto principal del banner." />
                         <Input
@@ -118,19 +92,18 @@ export default function GeneralSection({ initialData, fields, fieldErrors }: Sec
                         </div>
                     </div>
 
-                    {/* Abrir en nueva pestaña */}
                     <div className="flex items-center gap-2">
+                        <input type="hidden" name="openInNewTab" value="false" />
                         <input
                             type="checkbox"
                             name="openInNewTab"
                             value="true"
                             defaultChecked={initialData?.openInNewTab ?? false}
-                            className="w-4 h-4 accent-blue-600"
+                            className="w-4 h-4 accent-ring"
                         />
                         <Label className="text-xs">Abrir enlace en nueva pestaña</Label>
                     </div>
 
-                    {/* Descripción */}
                     <div className="space-y-1">
                         <LabelWithTooltip htmlFor="description" label="Descripción" tooltip="Texto descriptivo opcional." />
                         <Textarea
@@ -141,7 +114,6 @@ export default function GeneralSection({ initialData, fields, fieldErrors }: Sec
                         />
                     </div>
 
-                    {/* Términos y condiciones */}
                     <div className="space-y-1">
                         <LabelWithTooltip htmlFor="terms" label="Términos y condiciones" tooltip="Letra pequeña / T&C." />
                         <Textarea
@@ -155,33 +127,28 @@ export default function GeneralSection({ initialData, fields, fieldErrors }: Sec
                 </CardContent>
             </Card>
 
-            {/* ── Multimedia ────────────────────────────────────────────── */}
-            <Card>
-                <CardHeader className="flex flex-row items-center gap-2">
+            <Card className="border-[color:var(--color-border)] bg-background">
+                <CardHeader className="flex flex-row items-center gap-2 border-b border-[color:var(--color-border)]/60 pb-4">
                     <ImageIcon className="w-3.5 h-3.5 text-muted-foreground/80" />
-                    <CardTitle>Multimedia</CardTitle>
+                    <CardTitle className="text-xs font-bold uppercase tracking-wider text-foreground">Recursos del Banner</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                    <input type="hidden" name="media.imageUrl" value={selectedImageUrl} />
+                <CardContent className="space-y-5 pt-5">
 
-                    {/* Selector de imagen */}
-                    <div className="items-end gap-3 p-3 border border-border/40 bg-background-secondary/20 rounded-sm flex justify-between">
-                        <div className="flex-1 space-y-1">
-                            <Label className="text-xs font-bold text-foreground">URL Imagen</Label>
-                            <div className="h-10 px-3 flex items-center bg-background border border-border/40 rounded-sm text-xs text-muted-foreground truncate max-w-lg">
-                                {selectedImageUrl || "Sin imagen seleccionada"}
-                            </div>
-                        </div>
-                        <MediaLibraryDialog
-                            selectedImages={selectedImageUrl ? [selectedImageUrl] : []}
-                            globalImagesPool={availableImages}
-                            onConfirmSelection={handleConfirmSelection}
-                            onUploadSuccess={handleUploadSuccess}
-                            allowMultiple={false}
-                            triggerLabel="Seleccionar"
-                            triggerVariant="outline"
-                            size="sm"
+                    <div className="space-y-1.5">
+                        <FormMediaField
+                            name="media.imageUrl"
+                            label="Imagen o Video de Portada"
+                            folder="banners"
+                            defaultValue={defaultMediaUrl}
+                            multiple={false}
+                            maxFiles={1}
+                            accept="both"
                         />
+                        {(err("media.imageUrl") || err("media.videoUrl")) && (
+                            <p className="text-[10px] text-destructive font-semibold">
+                                {err("media.imageUrl") || err("media.videoUrl")}
+                            </p>
+                        )}
                     </div>
 
                     <div className="space-y-1">
@@ -195,12 +162,12 @@ export default function GeneralSection({ initialData, fields, fieldErrors }: Sec
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-1">
-                            <LabelWithTooltip htmlFor="media.videoUrl" label="URL Video" tooltip="URL para video opcional." />
+                            <LabelWithTooltip htmlFor="media.videoUrl" label="URL de Contingencia (Video)" tooltip="URL de video secundaria opcional." />
                             <Input
                                 name="media.videoUrl"
                                 defaultValue={val("media.videoUrl", initialData?.media?.videoUrl)}
-                                placeholder="https://..."
-                                className="h-10 text-xs bg-background-secondary border-border/40 rounded-sm"
+                                placeholder="Auto-completado si subes un archivo de video"
+                                className="h-10 text-xs bg-background-secondary border-border/40 rounded-sm text-muted-foreground/70"
                             />
                         </div>
                         <div className="space-y-1">

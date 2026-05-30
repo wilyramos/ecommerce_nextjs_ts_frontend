@@ -1,3 +1,5 @@
+//File: frontend/components/admin/brands/UploadBrandImage.tsx
+
 "use client";
 import { useState } from "react";
 import { uploadImageBrand } from "@/actions/brand/upload-image-action";

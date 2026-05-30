@@ -9,15 +9,13 @@ import AdminMenu from "./AdminMenu";
 import Logo from "../ui/Logo";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
-    Smartphone,
-    Users,
-    Receipt,
+    Smartphone, Receipt,
     Images,
     Layers,
     Bookmark,
     GitFork,
     Folder,
-    Library, // Icono minimalista ideal para Colecciones Temáticas
+    Library,
     BarChart,
     ShieldCheck,
     MonitorSmartphone,
@@ -37,11 +35,12 @@ type NavLink = {
 
 const links: NavLink[] = [
     { href: "/admin/products", icon: Smartphone, label: "Productos" },
-    { href: "/admin/clients", icon: Users, label: "Clientes" },
     { href: "/admin/orders", icon: Receipt, label: "Órdenes" },
     { href: "/admin/slider", icon: Images, label: "Slider" },
     { href: "/admin/comparisons", icon: Layers, label: "Comparativas" },
     { href: "/admin/collections", icon: Library, label: "Colecciones" },
+    { href: "/admin/media", icon: Images, label: "Medios" },
+    { href: "/admin/claims", icon: Layers, label: "Reclamos" },
 
     // --- CATÁLOGO ---
     { href: "/admin/brands", icon: Bookmark, label: "Marcas" },
@@ -54,7 +53,6 @@ const links: NavLink[] = [
         label: "Usuarios",
         children: [
             { href: "/admin/users", label: "Lista de usuarios" },
-            { href: "/admin/users/roles", label: "Roles y permisos" },
         ],
     },
     { href: "/pos", icon: MonitorSmartphone, label: "Punto de Venta", external: true },

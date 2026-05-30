@@ -10,7 +10,6 @@ import { toast } from "sonner";
 import { Search, Loader2, X, CheckCircle2, Plus } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 
 interface SearchProduct {
     _id: string;
@@ -18,7 +17,6 @@ interface SearchProduct {
     precio: number;
     imagenes?: string[];
     stock?: number;
-    esDestacado?: boolean;
 }
 
 interface Props {
@@ -187,11 +185,7 @@ export default function ProductAssignmentPanel({ collectionId, slug, assignedIds
                                                     {product.stock === 0 ? "Sin stock" : `${product.stock} uds`}
                                                 </span>
                                             )}
-                                            {product.esDestacado && (
-                                                <Badge variant="secondary" className="text-[9px] px-1 py-0 h-4">
-                                                    Destacado
-                                                </Badge>
-                                            )}
+                                          
                                         </div>
                                     </div>
 

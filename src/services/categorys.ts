@@ -1,90 +1,89 @@
+// File: frontend/src/services/categorys.ts
+
 import "server-only";
 
-import { cache } from 'react';
-import { notFound } from 'next/navigation';
+import { cache } from "react";
+import { notFound } from "next/navigation";
 import {
     apiCategorySchema,
     apiCategoryListSchema,
     type CategoryResponse,
-    type CategoryListResponse
+    type CategoryListResponse,
 } from "@/src/schemas/category.schema";
 
-export const getCategory = cache(async (id: string): Promise<CategoryResponse> => {
-    const url = `${process.env.API_URL}/category/${id}`;
+const BASE = `${process.env.API_URL}/category`;
 
-    const req = await fetch(url, {
-        method: 'GET',
-        next: { tags: ['categories', `category-${id}`] }
+// ─── Por ID ───────────────────────────────────────────────────────────────────
+
+export const getCategory = cache(async (id: string): Promise<CategoryResponse> => {
+    const res = await fetch(`${BASE}/${id}`, {
+        next: { tags: ["categories", `category-${id}`] },
     });
 
-    if (!req.ok) {
-        notFound();
-    }
+    if (!res.ok) notFound();
 
-    const json = await req.json();
-    return apiCategorySchema.parse(json);
+    return apiCategorySchema.parse(await res.json());
 });
+
+// ─── Por slug ─────────────────────────────────────────────────────────────────
 
 export const getCategoryBySlug = cache(async (slug: string): Promise<CategoryResponse> => {
-    const url = `${process.env.API_URL}/category/slug/${slug}`;
-
-    const req = await fetch(url, {
-        method: 'GET',
-        next: { tags: ['categories', `category-slug-${slug}`] }
+    const res = await fetch(`${BASE}/slug/${slug}`, {
+        next: { tags: ["categories", `category-slug-${slug}`] },
     });
 
-    if (!req.ok) {
-        notFound();
-    }
+    if (!res.ok) notFound();
 
-    const json = await req.json();
-    return apiCategorySchema.parse(json);
+    return apiCategorySchema.parse(await res.json());
 });
+
+// ─── Todas ────────────────────────────────────────────────────────────────────
 
 export const getCategories = cache(async (): Promise<CategoryListResponse> => {
-    const url = `${process.env.API_URL}/category`;
-
-    const res = await fetch(url, {
-        method: "GET",
-        next: { tags: ['categories'] }
+    const res = await fetch(BASE, {
+        next: { tags: ["categories"] },
     });
 
-    if (!res.ok) {
-        notFound();
-    }
+    if (!res.ok) notFound();
 
-    const json = await res.json();
-    return apiCategoryListSchema.parse(json);
+    return apiCategoryListSchema.parse(await res.json());
 });
 
-export const getPatternCategories = cache(async (): Promise<CategoryListResponse> => {
-    const url = `${process.env.API_URL}/category/patterns/all`;
+// ─── Categorías raíz (antes "patterns") ──────────────────────────────────────
+// Endpoint actualizado: GET /category/roots
 
-    const res = await fetch(url, {
-        method: "GET",
-        next: { tags: ['categories', 'pattern-categories'] }
+export const getRootCategories = cache(async (): Promise<CategoryListResponse> => {
+    const res = await fetch(`${BASE}/roots`, {
+        next: { tags: ["categories", "root-categories"] },
     });
 
-    if (!res.ok) {
-        notFound();
-    }
+    if (!res.ok) notFound();
 
-    const json = await res.json();
-    return apiCategoryListSchema.parse(json);
+    return apiCategoryListSchema.parse(await res.json());
 });
+
+// ─── Todas las subcategorías pobladas ────────────────────────────────────────
+// Endpoint actualizado: GET /category/subcategories
 
 export const getAllSubcategories = cache(async (): Promise<CategoryListResponse> => {
-    const url = `${process.env.API_URL}/category/all/subcategories`;
-
-    const res = await fetch(url, {
-        method: "GET",
-        next: { tags: ['categories', 'subcategories'] }
+    const res = await fetch(`${BASE}/subcategories`, {
+        next: { tags: ["categories", "subcategories"] },
     });
 
-    if (!res.ok) {
-        notFound();
-    }
+    if (!res.ok) notFound();
 
-    const json = await res.json();
-    return apiCategoryListSchema.parse(json);
+    return apiCategoryListSchema.parse(await res.json());
+});
+
+// ─── Subcategorías de una categoría específica ───────────────────────────────
+// Endpoint nuevo: GET /category/:id/subcategories
+
+export const getSubcategoriesById = cache(async (id: string): Promise<CategoryListResponse> => {
+    const res = await fetch(`${BASE}/${id}/subcategories`, {
+        next: { tags: ["categories", `subcategories-${id}`] },
+    });
+
+    if (!res.ok) notFound();
+
+    return apiCategoryListSchema.parse(await res.json());
 });

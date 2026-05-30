@@ -1,14 +1,12 @@
-import { HeadingH3 } from "@/components/ui/Heading";
+// File: frontend/components/admin/reports/GeneralView.tsx
+
+import { H2 } from "@/components/ui/Typography";
 import Link from "next/link";
 import { GoLinkExternal } from "react-icons/go";
 import renderSummaryItem from "./renderSummaryItem";
-
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 export default function GeneralView() {
-
-    // const startDate: string = new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString();
-    // const endDate: string = new Date().toISOString();
-
     const salesSummary = {
         totalSales: 10000,
         numberSales: 150,
@@ -17,27 +15,26 @@ export default function GeneralView() {
     };
 
     return (
-        <div className="p-4">
+        <section className="space-y-4">
+            <header className="flex items-center justify-between border-b border-border pb-2 select-none">
+                <H2>Detalle de Órdenes</H2>
 
-            <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-2">
-                <HeadingH3>Detalle de Ordenes</HeadingH3>
-
-
-                <div className="relative group self-start sm:self-auto">
-                    <Link
-                        href="/admin/reports/orders"
-                        className="text-gray-400 hover:text-gray-600 transition-colors"
-                    >
-                        <GoLinkExternal size={18} />
-                    </Link>
-
-                    {/* Tooltip */}
-                    <span className="absolute right-0 top-full mt-1 w-max px-2 py-1 text-xs text-white bg-gray-800 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity">
-                        Ir a la vista general de pedidos
-                    </span>
-                </div>
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Link
+                                href="/admin/reports/orders"
+                                className="p-2 text-muted-foreground hover:text-action-cta bg-background-secondary rounded-[var(--radius-sm)] transition-colors focus-visible:outline-hidden"
+                            >
+                                <GoLinkExternal size={16} />
+                            </Link>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Ir a la vista general de pedidos</p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
             </header>
-
 
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
                 {renderSummaryItem("Ingresos totales", salesSummary?.totalSales || 0)}
@@ -45,6 +42,6 @@ export default function GeneralView() {
                 {renderSummaryItem("Margen de ganancia", salesSummary?.margin || 0)}
                 {renderSummaryItem("Unidades vendidas", salesSummary?.totalUnitsSold || 0)}
             </div>
-        </div>
+        </section>
     )
 }

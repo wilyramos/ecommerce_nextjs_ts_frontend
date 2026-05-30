@@ -1,3 +1,5 @@
+//File: frontend/components/admin/products/CreateProductForm.tsx
+
 "use client";
 
 import { useActionState, useEffect } from "react";
@@ -5,19 +7,24 @@ import ProductForm from "./ProductForm";
 import { useRouter } from "next/navigation";
 import { createProduct } from "@/actions/product/add-product-action";
 import { toast } from "sonner";
-import type { CategoryListResponse, ProductWithCategoryResponse } from "@/src/schemas";
+import type { ProductWithCategoryResponse } from "@/src/schemas";
+import type { CategoryListResponse } from "@/src/schemas/category.schema";
+
 import type { TBrand } from "@/src/schemas/brands";
 import type { ProductLine } from "@/src/schemas/line.schema";
 import { Button } from "@/components/ui/button";
+import type { Collection } from "@/src/schemas/collection.schema";
 
 interface CreateProductFormProps {
     categorias: CategoryListResponse;
     brands: TBrand[];
     lines: ProductLine[];
     initialData?: ProductWithCategoryResponse;
+    allCollections: Collection[];
+    
 }
 
-export default function CreateProductForm({ categorias, brands, lines, initialData }: CreateProductFormProps) {
+export default function CreateProductForm({ categorias, brands, lines, initialData, allCollections }: CreateProductFormProps) {
     const router = useRouter();
 
     const [state, dispatch] = useActionState(createProduct, {
@@ -52,6 +59,7 @@ export default function CreateProductForm({ categorias, brands, lines, initialDa
                 categorias={categoriasOrdenadas}
                 brands={brands}
                 lines={lines}
+                allCollections={allCollections}
             />
             <Button type="submit">Crear producto</Button>
             

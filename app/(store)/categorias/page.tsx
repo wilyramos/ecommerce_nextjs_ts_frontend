@@ -1,3 +1,5 @@
+//File: frontend/app/%28store%29/categorias/page.tsx
+
 import { Metadata } from "next";
 import { getAllSubcategories } from "@/src/services/categorys";
 import CategoryCard from "@/components/category/category-card";

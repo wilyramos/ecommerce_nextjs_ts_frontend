@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ImageOff } from "lucide-react";
 import HeaderConTituloConControles from "../ui/HeaderConTituloConControles";
-import type { CategoryListResponse } from "@/src/schemas";
+import type { CategoryListResponse } from "@/src/schemas/category.schema";
 import { routes } from "@/lib/routes";
 
 const AbsoluteHeaderWrapper = (p: ButtonGroupProps) => (

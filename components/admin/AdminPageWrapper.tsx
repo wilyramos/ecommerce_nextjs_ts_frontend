@@ -1,4 +1,4 @@
-//File: frontend/components/admin/AdminPageWrapper.tsx
+// File: frontend/components/admin/AdminPageWrapper.tsx
 
 import React from "react";
 import BackButton from "@/components/ui/BackButton";
@@ -32,35 +32,29 @@ export default function AdminPageWrapper({
     return (
         <div className="flex flex-col min-h-screen bg-background-secondary text-foreground select-none">
             {/* ── HEADER ── */}
-            <header className="shrink-0 border-b border-border bg-background px-4 py-5 md:px-8 relative overflow-hidden">
-                <div className="max-w-screen-2xl mx-auto space-y-4">
+            <header className="shrink-0 border-b border-border bg-background px-4 py-4 md:px-8">
+                <div className="max-w-screen-2xl mx-auto space-y-2">
                     {/* Breadcrumb */}
                     {hasBreadcrumb && (
-                        <div className="text-[11px] font-medium tracking-wide opacity-90">
-                            <Breadcrumbs
-                                items={breadcrumbItems}
-                                current={breadcrumbCurrent}
-                            />
-                        </div>
+                        <Breadcrumbs
+                            items={breadcrumbItems}
+                            current={breadcrumbCurrent}
+                        />
                     )}
 
                     {/* Title & Actions */}
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                        <H1 className="">
-                            {title}
-                        </H1>
+                        <H1>{title}</H1>
 
                         <div className="flex items-center gap-3 self-end sm:self-auto">
                             {actions && (
                                 <div className="flex items-center gap-2">{actions}</div>
                             )}
                             {actions && showBackButton && (
-                                <div className="h-5 w-px bg-border mx-1 hidden sm:block" />
+                                <div className="h-4 w-px bg-border hidden sm:block" />
                             )}
                             {showBackButton && (
-                                <div className="transition-transform duration-200 active:scale-95">
-                                    <BackButton />
-                                </div>
+                                <BackButton />
                             )}
                         </div>
                     </div>
@@ -68,7 +62,7 @@ export default function AdminPageWrapper({
             </header>
 
             {/* ── CONTENT ── */}
-            <main className="flex-1 px-4 py-8 md:px-8">
+            <main className="flex-1 px-4 py-6 md:px-8">
                 <div className="max-w-screen-2xl mx-auto">
                     {children}
                 </div>

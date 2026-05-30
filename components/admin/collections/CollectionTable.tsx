@@ -1,129 +1,145 @@
-// File: frontend/components/admin/collections/CollectionTable.tsx
-import { Table, TableHeader, TableBody, TableRow, TableCell, TableHead } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import { Collection, CollectionType } from "@/src/schemas/collection.schema";
-import { CollectionActionsMenu } from "./CollectionActionsMenu";
+"use client";
+
+import React, { useState, useTransition } from "react";
+import { Table, TableHeader, TableBody, TableRow, TableHead } from "@/components/ui/table";
+import { Collection } from "@/src/schemas/collection.schema";
+import { Loader2 } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+// Imports de dnd-kit
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from "@dnd-kit/core";
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
+
+// Componente hijo importado
+import { SortableCollectionRow } from "./SortableCollectionRow";
+
+// Actions
+import { updateGeneralOrderAction, updateHomepageOrderAction } from "@/src/actions/collection-action";
 
 interface CollectionTableProps {
-    collections: Collection[];
-    PromotionDates: React.ComponentType<{ col: Collection }>;
+    initialCollections: Collection[];
 }
 
-const COLLECTION_TYPE_LABELS: Record<CollectionType, string> = {
-    promotion: "Promoción",
-    theme:     "Temática",
-    editorial: "Editorial",
-    seasonal:  "Temporada",
-};
+type ViewMode = "all" | "reorder_general" | "reorder_homepage";
 
-const COLLECTION_TYPE_VARIANTS: Record<CollectionType, "default" | "secondary" | "outline" | "destructive"> = {
-    promotion: "destructive",
-    theme:     "default",
-    editorial: "secondary",
-    seasonal:  "outline",
-};
+export function CollectionTable({ initialCollections }: CollectionTableProps) {
+    const [collections, setCollections] = useState<Collection[]>(initialCollections);
+    const [viewMode, setViewMode] = useState<ViewMode>("all");
+    const [isPending, startTransition] = useTransition();
 
-export function CollectionTable({ collections, PromotionDates }: CollectionTableProps) {
+    const sensors = useSensors(
+        useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+        useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+    );
+
     if (collections.length === 0) {
         return (
             <Table>
                 <TableBody>
                     <TableRow>
-                        <TableCell className="h-24 text-center text-muted-foreground text-xs font-medium">
+                        <td className="h-24 text-center text-muted-foreground text-xs font-medium">
                             No hay colecciones creadas actualmente.
-                        </TableCell>
+                        </td>
                     </TableRow>
                 </TableBody>
             </Table>
         );
     }
 
+    const getProcessedCollections = (): Collection[] => {
+        if (viewMode === "reorder_homepage") {
+            return [...collections]
+                .filter((c) => c.showInHomepage)
+                .sort((a, b) => a.homepageOrder - b.homepageOrder);
+        }
+        if (viewMode === "reorder_general") {
+            return [...collections].sort((a, b) => a.order - b.order);
+        }
+        return collections;
+    };
+
+    const displayCollections = getProcessedCollections();
+
+    const handleDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event;
+        if (!over || active.id === over.id) return;
+
+        const oldIndex = displayCollections.findIndex((c) => c._id === active.id);
+        const newIndex = displayCollections.findIndex((c) => c._id === over.id);
+
+        const sortedSubset = arrayMove(displayCollections, oldIndex, newIndex);
+        const orderedIds = sortedSubset.map((c) => c._id);
+
+        setCollections((prev) => {
+            const updated = [...prev];
+            sortedSubset.forEach((col, idx) => {
+                const target = updated.find((c) => c._id === col._id);
+                if (target) {
+                    if (viewMode === "reorder_homepage") target.homepageOrder = idx + 1;
+                    if (viewMode === "reorder_general") target.order = idx + 1;
+                }
+            });
+            return updated;
+        });
+
+        startTransition(async () => {
+            if (viewMode === "reorder_general") {
+                await updateGeneralOrderAction(orderedIds);
+            } else if (viewMode === "reorder_homepage") {
+                await updateHomepageOrderAction(orderedIds);
+            }
+        });
+    };
+
+    const isReorderEnabled = viewMode !== "all";
+
     return (
-        <Table>
-            <TableHeader className="bg-background-secondary/50">
-                <TableRow className="hover:bg-transparent border-border/60">
-                    <TableHead className="font-bold text-xs uppercase text-foreground">Nombre</TableHead>
-                    <TableHead className="font-bold text-xs uppercase text-foreground">Tipo</TableHead>
-                    <TableHead className="font-bold text-xs uppercase text-foreground">Slug</TableHead>
-                    <TableHead className="font-bold text-xs uppercase text-foreground">Badge</TableHead>
-                    <TableHead className="font-bold text-xs uppercase text-foreground">Orden</TableHead>
-                    <TableHead className="font-bold text-xs uppercase text-foreground">Estado</TableHead>
-                    <TableHead className="text-right font-bold text-xs uppercase text-foreground w-[60px]">Acciones</TableHead>
-                </TableRow>
-            </TableHeader>
-            <TableBody className="divide-y divide-border/40">
-                {collections.map((col) => (
-                    <TableRow key={col._id} className="hover:bg-background-secondary/40 transition-colors">
-                        <TableCell className="font-bold text-sm text-foreground">
-                            <div className="flex items-center gap-2">
-                                {col.color && (
-                                    <span
-                                        className="w-2 h-2 rounded-full shrink-0"
-                                        style={{ backgroundColor: col.color }}
-                                    />
-                                )}
-                                {col.icon && (
-                                    <span className="text-base leading-none">{col.icon}</span>
-                                )}
-                                <div>
-                                    <span>{col.name}</span>
-                                    <PromotionDates col={col} />
-                                </div>
-                            </div>
-                        </TableCell>
+        <div className="w-full flex flex-col">
+            <div className="flex items-center justify-between p-3  border-border/60 bg-muted/20 gap-4">
+                <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as ViewMode)} className="w-auto">
+                    <TabsList className="grid grid-cols-3 h-8 text-xs p-0.5">
+                        <TabsTrigger value="all" className="text-xs px-3">Vista Lista</TabsTrigger>
+                        <TabsTrigger value="reorder_general" className="text-xs px-3">Ordenar Catálogo</TabsTrigger>
+                        <TabsTrigger value="reorder_homepage" className="text-xs px-3">Ordenar Home</TabsTrigger>
+                    </TabsList>
+                </Tabs>
 
-                        <TableCell>
-                            <Badge
-                                variant={COLLECTION_TYPE_VARIANTS[col.type]}
-                                className="text-[10px] uppercase tracking-wider"
-                            >
-                                {COLLECTION_TYPE_LABELS[col.type]}
-                            </Badge>
-                        </TableCell>
+                {isPending && (
+                    <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground animate-pulse">
+                        <Loader2 size={14} className="animate-spin text-primary" />
+                        <span>Guardando cambios...</span>
+                    </div>
+                )}
+            </div>
 
-                        <TableCell className="text-xs text-muted-foreground font-mono">
-                            {col.slug}
-                        </TableCell>
-
-                        <TableCell>
-                            {col.badgeLabel ? (
-                                <span
-                                    className="text-[10px] font-bold px-1.5 py-0.5 rounded-sm"
-                                    style={{
-                                        backgroundColor: col.badgeColor ?? "#ef4444",
-                                        color: "#fff",
-                                    }}
-                                >
-                                    {col.badgeLabel}
-                                </span>
-                              ) : (
-                                <span className="text-muted-foreground text-xs">—</span>
-                            )}
-                        </TableCell>
-
-                        <TableCell className="text-sm text-foreground">
-                            {col.order}
-                        </TableCell>
-
-                        <TableCell>
-                            <Badge
-                                variant={col.isActive ? "default" : "destructive"}
-                                className="text-[10px] uppercase"
-                            >
-                                {col.isActive ? "Activo" : "Inactivo"}
-                            </Badge>
-                        </TableCell>
-
-                        <TableCell className="text-right">
-                            <CollectionActionsMenu 
-                                id={col._id} 
-                                slug={col.slug} 
-                                isActive={col.isActive} 
-                            />
-                        </TableCell>
-                    </TableRow>
-                ))}
-            </TableBody>
-        </Table>
+            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            {isReorderEnabled ? <TableHead className="w-[40px]"></TableHead> : null}
+                            <TableHead>Nombre</TableHead>
+                            <TableHead>Tipo</TableHead>
+                            <TableHead>Slug</TableHead>
+                            <TableHead>Badge</TableHead>
+                            <TableHead>Maquetación Home</TableHead>
+                            <TableHead>Orden Catálogo</TableHead>
+                            <TableHead>Estado</TableHead>
+                            <TableHead className="text-right w-[60px]">Acciones</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        <SortableContext items={displayCollections.map((c) => c._id)} strategy={verticalListSortingStrategy}>
+                            {displayCollections.map((col) => (
+                                <SortableCollectionRow
+                                    key={col._id}
+                                    col={col}
+                                    isReorderEnabled={isReorderEnabled}
+                                />
+                            ))}
+                        </SortableContext>
+                    </TableBody>
+                </Table>
+            </DndContext>
+        </div>
     );
 }

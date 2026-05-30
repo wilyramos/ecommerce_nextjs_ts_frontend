@@ -1,3 +1,4 @@
+// File: frontend/components/admin/products/ProductVariantsForm.tsx
 "use client";
 
 import { useState, useMemo } from "react";
@@ -20,7 +21,8 @@ import {
 } from "@/components/ui/accordion";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
-import MediaLibraryDialog from "./MediaLibraryDialog";
+
+import { FormMediaField } from "@/components/form/FormMediaField";
 
 interface CategoryAttr {
     name: string;
@@ -31,15 +33,11 @@ interface CategoryAttr {
 interface Props {
     product?: ProductWithCategoryResponse;
     categoryAttributes: CategoryAttr[];
-    globalImagesPool: string[];
-    onUploadToPool: (urls: string[]) => void;
 }
 
-export default function ProductVariantsForm({ 
-    product, 
-    categoryAttributes, 
-    globalImagesPool, 
-    onUploadToPool 
+export default function ProductVariantsForm({
+    product,
+    categoryAttributes
 }: Props) {
     const variantAttributes = categoryAttributes.filter((attr) => attr.isVariant);
 
@@ -219,7 +217,7 @@ export default function ProductVariantsForm({
                                     <div className="flex items-center gap-3">
                                         <div className="w-8 h-8 rounded-sm bg-background-secondary flex items-center justify-center border border-border/40 overflow-hidden relative">
                                             {variant.imagenes?.[0] ? (
-                                                <Image src={variant.imagenes[0]} alt="" fill className="object-contain p-0.5 mix-blend-multiply" unoptimized />
+                                                <Image src={variant.imagenes[0]} alt="" fill sizes="32px" className="object-contain p-0.5 mix-blend-multiply" priority={false} />
                                             ) : (
                                                 <span className="text-[10px] font-bold text-muted-foreground/40">#{(index + 1)}</span>
                                             )}
@@ -246,30 +244,19 @@ export default function ProductVariantsForm({
                             </AccordionTrigger>
 
                             <AccordionContent className="pt-2 pb-5 space-y-4 border-t border-border/40">
-                                {/* MULTIMEDIA DE LA VARIANTE */}
-                                <div className="p-3 rounded-sm border border-dashed border-border/60 bg-background-secondary/20 space-y-3">
-                                    <div className="flex items-center justify-between">
-                                        <Label className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Multimedia Específica</Label>
-                                        <MediaLibraryDialog 
-                                            selectedImages={variant.imagenes || []}
-                                            globalImagesPool={globalImagesPool}
-                                            onConfirmSelection={(imgs) => updateVariant(index, "imagenes", imgs)}
-                                            onUploadSuccess={onUploadToPool}
-                                            triggerLabel="Asignar Fotos"
-                                            triggerVariant="outline"
-                                        />
-                                    </div>
-                                    <div className="flex flex-wrap gap-2 min-h-[40px] items-center">
-                                        {variant.imagenes && variant.imagenes.length > 0 ? (
-                                            variant.imagenes.map((url, i) => (
-                                                <div key={i} className="relative w-10 h-10 rounded-sm border border-border/40 bg-background overflow-hidden p-0.5">
-                                                    <Image src={url} alt="" fill className="object-contain p-0.5 mix-blend-multiply" unoptimized />
-                                                </div>
-                                            ))
-                                        ) : (
-                                            <p className="text-[10px] text-muted-foreground/60 italic font-medium pl-0.5">Esta variante usa la imagen principal o no tiene fotos asignadas.</p>
-                                        )}
-                                    </div>
+
+                                {/* MULTIMEDIA ESPECÍFICA POR VARIANTE */}
+                                <div className="p-4 rounded-md border border-[color:var(--color-border)] bg-muted/10 space-y-2">
+                                    <FormMediaField
+                                        name={`variant_images_${variant._id}`}
+                                        label="Imágenes de la Variante"
+                                        folder="products"
+                                        defaultValue={variant.imagenes || []}
+                                        multiple={true}
+                                        maxFiles={5}
+                                        accept="image"
+                                        onChange={(urls) => updateVariant(index, "imagenes", urls)}
+                                    />
                                 </div>
 
                                 {/* ATRIBUTOS */}
@@ -338,6 +325,7 @@ export default function ProductVariantsForm({
 
                                 <div className="flex justify-end border-t border-border/40 pt-3 mt-1">
                                     <Button
+                                        type="button"
                                         variant="ghost"
                                         size="sm"
                                         onClick={() => removeVariant(index)}
@@ -354,10 +342,11 @@ export default function ProductVariantsForm({
             </Accordion>
 
             <div className="pt-2 flex gap-3">
-                <Button 
-                    onClick={addVariant} 
-                    size="sm" 
-                    variant="outline" 
+                <Button
+                    type="button"
+                    onClick={addVariant}
+                    size="sm"
+                    variant="outline"
                     className="flex-1 h-10 gap-1.5 border-dashed border border-border/80 font-bold uppercase text-xs rounded-sm cursor-pointer hover:bg-background-secondary/40"
                 >
                     <Plus className="w-4 h-4 text-action-cta" /> <span>Añadir Nueva Variante</span>

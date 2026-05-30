@@ -19,7 +19,7 @@
   --primary-foreground: oklch(1 0 0);       /* Texto blanco sobre elementos oscuros */
   
   /* Fondo Secundario de la Marca con Naranja Claro (#FFEDD5) */
-  --secondary: #a8a8a8;      
+  --secondary: #dbdbdb;      
   --secondary-foreground: #0f0f0f;  /* Gris ultra oscuro neutro (sin matiz naranja) para alta legibilidad */
 
   --muted: #4d4d4d;           /* #FFEDD5 */
@@ -49,6 +49,7 @@
   --success: oklch(0.63 0.19 148.6);        /* #10B981 - Stock Disponible / Éxito */
   --warning: oklch(0.77 0.18 73.6);         /* #F59E0B - Últimas Unidades */
   --destructive: #ff6000;     /* #EF4444 - Etiquetas de Descuento */
+  --destructivered: #ff0000;     /* #FF0000 - Etiquetas de ERROR, ELIMINAR */
   --destructive-foreground: oklch(1 0 0);
 
   /* Analítica y Métricas */

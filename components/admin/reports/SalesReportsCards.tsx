@@ -1,12 +1,14 @@
+// File: frontend/components/admin/reports/SalesReportsCards.tsx
+
 import renderSummaryItem from './renderSummaryItem';
 import { getSummarySales } from '@/src/services/sales';
 import { FiDollarSign, FiPackage, FiShoppingCart, FiTrendingUp } from 'react-icons/fi';
 import { GoLinkExternal } from "react-icons/go";
 import Link from 'next/link';
-import { HeadingH3 } from '@/components/ui/Heading';
+import { H2 } from '@/components/ui/Typography';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 export default async function SalesReportsCards() {
-    // Fechas: último mes
     const startDate: string = new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString();
     const endDate: string = new Date().toISOString();
 
@@ -19,27 +21,27 @@ export default async function SalesReportsCards() {
     });
 
     return (
-        <section className="p-2">
-            {/* Header */}
-            <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-2">
-                <HeadingH3>Resumen de Ventas</HeadingH3>
+        <section className="space-y-4">
+            <header className="flex items-center justify-between border-b border-border pb-2 select-none">
+                <H2>Resumen de Ventas</H2>
 
-                <div className="relative group self-start sm:self-auto">
-                    <Link
-                        href="/admin/reports/sales"
-                        className="text-gray-400 hover:text-gray-600 transition-colors"
-                    >
-                        <GoLinkExternal size={18} />
-                    </Link>
-
-                    {/* Tooltip */}
-                    <span className="absolute right-0 top-full mt-1 w-max px-2 py-1 text-sm text-white bg-gray-800 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity">
-                        Ir a la vista general de ventas
-                    </span>
-                </div>
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Link
+                                href="/admin/reports/sales"
+                                className="p-2 text-muted-foreground hover:text-action-cta bg-background-secondary rounded-[var(--radius-sm)] transition-colors focus-visible:outline-hidden"
+                            >
+                                <GoLinkExternal size={16} />
+                            </Link>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Ir a la vista general de ventas</p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
             </header>
 
-            {/* Cards */}
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
                 {renderSummaryItem("Ingresos totales", salesSummary?.totalSales || 0, <FiDollarSign />)}
                 {renderSummaryItem("Ventas realizadas", salesSummary?.numberSales || 0, <FiPackage />)}

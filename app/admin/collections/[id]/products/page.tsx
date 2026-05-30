@@ -12,10 +12,14 @@ import { Badge } from "@/components/ui/badge";
 export const dynamic = "force-dynamic";
 
 const COLLECTION_TYPE_LABELS: Record<string, string> = {
-    promotion: "Promoción",
-    theme:     "Temática",
-    editorial: "Editorial",
-    seasonal:  "Temporada",
+    featured:     "Destacados",
+    new_arrivals: "Nuevos ingresos",
+    best_sellers: "Más vendidos",
+    on_sale:      "En oferta",
+    promotion:    "Promoción",
+    theme:        "Temática",
+    editorial:    "Editorial",
+    seasonal:     "Temporada",
 };
 
 interface Props {
@@ -53,9 +57,7 @@ export default async function CollectionProductsPage({ params, searchParams }: P
                             Editar colección
                         </Link>
                     </Button>
-                    <Button variant="ghost" size="sm" className="text-xs" asChild>
-                        <Link href="/admin/collections">← Volver</Link>
-                    </Button>
+                  
                 </div>
             }
         >

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { CategoryResponse } from "@/src/schemas";
+import type { CategoryResponse } from "@/src/schemas/category.schema";
 import { routes } from "@/lib/routes";
 
 

@@ -1,3 +1,5 @@
+//File: frontend/src/services/comparison-service.ts
+
 import { Comparison, ComparisonFormValues } from "../schemas/comparison.schema";
 import { verifySession } from "../auth/dal";
 

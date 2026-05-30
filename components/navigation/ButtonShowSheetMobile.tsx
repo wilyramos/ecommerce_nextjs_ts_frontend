@@ -11,7 +11,9 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, ChevronRight } from "lucide-react";
 import { ScrollArea } from "../ui/scroll-area";
-import type { CategoryResponse } from "@/src/schemas";
+
+import type { CategoryResponse } from "@/src/schemas/category.schema";
+
 import { usePathname } from "next/navigation";
 import { routes } from "@/lib/routes";
 import Logo from "../ui/Logo";

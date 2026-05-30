@@ -249,6 +249,7 @@ export const productBaseSchema = z.object({
     dimensions: dimensionsSchema.optional(),
     metaTitle: z.string().max(60, 'El metaTitle no puede superar los 60 caracteres').optional(),
     metaDescription: z.string().max(160, 'La metaDescription no puede superar los 160 caracteres').optional(),
+    collections: z.array(z.string()).optional().default([]),
 });
 
 // ---------- Create & Update ----------
@@ -397,7 +398,7 @@ export type TFilter = z.infer<typeof filterSchema>;
 
 
 /* ============================================================
-   🚀 RESPUESTA FINAL DE LA API CON FILTROS
+   RESPUESTA FINAL DE LA API CON FILTROS
 ============================================================ */
 
 export const productsApiResponseWithFilters = productsAPIResponse.extend({
@@ -409,17 +410,21 @@ export const productsApiResponseWithFilters = productsAPIResponse.extend({
 export type TProductsApiResponseWithFilters = z.infer<typeof productsApiResponseWithFilters>;
 
 
-export const ApiProductWithCategorySchema = ApiProductSchema.extend({
-    categoria: apiCategorySchema,
-});
+// Corrección: Mantenemos el nombre nativo 'collections' en lugar de renombrarlo a systemCollections
+export const ApiProductWithCategorySchema = ApiProductSchema
+    .extend({
+        categoria: apiCategorySchema,
+        collections: z.array(z.string()).optional().default([]),
+    });
 
+export type ProductWithCategoryResponse = z.infer<typeof ApiProductWithCategorySchema>;
 export const productsWithCategoryAPIResponse = z.object({
     products: z.array(ApiProductWithCategorySchema),
     totalPages: z.number(),
     currentPage: z.number(),
     totalProducts: z.number(),
 });
-export type ProductWithCategoryResponse = z.infer<typeof ApiProductWithCategorySchema>;
+
 
 /* ============================================================
    🧾 TIPOS GENERALES

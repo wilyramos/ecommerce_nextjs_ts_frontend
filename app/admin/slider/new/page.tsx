@@ -4,17 +4,15 @@ import CreateSliderBannerForm from "@/components/admin/banner/CreateSliderBanner
 
 export default function NewSliderPage() {
     return (
-        <AdminPageWrapper 
+        <AdminPageWrapper
             title="Nuevo Banner del Slider"
             breadcrumbItems={[
                 { label: "Home", href: "/admin" },
                 { label: "Slider", href: "/admin/slider" },
             ]}
             breadcrumbCurrent="Nuevo Banner"
-            
-        
         >
-            <div className="max-screen-2xl mx-auto">
+            <div className="max-w-screen-2xl mx-auto">                
                 <CreateSliderBannerForm />
             </div>
         </AdminPageWrapper>

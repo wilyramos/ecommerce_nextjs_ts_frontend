@@ -1,24 +1,23 @@
-// src/app/admin/products/category/new/page.tsx
-import { getCategories } from "@/src/services/categorys";
+// File: app/admin/products/category/new/page.tsx
+
+import { getRootCategories } from "@/src/services/categorys";
 import CreateCategoryForm from "@/components/admin/category/CreateCategoryForm";
-import BackButton from "@/components/ui/BackButton";
+import AdminPageWrapper from "@/components/admin/AdminPageWrapper";
 
 export default async function NewCategoryPage() {
-    const categories = await getCategories();
+    const rootCategories = await getRootCategories();
 
     return (
-        <main className="mx-auto p-4">
-            {/* Encabezado */}
-            <header className="flex flex-col md:flex-row items-center justify-between gap-4">
-                <h1 className="text-2xl font-bold text-gray-900">Nueva Categoría</h1>
-
-                <BackButton />
-            </header>
-
-            {/* Formulario */}
-            <section className="mt-8">
-                <CreateCategoryForm categories={categories} />
-            </section>
-        </main>
+        <AdminPageWrapper
+            title="Nueva Categoría"
+            breadcrumbItems={[
+                { label: "Dashboard", href: "/admin" },
+                { label: "Categorías", href: "/admin/products/category" },
+            ]}
+            breadcrumbCurrent="Nueva"
+            showBackButton
+        >
+            <CreateCategoryForm categories={rootCategories} />
+        </AdminPageWrapper>
     );
 }

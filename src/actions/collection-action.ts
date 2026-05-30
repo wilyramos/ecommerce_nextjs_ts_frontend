@@ -28,26 +28,43 @@ const getErrorMessage = (error: unknown): string => {
 function processCollectionFormData(formData: FormData) {
     const rawData = Object.fromEntries(formData.entries());
 
-    // Función auxiliar interna para procesar cada fecha de forma segura
     const parseToISO = (value: unknown): string | undefined => {
-        if (!value || typeof value !== "string" || value.trim() === "") {
-            return undefined;
-        }
+        if (!value || typeof value !== "string" || value.trim() === "") return undefined;
         const date = new Date(value);
         return isNaN(date.getTime()) ? undefined : date.toISOString();
     };
 
+    const parseNumber = (value: unknown): number | undefined => {
+        if (!value && value !== 0) return undefined;
+        const n = Number(value);
+        return isNaN(n) ? undefined : n;
+    };
+
     return {
         ...rawData,
-        order: rawData.order ? Number(rawData.order) : undefined,
-        isActive: formData.has("isActive"),
-        startsAt: parseToISO(rawData.startsAt),
-        endsAt: parseToISO(rawData.endsAt),
+        // Numéricos
+        order:              parseNumber(rawData.order),
+        homepageOrder:      parseNumber(rawData.homepageOrder),
+        maxHomepageItems:   parseNumber(rawData.maxHomepageItems),
+        // Booleanos — presencia del campo en el FormData indica true
+        isActive:           formData.has("isActive"),
+        showInHomepage:     formData.has("showInHomepage"),
+        // Fechas
+        startsAt:           parseToISO(rawData.startsAt),
+        endsAt:             parseToISO(rawData.endsAt),
     };
 }
 
-function revalidatePromotion(type?: CollectionType | string) {
+function revalidateCollectionCaches(slug: string, type?: CollectionType | string) {
+    revalidatePath("/admin/collections");
+    revalidatePath(`/admin/collections/${slug}`);
+    revalidateTag(`collection-${slug}`);
+    revalidateTag("collections-list");
+
     if (type === "promotion") revalidateTag("promotions-active");
+
+    // Cualquier cambio en una collection que esté en homepage invalida el caché
+    revalidateTag("homepage-sections");
 }
 
 export async function createCollectionAction(
@@ -59,9 +76,7 @@ export async function createCollectionAction(
         const validatedFields = createCollectionPayloadSchema.parse(processedData);
         const newCollection = await collectionService.create(validatedFields);
 
-        revalidatePath("/admin/collections");
-        revalidateTag("collections-list");
-        revalidatePromotion(validatedFields.type);
+        revalidateCollectionCaches(newCollection.slug, newCollection.type);
 
         return { success: true, data: newCollection, message: "Colección creada con éxito" };
     } catch (error) {
@@ -79,11 +94,7 @@ export async function updateCollectionAction(
         const validatedFields = updateCollectionPayloadSchema.parse(processedData);
         const updatedCollection = await collectionService.update(id, validatedFields);
 
-        revalidatePath("/admin/collections");
-        revalidatePath(`/admin/collections/${updatedCollection.slug}`);
-        revalidateTag(`collection-${updatedCollection.slug}`);
-        revalidateTag("collections-list");
-        revalidatePromotion(updatedCollection.type);
+        revalidateCollectionCaches(updatedCollection.slug, updatedCollection.type);
 
         return { success: true, data: updatedCollection, message: "Colección actualizada con éxito" };
     } catch (error) {
@@ -99,10 +110,7 @@ export async function deleteCollectionAction(
     try {
         await collectionService.delete(id);
 
-        revalidatePath("/admin/collections");
-        revalidateTag(`collection-${slug}`);
-        revalidateTag("collections-list");
-        revalidatePromotion(type);
+        revalidateCollectionCaches(slug, type);
 
         return { success: true, message: "Colección eliminada correctamente" };
     } catch (error) {
@@ -119,6 +127,7 @@ export async function addProductsToCollectionAction(
         await collectionService.addProducts(id, productIds);
 
         revalidateTag(`collection-${slug}`);
+        revalidateTag("homepage-sections");
         revalidatePath(`/admin/collections/${slug}`);
 
         return { success: true, message: "Productos vinculados con éxito" };
@@ -136,9 +145,44 @@ export async function removeProductFromCollectionAction(
         await collectionService.removeProduct(id, productId);
 
         revalidateTag(`collection-${slug}`);
+        revalidateTag("homepage-sections");
         revalidatePath(`/admin/collections/${slug}`);
 
         return { success: true, message: "Producto desvinculado con éxito" };
+    } catch (error) {
+        return { success: false, error: getErrorMessage(error) };
+    }
+}
+
+// ... (Funciones anteriores se mantienen exactamente igual)
+
+export async function updateGeneralOrderAction(
+    orderedIds: string[]
+): Promise<ActionResponse> {
+    try {
+        await collectionService.updateGeneralOrder(orderedIds);
+
+        // Se revalida la vista del listado general en el admin
+        revalidatePath("/admin/collections");
+        revalidateTag("collections-list");
+
+        return { success: true, message: "Orden general actualizado con éxito" };
+    } catch (error) {
+        return { success: false, error: getErrorMessage(error) };
+    }
+}
+
+export async function updateHomepageOrderAction(
+    orderedIds: string[]
+): Promise<ActionResponse> {
+    try {
+        await collectionService.updateHomepageOrder(orderedIds);
+
+        // Revalida las secciones públicas de la página de inicio y el panel
+        revalidatePath("/admin/collections");
+        revalidateTag("homepage-sections");
+
+        return { success: true, message: "Orden del Home actualizado con éxito" };
     } catch (error) {
         return { success: false, error: getErrorMessage(error) };
     }

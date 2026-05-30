@@ -22,6 +22,7 @@ export default function Sidebarcs() {
         { name: "Garantías y devoluciones", href: "/hc/garantias-y-devoluciones", icon: RiShieldCheckLine, iconFill: RiShieldCheckFill },
         { name: "Preguntas frecuentes", href: "/hc/preguntas-frecuentes", icon: RiChat1Line, iconFill: RiChat1Fill },
         { name: "Políticas de privacidad", href: "/hc/politicas-de-privacidad", icon: RiFileShieldLine, iconFill: RiFileShieldFill },
+        { name: "Libro de reclamaciones", href: "/hc/libro-de-reclamaciones", icon: RiFileShieldLine, iconFill: RiFileShieldFill },
     ];
 
     return (

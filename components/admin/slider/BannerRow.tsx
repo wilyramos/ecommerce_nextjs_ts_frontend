@@ -1,3 +1,5 @@
+//File: frontend/components/admin/slider/BannerRow.tsx
+
 "use client";
 
 import { useOptimistic, useTransition } from "react";

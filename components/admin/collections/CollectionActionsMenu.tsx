@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { MoreVertical, Layers, Edit } from "lucide-react";
+import { MoreVertical, Layers, Edit, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
@@ -41,11 +41,17 @@ export function CollectionActionsMenu({ id, slug, isActive }: CollectionActionsM
                         <span>Editar</span>
                     </Link>
                 </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                    <Link href={`/colecciones/${slug}`} target="_blank" className="w-full flex items-center gap-2 cursor-pointer">
+                        <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
+                        <span>Ver en tienda</span>
+                    </Link>
+                </DropdownMenuItem>
                 {isActive && (
                     <>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem 
-                            variant="destructive" 
+                        <DropdownMenuItem
+                            variant="destructive"
                             onSelect={(e) => e.preventDefault()}
                             className="p-0"
                         >

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Settings2, Tag } from "lucide-react";
-import type { CategoryListResponse } from "@/src/schemas";
+import type { CategoryListResponse } from "@/src/schemas/category.schema";
 
 // UI Components
 import {

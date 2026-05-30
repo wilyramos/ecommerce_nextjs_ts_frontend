@@ -120,8 +120,6 @@ export const SliderBannerSchema = BaseSliderBannerSchema.superRefine((data, ctx)
 });
 
 // ─── RESPONSE SCHEMA ──────────────────────────────────────────────────────────
-// Se extiende desde el BaseSchema para evitar que los superRefine del formulario
-// interfieran con los datos históricos que llegan de la base de datos.
 
 export const SliderBannerResponseSchema = BaseSliderBannerSchema.extend({
     _id: z.string(),

@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import type { CategoryListResponse } from "@/src/schemas";
+import type { CategoryListResponse } from "@/src/schemas/category.schema";
 import { MdClear } from "react-icons/md";
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";

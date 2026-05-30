@@ -18,10 +18,10 @@ import {
 import { Button } from "@/components/ui/button";
 
 // Tipos
-import type { TApiProduct } from "@/src/schemas";
+import type { ProductWithCategoryResponse } from "@/src/schemas";
 
 interface SEOProductProps {
-    product?: TApiProduct;
+    product?: ProductWithCategoryResponse;
 }
 
 export default function SEOProduct({ product }: SEOProductProps) {

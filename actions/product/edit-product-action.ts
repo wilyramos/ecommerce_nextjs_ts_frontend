@@ -3,7 +3,7 @@
 import getToken from "@/src/auth/token"
 import { updateProductSchema, especificacionSchema, SuccessResponse } from "@/src/schemas"
 import type { TApiVariant, TEspecificacion } from "@/src/schemas"
-import { revalidatePath } from "next/cache"
+import { revalidatePath, revalidateTag } from "next/cache"
 
 type ActionStateType = {
     errors: string[];
@@ -61,7 +61,14 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
     const tagsRaw = formData.get('tags') as string;
     const tags: string[] = tagsRaw ? JSON.parse(tagsRaw) : [];
 
-    // 6. Dimensions
+    // 6. Captura de ObjectIds del formulario enviados desde ProductSwitches
+    const systemCollectionsRaw = formData.get("systemCollections") as string;
+    const systemCollectionsIds: string[] = systemCollectionsRaw ? JSON.parse(systemCollectionsRaw) : [];
+    
+    console.log("----------------------------------------");
+    console.log("🔍 [LOG 1] IDs crudos recibidos del Form:", systemCollectionsIds);
+
+    // 7. Dimensions
     const dimLength = formData.get('dimensions.length') as string;
     const dimWidth = formData.get('dimensions.width') as string;
     const dimHeight = formData.get('dimensions.height') as string;
@@ -74,10 +81,10 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
             }
             : undefined;
 
-    // 7. Complementarios
+    // 8. Complementarios
     const complementarios = formData.getAll('complementarios') as string[];
 
-    // 8. Construir productData
+    // 9. Construir productData asignándolo al campo real del modelo ('collections')
     const productData = {
         nombre: formData.get("nombre"),
         descripcion: formData.get("descripcion"),
@@ -95,45 +102,62 @@ export async function EditProduct(id: string, prevState: ActionStateType, formDa
         especificaciones,
         variants: cleanedVariants,
         complementarios: complementarios.length > 0 ? complementarios : [],
-        esDestacado: formData.get("esDestacado") === "true",
-        esNuevo: formData.get("esNuevo") === "true",
         isActive: formData.get("isActive") === "true",
-        isFrontPage: formData.get("isFrontPage") === "true",
         diasEnvio: formData.get('diasEnvio') ? Number(formData.get('diasEnvio')) : undefined,
         tags,
         weight: formData.get('weight') ? Number(formData.get('weight')) : undefined,
         dimensions,
         metaTitle: formData.get('metaTitle') || undefined,
         metaDescription: formData.get('metaDescription') || undefined,
+        
+        // Inyectamos el array relacional sobre la propiedad esperada por Zod y MongoDB
+        collections: systemCollectionsIds,
     };
 
-    // 9. Validar con Zod
+    console.log("🔍 [LOG 2] productData pre-validación Zod:", { nombre: productData.nombre, collections: productData.collections });
+
+    // 10. Validar con Zod
     const product = updateProductSchema.safeParse(productData);
     if (!product.success) {
+        console.error("❌ [LOG 3] Errores estructurales de Zod:", product.error.format());
         return {
             errors: product.error.errors.map(error => error.message),
             success: ""
         };
     }
 
-    // 10. Enviar al Backend
-    const token = await getToken();
-    const req = await fetch(`${process.env.API_URL}/products/${id}`, {
-        method: 'PUT',
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(product.data)
-    });
+    console.log("🔍 [LOG 4] Data limpia devuelta por Zod (product.data):", { nombre: product.data.nombre, collections: product.data.collections });
+    console.log("----------------------------------------");
 
-    const json = await req.json();
-    if (!req.ok) {
-        return { errors: [json.message], success: "" };
+    // 11. Enviar al Backend vía PUT
+    try {
+        const token = await getToken();
+        const req = await fetch(`${process.env.API_URL}/products/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(product.data)
+        });
+
+        const json = await req.json();
+        if (!req.ok) {
+            console.error("❌ [LOG 5] El backend rechazó la petición PUT:", json);
+            return { errors: [json.message || "Error al actualizar el producto."], success: "" };
+        }
+
+        const success = SuccessResponse.parse(json);
+
+        // 12. Purga y Revalidación de Caché en cascada
+        revalidatePath(`/admin/products/${id}`);
+        revalidatePath("/admin/products");
+        revalidateTag("homepage-sections");
+
+        return { errors: [], success: success.message };
+
+    } catch (error) {
+        console.error("❌ [LOG EXCEPCIÓN] Fallo crítico de red o fetch en EditProduct:", error);
+        return { errors: ["Error de conexión con el servidor."], success: "" };
     }
-
-    const success = SuccessResponse.parse(json);
-    revalidatePath(`/admin/products/${id}`);
-
-    return { errors: [], success: success.message };
 }

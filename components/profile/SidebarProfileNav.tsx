@@ -1,3 +1,5 @@
+// File: frontend/components/store/SidebarProfileNav.tsx
+
 "use client";
 
 import Link from "next/link";
@@ -34,7 +36,7 @@ export default function SidebarProfileNav() {
     const pathname = usePathname();
 
     return (
-        <nav className="flex flex-col gap-0.5">
+        <nav className="flex flex-col gap-0.5 bg-sidebar text-sidebar-foreground select-none">
             {links.map(({ href, label, iconActive: IconActive, iconInactive: IconInactive }) => {
                 const isActive = pathname === href;
 
@@ -43,23 +45,23 @@ export default function SidebarProfileNav() {
                         key={href}
                         href={href}
                         className={cn(
-                            "flex items-center gap-4 px-3 py-3 text-sm transition-all duration-300 relative group ",
+                            "flex items-center gap-4 px-3 py-3 text-sm font-medium transition-colors relative group rounded-[var(--radius-sm)] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-sidebar-ring",
                             isActive
-                                ? "text-[var(--color-text-primary)] font-bold "
-                                : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-tertiary)]/50"
+                                ? "bg-sidebar-accent text-sidebar-accent-foreground font-bold"
+                                : "text-sidebar-foreground hover:bg-background-secondary hover:text-foreground"
                         )}
                     >
-                        {/* Indicador Warm sutil (Dot) */}
+                        {/* Indicador Estructural en Estado Activo */}
                         {isActive && (
-                            <div className="absolute left-0 w-1 h-full bg-[var(--color-accent-warm)]  animate-in fade-in slide-in-from-left-2 duration-500" />
+                            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-ring rounded-r-full animate-in fade-in slide-in-from-left-1 duration-300" />
                         )}
 
-                        {/* Icon Switcher */}
-                        <div className="flex items-center justify-center w-6">
+                        {/* Contenedor del Icono */}
+                        <div className="flex items-center justify-center w-6 shrink-0">
                             {isActive ? (
-                                <IconActive className="text-xl text-[var(--color-accent-warm)] animate-in zoom-in duration-300" />
+                                <IconActive className="text-xl text-ring animate-in zoom-in-95 duration-200" />
                             ) : (
-                                <IconInactive className="text-xl text-[var(--color-text-tertiary)] group-hover:text-[var(--color-text-secondary)] transition-colors" />
+                                <IconInactive className="text-xl text-muted-foreground group-hover:text-foreground transition-colors" />
                             )}
                         </div>
 

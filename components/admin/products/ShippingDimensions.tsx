@@ -13,10 +13,10 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import type { TApiProduct } from "@/src/schemas";
+import type { ProductWithCategoryResponse } from "@/src/schemas";
 
 interface ShippingDimensionsProps {
-    product?: TApiProduct;
+    product?: ProductWithCategoryResponse;
 }
 
 export default function ShippingDimensions({ product }: ShippingDimensionsProps) {

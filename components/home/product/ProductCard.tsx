@@ -182,7 +182,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                     {/* Badges: Descuento y Nuevo */}
                     <div className="absolute top-2 left-2 pointer-events-none flex flex-col gap-1">
                         {(product.precioComparativo ?? 0) > 0 && (
-                            <span className="px-1 py-0.5 bg- text-destructive-foreground text-[10px] font-bold uppercase tracking-wider">
+                            <span className="px-1 py-0.5 bg-destructive text-destructive-foreground text-[10px] font-bold uppercase tracking-wider">
                                 -{Math.round(discountedPrice)}%
                             </span>
                         )}

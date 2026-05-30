@@ -1,5 +1,6 @@
-import "server-only";
+//File: frontend/src/services/users.ts
 
+import "server-only";
 
 import getToken from "../auth/token"
 import { UsersAPIResponse } from "../schemas";

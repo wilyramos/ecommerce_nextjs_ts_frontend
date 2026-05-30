@@ -1,3 +1,5 @@
+//File: frontend/components/seo/ProductJsonLd.tsx
+
 import type { ProductWithCategoryResponse } from "@/src/schemas"
 
 export default function ProductJsonLd({ producto }: { producto: ProductWithCategoryResponse }) {

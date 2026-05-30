@@ -1,3 +1,4 @@
+// File: frontend/components/admin/products/ProductDescriptionEditor.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -17,8 +18,10 @@ import { LinkNode } from "@lexical/link";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
 import { ListItemNode, ListNode } from "@lexical/list";
 import { TableNode, TableCellNode, TableRowNode } from "@lexical/table";
-import { ImageNode } from "@/components/editor/nodes/ImageNode";
-import Toolbar from "./Toolbar";
+
+// IMPORTACIÓN ESTÁNDAR ÚNICA MEDIANTE ALIAS
+import { ImageNode, $createImageNode } from "@/components/editor/nodes/ImageNode";
+import Toolbar from "@/components/admin/products/Toolbar";
 import EditorTheme from "@/components/form/editor/EditorTheme";
 
 const editorConfig: InitialConfigType = {
@@ -40,15 +43,12 @@ const moveStylesToSpans = (dom: Document) => {
     ];
 
     const elements = doc.querySelectorAll('*');
-
     elements.forEach((el) => {
         if (!(el instanceof HTMLElement)) return;
-
         const hasStyles = stylesToTransfer.some(style => el.style.getPropertyValue(style));
 
         if (hasStyles) {
             const childNodes = Array.from(el.childNodes);
-
             if (childNodes.length === 0) return;
 
             childNodes.forEach(child => {
@@ -58,18 +58,14 @@ const moveStylesToSpans = (dom: Document) => {
 
                     stylesToTransfer.forEach(style => {
                         const val = el.style.getPropertyValue(style);
-                        if (val) {
-                            span.style.setProperty(style, val);
-                        }
+                        if (val) span.style.setProperty(style, val);
                     });
-
                     el.replaceChild(span, child);
                 }
                 else if (child instanceof HTMLElement) {
                     stylesToTransfer.forEach(style => {
                         const parentVal = el.style.getPropertyValue(style);
                         const childVal = child.style.getPropertyValue(style);
-
                         if (parentVal && !childVal) {
                             child.style.setProperty(style, parentVal);
                         }
@@ -78,7 +74,6 @@ const moveStylesToSpans = (dom: Document) => {
             });
         }
     });
-
     return doc;
 };
 
@@ -91,11 +86,9 @@ function InitialHTMLPlugin({ html }: { html: string }) {
 
         editor.update(() => {
             const root = $getRoot();
-
             if (root.getTextContentSize() === 0) {
                 const parser = new DOMParser();
                 let dom = parser.parseFromString(html, "text/html");
-
                 dom = moveStylesToSpans(dom);
 
                 const nodes = $generateNodesFromDOM(editor, dom);
@@ -103,9 +96,30 @@ function InitialHTMLPlugin({ html }: { html: string }) {
                 $insertNodes(nodes);
             }
         });
-
         setIsLoaded(true);
     }, [html, editor, isLoaded]);
+
+    return null;
+}
+
+interface MediaInsertionPluginProps {
+    urlsToInsert: string[];
+    onClearUrls: () => void;
+}
+
+function MediaInsertionPlugin({ urlsToInsert, onClearUrls }: MediaInsertionPluginProps) {
+    const [editor] = useLexicalComposerContext();
+
+    useEffect(() => {
+        if (urlsToInsert.length === 0) return;
+
+        editor.update(() => {
+            const nodes = urlsToInsert.map(url => $createImageNode(url, "Imagen insertada"));
+            $insertNodes(nodes);
+        });
+
+        onClearUrls();
+    }, [urlsToInsert, editor, onClearUrls]);
 
     return null;
 }
@@ -113,13 +127,33 @@ function InitialHTMLPlugin({ html }: { html: string }) {
 export default function ProductDescriptionEditor({ initialHTML = "" }) {
     const [html, setHtml] = useState(initialHTML);
     const [isHTMLMode, setIsHTMLMode] = useState(false);
+    const [pendingUrls, setPendingUrls] = useState<string[]>([]);
+    const [resetKey, setResetKey] = useState(0);
+
+    const handleMediaChange = (urls: string[]) => {
+        if (urls.length > 0) {
+            setPendingUrls(urls);
+        }
+    };
+
+    const handleClearUrls = () => {
+        setPendingUrls([]);
+        setResetKey(prev => prev + 1);
+    };
 
     return (
-        <div className="w-full border border-border/60 rounded-sm overflow-hidden bg-background shadow-3xs text-foreground">
+        <div className="w-full border border-border/60 rounded-sm overflow-hidden bg-background text-foreground ">
             <input type="hidden" name="descripcion" value={html} />
 
             <LexicalComposer initialConfig={editorConfig}>
-                <Toolbar onToggleHTML={() => setIsHTMLMode(m => !m)} isHTMLMode={isHTMLMode} />
+                <div className="flex items-center justify-between border-b border-border/40 bg-background w-full">
+                    <Toolbar 
+                        onToggleHTML={() => setIsHTMLMode(m => !m)} 
+                        isHTMLMode={isHTMLMode} 
+                        mediaResetKey={resetKey}
+                        onMediaChange={handleMediaChange}
+                    />
+                </div>
 
                 {isHTMLMode ? (
                     <textarea
@@ -143,6 +177,7 @@ export default function ProductDescriptionEditor({ initialHTML = "" }) {
                             ErrorBoundary={LexicalErrorBoundary}
                         />
                         <InitialHTMLPlugin html={initialHTML} />
+                        <MediaInsertionPlugin urlsToInsert={pendingUrls} onClearUrls={handleClearUrls} />
                         <HistoryPlugin />
                         <AutoFocusPlugin />
                         <ListPlugin />

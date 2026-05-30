@@ -1,11 +1,13 @@
+// File: frontend/components/admin/products/ProductForm.tsx
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
-import { X, ImageIcon, LayoutGrid, Info } from "lucide-react";
+import { Info } from "lucide-react";
 
 // Types
-import type { ProductWithCategoryResponse, CategoryListResponse } from "@/src/schemas";
+import type { ProductWithCategoryResponse } from "@/src/schemas";
+import type { CategoryListResponse } from "@/src/schemas/category.schema";
+
 import type { TBrand } from "@/src/schemas/brands";
 import type { ProductLine } from "@/src/schemas/line.schema";
 
@@ -22,33 +24,34 @@ import SpecificationsSection from "./SpecificationsSection";
 import ProductDescriptionEditor from "./ProductDescriptionEditor";
 import BrandCombobox from "./BrandCombobox";
 import ProductVariantsForm from "./ProductVariantsForm";
-import MediaLibraryDialog from "./MediaLibraryDialog";
 import ComplementaryProductsSection from "./ComplementaryProductsSection";
 import SEOProduct from "./SEOproduct";
 import TagsInput from "./TagsInput";
 import ShippingDimensions from "./ShippingDimensions";
+import type { Collection } from "@/src/schemas/collection.schema";
+
+// Componente Unificado de Medios
+import { FormMediaField } from "@/components/form/FormMediaField";
 
 export default function ProductForm({
     product,
     categorias,
     brands,
     lines,
+    allCollections,
 }: {
     product?: ProductWithCategoryResponse;
     categorias: CategoryListResponse;
     brands: TBrand[];
     lines: ProductLine[];
+    allCollections: Collection[];
 }) {
     const initialBrandId = typeof product?.brand === "object" ? product?.brand?._id : product?.brand;
     const initialLineId = typeof product?.line === "object" ? product?.line?._id : product?.line;
 
     const [selectedCategoryId, setSelectedCategoryId] = useState<string | undefined>(product?.categoria?._id);
     const [selectedBrandId, setSelectedBrandId] = useState<string | undefined>(initialBrandId);
-    const [masterImages, setMasterImages] = useState<string[]>(() => Array.from(new Set(product?.imagenes || [])));
-
-    const handleAddImagesToPool = (newImages: string[]) => {
-        setMasterImages(prev => Array.from(new Set([...prev, ...newImages])));
-    };
+    const [masterImages] = useState<string[]>(() => Array.from(new Set(product?.imagenes || [])));
 
     const filteredLines = lines.filter(line => {
         if (!selectedBrandId) return false;
@@ -109,42 +112,17 @@ export default function ProductForm({
                     </div>
                 </section>
 
-                {/* 2. CONTENIDO VISUAL (GALERÍA) */}
+                {/* 2. CONTENIDO VISUAL - GALERÍA MULTIMEDIA UNIFICADA */}
                 <section className="p-5 border border-border/60 bg-background rounded-sm space-y-4">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                            <ImageIcon className="w-4 h-4 text-muted-foreground/80" />
-                            <h2 className="text-[11px] font-bold uppercase tracking-wider text-foreground">Galería Multimedia</h2>
-                        </div>
-                        <MediaLibraryDialog
-                            selectedImages={masterImages}
-                            globalImagesPool={masterImages}
-                            onConfirmSelection={setMasterImages}
-                            onUploadSuccess={handleAddImagesToPool}
-                            triggerLabel="Gestionar Imágenes"
-                        />
-                    </div>
-
-                    <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-3 p-4 border border-dashed border-border/60 bg-background-secondary/30 rounded-sm">
-                        {masterImages.map((img) => (
-                            <div key={img} className="relative aspect-square border border-border/40 bg-background rounded-sm overflow-hidden group">
-                                <Image src={img} alt="Product" fill className="object-contain p-1 mix-blend-multiply" unoptimized />
-                                <button
-                                    type="button"
-                                    onClick={() => setMasterImages(prev => prev.filter(i => i !== img))}
-                                    className="absolute top-1 right-1 bg-foreground/80 text-background p-1 opacity-0 group-hover:opacity-100 transition-opacity rounded-full outline-none cursor-pointer"
-                                >
-                                    <X size={10} />
-                                </button>
-                                <input type="hidden" name="imagenes[]" value={img} />
-                            </div>
-                        ))}
-                        {masterImages.length === 0 && (
-                            <div className="col-span-full py-6 text-center text-muted-foreground/60 text-xs font-medium">
-                                No hay imágenes seleccionadas
-                            </div>
-                        )}
-                    </div>
+                    <FormMediaField
+                        name="imagenes"
+                        label="Galería Multimedia"
+                        folder="products"
+                        defaultValue={masterImages}
+                        multiple={true}
+                        maxFiles={15}
+                        accept="both"
+                    />
                 </section>
 
                 {/* 3. DESCRIPCIÓN ENRIQUECIDA */}
@@ -192,15 +170,9 @@ export default function ProductForm({
 
                 {/* 5. VARIANTES */}
                 <section className="p-5 border border-border/60 bg-background rounded-sm">
-                    <div className="flex items-center gap-2 mb-3">
-                        <LayoutGrid className="w-4 h-4 text-muted-foreground/80" />
-                        <h2 className="text-[11px] font-bold uppercase tracking-wider text-foreground">Variantes de Producto</h2>
-                    </div>
                     <ProductVariantsForm
                         product={product}
                         categoryAttributes={dynamicCategoryAttributes}
-                        globalImagesPool={masterImages}
-                        onUploadToPool={handleAddImagesToPool}
                     />
                 </section>
 
@@ -214,23 +186,14 @@ export default function ProductForm({
             {/* =================== COLUMNA LATERAL (1/4) =================== */}
             <aside className="space-y-4">
                 <div className="sticky top-6 space-y-4">
-
-                    {/* Estatus y Visibilidad */}
                     <div className="p-4 border border-border/60 bg-background rounded-sm">
-                        <ProductSwitches product={product} />
+                        <ProductSwitches product={product} allCollections={allCollections} />
                     </div>
-
-                    {/* Organización */}
                     <div className="p-4 border border-border/60 bg-background rounded-sm">
                         <TagsInput initial={product?.tags || []} />
                     </div>
-
-                    {/* Logística */}
                     <ShippingDimensions product={product} />
-
-                    {/* SEO Metadata */}
                     <SEOProduct product={product} />
-
                 </div>
             </aside>
         </div>

@@ -1,9 +1,12 @@
+// File: frontend/app/admin/orders/page.tsx
+
 import { getOrders } from "@/src/services/orders";
 import OrdersTable from "@/components/admin/orders/OrdersTable";
 import Pagination from "@/components/ui/Pagination";
 import AddOrderButton from "@/components/admin/orders/AddOrderButton";
 import OrdersTableFilters from "@/components/admin/orders/OrdersTableFilters";
 import AdminPageWrapper from "@/components/admin/AdminPageWrapper";
+import { H2 } from "@/components/ui/Typography";
 
 type PageOrdersProps = {
     searchParams: Promise<{
@@ -25,7 +28,6 @@ export default async function pageOrders({ searchParams }: PageOrdersProps) {
     const page = Number(params.page) || 1;
     const limit = Number(params.limit) || 25;
 
-    // Get orders from the backend
     const data = await getOrders({
         page,
         limit,
@@ -52,16 +54,16 @@ export default async function pageOrders({ searchParams }: PageOrdersProps) {
                 <OrdersTableFilters />
 
                 {!orders ? (
-                    <div className="flex flex-col">
-                        <h2 className="text-lg sm:text-xlpy-10">
+                    <div className="flex flex-col items-center justify-center p-10 border border-border rounded-[var(--radius-lg)] bg-card">
+                        <H2 className="text-muted-foreground select-none">
                             No hay pedidos disponibles.
-                        </h2>
+                        </H2>
                     </div>
                 ) : orders.length === 0 ? (
-                    <div className="flex justify-center">
-                        <h2 className="text-base sm:text-lg">
+                    <div className="flex flex-col items-center justify-center p-10 border border-border rounded-[var(--radius-lg)] bg-card">
+                        <H2 className="text-muted-foreground select-none">
                             No se encontraron pedidos con los filtros aplicados.
-                        </h2>
+                        </H2>
                     </div>
                 ) : (
                     <>

@@ -1,3 +1,5 @@
+// File: frontend/components/store/ProfileForm.tsx
+
 "use client";
 
 import type { User } from "@/src/schemas";
@@ -8,9 +10,9 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { H2 } from "../ui/Typography";
 
 export default function ProfileForm({ user }: { user: User }) {
-
     const EditUserWithId = EditUserAction.bind(null);
     const [state, dispatch] = useActionState(EditUserWithId, {
         errors: [],
@@ -30,22 +32,22 @@ export default function ProfileForm({ user }: { user: User }) {
 
     if (!user) {
         return (
-            <div className="bg-white p-8 rounded-2xl shadow-lg max-w-3xl mx-auto">
-                <p className="text-red-500">No se ha encontrado el usuario.</p>
+            <div className="bg-card p-8 border border-border rounded-[var(--radius-lg)] max-w-3xl mx-auto text-card-foreground">
+                <H2 className="text-destructive select-none">No se ha encontrado el usuario.</H2>
             </div>
         );
     }
 
     return (
-        <div className="bg-white p-8 max-w-3xl mx-auto">
+        <div className="bg-card p-8 border border-border rounded-[var(--radius-lg)] max-w-3xl mx-auto text-card-foreground">
             <form 
                 className="grid grid-cols-1 md:grid-cols-2 gap-6"
                 noValidate
                 action={dispatch}
             >
                 {/* Nombre */}
-                <div className="flex flex-col gap-1">
-                    <Label htmlFor="nombre" className="text-sm text-gray-600 font-old">Nombre</Label>
+                <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="nombre">Nombre</Label>
                     <Input
                         type="text"
                         id="nombre"
@@ -55,8 +57,8 @@ export default function ProfileForm({ user }: { user: User }) {
                 </div>
 
                 {/* Apellidos */}
-                <div className="flex flex-col gap-1">
-                    <Label htmlFor="apellidos" className="text-sm text-gray-600 font-old">Apellidos</Label>
+                <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="apellidos">Apellidos</Label>
                     <Input
                         type="text"
                         id="apellidos"
@@ -66,10 +68,10 @@ export default function ProfileForm({ user }: { user: User }) {
                 </div>
 
                 {/* Tipo de documento */}
-                <div className="flex flex-col gap-1 w-full">
-                    <Label htmlFor="tipoDocumento" className="text-sm text-gray-600 font-old">Tipo de documento</Label>
-                    <Select name="tipoDocumento" defaultValue={user?.tipoDocumento || "DNI"} >
-                        <SelectTrigger className="w-full">
+                <div className="flex flex-col gap-1.5 w-full">
+                    <Label htmlFor="tipoDocumento">Tipo de documento</Label>
+                    <Select name="tipoDocumento" defaultValue={user?.tipoDocumento || "DNI"}>
+                        <SelectTrigger id="tipoDocumento" className="w-full">
                             <SelectValue placeholder="Seleccionar" />
                         </SelectTrigger>
                         <SelectContent>
@@ -81,8 +83,8 @@ export default function ProfileForm({ user }: { user: User }) {
                 </div>
 
                 {/* Número de documento */}
-                <div className="flex flex-col gap-1">
-                    <Label htmlFor="numeroDocumento" className="text-sm text-gray-600 font-old">Número de documento</Label>
+                <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="numeroDocumento">Número de documento</Label>
                     <Input
                         type="text"
                         id="numeroDocumento"
@@ -92,8 +94,8 @@ export default function ProfileForm({ user }: { user: User }) {
                 </div>
 
                 {/* Teléfono */}
-                <div className="flex flex-col gap-1">
-                    <Label htmlFor="telefono" className="text-sm text-gray-600 font-old">Teléfono</Label>
+                <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="telefono">Teléfono</Label>
                     <Input
                         type="text"
                         id="telefono"
@@ -103,8 +105,8 @@ export default function ProfileForm({ user }: { user: User }) {
                 </div>
 
                 {/* Email */}
-                <div className="flex flex-col gap-1">
-                    <Label htmlFor="email" className="text-sm text-gray-600 font-old">Email</Label>
+                <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="email">Email</Label>
                     <Input
                         type="email"
                         id="email"
@@ -113,10 +115,15 @@ export default function ProfileForm({ user }: { user: User }) {
                     />
                 </div>
 
-                {/* Botón */}
-                <Button type="submit">
-                    Guardar cambios
-                </Button>
+                {/* Botón de Guardar */}
+                <div className="md:col-span-2 flex justify-end pt-2">
+                    <Button 
+                        type="submit"
+                        className="bg-action-cta hover:bg-action-cta-hover text-action-cta-foreground font-bold px-6"
+                    >
+                        Guardar cambios
+                    </Button>
+                </div>
             </form>
         </div>
     );

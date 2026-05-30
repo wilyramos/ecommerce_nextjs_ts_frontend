@@ -11,29 +11,31 @@ export default function CreateSliderBannerForm() {
     const router = useRouter();
 
     const [state, dispatch, isPending] = useActionState(createSliderBannerAction, {
-        success: false,
-        message: ""
+        success: false as const,
+        message: "",
+        fields: undefined,
+        fieldErrors: undefined,
     });
 
-   useEffect(() => {
-    if (state.success) {
-        toast.success(state.message || "Banner guardado");
-        router.push("/admin/slider");
-    }
-
-    if (!state.success && state.message) {
-        // Toast principal
-        toast.error(state.message);
-
-        // Mostrar errores específicos en toasts (opcional, puede ser invasivo)
-        if (state.errors && state.errors.length > 0) {
-            state.errors.forEach((err) => {
-                // Evitamos repetir el mensaje genérico
-                if (err !== state.message) toast.error(err);
-            });
+    useEffect(() => {
+        if (state.success) {
+            toast.success(state.message || "Banner guardado");
+            router.push("/admin/slider");
         }
-    }
-}, [state, router]);
+
+        if (!state.success && state.message) {
+            // Toast principal
+            toast.error(state.message);
+
+            // Mostrar errores específicos en toasts (opcional, puede ser invasivo)
+            if (state.errors && state.errors.length > 0) {
+                state.errors.forEach((err) => {
+                    // Evitamos repetir el mensaje genérico
+                    if (err !== state.message) toast.error(err);
+                });
+            }
+        }
+    }, [state, router]);
 
     return (
         <form action={dispatch} className="flex flex-col gap-4 w-full mt-8" noValidate>

@@ -6,7 +6,7 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/
 import { useDebouncedCallback } from "use-debounce";
 import type { TBrand } from "@/src/schemas/brands";
 import Image from "next/image";
-import type { CategoryListResponse } from "@/src/schemas";
+import type { CategoryListResponse } from "@/src/schemas/category.schema";
 
 
 export default function FiltersSidebar(

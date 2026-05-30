@@ -1,5 +1,3 @@
-// File: frontend/components/admin/collections/AssignedProductsList.tsx
-
 "use client";
 
 import { useState } from "react";
@@ -8,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { CollectionProduct } from "@/src/schemas/collection.schema";
 import Image from "next/image";
 import { toast } from "sonner";
-import { Loader2, Star } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Pagination from "@/components/ui/Pagination";
 
@@ -48,8 +46,8 @@ export default function AssignedProductsList({
 
     if (products.length === 0 && currentPage === 1) {
         return (
-            <div className="border border-border/60 rounded-sm p-10 text-center">
-                <p className="text-xs text-muted-foreground font-medium">
+            <div className="border border-border rounded-[var(--radius-sm)] p-10 text-center bg-card">
+                <p className="text-xs text-muted-foreground font-medium select-none">
                     No hay productos asignados a esta colección todavía.
                 </p>
             </div>
@@ -57,17 +55,17 @@ export default function AssignedProductsList({
     }
 
     return (
-        <div className="border border-border/60 rounded-sm overflow-hidden">
+        <div className="border border-border rounded-[var(--radius-sm)] overflow-hidden bg-card text-card-foreground">
 
             {/* Header */}
-            <div className="px-4 py-3 border-b border-border/60 bg-background-secondary/30">
-                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+            <div className="px-4 py-3 border-b border-border bg-background-secondary select-none">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-foreground">
                     {pagination.total} producto{pagination.total !== 1 ? "s" : ""} asignado{pagination.total !== 1 ? "s" : ""}
                 </p>
             </div>
 
             {/* Lista */}
-            <div className="divide-y divide-border/40">
+            <div className="divide-y divide-border">
                 {products.map((product) => {
                     const isRemoving = removingIds.has(product._id);
                     const hasDiscount = product.precioComparativo && product.precioComparativo > product.precio;
@@ -77,11 +75,11 @@ export default function AssignedProductsList({
                             key={product._id}
                             className={cn(
                                 "p-3 flex items-center gap-3 transition-colors",
-                                isRemoving ? "opacity-50" : "hover:bg-background-secondary/40"
+                                isRemoving ? "opacity-50" : "hover:bg-background-secondary"
                             )}
                         >
                             {/* Imagen */}
-                            <div className="relative w-10 h-10 rounded-sm border border-border/40 overflow-hidden shrink-0 bg-background">
+                            <div className="relative w-10 h-10 rounded-[var(--radius-sm)] border border-border overflow-hidden shrink-0 bg-background">
                                 <Image
                                     src={product.imagenes?.[0] || "/placeholder.png"}
                                     alt={product.nombre}
@@ -94,10 +92,7 @@ export default function AssignedProductsList({
                             {/* Info */}
                             <div className="flex-1 min-w-0 text-xs">
                                 <div className="flex items-center gap-1.5">
-                                    {product.esDestacado && (
-                                        <Star className="w-3 h-3 text-amber-400 fill-amber-400 shrink-0" />
-                                    )}
-                                    <p className="font-medium text-foreground truncate">
+                                    <p className="font-bold text-foreground truncate">
                                         {product.nombre}
                                     </p>
                                 </div>
@@ -112,8 +107,8 @@ export default function AssignedProductsList({
                                     )}
                                     {product.stock !== undefined && (
                                         <span className={cn(
-                                            "font-medium",
-                                            product.stock === 0 ? "text-destructive" : "text-muted-foreground"
+                                            "font-semibold",
+                                            product.stock === 0 ? "text-destructive" : "text-success"
                                         )}>
                                             {product.stock === 0 ? "Sin stock" : `${product.stock} uds`}
                                         </span>
@@ -125,12 +120,12 @@ export default function AssignedProductsList({
                             <Button
                                 variant="ghost"
                                 size="sm"
-                                className="text-[10px] h-7 font-bold uppercase tracking-wider text-destructive hover:bg-destructive/10 shrink-0"
+                                className="text-[10px] h-7 font-bold uppercase tracking-wider text-destructive hover:bg-background-secondary rounded-[var(--radius-sm)] shrink-0"
                                 onClick={() => handleRemove(product._id)}
                                 disabled={isRemoving}
                             >
                                 {isRemoving
-                                    ? <Loader2 className="w-3 h-3 animate-spin" />
+                                    ? <Loader2 className="w-3 h-3 animate-spin text-muted-foreground" />
                                     : "Remover"
                                 }
                             </Button>
@@ -141,7 +136,7 @@ export default function AssignedProductsList({
 
             {/* Paginación */}
             {pagination.pages > 1 && (
-                <div className="border-t border-border/60">
+                <div className="border-t border-border bg-background-secondary">
                     <Pagination
                         currentPage={currentPage}
                         totalPages={pagination.pages}

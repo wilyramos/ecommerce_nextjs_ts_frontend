@@ -31,7 +31,6 @@ const LAYOUT_LABELS: Record<SliderLayout, string> = {
     "background-media": "Fondo con Media",
 };
 
-// Mapeo a valores hexadecimales reales para que el <input type="color"> los pueda renderizar
 const THEME_PRESETS: Record<Exclude<SliderTheme, 'custom'>, ColorPalette> = {
     dark: { bgColor: "#000000", accentColor: "#ff6000", textColor: "#a8a8a8" },
     light: { bgColor: "#ffffff", accentColor: "#ff6000", textColor: "#0f0f0f" },
@@ -87,7 +86,6 @@ export default function AppearanceSection({ initialData, fields }: SectionProps)
                 </Button>
             </CardHeader>
             <CardContent className="space-y-4">
-                {/* Layout */}
                 <div className="space-y-1">
                     <Label className="text-[11px] font-bold">Layout</Label>
                     <Select name="design.layout" value={layout} onValueChange={(v: SliderLayout) => setLayout(v)}>
@@ -102,7 +100,6 @@ export default function AppearanceSection({ initialData, fields }: SectionProps)
                     </Select>
                 </div>
 
-                {/* Tema */}
                 <div className="space-y-1">
                     <Label className="text-[11px] font-bold">Tema</Label>
                     <Select name="design.theme" value={theme} onValueChange={(v: SliderTheme) => setTheme(v)}>
@@ -117,16 +114,11 @@ export default function AppearanceSection({ initialData, fields }: SectionProps)
                     </Select>
                 </div>
 
-                {/* Colores */}
-                {/* Colores */}
                 <div className="space-y-3 pt-2">
                     {(Object.keys(colors) as Array<keyof ColorPalette>).map((key) => (
                         <div key={key} className="space-y-1">
                             <Label className="text-[9px] uppercase text-muted-foreground font-semibold">{COLOR_LABELS[key]}</Label>
-
-                            {/* ESTO ES LO NUEVO: Campo oculto que asegura que el valor se envíe al formulario */}
                             <input type="hidden" name={`design.${key}`} value={colors[key]} />
-
                             <div className="flex gap-2">
                                 <Input
                                     type="text"

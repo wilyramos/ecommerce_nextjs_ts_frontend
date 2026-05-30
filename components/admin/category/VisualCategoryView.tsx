@@ -1,8 +1,19 @@
+// File: frontend/components/admin/category/VisualCategoryView.tsx
+
 "use client";
 
-import type { CategoryListResponse } from "@/src/schemas";
+import type { CategoryListResponse } from "@/src/schemas/category.schema";
 import Link from "next/link";
 import { FaEdit } from "react-icons/fa";
+import { H2 } from "@/components/ui/Typography";
+import {
+    Table,
+    TableHeader,
+    TableBody,
+    TableRow,
+    TableHead,
+    TableCell,
+} from "@/components/ui/table";
 
 type Props = {
     categories: CategoryListResponse;
@@ -24,74 +35,71 @@ export default function VisualCategoryView({ categories }: Props) {
     const rootCategories = grouped["root"] || [];
 
     return (
-        <div className="space-y-8 mx-auto">
+        <div className="space-y-6 mx-auto">
             {rootCategories.map((parent) => {
                 const subcategories = grouped[parent._id] || [];
 
                 return (
                     <div
                         key={parent._id}
-                        className="space-y-2 border-b pb-4 border-border"
+                        className="space-y-2 border-b border-border pb-4 last:border-0 last:pb-0"
                     >
-                        <div className="flex justify-between items-center">
-                            <h2 className="text-lg font-semibold">{parent.nombre}</h2>
+                        <div className="flex justify-between items-center px-1 select-none">
+                            <H2>{parent.nombre}</H2>
                             <Link
                                 href={`/admin/products/category/${parent._id}`}
-                                className="text-xs hover:underline flex items-center gap-1 text-muted-foreground hover:text-foreground"
+                                className="text-xs font-bold uppercase tracking-wider text-muted-foreground hover:text-action-cta flex items-center gap-1 transition-colors focus-visible:outline-hidden"
                             >
                                 <FaEdit className="text-sm" />
-                                Editar
+                                Editar Matriz
                             </Link>
                         </div>
 
-                        <div className="overflow-x-auto rounded border border-border">
-                            <table className="min-w-full table-fixed text-xs">
-                                <thead className="bg-muted text-muted-foreground uppercase text-[10px] font-medium">
-                                    <tr>
-                                        <th className="px-3 py-2 w-1/3 text-left">Nombre</th>
-                                        <th className="px-3 py-2 w-1/3 text-left">Descripción</th>
-                                        <th className="px-3 py-2 w-1/3 text-right">Acciones</th>
-                                    </tr>
-                                </thead>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead className="w-1/3">Nombre Subcategoría</TableHead>
+                                    <TableHead className="w-1/3">Descripción</TableHead>
+                                    <TableHead className="w-1/3 text-right">Acciones</TableHead>
+                                </TableRow>
+                            </TableHeader>
 
-                                <tbody>
-                                    {subcategories.length === 0 ? (
-                                        <tr>
-                                            <td
-                                                colSpan={3}
-                                                className="px-3 py-4 text-center text-muted-foreground"
-                                            >
-                                                Sin subcategorías.
-                                            </td>
-                                        </tr>
-                                    ) : (
-                                        subcategories.map((subcat) => (
-                                            <tr
-                                                key={subcat._id}
-                                                className="border-t border-border hover:bg-muted/30 transition-colors"
-                                            >
-                                                <td className="px-3 py-2 truncate">
-                                                    {subcat.nombre}
-                                                </td>
+                            <TableBody>
+                                {subcategories.length === 0 ? (
+                                    <TableRow>
+                                        <TableCell
+                                            colSpan={3}
+                                            className="text-center py-6 text-muted-foreground font-semibold"
+                                        >
+                                            Sin subcategorías vinculadas.
+                                        </TableCell>
+                                    </TableRow>
+                                ) : (
+                                    subcategories.map((subcat) => (
+                                        <TableRow key={subcat._id}>
+                                            <TableCell className="font-bold">
+                                                {subcat.nombre}
+                                            </TableCell>
 
-                                                <td className="px-3 py-2 text-muted-foreground">
-                                                    {subcat.descripcion}
-                                                </td>
+                                            <TableCell className="text-muted-foreground">
+                                                {subcat.descripcion || "—"}
+                                            </TableCell>
 
-                                                <td className="px-3 py-2 text-right">
+                                            <TableCell className="text-right">
+                                                <div className="flex justify-end">
                                                     <Link
                                                         href={`/admin/products/category/${subcat._id}`}
-                                                        className="text-muted-foreground hover:text-foreground hover:underline flex items-center justify-end gap-1"
+                                                        className="text-muted-foreground hover:text-action-cta p-1 rounded-[var(--radius-sm)] transition-colors focus-visible:outline-hidden"
                                                     >
-                                                        <FaEdit className="text-xs" />
+                                                        <FaEdit className="text-sm" />
                                                     </Link>
-                                                </td>
-                                            </tr>
-                                        ))
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
+                                                </div>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                )}
+                            </TableBody>
+                        </Table>
                     </div>
                 );
             })}

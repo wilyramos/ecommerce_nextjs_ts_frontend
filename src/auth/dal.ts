@@ -21,7 +21,7 @@ export const getSession = cache(async () => {
 
         const responseData = await req.json()
         const ResponseValidation = UserSchema.safeParse(responseData);
-        
+
         if (!ResponseValidation.success) return null
 
         return {

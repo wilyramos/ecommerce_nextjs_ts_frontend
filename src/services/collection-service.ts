@@ -5,8 +5,10 @@ import {
     collectionDetailResponseSchema,
     collectionSchema,
     promotionsArraySchema,
+    homepageSectionsResponseSchema,
     Collection,
     CollectionDetailResponse,
+    HomepageSection,
     CreateCollectionPayload,
     UpdateCollectionPayload,
     CollectionType,
@@ -28,10 +30,10 @@ async function authHeaders(includeContentType = true): Promise<HeadersInit> {
 export const collectionService = {
 
     // ─── ADMIN ────────────────────────────────────────────────────────────────
-
-    async getAll(filters: { active?: boolean; type?: CollectionType } = {}): Promise<Collection[]> {
+    async getAll(filters: { active?: boolean; type?: CollectionType; homepage?: boolean } = {}): Promise<Collection[]> {
         const params = new URLSearchParams();
         if (filters.active !== undefined) params.set("active", String(filters.active));
+        if (filters.homepage !== undefined) params.set("homepage", String(filters.homepage));
         if (filters.type) params.set("type", filters.type);
 
         const res = await fetch(
@@ -82,7 +84,10 @@ export const collectionService = {
             method: "DELETE",
             headers: await authHeaders(false),
         });
-        if (!res.ok) throw new Error("Error al eliminar la colección");
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.message || "Error al eliminar la colección");
+        }
         const data = await res.json();
         return collectionSchema.parse(data.collection ?? data);
     },
@@ -105,8 +110,6 @@ export const collectionService = {
         });
         if (!res.ok) throw new Error("Error al remover el producto de la colección");
     },
-
-    // Dentro de collectionService, después de removeProduct:
 
     async getProductsPaginated(
         id: string,
@@ -143,6 +146,39 @@ export const collectionService = {
         if (!res.ok) throw new Error("Error al obtener las promociones activas");
         return promotionsArraySchema.parse(await res.json());
     },
+
+    async getHomepageSections(): Promise<HomepageSection[]> {
+        const res = await fetch(
+            `${API_URL}/collections/public/homepage`,
+            { next: { tags: ["homepage-sections"] } }
+        );
+        if (!res.ok) throw new Error("Error al obtener las secciones del homepage");
+        return homepageSectionsResponseSchema.parse(await res.json());
+    },
+
+    async updateGeneralOrder(orderedIds: string[]): Promise<void> {
+        const res = await fetch(`${API_URL}/collections/reorder/general`, {
+            method: "PUT",
+            headers: await authHeaders(),
+            body: JSON.stringify({ orderedIds }),
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.message || "Error al actualizar el orden general");
+        }
+    },
+
+    async updateHomepageOrder(orderedIds: string[]): Promise<void> {
+        const res = await fetch(`${API_URL}/collections/reorder/homepage`, {
+            method: "PUT",
+            headers: await authHeaders(),
+            body: JSON.stringify({ orderedIds }),
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.message || "Error al actualizar el orden del home");
+        }
+    },
 };
 
 // ─── HELPERS PARA SERVER COMPONENTS PÚBLICOS ─────────────────────────────────
@@ -169,3 +205,13 @@ export async function getActivePromotions(): Promise<Collection[]> {
         return [];
     }
 }
+
+export async function getHomepageSections(): Promise<HomepageSection[]> {
+    try {
+        return await collectionService.getHomepageSections();
+    } catch (error) {
+        console.error("Error fetching homepage sections:", error);
+        return [];
+    }
+}
+

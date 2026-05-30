@@ -4,6 +4,7 @@ import { getActiveBrands } from "@/src/services/brands";
 import { linesService } from "@/src/services/lines.service"; // Importamos el servicio
 import AdminPageWrapper from "@/components/admin/AdminPageWrapper";
 import { getProduct } from "@/src/services/products";
+import { getActiveCollections } from "@/src/services/collection-service";
 
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
@@ -17,12 +18,15 @@ export default async function NewProductPage({ searchParams }: { searchParams: S
 
 
     // Parallel Data Fetching
-    const [categorias, brands, lines, duplicateProduct] = await Promise.all([
+    const [categorias, brands, lines, duplicateProduct, collections] = await Promise.all([
         getAllSubcategories(),
         getActiveBrands(),
         linesService.getAllActive(), // Obtenemos líneas activas
         duplicateId ? getProduct(duplicateId as string) : Promise.resolve(null), // Si hay ID de duplicado, obtenemos ese producto
+        getActiveCollections(),
+
     ]);
+
 
     const initialData = duplicateProduct ? {
         ...duplicateProduct,
@@ -40,6 +44,7 @@ export default async function NewProductPage({ searchParams }: { searchParams: S
                 brands={brands}
                 lines={lines} // Pasamos las líneas
                 initialData={initialData} // Pasamos los datos iniciales para duplicar
+                allCollections={collections} // Pasamos las colecciones para asignar al producto
             />
         </AdminPageWrapper>
     );

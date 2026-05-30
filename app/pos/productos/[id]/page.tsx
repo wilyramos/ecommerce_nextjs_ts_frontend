@@ -45,7 +45,7 @@ export default async function ProductDetailsPage({ params }: { params: Params })
                 </div>
             </div>
 
-            <EditProductForm product={product} categorias={categorias} brands={brands} lines={lines} />
+            <EditProductForm product={product} categorias={categorias} brands={brands} lines={lines} allCollections={[]} />
         </div>
     );
 }

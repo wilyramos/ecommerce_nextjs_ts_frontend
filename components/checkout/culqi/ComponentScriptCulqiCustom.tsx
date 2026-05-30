@@ -1,10 +1,10 @@
 "use client";
 
 import Script from "next/script";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { processPaymentCulqi } from "@/actions/checkout/process-culqi-payment";
+import type { TOrderPopulated } from "@/src/schemas";
 
-// Tipos basados en la API de Culqi v4
 interface CulqiSettings {
     title: string;
     currency: "PEN" | "USD";
@@ -33,80 +33,92 @@ interface CulqiObject {
     options: (opts: CulqiOptions) => void;
     open: () => void;
     token?: { id: string };
-    order?: unknown;
-    error?: unknown;
+    order?: { id: string }; 
+    error?: { user_message: string };
 }
 
 declare global {
     interface Window {
         Culqi?: CulqiObject;
-        culqi?: () => void | Promise<void>;
+        culqi?: () => void;
     }
 }
 
-export default function ComponentScriptCulqiCustom() {
+export default function ComponentScriptCulqiCustom({ order }: { order: TOrderPopulated }) {
     const [culqiReady, setCulqiReady] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-    const handleScriptLoad = () => {
-        if (typeof window !== "undefined" && window.Culqi) {
-            window.Culqi.publicKey = process.env.NEXT_PUBLIC_CULQI_PUBLIC_KEY ?? "";
-            console.log("✅ Culqi inicializado");
-            setCulqiReady(true);
-        } else {
-            console.error("❌ Culqi no se pudo inicializar");
+    // Guardamos la lógica de procesamiento en una referencia para evitar que Culqi ejecute funciones obsoletas
+    const paymentHandlerRef = useRef<() => Promise<void>>(async () => {});
+
+    paymentHandlerRef.current = async () => {
+        const Culqi = window.Culqi;
+        if (!Culqi) return;
+
+        if (Culqi.error) {
+            console.error("❌ Error en Culqi Checkout:", Culqi.error);
+            alert(Culqi.error.user_message || "Error al procesar con el formulario.");
+            return;
+        }
+
+        try {
+            setLoading(true);
+            
+            // Datos estáticos de prueba solicitados antes de mapear la orden dinámica
+            const testAmount = 1000; // S/. 10.00 pesos en céntimos
+            const testDescription = `Pago de prueba - Orden #${order._id}`;
+
+            if (Culqi.token) {
+                console.log("Token recibido de tarjeta:", Culqi.token.id);
+                await processPaymentCulqi({
+                    token: Culqi.token.id,
+                    amount: testAmount,
+                    description: testDescription,
+                });
+            } else if (Culqi.order) {
+                console.log("Orden recibida de billetera/Yape:", Culqi.order.id);
+                await processPaymentCulqi({
+                    order: Culqi.order.id,
+                    amount: testAmount,
+                    description: testDescription,
+                });
+            }
+
+            console.log("✅ Pago enviado exitosamente al backend");
+            // Aquí puedes redirigir con router.push o refrescar el estado de la orden
+        } catch (err) {
+            console.error("❌ Error en Server Action:", err);
+        } finally {
+            setLoading(false);
         }
     };
 
     useEffect(() => {
         if (typeof window !== "undefined") {
-            window.culqi = async () => {
-                const { token, order, error } = window.Culqi ?? {};
-
-                if (error) {
-                    console.error("Error en el pago:", error);
-                    return;
-                }
-
-                try {
-                    if (token) {
-                        console.log("Token recibido:", token.id);
-                        await processPaymentCulqi({
-                            token: token.id,
-                            amount: 1000,
-                            description: "Pago con tarjeta",
-                        });
-                    }
-
-                    if (order) {
-                        console.log("Orden recibida:", order);
-                        await processPaymentCulqi({
-                            order,
-                            amount: 1000,
-                            description: "Pago con Yape o billetera",
-                        });
-                    }
-
-                    console.log("✅ Pago procesado con éxito");
-                } catch (err) {
-                    console.error("❌ Error procesando pago:", err);
-                }
+            // Culqi v4 ejecuta obligatoriamente la función global window.culqi sin parámetros
+            window.culqi = () => {
+                paymentHandlerRef.current();
             };
         }
     }, []);
 
+    const handleScriptLoad = () => {
+        if (typeof window !== "undefined" && window.Culqi) {
+            window.Culqi.publicKey = process.env.NEXT_PUBLIC_CULQI_PUBLIC_KEY ?? "";
+            setCulqiReady(true);
+        }
+    };
+
     const openCheckout = () => {
         const Culqi = window.Culqi;
+        if (!Culqi || loading) return;
 
-        if (!Culqi) {
-            console.error("Culqi no está cargado");
-            return;
-        }
-
+        // Configuración inicial fija para testing de despliegue
         Culqi.settings({
-            title: "GOPHONE",
+            title: "GOPHONE STORE",
             currency: "PEN",
-            amount: 1000,
-            description: "Pago de prueba",
+            amount: 1000, 
+            description: `Orden de prueba ${order._id}`,
         });
 
         Culqi.options({
@@ -119,16 +131,9 @@ export default function ComponentScriptCulqiCustom() {
                 billetera: true,
                 bancaMovil: true,
                 agente: true,
-                cuotealo: true,
+                cuotealo: false,
             },
-            paymentMethodsSort: [
-                "tarjeta",
-                "yape",
-                "billetera",
-                "bancaMovil",
-                "agente",
-                "cuotealo",
-            ],
+            paymentMethodsSort: ["tarjeta", "yape", "billetera"],
         });
 
         Culqi.open();
@@ -143,12 +148,16 @@ export default function ComponentScriptCulqiCustom() {
             />
 
             <button
+                type="button"
                 onClick={openCheckout}
-                disabled={!culqiReady}
-                className={`px-4 py-2 rounded-full border-2 border-orange-400 text-black font-extrabold ${culqiReady ? "" : "cursor-not-allowed"
+                disabled={!culqiReady || loading}
+                className={`w-full py-3 px-6 rounded-xl border border-orange-500 font-bold transition-all
+                    ${culqiReady && !loading 
+                        ? "bg-orange-500 text-white hover:bg-orange-600" 
+                        : "bg-muted text-muted-foreground cursor-not-allowed opacity-50"
                     }`}
             >
-                {culqiReady ? "Pagar con Culqi" : "Cargando Culqi..."}
+                {loading ? "Procesando pago..." : culqiReady ? "Pagar con Culqi" : "Cargando pasarela..."}
             </button>
         </>
     );

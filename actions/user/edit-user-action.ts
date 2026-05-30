@@ -1,3 +1,5 @@
+//File: frontend/src/actions/user/edit-user-action.ts
+
 "use server"
 
 import getToken from "@/src/auth/token"
@@ -70,9 +72,6 @@ export async function EditUserAction(prevState: ActionStateType, formData: FormD
         }
     }
 
-
-
-    
 
     // Revalidate the path to update the user profile
     revalidatePath("/profile")

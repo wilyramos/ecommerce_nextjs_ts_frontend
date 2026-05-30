@@ -1,11 +1,14 @@
+// File: components/store/ClientCategoriasDesktop.tsx
 "use client";
 
 import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { routes } from "@/lib/routes";
-import type { CategoryResponse, CategoryListResponse } from "@/src/schemas";
 import type { Collection } from "@/src/schemas/collection.schema";
+import { FiImage, FiArrowRight } from "react-icons/fi";
+import { Lead, Muted } from "@/components/ui/Typography";
+import { CategoryResponse } from "@/src/schemas/category.schema";
 
 import {
     NavigationMenu,
@@ -33,42 +36,50 @@ export default function ClientCategoriasDesktop({
             if (!acc[key]) acc[key] = [];
             acc[key].push(category);
             return acc;
-        }, {} as Record<string, CategoryListResponse>);
+        }, {} as Record<string, CategoryResponse[]>);
     }, [categories]);
 
     const rootCategories = grouped["root"] || [];
 
     return (
-        <NavigationMenu className="w-full max-w-none ">
+        <NavigationMenu className="w-full">
             <NavigationMenuList>
                 {rootCategories.map((cat) => {
                     const sub = grouped[cat._id] || [];
                     return (
                         <NavigationMenuItem key={cat._id}>
-                            <NavigationMenuTrigger>{cat.nombre}</NavigationMenuTrigger>
+                            <NavigationMenuTrigger>
+                                {cat.nombre}
+                            </NavigationMenuTrigger>
                             {sub.length > 0 && (
-                                <NavigationMenuContent className="w-[740px]">
-                                    <div className="grid grid-cols-[240px_1fr] bg-background">
-                                        <div className="bg-muted-neutral/30 p-6 flex flex-col justify-between relative">
-                                            <div className="relative z-10">
-                                                <h3 className="text-xl font-bold tracking-tight text-foreground mb-2">
+                                <NavigationMenuContent className="w-[640px]">
+                                    <div className="grid grid-cols-[200px_1fr] bg-background">
+                                        <div className="bg-background-secondary p-4 flex flex-col justify-between border-r border-border">
+                                            <div>
+                                                <Lead className="mb-1 text-foreground">
                                                     {cat.nombre}
-                                                </h3>
-                                                <p className="text-xs text-muted-foreground line-clamp-3">
-                                                    {cat.descripcion || `Explora lo último en ${cat.nombre.toLowerCase()}.`}
-                                                </p>
+                                                </Lead>
+                                                <Muted className="line-clamp-3 leading-relaxed font-medium">
+                                                    {cat.descripcion || `Explora lo mejor en ${cat.nombre.toLowerCase()}.`}
+                                                </Muted>
                                             </div>
                                             <Link
                                                 href={routes.catalog({ category: cat.slug })}
-                                                className="text-xs font-medium text-action-cta underline-offset-4 hover:underline"
+                                                className="text-[11px] text-muted-foreground hover:text-primary transition-colors mt-4 inline-flex items-center gap-1 uppercase font-bold tracking-wider focus-visible:outline-none"
                                             >
                                                 Ver todo
+                                                <FiArrowRight className="w-3 h-3" />
                                             </Link>
                                         </div>
-                                        <div className="p-6">
-                                            <ul className="grid grid-cols-2 gap-x-4 gap-y-2">
+                                        <div className="p-3">
+                                            <ul className="grid grid-cols-2 gap-1">
                                                 {sub.map((subcat) => (
-                                                    <SubcategoryItem key={subcat._id} subcat={subcat} />
+                                                    <NavItem
+                                                        key={subcat._id}
+                                                        href={routes.catalog({ category: subcat.slug })}
+                                                        title={subcat.nombre}
+                                                        image={subcat.image}
+                                                    />
                                                 ))}
                                             </ul>
                                         </div>
@@ -78,78 +89,83 @@ export default function ClientCategoriasDesktop({
                         </NavigationMenuItem>
                     );
                 })}
-            </NavigationMenuList>
 
-            {collections.length > 0 && (
-                <NavigationMenuList>
+                {collections.length > 0 && (
                     <NavigationMenuItem>
-                        <NavigationMenuTrigger>Tendencias</NavigationMenuTrigger>
-                        <NavigationMenuContent className="w-64 p-2">
-                            <ul className="space-y-2">
-                                {collections.map((col) => (
-                                    <CollectionItem key={col._id} col={col} />
-                                ))}
-                            </ul>
-                            <div className="border-t border-border mt-2 pt-2 px-2">
-                                <Link
-                                    href="/colecciones"
-                                    className="text-[11px] font-medium text-muted-foreground hover:text-action-cta transition-colors"
-                                >
-                                    Ver todas
-                                </Link>
+                        <NavigationMenuTrigger>
+                            Tendencias
+                        </NavigationMenuTrigger>
+                        <NavigationMenuContent className="w-[640px]">
+                            <div className="grid grid-cols-[200px_1fr] bg-background">
+                                <div className="bg-background-secondary p-4 flex flex-col justify-between border-r border-border">
+                                    <div>
+                                        <Lead className="mb-1 text-foreground">
+                                            Tendencias
+                                        </Lead>
+                                        <Muted className="line-clamp-3 leading-relaxed font-medium">
+                                            Descubre las colecciones más populares y exclusivas del momento.
+                                        </Muted>
+                                    </div>
+                                    <Link
+                                        href="/colecciones"
+                                        className="text-[11px] text-muted-foreground hover:text-primary transition-colors mt-4 inline-flex items-center gap-1 uppercase font-bold tracking-wider focus-visible:outline-none"
+                                    >
+                                        Ver todo
+                                        <FiArrowRight className="w-3 h-3" />
+                                    </Link>
+                                </div>
+                                <div className="p-3">
+                                    <ul className="grid grid-cols-2 gap-1">
+                                        {collections.map((col) => (
+                                            <NavItem
+                                                key={col._id}
+                                                href={`/colecciones/${col.slug}`}
+                                                title={col.name}
+                                                image={col.image}
+                                            />
+                                        ))}
+                                    </ul>
+                                </div>
                             </div>
                         </NavigationMenuContent>
                     </NavigationMenuItem>
-                </NavigationMenuList>
-            )}
+                )}
+            </NavigationMenuList>
         </NavigationMenu>
     );
 }
 
-function SubcategoryItem({ subcat }: { subcat: CategoryResponse }) {
-    return (
-        <li>
-            <NavigationMenuLink asChild>
-                <Link
-                    href={routes.catalog({ category: subcat.slug })}
-                    className="flex items-center gap-3 p-2transition-colors hover:bg-muted-neutral"
-                >
-                    {subcat.image && (
-                        <div className="relative size-8 overflow-hidden">
-                            <Image src={subcat.image} alt={subcat.nombre} fill className="object-cover" sizes="32px" unoptimized quality={10} />
-                        </div>
-                    )}
-                    <span className="text-sm font-medium truncate">{subcat.nombre}</span>
-                </Link>
-            </NavigationMenuLink>
-        </li>
-    );
+interface NavItemProps {
+    href: string;
+    title: string;
+    image?: string | null;
 }
 
-function CollectionItem({ col }: { col: Collection }) {
+function NavItem({ href, title, image }: NavItemProps) {
     return (
         <li>
             <NavigationMenuLink asChild>
                 <Link
-                    href={`/colecciones/${col.slug}`}
-                    className="group relative flex h-16 w-full items-center overflow-hidden  transition-all hover:ring-2 hover:ring-action-cta/20 flex-col justify-center"
+                    href={href}
+                    className="flex items-center gap-3 px-2 py-1.5 rounded-[var(--radius-sm)] hover:bg-accent transition-colors group w-full min-h-[44px]"
                 >
-                    {col.image && (
-                        <>
+                    <div className="relative size-7 shrink-0 overflow-hidden rounded-[var(--radius-sm)] bg-background-secondary flex items-center justify-center border border-border">
+                        {image ? (
                             <Image
-                                src={col.image}
-                                alt={col.name}
+                                src={image}
+                                alt={title}
                                 fill
-                                className="object-cover transition-transform"
-                                sizes="256px"
+                                className="object-cover group-hover:scale-105 transition-transform duration-200"
+                                sizes="28px"
                                 unoptimized
-                                quality={10}
+                                quality={20}
                             />
-                            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors" />
-                        </>
-                    )}
-                    <span className="relative z-10 px-4 text-sm capitalize font-semibold text-gray-100 truncate drop-shadow-md">
-                        {col.name}
+                        ) : (
+                            <FiImage className="w-3.5 h-3.5 text-muted-foreground" />
+                        )}
+                    </div>
+                    <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground transition-colors truncate block capitalize">
+                        {title}
                     </span>
                 </Link>
             </NavigationMenuLink>

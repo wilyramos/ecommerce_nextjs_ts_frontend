@@ -1,3 +1,5 @@
+//File: frontend/components/checkout/PaymentMethodsAccordion.tsx
+
 "use client";
 
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
@@ -6,6 +8,7 @@ import type { TOrderPopulated } from "@/src/schemas";
 import Image from "next/image";
 import CheckoutProMP from "./mercadopago/CheckoutProMP";
 import CheckoutYape from "./mercadopago/CheckoutYape";
+import CheckoutCulqi from "./culqi/CheckoutCulqi";
 
 export default function PaymentMethodsAccordion({ order }: { order: TOrderPopulated }) {
 
@@ -127,6 +130,38 @@ export default function PaymentMethodsAccordion({ order }: { order: TOrderPopula
                         </div>
                     </AccordionContent>
                 </AccordionItem>
+
+
+                {/* CULQI */}
+<AccordionItem
+    value="culqi"
+    className={`${itemBaseClass} data-[state=open]:border-orange-500 data-[state=open]:shadow-md`}
+>
+    <AccordionTrigger className={triggerClass}>
+        <div className="flex items-center w-full justify-between gap-4">
+            <div className="flex items-center gap-4">
+                <div className="relative flex items-center justify-center w-5 h-5 shrink-0 border border-[var(--color-border-subtle)] rounded-full transition-colors group-data-[state=open]:border-orange-500">
+                    <div className="w-2.5 h-2.5 rounded-full bg-orange-500 scale-0 transition-transform duration-200 group-data-[state=open]:scale-100" />
+                </div>
+
+                <div className="flex flex-col text-left">
+                    <span className={textTitleClass}>Culqi (Tarjetas, Yape, Billeteras)</span>
+                    <span className={textSubtitleClass}>Multiples métodos de pago</span>
+                </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+                <Image src="/payments/culqi.png" alt="Culqi" width={50} height={20} className="object-contain w-auto h-4" />
+            </div>
+        </div>
+    </AccordionTrigger>
+
+    <AccordionContent className={contentClass}>
+        <div className="p-6 max-w-lg mx-auto">
+            <CheckoutCulqi order={order} />
+        </div>
+    </AccordionContent>
+</AccordionItem>
 
             </Accordion>
         </section>

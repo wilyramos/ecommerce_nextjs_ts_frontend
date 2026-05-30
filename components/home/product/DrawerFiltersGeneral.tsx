@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { VscSettings } from "react-icons/vsc";
 import { MdClear } from "react-icons/md";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import type { CategoryListResponse } from "@/src/schemas";
+import type { CategoryListResponse } from "@/src/schemas/category.schema";
 import { Range } from "react-range";
 
 import {

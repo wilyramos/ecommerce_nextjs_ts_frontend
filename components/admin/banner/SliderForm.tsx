@@ -1,10 +1,7 @@
-// File: frontend/src/components/admin/banner/SliderForm.tsx
 "use client";
 
 import Alert from "@/components/ui/Alert";
-import {
-    type SliderBanner
-} from "@/src/schemas/slider.schema";
+import { type SliderBanner } from "@/src/schemas/slider.schema";
 import GeneralSection from "./form-sections/GeneralSection";
 import PromoSection from "./form-sections/PromoSection";
 import AppearanceSection from "./form-sections/AppearanceSection";
