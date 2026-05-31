@@ -109,7 +109,7 @@ export default function ShippingForm() {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 text-foreground">
-            
+
             {/* UBIGEO: Departamento / Provincia / Distrito */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="flex flex-col gap-1.5">
@@ -119,13 +119,13 @@ export default function ShippingForm() {
                         name="departamento"
                         rules={{ required: true }}
                         render={({ field }) => (
-                            <Select 
+                            <Select
                                 onValueChange={(val) => {
                                     field.onChange(val)
                                     setValue('provincia', '')
                                     setValue('distrito', '')
                                     trigger(['departamento', 'provincia', 'distrito'])
-                                }} 
+                                }}
                                 value={field.value}
                                 disabled={loading}
                             >
@@ -152,13 +152,13 @@ export default function ShippingForm() {
                         name="provincia"
                         rules={{ required: true }}
                         render={({ field }) => (
-                            <Select 
+                            <Select
                                 disabled={!provincias.length || loading}
                                 onValueChange={(val) => {
                                     field.onChange(val)
                                     setValue('distrito', '')
                                     trigger(['provincia', 'distrito'])
-                                }} 
+                                }}
                                 value={field.value}
                             >
                                 <SelectTrigger aria-invalid={errors.provincia ? "true" : "false"} className='w-full'>
@@ -184,12 +184,12 @@ export default function ShippingForm() {
                         name="distrito"
                         rules={{ required: true }}
                         render={({ field }) => (
-                            <Select 
+                            <Select
                                 disabled={!distritos.length || loading}
                                 onValueChange={(val) => {
                                     field.onChange(val)
                                     trigger('distrito')
-                                }} 
+                                }}
                                 value={field.value}
                             >
                                 <SelectTrigger aria-invalid={errors.distrito ? "true" : "false"} className='w-full'>
@@ -212,8 +212,8 @@ export default function ShippingForm() {
             {/* DIRECCIÓN */}
             <div className="flex flex-col gap-1.5">
                 <Label required>Dirección</Label>
-                <Input 
-                    {...register('direccion', { required: true })} 
+                <Input
+                    {...register('direccion', { required: true })}
                     aria-invalid={errors.direccion ? "true" : "false"}
                     placeholder="Av. Principal 123"
                     disabled={loading}
@@ -240,8 +240,8 @@ export default function ShippingForm() {
             {/* REFERENCIA */}
             <div className="flex flex-col gap-1.5">
                 <Label required>Referencia</Label>
-                <Input 
-                    {...register('referencia', { required: true })} 
+                <Input
+                    {...register('referencia', { required: true })}
                     aria-invalid={errors.referencia ? "true" : "false"}
                     placeholder="Ej. Frente al parque, casa color verde..."
                     disabled={loading}

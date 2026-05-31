@@ -1,3 +1,5 @@
+//File: frontend/components/checkout/izipay/CheckoutIzipay.tsx
+
 "use client";
 
 import { useEffect, useRef, useState } from "react";

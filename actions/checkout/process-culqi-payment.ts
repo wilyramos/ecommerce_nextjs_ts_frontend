@@ -21,6 +21,8 @@ export async function processPaymentCulqi(paymentData: CulqiPaymentPayload) {
         orderId: paymentData.orderId,
     });
 
+
+
     const authToken = await getToken();
 
     if (!authToken) {

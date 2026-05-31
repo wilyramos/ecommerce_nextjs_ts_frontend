@@ -1,6 +1,6 @@
 import type { TApiProduct } from "@/src/schemas/index"; // Use the specific Catalog Schema
 import ProductCard from "../home/product/ProductCard"; // Your existing Card component
-import { LuSearchX, LuShoppingBag } from "react-icons/lu";
+import { LuSearchX } from "react-icons/lu";
 import Link from "next/link";
 
 interface Props {
@@ -60,8 +60,7 @@ export default function CatalogGrid({ products, isFallback }: Props) {
     // Esto pasa si la base de datos está totalmente vacía o el fallback falló
     if (!products || products.length === 0) {
         return (
-            <div className="h-64 flex flex-col items-center justify-center text-[var(--store-text-muted)] border border-dashed border-[var(--store-border)] rounded-2xl bg-gray-50">
-                <LuShoppingBag className="w-12 h-12 mb-4 opacity-20" />
+            <div className="h-64 flex flex-col items-center justify-center ">
                 <p className="font-medium">No hay productos disponibles.</p>
             </div>
         );

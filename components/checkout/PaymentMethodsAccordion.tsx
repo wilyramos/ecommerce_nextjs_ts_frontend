@@ -9,6 +9,7 @@ import Image from "next/image";
 import CheckoutProMP from "./mercadopago/CheckoutProMP";
 import CheckoutYape from "./mercadopago/CheckoutYape";
 import { Muted } from "@/components/ui/Typography";
+// import CheckoutCulqi from "./culqi/CheckoutCulqi";
 
 export default function PaymentMethodsAccordion({ order }: { order: TOrderPopulated }) {
     const itemBaseClass = "group border border-border rounded-[var(--radius-md)] bg-card overflow-hidden transition-all duration-300";
@@ -153,7 +154,7 @@ export default function PaymentMethodsAccordion({ order }: { order: TOrderPopula
 
                     <AccordionContent className={contentClass}>
                         <div className="p-6 max-w-lg mx-auto text-gray-400 text-xs italic">
-                            Proximamente disponible.
+                            Poximamente disponible.
                             {/* <CheckoutCulqi order={order} /> */}
                         </div>
                     </AccordionContent>
