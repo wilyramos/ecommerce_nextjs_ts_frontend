@@ -37,7 +37,7 @@ export default function PoliticasPrivacidadPage() {
     ];
 
     return (
-        <section className="max-w-4xl mx-auto px-4 py-12 md:py-16 select-none bg-background text-foreground">
+        <section className="mx-auto px-4 py-12 md:py-16 select-none bg-background text-foreground">
             
             {/* --- CABECERA EDITORIAL --- */}
             <header className="mb-14 text-start">

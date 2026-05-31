@@ -1,14 +1,17 @@
+// File: frontend/app/(store)/checkout/layout.tsx
+
 import CheckoutSteps from '@/components/checkout/CheckoutSteps'
 import ResumenFinalCarrito from '@/components/cart/ResumenFinalCarrito'
 import { redirect } from 'next/navigation'
-import { getCurrentUser } from '@/src/auth/currentUser'
+import { verifySession } from '@/src/auth/dal';
 
 export default async function CheckoutLayout({ children }: { children: React.ReactNode }) {
-    const user = await getCurrentUser()
+    const { user } = await verifySession();
+    
     if (!user) redirect("/auth/login?redirect=/checkout/profile")
 
     return (
-        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8 min-h-screen">
+        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8 min-h-screen bg-background text-foreground">
 
             {/* Contenedor de Pasos Centrado */}
             <div className="mb-6 md:mb-8 flex justify-center w-full">

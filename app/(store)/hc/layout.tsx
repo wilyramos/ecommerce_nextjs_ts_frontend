@@ -1,3 +1,5 @@
+// File: frontend/app/(store)/hc/layout.tsx
+
 import React from "react";
 import Sidebarcs from "@/components/home/clientservice/Sidebarcs";
 import type { Metadata } from "next";
@@ -27,7 +29,7 @@ export const metadata: Metadata = {
         type: "website",
         images: [
             {
-                url: "https://gophone.pe/og-image.jpg", // *Si no tienes imagen aún, puedo generarte una*
+                url: "https://gophone.pe/og-image.jpg",
                 width: 1200,
                 height: 630,
                 alt: "Centro de Ayuda Gophone Perú"
@@ -45,13 +47,13 @@ export const metadata: Metadata = {
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
-        <div className="flex flex-col min-h-screen">
-
-            <div className="flex flex-1 w-full max-w-6xl mx-auto px-4 md:px-8 pt-6 pb-20 md:pb-6">
+        <main className="min-h-screen bg-background text-foreground">
+            <div className="flex w-full max-w-screen-2xl mx-auto px-4 md:px-8 pt-8 pb-24 md:pb-8 gap-0 md:gap-8">
                 <Sidebarcs />
-                <main className="flex-1 md:pl-6">{children}</main>
+                <section className="flex-1 min-w-0">
+                    {children}
+                </section>
             </div>
-
-        </div>
+        </main>
     );
 }

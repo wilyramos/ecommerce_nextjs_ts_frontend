@@ -1,3 +1,5 @@
+// File: frontend/components/checkout/ShippingForm.tsx
+
 'use client'
 
 import { useState, useMemo } from 'react'
@@ -106,16 +108,15 @@ export default function ShippingForm() {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-1">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 text-foreground">
             
             {/* UBIGEO: Departamento / Provincia / Distrito */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6">
-                <div className="flex flex-col gap-2">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="flex flex-col gap-1.5">
                     <Label required>Departamento</Label>
                     <Controller
                         control={control}
                         name="departamento"
-                        
                         rules={{ required: true }}
                         render={({ field }) => (
                             <Select 
@@ -126,6 +127,7 @@ export default function ShippingForm() {
                                     trigger(['departamento', 'provincia', 'distrito'])
                                 }} 
                                 value={field.value}
+                                disabled={loading}
                             >
                                 <SelectTrigger aria-invalid={errors.departamento ? "true" : "false"} className='w-full'>
                                     <SelectValue placeholder="Seleccionar" />
@@ -138,12 +140,12 @@ export default function ShippingForm() {
                             </Select>
                         )}
                     />
-                    <div className="h-6">
+                    <div className="min-h-5 overflow-hidden">
                         {errors.departamento && <ErrorMessage>Requerido</ErrorMessage>}
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-1.5">
                     <Label required>Provincia</Label>
                     <Controller
                         control={control}
@@ -151,7 +153,7 @@ export default function ShippingForm() {
                         rules={{ required: true }}
                         render={({ field }) => (
                             <Select 
-                                disabled={!provincias.length}
+                                disabled={!provincias.length || loading}
                                 onValueChange={(val) => {
                                     field.onChange(val)
                                     setValue('distrito', '')
@@ -170,12 +172,12 @@ export default function ShippingForm() {
                             </Select>
                         )}
                     />
-                    <div className="h-6">
+                    <div className="min-h-5 overflow-hidden">
                         {errors.provincia && <ErrorMessage>Requerido</ErrorMessage>}
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-1.5">
                     <Label required>Distrito</Label>
                     <Controller
                         control={control}
@@ -183,7 +185,7 @@ export default function ShippingForm() {
                         rules={{ required: true }}
                         render={({ field }) => (
                             <Select 
-                                disabled={!distritos.length}
+                                disabled={!distritos.length || loading}
                                 onValueChange={(val) => {
                                     field.onChange(val)
                                     trigger('distrito')
@@ -201,59 +203,60 @@ export default function ShippingForm() {
                             </Select>
                         )}
                     />
-                    <div className="h-6">
+                    <div className="min-h-5 overflow-hidden">
                         {errors.distrito && <ErrorMessage>Requerido</ErrorMessage>}
                     </div>
                 </div>
             </div>
 
             {/* DIRECCIÓN */}
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1.5">
                 <Label required>Dirección</Label>
                 <Input 
                     {...register('direccion', { required: true })} 
                     aria-invalid={errors.direccion ? "true" : "false"}
                     placeholder="Av. Principal 123"
+                    disabled={loading}
                 />
-                <div className="h-6">
+                <div className="min-h-5 overflow-hidden">
                     {errors.direccion && <ErrorMessage>La dirección es obligatoria</ErrorMessage>}
                 </div>
             </div>
 
             {/* NÚMERO Y PISO */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
-                <div className="flex flex-col gap-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex flex-col gap-1.5">
                     <Label>Número</Label>
-                    <Input {...register('numero')} placeholder="N°" />
-                    <div className="h-6" />
+                    <Input {...register('numero')} placeholder="N°" disabled={loading} />
+                    <div className="min-h-5" />
                 </div>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-1.5">
                     <Label>Piso / Dpto</Label>
-                    <Input {...register('pisoDpto')} placeholder="Opcional" />
-                    <div className="h-6" />
+                    <Input {...register('pisoDpto')} placeholder="Opcional" disabled={loading} />
+                    <div className="min-h-5" />
                 </div>
             </div>
 
             {/* REFERENCIA */}
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1.5">
                 <Label required>Referencia</Label>
                 <Input 
                     {...register('referencia', { required: true })} 
                     aria-invalid={errors.referencia ? "true" : "false"}
                     placeholder="Ej. Frente al parque, casa color verde..."
+                    disabled={loading}
                 />
-                <div className="h-6">
+                <div className="min-h-5 overflow-hidden">
                     {errors.referencia && <ErrorMessage>La referencia es obligatoria</ErrorMessage>}
                 </div>
             </div>
 
             {/* Botón de envío */}
-            <div className="pt-6 border-t border-[var(--color-border-subtle)] mt-4">
+            <div className="pt-6 border-t border-border mt-2 flex justify-end">
                 <Button
                     type="submit"
                     disabled={loading || !isValid}
-                    variant="accent"
-                    className="w-full"
+                    className="w-full md:w-auto bg-action-cta hover:bg-action-cta-hover text-action-cta-foreground font-bold px-8 rounded-[var(--radius-sm)]"
                 >
                     {loading ? (
                         <div className="flex items-center gap-2">

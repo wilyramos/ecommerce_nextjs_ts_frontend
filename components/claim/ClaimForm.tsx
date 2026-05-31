@@ -1,4 +1,5 @@
 // File: app/%28store%29/hc/libro-de-reclamaciones/components/ClaimForm.tsx
+
 "use client";
 
 import { useActionState, useEffect, useRef } from "react";
@@ -28,17 +29,19 @@ export default function ClaimForm() {
     }, [state.success, state.data]);
 
     return (
-        <div className="rounded-xl border bg-white p-6 shadow-sm">
+        <div className="rounded-[var(--radius-lg)] border border-border bg-card p-6 text-card-foreground">
             {state.message && (
                 <div className="mb-6">
                     <ErrorMessage
                         variant={state.success ? "success" : "error"}
                         mode="banner"
                     >
-                        <div className="flex flex-col gap-0.5">
-                            <span className="font-semibold">{state.message}</span>
+                        <div className="flex flex-col gap-1">
+                            <span className="font-bold">{state.message}</span>
                             {state.success && state.data && (
-                                <span className="font-mono text-xs opacity-90">Código de Seguimiento: {state.data.correlativo}</span>
+                                <span className="font-mono text-xs font-black select-all opacity-95">
+                                    Código de Seguimiento: {state.data.correlativo}
+                                </span>
                             )}
                         </div>
                     </ErrorMessage>
@@ -48,7 +51,7 @@ export default function ClaimForm() {
             <form ref={formRef} action={formAction} className="space-y-8">
                 {/* SECCIÓN 1: DATOS DEL CONSUMIDOR */}
                 <fieldset className="space-y-4" disabled={isPending}>
-                    <legend className="text-lg font-semibold text-gray-900 border-b pb-2 w-full mb-2">
+                    <legend className="text-sm font-bold uppercase tracking-wider text-foreground border-b border-border pb-2 w-full mb-2 select-none">
                         1. Identificación del Consumidor Reclamante
                     </legend>
 
@@ -196,7 +199,7 @@ export default function ClaimForm() {
 
                 {/* SECCIÓN 2: DETALLE DEL RECLAMO */}
                 <fieldset className="space-y-4" disabled={isPending}>
-                    <legend className="text-lg font-semibold text-gray-900 border-b pb-2 w-full mb-2">
+                    <legend className="text-sm font-bold uppercase tracking-wider text-foreground border-b border-border pb-2 w-full mb-2 select-none">
                         2. Detalle de la Reclamación
                     </legend>
 
@@ -204,25 +207,25 @@ export default function ClaimForm() {
                         <div className="space-y-1.5">
                             <Label>Tipo de Incidencia</Label>
                             <div className="mt-2 flex items-center space-x-6 h-10">
-                                <label className="inline-flex items-center text-sm cursor-pointer select-none">
+                                <label className="inline-flex items-center text-xs font-bold text-foreground cursor-pointer select-none">
                                     <input
                                         type="radio"
                                         name="detail.tipoReclamo"
                                         value="Reclamo"
                                         defaultChecked={!state.payload?.detail?.tipoReclamo || state.payload?.detail?.tipoReclamo === "Reclamo"}
-                                        className="h-4 w-4 text-primary border-gray-300 focus:ring-primary accent-black"
+                                        className="h-4 w-4 text-primary border-border focus:ring-ring accent-foreground"
                                     />
-                                    <span className="ml-2 text-gray-700 font-medium">Reclamo (Disconformidad del producto)</span>
+                                    <span className="ml-2">Reclamo (Falla del producto)</span>
                                 </label>
-                                <label className="inline-flex items-center text-sm cursor-pointer select-none">
+                                <label className="inline-flex items-center text-xs font-bold text-foreground cursor-pointer select-none">
                                     <input
                                         type="radio"
                                         name="detail.tipoReclamo"
                                         value="Queja"
                                         defaultChecked={state.payload?.detail?.tipoReclamo === "Queja"}
-                                        className="h-4 w-4 text-primary border-gray-300 focus:ring-primary accent-black"
+                                        className="h-4 w-4 text-primary border-border focus:ring-ring accent-foreground"
                                     />
-                                    <span className="ml-2 text-gray-700 font-medium">Queja (Malestar en la atención)</span>
+                                    <span className="ml-2">Queja (Malestar comercial)</span>
                                 </label>
                             </div>
                             {state.errors?.["detail.tipoReclamo"] && (
@@ -284,11 +287,11 @@ export default function ClaimForm() {
                     </div>
                 </fieldset>
 
-                <div className="pt-2">
+                <div className="pt-2 flex justify-end">
                     <Button
                         type="submit"
                         disabled={isPending}
-                        className="w-full h-11 text-sm font-semibold transition-all duration-200"
+                        className="w-full sm:w-auto bg-action-cta hover:bg-action-cta-hover text-action-cta-foreground font-bold px-8 h-11 rounded-[var(--radius-sm)]"
                     >
                         {isPending ? "Registrando Reclamación..." : "Enviar Reclamación Oficial"}
                     </Button>
