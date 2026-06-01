@@ -1,4 +1,4 @@
-//File:
+//File: src/store/cartStore.ts
 
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';

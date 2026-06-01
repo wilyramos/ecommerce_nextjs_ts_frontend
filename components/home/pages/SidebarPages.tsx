@@ -17,7 +17,7 @@ export default function SidebarPages() {
     const legalNav = [
         {
             name: "Términos y Condiciones",
-            href: "/terminos",
+            href: "/terminos-y-condiciones",
             icon: RiServiceLine,
             iconFill: RiServiceFill
         },
@@ -27,6 +27,12 @@ export default function SidebarPages() {
             icon: MdOutlineCookie,
             iconFill: MdCookie
         },
+        {
+            name: "Políticas de Cambios y Devoluciones",
+            href: "/politicas-de-cambios-y-devoluciones",
+            icon: RiServiceLine,
+            iconFill: RiServiceFill
+        }
     ];
 
     return (

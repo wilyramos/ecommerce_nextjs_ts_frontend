@@ -408,6 +408,18 @@ export default function ProductDetails({ producto }: Props) {
                             </span>
                         </a>
 
+                        <div className="flex flex-wrap gap-x-4 gap-y-2 py-3 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+        <Link href="/terminos-y-condiciones" className="hover:text-action-cta transition-colors underline-offset-2 hover:underline">
+            Términos y Condiciones
+        </Link>
+        <Link href="/politicas-de-cambios-y-devoluciones" className="hover:text-action-cta transition-colors underline-offset-2 hover:underline">
+            Cambios y Devoluciones
+        </Link>
+        <Link href="/libro-de-reclamaciones" className="hover:text-action-cta transition-colors underline-offset-2 hover:underline">
+            Libro de Reclamaciones
+        </Link>
+    </div>
+
                     </div>
 
                     {/* Módulo de Complementarios */}

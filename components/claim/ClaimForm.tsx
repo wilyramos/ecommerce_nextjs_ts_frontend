@@ -1,4 +1,4 @@
-// File: app/%28store%29/hc/libro-de-reclamaciones/components/ClaimForm.tsx
+// File: app/%28store%29/libro-de-reclamaciones/components/ClaimForm.tsx
 
 "use client";
 

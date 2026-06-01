@@ -26,7 +26,7 @@ export default function Sidebarcs() {
         { name: "Garantías y devoluciones", href: "/hc/garantias-y-devoluciones", icon: RiShieldCheckLine, iconFill: RiShieldCheckFill },
         { name: "Preguntas frecuentes", href: "/hc/preguntas-frecuentes", icon: RiChat1Line, iconFill: RiChat1Fill },
         { name: "Políticas de privacidad", href: "/hc/politicas-de-privacidad", icon: RiFileShieldLine, iconFill: RiFileShieldFill },
-        { name: "Libro de reclamaciones", href: "/hc/libro-de-reclamaciones", icon: RiFileShieldLine, iconFill: RiFileShieldFill },
+        { name: "Libro de reclamaciones", href: "/libro-de-reclamaciones", icon: RiFileShieldLine, iconFill: RiFileShieldFill },
     ];
 
     return (
@@ -70,7 +70,7 @@ export default function Sidebarcs() {
                             Legal
                         </Muted>
                         <Link
-                            href="/terminos"
+                            href="/terminos-y-condiciones"
                             className="flex items-center justify-between px-3 py-2.5 rounded-[var(--radius-sm)] bg-background-secondary border border-border group hover:border-muted-foreground transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring"
                         >
                             <div className="flex items-center gap-2.5">
@@ -106,10 +106,10 @@ export default function Sidebarcs() {
                             </Link>
                         );
                     })}
-                    
+
                     {/* Botón Legal en móvil */}
                     <Link
-                        href="/terminos"
+                        href="/terminos-y-condiciones"
                         className="flex flex-col items-center justify-center gap-0.5 w-full h-full text-muted-foreground hover:text-foreground outline-none transition-colors"
                     >
                         <RiFileShieldLine className="w-4 h-4 shrink-0" />

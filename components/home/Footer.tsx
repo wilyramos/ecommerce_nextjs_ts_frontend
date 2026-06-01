@@ -26,14 +26,14 @@ export default function Footer() {
         { label: "Contacto y soporte", href: "/hc/contacto-y-soporte" },
         { label: "Garantías y devoluciones", href: "/hc/garantias-y-devoluciones" },
         { label: "Preguntas frecuentes", href: "/hc/preguntas-frecuentes" },
-        { label: "Comparador de productos", href: "/comparativas" },
-        { label: "Libro de reclamaciones", href: "/hc/libro-de-reclamaciones" },
+        // { label: "Comparador de productos", href: "/comparativas" },
+        { label: "Libro de reclamaciones", href: "/libro-de-reclamaciones" },
     ];
 
     const legalLinks = [
         { label: "Privacidad", href: "/hc/politicas-de-privacidad" },
-        { label: "Términos", href: "/terminos" },
-        { label: "Cambios y devoluciones", href: "/cambios-y-devoluciones" },
+        { label: "Términos y condiciones", href: "/terminos-y-condiciones" },
+        { label: "Cambios y devoluciones", href: "/politicas-de-cambios-y-devoluciones" },
     ];
 
     const social = [
@@ -167,7 +167,7 @@ export default function Footer() {
 
                         <div className="flex items-center gap-6 order-1 md:order-2">
                             <Link
-                                href="/hc/libro-de-reclamaciones"
+                                href="/libro-de-reclamaciones"
                                 className="inline-flex items-center gap-2 px-3 py-2 border border-border rounded-[var(--radius-sm)] text-[11px]  text-muted-foreground hover:text-foreground hover:bg-background-secondary transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
                             >
                                 <FaBookOpen className="w-3.5 h-3.5 text-amber-500 shrink-0" />
