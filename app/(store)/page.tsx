@@ -17,7 +17,7 @@ export const metadata: Metadata = {
         template: "%s | GoPhone",
     },
     description:
-        "GoPhone es tu tienda de confianza en Cañete para la compra de celulares, accesorios y más. Ofrecemos productos de calidad, envío rápido y atención personalizada.",
+        "GoPhone en Cañete para la compra de celulares, accesorios y más. Ofrecemos productos de calidad, envío rápido y atención personalizada.",
     keywords: [
         "GoPhone",
         "tienda iPhone Cañete",
