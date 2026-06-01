@@ -26,7 +26,7 @@ export default function Footer() {
         { label: "Contacto y soporte", href: "/hc/contacto-y-soporte" },
         { label: "Garantías y devoluciones", href: "/hc/garantias-y-devoluciones" },
         { label: "Preguntas frecuentes", href: "/hc/preguntas-frecuentes" },
-        // { label: "Comparador de productos", href: "/comparativas" },
+        { label: "Comparador de productos", href: "/comparativas" },
         { label: "Libro de reclamaciones", href: "/libro-de-reclamaciones" },
     ];
 
