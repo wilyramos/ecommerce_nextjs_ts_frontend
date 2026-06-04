@@ -364,7 +364,7 @@ export default function ProductDetails({ producto }: Props) {
                         </section>
                     </div>
 
-                    {showPaymentNotice && (
+                    {showPaymentNotice && precio > 50 && (
                         <div className="pt-2">
                             <PaymentNotice price={precio} installments={6} />
                         </div>

@@ -73,6 +73,7 @@ export default function ComponentScriptCulqiCustom({ order }: { order: OrderResp
 
     const paymentHandlerRef = useRef<() => Promise<void>>(async () => { });
 
+
     paymentHandlerRef.current = async () => {
         const Culqi = checkoutRef.current;
         if (!Culqi) return;
@@ -97,32 +98,34 @@ export default function ComponentScriptCulqiCustom({ order }: { order: OrderResp
 
         try {
             if (Culqi.token) {
+                // ── Flujo Síncrono: Tarjetas / Yape Directo ──
                 await processPaymentCulqi({
                     token: Culqi.token.id,
                     email: Culqi.token.email || userEmail,
                     amount,
                     orderId,
                 });
-                Culqi.close();
-                // Redirigir a la ruta de verificación de estado dinámico para polling controlado
+                Culqi.close(); // Correcto: Se cierra porque el cobro ya se completó de inmediato
                 router.push(`/checkout-result/verifying?orderNumber=${orderNumber}`);
             } else if (Culqi.order) {
+                // ── Flujo Asíncrono: PagoEfectivo / QR / Banca Móvil ──
                 await processPaymentCulqi({
                     order: Culqi.order.id,
                     email: userEmail,
                     amount,
                     orderId,
                 });
-                Culqi.close();
-                // Sincronizado para que las órdenes de código de pago sigan el mismo flujo dinámico
-                router.push(`/checkout-result/verifying?orderNumber=${orderNumber}`);
+
+                // Dejamos el modal abierto para que el cliente vea su QR, guarde su código CIP o complete la acción en pantalla.
+
+                setLoading(false); // Liberamos el estado de carga local
+                toast.success("Código de pago generado de manera exitosa.");
             }
         } catch (err) {
             toast.error(err instanceof Error ? err.message : "Error procesando el pago con Culqi.");
             setLoading(false);
         }
     };
-
     const initCheckout = () => {
         const pk = process.env.NEXT_PUBLIC_CULQI_PUBLIC_KEY;
         const currentOrder = orderRef.current;
@@ -140,7 +143,7 @@ export default function ComponentScriptCulqiCustom({ order }: { order: OrderResp
                 title: "GOPHONE",
                 currency: currentOrder.currency || "PEN",
                 amount: amount,
-                order: currentOrder.culqiOrderId, 
+                order: currentOrder.culqiOrderId,
             },
             options: {
                 lang: "auto",
@@ -179,16 +182,15 @@ export default function ComponentScriptCulqiCustom({ order }: { order: OrderResp
                 type="button"
                 onClick={() => checkoutRef.current?.open()}
                 disabled={!culqiReady || loading}
-                className={`w-full py-3 px-6 text-sm font-bold tracking-wide transition-all ${
-                    culqiReady && !loading
-                        ? "bg-orange-600 text-white hover:bg-orange-700 active:scale-[0.99]"
-                        : "bg-background-secondary text-muted-foreground border border-border cursor-not-allowed opacity-50"
-                }`}
+                className={`w-full py-3 px-6 text-sm font-bold tracking-wide transition-all ${culqiReady && !loading
+                    ? "bg-orange-600 text-white hover:bg-orange-700 active:scale-[0.99]"
+                    : "bg-background-secondary text-muted-foreground border border-border cursor-not-allowed opacity-50"
+                    }`}
             >
-                {loading 
-                    ? "Procesando pago..." 
-                    : culqiReady 
-                        ? `Pagar ${order.currency} ${order.totalPrice.toFixed(2)}` 
+                {loading
+                    ? "Procesando pago..."
+                    : culqiReady
+                        ? `Pagar ${order.currency} ${order.totalPrice.toFixed(2)}`
                         : "Cargando pasarela..."}
             </Button>
         </>

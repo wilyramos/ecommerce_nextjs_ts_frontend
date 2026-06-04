@@ -196,20 +196,16 @@ export default function CheckoutForm({ defaultProfile, lockedEmail }: Props) {
     const serverError = state?.ok === false ? state.error : undefined
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+        <form onSubmit={handleSubmit} className="space-y-6" noValidate>
             {serverError && (
-                <div
-                    role="alert"
-                    className="rounded-[var(--radius-sm)] border border-destructive/30 bg-destructive/5 px-4 py-3 text-xs font-bold text-destructive select-none"
-                >
+                <div role="alert" className="rounded-[var(--radius-sm)] border border-destructive/20 bg-destructive/5 px-4 py-3 text-[11px] font-bold text-destructive ">
                     {serverError}
                 </div>
             )}
 
-            {/* Información personal */}
-            <section className="bg-card p-2 md:p-6 shadow-xs">
-                <h2 className="text-[10px] font-black text-[var(--ring)] tracking-widest uppercase mb-6 select-none">
-                    1. Información personal
+            <section className="">
+                <h2 className="text-[9px] font-black text-[var(--ring)] uppercase mb-5 ">
+                    1. Información Personal
                 </h2>
                 <CustomerProfileSection
                     values={profile}
@@ -220,10 +216,9 @@ export default function CheckoutForm({ defaultProfile, lockedEmail }: Props) {
                 />
             </section>
 
-            {/* Dirección de envío */}
-            <section className="bg-card p-2 md:p-6 shadow-xs">
-                <h2 className="text-[10px] font-black text-[var(--ring)] tracking-widest uppercase mb-6 select-none">
-                    2. Dirección de envío
+            <section className="">
+                <h2 className="text-[9px] font-black text-[var(--ring)] uppercase mb-5 ">
+                    2. Dirección de Envío
                 </h2>
                 <ShippingAddressSection
                     values={address}
@@ -235,11 +230,10 @@ export default function CheckoutForm({ defaultProfile, lockedEmail }: Props) {
                 />
             </section>
 
-            {/* Submit */}
             <Button
                 type="submit"
                 disabled={isPending || cart.length === 0}
-                className="w-full bg-action-cta hover:bg-action-cta-hover uppercase font-bold"
+                className="w-full bg-action-cta hover:bg-action-cta-hover text-action-cta-foreground font-bold  transition-all"
             >
                 {isPending ? (
                     <span className="flex items-center justify-center gap-2">
@@ -247,7 +241,7 @@ export default function CheckoutForm({ defaultProfile, lockedEmail }: Props) {
                         Procesando...
                     </span>
                 ) : (
-                    'Continuar al pago'
+                    'Ir a pagar'
                 )}
             </Button>
         </form>

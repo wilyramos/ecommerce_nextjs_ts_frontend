@@ -15,17 +15,16 @@ type Props = {
 }
 
 export default function CustomerProfileSection({ values, errors, disabled, lockedEmail, onChange }: Props) {
-    
+
     // Helper ultracompacto con manejo de errores inline al lado del label
     const renderField = (fieldKey: keyof CustomerProfile, label: string, placeholder: string, type = "text", required = true) => {
         const errorKey = `customerProfile.${fieldKey}`
         const error = errors[errorKey]
-        
+
         return (
             <div className="flex flex-col gap-0.5 w-full">
                 <div className="flex items-center justify-between h-5">
-                    <Label required={required} className='text-[10px]'>{label}</Label>
-                    {error && <div className="text-xs mt-[-4px]"><ErrorMessage>{error}</ErrorMessage></div>}
+                    <Label required={required} className="text-[10px] font-bold text-muted-foreground">{label}</Label>                    {error && <div className="text-xs mt-[-4px]"><ErrorMessage>{error}</ErrorMessage></div>}
                 </div>
                 <Input
                     type={type}
@@ -50,11 +49,11 @@ export default function CustomerProfileSection({ values, errors, disabled, locke
                         <div className="flex items-center justify-between h-5">
                             <Label className="text-[10px]">Correo</Label>
                         </div>
-                        <Input 
-                            value={lockedEmail} 
-                            disabled 
-                            readOnly 
-                            className="border-border cursor-not-allowed select-none" 
+                        <Input
+                            value={lockedEmail}
+                            disabled
+                            readOnly
+                            className="border-border cursor-not-allowed select-none"
                         />
                     </>
                 ) : (
@@ -80,8 +79,8 @@ export default function CustomerProfileSection({ values, errors, disabled, locke
                     <div className="flex items-center justify-between h-5">
                         <Label className="text-[10px]">Tipo Doc.</Label>
                     </div>
-                    <Select 
-                        value={values.tipoDocumento ?? ''} 
+                    <Select
+                        value={values.tipoDocumento ?? ''}
                         onValueChange={val => onChange('tipoDocumento', (val as TipoDocumento) || undefined)}
                         disabled={disabled}
                     >

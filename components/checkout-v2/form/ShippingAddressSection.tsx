@@ -50,7 +50,6 @@ export default function ShippingAddressSection({ values, errors, disabled, notes
 
     return (
         <fieldset className="space-y-1 text-foreground" disabled={disabled}>
-            <legend className="sr-only">Dirección de envío</legend>
 
             {/* Ubigeo (Departamento / Provincia / Distrito) */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
@@ -100,11 +99,6 @@ export default function ShippingAddressSection({ values, errors, disabled, notes
             {/* Dirección Principal */}
             {renderField('direccion', 'Dirección', 'Av. Principal 123', true)}
 
-            {/* Detalles Domiciliarios */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {/* {renderField('numero', 'Número', 'N° (opcional)', false)} */}
-                {/* {renderField('pisoDpto', 'Piso / Dpto', 'Opcional', false)} */}
-            </div>
 
             {/* Referencia */}
             {renderField('referencia', 'Referencia', 'Ej. Frente al parque, casa color verde...', true)}
@@ -112,7 +106,7 @@ export default function ShippingAddressSection({ values, errors, disabled, notes
             {/* Notas Especiales */}
             <div className="flex flex-col gap-1.5">
                 <div className="flex items-center justify-between h-5">
-                    <Label>Notas del pedido <span className="text-muted-foreground text-xs">(opcional)</span></Label>
+                    <Label>Notas del pedido <span className="text-muted-foreground text-xs"></span></Label>
                 </div>
                 <Input
                     value={notes}

@@ -18,7 +18,7 @@ export default function CheckoutStepsV2() {
     const activeIndex = currentIndex === -1 ? 0 : currentIndex
 
     return (
-        <nav aria-label="Pasos del checkout" className="flex items-center gap-1 p-1.5 bg-background border border-border rounded-full w-fit shadow-sm select-none">
+        <nav aria-label="Pasos del checkout" className="flex items-center gap-1 w-fit select-none">
             {STEPS.map((step, index) => {
                 const isActive = index === activeIndex
                 const isDone = index < activeIndex
@@ -42,7 +42,7 @@ export default function CheckoutStepsV2() {
                         )}>
                             {isDone ? '✓' : index + 1}
                         </div>
-                        <span className="hidden sm:inline">{step.label}</span>
+                        <span className="inline text-[9px] md:text-xs">{step.label}</span>
                     </div>
                 )
 

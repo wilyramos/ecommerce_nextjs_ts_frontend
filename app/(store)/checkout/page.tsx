@@ -30,9 +30,7 @@ export default async function CheckoutStepOnePage() {
                 <h1 className="text-xl font-bold tracking-tight text-foreground">
                     Datos de entrega
                 </h1>
-                <p className="text-sm text-muted-foreground">
-                    Ingresa tus datos personales y la ubicación para tu despacho.
-                </p>
+             
             </div>
 
             <CheckoutForm

@@ -14,7 +14,7 @@ export default function CheckoutLayoutV2({ children }: Props) {
             <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
                 
                 {/* Cabecera central con los pasos */}
-                <header className="mb-10 flex justify-center">
+                <header className="mb-5 flex justify-center">
                     <CheckoutStepsV2 />
                 </header>
                 
