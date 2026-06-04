@@ -102,8 +102,8 @@ export default function ShippingAddressSection({ values, errors, disabled, notes
 
             {/* Detalles Domiciliarios */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {renderField('numero', 'Número', 'N° (opcional)', false)}
-                {renderField('pisoDpto', 'Piso / Dpto', 'Opcional', false)}
+                {/* {renderField('numero', 'Número', 'N° (opcional)', false)} */}
+                {/* {renderField('pisoDpto', 'Piso / Dpto', 'Opcional', false)} */}
             </div>
 
             {/* Referencia */}

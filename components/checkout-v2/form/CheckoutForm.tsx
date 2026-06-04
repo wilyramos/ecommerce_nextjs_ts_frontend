@@ -196,7 +196,7 @@ export default function CheckoutForm({ defaultProfile, lockedEmail }: Props) {
     const serverError = state?.ok === false ? state.error : undefined
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+        <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             {serverError && (
                 <div
                     role="alert"
@@ -207,43 +207,43 @@ export default function CheckoutForm({ defaultProfile, lockedEmail }: Props) {
             )}
 
             {/* Información personal */}
-            <section className="bg-card border border-border rounded-[var(--radius-md)] p-4 md:p-6 shadow-xs">
-                <h2 className="text-[10px] font-black text-muted-foreground tracking-widest uppercase mb-6 select-none">
+            <section className="bg-card p-2 md:p-6 shadow-xs">
+                <h2 className="text-[10px] font-black text-[var(--ring)] tracking-widest uppercase mb-6 select-none">
                     1. Información personal
                 </h2>
-                <CustomerProfileSection 
-                    values={profile} 
-                    errors={fieldErrors} 
-                    disabled={isPending} 
-                    lockedEmail={lockedEmail} 
-                    onChange={handleProfileChange} 
+                <CustomerProfileSection
+                    values={profile}
+                    errors={fieldErrors}
+                    disabled={isPending}
+                    lockedEmail={lockedEmail}
+                    onChange={handleProfileChange}
                 />
             </section>
 
             {/* Dirección de envío */}
-            <section className="bg-card border border-border rounded-[var(--radius-md)] p-4 md:p-6 shadow-xs">
-                <h2 className="text-[10px] font-black text-muted-foreground tracking-widest uppercase mb-6 select-none">
+            <section className="bg-card p-2 md:p-6 shadow-xs">
+                <h2 className="text-[10px] font-black text-[var(--ring)] tracking-widest uppercase mb-6 select-none">
                     2. Dirección de envío
                 </h2>
-                <ShippingAddressSection 
-                    values={address} 
-                    errors={fieldErrors} 
-                    disabled={isPending} 
-                    notes={notes} 
-                    onChange={handleAddressChange} 
-                    onNotesChange={handleNotesChange} 
+                <ShippingAddressSection
+                    values={address}
+                    errors={fieldErrors}
+                    disabled={isPending}
+                    notes={notes}
+                    onChange={handleAddressChange}
+                    onNotesChange={handleNotesChange}
                 />
             </section>
 
             {/* Submit */}
-            <Button 
+            <Button
                 type="submit"
                 disabled={isPending || cart.length === 0}
                 className="w-full bg-action-cta hover:bg-action-cta-hover uppercase font-bold"
             >
                 {isPending ? (
                     <span className="flex items-center justify-center gap-2">
-                        <Loader2 className="h-4 w-4 animate-spin"/>
+                        <Loader2 className="h-4 w-4 animate-spin" />
                         Procesando...
                     </span>
                 ) : (

@@ -25,7 +25,7 @@ export default async function CheckoutStepOnePage() {
     }
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-2">
             <div className="space-y-1">
                 <h1 className="text-xl font-bold tracking-tight text-foreground">
                     Datos de entrega
