@@ -38,7 +38,7 @@ interface CulqiCheckoutConfig {
         title: string;
         currency: string;
         amount: number;
-        order?: string; //
+        order?: string; // Mapeado según la documentación oficial adjunta
     };
     options: {
         lang: string;
@@ -140,7 +140,7 @@ export default function ComponentScriptCulqiCustom({ order }: { order: OrderResp
                 title: "GOPHONE",
                 currency: currentOrder.currency || "PEN",
                 amount: amount,
-                order: currentOrder.culqiOrderId,
+                order: currentOrder.culqiOrderId, 
             },
             options: {
                 lang: "auto",
@@ -179,15 +179,16 @@ export default function ComponentScriptCulqiCustom({ order }: { order: OrderResp
                 type="button"
                 onClick={() => checkoutRef.current?.open()}
                 disabled={!culqiReady || loading}
-                className={`w-full py-3 px-6 text-sm font-bold tracking-wide transition-all ${culqiReady && !loading
+                className={`w-full py-3 px-6 text-sm font-bold tracking-wide transition-all ${
+                    culqiReady && !loading
                         ? "bg-orange-600 text-white hover:bg-orange-700 active:scale-[0.99]"
                         : "bg-background-secondary text-muted-foreground border border-border cursor-not-allowed opacity-50"
-                    }`}
+                }`}
             >
-                {loading
-                    ? "Procesando pago..."
-                    : culqiReady
-                        ? `Pagar ${order.currency} ${order.totalPrice.toFixed(2)}`
+                {loading 
+                    ? "Procesando pago..." 
+                    : culqiReady 
+                        ? `Pagar ${order.currency} ${order.totalPrice.toFixed(2)}` 
                         : "Cargando pasarela..."}
             </Button>
         </>
