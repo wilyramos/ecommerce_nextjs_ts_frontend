@@ -1,82 +1,94 @@
+// File: frontend/components/checkout/SuccessClient.tsx
 'use client';
 
 import { useEffect } from 'react';
 import { useCartStore } from '@/src/store/cartStore';
 import { useCheckoutStore } from '@/src/store/checkoutStore';
-import type { TOrderPopulated } from '@/src/schemas';
-import { toast } from 'sonner';
+import type { OrderResponse } from '@/src/schemas/order.schema';
 import Link from 'next/link';
+import { CheckCircle2, ShoppingBag, CreditCard, Receipt, Truck, ArrowLeft } from 'lucide-react';
 
-import { BsCheckCircle, BsTruck, BsFileEarmarkText, BsCreditCard, BsClipboardCheck, BsBagCheck } from 'react-icons/bs';
-import { FiArrowLeftCircle } from 'react-icons/fi';
+interface Props {
+    order: OrderResponse;
+}
 
-export default function SuccessClient({ order }: { order: TOrderPopulated }) {
+export default function SuccessClient({ order }: Props) {
     const clearCart = useCartStore((state) => state.clearCart);
     const clearCheckout = useCheckoutStore((state) => state.clearCheckout);
 
     useEffect(() => {
-        if (order?.payment?.status === 'approved') {
-            clearCart();
-            clearCheckout();
-            toast.success('¡Pago exitoso! Tu orden ha sido procesada correctamente.');
-        }
-    }, [order, clearCart, clearCheckout]);
+        // Vaciado automático inmediato de la memoria del cliente (Mecanismo anti-duplicación)
+        clearCart();
+        clearCheckout();
+    }, [clearCart, clearCheckout, order.status, order.payment?.status]);
+
+    const isPaid = order.payment?.status === 'approved' || order.status === 'processing' || order.status === 'shipped';
 
     return (
-        <div className="flex items-center justify-center px-4 py-20 bg-[var(--color-bg-primary)]">
-            <div className="w-full max-w-lg p-10 text-center bg-[var(--color-bg-tertiary)] rounded-2xl border border-[var(--color-border-subtle)] shadow-sm">
-                <BsCheckCircle className="text-[var(--color-success)] text-7xl mx-auto mb-6" />
-                
-                <h1 className="text-3xl font-semibold text-[var(--color-text-primary)] mb-2 flex items-center justify-center gap-2">
-                    <BsBagCheck className="text-[var(--color-action-primary)]" />
-                    Pago aprobado
+        <div className="flex items-center justify-center px-4 py-16 bg-background text-foreground">
+            <div className="w-full max-w-lg p-8 md:p-10 text-center bg-card rounded-[var(--radius-lg)] border border-border shadow-xs">
+                <CheckCircle2 className="text-success w-16 h-16 mx-auto mb-5" />
+
+                <h1 className="text-xl font-black text-foreground mb-1.5 flex items-center justify-center gap-2 uppercase tracking-wide select-none">
+                    <ShoppingBag className="text-action-cta w-5 h-5 shrink-0" />
+                    {isPaid ? "¡Pago Confirmado!" : "Pedido Recibido"}
                 </h1>
-                
-                <p className="text-[var(--color-text-secondary)] text-sm mb-8 tracking-wide">
-                    Tu orden está en proceso. Gracias por confiar en nosotros.
+
+                <p className="text-muted-foreground text-xs font-semibold mb-6 tracking-normal max-w-sm mx-auto">
+                    {isPaid
+                        ? "Tu pago fue aprobado con éxito. Tu orden ya está en preparación."
+                        : "Tu pedido está registrado y se encuentra en verificación de pago."}
                 </p>
 
-                {/* Detalles con íconos */}
-                <div className="text-left text-sm text-[var(--color-text-primary)] space-y-4 border-t border-[var(--color-border-default)] pt-6">
-                    <p className="flex items-center gap-2">
-                        <BsClipboardCheck className="text-[var(--color-text-tertiary)]" />
-                        <span className="text-[var(--color-text-secondary)]">Número de orden:</span>
-                        <span className="font-medium">{order._id}</span>
-                    </p>
-                    <p className="flex items-center gap-2">
-                        <BsCreditCard className="text-[var(--color-text-tertiary)]" />
-                        <span className="text-[var(--color-text-secondary)]">Estado del pago:</span>
-                        <span className="text-[var(--color-success)] font-medium">
-                            {order.payment?.status || "Desconocido"}
+                {/* Grid de metadata estructurada estilo recibo comercial */}
+                <div className="text-left text-xs text-foreground space-y-3.5 border-t border-border pt-6 font-semibold">
+                    <div className="flex items-center justify-between border-b border-border/40 pb-2.5">
+                        <span className="text-muted-foreground flex items-center gap-2 select-none">
+                            <Receipt className="w-3.5 h-3.5 shrink-0" /> Código de compra:
                         </span>
-                    </p>
-                    <p className="flex items-center gap-2">
-                        <BsFileEarmarkText className="text-[var(--color-text-tertiary)]" />
-                        <span className="text-[var(--color-text-secondary)]">Total:</span>
-                        <span className="font-medium">S/ {order.totalPrice.toFixed(2)}</span>
-                    </p>
-                    <p className="flex items-center gap-2">
-                        <BsTruck className="text-[var(--color-text-tertiary)]" />
-                        <span className="text-[var(--color-text-secondary)]">Envío:</span>
-                        <span className="font-medium">{order.status}</span>
-                    </p>
+                        <span className="font-mono font-bold text-foreground select-all">{order.orderNumber}</span>
+                    </div>
+
+                    <div className="flex items-center justify-between border-b border-border/40 pb-2.5">
+                        <span className="text-muted-foreground flex items-center gap-2 select-none">
+                            <CreditCard className="w-3.5 h-3.5 shrink-0" /> Estado del pago:
+                        </span>
+                        <span className={`font-black uppercase tracking-wider text-[11px] ${isPaid ? "text-success" : "text-warning"}`}>
+                            {order.payment?.status || "Awaiting"}
+                        </span>
+                    </div>
+
+                    <div className="flex items-center justify-between border-b border-border/40 pb-2.5">
+                        <span className="text-muted-foreground flex items-center gap-2 select-none">
+                            <ShoppingBag className="w-3.5 h-3.5 shrink-0" /> Monto debitado:
+                        </span>
+                        <span className="font-mono font-bold text-foreground select-all">{order.currency} {order.totalPrice.toFixed(2)}</span>
+                    </div>
+
+                    <div className="flex items-center justify-between pb-1">
+                        <span className="text-muted-foreground flex items-center gap-2 select-none">
+                            <Truck className="w-3.5 h-3.5 shrink-0" /> Flujo logístico:
+                        </span>
+                        <span className="font-bold text-foreground uppercase tracking-wider bg-background-secondary px-2 py-0.5 rounded-[var(--radius-sm)] border border-border text-[10px]">
+                            {order.status.replace("_", " ")}
+                        </span>
+                    </div>
                 </div>
 
-                {/* Acciones */}
-                <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
+                {/* Acciones del Core */}
+                <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center select-none">
                     <Link
-                        href={`/productos`}
-                        className="w-full sm:w-auto border border-[var(--color-border-strong)] text-[var(--color-text-primary)] py-2.5 px-6 rounded-full text-sm tracking-wide hover:bg-[var(--color-surface-hover)] transition flex items-center justify-center gap-2"
+                        href="/productos"
+                        className="w-full sm:w-auto border border-border text-foreground py-2.5 px-6 rounded-[var(--radius-sm)] text-xs font-bold uppercase tracking-wider hover:bg-background-secondary transition-colors flex items-center justify-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     >
-                        <FiArrowLeftCircle className="text-lg" />
-                        Seguir comprando
+                        <ArrowLeft className="w-3.5 h-3.5" strokeWidth={2.5} />
+                        Regresar al catálogo
                     </Link>
                     <Link
                         href="/profile/orders"
-                        className="w-full sm:w-auto bg-[var(--color-action-primary)] text-[var(--color-text-inverse)] py-2.5 px-6 rounded-full text-sm tracking-wide hover:bg-[var(--color-action-primary-hover)] transition flex items-center justify-center gap-2 shadow-sm"
+                        className="w-full sm:w-auto bg-action-cta hover:bg-action-cta-hover text-action-cta-foreground py-2.5 px-6 rounded-[var(--radius-sm)] text-xs font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     >
-                        <BsClipboardCheck className="text-lg" />
-                        Ver mis pedidos
+                        Monitorear mis pedidos
                     </Link>
                 </div>
             </div>

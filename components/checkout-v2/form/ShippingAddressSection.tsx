@@ -1,206 +1,125 @@
-// File: frontend/components/checkout-v2/form/ShippingAddressSection.tsx
+'use client'
 
 import { useMemo } from 'react'
-import { UseFormReturn, Controller } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import ErrorMessage from '@/components/ui/ErrorMessage'
 import { locations } from '@/src/data/locations'
-import type { CheckoutFormValues } from './CheckoutForm'
+import type { ShippingAddress } from '@/src/schemas/order.schema'
 
 type Props = {
-    form: UseFormReturn<CheckoutFormValues>
+    values: ShippingAddress
+    errors: Record<string, string>
     disabled?: boolean
+    notes: string
+    onChange: (field: keyof ShippingAddress, value: string) => void
+    onNotesChange: (value: string) => void
 }
 
-export default function ShippingAddressSection({ form, disabled }: Props) {
-    const { register, control, watch, setValue, trigger, formState: { errors } } = form
+export default function ShippingAddressSection({ values, errors, disabled, notes, onChange, onNotesChange }: Props) {
+    const provincias = useMemo(() => (values.departamento ? Object.keys(locations[values.departamento] ?? {}) : []), [values.departamento])
+    const distritos = useMemo(() => (values.departamento && values.provincia ? locations[values.departamento]?.[values.provincia] ?? [] : []), [values.departamento, values.provincia])
 
-    const selectedDepartamento = watch('shippingAddress.departamento')
-    const selectedProvincia    = watch('shippingAddress.provincia')
+    const handleSelectChange = (field: 'departamento' | 'provincia', val: string) => {
+        onChange(field, val)
+        onChange('provincia', field === 'departamento' ? '' : val)
+        onChange('distrito', '')
+    }
 
-    const provincias = useMemo(
-        () => selectedDepartamento ? Object.keys(locations[selectedDepartamento] ?? {}) : [],
-        [selectedDepartamento]
-    )
-
-    const distritos = useMemo(
-        () => selectedDepartamento && selectedProvincia
-            ? locations[selectedDepartamento]?.[selectedProvincia] ?? []
-            : [],
-        [selectedDepartamento, selectedProvincia]
-    )
+    // Helper compacto con el error alineado a la derecha del Label
+    const renderField = (fieldKey: keyof ShippingAddress, label: string, placeholder: string, required = true) => {
+        const errorKey = `shippingAddress.${fieldKey}`
+        const error = errors[errorKey]
+        return (
+            <div className="flex flex-col gap-1.5 w-full">
+                <div className="flex items-center justify-between gap-2 h-5">
+                    <Label required={required}>{label}</Label>
+                    {error && <div className="text-xs mt-[-4px]"><ErrorMessage>{error}</ErrorMessage></div>}
+                </div>
+                <Input
+                    value={values[fieldKey] ?? ''}
+                    onChange={e => onChange(fieldKey, e.target.value)}
+                    placeholder={placeholder}
+                    aria-invalid={!!error}
+                    disabled={disabled}
+                />
+            </div>
+        )
+    }
 
     return (
-        <fieldset className="space-y-4" disabled={disabled}>
+        <fieldset className="space-y-1 text-foreground" disabled={disabled}>
             <legend className="sr-only">Dirección de envío</legend>
 
-            {/* Ubigeo */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Ubigeo (Departamento / Provincia / Distrito) */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                 {/* Departamento */}
                 <div className="flex flex-col gap-1.5">
-                    <Label required>Departamento</Label>
-                    <Controller
-                        control={control}
-                        name="shippingAddress.departamento"
-                        render={({ field }) => (
-                            <Select
-                                onValueChange={(val) => {
-                                    field.onChange(val)
-                                    setValue('shippingAddress.provincia', '')
-                                    setValue('shippingAddress.distrito', '')
-                                    trigger(['shippingAddress.departamento', 'shippingAddress.provincia', 'shippingAddress.distrito'])
-                                }}
-                                value={field.value}
-                            >
-                                <SelectTrigger
-                                    className="w-full"
-                                    aria-invalid={errors.shippingAddress?.departamento ? 'true' : 'false'}
-                                >
-                                    <SelectValue placeholder="Seleccionar" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {Object.keys(locations).map(dep => (
-                                        <SelectItem key={dep} value={dep}>{dep}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        )}
-                    />
-                    <div className="min-h-5 overflow-hidden">
-                        {errors.shippingAddress?.departamento && (
-                            <ErrorMessage>{errors.shippingAddress.departamento.message}</ErrorMessage>
-                        )}
+                    <div className="flex items-center justify-between h-5">
+                        <Label required>Departamento</Label>
+                        {errors['shippingAddress.departamento'] && <div className="text-xs mt-[-4px]"><ErrorMessage>{errors['shippingAddress.departamento']}</ErrorMessage></div>}
                     </div>
+                    <Select value={values.departamento} onValueChange={val => handleSelectChange('departamento', val)}>
+                        <SelectTrigger className="w-full"><SelectValue placeholder="Seleccionar" /></SelectTrigger>
+                        <SelectContent>
+                            {Object.keys(locations).map(dep => <SelectItem key={dep} value={dep}>{dep}</SelectItem>)}
+                        </SelectContent>
+                    </Select>
                 </div>
 
                 {/* Provincia */}
                 <div className="flex flex-col gap-1.5">
-                    <Label required>Provincia</Label>
-                    <Controller
-                        control={control}
-                        name="shippingAddress.provincia"
-                        render={({ field }) => (
-                            <Select
-                                disabled={!provincias.length}
-                                onValueChange={(val) => {
-                                    field.onChange(val)
-                                    setValue('shippingAddress.distrito', '')
-                                    trigger(['shippingAddress.provincia', 'shippingAddress.distrito'])
-                                }}
-                                value={field.value}
-                            >
-                                <SelectTrigger
-                                    className="w-full"
-                                    aria-invalid={errors.shippingAddress?.provincia ? 'true' : 'false'}
-                                >
-                                    <SelectValue placeholder="Seleccionar" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {provincias.map(p => (
-                                        <SelectItem key={p} value={p}>{p}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        )}
-                    />
-                    <div className="min-h-5 overflow-hidden">
-                        {errors.shippingAddress?.provincia && (
-                            <ErrorMessage>{errors.shippingAddress.provincia.message}</ErrorMessage>
-                        )}
+                    <div className="flex items-center justify-between h-5">
+                        <Label required>Provincia</Label>
+                        {errors['shippingAddress.provincia'] && <div className="text-xs mt-[-4px]"><ErrorMessage>{errors['shippingAddress.provincia']}</ErrorMessage></div>}
                     </div>
+                    <Select value={values.provincia} onValueChange={val => handleSelectChange('provincia', val)} disabled={provincias.length === 0}>
+                        <SelectTrigger className="w-full"><SelectValue placeholder="Seleccionar" /></SelectTrigger>
+                        <SelectContent>
+                            {provincias.map(p => <SelectItem key={p} value={p}>{p}</SelectItem>)}
+                        </SelectContent>
+                    </Select>
                 </div>
 
                 {/* Distrito */}
                 <div className="flex flex-col gap-1.5">
-                    <Label required>Distrito</Label>
-                    <Controller
-                        control={control}
-                        name="shippingAddress.distrito"
-                        render={({ field }) => (
-                            <Select
-                                disabled={!distritos.length}
-                                onValueChange={(val) => {
-                                    field.onChange(val)
-                                    trigger('shippingAddress.distrito')
-                                }}
-                                value={field.value}
-                            >
-                                <SelectTrigger
-                                    className="w-full"
-                                    aria-invalid={errors.shippingAddress?.distrito ? 'true' : 'false'}
-                                >
-                                    <SelectValue placeholder="Seleccionar" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {distritos.map(d => (
-                                        <SelectItem key={d} value={d}>{d}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        )}
-                    />
-                    <div className="min-h-5 overflow-hidden">
-                        {errors.shippingAddress?.distrito && (
-                            <ErrorMessage>{errors.shippingAddress.distrito.message}</ErrorMessage>
-                        )}
+                    <div className="flex items-center justify-between h-5">
+                        <Label required>Distrito</Label>
+                        {errors['shippingAddress.distrito'] && <div className="text-xs mt-[-4px]"><ErrorMessage>{errors['shippingAddress.distrito']}</ErrorMessage></div>}
                     </div>
+                    <Select value={values.distrito} onValueChange={val => onChange('distrito', val)} disabled={distritos.length === 0}>
+                        <SelectTrigger className="w-full"><SelectValue placeholder="Seleccionar" /></SelectTrigger>
+                        <SelectContent>
+                            {distritos.map(d => <SelectItem key={d} value={d}>{d}</SelectItem>)}
+                        </SelectContent>
+                    </Select>
                 </div>
             </div>
 
-            {/* Dirección */}
-            <div className="flex flex-col gap-1.5">
-                <Label required>Dirección</Label>
-                <Input
-                    {...register('shippingAddress.direccion')}
-                    placeholder="Av. Principal 123"
-                    aria-invalid={errors.shippingAddress?.direccion ? 'true' : 'false'}
-                />
-                <div className="min-h-5 overflow-hidden">
-                    {errors.shippingAddress?.direccion && (
-                        <ErrorMessage>{errors.shippingAddress.direccion.message}</ErrorMessage>
-                    )}
-                </div>
-            </div>
+            {/* Dirección Principal */}
+            {renderField('direccion', 'Dirección', 'Av. Principal 123', true)}
 
-            {/* Número y Piso */}
+            {/* Detalles Domiciliarios */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex flex-col gap-1.5">
-                    <Label>Número</Label>
-                    <Input {...register('shippingAddress.numero')} placeholder="N° (opcional)" />
-                    <div className="min-h-5" />
-                </div>
-                <div className="flex flex-col gap-1.5">
-                    <Label>Piso / Dpto</Label>
-                    <Input {...register('shippingAddress.pisoDpto')} placeholder="Opcional" />
-                    <div className="min-h-5" />
-                </div>
+                {renderField('numero', 'Número', 'N° (opcional)', false)}
+                {renderField('pisoDpto', 'Piso / Dpto', 'Opcional', false)}
             </div>
 
             {/* Referencia */}
-            <div className="flex flex-col gap-1.5">
-                <Label required>Referencia</Label>
-                <Input
-                    {...register('shippingAddress.referencia')}
-                    placeholder="Ej. Frente al parque, casa color verde..."
-                    aria-invalid={errors.shippingAddress?.referencia ? 'true' : 'false'}
-                />
-                <div className="min-h-5 overflow-hidden">
-                    {errors.shippingAddress?.referencia && (
-                        <ErrorMessage>{errors.shippingAddress.referencia.message}</ErrorMessage>
-                    )}
-                </div>
-            </div>
+            {renderField('referencia', 'Referencia', 'Ej. Frente al parque, casa color verde...', true)}
 
-            {/* Notas opcionales */}
+            {/* Notas Especiales */}
             <div className="flex flex-col gap-1.5">
-                <Label>Notas del pedido <span className="text-muted-foreground text-xs">(opcional)</span></Label>
+                <div className="flex items-center justify-between h-5">
+                    <Label>Notas del pedido <span className="text-muted-foreground text-xs">(opcional)</span></Label>
+                </div>
                 <Input
-                    {...register('notes')}
+                    value={notes}
+                    onChange={e => onNotesChange(e.target.value)}
                     placeholder="Instrucciones especiales de entrega..."
+                    maxLength={300}
                 />
-                <div className="min-h-5" />
             </div>
         </fieldset>
     )

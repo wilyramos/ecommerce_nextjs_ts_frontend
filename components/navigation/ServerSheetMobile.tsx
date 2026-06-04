@@ -5,12 +5,10 @@ import { getActiveCollections } from "@/src/services/collection-service";
 
 
 export default async function ServerSheetMobile() {
-     const [categories, collections] = await Promise.all([
+  const [categories, collections] = await Promise.all([
     getCategories(),
     getActiveCollections(),
   ]);
 
-
-
-    return <ButtonShowSheetMobile categories={categories} collections={collections} />;
+  return <ButtonShowSheetMobile categories={categories} collections={collections} />;
 }

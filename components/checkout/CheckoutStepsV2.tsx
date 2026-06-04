@@ -7,8 +7,8 @@ import { FiUser, FiCreditCard } from 'react-icons/fi'
 import { cn } from '@/lib/utils'
 
 const STEPS = [
-    { label: 'Datos y envío', path: '/checkout-v2',          icon: FiUser       },
-    { label: 'Pago',          path: '/checkout-v2/payment',  icon: FiCreditCard },
+    { label: 'Datos y envío', path: '/checkout',          icon: FiUser       },
+    { label: 'Pago',          path: '/checkout/payment',  icon: FiCreditCard },
 ]
 
 export default function CheckoutStepsV2() {

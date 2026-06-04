@@ -36,6 +36,7 @@ type NavLink = {
 const links: NavLink[] = [
     { href: "/admin/products", icon: Smartphone, label: "Productos" },
     { href: "/admin/orders", icon: Receipt, label: "Órdenes" },
+    { href: "/admin/orders-v2", icon: Folder, label: "Ordenes nuevas" },
     { href: "/admin/slider", icon: Images, label: "Slider" },
     { href: "/admin/comparisons", icon: Layers, label: "Comparativas" },
     { href: "/admin/collections", icon: Library, label: "Colecciones" },

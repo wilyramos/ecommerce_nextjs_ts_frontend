@@ -101,7 +101,7 @@ export default function ResumenCarrito() {
                         Verifica tus productos antes de continuar.
                     </Small>
 
-                    <Button onClick={() => router.push("/checkout/profile")} variant="primary">
+                    <Button onClick={() => router.push("/checkout")} variant="primary">
                         Finalizar Compra
                     </Button>
                 </div>

@@ -20,14 +20,14 @@ const AbsoluteHeaderWrapper = (p: ButtonGroupProps) => (
 
 export default function ClientCarouselCategorias({ categorias }: { categorias: CategoryListResponse }) {
     const responsive = {
-        desktop: { breakpoint: { max: 3000, min: 1280 }, items: 5 },
+        desktop: { breakpoint: { max: 3000, min: 1280 }, items: 6 },
         laptop: { breakpoint: { max: 1280, min: 1024 }, items: 4 },
         tablet: { breakpoint: { max: 1024, min: 640 }, items: 3 },
-        mobile: { breakpoint: { max: 640, min: 0 }, items: 2, partialVisibilityGutter: 20 }
+        mobile: { breakpoint: { max: 640, min: 0 }, items: 3, partialVisibilityGutter: 20 }
     };
 
     return (
-        <section className="relative max-w-7xl mx-auto px-4 md:px-8 pt-20 md:pt-24 pb-12">
+        <section className="relative max-w-7xl mx-auto px-4 md:px-8 pt-12 md:pt-24 pb-6">
             <Carousel
                 responsive={responsive}
                 infinite

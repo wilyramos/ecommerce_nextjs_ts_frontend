@@ -1,42 +1,42 @@
-// File: frontend/app/(store)/checkout/layout.tsx
+// File: frontend/app/(store)/checkout-v2/layout.tsx
 
-import CheckoutSteps from '@/components/checkout/CheckoutSteps'
-import ResumenFinalCarrito from '@/components/cart/ResumenFinalCarrito'
-import { redirect } from 'next/navigation'
-import { getSession } from '@/src/auth/dal'; // Importa getSession en lugar de verifySessionimport { headers } from 'next/headers';
-import { headers } from "next/headers";
+import { ReactNode } from 'react'
+import OrderSummary from '@/components/checkout-v2/summary/OrderSummary'
+import CheckoutStepsV2 from '@/components/checkout-v2/shared/CheckoutStepsV2'
 
-export default async function CheckoutLayout({ children }: { children: React.ReactNode }) {
-    const session = await getSession(); // No lanza redirect automático
-    
-    if (!session) {
-        const headersList = await headers();
-        const pathname = headersList.get("x-invoke-path") || "/checkout/profile";
-        redirect(`/auth/login?redirect=${encodeURIComponent(pathname)}`);
-    }
+type Props = {
+    children: ReactNode
+}
+
+export default function CheckoutLayoutV2({ children }: Props) {
     return (
-        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8 min-h-screen bg-background text-foreground">
+        <div className="min-h-screen bg-background-secondary pb-20">
+            <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+                
+                {/* Cabecera central con los pasos */}
+                <header className="mb-10 flex justify-center">
+                    <CheckoutStepsV2 />
+                </header>
+                
+                {/* Estructura dividida de Checkout */}
+                <div className="grid grid-cols-1 gap-x-12 gap-y-10 lg:grid-cols-12">
+                    
+                    {/* Contenido principal dinámico (Paso 1 o Paso 2) */}
+                    <main className="lg:col-span-7">
+                        <div className="bg-card border border-border p-6 md:p-8 rounded-[var(--radius-lg)] shadow-sm">
+                            {children}
+                        </div>
+                    </main>
 
-            {/* Contenedor de Pasos Centrado */}
-            <div className="mb-6 md:mb-8 flex justify-center w-full">
-                <CheckoutSteps />
+                    {/* Resumen lateral estático y persistente */}
+                    <aside className="lg:col-span-5 lg:sticky lg:top-24 h-fit">
+                        <div className="bg-card border border-border p-6 md:p-8 rounded-[var(--radius-lg)] shadow-sm">
+                            <OrderSummary />
+                        </div>
+                    </aside>
+                    
+                </div>
             </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-                {/* Sección Principal (Formularios) */}
-                <section className="lg:col-span-2">
-                    {children}
-                </section>
-
-                {/* Resumen Lateral (Sticky) */}
-                <aside className="lg:col-span-1">
-                    <div className="lg:sticky lg:top-8">
-                        <ResumenFinalCarrito />
-                    </div>
-                </aside>
-
-            </div>
-        </main>
+        </div>
     )
 }

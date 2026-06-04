@@ -78,15 +78,15 @@ export default function HomePage() {
             {/* Secciones dinámicas desde Collections */}
             <HomepageSections />
 
-            <section className="my-10">
+            <section className="my-2 md:my-10">
                 <CategoriasDestacadasWrapper />
             </section>
 
-            <section className="my-5">
+            <section className="my-2 md:my-5">
                 <BrandsList />
             </section>
 
-            <section>
+            <section className="">
                 <FeaturesList />
             </section>
         </>

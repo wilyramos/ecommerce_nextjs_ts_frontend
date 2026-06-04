@@ -50,10 +50,6 @@ export default function OrderSummary() {
                 <span>S/ {totalFinal.toFixed(2)}</span>
             </div>
 
-            {/* Seguridad */}
-            <p className="text-[11px] text-muted-foreground mt-4 text-center">
-                🔒 Pago 100% seguro · SSL encriptado
-            </p>
         </div>
     )
 }

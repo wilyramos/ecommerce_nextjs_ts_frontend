@@ -1,15 +1,16 @@
-// File: frontend/actions/checkout/process-culqi-payment.ts
+//File: frontend/actions/checkout/process-culqi-payment.ts
 
 "use server";
 
-import getToken from "@/src/auth/token";
+// para procesar pagos con o sin token
+import { getTokenOptional } from "@/src/auth/dal"; 
 
 export interface CulqiPaymentPayload {
-    token?: string;   // pago con tarjeta
-    order?: string;   // pago con billetera / PagoEfectivo
-    amount: number;   // en céntimos: S/10.00 → 1000
+    token?: string;   
+    order?: string;   
+    amount: number;   
     email: string;
-    orderId: string;  // ID de la orden en tu sistema para metadata
+    orderId: string;  
 }
 
 export async function processPaymentCulqi(paymentData: CulqiPaymentPayload) {
@@ -21,17 +22,10 @@ export async function processPaymentCulqi(paymentData: CulqiPaymentPayload) {
         orderId: paymentData.orderId,
     });
 
-
-
-    const authToken = await getToken();
-
-    if (!authToken) {
-        console.error("❌ [SA] No hay token de autenticación en cookies");
-        throw new Error("No autenticado. Por favor inicia sesión.");
-    }
+    // CAMBIO: Usar el validador opcional en lugar del estricto
+    const authToken = await getTokenOptional();
 
     const url = process.env.API_URL;
-
     if (!url) {
         console.error("❌ [SA] API_URL no definida en variables de entorno");
         throw new Error("API_URL no configurada.");
@@ -39,14 +33,20 @@ export async function processPaymentCulqi(paymentData: CulqiPaymentPayload) {
 
     const endpoint = `${url}/checkout/process-payment-culqi`;
     console.log("🌐 [SA] Enviando a:", endpoint);
-    console.log("📦 [SA] Payload:", paymentData);
+
+    // Configurar cabeceras dinámicas
+    const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+    };
+
+    // Inyectar el token de autorización únicamente si el usuario está autenticado
+    if (authToken) {
+        headers["Authorization"] = `Bearer ${authToken}`;
+    }
 
     const res = await fetch(endpoint, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-        },
+        headers,
         body: JSON.stringify(paymentData),
         cache: "no-store",
     });

@@ -1,3 +1,5 @@
+//File: frontend/components/home/FeaturesList.tsx
+
 "use client";
 
 import Link from "next/link";
@@ -39,38 +41,32 @@ const features: Feature[] = [
 
 export default function MinimalFeatures() {
     return (
-        <section className="bg-background py-12 md:py-16 border-b border-border">
+        <section className="bg-background-secondary py-12 md:py-16 border-b border-border">
             <div className="max-w-7xl mx-auto px-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
                     {features.map((feature) => {
-                        const Icon = feature.icon;
 
                         const Content = (
                             <div
-                                className="group relative flex flex-col gap-3 p-5 rounded-xl border border-border bg-background cursor-pointer transition-all duration-300 hover:border-border-hover hover:shadow-sm hover:-translate-y-0.5 overflow-hidden"
+                                className="group relative flex flex-row items-center gap-1 md:gap-4 p-2 h-full border border-border bg-background cursor-pointer transition-all duration-300 hover:border-border-hover hover:-translate-y-0.5 overflow-hidden"
                                 aria-label={feature.title}
                             >
-                                {/* Fondo gradiente sutil en hover */}
-                                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-background-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-
-                                {/* Icono */}
-                                <div className="relative z-10 inline-flex w-fit p-2.5 rounded-lg bg-background-secondary text-foreground border border-border group-hover:bg-muted-neutral group-hover:border-border-hover group-hover:text-action-cta group-hover:scale-105 transition-all duration-300">
-                                    <Icon size={18} strokeWidth={1.6} />
+                                {/* Icono a la izquierda */}
+                                <div className="shrink-0">
+                                    <feature.icon className="w-3 h-3 md:w-6 md:h-6 text-primary" />
                                 </div>
 
-                                {/* Contenido */}
-                                <div className="relative z-10 flex flex-col gap-1">
-                                    <h3 className="text-[13px] md:text-sm font-semibold text-foreground leading-snug tracking-tight transition-colors duration-300">
+                                {/* Contenido de texto */}
+                                <div className="relative z-10 flex flex-col">
+                                    <h3 className="text-[10px] md:text-sm font-semibold text-foreground leading-snug tracking-tight">
                                         {feature.title}
                                     </h3>
-
-                                    <p className="text-xs text-muted-foreground leading-relaxed transition-colors duration-300">
+                                    <p className=" text-[8px] md:text-xs text-muted-foreground leading-relaxed">
                                         {feature.description}
                                     </p>
                                 </div>
                             </div>
                         );
-
                         return (
                             <div key={feature.title} className="h-full">
                                 {feature.url ? (

@@ -1,3 +1,5 @@
+// File: frontend/components/store/ButtonShowCart.tsx
+
 "use client";
 
 import {
@@ -14,6 +16,7 @@ import ItemCarrito from "../cart/ItemCarrito";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from '@/components/ui/button';
+import { Muted } from "@/components/ui/Typography";
 
 export default function ButtonShowCart() {
     const carrito = useCartStore((state) => state.cart);
@@ -29,20 +32,20 @@ export default function ButtonShowCart() {
             return;
         }
         setCartOpen(false);
-        router.push("/carrito");
+        router.push("/checkout");
     }
 
     return (
         <Sheet open={isCartOpen} onOpenChange={setCartOpen}>
             <SheetTrigger asChild>
-                <button className="relative p-2.5 rounded-full transition-all duration-300 hover:bg-background-secondary group cursor-pointer active:scale-90">
+                <button className="relative p-2.5 rounded-full transition-colors hover:bg-background-secondary group cursor-pointer active:scale-95 outline-none select-none">
                     <ShoppingCart
                         size={20}
-                        strokeWidth={1.5}
+                        strokeWidth={2}
                         className="text-foreground group-hover:text-action-cta transition-colors"
                     />
                     {carrito.length > 0 && (
-                        <span className="absolute top-1 right-1 bg-action-cta text-action-cta-foreground text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center shadow-md animate-in zoom-in-50 duration-200">
+                        <span className="absolute top-1 right-1 bg-action-cta text-action-cta-foreground text-[9px] font-black rounded-full h-4 w-4 flex items-center justify-center shadow-md animate-in zoom-in-50 duration-200">
                             {carrito.length}
                         </span>
                     )}
@@ -51,16 +54,16 @@ export default function ButtonShowCart() {
 
             <SheetContent
                 side="right"
-                className="flex flex-col h-full p-0 border-l border-border bg-background overflow-hidden"
+                className="flex flex-col h-full p-0 border-l border-border bg-card text-card-foreground overflow-hidden select-none"
             >
                 {/* Header */}
-                <SheetHeader className="p-6 border-b border-border">
+                <SheetHeader className="p-6 border-b border-border bg-card">
                     <div className="flex flex-col gap-1">
                         <div className="flex items-center justify-between">
-                            <SheetTitle className="text-xl font-semibold text-foreground">
+                            <SheetTitle className="text-lg font-semibold  text-foreground uppercase">
                                 Carrito
                             </SheetTitle>
-                            <span className="text-sm text-muted">
+                            <span className="text-xs font-bold text-muted-foreground bg-background-secondary px-2.5 py-1 border border-border rounded-full">
                                 {carrito.length} {carrito.length === 1 ? 'Ítem' : 'Ítems'}
                             </span>
                         </div>
@@ -68,27 +71,27 @@ export default function ButtonShowCart() {
                 </SheetHeader>
 
                 {/* Lista de productos */}
-                <div className="flex-1 overflow-y-auto overflow-x-hidden px-6 py-2 scrollbar-thin scrollbar-thumb-border">
+                <div className="flex-1 overflow-y-auto overflow-x-hidden px-6 py-2 scrollbar-thin scrollbar-thumb-border bg-card">
                     {carrito.length === 0 ? (
                         <div className="h-full flex flex-col items-center justify-center space-y-4">
-                            <div className="p-8 rounded-full bg-background-secondary text-muted-foreground border border-border">
-                                <ShoppingBag size={48} strokeWidth={1} />
+                            <div className="p-6 rounded-full bg-background-secondary text-muted-foreground border border-border">
+                                <ShoppingBag size={40} strokeWidth={1.5} />
                             </div>
-                            <div className="text-center">
-                                <h3 className="text-lg font-bold text-foreground tracking-tight">
+                            <div className="text-center space-y-1">
+                                <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">
                                     Tu bolsa está vacía
                                 </h3>
-                                <p className="text-sm text-muted-foreground max-w-[220px] mx-auto mt-1">
-                                    Explora nuestra tienda y añade los mejores productos.
-                                </p>
+                                <Muted className="max-w-[200px] mx-auto font-semibold">
+                                    Explora la tienda y añade los mejores productos a tu setup.
+                                </Muted>
                             </div>
                         </div>
                     ) : (
-                        <div className="divide-y divide-border/40">
+                        <div className="divide-y divide-border/60">
                             {carrito.map((item) => (
                                 <div
                                     key={`${item._id}-${item.variant?._id ?? "no-variant"}`}
-                                    className="py-3 w-full overflow-hidden"
+                                    className="py-4 w-full overflow-hidden"
                                 >
                                     <ItemCarrito item={item} />
                                 </div>
@@ -99,24 +102,26 @@ export default function ButtonShowCart() {
 
                 {/* Footer y Acciones */}
                 {carrito.length > 0 && (
-                    <div className="p-6 bg-background border-t border-border">
+                    <div className="p-6 bg-card border-t border-border mt-auto">
                         <div className="space-y-4 mb-6">
-                            <div className="flex justify-between items-baseline pt-2">
-                                <span className="text-lg font-bold tracking-tight text-foreground">Total</span>
-                                <div className="text-right">
-                                    <span className="text-xl font-extrabold text-foreground tracking-tighter">
-                                        S/ {total}
+                            <div className="flex justify-between items-baseline pt-2 border-t border-transparent">
+                                <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Total Estimado</span>
+                                <div className="text-right select-all font-mono">
+                                    <span className="text-xs font-black text-foreground mr-1">S/</span>
+                                    <span className="text-2xl font-black text-foreground ">
+                                        {total}
                                     </span>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="grid gap-3">
+                        <div className="grid">
                             <Button
                                 onClick={handleCheckout}
-                                variant="primary"
+                                className="w-full bg-action-cta hover:bg-action-cta-hover text-action-cta-foreground font-bold uppercase tracking-wide text-xs h-11 flex items-center justify-center gap-2 rounded-[var(--radius-sm)] shadow-xs"
                             >
-                                Finalizar Pedido <ArrowRight size={18} />
+                                Finalizar Pedido 
+                                <ArrowRight size={14} strokeWidth={2.5} className="animate-in fade-in slide-in-from-left-1 duration-300" />
                             </Button>
                         </div>
                     </div>

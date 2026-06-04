@@ -7,6 +7,7 @@ import AddProductToCart from './AddProductToCart';
 import ImagenesProductoCarousel from './ImagenesProductoCarousel';
 import type { ProductWithCategoryResponse, TApiVariant } from '@/src/schemas';
 import ShopNowButton from './ShopNowButton';
+import PaymentNotice from './PaymentNotice';
 import ProductExpandableSections from './ProductExpandableSections ';
 import { cn, getDeliveryRange } from '@/lib/utils';
 import { useSearchParams } from 'next/navigation';
@@ -45,6 +46,8 @@ export default function ProductDetails({ producto }: Props) {
         });
         return attrs;
     }, [producto.variants]);
+
+    const showPaymentNotice = producto.categoria ?? false;
 
     useEffect(() => {
         const initialAttrs: Record<string, string> = {};
@@ -132,12 +135,12 @@ export default function ProductDetails({ producto }: Props) {
 
     return (
         <>
-            <article className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 mx-auto text-foreground bg-background">
+            <article className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 mx-auto text-foreground bg-background">
                 <div className='md:col-span-7'>
                     <ImagenesProductoCarousel images={variantImages} />
                 </div>
 
-                <section className='md:col-span-5 px-2 md:px-0 space-y-6'>
+                <section className='md:col-span-5 px-2 md:px-0 space-y-2'>
                     <div className="space-y-4">
                         <header className="pt-1 pb-4 border-b border-border space-y-3">
 
@@ -193,7 +196,7 @@ export default function ProductDetails({ producto }: Props) {
                             <div className="flex items-baseline gap-3 flex-wrap pt-1">
                                 <div className="flex items-baseline gap-0.5 text-foreground select-all">
                                     <span className="text-sm">S/</span>
-                                    <span className="text-2xl ">
+                                    <span className="text-2xl md:text-3xl font-semibold ">
                                         {precio.toFixed(2)}
                                     </span>
                                 </div>
@@ -361,8 +364,14 @@ export default function ProductDetails({ producto }: Props) {
                         </section>
                     </div>
 
+                    {showPaymentNotice && (
+                        <div className="pt-2">
+                            <PaymentNotice price={precio} installments={6} />
+                        </div>
+                    )}
+
                     {/* Fichas de Logística de Tienda */}
-                    <div className="border-t border-border/80 pt-2 divide-y divide-border/40 select-none">
+                    <div className="/80 pt-2 divide-y divide-border/40 select-none">
 
                         {/* Envío */}
                         <div className="flex items-center justify-between py-3">
@@ -384,7 +393,7 @@ export default function ProductDetails({ producto }: Props) {
                         <div className="flex items-center justify-between py-3">
                             <div className="flex items-center gap-2.5 text-muted-foreground">
                                 <CreditCard className="w-4 h-4 shrink-0" />
-                                <span className="text-xs font-semibold">Medios de pago certificados:</span>
+                                <span className="text-xs font-semibold">Medios de pago:</span>
                             </div>
                             <div className="grayscale opacity-40 hover:opacity-100 hover:grayscale-0 transition-all duration-300 scale-90 origin-right">
                                 <PaymentMethods />
@@ -406,24 +415,30 @@ export default function ProductDetails({ producto }: Props) {
                                 WhatsApp
                                 <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
                             </span>
+
                         </a>
 
-                        <div className="flex flex-wrap gap-x-4 gap-y-2 py-3 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
-        <Link href="/terminos-y-condiciones" className="hover:text-action-cta transition-colors underline-offset-2 hover:underline">
-            Términos y Condiciones
-        </Link>
-        <Link href="/politicas-de-cambios-y-devoluciones" className="hover:text-action-cta transition-colors underline-offset-2 hover:underline">
-            Cambios y Devoluciones
-        </Link>
-        <Link href="/libro-de-reclamaciones" className="hover:text-action-cta transition-colors underline-offset-2 hover:underline">
-            Libro de Reclamaciones
-        </Link>
-    </div>
+                        <div>
+
+                            <Link href="/politicas-de-cambios-y-devoluciones" className="flex items-center gap-2.5 text-muted-foreground text-xs font-semibold hover:text-action-cta transition-colors underline-offset-2 hover:underline py-3">
+                                Ver políticas de cambios y devoluciones
+                            </Link>
+                        </div>
+
+                        <div className="flex flex-row justify-between md:gap-x-4 gap-y-2 py-3 text-[10px] md:text-xs text-muted-foreground uppercase ">
+                            {/* <Link href="/terminos-y-condiciones" className="hover:text-action-cta transition-colors underline-offset-2 hover:underline">
+                                Términos y Condiciones
+                            </Link> */}
+
+                            {/* <Link href="/libro-de-reclamaciones" className="hover:text-action-cta transition-colors underline-offset-2 hover:underline">
+                                Libro de Reclamaciones
+                            </Link> */}
+                        </div>
 
                     </div>
 
                     {/* Módulo de Complementarios */}
-                    <section className="mt-2 pt-4 border-t border-border">
+                    <section className="mt-2 pt-4 ">
                         {producto.complementarios && producto.complementarios.length > 0 && (
                             <div className="space-y-3">
                                 <H3 className="text-xs uppercase tracking-wider text-muted-foreground select-none">
@@ -472,7 +487,7 @@ export default function ProductDetails({ producto }: Props) {
             <ProductExpandableSections producto={producto} />
 
             {/* Sticky Mobile Add To Cart */}
-            <div className="md:hidden fixed bottom-0 left-0 w-full bg-card p-4 border-t border-border shadow-lg z-50 select-none pb-safe">
+            <div className="md:hidden fixed bottom-0 left-0 w-full bg-card p-4  shadow-lg z-50 select-none pb-safe">
                 <AddProductToCart
                     product={producto}
                     variant={allAttributesSelected ? selectedVariant ?? undefined : undefined}

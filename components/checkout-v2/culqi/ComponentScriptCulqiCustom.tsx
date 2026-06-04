@@ -1,0 +1,192 @@
+//File: frontend/components/checkout-v2/culqi/ComponentScriptCulqiCustom.tsx
+
+"use client";
+
+import Script from "next/script";
+import { useState, useEffect, useRef } from "react";
+import { processPaymentCulqi } from "@/actions/checkout/process-culqi-payment";
+import type { OrderResponse } from "@/src/schemas/order.schema";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+
+interface CulqiToken {
+    id: string;
+    email: string;
+    last_four: string;
+}
+
+interface CulqiOrder {
+    id: string;
+}
+
+interface CulqiError {
+    user_message: string;
+    merchant_message: string;
+    code: string;
+}
+
+interface CulqiInstance {
+    token?: CulqiToken | null;
+    order?: CulqiOrder | null;
+    error?: CulqiError | null;
+    culqi: () => void;
+    open: () => void;
+    close: () => void;
+}
+
+interface CulqiCheckoutConfig {
+    settings: {
+        title: string;
+        currency: string;
+        amount: number;
+        orderId?: string;
+    };
+    options: {
+        lang: string;
+        installments: boolean;
+        modal: boolean;
+        paymentMethods: {
+            tarjeta: boolean;
+            yape: boolean;
+            billetera: boolean;
+            bancaMovil: boolean;
+            agente: boolean;
+            cuotealo: boolean;
+        };
+        paymentMethodsSort: string[];
+    };
+}
+
+declare global {
+    interface Window {
+        CulqiCheckout?: new (publicKey: string, config: CulqiCheckoutConfig) => CulqiInstance;
+    }
+}
+
+
+export default function ComponentScriptCulqiCustom({ order }: { order: OrderResponse }) {
+    const [culqiReady, setCulqiReady] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
+    const checkoutRef = useRef<CulqiInstance | null>(null);
+
+    const orderRef = useRef(order);
+    useEffect(() => { orderRef.current = order; }, [order]);
+
+    const paymentHandlerRef = useRef<() => Promise<void>>(async () => { });
+
+    paymentHandlerRef.current = async () => {
+        const Culqi = checkoutRef.current;
+        if (!Culqi) return;
+
+        if (Culqi.error) {
+            toast.error(Culqi.error.user_message);
+            return;
+        }
+
+        const currentOrder = orderRef.current;
+        const amount = Math.round(currentOrder.totalPrice * 100);
+        const orderId = String(currentOrder._id);
+        const orderNumber = currentOrder.orderNumber;
+        const userEmail = currentOrder.customerProfile?.email;
+
+        if (!userEmail) {
+            toast.error("El correo electrónico de la orden es requerido.");
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            if (Culqi.token) {
+                await processPaymentCulqi({
+                    token: Culqi.token.id,
+                    email: Culqi.token.email || userEmail,
+                    amount,
+                    orderId,
+                });
+                Culqi.close();
+                // Redirigir a la ruta de verificación de estado dinámico
+                router.push(`/checkout-result/verifying?orderNumber=${orderNumber}`);
+            } else if (Culqi.order) {
+                await processPaymentCulqi({
+                    order: Culqi.order.id,
+                    email: userEmail,
+                    amount,
+                    orderId,
+                });
+                Culqi.close();
+                router.push(`/checkout-result/verifying?orderNumber=${orderNumber}`);
+            }
+        } catch (err) {
+            toast.error(err instanceof Error ? err.message : "Error procesando el pago con Culqi.");
+            setLoading(false);
+        }
+    };
+
+    const initCheckout = () => {
+        const pk = process.env.NEXT_PUBLIC_CULQI_PUBLIC_KEY;
+        const currentOrder = orderRef.current;
+        if (!pk || !window.CulqiCheckout) return;
+
+        const amount = Math.round(currentOrder.totalPrice * 100);
+
+        const oldModal = document.getElementById("culqi_checkout_iframe");
+        if (oldModal) oldModal.remove();
+        const oldContainer = document.querySelector(".culqi-checkout-container");
+        if (oldContainer) oldContainer.remove();
+
+        const instance = new window.CulqiCheckout(pk, {
+            settings: {
+                title: "GOPHONE",
+                currency: currentOrder.currency || "PEN",
+                amount: amount,
+            },
+            options: {
+                lang: "auto",
+                installments: true,
+                modal: true,
+                paymentMethods: {
+                    tarjeta: true,
+                    yape: true,
+                    billetera: true,
+                    bancaMovil: true,
+                    agente: true,
+                    cuotealo: false,
+                },
+                paymentMethodsSort: ["tarjeta", "yape", "billetera", "bancaMovil"],
+            },
+        });
+
+        instance.culqi = () => { paymentHandlerRef.current(); };
+        checkoutRef.current = instance;
+        setCulqiReady(true);
+    };
+
+    useEffect(() => {
+        if (window.CulqiCheckout) initCheckout();
+    }, [order._id]);
+
+    return (
+        <>
+            <Script
+                src="https://js.culqi.com/checkout-js"
+                strategy="afterInteractive"
+                onLoad={initCheckout}
+            />
+
+            <Button
+                type="button"
+                onClick={() => checkoutRef.current?.open()}
+                disabled={!culqiReady || loading}
+                className={`w-full py-3 px-6 text-sm font-bold tracking-wide transition-all ${culqiReady && !loading
+                        ? "bg-orange-600 text-white hover:bg-orange-700 active:scale-[0.99]"
+                        : "bg-background-secondary text-muted-foreground border border-border cursor-not-allowed opacity-50"
+                    }`}
+            >
+                {loading ? "Procesando pago..." : culqiReady ? `Pagar ${order.currency} ${order.totalPrice.toFixed(2)}` : "Cargando pasarela..."}
+            </Button>
+        </>
+    );
+}

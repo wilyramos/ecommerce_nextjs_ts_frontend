@@ -48,10 +48,10 @@ const buttonVariants = cva(
                     "bg-destructive text-destructive-foreground shadow-sm hover:opacity-90 focus-visible:ring-destructive",
             },
             size: {
-                default: "h-10 px-4 py-2 rounded-md",
-                sm: "h-8 gap-1.5 px-3 text-xs rounded-sm",
-                lg: "h-12 px-8 text-base rounded-lg",
-                icon: "size-10 rounded-md",
+                default: "h-10 px-4 py-2",
+                sm: "h-8 gap-1.5 px-3 text-xs ",
+                lg: "h-12 px-8 text-base",
+                icon: "size-10",
             },
         },
         defaultVariants: {

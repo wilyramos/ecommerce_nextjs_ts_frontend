@@ -63,14 +63,14 @@ export default async function ProductPageServer({ producto }: Props) {
                 {producto.nombre} - GOPHONE
             </h1>
 
-            <section className="container mx-auto px-2 md:px-6 pt-5">
+            <section className="container mx-auto px-2 md:px-6 pt-1 md:pt-5">
                 {/* Navegación de migas de pan */}
                 <Breadcrumbs
                     items={breadcrumbSegments}
                     current={producto.nombre} // El nombre del producto es el último nivel (texto no clicable)
                 />
 
-                <div className="flex flex-col lg:flex-row gap-12">
+                <div className="flex flex-col lg:flex-row gap-12 pt-1">
                     <div className="w-full">
                         <ProductDetails producto={producto} />
                     </div>

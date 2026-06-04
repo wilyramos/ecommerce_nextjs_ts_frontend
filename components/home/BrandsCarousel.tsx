@@ -28,7 +28,7 @@ export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {
     };
 
     return (
-        <section className="relative max-w-7xl mx-auto px-4 md:px-8 pt-16 md:pt-20 pb-12">
+        <section className="relative max-w-7xl mx-auto px-4 md:px-8 py-10">
             <Carousel
                 responsive={responsive}
                 infinite

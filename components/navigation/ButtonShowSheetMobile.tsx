@@ -1,3 +1,5 @@
+// File: frontend/components/store/ButtonShowSheetMobile.tsx
+
 "use client";
 
 import {
@@ -5,20 +7,21 @@ import {
     SheetContent,
     SheetHeader,
     SheetTitle,
-    SheetTrigger
+    SheetTrigger,
 } from "@/components/ui/sheet";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, ChevronRight } from "lucide-react";
 import { ScrollArea } from "../ui/scroll-area";
-
-import type { CategoryResponse } from "@/src/schemas/category.schema";
-
 import { usePathname } from "next/navigation";
-import { routes } from "@/lib/routes";
-import Logo from "../ui/Logo";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import Logo from "../ui/Logo";
+import { Muted } from "@/components/ui/Typography";
+
+// Importaciones de tus tipos y rutas
+import { routes } from "@/lib/routes";
+import type { CategoryResponse } from "@/src/schemas/category.schema";
 import type { Collection } from "@/src/schemas/collection.schema";
 
 interface Props {
@@ -33,40 +36,23 @@ export default function ButtonShowSheetMobile({ categories, collections }: Props
     useEffect(() => setOpen(false), [pathname]);
 
     const mainLinks = [
-        {
-            href: "/novedades",
-            label: "Novedades",
-        },
-        {
-            href: "/ofertas",
-            label: "Ofertas",
-        },
-        {
-            href: routes.catalog(),
-            label: "Catálogo General",
-        },
+        { href: routes.catalog(), label: "Catálogo General" },
     ];
-
-    // Corregido para construir la ruta directa de colecciones
-    const collectionsLinks = collections.map(col => ({
-        href: `/colecciones/${col.slug}`,
-        label: col.name,
-        description: `Explora la colección ${col.name}`
-    }));
 
     return (
         <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-                <button className="p-2 text-foreground active:scale-95 transition-transform outline-none">
-                    <Menu size={26} strokeWidth={1.5} />
+                <button className="p-2 text-foreground active:scale-95 transition-transform outline-none cursor-pointer">
+                    <Menu size={24} strokeWidth={2} />
                 </button>
             </SheetTrigger>
 
             <SheetContent
                 side="left"
-                className="flex flex-col p-0 border-r border-border bg-background"
+                className="flex flex-col p-0 border-r border-border bg-card w-[300px] sm:w-[380px] text-card-foreground select-none"
             >
-                <div className="px-4 pt-3 border-b border-border">
+                {/* Header fijo */}
+                <div className="px-6 pt-6 pb-4 border-b border-border bg-card">
                     <SheetHeader className="text-left">
                         <SheetTitle>
                             <Logo />
@@ -74,93 +60,82 @@ export default function ButtonShowSheetMobile({ categories, collections }: Props
                     </SheetHeader>
                 </div>
 
-                <ScrollArea className="flex-1">
-                    <div className="grid grid-cols-1 gap-1 mb-8">
-                        {mainLinks.map((link) => {
-                            const isActive = pathname === link.href;
-                            return (
+                {/* Contenido con Scroll */}
+                <ScrollArea className="flex-1 overflow-y-auto py-4 bg-card">
+                    <nav className="flex flex-col gap-6">
+                        {/* Enlaces principales */}
+                        <div className="flex flex-col">
+                            {mainLinks.map((link) => (
                                 <Link
                                     key={link.href}
                                     href={link.href}
                                     className={cn(
-                                        "flex flex-col px-4 py-3 transition-all duration-300 border-b border-border/40",
-                                        isActive
-                                            ? "bg-secondary text-secondary-foreground font-bold"
-                                            : "hover:bg-background-secondary text-foreground"
+                                        "px-6 py-3.5 text-xs font-bold uppercase tracking-wider transition-colors outline-none focus-visible:bg-background-secondary",
+                                        pathname === link.href
+                                            ? "bg-background-secondary text-action-cta font-black"
+                                            : "text-foreground hover:bg-background-secondary/60"
                                     )}
                                 >
-                                    <span className="text-[14px] font-bold uppercase tracking-tight leading-none">
-                                        {link.label}
-                                    </span>
-
+                                    {link.label}
                                 </Link>
-                            );
-                        })}
-                    </div>
-
-                    {/* Sección opcional si deseas renderizar los enlaces generados de las colecciones */}
-                    {collectionsLinks.length > 0 && (
-                        <div className="grid grid-cols-1 gap-1 mb-8">
-                            {collectionsLinks.map((link) => {
-                                const isActive = pathname === link.href;
-                                return (
-                                    <Link
-                                        key={link.href}
-                                        href={link.href}
-                                        className={cn(
-                                            "flex flex-col px-4 py-3 transition-all duration-300 border-b border-border/40",
-                                            isActive
-                                                ? "bg-secondary text-secondary-foreground font-bold"
-                                                : "hover:bg-background-secondary text-foreground"
-                                        )}
-                                    >
-                                        <span className="text-[14px] font-bold uppercase  leading-none">
-                                            {link.label}
-                                        </span>
-                                    </Link>
-                                );
-                            })}
-                        </div>
-                    )}
-
-                    <div className="px-2 pb-10">
-                        <h3 className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] mb-4 ml-4">
-                            Explorar
-                        </h3>
-                        <div className="space-y-1">
-                            {categories.filter(c => !c.parent).map((parent) => (
-                                <details key={parent._id} className="group overflow-hidden border border-transparent hover:border-border transition-all">
-                                    <summary className="list-none flex items-center justify-between p-4 cursor-pointer hover:bg-background-secondary transition-colors">
-                                        <div className="flex items-center gap-3">
-                                            <span className="text-[14px] font-semibold text-foreground">{parent.nombre}</span>
-                                        </div>
-                                        <ChevronRight size={14} className="text-muted-foreground group-open:rotate-90 transition-transform" />
-                                    </summary>
-                                    <div className="pl-6 pr-4 pb-4 space-y-3 animate-in slide-in-from-top-2 duration-300">
-                                        {categories.filter(c => (typeof c.parent === 'object' ? c.parent?._id : c.parent) === parent._id).map((sub) => (
-                                            <Link
-                                                key={sub._id}
-                                                href={routes.catalog({ category: sub.slug })}
-                                                className="block text-[13px] font-medium text-muted-foreground hover:text-action-cta transition-colors"
-                                            >
-                                                {sub.nombre}
-                                            </Link>
-                                        ))}
-                                    </div>
-                                </details>
                             ))}
                         </div>
-                    </div>
+
+                        {/* Colecciones */}
+                        {collections.length > 0 && (
+                            <details className="group border-y border-border/60">
+                                <summary className="list-none flex items-center justify-between px-6 py-4 cursor-pointer hover:bg-background-secondary font-black text-xs uppercase tracking-wider text-foreground outline-none">
+                                    Colecciones
+                                    <ChevronRight size={14} className="text-muted-foreground group-open:rotate-90 transition-transform" />
+                                </summary>
+                                <div className="flex flex-col pb-4 bg-background-secondary/30 divide-y divide-border/20">
+                                    {collections.map((col) => (
+                                        <Link
+                                            key={col._id}
+                                            href={`/colecciones/${col.slug}`}
+                                            className="px-10 py-3 text-xs font-semibold text-muted-foreground hover:text-foreground outline-none"
+                                        >
+                                            {col.name}
+                                        </Link>
+                                    ))}
+                                </div>
+                            </details>
+                        )}
+
+                        {/* Categorías */}
+                        <div className="px-6 space-y-3">
+                            <Muted className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.15em]">
+                                Explorar Categorías
+                            </Muted>
+                            <div className="space-y-1.5">
+                                {categories.filter(c => !c.parent).map((parent) => (
+                                    <details key={parent._id} className="group overflow-hidden border border-border/40 rounded-[var(--radius-sm)] bg-background/30">
+                                        <summary className="list-none flex items-center justify-between p-3 cursor-pointer hover:bg-background-secondary transition-colors outline-none">
+                                            <span className="text-xs font-bold text-foreground">{parent.nombre}</span>
+                                            <ChevronRight size={14} className="text-muted-foreground group-open:rotate-90 transition-transform" />
+                                        </summary>
+                                        <div className="pl-4 pr-2 pb-2 pt-1 space-y-1 border-t border-border/30 bg-background-secondary/20">
+                                            {categories.filter(c => (typeof c.parent === 'object' ? c.parent?._id : c.parent) === parent._id).map((sub) => (
+                                                <Link
+                                                    key={sub._id}
+                                                    href={routes.catalog({ category: sub.slug })}
+                                                    className="block px-3 py-2 text-xs font-semibold text-muted-foreground hover:text-action-cta hover:bg-background-secondary rounded-[var(--radius-xs)] transition-colors outline-none"
+                                                >
+                                                    {sub.nombre}
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    </details>
+                                ))}
+                            </div>
+                        </div>
+                    </nav>
                 </ScrollArea>
 
-                <div className="mt-auto border-t border-border p-6 bg-background">
-                    <Button
-                        asChild
-                        className="w-full bg-action-cta hover:bg-action-cta-hover text-action-cta-foreground font-semibold"
-                    >
-                        <Link href="/auth/registro" className="flex items-center justify-center">
-                            Iniciar Sesión / Registrarse
-                        </Link>
+                {/* Footer fijo */}
+                <div className="border-t border-border p-6 bg-card">
+                    <Button asChild className="w-full bg-action-cta hover:bg-action-cta-hover text-action-cta-foreground font-bold tracking-wide uppercase text-xs h-11">
+                        <Link href="/auth/registro">Iniciar Sesión / Registro</Link>
                     </Button>
                 </div>
             </SheetContent>

@@ -1,31 +1,24 @@
-// File: frontend/app/%28store%29/checkout-result/success/page.tsx
-
-import SuccessClient from "@/components/checkout/SuccessClient"
-import { getOrder } from "@/src/services/orders";
-
+// File: frontend/app/(store)/checkout-result/success/page.tsx
+import { notFound } from "next/navigation";
+import SuccessClient from "@/components/checkout/SuccessClient";
+import { orderService } from "@/src/services/order-service";
 
 type SearchParams = Promise<{
-    orderId?: string;
+    orderNumber?: string;
 }>;
 
 export default async function SuccessPageCheckout({ searchParams }: { searchParams: SearchParams }) {
-
-    const { orderId } = await searchParams;
-    if (!orderId) {
-        return <p>Order ID is missing</p>;
+    const { orderNumber } = await searchParams;
+    
+    if (!orderNumber) {
+        return notFound();
     }
 
-    const order = await getOrder(orderId);
-
-    console.log("orderrr", order)
+    const order = await orderService.getOrderByNumber(orderNumber);
 
     if (!order) {
-        return <p>Order not found</p>;
+        return notFound();
     }
 
-    return (
-        <>
-            <SuccessClient order={order} />
-        </>
-    )
+    return <SuccessClient order={order} />;
 }

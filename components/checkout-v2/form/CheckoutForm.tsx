@@ -1,190 +1,255 @@
+// File: frontend/components/checkout-v2/form/CheckoutForm.tsx
 'use client'
 
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
+import { useActionState, useState, useCallback, useEffect, useRef, startTransition } from 'react'
 import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
-import { FiUser, FiMapPin } from 'react-icons/fi'
 
 import { useCartStore } from '@/src/store/cartStore'
-// import { useCheckoutStoreV2 } from '@/src/store/checkoutStoreV2'
-import { CustomerProfileSchema, ShippingAddressSchema } from '@/src/schemas/order.schema'
+import { useCheckoutStoreV2 } from '@/src/store/checkoutStoreV2'
+import { createOrderAction } from '@/actions/order-actions'
+import {
+    CreateOrderDTOSchema,
+    type CustomerProfile,
+    type ShippingAddress,
+    type TipoDocumento,
+} from '@/src/schemas/order.schema'
+import { Button } from '@/components/ui/button'
 
 import CustomerProfileSection from './CustomerProfileSection'
 import ShippingAddressSection from './ShippingAddressSection'
-import { Button } from '@/components/ui/button'
-
-// ── Schema unificado del formulario ───────────────────────────────────────────
-
-const checkoutFormSchema = z.object({
-    customerProfile: CustomerProfileSchema,
-    shippingAddress: ShippingAddressSchema.extend({
-        referencia: z.string().trim().min(1, 'La referencia es obligatoria'),
-    }),
-    notes: z.string().max(300).optional(),
-})
-
-export type CheckoutFormValues = z.infer<typeof checkoutFormSchema>
-
-// ── Resolver Personalizado Nativo (Reemplazo de zodResolver) ──────────────────
-
-const customZodResolver = (schema: typeof checkoutFormSchema) => async (values: CheckoutFormValues) => {
-    const result = await schema.safeParseAsync(values)
-
-    if (result.success) {
-        return { values: result.data, errors: {} }
-    }
-
-    // Mapear los errores estructurados de Zod al formato plano de React Hook Form
-    const errors = result.error.errors.reduce((acc, currentError) => {
-        const path = currentError.path.join('.')
-        acc[path] = {
-            type: currentError.code,
-            message: currentError.message
-        }
-        return acc
-    }, {} as Record<string, { type: string; message: string }>)
-
-    return { values: {}, errors }
-}
-
-// ── Props ─────────────────────────────────────────────────────────────────────
 
 type Props = {
-    defaultProfile?: Partial<CheckoutFormValues['customerProfile']>
+    defaultProfile?: Partial<CustomerProfile>
     lockedEmail?: string
 }
 
-// ── Componente ────────────────────────────────────────────────────────────────
+function buildInitialProfile(
+    stored?: CustomerProfile | null,
+    defaultProfile?: Partial<CustomerProfile>,
+    lockedEmail?: string
+): CustomerProfile {
+    return stored ?? {
+        nombre: defaultProfile?.nombre ?? '',
+        apellidos: defaultProfile?.apellidos ?? '',
+        email: lockedEmail ?? defaultProfile?.email ?? '',
+        telefono: defaultProfile?.telefono ?? '',
+        tipoDocumento: defaultProfile?.tipoDocumento ?? undefined,
+        numeroDocumento: defaultProfile?.numeroDocumento ?? '',
+    }
+}
+
+const EMPTY_ADDRESS: ShippingAddress = {
+    departamento: '',
+    provincia: '',
+    distrito: '',
+    direccion: '',
+    numero: '',
+    pisoDpto: '',
+    referencia: '',
+}
 
 export default function CheckoutForm({ defaultProfile, lockedEmail }: Props) {
-    const [loading, setLoading] = useState(false)
-
     const { cart } = useCartStore()
-    // const { setOrder, setCustomerProfile, setShippingAddress } = useCheckoutStoreV2()
 
+    const {
+        customerProfile: storedProfile,
+        shippingAddress: storedAddress,
+        notes: storedNotes,
+        setCustomerProfile,
+        setShippingAddress,
+        setNotes: storeSetNotes,
+    } = useCheckoutStoreV2()
 
-    const form = useForm<CheckoutFormValues>({
-        resolver: customZodResolver(checkoutFormSchema), // Inyección del resolver nativo personalizado
-        mode: 'onChange',
-        defaultValues: {
-            customerProfile: {
-                nombre: defaultProfile?.nombre ?? '',
-                apellidos: defaultProfile?.apellidos ?? '',
-                email: defaultProfile?.email ?? lockedEmail ?? '',
-                telefono: defaultProfile?.telefono ?? '',
-                tipoDocumento: defaultProfile?.tipoDocumento ?? undefined,
-                numeroDocumento: defaultProfile?.numeroDocumento ?? '',
-            },
-            shippingAddress: {
-                departamento: '',
-                provincia: '',
-                distrito: '',
-                direccion: '',
-                numero: '',
-                pisoDpto: '',
-                referencia: '',
-            },
-            notes: '',
-        },
+    const [profile, setProfile] = useState<CustomerProfile>(() =>
+        buildInitialProfile(storedProfile, defaultProfile, lockedEmail)
+    )
+    const [address, setAddress] = useState<ShippingAddress>(
+        storedAddress ?? EMPTY_ADDRESS
+    )
+    const [notes, setNotes] = useState(storedNotes)
+    const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
+
+    const pendingProfile = useRef<CustomerProfile | null>(null)
+    const pendingAddress = useRef<ShippingAddress | null>(null)
+
+    useEffect(() => {
+        if (pendingProfile.current) {
+            setCustomerProfile(pendingProfile.current)
+            pendingProfile.current = null
+        }
     })
 
-    const { handleSubmit, formState: { isValid } } = form
+    useEffect(() => {
+        if (pendingAddress.current) {
+            setShippingAddress(pendingAddress.current)
+            pendingAddress.current = null
+        }
+    })
 
-    const onSubmit = async (data: CheckoutFormValues) => {
+    useEffect(() => {
+        if (lockedEmail) {
+            setProfile(prev => ({ ...prev, email: lockedEmail }))
+        }
+    }, [lockedEmail])
+
+    const [state, formAction, isPending] = useActionState(createOrderAction, undefined)
+
+    const handleProfileChange = useCallback(
+        (field: keyof CustomerProfile, value: string | TipoDocumento | undefined) => {
+            setProfile(prev => {
+                const next = { ...prev, [field]: value }
+                pendingProfile.current = next
+                return next
+            })
+            setFieldErrors(prev => {
+                const next = { ...prev }
+                delete next[`customerProfile.${field}`]
+                return next
+            })
+        },
+        []
+    )
+
+    const handleAddressChange = useCallback(
+        (field: keyof ShippingAddress, value: string) => {
+            setAddress(prev => {
+                const next = { ...prev, [field]: value }
+                pendingAddress.current = next
+                return next
+            })
+            setFieldErrors(prev => {
+                const next = { ...prev }
+                delete next[`shippingAddress.${field}`]
+                return next
+            })
+        },
+        []
+    )
+
+    const handleNotesChange = useCallback(
+        (value: string) => {
+            setNotes(value)
+            storeSetNotes(value)
+        },
+        [storeSetNotes]
+    )
+
+    function validate(): boolean {
+        const result = CreateOrderDTOSchema.safeParse({
+            customerProfile: { ...profile, email: lockedEmail ?? profile.email },
+            items: cart.map(item => ({
+                productId: item._id,
+                variantId: item.variant?._id,
+                quantity: item.cantidad,
+            })),
+            shippingAddress: address,
+            notes: notes || undefined,
+            currency: 'PEN',
+        })
+
+        if (result.success) {
+            setFieldErrors({})
+            return true
+        }
+
+        const errors: Record<string, string> = {}
+        for (const issue of result.error.errors) {
+            const path = issue.path.join('.')
+            if (!errors[path]) errors[path] = issue.message
+        }
+        setFieldErrors(errors)
+        return false
+    }
+
+    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault()
+
         if (cart.length === 0) {
             toast.error('Tu carrito está vacío.')
             return
         }
 
-        console.log('Datos del formulario validados:', data)
+        if (!validate()) {
+            toast.error('Revisa los campos marcados antes de continuar.')
+            return
+        }
 
-        setLoading(true)
+        const fd = new FormData()
+        fd.append('payload', JSON.stringify({
+            customerProfile: { ...profile, email: lockedEmail ?? profile.email },
+            items: cart.map(item => ({
+                productId: item._id,
+                variantId: item.variant?._id,
+                quantity: item.cantidad,
+            })),
+            shippingAddress: address,
+            notes: notes || undefined,
+            currency: 'PEN',
+        }))
 
-        // setCustomerProfile(data.customerProfile)
-        // setShippingAddress(data.shippingAddress)
-
-        // const payload = {
-        //     customerProfile: {
-        //         ...data.customerProfile,
-        //         email: lockedEmail ?? data.customerProfile.email,
-        //     },
-        //     items: cart.map(item => ({
-        //         productId: item._id,
-        //         variantId: item.variant?._id,
-        //         quantity:  item.cantidad,
-        //     })),
-        //     shippingAddress: data.shippingAddress,
-        //     notes: data.notes,
-        //     currency: 'PEN',
-        // }
-
-
+        startTransition(() => {
+            formAction(fd)
+        })
     }
 
+    const serverError = state?.ok === false ? state.error : undefined
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+            {serverError && (
+                <div
+                    role="alert"
+                    className="rounded-[var(--radius-sm)] border border-destructive/30 bg-destructive/5 px-4 py-3 text-xs font-bold text-destructive select-none"
+                >
+                    {serverError}
+                </div>
+            )}
 
-            {/* ── Sección 1: Datos personales ── */}
-            <section className="bg-card border border-border rounded-[var(--radius-lg)] p-6 md:p-8">
-                <header className="flex items-center gap-3 mb-6 pb-5 border-b border-border">
-                    <div className="w-8 h-8 rounded-full bg-background-secondary border border-border flex items-center justify-center text-foreground shrink-0">
-                        <FiUser size={15} strokeWidth={2} />
-                    </div>
-                    <div>
-                        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-                            Paso 01
-                        </p>
-                        <h2 className="text-base font-semibold text-foreground leading-tight">
-                            Información personal
-                        </h2>
-                    </div>
-                </header>
-
-                <CustomerProfileSection
-                    form={form}
-                    disabled={loading}
-                    lockedEmail={lockedEmail}
+            {/* Información personal */}
+            <section className="bg-card border border-border rounded-[var(--radius-md)] p-4 md:p-6 shadow-xs">
+                <h2 className="text-[10px] font-black text-muted-foreground tracking-widest uppercase mb-6 select-none">
+                    1. Información personal
+                </h2>
+                <CustomerProfileSection 
+                    values={profile} 
+                    errors={fieldErrors} 
+                    disabled={isPending} 
+                    lockedEmail={lockedEmail} 
+                    onChange={handleProfileChange} 
                 />
             </section>
 
-            {/* ── Sección 2: Dirección de envío ── */}
-            <section className="bg-card border border-border rounded-[var(--radius-lg)] p-6 md:p-8">
-                <header className="flex items-center gap-3 mb-6 pb-5 border-b border-border">
-                    <div className="w-8 h-8 rounded-full bg-background-secondary border border-border flex items-center justify-center text-foreground shrink-0">
-                        <FiMapPin size={15} strokeWidth={2} />
-                    </div>
-                    <div>
-                        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
-                            Paso 01 — continuación
-                        </p>
-                        <h2 className="text-base font-semibold text-foreground leading-tight">
-                            Dirección de envío
-                        </h2>
-                    </div>
-                </header>
-
-                <ShippingAddressSection form={form} disabled={loading} />
+            {/* Dirección de envío */}
+            <section className="bg-card border border-border rounded-[var(--radius-md)] p-4 md:p-6 shadow-xs">
+                <h2 className="text-[10px] font-black text-muted-foreground tracking-widest uppercase mb-6 select-none">
+                    2. Dirección de envío
+                </h2>
+                <ShippingAddressSection 
+                    values={address} 
+                    errors={fieldErrors} 
+                    disabled={isPending} 
+                    notes={notes} 
+                    onChange={handleAddressChange} 
+                    onNotesChange={handleNotesChange} 
+                />
             </section>
 
-            {/* ── Submit ── */}
-            <div className="flex justify-end">
-                <Button
-                    type="submit"
-                    disabled={loading || !isValid || cart.length === 0}
-                    className="w-full md:w-auto bg-action-cta hover:bg-action-cta-hover text-action-cta-foreground font-bold px-10 py-3 rounded-[var(--radius-sm)] text-sm"
-                >
-                    {loading ? (
-                        <span className="flex items-center gap-2">
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                            Procesando...
-                        </span>
-                    ) : (
-                        'Continuar al pago →'
-                    )}
-                </Button>
-            </div>
+            {/* Submit */}
+            <Button 
+                type="submit"
+                disabled={isPending || cart.length === 0}
+                className="w-full bg-action-cta hover:bg-action-cta-hover uppercase font-bold"
+            >
+                {isPending ? (
+                    <span className="flex items-center justify-center gap-2">
+                        <Loader2 className="h-4 w-4 animate-spin"/>
+                        Procesando...
+                    </span>
+                ) : (
+                    'Continuar al pago'
+                )}
+            </Button>
         </form>
     )
 }

@@ -1,4 +1,7 @@
+// File: frontend/src/schemas/order.schema.ts
+
 import { z } from "zod";
+import { productSchema } from "./product.schema";
 
 // ============================================================================
 // ── ENUMS DE CONTROL (Espejo del Backend)
@@ -52,7 +55,6 @@ export type CustomerProfile = z.infer<typeof CustomerProfileSchema>;
 
 /**
  * Estructura exacta que espera el backend para procesar la orden (Input del Carrito).
- * No se envían precios, nombres ni totales calculados para mitigar inyecciones o fraudes en HTTP.
  */
 export const CartItemInputSchema = z.object({
     productId: z.string().regex(/^[0-9a-fA-F]{24}$/, 'ID de producto inválido'),
@@ -62,15 +64,17 @@ export const CartItemInputSchema = z.object({
 export type CartItemInput = z.infer<typeof CartItemInputSchema>;
 
 /**
- * Ítem histórico devuelto por la API (Copia estática del producto al momento de compra).
+ * Ítem histórico devuelto por la API.
+ * ACTUALIZADO: Permite que `productId` sea el ID string clásico o el sub-esquema del producto
+ * completamente poblado con sus variantes, stocks dinámicos e imágenes.
  */
 export const OrderItemResponseSchema = z.object({
-    productId:         z.string(),
+    productId:         z.union([z.string().regex(/^[0-9a-fA-F]{24}$/), productSchema]),
     variantId:         z.string().optional(),
     variantAttributes: z.record(z.string(), z.string()).optional(),
-    quantity:          z.number(),
-    price:             z.number(),
-    nombre:            z.string(),
+    quantity:          z.number().int().positive(),
+    price:             z.number().min(0),
+    nombre:            z.string().trim().min(1),
     imagen:            z.string().optional(),
     sku:               z.string().optional(),
     barcode:           z.string().optional()
@@ -82,15 +86,30 @@ export const PaymentInfoSchema = z.object({
     method:        z.string().optional(),
     transactionId: z.string().optional(),
     status:        PaymentStatusEnum,
-    rawResponse:   z.any().optional()
+    rawResponse:   z.unknown().optional() 
 });
 export type PaymentInfo = z.infer<typeof PaymentInfoSchema>;
 
 export const StatusHistorySchema = z.object({
     status:    OrderStatusEnum,
-    changedAt: z.coerce.date() // Convierte de forma automática strings ISO provenientes de JSON a objetos Date nativos
+    changedAt: z.coerce.date() 
 });
 export type StatusHistory = z.infer<typeof StatusHistorySchema>;
+
+// ============================================================================
+// ── FILTROS DE CONSULTA
+// ============================================================================
+
+export const OrderFiltersSchema = z.object({
+    status:  OrderStatusEnum.optional(),
+    email:   z.string().optional(),
+    userId:  z.string().optional(),
+    page:    z.number().optional(),
+    limit:   z.number().optional(),
+    from:    z.string().optional(),
+    to:      z.string().optional()
+});
+export type OrderFilters = z.infer<typeof OrderFiltersSchema>;
 
 // ============================================================================
 // ── 1. DTO PARA CREAR ORDEN (REQUEST → Backend)
@@ -114,9 +133,8 @@ export const OrderResponseSchema = z.object({
     orderNumber: z.string(),
     
     // user puede ser el ObjectId string o el documento poblado de forma opcional.
-    // Viene como undefined de forma nativa en órdenes hechas por invitados.
     user: z.union([
-        z.string(),
+        z.string().regex(/^[0-9a-fA-F]{24}$/),
         z.object({
             _id:       z.string(),
             nombre:    z.string(),
@@ -143,7 +161,7 @@ export const OrderResponseSchema = z.object({
 export type OrderResponse = z.infer<typeof OrderResponseSchema>;
 
 // ============================================================================
-// ── 3. ENVOLTORIOS DE RESPUESTA DE LA API ({ ok: true, data: ... })
+// ── 3. ENVOLTORIOS DE RESPUESTA DE LA API
 // ============================================================================
 
 export const OrderApiResponseSchema = z.object({
@@ -154,7 +172,7 @@ export type OrderApiResponse = z.infer<typeof OrderApiResponseSchema>;
 
 export const OrderPaginatedApiResponseSchema = z.object({
     ok:   z.literal(true),
-    data: z.array(OrderResponseSchema), // Sincronizado con la estructura plana de tu controlador V2
+    data: z.array(OrderResponseSchema), 
     meta: z.object({
         total: z.number(),
         page:  z.number(),
@@ -201,3 +219,17 @@ export const TERMINAL_STATUSES: OrderStatus[] = [
     'delivered',
     'canceled',
 ];
+
+
+// 
+
+export const OrderStatusOnlyResponseSchema = z.object({
+    ok: z.literal(true),
+    data: z.object({
+        status: OrderStatusEnum,
+        payment: z.object({
+            status: PaymentStatusEnum
+        }).optional()
+    })
+});
+export type OrderStatusOnlyResponse = z.infer<typeof OrderStatusOnlyResponseSchema>;

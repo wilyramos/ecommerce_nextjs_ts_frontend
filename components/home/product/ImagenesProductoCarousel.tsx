@@ -1,3 +1,5 @@
+//File: frontend/components/home/product/ImagenesProductoCarousel.tsx
+
 "use client";
 
 import { useState, useMemo, useEffect, useRef } from "react";
@@ -189,6 +191,14 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                     onTouchMove={handleTouchMove}
                     onTouchEnd={handleTouchEnd}
                 >
+
+                    {uniqueImages.length > 1 && (
+                        <div className="md:hidden absolute bottom-3 right-3 z-20 px-2 py-0.5 bg-background/80 backdrop-blur-sm border border-border">
+                            <span className="text-[10px] font-bold text-foreground tracking-widest">
+                                {selectedIndex + 1} <span className="text-muted-foreground">/</span> {uniqueImages.length}
+                            </span>
+                        </div>
+                    )}
                     {currentImgSrc && (
                         <Image
                             key={currentImgSrc}
@@ -197,7 +207,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                             fill
                             priority
                             className={cn(
-                                "object-contain transition-transform duration-500 ease-out p-4 md:p-8",
+                                "object-contain transition-transform duration-500 ease-out  md:p-8",
                                 zoom ? "scale-[2.5]" : "scale-100"
                             )}
                             style={zoom ? { transformOrigin: `${position.x}% ${position.y}%` } : undefined}
@@ -233,7 +243,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                 </div>
 
                 {/* MOBILE PAGINATION */}
-                {uniqueImages.length > 1 && (
+                {/* {uniqueImages.length > 1 && (
                     <div className="flex md:hidden justify-center items-center gap-2 my-2">
                         {uniqueImages.map((_, idx) => (
                             <button
@@ -248,7 +258,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                             />
                         ))}
                     </div>
-                )}
+                )} */}
             </div>
         </div>
     );

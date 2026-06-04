@@ -1,126 +1,104 @@
-// File: frontend/components/checkout-v2/form/CustomerProfileSection.tsx
+'use client'
 
-import { UseFormReturn } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Controller } from 'react-hook-form'
 import ErrorMessage from '@/components/ui/ErrorMessage'
-import type { CheckoutFormValues } from './CheckoutForm'
+import type { CustomerProfile, TipoDocumento } from '@/src/schemas/order.schema'
 
 type Props = {
-    form: UseFormReturn<CheckoutFormValues>
+    values: CustomerProfile
+    errors: Record<string, string>
     disabled?: boolean
-    lockedEmail?: string  // email del usuario autenticado — no editable
+    lockedEmail?: string
+    onChange: (field: keyof CustomerProfile, value: string | TipoDocumento | undefined) => void
 }
 
-export default function CustomerProfileSection({ form, disabled, lockedEmail }: Props) {
-    const { register, control, formState: { errors } } = form
+export default function CustomerProfileSection({ values, errors, disabled, lockedEmail, onChange }: Props) {
+    
+    // Helper ultracompacto con manejo de errores inline al lado del label
+    const renderField = (fieldKey: keyof CustomerProfile, label: string, placeholder: string, type = "text", required = true) => {
+        const errorKey = `customerProfile.${fieldKey}`
+        const error = errors[errorKey]
+        
+        return (
+            <div className="flex flex-col gap-0.5 w-full">
+                <div className="flex items-center justify-between h-5">
+                    <Label required={required} className='text-[10px]'>{label}</Label>
+                    {error && <div className="text-xs mt-[-4px]"><ErrorMessage>{error}</ErrorMessage></div>}
+                </div>
+                <Input
+                    type={type}
+                    value={(values[fieldKey] as string) ?? ''}
+                    onChange={e => onChange(fieldKey, e.target.value)}
+                    placeholder={placeholder}
+                    aria-invalid={!!error}
+                    disabled={disabled}
+                />
+            </div>
+        )
+    }
 
     return (
-        <fieldset className="space-y-4" disabled={disabled}>
+        <fieldset className="space-y-1 text-foreground" disabled={disabled}>
             <legend className="sr-only">Datos personales</legend>
 
             {/* Email */}
             <div className="flex flex-col gap-1.5">
-                <Label>Correo electrónico</Label>
                 {lockedEmail ? (
-                    <Input
-                        value={lockedEmail}
-                        disabled
-                        className="bg-muted text-muted-foreground cursor-not-allowed"
-                    />
-                ) : (
                     <>
-                        <Input
-                            {...register('customerProfile.email')}
-                            type="email"
-                            placeholder="correo@ejemplo.com"
-                            aria-invalid={errors.customerProfile?.email ? 'true' : 'false'}
-                        />
-                        <div className="min-h-5 overflow-hidden">
-                            {errors.customerProfile?.email && (
-                                <ErrorMessage>{errors.customerProfile.email.message}</ErrorMessage>
-                            )}
+                        <div className="flex items-center justify-between h-5">
+                            <Label className="text-[10px]">Correo</Label>
                         </div>
+                        <Input 
+                            value={lockedEmail} 
+                            disabled 
+                            readOnly 
+                            className="border-border cursor-not-allowed select-none" 
+                        />
                     </>
+                ) : (
+                    renderField('email', 'Correo electrónico', 'correo@ejemplo.com', 'email', true)
                 )}
             </div>
 
             {/* Nombre / Apellidos */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex flex-col gap-1.5">
-                    <Label required>Nombre</Label>
-                    <Input
-                        {...register('customerProfile.nombre')}
-                        placeholder="Tu nombre"
-                        aria-invalid={errors.customerProfile?.nombre ? 'true' : 'false'}
-                    />
-                    <div className="min-h-5 overflow-hidden">
-                        {errors.customerProfile?.nombre && (
-                            <ErrorMessage>{errors.customerProfile.nombre.message}</ErrorMessage>
-                        )}
-                    </div>
-                </div>
-                <div className="flex flex-col gap-1.5">
-                    <Label required>Apellidos</Label>
-                    <Input
-                        {...register('customerProfile.apellidos')}
-                        placeholder="Tus apellidos"
-                        aria-invalid={errors.customerProfile?.apellidos ? 'true' : 'false'}
-                    />
-                    <div className="min-h-5 overflow-hidden">
-                        {errors.customerProfile?.apellidos && (
-                            <ErrorMessage>{errors.customerProfile.apellidos.message}</ErrorMessage>
-                        )}
-                    </div>
-                </div>
+                {renderField('nombre', 'Nombre', 'Tu nombre', 'text', true)}
+                {renderField('apellidos', 'Apellidos', 'Tus apellidos', 'text', true)}
             </div>
 
-            {/* Teléfono */}
-            <div className="flex flex-col gap-1.5">
-                <Label required>Teléfono / Móvil</Label>
-                <Input
-                    {...register('customerProfile.telefono')}
-                    placeholder="999999999"
-                    aria-invalid={errors.customerProfile?.telefono ? 'true' : 'false'}
-                />
-                <div className="min-h-5 overflow-hidden">
-                    {errors.customerProfile?.telefono && (
-                        <ErrorMessage>{errors.customerProfile.telefono.message}</ErrorMessage>
-                    )}
-                </div>
-            </div>
-
-            {/* Documento */}
+            {/* Teléfono y Documento de Identidad alineados en la misma fila */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="flex flex-col gap-1.5">
-                    <Label>Tipo Doc.</Label>
-                    <Controller
-                        control={control}
-                        name="customerProfile.tipoDocumento"
-                        render={({ field }) => (
-                            <Select onValueChange={field.onChange} value={field.value ?? ''}>
-                                <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Opcional" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="DNI">DNI</SelectItem>
-                                    <SelectItem value="RUC">RUC</SelectItem>
-                                    <SelectItem value="CE">Carnet Ext.</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        )}
-                    />
-                    <div className="min-h-5" />
+                {/* Teléfono */}
+                <div>
+                    {renderField('telefono', 'Teléfono / Móvil', '999 999 999', 'tel', true)}
                 </div>
-                <div className="md:col-span-2 flex flex-col gap-1.5">
-                    <Label>N° Documento</Label>
-                    <Input
-                        {...register('customerProfile.numeroDocumento')}
-                        placeholder="Opcional"
-                    />
-                    <div className="min-h-5" />
+
+                {/* Tipo Doc. */}
+                <div className="flex flex-col gap-0.5 w-full">
+                    <div className="flex items-center justify-between h-5">
+                        <Label className="text-[10px]">Tipo Doc.</Label>
+                    </div>
+                    <Select 
+                        value={values.tipoDocumento ?? ''} 
+                        onValueChange={val => onChange('tipoDocumento', (val as TipoDocumento) || undefined)}
+                        disabled={disabled}
+                    >
+                        <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Opcional" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="DNI">DNI</SelectItem>
+                            <SelectItem value="RUC">RUC</SelectItem>
+                            <SelectItem value="CE">Carnet Ext.</SelectItem>
+                        </SelectContent>
+                    </Select>
+                </div>
+
+                {/* N° Documento */}
+                <div>
+                    {renderField('numeroDocumento', 'N° Documento', 'Opcional', 'text', false)}
                 </div>
             </div>
         </fieldset>
