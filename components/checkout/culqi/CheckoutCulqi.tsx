@@ -3,7 +3,7 @@
 "use client";
 
 import type { TOrderPopulated } from "@/src/schemas";
-import ComponentScriptCulqiCustom from "./ComponentScriptCulqiCustom";
+// import ComponentScriptCulqiCustom from "./ComponentScriptCulqiCustom";
 import { Muted } from "@/components/ui/Typography";
 
 export default function CheckoutCulqi({ order }: { order: TOrderPopulated }) {
@@ -15,7 +15,7 @@ export default function CheckoutCulqi({ order }: { order: TOrderPopulated }) {
         <div className="flex flex-col items-center gap-4 w-full">
             <Muted className="font-semibold select-none">Paga de forma segura con Culqi</Muted>
             <div className="w-full flex justify-center">
-                <ComponentScriptCulqiCustom order={order} />
+                {/* <ComponentScriptCulqiCustom order={order} /> */}
             </div>
         </div>
     );

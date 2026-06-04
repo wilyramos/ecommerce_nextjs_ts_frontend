@@ -35,34 +35,8 @@ interface CulqiInstance {
     close: () => void;
 }
 
-interface CulqiCheckoutConfig {
-    settings: {
-        title: string;
-        currency: string;
-        amount: number;
-        orderId?: string; // Culqi orders api
-    };
-    options: {
-        lang: string;
-        installments: boolean;
-        modal: boolean;
-        paymentMethods: {
-            tarjeta: boolean;
-            yape: boolean;
-            billetera: boolean;
-            bancaMovil: boolean;
-            agente: boolean;
-            cuotealo: boolean;
-        };
-        paymentMethodsSort: string[];
-    };
-}
 
-declare global {
-    interface Window {
-        CulqiCheckout?: new (publicKey: string, config: CulqiCheckoutConfig) => CulqiInstance;
-    }
-}
+
 
 export default function ComponentScriptCulqiCustom({ order }: { order: TOrderPopulated }) {
     const [culqiReady, setCulqiReady] = useState(false);

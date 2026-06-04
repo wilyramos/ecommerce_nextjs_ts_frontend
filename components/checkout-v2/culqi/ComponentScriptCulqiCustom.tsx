@@ -38,7 +38,7 @@ interface CulqiCheckoutConfig {
         title: string;
         currency: string;
         amount: number;
-        order?: string; // Mapeado según la documentación oficial adjunta
+        order?: string; //
     };
     options: {
         lang: string;
