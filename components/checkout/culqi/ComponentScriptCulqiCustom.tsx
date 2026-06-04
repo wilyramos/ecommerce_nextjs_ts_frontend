@@ -211,6 +211,8 @@ export default function ComponentScriptCulqiCustom({ order }: { order: TOrderPop
                         : "bg-background-secondary text-muted-foreground border-border cursor-not-allowed opacity-50"
                     }`}
             >
+
+                de prueba testt
                 {loading
                     ? "Procesando pago..."
                     : culqiReady

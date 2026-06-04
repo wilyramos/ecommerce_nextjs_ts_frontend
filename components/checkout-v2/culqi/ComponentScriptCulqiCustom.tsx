@@ -1,5 +1,3 @@
-//File: frontend/components/checkout-v2/culqi/ComponentScriptCulqiCustom.tsx
-
 "use client";
 
 import Script from "next/script";
@@ -40,7 +38,7 @@ interface CulqiCheckoutConfig {
         title: string;
         currency: string;
         amount: number;
-        orderId?: string;
+        order?: string; // Mapeado según la documentación oficial adjunta
     };
     options: {
         lang: string;
@@ -63,7 +61,6 @@ declare global {
         CulqiCheckout?: new (publicKey: string, config: CulqiCheckoutConfig) => CulqiInstance;
     }
 }
-
 
 export default function ComponentScriptCulqiCustom({ order }: { order: OrderResponse }) {
     const [culqiReady, setCulqiReady] = useState(false);
@@ -107,7 +104,7 @@ export default function ComponentScriptCulqiCustom({ order }: { order: OrderResp
                     orderId,
                 });
                 Culqi.close();
-                // Redirigir a la ruta de verificación de estado dinámico
+                // Redirigir a la ruta de verificación de estado dinámico para polling controlado
                 router.push(`/checkout-result/verifying?orderNumber=${orderNumber}`);
             } else if (Culqi.order) {
                 await processPaymentCulqi({
@@ -117,6 +114,7 @@ export default function ComponentScriptCulqiCustom({ order }: { order: OrderResp
                     orderId,
                 });
                 Culqi.close();
+                // Sincronizado para que las órdenes de código de pago sigan el mismo flujo dinámico
                 router.push(`/checkout-result/verifying?orderNumber=${orderNumber}`);
             }
         } catch (err) {
@@ -142,6 +140,7 @@ export default function ComponentScriptCulqiCustom({ order }: { order: OrderResp
                 title: "GOPHONE",
                 currency: currentOrder.currency || "PEN",
                 amount: amount,
+                order: currentOrder.culqiOrderId,
             },
             options: {
                 lang: "auto",
@@ -155,7 +154,7 @@ export default function ComponentScriptCulqiCustom({ order }: { order: OrderResp
                     agente: true,
                     cuotealo: false,
                 },
-                paymentMethodsSort: ["tarjeta", "yape", "billetera", "bancaMovil"],
+                paymentMethodsSort: ["tarjeta", "yape", "billetera", "bancaMovil", "agente"],
             },
         });
 
@@ -185,7 +184,11 @@ export default function ComponentScriptCulqiCustom({ order }: { order: OrderResp
                         : "bg-background-secondary text-muted-foreground border border-border cursor-not-allowed opacity-50"
                     }`}
             >
-                {loading ? "Procesando pago..." : culqiReady ? `Pagar ${order.currency} ${order.totalPrice.toFixed(2)}` : "Cargando pasarela..."}
+                {loading
+                    ? "Procesando pago..."
+                    : culqiReady
+                        ? `Pagar ${order.currency} ${order.totalPrice.toFixed(2)}`
+                        : "Cargando pasarela..."}
             </Button>
         </>
     );

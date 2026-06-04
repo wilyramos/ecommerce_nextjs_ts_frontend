@@ -16,7 +16,7 @@ export default function OrderSummary() {
     if (cart.length === 0) return null
 
     return (
-        <div className="bg-card border border-border rounded-[var(--radius-lg)] p-5 text-card-foreground">
+        <div className="bg-card p-5 text-card-foreground">
             <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-4">
                 Resumen del pedido
             </h2>

@@ -1,5 +1,3 @@
-// File: frontend/src/schemas/order.schema.ts
-
 import { z } from "zod";
 import { productSchema } from "./product.schema";
 
@@ -65,7 +63,7 @@ export type CartItemInput = z.infer<typeof CartItemInputSchema>;
 
 /**
  * Ítem histórico devuelto por la API.
- * ACTUALIZADO: Permite que `productId` sea el ID string clásico o el sub-esquema del producto
+ * Permite que `productId` sea el ID string clásico o el sub-esquema del producto
  * completamente poblado con sus variantes, stocks dinámicos e imágenes.
  */
 export const OrderItemResponseSchema = z.object({
@@ -129,8 +127,9 @@ export type CreateOrderDTO = z.infer<typeof CreateOrderDTOSchema>;
 // ============================================================================
 
 export const OrderResponseSchema = z.object({
-    _id:         z.string(),
-    orderNumber: z.string(),
+    _id:          z.string(),
+    orderNumber:  z.string(),
+    culqiOrderId: z.string().optional(), // Inyectado para habilitar el flujo multipago (ord_live_...)
     
     // user puede ser el ObjectId string o el documento poblado de forma opcional.
     user: z.union([
@@ -220,8 +219,9 @@ export const TERMINAL_STATUSES: OrderStatus[] = [
     'canceled',
 ];
 
-
-// 
+// ============================================================================
+// ── 5. RESPUESTAS OPTIMIZADAS PARA POLLING
+// ============================================================================
 
 export const OrderStatusOnlyResponseSchema = z.object({
     ok: z.literal(true),
