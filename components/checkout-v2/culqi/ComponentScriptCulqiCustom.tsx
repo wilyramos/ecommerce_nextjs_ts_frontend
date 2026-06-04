@@ -152,9 +152,9 @@ export default function ComponentScriptCulqiCustom({ order }: { order: OrderResp
                     billetera: true,
                     bancaMovil: true,
                     agente: true,
-                    cuotealo: false,
+                    cuotealo: true,
                 },
-                paymentMethodsSort: ["tarjeta", "yape", "billetera", "bancaMovil", "agente"],
+                paymentMethodsSort: ["tarjeta", "yape", "billetera", "bancaMovil", "agente", "cuotealo"],
             },
         });
 
