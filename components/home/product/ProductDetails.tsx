@@ -216,7 +216,7 @@ export default function ProductDetails({ producto }: Props) {
                             {/* Stock agotado */}
                             {stock === 0 && (
                                 <div className="pt-1 select-none">
-                                    <span className="inline-flex items-center text-xs font-black uppercase tracking-wider text-destructive bg-destructive/10 border border-destructive/20 px-2.5 py-1 ">
+                                    <span className="inline-flex items-center text-xs uppercase tracking-wider text-destructive bg-destructive/10 border border-destructive/20 px-2.5 py-1 ">
                                         Sin stock
                                     </span>
                                 </div>

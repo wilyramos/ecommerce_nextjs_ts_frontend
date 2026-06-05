@@ -29,7 +29,7 @@ export default function CreateCategoryForm({ categories }: Props) {
     }, [state, router]);
 
     return (
-        <form noValidate action={dispatch} className="max-w-2xl mx-auto">
+        <form noValidate action={dispatch} className="max-w-7xl mx-auto">
             <Card>
                 <CardContent className="pt-6">
                     <CategoryForm categories={categories} />
