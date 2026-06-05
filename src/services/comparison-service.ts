@@ -3,7 +3,7 @@
 import { Comparison, ComparisonFormValues } from "../schemas/comparison.schema";
 import { verifySession } from "../auth/dal";
 
-const API_URL = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.API_URL || "http://localhost:4000/api";
 
 export class ComparisonService {
     /**

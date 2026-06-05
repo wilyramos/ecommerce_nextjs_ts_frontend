@@ -20,9 +20,9 @@ const IS_SERVER = typeof window === 'undefined';
 
 const getRequestUrl = (path: string): string => {
   if (IS_SERVER) {
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL;
+    const backendUrl = process.env.API_URL;
     if (!backendUrl) {
-      throw new Error('NEXT_PUBLIC_API_URL no está definida en las variables de entorno');
+      throw new Error('API_URL no está definida en las variables de entorno');
     }
     return `${backendUrl}${path}`;
   }

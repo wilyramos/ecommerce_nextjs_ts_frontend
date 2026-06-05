@@ -22,10 +22,9 @@ export async function GET(req: NextRequest) {
     const limit = searchParams.get('limit') || '20';
     const id = searchParams.get('id');
 
-    // CORREGIDO: Evitamos concatenar "null" como string evaluando la existencia real del ID
-    let backendUrlString = `${process.env.NEXT_PUBLIC_API_URL}/media`;
+    let backendUrlString = `${process.env.API_URL}/media`;
     if (id && id !== 'null' && id !== 'undefined') {
-      backendUrlString = `${process.env.NEXT_PUBLIC_API_URL}/media/${id}`;
+      backendUrlString = `${process.env.API_URL}/media/${id}`;
     }
 
     const backendUrl = new URL(backendUrlString);
@@ -85,7 +84,7 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ message: 'El ID del recurso es requerido y debe ser válido' }, { status: 400 });
     }
 
-    const backendUrl = `${process.env.NEXT_PUBLIC_API_URL}/media/${id}`;
+    const backendUrl = `${process.env.API_URL}/media/${id}`;
 
     const backendResponse = await fetch(backendUrl, {
       method: 'DELETE',

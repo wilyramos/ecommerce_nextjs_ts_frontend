@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     }
 
     const formData = await req.formData();
-    const backendUrl = `${process.env.NEXT_PUBLIC_API_URL}/media/upload`;
+    const backendUrl = `${process.env.API_URL}/media/upload`;
     
     const backendResponse = await fetch(backendUrl, {
       method: 'POST',
