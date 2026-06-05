@@ -48,43 +48,54 @@ export default function ClientCategoriasDesktop({
                     const sub = grouped[cat._id] || [];
                     return (
                         <NavigationMenuItem key={cat._id}>
-                            <NavigationMenuTrigger>
-                                {cat.nombre}
-                            </NavigationMenuTrigger>
-                            {sub.length > 0 && (
-                                <NavigationMenuContent className="w-[640px]">
-                                    <div className="grid grid-cols-[200px_1fr] bg-background">
-                                        <div className="bg-background-secondary p-4 flex flex-col justify-between border-r border-border">
-                                            <div>
-                                                <Lead className="mb-1 text-foreground">
-                                                    {cat.nombre}
-                                                </Lead>
-                                                <Muted className="line-clamp-3 leading-relaxed font-medium">
-                                                    {cat.descripcion || `Explora lo mejor en ${cat.nombre.toLowerCase()}.`}
-                                                </Muted>
+                            {sub.length === 0 ? (
+                                <NavigationMenuLink asChild>
+                                    <Link
+                                        href={routes.catalog({ category: cat.slug })}
+                                        className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none rounded-[var(--radius-sm)] h-9"
+                                    >
+                                        {cat.nombre}
+                                    </Link>
+                                </NavigationMenuLink>
+                            ) : (
+                                <>
+                                    <NavigationMenuTrigger>
+                                        {cat.nombre}
+                                    </NavigationMenuTrigger>
+                                    <NavigationMenuContent className="w-[640px]">
+                                        <div className="grid grid-cols-[200px_1fr] bg-background">
+                                            <div className="bg-background-secondary p-4 flex flex-col justify-between border-r border-border">
+                                                <div>
+                                                    <Lead className="mb-1 text-foreground">
+                                                        {cat.nombre}
+                                                    </Lead>
+                                                    <Muted className="line-clamp-3 leading-relaxed font-medium">
+                                                        {cat.descripcion || `Explora lo mejor en ${cat.nombre.toLowerCase()}.`}
+                                                    </Muted>
+                                                </div>
+                                                <Link
+                                                    href={routes.catalog({ category: cat.slug })}
+                                                    className="text-[11px] text-muted-foreground hover:text-primary transition-colors mt-4 inline-flex items-center gap-1 uppercase font-bold tracking-wider focus-visible:outline-none"
+                                                >
+                                                    Ver todo
+                                                    <FiArrowRight className="w-3 h-3" />
+                                                </Link>
                                             </div>
-                                            <Link
-                                                href={routes.catalog({ category: cat.slug })}
-                                                className="text-[11px] text-muted-foreground hover:text-primary transition-colors mt-4 inline-flex items-center gap-1 uppercase font-bold tracking-wider focus-visible:outline-none"
-                                            >
-                                                Ver todo
-                                                <FiArrowRight className="w-3 h-3" />
-                                            </Link>
+                                            <div className="p-3">
+                                                <ul className="grid grid-cols-2 gap-1">
+                                                    {sub.map((subcat) => (
+                                                        <NavItem
+                                                            key={subcat._id}
+                                                            href={routes.catalog({ category: subcat.slug })}
+                                                            title={subcat.nombre}
+                                                            image={subcat.image}
+                                                        />
+                                                    ))}
+                                                </ul>
+                                            </div>
                                         </div>
-                                        <div className="p-3">
-                                            <ul className="grid grid-cols-2 gap-1">
-                                                {sub.map((subcat) => (
-                                                    <NavItem
-                                                        key={subcat._id}
-                                                        href={routes.catalog({ category: subcat.slug })}
-                                                        title={subcat.nombre}
-                                                        image={subcat.image}
-                                                    />
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </NavigationMenuContent>
+                                    </NavigationMenuContent>
+                                </>
                             )}
                         </NavigationMenuItem>
                     );
