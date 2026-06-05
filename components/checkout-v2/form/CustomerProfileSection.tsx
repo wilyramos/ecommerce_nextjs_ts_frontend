@@ -24,7 +24,7 @@ export default function CustomerProfileSection({ values, errors, disabled, locke
         return (
             <div className="flex flex-col gap-0.5 w-full">
                 <div className="flex items-center justify-between h-5">
-                    <Label required={required} className="text-[10px] font-bold text-muted-foreground">{label}</Label>                    {error && <div className="text-xs mt-[-4px]"><ErrorMessage>{error}</ErrorMessage></div>}
+                    <Label required={required} className="text-[10px]">{label}</Label>                    {error && <div className="text-xs mt-[-4px]"><ErrorMessage>{error}</ErrorMessage></div>}
                 </div>
                 <Input
                     type={type}

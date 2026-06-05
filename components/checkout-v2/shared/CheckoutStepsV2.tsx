@@ -25,9 +25,9 @@ export default function CheckoutStepsV2() {
 
                 const stepContent = (
                     <div className={cn(
-                        'flex items-center gap-2.5 px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-widest transition-all duration-300',
+                        'flex items-center gap-2.5 px-2 py-2 text-xs font-black uppercase tracking-widest transition-all duration-300',
                         isActive
-                            ? 'bg-action-cta text-action-cta-foreground shadow-md'
+                            ? ' text-action-cta'
                             : isDone
                                 ? 'bg-background-secondary text-foreground hover:bg-muted/50 cursor-pointer'
                                 : 'bg-transparent text-muted-foreground/40 cursor-default'

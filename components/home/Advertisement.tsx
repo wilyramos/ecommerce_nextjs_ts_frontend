@@ -1,39 +1,59 @@
 "use client";
 
 import * as React from "react";
-import { CreditCard, Zap, ShieldCheck, Clock, Truck } from "lucide-react";
 
 const items = [
-  { icon: Truck, text: "Envío gratis a Cañete" },
-  { icon: Truck, text: "Envíos a todo Perú (Shalom)" },
-  { icon: CreditCard, text: "Paga con tarjeta o Yape" },
-  { icon: Zap, text: "6 cuotas sin intereses" },
-  { icon: ShieldCheck, text: "Productos 100% originales" },
-  { icon: Clock, text: "Atención: Lun–Sáb 9am – 7pm" },
+  { accent: false, text: "Envío gratis" },
+  { accent: true, text: "Envio a todo Cañete" },
+  { accent: false, text: "Envíos a todo Perú" },
+  { accent: true, text: "Paga hasta 6 cuotas sin intereses" },
+  { accent: false, text: "Paga con tarjeta o Yape" },
 ];
 
 export default function AnnouncementBar() {
   const doubled = [...items, ...items];
 
   return (
-    <div className="w-full bg-action-cta text-action-cta-foreground py-2 overflow-hidden sticky top-0 z-10">
+    <div className="w-full bg-action-cta sticky top-0 z-10 overflow-hidden border-0">
       <style jsx>{`
-        @keyframes scroll {
-          0% { transform: translateX(0); }
+        @keyframes slide {
+          0%   { transform: translateX(0); }
           100% { transform: translateX(-50%); }
         }
-        .animate-scroll {
-          animation: scroll 40s linear infinite;
+        .bar-track {
+          animation: slide 32s linear infinite;
+        }
+        .bar-track:hover {
+          animation-play-state: paused;
         }
       `}</style>
 
-      <div className="flex animate-scroll whitespace-nowrap">
-        {doubled.map((item, i) => (
-          <div key={i} className="flex items-center gap-2 px-6 text-[12px] uppercase tracking-wider font-semibold opacity-80">
-            <item.icon className="w-3.5 h-3.5" />
-            <span className="truncate">{item.text}</span>
-          </div>
-        ))}
+      <div className="relative h-8 flex items-center">
+        {/* Gradient izquierdo */}
+        <div className="absolute left-0 inset-y-0 w-12 bg-gradient-to-r from-action-cta to-transparent z-10 pointer-events-none" />
+
+        {/* Gradient derecho */}
+        <div className="absolute right-0 inset-y-0 w-12 bg-gradient-to-l from-action-cta to-transparent z-10 pointer-events-none" />
+
+        {/* Track de items */}
+        <div className="bar-track flex items-center whitespace-nowrap">
+          {doubled.map((item, i) => (
+            <div
+              key={i}
+              className="inline-flex items-center gap-2 px-7 text-[12px] text-action-cta-foreground/80 hover:text-action-cta-foreground tracking-wide transition-colors duration-200"
+            >
+              <span
+                className="w-[5px] h-[5px] rounded-full flex-shrink-0"
+                style={{
+                  background: item.accent
+                    ? "var(--primary)"
+                    : "var(--action-cta-foreground)"
+                }}
+              />
+              {item.text}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

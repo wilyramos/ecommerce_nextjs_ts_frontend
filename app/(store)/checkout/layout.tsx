@@ -10,8 +10,8 @@ type Props = {
 
 export default function CheckoutLayoutV2({ children }: Props) {
     return (
-        <div className="min-h-screen bg-background-secondary pb-20">
-            <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-background-secondary p-2">
+            <div className="mx-auto max-w-7xl">
                 
                 {/* Cabecera central con los pasos */}
                 <header className="mb-5 flex justify-center">
@@ -19,18 +19,18 @@ export default function CheckoutLayoutV2({ children }: Props) {
                 </header>
                 
                 {/* Estructura dividida de Checkout */}
-                <div className="grid grid-cols-1 gap-x-12 gap-y-10 lg:grid-cols-12">
+                <div className="grid grid-cols-1 gap-x-12 lg:grid-cols-12">
                     
                     {/* Contenido principal dinámico (Paso 1 o Paso 2) */}
                     <main className="lg:col-span-7">
-                        <div className="bg-card border border-border p-6 md:p-8 rounded-[var(--radius-lg)] shadow-sm">
+                        <div className="bg-card p-4">
                             {children}
                         </div>
                     </main>
 
                     {/* Resumen lateral estático y persistente */}
                     <aside className="lg:col-span-5 lg:sticky lg:top-24 h-fit">
-                        <div className="bg-card border border-border p-6 md:p-8 rounded-[var(--radius-lg)] shadow-sm">
+                        <div className="bg-card p-4">
                             <OrderSummary />
                         </div>
                     </aside>

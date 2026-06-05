@@ -84,7 +84,7 @@ export default function ButtonShowSheetMobile({ categories, collections }: Props
                         {/* Colecciones */}
                         {collections.length > 0 && (
                             <details className="group border-y border-border/60">
-                                <summary className="list-none flex items-center justify-between px-6 py-4 cursor-pointer hover:bg-background-secondary font-black text-xs uppercase tracking-wider text-foreground outline-none">
+                                <summary className="list-none flex items-center justify-between px-6 py-4 cursor-pointer hover:bg-background-secondary font-semibold text-xs uppercase tracking-wider text-foreground outline-none">
                                     Colecciones
                                     <ChevronRight size={14} className="text-muted-foreground group-open:rotate-90 transition-transform" />
                                 </summary>
@@ -104,8 +104,8 @@ export default function ButtonShowSheetMobile({ categories, collections }: Props
 
                         {/* Categorías */}
                         <div className="px-6 space-y-3">
-                            <Muted className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.15em]">
-                                Explorar Categorías
+                            <Muted className="text-xs font-black text-muted-foreground ">
+                                Categorías
                             </Muted>
                             <div className="space-y-1.5">
                                 {categories.filter(c => !c.parent).map((parent) => (
@@ -133,8 +133,8 @@ export default function ButtonShowSheetMobile({ categories, collections }: Props
                 </ScrollArea>
 
                 {/* Footer fijo */}
-                <div className="border-t border-border p-6 bg-card">
-                    <Button asChild className="w-full bg-action-cta hover:bg-action-cta-hover text-action-cta-foreground font-bold tracking-wide uppercase text-xs h-11">
+                <div className="border-t border-border p-4 bg-card">
+                    <Button asChild className="w-full">
                         <Link href="/auth/registro">Iniciar Sesión / Registro</Link>
                     </Button>
                 </div>

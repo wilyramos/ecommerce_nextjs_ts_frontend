@@ -13,7 +13,7 @@ export default function OrderSummaryItem({ item }: Props) {
     return (
         <li className="flex gap-3 py-3">
             {/* Imagen */}
-            <div className="relative w-14 h-14 rounded-[var(--radius-sm)] border border-border bg-muted shrink-0 overflow-hidden">
+            <div className="relative w-14 h-14 rounded-[var(--radius-sm)] border border-border shrink-0 overflow-hidden">
                 {imagen ? (
                     <Image
                         src={imagen}
@@ -21,6 +21,8 @@ export default function OrderSummaryItem({ item }: Props) {
                         fill
                         sizes="56px"
                         className="object-cover"
+                        quality={5}
+                        unoptimized
                     />
                 ) : (
                     <div className="w-full h-full bg-muted-neutral" />

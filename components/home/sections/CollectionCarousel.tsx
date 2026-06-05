@@ -28,14 +28,14 @@ function toApiProduct(p: CollectionProduct): TApiProduct {
 }
 
 const responsive = {
-    desktop: { breakpoint: { max: 3000, min: 1024 }, items: 5, slidesToSlide: 2 },
+    desktop: { breakpoint: { max: 3000, min: 1024 }, items: 4, slidesToSlide: 2 },
     tablet: { breakpoint: { max: 1024, min: 640 }, items: 3, slidesToSlide: 2 },
     mobile: { breakpoint: { max: 640, min: 0 }, items: 2, slidesToSlide: 1 },
 };
 
 export default function CollectionCarousel({ products }: Props) {
     return (
-        <div className="relative px-6">
+        <div className="relative ">
             <Carousel
                 responsive={responsive}
                 infinite={false}

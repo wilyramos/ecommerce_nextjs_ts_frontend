@@ -20,7 +20,7 @@ function Label({
       data-slot="label"
       className={cn(
         // Base styles simplificados para un look administrativo minimalista
-        "flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-foreground select-none",
+        "flex items-center gap-1.5 text-[10px] font-semibold tracking-wider text-foreground select-none",
         "peer-disabled:cursor-not-allowed peer-disabled:opacity-50",
         className
       )}
@@ -28,8 +28,8 @@ function Label({
     >
       {children}
       {required && (
-        <span 
-          className="text-destructive font-black" 
+        <span
+          className="text-destructive font-black"
           aria-hidden="true"
         >
           *

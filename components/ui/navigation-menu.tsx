@@ -92,7 +92,7 @@ function NavigationMenuContent({
     <NavigationMenuPrimitive.Content
       data-slot="navigation-menu-content"
       className={cn(
-        "data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 top-full absolute mt-1 w-auto bg-card text-card-foreground border border-border overflow-hidden duration-200 focus:outline-none focus:ring-0 rounded-[var(--radius-lg)] shadow-lg",
+        "data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 top-full absolute mt-1 w-auto bg-card text-card-foreground border border-border overflow-hidden duration-200 focus:outline-none focus:ring-0 ",
         "right-0 lg:right-auto origin-top-right lg:origin-top-left",
         className
       )}
@@ -131,7 +131,7 @@ function NavigationMenuLink({
     <NavigationMenuPrimitive.Link
       data-slot="navigation-menu-link"
       className={cn(
-        "data-[active=true]:bg-background-secondary data-[active=true]:text-foreground hover:bg-background-secondary text-foreground flex flex-col gap-1 p-2 text-sm  transition-colors outline-none focus-visible:ring-ring focus-visible:ring-[3px] rounded-[var(--radius-sm)] [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground [&:hover_span]:text-action-cta",
+        "data-[active=true]:bg-background-secondary data-[active=true]:text-foreground hover:bg-background-secondary text-foreground flex flex-col gap-1 p-2 text-sm  transition-colors outline-none focus-visible:ring-ring focus-visible:ring-[3px] [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground [&:hover_span]:text-action-cta",
         className
       )}
       {...props}
@@ -152,7 +152,7 @@ function NavigationMenuIndicator({
       )}
       {...props}
     >
-      <div className="bg-border border-t border-l border-border relative top-[60%] h-2 w-2 rotate-45 rounded-tl-[1px]" />
+      <div className="bg-border border-t border-l border-border relative top-[60%] h-2 w-2 rotate-45" />
     </NavigationMenuPrimitive.Indicator>
   )
 }

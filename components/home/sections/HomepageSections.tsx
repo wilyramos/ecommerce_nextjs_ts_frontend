@@ -9,7 +9,7 @@ export default async function HomepageSections() {
     if (!sections.length) return null;
 
     return (
-        <div className="space-y-12 my-10">
+        <div className="space-y-12 my-6">
             {sections.map((section) => (
                 <CollectionSection
                     key={section.collection._id}
