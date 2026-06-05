@@ -35,16 +35,16 @@ export default function BrandCombobox({ brands, value, onChange }: BrandCombobox
             <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
                     <Button
-                        variant="default"
+                        variant="outline"
                         role="combobox"
                         aria-expanded={open}
-                        className="w-full justify-between text-left font-normal"
+                        className="w-full justify-between text-left rounded-sm"
                     >
-                        {selectedBrandLabel || "Selecciona una marca..."}
+                        {selectedBrandLabel || "Selecciona una marca"}
                         <ChevronsUpDown className="opacity-50 w-4 h-4 ml-2" />
                     </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0" align="start">
+                <PopoverContent className="w-full " align="start">
                     <Command>
                         <CommandInput placeholder="Buscar marca..." className="h-9" />
                         <CommandList>

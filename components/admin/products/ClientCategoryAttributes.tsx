@@ -21,6 +21,7 @@ import {
     DialogFooter
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { LabelWithTooltip } from "@/components/utils/LabelWithTooltip";
 
 type Props = {
     categorias: CategoryListResponse;
@@ -88,9 +89,9 @@ export default function ClientCategoryAttributes({
 
             {/* --- SELECCIÓN DE CATEGORÍA --- */}
             <div className="space-y-1">
-                <label className="text-xs font-bold text-foreground">
-                    Categoría <span className="text-destructive">*</span>
-                </label>
+
+                <LabelWithTooltip htmlFor="categoria" label="Categoría" required tooltip="Selecciona la categoría a la que pertenece este producto. Esto permitirá configurar atributos específicos relacionados con esa categoría." />
+
 
                 <input type="hidden" name="categoria" value={selectedCategoryId} />
                 <input type="hidden" name="atributos" value={validAtributosJSON} />
