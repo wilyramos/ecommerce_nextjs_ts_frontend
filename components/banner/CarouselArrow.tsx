@@ -21,12 +21,12 @@ export function CarouselArrow({ onClick, direction }: ArrowProps) {
             className={`
                 absolute top-1/2 -translate-y-1/2 z-20
                 hidden sm:flex items-center justify-center
-                w-10 h-10
-                border border-white/10
-                bg-white/5 dark:bg-black/20
-                text-white/70
-                backdrop-blur-md
-                hover:bg-white hover:text-black
+                w-12 h-12
+                border border-none
+                bg-white/2 
+                text-black/40
+                backdrop-blur-xs
+                hover:bg-white/5 
                 transition-all duration-200
                 ${position}
             `}

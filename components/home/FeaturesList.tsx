@@ -41,14 +41,14 @@ const features: Feature[] = [
 
 export default function MinimalFeatures() {
     return (
-        <section className="bg-background-secondary py-12 md:py-16 border-b border-border">
+        <section className="bg-background-secondary py-6 md:py-10 border-b border-border">
             <div className="max-w-7xl mx-auto px-6">
                 <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
                     {features.map((feature) => {
 
                         const Content = (
                             <div
-                                className="group relative flex flex-row items-center gap-1 md:gap-4 p-2 h-full border border-border bg-background cursor-pointer transition-all duration-300 hover:border-border-hover hover:-translate-y-0.5 overflow-hidden"
+                                className="group relative flex flex-row items-center gap-1 md:gap-4 p-2 h-full bg-background cursor-pointer transition-all duration-300  hover:-translate-y-0.5 overflow-hidden"
                                 aria-label={feature.title}
                             >
                                 {/* Icono a la izquierda */}

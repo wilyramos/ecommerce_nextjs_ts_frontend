@@ -42,7 +42,8 @@ const links: NavLink[] = [
     { href: "/admin/collections", icon: Library, label: "Colecciones" },
     { href: "/admin/media", icon: Images, label: "Medios" },
     { href: "/admin/claims", icon: Layers, label: "Reclamos" },
-
+    { href: "/admin/sections", icon: Folder, label: "Secciones" },
+    { href: "/admin/advertisements", icon: Images, label: "Avisos" },
     // --- CATÁLOGO ---
     { href: "/admin/brands", icon: Bookmark, label: "Marcas" },
     { href: "/admin/lines", icon: GitFork, label: "Líneas" },

@@ -1,13 +1,11 @@
-// File: frontend/app/(store)/page.tsx
-
 import { Metadata } from "next";
 import { metadata as globalMetadata } from "@/app/layout";
 import CategoriasDestacadasWrapper from "@/components/home/CategoriasDestacadasWrapper";
 import FeaturesList from "@/components/home/FeaturesList";
 import BrandsList from "@/components/home/BrandsList";
-import Advertisement from "@/components/home/Advertisement";
 import CarruselPrincipal from "@/components/home/CarruselPrincipal";
-import HomepageSections from "@/components/home/sections/HomepageSections";
+import HomepageSectionsWrapper from "@/components/home/sections/HomepageSectionsWrapper";
+import GlobalAdContainer from "@/components/home/GlobalAdContainer";
 
 // Metadata for SEO and social sharing
 export const metadata: Metadata = {
@@ -63,20 +61,18 @@ export const metadata: Metadata = {
     }
 };
 
-
 export default function HomePage() {
     return (
         <>
-            <section>
-                <Advertisement />
-            </section>
+            <GlobalAdContainer />
+
 
             <section>
                 <CarruselPrincipal />
             </section>
 
-            {/* Secciones dinámicas desde Collections */}
-            <HomepageSections />
+            {/* El Wrapper se encarga de la llamada asíncrona de forma aislada */}
+            <HomepageSectionsWrapper />
 
             <section className="my-2 md:my-10">
                 <CategoriasDestacadasWrapper />
