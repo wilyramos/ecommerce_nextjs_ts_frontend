@@ -6,6 +6,7 @@ import BrandsList from "@/components/home/BrandsList";
 import CarruselPrincipal from "@/components/home/CarruselPrincipal";
 import HomepageSectionsWrapper from "@/components/home/sections/HomepageSectionsWrapper";
 import GlobalAdContainer from "@/components/home/GlobalAdContainer";
+import HomepageSections from "@/components/home/sections/HomepageSections";
 
 // Metadata for SEO and social sharing
 export const metadata: Metadata = {
@@ -71,7 +72,8 @@ export default function HomePage() {
                 <CarruselPrincipal />
             </section>
 
-            {/* El Wrapper se encarga de la llamada asíncrona de forma aislada */}
+
+            <HomepageSections />
             <HomepageSectionsWrapper />
 
             <section className="my-2 md:my-10">
