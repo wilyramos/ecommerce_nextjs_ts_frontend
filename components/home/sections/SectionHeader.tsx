@@ -4,11 +4,11 @@ interface SectionHeaderProps {
 
 export default function SectionHeader({ title }: SectionHeaderProps) {
     return (
-        <div className="flex items-center gap-4">
-            <h2 className="text-xl md:text-2xl font-bold tracking-tight text-foreground whitespace-nowrap">
+        <div className="flex items-center gap-4 text-action-cta">
+            <h2 className="text-xl md:text-xl font-semibold tracking-tight text-foreground whitespace-nowrap">
                 {title}
             </h2>
-            <div className="flex-1 h-px bg-border" />
+            <div className="flex-1 h-px bg-action-cta border-action-cta" />
         </div>
     );
 }

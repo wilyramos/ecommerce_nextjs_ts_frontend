@@ -138,7 +138,7 @@ export default function Footer() {
                 </div>
 
                 {/* Bottom Bar: Legal & Global */}
-                <div className="mt-16 pt-8 border-t border-border">
+                <div className="mt-16 pt-6 border-t border-border">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-6">
 
                         <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8 order-2 md:order-1">
@@ -163,17 +163,23 @@ export default function Footer() {
                                     </div>
                                 ))}
                             </nav>
-                        </div>
 
-                        <div className="flex items-center gap-6 order-1 md:order-2">
                             <Link
                                 href="/libro-de-reclamaciones"
-                                className="inline-flex items-center gap-2 px-3 py-2 border border-border rounded-[var(--radius-sm)] text-[11px]  text-muted-foreground hover:text-foreground hover:bg-background-secondary transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+                                className="inline-flex items-center gap-2 px-3 py-2 border border-border text-xs  text-muted-foreground hover:text-foreground hover:bg-background-secondary transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
                             >
                                 <FaBookOpen className="w-3.5 h-3.5 text-amber-500 shrink-0" />
                                 Libro de Reclamaciones
                             </Link>
-                            <div className="grayscale opacity-40 hover:opacity-100 hover:grayscale-0 transition-all duration-300 scale-90">
+                        </div>
+
+                        <div className="flex items-center gap-6 order-1 md:order-2">
+
+                            <div className="">
+                                <span className="text-[11px] text-muted-foreground ">
+                                    Medios de pago:
+                                </span>
+
                                 <PaymentMethods />
                             </div>
                         </div>

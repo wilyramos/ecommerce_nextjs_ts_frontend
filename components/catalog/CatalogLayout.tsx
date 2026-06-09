@@ -67,9 +67,9 @@ export default function CatalogLayout({
     }
 
     return (
-        <section className="container mx-auto px-4 md:px-8 max-w-screen-2xl text-foreground bg-background">
+        <section className="container mx-auto px-4 md:px-8 max-w-screen-2xl text-foreground">
 
-            <div className="pt-4">
+            <div className="py-2 md:py-4">
                 <CatalogHeader
                     title={getTitle()}
                     totalProducts={pagination.totalItems}
@@ -80,7 +80,7 @@ export default function CatalogLayout({
             <div className="flex flex-col lg:grid lg:grid-cols-12 gap-2 relative">
 
                 {/* Sidebar Desktop con estilos de panel lateral del sistema */}
-                <aside className="hidden lg:block lg:col-span-3 xl:col-span-2 md:pr-6 border-r border-sidebar-border bg-sidebar text-sidebar-foreground">
+                <aside className="hidden lg:block lg:col-span-3 xl:col-span-2 ">
                     <div className="sticky top-24">
                         <CatalogSidebar filters={filters} />
                     </div>

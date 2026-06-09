@@ -52,7 +52,7 @@ export function SalesTable({ initialData }: { initialData: Sale[] }) {
                                 <TableCell className="px-4 py-3 text-text-secondary">
                                     {format(new Date(sale.createdAt!), "dd/MM/yy HH:mm")}
                                 </TableCell>
-                                <TableCell className="px-4 py-3 font-mono text-xs font-bold text-text-primary">
+                                <TableCell className="px-4 py-3 text-xs font-bold text-text-primary">
                                     {sale.receiptNumber}
                                 </TableCell>
                                 <TableCell className="px-4 py-3">

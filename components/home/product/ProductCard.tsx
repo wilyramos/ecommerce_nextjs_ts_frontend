@@ -190,11 +190,11 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                 </div>
 
                 {/* --- INFO --- */}
-                <div className="flex flex-col flex-1 p-3 md:p-4 bg-background">
-                    <div className="flex flex-col gap-1 h-[4.5rem] md:h-[5rem]">
+                <div className="flex flex-col flex-1 p-2 md:p-4 bg-background">
+                    <div className="flex flex-col gap-0.5 h-[4.5rem] md:h-[5rem]">
 
                         <div className="h-5 shrink-0 flex justify-between items-center mb-1">
-                            <span className="text-[10px] font-bold tracking-[0.15em] text-muted-foreground uppercase truncate max-w-[50%]">
+                            <span className="text-[10px]  md:text-xs font-bold text-muted-foreground uppercase truncate max-w-[50%]">
                                 {product.brand?.nombre || ""}
                             </span>
 
@@ -217,7 +217,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                                                 className={cn(
                                                     "relative transition-transform duration-200 outline-none rounded-full",
                                                     isSelected
-                                                        ? "scale-110 ring-1 ring-offset-1 ring-foreground/30"
+                                                        ? "scale-110 ring-1 ring-offset-1 ring-foreground/10"
                                                         : "hover:scale-110 hover:z-20"
                                                 )}
                                                 aria-label={`Seleccionar color ${c}`}
@@ -243,24 +243,25 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                         <div className="absolute inset-0 bg-foreground opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none" />
                     </div>
 
-                    <div className="flex items-end justify-between mt-auto pt-2 group-hover:border-border transition-colors">
-                        <div className="flex flex-col w-full">
-                            {stock > 0 ? (
-                                <div className="flex flex-row items-start gap-2">
-                                    {/* Precio Actual */}
-                                    <span className="text-sm md:text-[15px] text-foreground">
-                                        S/ {precio.toFixed(2)}
+                    <div className="mt-auto w-full pt-3 border-t border-transparent group-hover:border-border transition-colors">
+                        <div className="flex items-end justify-between gap-3">
+                            {/* Precios */}
+                            <div className="flex flex-col min-w-0">
+                                {(product.precioComparativo ?? 0) > 0 && (
+                                    <span className="text-xs text-muted-foreground line-through">
+                                        S/ {product.precioComparativo!.toFixed(2)}
                                     </span>
-                                    {/* Precio anterior */}
-                                    {(product.precioComparativo ?? 0) > 0 && (
-                                        <span className="text-[10px] md:text-[13px] text-muted-foreground line-through mb-0.5">
-                                            S/ {product.precioComparativo!.toFixed(2)}
-                                        </span>
-                                    )}
-                                </div>
-                            ) : (
-                                <span className="text-[10px] font-bold px-2 py-1 bg-background-secondary text-muted-foreground self-start rounded-sm border border-border">
-                                    Agotado
+                                )}
+
+                                <span className="text-base md:text-lg font-semibold text-foreground leading-none">
+                                    S/ {precio.toFixed(2)}
+                                </span>
+                            </div>
+
+                            {/* Stock */}
+                            {stock <= 0 && (
+                                <span className="inline-flex items-center bg-destructive/10 px-2.5 py-1 text-[11px] font-medium text-destructive whitespace-nowrap">
+                                    Sin stock
                                 </span>
                             )}
                         </div>

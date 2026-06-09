@@ -105,8 +105,8 @@ export default function ButtonShowCart() {
                     <div className="p-6 bg-card border-t border-border mt-auto">
                         <div className="space-y-4 mb-6">
                             <div className="flex justify-between items-baseline pt-2 border-t border-transparent">
-                                <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Total Estimado</span>
-                                <div className="text-right select-all font-mono">
+                                <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Total </span>
+                                <div className="text-right select-all ">
                                     <span className="text-xs font-black text-foreground mr-1">S/</span>
                                     <span className="text-2xl font-black text-foreground ">
                                         {total}
@@ -118,7 +118,8 @@ export default function ButtonShowCart() {
                         <div className="grid">
                             <Button
                                 onClick={handleCheckout}
-                                className="w-full bg-action-cta hover:bg-action-cta-hover text-action-cta-foreground font-bold uppercase tracking-wide text-xs h-11 flex items-center justify-center gap-2 rounded-[var(--radius-sm)] shadow-xs"
+                                variant="accent"
+                                className="w-full "
                             >
                                 Finalizar Pedido 
                                 <ArrowRight size={14} strokeWidth={2.5} className="animate-in fade-in slide-in-from-left-1 duration-300" />

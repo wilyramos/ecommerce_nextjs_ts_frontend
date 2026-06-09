@@ -1,4 +1,3 @@
-// File: components/store/ClientCategoriasDesktop.tsx
 "use client";
 
 import * as React from "react";
@@ -17,6 +16,7 @@ import {
     NavigationMenuTrigger,
     NavigationMenuContent,
     NavigationMenuLink,
+    navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
 export default function ClientCategoriasDesktop({
@@ -26,8 +26,8 @@ export default function ClientCategoriasDesktop({
     categories: CategoryResponse[];
     collections?: Collection[];
 }) {
-    const grouped = React.useMemo(() => {
-        return categories.reduce((acc, category) => {
+    const { rootNoSub, rootWithSub } = React.useMemo(() => {
+        const grouped = categories.reduce((acc, category) => {
             const parentId =
                 category.parent && typeof category.parent !== "string"
                     ? category.parent._id
@@ -37,108 +37,100 @@ export default function ClientCategoriasDesktop({
             acc[key].push(category);
             return acc;
         }, {} as Record<string, CategoryResponse[]>);
+
+        const rootCategories = grouped["root"] || [];
+
+        const rootNoSub: CategoryResponse[] = [];
+        const rootWithSub: { cat: CategoryResponse; sub: CategoryResponse[] }[] = [];
+
+        rootCategories.forEach((cat) => {
+            const sub = grouped[cat._id] || [];
+            if (sub.length === 0) {
+                rootNoSub.push(cat);
+            } else {
+                rootWithSub.push({ cat, sub });
+            }
+        });
+
+        return { rootNoSub, rootWithSub };
     }, [categories]);
 
-    const rootCategories = grouped["root"] || [];
+    const renderDropdown = (
+        title: string,
+        description: string,
+        linkHref: string,
+        items: { _id: string; title: string; slug: string; image?: string | null; isCollection?: boolean }[]
+    ) => (
+        <NavigationMenuContent className="w-[640px]">
+            <div className="grid grid-cols-[200px_1fr] bg-background">
+                <div className="bg-background-secondary p-4 flex flex-col justify-between border-r border-border">
+                    <div>
+                        <Lead className="mb-1 text-foreground">{title}</Lead>
+                        <Muted className="line-clamp-3 leading-relaxed font-medium">
+                            {description}
+                        </Muted>
+                    </div>
+                    <Link
+                        href={linkHref}
+                        className="text-[11px] text-muted-foreground hover:text-primary transition-colors mt-4 inline-flex items-center gap-1 uppercase font-bold tracking-wider focus-visible:outline-none"
+                    >
+                        Ver todo
+                        <FiArrowRight className="w-3 h-3" />
+                    </Link>
+                </div>
+                <div className="p-3">
+                    <ul className="grid grid-cols-2 gap-1">
+                        {items.map((item) => (
+                            <NavItem
+                                key={item._id}
+                                href={item.isCollection ? `/colecciones/${item.slug}` : routes.catalog({ category: item.slug })}
+                                title={item.title}
+                                image={item.image}
+                            />
+                        ))}
+                    </ul>
+                </div>
+            </div>
+        </NavigationMenuContent>
+    );
 
     return (
         <NavigationMenu className="w-full">
             <NavigationMenuList>
-                {rootCategories.map((cat) => {
-                    const sub = grouped[cat._id] || [];
-                    return (
-                        <NavigationMenuItem key={cat._id}>
-                            {sub.length === 0 ? (
-                                <NavigationMenuLink asChild>
-                                    <Link
-                                        href={routes.catalog({ category: cat.slug })}
-                                        className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none rounded-[var(--radius-sm)] h-9"
-                                    >
-                                        {cat.nombre}
-                                    </Link>
-                                </NavigationMenuLink>
-                            ) : (
-                                <>
-                                    <NavigationMenuTrigger>
-                                        {cat.nombre}
-                                    </NavigationMenuTrigger>
-                                    <NavigationMenuContent className="w-[640px]">
-                                        <div className="grid grid-cols-[200px_1fr] bg-background">
-                                            <div className="bg-background-secondary p-4 flex flex-col justify-between border-r border-border">
-                                                <div>
-                                                    <Lead className="mb-1 text-foreground">
-                                                        {cat.nombre}
-                                                    </Lead>
-                                                    <Muted className="line-clamp-3 leading-relaxed font-medium">
-                                                        {cat.descripcion || `Explora lo mejor en ${cat.nombre.toLowerCase()}.`}
-                                                    </Muted>
-                                                </div>
-                                                <Link
-                                                    href={routes.catalog({ category: cat.slug })}
-                                                    className="text-[11px] text-muted-foreground hover:text-primary transition-colors mt-4 inline-flex items-center gap-1 uppercase font-bold tracking-wider focus-visible:outline-none"
-                                                >
-                                                    Ver todo
-                                                    <FiArrowRight className="w-3 h-3" />
-                                                </Link>
-                                            </div>
-                                            <div className="p-3">
-                                                <ul className="grid grid-cols-2 gap-1">
-                                                    {sub.map((subcat) => (
-                                                        <NavItem
-                                                            key={subcat._id}
-                                                            href={routes.catalog({ category: subcat.slug })}
-                                                            title={subcat.nombre}
-                                                            image={subcat.image}
-                                                        />
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </NavigationMenuContent>
-                                </>
-                            )}
-                        </NavigationMenuItem>
-                    );
-                })}
+                {/* Categorías Root sin subcategorías primero */}
+                {rootNoSub.map((cat) => (
+                    <NavigationMenuItem key={cat._id}>
+                        <Link href={routes.catalog({ category: cat.slug })} legacyBehavior passHref>
+                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                                {cat.nombre}
+                            </NavigationMenuLink>
+                        </Link>
+                    </NavigationMenuItem>
+                ))}
 
+                {/* Categorías con subcategorías después */}
+                {rootWithSub.map(({ cat, sub }) => (
+                    <NavigationMenuItem key={cat._id}>
+                        <NavigationMenuTrigger>{cat.nombre}</NavigationMenuTrigger>
+                        {renderDropdown(
+                            cat.nombre,
+                            cat.descripcion || `Explora lo mejor en ${cat.nombre.toLowerCase()}.`,
+                            routes.catalog({ category: cat.slug }),
+                            sub.map(s => ({ _id: s._id, title: s.nombre, slug: s.slug, image: s.image }))
+                        )}
+                    </NavigationMenuItem>
+                ))}
+
+                {/* Tendencias al final */}
                 {collections.length > 0 && (
                     <NavigationMenuItem>
-                        <NavigationMenuTrigger>
-                            Tendencias
-                        </NavigationMenuTrigger>
-                        <NavigationMenuContent className="w-[640px]">
-                            <div className="grid grid-cols-[200px_1fr] bg-background">
-                                <div className="bg-background-secondary p-4 flex flex-col justify-between border-r border-border">
-                                    <div>
-                                        <Lead className="mb-1 text-foreground">
-                                            Tendencias
-                                        </Lead>
-                                        <Muted className="line-clamp-3 leading-relaxed font-medium">
-                                            Descubre las colecciones más populares y exclusivas del momento.
-                                        </Muted>
-                                    </div>
-                                    <Link
-                                        href="/colecciones"
-                                        className="text-[11px] text-muted-foreground hover:text-primary transition-colors mt-4 inline-flex items-center gap-1 uppercase font-bold tracking-wider focus-visible:outline-none"
-                                    >
-                                        Ver todo
-                                        <FiArrowRight className="w-3 h-3" />
-                                    </Link>
-                                </div>
-                                <div className="p-3">
-                                    <ul className="grid grid-cols-2 gap-1">
-                                        {collections.map((col) => (
-                                            <NavItem
-                                                key={col._id}
-                                                href={`/colecciones/${col.slug}`}
-                                                title={col.name}
-                                                image={col.image}
-                                            />
-                                        ))}
-                                    </ul>
-                                </div>
-                            </div>
-                        </NavigationMenuContent>
+                        <NavigationMenuTrigger>Tendencias</NavigationMenuTrigger>
+                        {renderDropdown(
+                            "Tendencias",
+                            "Descubre las colecciones más populares y exclusivas del momento.",
+                            "/colecciones",
+                            collections.map(c => ({ _id: c._id, title: c.name, slug: c.slug, image: c.image, isCollection: true }))
+                        )}
                     </NavigationMenuItem>
                 )}
             </NavigationMenuList>
@@ -172,7 +164,7 @@ function NavItem({ href, title, image }: NavItemProps) {
                                 quality={20}
                             />
                         ) : (
-                            <FiImage className="w-3.5 h-3.5 text-muted-foreground" />
+                            <FiImage className="w-2 h-2 text-muted-foreground/20" />
                         )}
                     </div>
                     <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground transition-colors truncate block capitalize">

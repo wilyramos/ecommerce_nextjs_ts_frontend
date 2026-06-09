@@ -50,8 +50,6 @@ export const getCatalogData = async (
     }
 };
 
-// ... (tu código existente de getCatalogData)
-
 /**
  * Obtiene específicamente el catálogo de OFERTAS.
  * Apunta a un endpoint dedicado para mejor performance y lógica de negocio.

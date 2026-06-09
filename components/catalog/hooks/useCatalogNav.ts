@@ -1,13 +1,14 @@
 // File: frontend/components/catalog/hooks/useCatalogNav.ts
 "use client";
 
-import { useRouter, useSearchParams, useParams } from "next/navigation";
+import { useRouter, useSearchParams, useParams, usePathname } from "next/navigation";
 import { useMemo, useCallback } from "react";
 
 export function useCatalogNav() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const params = useParams();
+    const pathname = usePathname(); // ← FIX: faltaba este import
 
     const slugs = useMemo(() => {
         const raw = params.slug;
@@ -30,7 +31,9 @@ export function useCatalogNav() {
     const setBrand = useCallback((brandSlug: string) => {
         if (slugs.includes(brandSlug)) {
             const newSlugs = slugs.filter(s => s !== brandSlug);
-            const newPath = newSlugs.length > 0 ? `/catalogo/${newSlugs.join('/')}` : '/catalogo';
+            const newPath = newSlugs.length > 0
+                ? `/catalogo/${newSlugs.join('/')}`
+                : '/catalogo';
             router.push(createUrl(newPath));
             return;
         }
@@ -41,7 +44,9 @@ export function useCatalogNav() {
     const setLine = useCallback((lineSlug: string) => {
         if (slugs.includes(lineSlug)) {
             const newSlugs = slugs.filter(s => s !== lineSlug);
-            const newPath = newSlugs.length > 0 ? `/catalogo/${newSlugs.join('/')}` : '/catalogo';
+            const newPath = newSlugs.length > 0
+                ? `/catalogo/${newSlugs.join('/')}`
+                : '/catalogo';
             router.push(createUrl(newPath));
         } else {
             const newPath = `/catalogo/${[...slugs, lineSlug].join('/')}`;
@@ -49,31 +54,74 @@ export function useCatalogNav() {
         }
     }, [slugs, router, createUrl]);
 
-    const isCategoryActive = (slug: string) => slugs.includes(slug);
-    const isBrandActive    = (slug: string) => slugs.includes(slug);
-    const isLineActive     = (slug: string) => slugs.includes(slug);
+    const isCategoryActive = useCallback((slug: string) => slugs.includes(slug), [slugs]);
+    const isBrandActive    = useCallback((slug: string) => slugs.includes(slug), [slugs]);
+    const isLineActive     = useCallback((slug: string) => slugs.includes(slug), [slugs]);
 
     const updateFilter = useCallback((key: string, value: string) => {
-        const newParams = new URLSearchParams(searchParams.toString());
-        newParams.delete('page');
+        const next = new URLSearchParams(searchParams.toString());
 
-        if (newParams.has(key, value)) {
-            newParams.delete(key, value);
+        // Parámetros de valor único: siempre reemplazar (fix del sort duplicado)
+        const singleValueKeys = ['sort', 'page', 'priceMin', 'priceMax'];
+
+        if (singleValueKeys.includes(key)) {
+            next.set(key, value);
         } else {
-            newParams.append(key, value);
+            // Toggle multi-valor (atributos, colores…)
+            const current = next.getAll(key);
+            if (current.includes(value)) {
+                next.delete(key);
+                current.filter(v => v !== value).forEach(v => next.append(key, v));
+            } else {
+                next.append(key, value);
+            }
         }
 
-        const pathname = window.location.pathname;
-        router.push(`${pathname}?${newParams.toString()}`, { scroll: false });
-    }, [searchParams, router]);
+        // Resetear siempre a página 1 al cambiar cualquier filtro que no sea page/sort
+        if (key !== 'page' && key !== 'sort') {
+            next.delete('page');
+        }
+
+        router.push(`${pathname}?${next.toString()}`);
+    }, [searchParams, pathname, router]);
+
+    // FIX: hasFilters solo mira query params reales, no slugs de ruta
+    // Los slugs son parte de la navegación, no "filtros activos" en el sentido UX
+    const hasActiveQueryFilters = useMemo(() => {
+        for (const [key] of searchParams.entries()) {
+            // Ignorar sort=recientes (valor por defecto) y page
+            if (key === 'page') continue;
+            if (key === 'sort' && searchParams.get('sort') === 'recientes') continue;
+            return true;
+        }
+        return false;
+    }, [searchParams]);
 
     const clearFilters = useCallback(() => {
-        router.push(window.location.pathname);
-    }, [router]);
+        // Solo limpia query params, mantiene el path (slugs de ruta)
+        router.push(pathname);
+    }, [router, pathname]);
+
+    const setPriceRange = useCallback((min: number, max: number) => {
+        const next = new URLSearchParams(searchParams.toString());
+        next.set('priceMin', String(min));
+        next.set('priceMax', String(max));
+        next.delete('page');
+        router.push(`${pathname}?${next.toString()}`);
+    }, [searchParams, pathname, router]);
+
+    const clearPriceRange = useCallback(() => {
+        const next = new URLSearchParams(searchParams.toString());
+        next.delete('priceMin');
+        next.delete('priceMax');
+        next.delete('page');
+        router.push(`${pathname}?${next.toString()}`);
+    }, [searchParams, pathname, router]);
 
     return {
         currentSlugs: slugs,
-        hasFilters: slugs.length > 0 || searchParams.toString().length > 0,
+        hasFilters: hasActiveQueryFilters,
+
         isCategoryActive,
         isBrandActive,
         isLineActive,
@@ -81,7 +129,10 @@ export function useCatalogNav() {
         setBrand,
         setLine,
         updateFilter,
+        setPriceRange,
+        clearPriceRange,
         clearFilters,
         searchParams,
+        pathname,
     };
 }

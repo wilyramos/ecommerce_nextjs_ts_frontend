@@ -109,7 +109,7 @@ function CollectionCard({ col }: { col: Collection }) {
 
                 {/* Fechas solo para promociones vigentes */}
                 {col.type === "promotion" && col.startsAt && col.endsAt && (
-                    <p className="text-[10px] font-bold font-mono text-foreground mt-2 pt-2 border-t border-border select-none">
+                    <p className="text-[10px] font-bold text-foreground mt-2 pt-2 border-t border-border select-none">
                         {new Date(col.startsAt).toLocaleDateString("es-PE", { day: "2-digit", month: "short" })}
                         {" → "}
                         {new Date(col.endsAt).toLocaleDateString("es-PE", { day: "2-digit", month: "short", year: "numeric" })}

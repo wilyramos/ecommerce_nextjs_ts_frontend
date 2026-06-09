@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Home, ArrowUpDown } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 import {
     Select,
     SelectContent,
@@ -28,7 +28,7 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
     const currentSort = searchParams.get("sort") || "recientes";
 
     return (
-        <div className="w-full flex flex-col gap-8 pt-4 pb-6 border-b border-border">
+        <div className="w-full flex flex-col gap-8 pt-2 pb-4 border-b border-border">
 
             {/* Breadcrumbs */}
             <nav aria-label="Breadcrumb" className="px-1">
@@ -52,7 +52,7 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
                                         href={crumb.href}
                                         className="flex items-center gap-1 hover:text-foreground transition-colors duration-200"
                                     >
-                                        {isFirst && <Home className="w-2.5 h-2.5 mb-0.5" />}
+                                        {isFirst}
                                         {crumb.label}
                                     </Link>
                                 )}
@@ -89,20 +89,20 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
                 <div className="hidden md:flex items-center gap-4">
                     <div className="group relative flex items-center">
                         <div className="absolute left-3 z-10 pointer-events-none">
-                            <ArrowUpDown className="w-3.5 h-3.5 text-muted-foreground group-focus-within:text-action-cta transition-colors" />
+                            <ArrowUpDown className="w-3.5 h-3.5" />
                         </div>
 
                         <Select
                             value={currentSort}
                             onValueChange={(val) => updateFilter("sort", val)}
                         >
-                            <SelectTrigger className="w-[200px] h-11 pl-9 pr-4 border-border bg-background text-[13px] font-semibold text-foreground focus:ring-2 focus:ring-ring focus:border-border-hover transition-all hover:bg-background-secondary">
+                            <SelectTrigger className="w-[200px] h-11 pl-9 pr-4  ">
                                 <SelectValue placeholder="Ordenar por" />
                             </SelectTrigger>
 
                             <SelectContent
                                 align="end"
-                                className="bg-background border-border p-1 text-foreground"
+                                className=""
                             >
                                 <SelectItem value="relevancia">
                                     Relevancia
@@ -112,10 +112,6 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
                                     Más Recientes
                                 </SelectItem>
 
-                                <SelectItem value="rating">
-                                    Mejor Valorados
-                                </SelectItem>
-
                                 <SelectItem value="discount">
                                     Mayor Descuento
                                 </SelectItem>
@@ -123,11 +119,11 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
                                 <SelectItem value="price-asc">
                                     Precio: Menor a Mayor
                                 </SelectItem>
-                                
+
                                 <SelectItem value="price-desc">
                                     Precio: Mayor a Menor
                                 </SelectItem>
-                                
+
                                 <SelectItem value="name-asc">
                                     Nombre: A - Z
                                 </SelectItem>

@@ -112,7 +112,7 @@ export default function GarantiasDevolucionesPage() {
                             "Tras la validación, procesamos tu cambio o reembolso."
                         ].map((text, i) => (
                             <div key={i} className="space-y-1.5">
-                                <span className="text-action-cta font-mono font-bold text-base">0{i + 1}</span>
+                                <span className="text-action-cta font-bold text-base">0{i + 1}</span>
                                 <Muted className="text-xs text-muted-foreground leading-relaxed font-medium">{text}</Muted>
                             </div>
                         ))}

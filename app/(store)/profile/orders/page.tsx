@@ -69,7 +69,7 @@ export default async function OrdersProfilePage({ searchParams }: PageOrdersProp
                                     <span className="block text-[10px] uppercase tracking-widest text-muted-foreground font-black">
                                         Número de Pedido
                                     </span>
-                                    <span className="text-xs font-mono font-bold text-foreground select-all">
+                                    <span className="text-xs font-bold text-foreground select-all">
                                         {o.orderNumber}
                                     </span>
                                 </div>

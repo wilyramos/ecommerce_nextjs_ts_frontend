@@ -9,9 +9,7 @@ export default async function ProductosRelated({ slug }: { slug: string }) {
     // console.log(productsRelate);
     if (!productsRelated || productsRelated.length === 0) {
         return (
-            <p className="text-gray-200 text-center text-sm mt-6">
-                No hay productos relacionados
-            </p>
+            null
         );
     }
 
@@ -21,7 +19,7 @@ export default async function ProductosRelated({ slug }: { slug: string }) {
                 Tambien te puede interesar
             </h2>
             <div>
-                <div className="border-b border-2 border-black w-14 md:w-20 mb-4"></div>
+                <div className="border-b border-2 border-action-cta w-14 md:w-20 mb-4"></div>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 text-start">
                 {productsRelated.map((product) => (

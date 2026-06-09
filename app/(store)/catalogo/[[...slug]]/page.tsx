@@ -25,7 +25,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
     const { categoryName, brandName, lineName, searchQuery } = data.context;
 
     // 1. Construcción Inteligente del Título
-    let title = "Catálogo de Tecnología";
+    let title = "Catálogo de Productos";
 
     if (searchQuery) {
         title = `Resultados para "${searchQuery}"`;
