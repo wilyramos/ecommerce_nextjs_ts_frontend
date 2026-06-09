@@ -1,5 +1,3 @@
-// File: frontend/components/collections/CollectionSidebar.tsx
-
 "use client";
 
 import { useMemo } from "react";
@@ -38,19 +36,21 @@ export default function CollectionSidebar({ filters }: Props) {
         lines: [...filters.lines].sort((a, b) => a.nombre.localeCompare(b.nombre)),
         atributos: [...filters.atributos]
             .sort((a, b) => a.name.localeCompare(b.name))
-            .map(attr => ({
+            .map((attr) => ({
                 ...attr,
-                values: [...attr.values].sort((a, b) => a.localeCompare(b)),
+                values: [...attr.values].sort((a, b) => {
+                    const va = typeof a === 'string' ? a : a.value;
+                    const vb = typeof b === 'string' ? b : b.value;
+                    return va.localeCompare(vb);
+                }),
             })),
     }), [filters]);
 
     const triggerClass =
-        "text-[11px] font-bold uppercase tracking-[0.08em] text-muted-foreground " +
-        "hover:no-underline py-3 px-0 border-b border-border hover:text-foreground transition-colors";
+        "text-[11px] font-bold uppercase tracking-[0.08em] text-muted-foreground hover:no-underline py-3 px-0 border-b border-border hover:text-foreground transition-colors";
 
     const row =
-        "flex items-center gap-2.5 px-2 py-2 rounded-sm cursor-pointer " +
-        "transition-colors hover:bg-background-secondary hover:text-foreground";
+        "flex items-center gap-2.5 px-2 py-2 rounded-sm cursor-pointer transition-colors hover:bg-background-secondary hover:text-foreground";
 
     const checkboxClass =
         "w-3.5 h-3.5 rounded-sm border-border " +
@@ -62,9 +62,7 @@ export default function CollectionSidebar({ filters }: Props) {
 
     return (
         <div className="w-full pb-20 select-none bg-background text-foreground">
-
             <ActiveFiltersCollection />
-
 
             <Accordion
                 type="multiple"
@@ -84,13 +82,18 @@ export default function CollectionSidebar({ filters }: Props) {
                                             <button
                                                 onClick={() => setCategory(cat.slug)}
                                                 className={cn(
-                                                    "w-full text-left px-2 py-2 text-[13px] rounded-sm transition-colors duration-150 outline-none font-medium",
+                                                    "w-full text-left flex items-center justify-between px-2 py-2 text-[13px] rounded-sm transition-colors duration-150 outline-none font-medium",
                                                     active
                                                         ? "bg-background-secondary text-action-cta font-bold"
                                                         : "text-muted-foreground hover:bg-background-secondary/60 hover:text-foreground"
                                                 )}
                                             >
-                                                {cat.nombre}
+                                                <span>{cat.nombre}</span>
+                                                {cat.count !== undefined && (
+                                                    <span className="text-[11px] font-normal tabular-nums text-muted-foreground/70">
+                                                        {cat.count}
+                                                    </span>
+                                                )}
                                             </button>
                                         </li>
                                     );
@@ -115,12 +118,14 @@ export default function CollectionSidebar({ filters }: Props) {
                                             className={cn(row, active && "bg-background-secondary text-foreground font-semibold")}
                                         >
                                             <Checkbox checked={active} className={checkboxClass} />
-                                            <span className={cn(
-                                                "text-[13px] font-medium transition-colors duration-150",
-                                                active ? "text-foreground" : "text-muted-foreground"
-                                            )}>
+                                            <span className={cn("text-[13px] font-medium transition-colors duration-150 flex-1", active ? "text-foreground" : "text-muted-foreground")}>
                                                 {brand.nombre}
                                             </span>
+                                            {brand.count !== undefined && (
+                                                <span className="text-[11px] tabular-nums text-muted-foreground/70 ml-auto">
+                                                    {brand.count}
+                                                </span>
+                                            )}
                                         </div>
                                     );
                                 })}
@@ -144,12 +149,14 @@ export default function CollectionSidebar({ filters }: Props) {
                                             className={cn(row, active && "bg-background-secondary text-foreground font-semibold")}
                                         >
                                             <Checkbox checked={active} className={checkboxClass} />
-                                            <span className={cn(
-                                                "text-[13px] font-medium transition-colors duration-150",
-                                                active ? "text-foreground" : "text-muted-foreground"
-                                            )}>
+                                            <span className={cn("text-[13px] font-medium transition-colors duration-150 flex-1", active ? "text-foreground" : "text-muted-foreground")}>
                                                 {line.nombre}
                                             </span>
+                                            {line.count !== undefined && (
+                                                <span className="text-[11px] tabular-nums text-muted-foreground/70 ml-auto">
+                                                    {line.count}
+                                                </span>
+                                            )}
                                         </div>
                                     );
                                 })}
@@ -167,23 +174,28 @@ export default function CollectionSidebar({ filters }: Props) {
                             <AccordionContent className="pt-2 pb-0">
                                 <div className="space-y-0.5 max-h-[220px] overflow-y-auto pr-1 scrollbar-none">
                                     {attr.values.map((val) => {
-                                        const checked = searchParams.getAll(attr.name).includes(val);
+                                        const strVal = typeof val === 'string' ? val : val.value;
+                                        const count = typeof val === 'string' ? undefined : val.count;
+                                        const isChecked = searchParams.getAll(attr.name).includes(strVal);
+
                                         return (
                                             <div
-                                                key={val}
-                                                onClick={() => updateFilter(attr.name, val)}
-                                                className={cn(row, checked && "bg-background-secondary text-foreground font-semibold")}
+                                                key={strVal}
+                                                onClick={() => updateFilter(attr.name, strVal)}
+                                                className={cn(row, isChecked && "bg-background-secondary text-foreground font-semibold")}
                                             >
-                                                <Checkbox checked={checked} className={checkboxClass} />
-                                                <div className="flex items-center gap-2">
-                                                    {isColorAttr && <ColorCircle color={val} size={12} />}
-                                                    <span className={cn(
-                                                        "text-[13px] font-medium capitalize transition-colors duration-150",
-                                                        checked ? "text-foreground" : "text-muted-foreground"
-                                                    )}>
-                                                        {val}
+                                                <Checkbox checked={isChecked} className={checkboxClass} />
+                                                <div className="flex items-center gap-2 flex-1">
+                                                    {isColorAttr && <ColorCircle color={strVal} size={12} />}
+                                                    <span className={cn("text-[13px] font-medium capitalize transition-colors duration-150", isChecked ? "text-foreground" : "text-muted-foreground")}>
+                                                        {strVal}
                                                     </span>
                                                 </div>
+                                                {count !== undefined && (
+                                                    <span className="text-[11px] tabular-nums text-muted-foreground/70 ml-auto">
+                                                        {count}
+                                                    </span>
+                                                )}
                                             </div>
                                         );
                                     })}
