@@ -100,10 +100,8 @@ export default function ClientCategoriasDesktop({
                 {/* Categorías Root sin subcategorías primero */}
                 {rootNoSub.map((cat) => (
                     <NavigationMenuItem key={cat._id}>
-                        <Link href={routes.catalog({ category: cat.slug })} legacyBehavior passHref>
-                            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                                {cat.nombre}
-                            </NavigationMenuLink>
+                        <Link href={routes.catalog({ category: cat.slug })} className={navigationMenuTriggerStyle()}>
+                            {cat.nombre}
                         </Link>
                     </NavigationMenuItem>
                 ))}

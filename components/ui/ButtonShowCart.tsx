@@ -10,13 +10,12 @@ import {
     SheetTrigger
 } from "@/components/ui/sheet";
 
-import { ShoppingCart, ArrowRight, ShoppingBag } from "lucide-react";
+import { ShoppingCart, ArrowRight } from "lucide-react";
 import { useCartStore } from "@/src/store/cartStore";
 import ItemCarrito from "../cart/ItemCarrito";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from '@/components/ui/button';
-import { Muted } from "@/components/ui/Typography";
 
 export default function ButtonShowCart() {
     const carrito = useCartStore((state) => state.cart);
@@ -74,16 +73,12 @@ export default function ButtonShowCart() {
                 <div className="flex-1 overflow-y-auto overflow-x-hidden px-6 py-2 scrollbar-thin scrollbar-thumb-border bg-card">
                     {carrito.length === 0 ? (
                         <div className="h-full flex flex-col items-center justify-center space-y-4">
-                            <div className="p-6 rounded-full bg-background-secondary text-muted-foreground border border-border">
-                                <ShoppingBag size={40} strokeWidth={1.5} />
-                            </div>
+                           
                             <div className="text-center space-y-1">
                                 <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">
-                                    Tu bolsa está vacía
+                                    Tu carrito está vacío
                                 </h3>
-                                <Muted className="max-w-[200px] mx-auto font-semibold">
-                                    Explora la tienda y añade los mejores productos a tu setup.
-                                </Muted>
+                             
                             </div>
                         </div>
                     ) : (

@@ -60,7 +60,7 @@ export default function TopBarAd({ ads }: TopBarAdProps) {
                             {/* Ícono contextual */}
                             <Icon size={12} className="shrink-0 opacity-80" strokeWidth={2.5} />
 
-                            <span className="uppercase tracking-widest text-[10px] font-black">
+                            <span className="uppercase tracking-widest text-[10px] font-semibold">
                                 {ad.title}
                             </span>
 

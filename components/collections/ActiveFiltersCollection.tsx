@@ -20,8 +20,8 @@ export default function ActiveFiltersCollection() {
 
     return (
         <div className="mb-6 select-none">
-            <div className="flex items-center justify-between mb-3">
-                <span className="text-[11px] uppercase tracking-[0.08em] font-bold text-muted-foreground">
+            <div className="flex items-center justify-between py-4">
+                <span className="text-[11px] uppercase tracking-[0.08em] font-bold text-muted-foreground ">
                     Filtros activos
                 </span>
                 <button
@@ -88,7 +88,7 @@ function Chip({ label, onRemove }: { label: string; onRemove: () => void }) {
     return (
         <button
             onClick={onRemove}
-            className="group inline-flex items-center gap-2 pl-3 pr-2 py-1.5 text-[12px] font-medium text-foreground bg-background-secondary border border-border rounded-sm hover:border-muted-foreground hover:bg-background transition-colors duration-150 outline-none"
+            className="group inline-flex items-center gap-2 pl-3 pr-2 py-1.5 text-[12px] font-medium text-foreground bg-background-secondary border border-border hover:border-muted-foreground hover:bg-background transition-colors duration-150 outline-none"
         >
             <span className="capitalize truncate max-w-[160px] leading-none">
                 {label}

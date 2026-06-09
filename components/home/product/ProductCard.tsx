@@ -254,7 +254,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                                 )}
 
                                 <span className="text-base md:text-lg font-semibold text-foreground leading-none">
-                                    S/ {precio.toFixed(2)}
+                                    <span className="text-[13px] md:text-base text-muted-foreground font-light">s/</span> {precio.toFixed(2)}
                                 </span>
                             </div>
 

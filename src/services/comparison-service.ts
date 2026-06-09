@@ -30,14 +30,20 @@ export class ComparisonService {
     /**
      * Recupera una comparativa específica mediante su slug.
      */
-    static async getBySlug(slug: string, isPublic: boolean = true): Promise<{ status: string; data: Comparison }> {
+
+    static async getBySlug(slug: string, isPublic: boolean = true): Promise<{ status: string; data: Comparison | null }> {
         const res = await fetch(`${API_URL}/comparisons/slug/${slug}?isPublic=${isPublic}`, {
             method: "GET",
             headers: { "Content-Type": "application/json" },
             next: { tags: [`comparison-${slug}`], revalidate: 3600 }
         });
 
-        if (!res.ok) throw new Error("Comparativa no encontrada");
+        // 1. Si no es OK, evaluamos si es 404
+        if (res.status === 404) return { status: "not_found", data: null };
+
+        // 2. Si es otro error, ahí sí lanzamos excepción
+        if (!res.ok) throw new Error("Error al obtener la comparativa");
+
         return await res.json();
     }
 
@@ -48,7 +54,7 @@ export class ComparisonService {
         const session = await verifySession();
         const res = await fetch(`${API_URL}/comparisons/${id}`, {
             method: "GET",
-            headers: { 
+            headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${session.token}`
             },

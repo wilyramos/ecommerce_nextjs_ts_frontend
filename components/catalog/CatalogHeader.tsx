@@ -29,9 +29,8 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
 
     return (
         <div className="w-full flex flex-col gap-8 pt-2 pb-4 border-b border-border">
-
             {/* Breadcrumbs */}
-            <nav aria-label="Breadcrumb" className="px-1">
+            <nav aria-label="Breadcrumb">
                 <ol className="flex items-center flex-wrap gap-x-1.5 text-sm text-muted-foreground">
                     {breadcrumbs.map((crumb, index) => {
                         const isLast = index === breadcrumbs.length - 1;
@@ -63,7 +62,7 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
             </nav>
 
             {/* Header */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 px-1">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div className="space-y-1.5">
                     <div className="flex items-baseline gap-4">
                         <h1 className="text-xl md:text-2xl font-semibold tracking-tighter text-foreground uppercase">

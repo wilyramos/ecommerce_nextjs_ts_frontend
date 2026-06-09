@@ -1,8 +1,5 @@
-//File: frontend/app/admin/layout.tsx
-
 import { verifySession } from '@/src/auth/dal';
-import AdminSidebar from "@/components/admin/AdminSidebar";
-import MobileSidebar from '@/components/admin/MobileSidebar';
+import { AdminSidebar, MobileSidebar } from "@/components/admin/AdminSidebar";
 import ToastNotification from "@/components/ui/ToastNotification";
 import { redirect } from 'next/navigation';
 import Logo from '@/components/ui/Logo';
@@ -13,29 +10,25 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
     return (
         <>
-            {/* MOBILE TOPBAR FIXED */}
-            <div className="md:hidden fixed top-0 inset-x-0 z-40 h-12 px-2 border-b flex items-center justify-between">
-                <div className="flex items-center">
-                    <MobileSidebar user={user} />
-                </div>
-
+            {/* MOBILE TOPBAR */}
+            <div className="md:hidden fixed top-0 inset-x-0 z-40 h-12 border-b bg-background flex items-center px-3 gap-3">
+                <MobileSidebar user={user} />
                 <div className="flex-1 flex justify-center">
                     <Logo />
                 </div>
-
-                <div className="w-6" />
+                <div className="w-9" /> {/* balance */}
             </div>
 
             {/* DESKTOP LAYOUT */}
-            <div className="hidden md:grid grid-cols-[auto_1fr] ">
-                <div className="border-r h-screen sticky top-0">
+            <div className="hidden md:flex h-screen overflow-hidden">
+                <div className="border-r shrink-0">
                     <AdminSidebar user={user} />
                 </div>
-                <main className="overflow-y-auto ">{children}</main>
+                <main className="flex-1 overflow-y-auto">{children}</main>
             </div>
 
-            {/* MOBILE CONTENT (OFFSET POR TOPBAR) */}
-            <div className="md:hidden pt-14 p-2">
+            {/* MOBILE CONTENT */}
+            <div className="md:hidden pt-12">
                 {children}
             </div>
 

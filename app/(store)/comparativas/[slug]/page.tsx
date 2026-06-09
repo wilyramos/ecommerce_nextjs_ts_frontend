@@ -11,6 +11,7 @@ import ComparisonCharts from "@/components/store/comparisons/ComparisonCharts";
 import QuickVerdict from "@/components/store/comparisons/QuickVerdict";
 import EditorialAnalysis from "@/components/store/comparisons/EditorialAnalysis";
 import FaqSection from "@/components/store/comparisons/FaqSection";
+import { notFound } from "next/navigation";
 
 // ─────────────────────────────────────────────────────────────
 // METADATA
@@ -22,9 +23,15 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params;
-    
+
     try {
         const res = await ComparisonService.getBySlug(slug, true);
+
+        // Si no hay datos, en lugar de notFound(), retornamos un objeto vacío.
+        // Esto evita el error de "HTTP_ERROR_FALLBACK" en el proceso de metadata.
+        if (!res?.data) {
+            return { title: "Comparativa no encontrada" };
+        }
         const comparison = res.data as Comparison;
 
         if (!comparison) return {};
@@ -32,9 +39,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         // Usa metaTitle cargado por el admin, o cae de vuelta al título principal
         const title = comparison.metaTitle || comparison.title;
         // Usa metaDescription cargada por el admin, o cae de vuelta a la introducción truncada
-        const description = comparison.metaDescription || 
-            (comparison.introduccion.length > 155 
-                ? `${comparison.introduccion.substring(0, 152)}...` 
+        const description = comparison.metaDescription ||
+            (comparison.introduccion.length > 155
+                ? `${comparison.introduccion.substring(0, 152)}...`
                 : comparison.introduccion);
 
         return {
@@ -74,7 +81,14 @@ function getProductNames(products: Comparison["products"]): string {
 
 export default async function ComparisonDetailPage({ params }: Props) {
     const { slug } = await params;
+
+    // Es recomendable envolverlo en try/catch o validar la respuesta
     const res = await ComparisonService.getBySlug(slug, true);
+
+    // AGREGAR ESTO: Si no hay data, disparar notFound()
+    if (!res?.data) {
+        notFound();
+    }
     const comparison = res.data as Comparison;
 
     const breadcrumbItems = [{ label: "Comparativas", href: "/comparativas" }];

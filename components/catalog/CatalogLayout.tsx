@@ -67,7 +67,7 @@ export default function CatalogLayout({
     }
 
     return (
-        <section className="container mx-auto px-4 md:px-8 max-w-screen-2xl text-foreground">
+        <section className="container mx-auto px-4 md:px-6 max-w-screen-2xl text-foreground">
 
             <div className="py-2 md:py-4">
                 <CatalogHeader

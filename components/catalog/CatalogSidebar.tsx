@@ -125,10 +125,10 @@ export default function CatalogSidebar({ filters }: Props) {
         "text-[11px] font-bold uppercase tracking-[0.08em] text-muted-foreground hover:no-underline py-3 px-0 border-b border-border hover:text-foreground transition-colors";
 
     const row =
-        "flex items-center gap-2.5 px-2 py-2 rounded-sm cursor-pointer transition-colors hover:bg-background-secondary hover:text-foreground";
+        "flex items-center gap-2.5 px-2 py-2  cursor-pointer transition-colors hover:bg-background-secondary hover:text-foreground";
 
     const checkboxClass =
-        "w-3.5 h-3.5 rounded-sm border-border " +
+        "w-3.5 h-3.5  border-border " +
         "data-[state=checked]:bg-action-cta " +
         "data-[state=checked]:border-action-cta " +
         "data-[state=checked]:text-primary-foreground " +
@@ -162,7 +162,7 @@ export default function CatalogSidebar({ filters }: Props) {
                                             <button
                                                 onClick={() => setCategory(cat.slug)}
                                                 className={cn(
-                                                    "w-full text-left flex items-center justify-between px-2 py-2 text-[13px] rounded-sm transition-colors duration-150 outline-none font-medium",
+                                                    "w-full text-left flex items-center justify-between px-2 py-2 text-[13px]  transition-colors duration-150 outline-none font-medium",
                                                     active
                                                         ? "bg-background-secondary text-action-cta font-bold"
                                                         : "text-muted-foreground hover:bg-background-secondary/60 hover:text-foreground"
