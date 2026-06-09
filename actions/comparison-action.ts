@@ -1,4 +1,4 @@
-// frontend/actions/comparison-action.ts
+// File: frontend/actions/comparison-action.ts
 "use server";
 
 import { ComparisonService } from "@/src/services/comparison-service";
@@ -13,14 +13,15 @@ export interface ActionResponse {
 }
 
 /**
- * Helper esencial para reconstruir la estructura anidada del FormData 
- * (Convierte claves planas como "especificaciones[0][key]" en objetos y arrays reales)
+ * Helper para reconstruir la estructura anidada de FormData de forma segura.
+ * Controla explícitamente cuándo convertir a Number para no romper la validación Zod de los strings.
  */
 function parseNestedFormData(formData: FormData): Record<string, unknown> {
     const root: Record<string, any> = {};
 
     for (const [flatKey, value] of formData.entries()) {
-        if (flatKey.startsWith("$")) continue; // Ignorar claves internas de Next.js
+        // Ignorar claves internas inyectadas por Next.js / React
+        if (flatKey.startsWith("$")) continue;
 
         const pathParts = flatKey.match(/[^\[\]]+/g);
         if (!pathParts) continue;
@@ -33,9 +34,21 @@ function parseNestedFormData(formData: FormData): Record<string, unknown> {
 
             if (isLast) {
                 let finalValue: unknown = value;
-                if (value === "true") finalValue = true;
-                else if (value === "false") finalValue = false;
-                else if (typeof value === "string") finalValue = value.trim();
+                
+                if (value === "true") {
+                    finalValue = true;
+                } else if (value === "false") {
+                    finalValue = false;
+                } else if (typeof value === "string") {
+                    const trimmed = value.trim();
+                    // FIX CRÍTICO: Solo convertimos a número explícitamente si el campo se llama 'score'
+                    // Esto evita que valores técnicos como "120" fallen al esperar un string.
+                    if (part === "score" && trimmed !== "" && !isNaN(Number(trimmed))) {
+                        finalValue = Number(trimmed);
+                    } else {
+                        finalValue = trimmed;
+                    }
+                }
 
                 current[part] = finalValue;
             } else {
@@ -58,16 +71,13 @@ export async function createComparisonAction(
     _prevState: ActionResponse,
     formData: unknown
 ): Promise<ActionResponse> {
-    // Soporta tanto recibir FormData directo del Form como un objeto plano parsed
     const rawFields = formData instanceof FormData ? parseNestedFormData(formData) : formData;
-
-    // Validar con Zod aplicando los superRefine de integridad
     const validatedFields = ComparisonSchema.safeParse(rawFields);
     
     if (!validatedFields.success) {
         return {
             success: false,
-            message: "Error de validación en los datos provistos.",
+            message: "Por favor, revisa los campos en rojo. Hay errores de validación.",
             errors: validatedFields.error.flatten().fieldErrors,
             fields: rawFields as Partial<ComparisonFormValues>
         };
@@ -81,12 +91,12 @@ export async function createComparisonAction(
 
         return { 
             success: true, 
-            message: "Comparativa creada de forma exitosa." 
+            message: "Comparativa creada y publicada de forma exitosa." 
         };
     } catch (error: unknown) {
         return {
             success: false,
-            message: error instanceof Error ? error.message : "Ocurrió un error inesperado al procesar la solicitud.",
+            message: error instanceof Error ? error.message : "Ocurrió un error inesperado al procesar la solicitud con el servidor.",
             fields: rawFields as Partial<ComparisonFormValues>,
         };
     }
@@ -99,13 +109,12 @@ export async function updateComparisonAction(
     formData: unknown
 ): Promise<ActionResponse> {
     const rawFields = formData instanceof FormData ? parseNestedFormData(formData) : formData;
-
     const validatedFields = ComparisonSchema.safeParse(rawFields);
     
     if (!validatedFields.success) {
         return {
             success: false,
-            message: "Error de validación en los datos de actualización.",
+            message: "Existen errores de validación en los datos ingresados.",
             errors: validatedFields.error.flatten().fieldErrors,
             fields: rawFields as Partial<ComparisonFormValues>,
         };
@@ -115,7 +124,6 @@ export async function updateComparisonAction(
         const result = await ComparisonService.update(id, validatedFields.data);
         const newSlug = result.data?.slug || slug;
 
-        // Revalidación de caché bajo demanda de Next.js 15
         revalidateTag("comparisons");
         revalidateTag(`comparison-${slug}`);
         revalidatePath("/comparativas");
@@ -128,12 +136,12 @@ export async function updateComparisonAction(
 
         return { 
             success: true, 
-            message: "Comparativa modificada correctamente." 
+            message: "Comparativa actualizada y sincronizada correctamente." 
         };
     } catch (error: unknown) {
         return {
             success: false,
-            message: error instanceof Error ? error.message : "Error al intentar actualizar el registro.",
+            message: error instanceof Error ? error.message : "Fallo al intentar actualizar el registro en la base de datos.",
             fields: rawFields as Partial<ComparisonFormValues>,
         };
     }
@@ -153,12 +161,12 @@ export async function deleteComparisonAction(
 
         return { 
             success: true, 
-            message: "La comparativa ha sido eliminada del catálogo." 
+            message: "La comparativa ha sido dada de baja del catálogo." 
         };
     } catch (error: unknown) {
         return {
             success: false,
-            message: error instanceof Error ? error.message : "Fallo crítico al eliminar la comparativa."
+            message: error instanceof Error ? error.message : "Fallo crítico al intentar eliminar la comparativa."
         };
     }
 }

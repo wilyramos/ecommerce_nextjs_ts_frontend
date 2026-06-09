@@ -21,7 +21,7 @@ interface CreateProductFormProps {
     lines: ProductLine[];
     initialData?: ProductWithCategoryResponse;
     allCollections: Collection[];
-    
+
 }
 
 export default function CreateProductForm({ categorias, brands, lines, initialData, allCollections }: CreateProductFormProps) {
@@ -61,8 +61,18 @@ export default function CreateProductForm({ categorias, brands, lines, initialDa
                 lines={lines}
                 allCollections={allCollections}
             />
-            <Button type="submit">Crear producto</Button>
-            
+
+            <div className="flex justify-end py-4 border-t border-border sticky bottom-0 z-10 px-4 bg-background">
+
+                <Button
+                    type="submit"
+                    className="px-8 font-semibold"
+                >
+                    Crear producto
+                </Button>
+
+            </div>
+
         </form>
     );
 }

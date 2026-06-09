@@ -390,7 +390,7 @@ export function AdminSidebar({ user }: { user: User }) {
         <TooltipProvider>
             <aside
                 className={cn(
-                    "hidden md:flex relative h-screen flex-col text-foreground transition-all duration-300 select-none",
+                    "hidden md:flex relative h-screen flex-col text-foreground transition-all duration-300 select-none border-r border-border bg-background",
                     expanded ? "w-60" : "w-[60px]"
                 )}
             >

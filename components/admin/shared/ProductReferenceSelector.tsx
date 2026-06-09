@@ -1,5 +1,4 @@
-//File: frontend/components/admin/shared/ProductReferenceSelector.tsx
-
+// File: frontend/components/admin/shared/ProductReferenceSelector.tsx
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
@@ -37,6 +36,7 @@ interface Props {
     initialId?: string;
     label?: string;
     onSelect?: (id: string) => void;
+    onProductData?: (product: Product | null) => void;
 }
 
 export default function ProductReferenceSelector({
@@ -45,6 +45,7 @@ export default function ProductReferenceSelector({
     initialId,
     label = "Producto Vinculado",
     onSelect,
+    onProductData,
 }: Props) {
     const [open, setOpen] = useState(false);
     const [search, setSearch] = useState("");
@@ -73,6 +74,7 @@ export default function ProductReferenceSelector({
 
                 if (data?.length) {
                     setSelected(data[0]);
+                    if (onProductData) onProductData(data[0]);
                 }
             } catch (error) {
                 console.error(error);
@@ -80,7 +82,7 @@ export default function ProductReferenceSelector({
         };
 
         hydrate();
-    }, [initialId, selected]);
+    }, [initialId, selected, onProductData]);
 
     const handleSearch = useCallback(async (query: string) => {
         if (query.trim().length < 2) {
@@ -142,6 +144,7 @@ export default function ProductReferenceSelector({
                         onClick={() => {
                             setSelected(null);
                             if (onSelect) onSelect("");
+                            if (onProductData) onProductData(null);
                         }}
                         className="p-1 hover:opacity-70"
                     >
@@ -192,8 +195,7 @@ export default function ProductReferenceSelector({
                             </div>
                         ) : results.length ? (
                             results.map((product) => {
-                                const active =
-                                    selected?._id === product._id;
+                                const active = selected?._id === product._id;
 
                                 return (
                                     <button
@@ -203,20 +205,16 @@ export default function ProductReferenceSelector({
                                             setSelected(product);
                                             setOpen(false);
                                             if (onSelect) onSelect(product._id);
+                                            if (onProductData) onProductData(product);
                                         }}
                                         className={cn(
                                             "w-full flex items-center gap-4 p-2 border-b text-left transition-colors",
-                                            active
-                                                ? "bg-muted"
-                                                : "hover:bg-muted/50"
+                                            active ? "bg-muted" : "hover:bg-muted/50"
                                         )}
                                     >
                                         <div className="relative w-12 h-12 border bg-white shrink-0">
                                             <Image
-                                                src={
-                                                    product.imagenes?.[0] ||
-                                                    "/placeholder.png"
-                                                }
+                                                src={product.imagenes?.[0] || "/placeholder.png"}
                                                 alt={product.nombre}
                                                 fill
                                                 className="object-contain p-1"
@@ -230,8 +228,7 @@ export default function ProductReferenceSelector({
                                             </p>
 
                                             <p className="text-xs text-muted-foreground">
-                                                S/{" "}
-                                                {product.precio.toFixed(2)}
+                                                S/ {product.precio.toFixed(2)}
                                             </p>
                                         </div>
 
@@ -243,9 +240,7 @@ export default function ProductReferenceSelector({
                             })
                         ) : (
                             <div className="h-full flex items-center justify-center text-sm text-muted-foreground">
-                                {search.length >= 2
-                                    ? "Sin resultados"
-                                    : "Escribe para buscar"}
+                                {search.length >= 2 ? "Sin resultados" : "Escribe para buscar"}
                             </div>
                         )}
                     </div>

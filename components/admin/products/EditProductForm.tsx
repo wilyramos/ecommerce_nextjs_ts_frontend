@@ -74,8 +74,10 @@ export default function EditProductForm({ product, categorias, brands, lines, al
                 lines={lines} // Pasamos las líneas al formulario genérico
                 allCollections={allCollections} // Pasamos todas las colecciones al formulario genérico
             />
-            <div className="p-4">
-                <Button type="submit">Actualizar Producto</Button>
+            <div className="flex justify-end py-4 border-t border-border sticky bottom-0 z-10 px-4 bg-background">
+                <Button type="submit">
+                    {state.success ? "Actualizado" : "Actualizar producto"}
+                </Button>
             </div>
         </form>
     );

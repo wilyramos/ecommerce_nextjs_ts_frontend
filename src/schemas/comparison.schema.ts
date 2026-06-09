@@ -1,4 +1,4 @@
-//File: frontend/src/schemas/comparison.schema.ts
+// File: frontend/src/schemas/comparison.schema.ts
 
 import { z } from "zod";
 
@@ -24,24 +24,33 @@ export const ComparisonSpecSchema = z.object({
     key: z.string().trim().min(1, "La característica técnica es requerida (Ej: Pantalla)"),
     values: z.array(z.string().trim().min(1, "El valor técnico no puede estar vacío")),
     category: z.string().trim().default("General"),
-    explanation: optionalString,
     isKeyDifference: z.boolean().default(false),
+});
+
+// Puntuaciones para generar gráficos de Radar / Barras en Frontend
+export const ProductScoreSchema = z.object({
+    criterion: z.string().trim().min(1, "El nombre del criterio es requerido (Ej: Rendimiento)"),
+    score: z.number().min(0, "La puntuación mínima es 0").max(100, "La puntuación máxima es 100"),
 });
 
 export const ProductEditorialSchema = z.object({
     product: idOrPopulatedId.nullable().optional().or(z.literal("")),
-    resumenIdoneidad: z.string()
-        .trim()
-        .min(10, "El resumen de idoneidad debe tener al menos 50 caracteres")
-        .max(300, "El resumen de idoneidad no debe superar los 300 caracteres"),
-    pros: z.array(z.string().trim().min(10, "Cada punto a favor debe tener al menos 10 caracteres")),
-    contras: z.array(z.string().trim().min(10, "Cada contra debe tener al menos 10 caracteres")),
+    winnerBadge: optionalString, 
+    pros: z.array(z.string().trim().min(5, "Cada punto a favor debe tener al menos 5 caracteres")),
+    contras: z.array(z.string().trim().min(5, "Cada contra debe tener al menos 5 caracteres")),
+    scores: z.array(ProductScoreSchema).default([]), 
 });
 
 export const ComparisonFAQSchema = z.object({
     pregunta: z.string().trim().min(1, "La pregunta es requerida"),
     respuesta: z.string().trim().min(1, "La respuesta es requerida"),
-    keywords: z.array(z.string().trim()).default([]),
+});
+
+// Captación de Leads / Configuración de CTA
+export const ComparisonCTASchema = z.object({
+    buttonText: z.string().trim().default("Solicitar Cotización Inmediata"),
+    targetUrl: optionalString,
+    leadFormActive: z.boolean().default(true),
 });
 
 // ─────────────────────────────────────────────────────────────
@@ -51,21 +60,18 @@ export const ComparisonFAQSchema = z.object({
 export const BaseComparisonSchema = z.object({
     title: z.string()
         .trim()
-        .min(20, "El título principal debe tener al menos 20 caracteres")
+        .min(10, "El título principal debe tener al menos 10 caracteres")
         .max(100, "El título principal no debe superar los 100 caracteres"),
     slug: optionalString,
     metaTitle: z.string().trim().max(60, "El Meta Title SEO no debe superar los 60 caracteres").optional(),
     metaDescription: z.string().trim().max(160, "La Meta Description SEO no debe superar los 160 caracteres").optional(),
 
     products: z.array(idOrPopulatedId),
-
-    introduccion: z.string().trim().min(150, "La introducción editorial debe tener al menos 150 caracteres para SEO"),
-    veredictoRapido: optionalString,
-    conclusion: z.string().trim().min(150, "La conclusión final debe tener al menos 150 caracteres para SEO"),
+    veredictoRapido: z.string().trim().min(20, "El veredicto rápido debe tener al menos 20 caracteres"),
 
     especificaciones: z.array(ComparisonSpecSchema).default([]),
     analisisEditorial: z.array(ProductEditorialSchema).default([]),
-    palabrasClaveSecundarias: z.array(z.string().trim()).default([]),
+    ctaConfig: ComparisonCTASchema.default({ buttonText: "Solicitar Cotización Inmediata", leadFormActive: true }),
     faqItems: z.array(ComparisonFAQSchema).default([]),
 
     isActive: z.boolean().default(true),
@@ -108,7 +114,7 @@ export const ComparisonSchema = BaseComparisonSchema.superRefine((data, ctx) => 
         }
     });
 
-    // 4. Alineación exacta del Análisis Editorial con los Productos
+    // 4. Alineación exacta del Análisis Editorial y métricas de Gráficos con los Productos
     if (data.analisisEditorial.length > 0) {
         const editorialIds = data.analisisEditorial.map((e) => e.product);
 
@@ -137,6 +143,20 @@ export const ComparisonSchema = BaseComparisonSchema.superRefine((data, ctx) => 
                     path: ["analisisEditorial", index, "product"],
                 });
             }
+
+            // Verificar que todos los productos evaluados compartan los mismos criterios en sus gráficos
+            if (index > 0 && data.analisisEditorial[0]) {
+                const primerProductCriteria = data.analisisEditorial[0].scores.map(s => s.criterion).sort();
+                const currentProductCriteria = edit.scores.map(s => s.criterion).sort();
+
+                if (JSON.stringify(primerProductCriteria) !== JSON.stringify(currentProductCriteria)) {
+                    ctx.addIssue({
+                        code: z.ZodIssueCode.custom,
+                        message: "Todos los productos dentro de la comparativa deben poseer exactamente los mismos criterios de evaluación para estructurar correctamente el gráfico.",
+                        path: ["analisisEditorial", index, "scores"],
+                    });
+                }
+            }
         });
     }
 });
@@ -150,18 +170,18 @@ export const PopulatedProductSchema = z.object({
     nombre: z.string(),
     imagenes: z.array(z.string()).optional(),
     precio: z.union([z.number(), z.string()]).optional(),
-}).passthrough(); // Permite propiedades adicionales del producto sin romper el esquema
+}).passthrough();
 
 export const ComparisonResponseSchema = BaseComparisonSchema.extend({
     _id: z.string(),
     slug: z.string(),
-    viewCount: z.number(),
-    avgTimeOnPage: z.number(),
+    viewCount: z.number().optional(),
     createdAt: z.string(),
     updatedAt: z.string(),
     deletedAt: z.string().nullable().optional(),
 
-    products: z.array(z.union([z.string(), PopulatedProductSchema])), analisisEditorial: z.array(
+    products: z.array(z.union([z.string(), PopulatedProductSchema])),
+    analisisEditorial: z.array(
         ProductEditorialSchema.extend({
             product: z.union([z.string(), z.record(z.any())]),
         })
@@ -176,7 +196,9 @@ export type ComparisonFormValues = z.infer<typeof ComparisonSchema>;
 export type Comparison = z.infer<typeof ComparisonResponseSchema>;
 
 export type ComparisonSpec = z.infer<typeof ComparisonSpecSchema>;
+export type ProductScore = z.infer<typeof ProductScoreSchema>;
 export type ProductEditorial = z.infer<typeof ProductEditorialSchema>;
 export type ComparisonFAQ = z.infer<typeof ComparisonFAQSchema>;
+export type ComparisonCTA = z.infer<typeof ComparisonCTASchema>;
 
 export type PopulatedProduct = z.infer<typeof PopulatedProductSchema>;

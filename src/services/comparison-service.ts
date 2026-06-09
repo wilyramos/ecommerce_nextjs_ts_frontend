@@ -1,4 +1,4 @@
-//File: frontend/src/services/comparison-service.ts
+// File: frontend/src/services/comparison-service.ts
 
 import { Comparison, ComparisonFormValues } from "../schemas/comparison.schema";
 import { verifySession } from "../auth/dal";
@@ -28,9 +28,8 @@ export class ComparisonService {
     }
 
     /**
-     * Recupera una comparativa específica mediante su slug.
+     * Recupera una comparativa específica mediante su slug con soporte para gráficos y CTA comerciales.
      */
-
     static async getBySlug(slug: string, isPublic: boolean = true): Promise<{ status: string; data: Comparison | null }> {
         const res = await fetch(`${API_URL}/comparisons/slug/${slug}?isPublic=${isPublic}`, {
             method: "GET",
@@ -38,10 +37,7 @@ export class ComparisonService {
             next: { tags: [`comparison-${slug}`], revalidate: 3600 }
         });
 
-        // 1. Si no es OK, evaluamos si es 404
         if (res.status === 404) return { status: "not_found", data: null };
-
-        // 2. Si es otro error, ahí sí lanzamos excepción
         if (!res.ok) throw new Error("Error al obtener la comparativa");
 
         return await res.json();
@@ -66,7 +62,7 @@ export class ComparisonService {
     }
 
     /**
-     * Obtiene comparativas vinculadas a un producto específico para enlazado interno SEO.
+     * Obtiene comparativas vinculadas a un producto específico para enlazado interno SEO e impacto comercial.
      */
     static async getRelatedToProduct(productId: string, limit?: number): Promise<{ status: string; data: Comparison[] }> {
         const params = limit ? `?limit=${limit}` : "";

@@ -32,7 +32,7 @@ export default function CreateComparisonForm() {
                 fieldErrors={state.errors}
                 generalError={!state.success && state.message ? state.message : undefined}
             />
-            <div className="flex justify-end py-4 bg-[var(--color-bg-secondary)] border-t sticky bottom-0 z-10 px-6 rounded-b-xl">
+            <div className="flex justify-end py-4 border-t sticky bottom-0 z-10 px-4 bg-background">
                 <Button type="submit" disabled={isPending} className="px-8 font-semibold">
                     {isPending ? "Guardando..." : "Crear Comparativa"}
                 </Button>

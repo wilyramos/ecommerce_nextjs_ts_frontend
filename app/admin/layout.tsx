@@ -21,7 +21,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
             {/* DESKTOP LAYOUT */}
             <div className="hidden md:flex h-screen overflow-hidden">
-                <div className="border-r shrink-0">
+                <div className="shrink-0">
                     <AdminSidebar user={user} />
                 </div>
                 <main className="flex-1 overflow-y-auto">{children}</main>
