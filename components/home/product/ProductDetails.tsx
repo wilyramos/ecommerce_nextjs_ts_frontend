@@ -169,8 +169,8 @@ export default function ProductDetails({ producto }: Props) {
                                 </div>
 
                                 {(selectedVariant?.sku || producto.sku) && (
-                                    <span className="text-[10px] font-mono font-semibold text-muted-foreground select-all">
-                                        SKU: {selectedVariant?.sku || producto.sku}
+                                    <span className="text-[10px] text-muted-foreground">
+                                        {selectedVariant?.sku || producto.sku}
                                     </span>
                                 )}
                             </div>

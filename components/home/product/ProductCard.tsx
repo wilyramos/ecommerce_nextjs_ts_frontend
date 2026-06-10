@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { MdOutlineImageNotSupported } from "react-icons/md";
 
 export default function ProductCard({ product }: { product: TApiProduct }) {
+
     const searchParams = useSearchParams();
     const [currentIndex, setCurrentIndex] = useState(0);
     const [previewImages, setPreviewImages] = useState<string[]>(product.imagenes ?? []);
@@ -121,6 +122,10 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
         ? ((product.precioComparativo - precio) / product.precioComparativo) * 100
         : 0;
 
+    const isNew = product.createdAt
+        ? (Date.now() - new Date(product.createdAt).getTime()) < 30 * 24 * 60 * 60 * 1000
+        : false; // Es nuevo si fue creado hace menos de 30 días
+
     return (
         <div
             className="group relative flex flex-col transform transition-transform duration-500 bg-background "
@@ -186,15 +191,20 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                                 -{Math.round(discountedPrice)}%
                             </span>
                         )}
+                        {isNew && (
+                            <span className="px-1 py-0.5 bg-foreground text-background text-[10px] font-bold uppercase tracking-wider">
+                                Nuevo
+                            </span>
+                        )}
                     </div>
                 </div>
 
                 {/* --- INFO --- */}
-                <div className="flex flex-col flex-1 p-2 md:p-4 bg-background">
+                <div className="flex flex-col flex-1 px-2 md:px-4 bg-background">
                     <div className="flex flex-col gap-0.5 h-[4.5rem] md:h-[5rem]">
 
                         <div className="h-5 shrink-0 flex justify-between items-center mb-1">
-                            <span className="text-[10px]  md:text-xs font-bold text-muted-foreground uppercase truncate max-w-[50%]">
+                            <span className="text-[10px]  md:text-xs font-semibold text-muted-foreground uppercase truncate max-w-[50%]">
                                 {product.brand?.nombre || ""}
                             </span>
 
@@ -243,17 +253,17 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                         <div className="absolute inset-0 bg-foreground opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none" />
                     </div>
 
-                    <div className="mt-auto w-full pt-3 border-t border-transparent group-hover:border-border transition-colors">
+                    <div className="mt-auto w-full ">
                         <div className="flex items-end justify-between gap-3">
                             {/* Precios */}
-                            <div className="flex flex-col min-w-0">
+                            <div className="flex flex-col">
                                 {(product.precioComparativo ?? 0) > 0 && (
-                                    <span className="text-xs text-muted-foreground line-through">
+                                    <span className="text-[10px] md:text-sm text-muted-foreground line-through">
                                         S/ {product.precioComparativo!.toFixed(2)}
                                     </span>
                                 )}
 
-                                <span className="text-base md:text-lg font-semibold text-foreground leading-none">
+                                <span className="text-base md:text-lg text-foreground leading-none">
                                     <span className="text-[13px] md:text-base text-muted-foreground font-light">s/</span> {precio.toFixed(2)}
                                 </span>
                             </div>
