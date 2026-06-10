@@ -1,5 +1,3 @@
-//File: frontend/components/home/product/ProductCard.tsx
-
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
@@ -122,10 +120,6 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
         ? ((product.precioComparativo - precio) / product.precioComparativo) * 100
         : 0;
 
-    const isNew = product.createdAt
-        ? (Date.now() - new Date(product.createdAt).getTime()) < 30 * 24 * 60 * 60 * 1000
-        : false; // Es nuevo si fue creado hace menos de 30 días
-
     return (
         <div
             className="group relative flex flex-col transform transition-transform duration-500 bg-background "
@@ -146,19 +140,27 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                                 className="flex w-full h-full transition-transform duration-500 ease-in-out"
                                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
                             >
-                                {previewImages.map((img, idx) => (
-                                    <div key={idx} className="min-w-full h-full relative">
-                                        <Image
-                                            src={img}
-                                            alt={`${product.nombre} - vista ${idx + 1}`}
-                                            fill
-                                            sizes="(max-width: 900px) 80w, 50vw"
-                                            className="object-contain mix-blend-multiply"
-                                            quality={80}
-                                            unoptimized
-                                        />
-                                    </div>
-                                ))}
+                                {previewImages.map((img, idx) => {
+                                    const isNear = Math.abs(idx - currentIndex) <= 1 ||
+                                        (currentIndex === 0 && idx === previewImages.length - 1) ||
+                                        (currentIndex === previewImages.length - 1 && idx === 0);
+
+                                    if (!isNear) return <div key={idx} className="min-w-full h-full" />;
+
+                                    return (
+                                        <div key={idx} className="min-w-full h-full relative">
+                                            <Image
+                                                src={img}
+                                                alt={`${product.nombre} - vista ${idx + 1}`}
+                                                fill
+                                                sizes="(max-width: 900px) 80w, 50vw"
+                                                className="object-contain mix-blend-multiply"
+                                                quality={80}
+                                                unoptimized
+                                            />
+                                        </div>
+                                    );
+                                })}
                             </div>
 
                             {/* Controles Desktop */}
@@ -170,10 +172,12 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                                     <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); nextImage(); }} className="absolute right-2 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm text-foreground p-1.5 rounded-full opacity-0 md:group-hover:opacity-100 transition shadow-sm hover:scale-110 z-10 border border-border">
                                         <ChevronRight size={16} />
                                     </button>
-                                    <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5 pointer-events-none">
-                                        {previewImages.map((_, idx) => (
-                                            <span key={idx} className={`h-1.5 rounded-full transition-all duration-300 opacity-0 md:group-hover:opacity-100 ${idx === currentIndex ? "w-4 bg-foreground" : "w-1.5 bg-foreground/30"}`} />
-                                        ))}
+
+                                    {/* Contador de imágenes dinámico */}
+                                    <div className="absolute bottom-2 right-2 z-20 px-1 py-0.5 bg-white/95 border border-border/40 shadow-xs pointer-events-none md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                                        <span className="text-[9px] font-semibold text-foreground/85 tabular-nums tracking-wide select-none leading-none pt-[0.5px]">
+                                            {currentIndex + 1}<span className="mx-0.5 text-muted-foreground/50 font-normal">/</span>{previewImages.length}
+                                        </span>
                                     </div>
                                 </>
                             )}
@@ -185,26 +189,22 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                     )}
 
                     {/* Badges: Descuento y Nuevo */}
-                    <div className="absolute top-2 left-2 pointer-events-none flex flex-col gap-1">
+                    <div className="absolute top-2 left-4 pointer-events-none flex flex-col gap-1">
                         {(product.precioComparativo ?? 0) > 0 && (
-                            <span className="px-1 py-0.5 bg-destructive text-destructive-foreground text-[10px] font-bold uppercase tracking-wider">
+                            <span className="px-1 py-0.5 bg-destructive text-destructive-foreground text-xs font-bold uppercase tracking-wider">
                                 -{Math.round(discountedPrice)}%
                             </span>
                         )}
-                        {isNew && (
-                            <span className="px-1 py-0.5 bg-foreground text-background text-[10px] font-bold uppercase tracking-wider">
-                                Nuevo
-                            </span>
-                        )}
+                     
                     </div>
                 </div>
 
                 {/* --- INFO --- */}
-                <div className="flex flex-col flex-1 px-2 md:px-4 bg-background">
+                <div className="flex flex-col flex-1 px-2 md:px-4 bg-background py-0.5">
                     <div className="flex flex-col gap-0.5 h-[4.5rem] md:h-[5rem]">
 
                         <div className="h-5 shrink-0 flex justify-between items-center mb-1">
-                            <span className="text-[10px]  md:text-xs font-semibold text-muted-foreground uppercase truncate max-w-[50%]">
+                            <span className="text-[10px]  md:text-xs font-semibold text-muted-foreground/80 uppercase truncate max-w-[50%]">
                                 {product.brand?.nombre || ""}
                             </span>
 
@@ -249,13 +249,11 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                             {product.nombre}
                         </h3>
 
-                        {/* Overlay Hover Sutil */}
                         <div className="absolute inset-0 bg-foreground opacity-0 group-hover:opacity-5 transition-opacity duration-300 pointer-events-none" />
                     </div>
 
                     <div className="mt-auto w-full ">
                         <div className="flex items-end justify-between gap-3">
-                            {/* Precios */}
                             <div className="flex flex-col">
                                 {(product.precioComparativo ?? 0) > 0 && (
                                     <span className="text-[10px] md:text-sm text-muted-foreground line-through">
@@ -268,7 +266,6 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                                 </span>
                             </div>
 
-                            {/* Stock */}
                             {stock <= 0 && (
                                 <span className="inline-flex items-center bg-destructive/10 px-2.5 py-1 text-[11px] font-medium text-destructive whitespace-nowrap">
                                     Sin stock

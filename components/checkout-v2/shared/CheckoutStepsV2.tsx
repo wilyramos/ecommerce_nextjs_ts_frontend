@@ -1,70 +1,70 @@
-// File: frontend/components/checkout-v2/shared/CheckoutStepsV2.tsx
 'use client'
 
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { FiUser, FiCreditCard } from 'react-icons/fi'
 import { cn } from '@/lib/utils'
 
 const STEPS = [
-    { label: 'Datos y envío', path: '/checkout', icon: FiUser },
-    { label: 'Pago', path: '/checkout/payment', icon: FiCreditCard },
+    { label: 'Datos y envío', path: '/checkout-v2' },
+    { label: 'Pago',          path: '/checkout-v2/payment' },
 ]
 
 export default function CheckoutStepsV2() {
     const pathname = usePathname()
-
-    const currentIndex = STEPS.findIndex(s => s.path === pathname)
-    const activeIndex = currentIndex === -1 ? 0 : currentIndex
+    const activeIndex = Math.max(STEPS.findIndex(s => s.path === pathname), 0)
 
     return (
-        <nav aria-label="Pasos del checkout" className="flex items-center gap-1 w-fit select-none">
+        <nav aria-label="Progreso del checkout" className="flex items-center select-none">
             {STEPS.map((step, index) => {
                 const isActive = index === activeIndex
-                const isDone = index < activeIndex
+                const isDone   = index < activeIndex
 
-                const stepContent = (
+                const content = (
                     <div className={cn(
-                        'flex items-center gap-2.5 px-2 py-2 text-xs font-black uppercase tracking-widest transition-all duration-300',
-                        isActive
-                            ? ' text-action-cta'
-                            : isDone
-                                ? 'bg-background-secondary text-foreground hover:bg-muted/50 cursor-pointer'
-                                : 'bg-transparent text-muted-foreground/40 cursor-default'
+                        'flex items-center gap-1.5 text-[11px] font-semibold transition-colors duration-200',
+                        isActive && 'text-foreground',
+                        isDone   && 'text-muted-foreground hover:text-foreground cursor-pointer',
+                        !isActive && !isDone && 'text-muted-foreground/30 pointer-events-none'
                     )}>
-                        <div className={cn(
-                            'w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black shrink-0 transition-all duration-300 border-2',
-                            isActive
-                                ? 'bg-background/20 border-white/20 text-white'
-                                : isDone
-                                    ? 'bg-action-cta border-action-cta text-white'
-                                    : 'bg-transparent border-muted-foreground/20 text-muted-foreground/40'
+                        <span className={cn(
+                            'w-[18px] h-[18px] rounded-full flex items-center justify-center shrink-0 border transition-all duration-200',
+                            isActive && 'bg-foreground border-foreground text-background text-[9px] font-bold',
+                            isDone   && 'bg-action-cta border-action-cta',
+                            !isActive && !isDone && 'border-border'
                         )}>
-                            {isDone ? '✓' : index + 1}
-                        </div>
-                        <span className="inline text-[9px] md:text-xs">{step.label}</span>
+                            {isDone ? (
+                                <svg width="7" height="6" viewBox="0 0 7 6" fill="none" aria-hidden>
+                                    <path d="M1 3L2.8 5L6 1" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                            ) : (
+                                <span className={cn(
+                                    'text-[9px] font-bold leading-none',
+                                    isActive ? 'text-background' : 'text-muted-foreground/30'
+                                )}>
+                                    {index + 1}
+                                </span>
+                            )}
+                        </span>
+
+                        {/* Label: siempre visible en activo, oculto en móvil para el resto */}
+                        <span className={cn(isActive ? 'inline' : 'hidden sm:inline')}>
+                            {step.label}
+                        </span>
                     </div>
                 )
 
                 return (
-                    <div key={step.path} className="flex items-center gap-1">
-                        {isDone ? (
-                            <Link
-                                href={step.path}
-                                className="rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                            >
-                                {stepContent}
-                            </Link>
-                        ) : (
-                            stepContent
-                        )}
+                    <div key={step.path} className="flex items-center">
+                        {isDone
+                            ? <Link href={step.path} className="rounded outline-none focus-visible:ring-2 focus-visible:ring-ring">{content}</Link>
+                            : content
+                        }
 
-                        {/* Separador */}
                         {index < STEPS.length - 1 && (
-                            <div className={cn(
-                                'w-8 h-[2px] transition-colors duration-300 rounded-full mx-1',
-                                isDone ? 'bg-action-cta' : 'bg-border'
-                            )} />
+                            <div className="mx-2.5 flex items-center gap-0.5" aria-hidden>
+                                <div className={cn('w-4 h-px rounded-full transition-colors duration-300', isDone ? 'bg-action-cta' : 'bg-border')} />
+                                <div className={cn('w-1.5 h-px rounded-full transition-colors duration-300 opacity-40', isDone ? 'bg-action-cta' : 'bg-border')} />
+                            </div>
                         )}
                     </div>
                 )

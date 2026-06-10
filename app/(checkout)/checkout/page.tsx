@@ -1,11 +1,8 @@
-// File: frontend/app/(store)/checkout-v2/page.tsx
-
 import { getSession } from '@/src/auth/dal'
-import CheckoutForm   from '@/components/checkout-v2/form/CheckoutForm'
+import CheckoutForm from '@/components/checkout-v2/form/CheckoutForm'
 import type { CustomerProfile } from '@/src/schemas/order.schema'
 
 export default async function CheckoutStepOnePage() {
-    // getSession() usa el DAL: lee la cookie, valida con UserSchema, retorna null si no hay sesión
     const session = await getSession()
 
     let defaultProfile: Partial<CustomerProfile> | undefined
@@ -13,7 +10,6 @@ export default async function CheckoutStepOnePage() {
 
     if (session?.user) {
         const { nombre, apellidos, telefono, tipoDocumento, numeroDocumento, email } = session.user
-
         defaultProfile = {
             nombre:          nombre          ?? '',
             apellidos:       apellidos       ?? '',
@@ -25,18 +21,16 @@ export default async function CheckoutStepOnePage() {
     }
 
     return (
-        <div className="space-y-2">
-            <div className="space-y-1">
+        <div className="space-y-6">
+            <div className="border-b border-border pb-5">
                 <h1 className="text-xl font-bold tracking-tight text-foreground">
                     Datos de entrega
                 </h1>
-             
+                <p className="text-xs text-muted-foreground mt-1">
+                    Completa tu información para continuar.
+                </p>
             </div>
-
-            <CheckoutForm
-                defaultProfile={defaultProfile}
-                lockedEmail={lockedEmail}
-            />
+            <CheckoutForm defaultProfile={defaultProfile} lockedEmail={lockedEmail} />
         </div>
     )
 }

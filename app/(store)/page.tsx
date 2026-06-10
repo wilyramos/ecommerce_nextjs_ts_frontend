@@ -67,18 +67,19 @@ export default function HomePage() {
         <>
             <GlobalAdContainer />
 
-
             <section>
                 <CarruselPrincipal />
             </section>
 
 
             <HomepageSections />
-            <HomepageSectionsWrapper />
 
             <section className="my-2 md:my-10">
                 <CategoriasDestacadasWrapper />
             </section>
+
+            <HomepageSectionsWrapper />
+
 
             <section className="my-2 md:my-5">
                 <BrandsList />

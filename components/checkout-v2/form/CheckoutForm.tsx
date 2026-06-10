@@ -1,9 +1,10 @@
-// File: frontend/components/checkout-v2/form/CheckoutForm.tsx
 'use client'
 
 import { useActionState, useState, useCallback, useEffect, useRef, startTransition } from 'react'
+import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
+import { FcGoogle } from 'react-icons/fc'
 
 import { useCartStore } from '@/src/store/cartStore'
 import { useCheckoutStoreV2 } from '@/src/store/checkoutStoreV2'
@@ -51,6 +52,7 @@ const EMPTY_ADDRESS: ShippingAddress = {
 
 export default function CheckoutForm({ defaultProfile, lockedEmail }: Props) {
     const { cart } = useCartStore()
+    const router = useRouter()
 
     const {
         customerProfile: storedProfile,
@@ -193,20 +195,52 @@ export default function CheckoutForm({ defaultProfile, lockedEmail }: Props) {
         })
     }
 
+    // Navegar al login conservando la URL del checkout para el retorno automático
+    const handleRedirectToLogin = () => {
+        router.push('/auth/login?redirect=/checkout')
+    }
+
     const serverError = state?.ok === false ? state.error : undefined
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+        <form onSubmit={handleSubmit} className="space-y-7" noValidate>
             {serverError && (
-                <div role="alert" className="rounded-[var(--radius-sm)] border border-destructive/20 bg-destructive/5 px-4 py-3 text-[11px] font-bold text-destructive ">
+                <div role="alert" className="rounded-md border border-destructive/20 bg-destructive/5 px-4 py-3 text-[12px] font-medium text-destructive">
                     {serverError}
                 </div>
             )}
 
-            <section className="">
-                <h2 className="text-[9px] font-black text-[var(--ring)] uppercase mb-5 ">
-                    1. Información Personal
-                </h2>
+            {/* Sección 1: Contacto con Acceso Estilo Shopify */}
+            <section className="space-y-4">
+                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                    <h2 className="text-base font-semibold text-foreground tracking-tight">
+                        Contacto
+                    </h2>
+                    
+                    {!lockedEmail && (
+                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <span>¿Ya tienes una cuenta?</span>
+                            <button
+                                type="button"
+                                onClick={handleRedirectToLogin}
+                                className="text-foreground font-medium underline hover:text-foreground/80 transition-colors cursor-pointer hover:no-underline"
+                            >
+                                Iniciar sesión
+                            </button>
+                            <span className="text-muted-foreground/40 select-none">|</span>
+                            <button
+                                type="button"
+                                onClick={handleRedirectToLogin}
+                                className="flex items-center gap-1 text-foreground font-medium hover:opacity-80 transition-opacity cursor-pointer"
+                                title="Iniciar sesión con Google"
+                            >
+                                <FcGoogle size={14} className="mt-[0.5px]" />
+                                <span className="underline">Gmail</span>
+                            </button>
+                        </div>
+                    )}
+                </div>
+
                 <CustomerProfileSection
                     values={profile}
                     errors={fieldErrors}
@@ -216,9 +250,10 @@ export default function CheckoutForm({ defaultProfile, lockedEmail }: Props) {
                 />
             </section>
 
-            <section className="">
-                <h2 className="text-[9px] font-black text-[var(--ring)] uppercase mb-5 ">
-                    2. Dirección de Envío
+            {/* Sección 2 */}
+            <section className="space-y-4">
+                <h2 className="text-base font-semibold text-foreground tracking-tight">
+                    Entrega
                 </h2>
                 <ShippingAddressSection
                     values={address}
@@ -230,10 +265,11 @@ export default function CheckoutForm({ defaultProfile, lockedEmail }: Props) {
                 />
             </section>
 
+            {/* Botón de Pago Principal */}
             <Button
                 type="submit"
                 disabled={isPending || cart.length === 0}
-                className="w-full bg-action-cta hover:bg-action-cta-hover text-action-cta-foreground font-bold  transition-all"
+                className="w-full h-12 bg-action-cta hover:bg-action-cta-hover text-action-cta-foreground text-sm font-semibold rounded-md transition-colors"
             >
                 {isPending ? (
                     <span className="flex items-center justify-center gap-2">
