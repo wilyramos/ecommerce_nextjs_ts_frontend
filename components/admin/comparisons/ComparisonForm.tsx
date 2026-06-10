@@ -2,7 +2,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Comparison, ComparisonFormValues, ComparisonSpec, ProductEditorial, ComparisonFAQ, ComparisonCTA, ProductScore } from "@/src/schemas/comparison.schema";
+import {
+    Comparison,
+    ComparisonFormValues,
+    ComparisonSpec,
+    ComparisonFAQ,
+} from "@/src/schemas/comparison.schema";
 import { LabelWithTooltip } from "@/components/utils/LabelWithTooltip";
 import ProductReferenceSelector from "@/components/admin/shared/ProductReferenceSelector";
 import { Small } from "@/components/ui/Typography";
@@ -13,7 +18,7 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Plus, Trash2, Layers, FileText, Settings, HelpCircle, Sparkles, BarChart3, Target } from "lucide-react";
+import { Plus, Trash2, Layers, FileText, Settings, HelpCircle, Sparkles, BarChart3 } from "lucide-react";
 
 interface ComparisonFormProps {
     initialData?: Comparison;
@@ -28,60 +33,45 @@ export default function ComparisonForm({
     fieldErrors,
     generalError,
 }: ComparisonFormProps) {
-    const [isActive, setIsActive] = useState<boolean>(() => fields?.isActive ?? initialData?.isActive ?? true);
-    const [isFeatured, setIsFeatured] = useState<boolean>(() => fields?.isFeatured ?? initialData?.isFeatured ?? false);
+
+    // ── Estado ────────────────────────────────────────────
+
+    const [isActive, setIsActive] = useState<boolean>(
+        () => fields?.isActive ?? initialData?.isActive ?? true
+    );
+    const [isFeatured, setIsFeatured] = useState<boolean>(
+        () => fields?.isFeatured ?? initialData?.isFeatured ?? false
+    );
 
     const [products, setProducts] = useState<string[]>(() => {
         if (fields?.products) return fields.products as string[];
         if (initialData?.products) {
-            return initialData.products.map(p => typeof p === "string" ? p : p._id) as string[];
+            return initialData.products.map(p =>
+                typeof p === "string" ? p : p._id
+            ) as string[];
         }
         return ["", ""];
     });
 
     const [productNames, setProductNames] = useState<Record<number, string>>(() => {
-        const initialMap: Record<number, string> = {};
+        const map: Record<number, string> = {};
         if (initialData?.products) {
             initialData.products.forEach((p, idx) => {
-                if (p && typeof p === "object" && p.nombre) {
-                    initialMap[idx] = p.nombre;
-                }
+                if (p && typeof p === "object" && p.nombre) map[idx] = p.nombre;
             });
         }
-        return initialMap;
+        return map;
     });
 
     const [specs, setSpecs] = useState<ComparisonSpec[]>(() => {
         if (fields?.especificaciones) return fields.especificaciones as ComparisonSpec[];
         if (initialData?.especificaciones) return initialData.especificaciones as ComparisonSpec[];
-        return [{ key: "", values: ["", ""], category: "General", isKeyDifference: false }];
-    });
-
-    const [editorials, setEditorials] = useState<ProductEditorial[]>(() => {
-        if (fields?.analisisEditorial) return fields.analisisEditorial as ProductEditorial[];
-        if (initialData?.analisisEditorial) {
-            return initialData.analisisEditorial.map(e => ({
-                product: typeof e.product === "string" ? e.product : e.product?._id ? e.product._id : "",
-                pros: e.pros,
-                contras: e.contras,
-                winnerBadge: e.winnerBadge || "",
-                scores: e.scores || [
-                    { criterion: "Rendimiento", score: 80 },
-                    { criterion: "Cámara", score: 80 },
-                    { criterion: "Batería", score: 80 }
-                ]
-            })) as ProductEditorial[];
-        }
-        return [
-            { product: "", pros: [""], contras: [""], winnerBadge: "", scores: [{ criterion: "Rendimiento", score: 80 }, { criterion: "Cámara", score: 80 }, { criterion: "Batería", score: 80 }] },
-            { product: "", pros: [""], contras: [""], winnerBadge: "", scores: [{ criterion: "Rendimiento", score: 80 }, { criterion: "Cámara", score: 80 }, { criterion: "Batería", score: 80 }] }
-        ];
-    });
-
-    const [ctaConfig, setCtaConfig] = useState<ComparisonCTA>(() => {
-        if (fields?.ctaConfig) return fields.ctaConfig as ComparisonCTA;
-        if (initialData?.ctaConfig) return initialData.ctaConfig as ComparisonCTA;
-        return { buttonText: "Solicitar Cotización Inmediata", targetUrl: "", leadFormActive: true };
+        return [{
+            key: "",
+            values: ["", ""],
+            scores: [80, 80],
+            isKeyDifference: false
+        }];
     });
 
     const [faqs, setFaqs] = useState<ComparisonFAQ[]>(() => {
@@ -90,169 +80,161 @@ export default function ComparisonForm({
         return [];
     });
 
+    // ── Sincronización al cambiar número de productos ─────
+
     useEffect(() => {
         if (!fields) return;
-        if (fields.products) setProducts(fields.products as string[]);
+        if (fields.products)         setProducts(fields.products as string[]);
         if (fields.especificaciones) setSpecs(fields.especificaciones as ComparisonSpec[]);
-        if (fields.analisisEditorial) setEditorials(fields.analisisEditorial as ProductEditorial[]);
-        if (fields.faqItems) setFaqs(fields.faqItems as ComparisonFAQ[]);
-        if (fields.ctaConfig) setCtaConfig(fields.ctaConfig as ComparisonCTA);
+        if (fields.faqItems)         setFaqs(fields.faqItems as ComparisonFAQ[]);
     }, [fields]);
 
     useEffect(() => {
+        const n = products.length;
         setSpecs(prev => prev.map(spec => {
-            const newValues = [...spec.values];
-            while (newValues.length < products.length) newValues.push("");
-            if (newValues.length > products.length) newValues.length = products.length;
-            return { ...spec, values: newValues };
+            const values = [...spec.values];
+            const scores = [...spec.scores];
+            while (values.length < n) values.push("");
+            while (scores.length < n) scores.push(80);
+            values.length = n;
+            scores.length = n;
+            return { ...spec, values, scores };
         }));
-
-        setEditorials(prev => {
-            const newEditorials = [...prev];
-            while (newEditorials.length < products.length) {
-                newEditorials.push({
-                    product: "",
-                    pros: [""],
-                    contras: [""],
-                    winnerBadge: "",
-                    scores: [
-                        { criterion: "Rendimiento", score: 80 },
-                        { criterion: "Cámara", score: 80 },
-                        { criterion: "Batería", score: 80 }
-                    ]
-                });
-            }
-            if (newEditorials.length > products.length) newEditorials.length = products.length;
-            return newEditorials;
-        });
     }, [products.length]);
 
-    const addProduct = () => setProducts([...products, ""]);
+    // ── Handlers: productos ───────────────────────────────
+
+    const addProduct = () => setProducts(p => [...p, ""]);
+
     const removeProduct = (idx: number) => {
         if (products.length <= 2) return;
-        setProducts(products.filter((_, i) => i !== idx));
-        setEditorials(editorials.filter((_, i) => i !== idx));
-
-        const updatedNames = { ...productNames };
-        delete updatedNames[idx];
-        const reindexedNames: Record<number, string> = {};
-        products.filter((_, i) => i !== idx).forEach((_, newIdx) => {
-            const oldIdx = newIdx >= idx ? newIdx + 1 : newIdx;
-            if (updatedNames[oldIdx]) reindexedNames[newIdx] = updatedNames[oldIdx];
+        setProducts(p => p.filter((_, i) => i !== idx));
+        setProductNames(prev => {
+            const copy = { ...prev };
+            delete copy[idx];
+            const reindexed: Record<number, string> = {};
+            Object.entries(copy).forEach(([k, v]) => {
+                const ki = Number(k);
+                reindexed[ki > idx ? ki - 1 : ki] = v;
+            });
+            return reindexed;
         });
-        setProductNames(reindexedNames);
     };
 
-    const addSpecRow = () => {
-        setSpecs([...specs, { key: "", values: Array(products.length).fill(""), category: "General", isKeyDifference: false }]);
+    // ── Handlers: specs ───────────────────────────────────
+
+    const addSpec = () => setSpecs(prev => [
+        ...prev,
+        { key: "", values: Array(products.length).fill(""), scores: Array(products.length).fill(80), isKeyDifference: false }
+    ]);
+
+    const removeSpec = (idx: number) => setSpecs(prev => prev.filter((_, i) => i !== idx));
+
+    const updateSpecKey = (idx: number, value: string) => {
+        setSpecs(prev => prev.map((s, i) => i === idx ? { ...s, key: value } : s));
     };
-    const removeSpecRow = (idx: number) => setSpecs(specs.filter((_, i) => i !== idx));
+
+    const updateSpecValue = (specIdx: number, prodIdx: number, value: string) => {
+        setSpecs(prev => prev.map((s, i) => {
+            if (i !== specIdx) return s;
+            const values = [...s.values];
+            values[prodIdx] = value;
+            return { ...s, values };
+        }));
+    };
+
+    const updateSpecScore = (specIdx: number, prodIdx: number, value: number) => {
+        setSpecs(prev => prev.map((s, i) => {
+            if (i !== specIdx) return s;
+            const scores = [...s.scores];
+            scores[prodIdx] = Math.min(100, Math.max(0, value));
+            return { ...s, scores };
+        }));
+    };
 
     const updateSpecIsKeyDifference = (idx: number, checked: boolean) => {
-        const updated = [...specs];
-        updated[idx].isKeyDifference = checked;
-        setSpecs(updated);
+        setSpecs(prev => prev.map((s, i) => i === idx ? { ...s, isKeyDifference: checked } : s));
     };
 
-    const updateEditorialScore = (eIdx: number, sIdx: number, field: keyof ProductScore, value: string | number) => {
-        const updated = [...editorials];
-        if (!updated[eIdx].scores) updated[eIdx].scores = [];
-        updated[eIdx].scores[sIdx] = {
-            ...updated[eIdx].scores[sIdx],
-            [field]: value
-        };
-        setEditorials(updated);
-    };
+    // ── Handlers: FAQs ────────────────────────────────────
 
-    const addPro = (eIdx: number) => {
-        const updated = [...editorials];
-        updated[eIdx].pros.push("");
-        setEditorials(updated);
-    };
-    const addContra = (eIdx: number) => {
-        const updated = [...editorials];
-        updated[eIdx].contras.push("");
-        setEditorials(updated);
-    };
+    const addFaq    = () => setFaqs(prev => [...prev, { pregunta: "", respuesta: "" }]);
+    const removeFaq = (idx: number) => setFaqs(prev => prev.filter((_, i) => i !== idx));
 
-    const addFaq = () => setFaqs([...faqs, { pregunta: "", respuesta: "" }]);
-    const removeFaq = (idx: number) => setFaqs(faqs.filter((_, i) => i !== idx));
+    // ── Render ────────────────────────────────────────────
 
     return (
         <div className="space-y-8">
             {generalError && <Alert variant="error" mode="banner">{generalError}</Alert>}
 
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                {/* COLUMNA PRINCIPAL (AGRUPACIÓN EN ACORDEONES COLAPSABLES) */}
+
+                {/* ── COLUMNA PRINCIPAL ── */}
                 <div className="lg:col-span-3">
                     <Accordion type="multiple" defaultValue={["sec-products", "sec-general"]} className="space-y-4">
 
-                        {/* 1. SELECCIÓN DE PRODUCTOS */}
-                        <AccordionItem value="sec-products" className="border rounded-xl bg-card px-6 py-2 shadow-sm">
+                        {/* 1. PRODUCTOS */}
+                        <AccordionItem value="sec-products" className="border border-border rounded-xl bg-card px-6 py-2 shadow-sm">
                             <AccordionTrigger className="hover:no-underline">
                                 <div className="flex items-center gap-3 text-left">
                                     <FileText className="w-5 h-5 text-primary" />
                                     <div>
-                                        <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">1. Selección de Productos</h3>
-                                        <p className="text-xs text-muted-foreground font-normal">Define los modelos del catálogo que se van a contrastar.</p>
+                                        <h3 className="text-sm font-bold uppercase tracking-wider text-primary">1. Productos a comparar</h3>
+                                        <p className="text-xs text-muted-foreground font-normal">Mínimo 2 productos del catálogo.</p>
                                     </div>
                                 </div>
                             </AccordionTrigger>
-                            <AccordionContent className="pt-4 pb-4 border-t space-y-4">
+                            <AccordionContent className="pt-4 pb-4 border-t border-border space-y-4">
                                 <div className="flex justify-end">
                                     <Button type="button" variant="outline" size="sm" onClick={addProduct} className="gap-1.5 text-xs">
-                                        <Plus className="w-3.5 h-3.5" /> Vincular Producto
+                                        <Plus className="w-3.5 h-3.5" /> Añadir producto
                                     </Button>
                                 </div>
-                                {fieldErrors?.products && <Alert variant="error">{fieldErrors.products[0]}</Alert>}
+                                {fieldErrors?.products && (
+                                    <Alert variant="error">{fieldErrors.products[0]}</Alert>
+                                )}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {products.map((prod, idx) => {
-                                        const rawProduct = initialData?.products?.[idx];
-                                        const initialProductObject = rawProduct && typeof rawProduct === "object" ? {
-                                            _id: rawProduct._id,
-                                            nombre: rawProduct.nombre || "",
-                                            precio: typeof rawProduct.precio === "string" ? parseFloat(rawProduct.precio) : (rawProduct.precio || 0),
-                                            imagenes: rawProduct.imagenes || []
+                                        const raw = initialData?.products?.[idx];
+                                        const initialObj = raw && typeof raw === "object" ? {
+                                            _id: raw._id,
+                                            nombre: raw.nombre || "",
+                                            precio: typeof raw.precio === "string" ? parseFloat(raw.precio) : (raw.precio || 0),
+                                            imagenes: raw.imagenes || []
                                         } : null;
 
                                         return (
-                                            <div key={idx} className="flex items-start gap-3 border p-4 rounded-xl bg-secondary/20 relative">
+                                            <div key={idx} className="flex items-start gap-3 border border-border p-4 rounded-xl bg-muted-neutral relative">
                                                 <div className="flex-1 space-y-1">
-                                                    <span className="text-xs font-bold uppercase block mb-1 text-primary truncate max-w-[240px]">
-                                                        {productNames[idx] || `Modelo de Referencia`}
+                                                    <span className="text-xs font-bold text-primary block mb-1 truncate">
+                                                        {productNames[idx] || `Producto ${idx + 1}`}
                                                     </span>
                                                     <input type="hidden" name={`products[${idx}]`} value={prod} />
                                                     <ProductReferenceSelector
                                                         label=""
-                                                        initialId={typeof rawProduct === "string" ? rawProduct : prod}
-                                                        initialProduct={initialProductObject}
-                                                        onProductData={(productObj) => {
-                                                            if (productObj) {
-                                                                setProductNames(prev => ({ ...prev, [idx]: productObj.nombre }));
-                                                            }
+                                                        initialId={typeof raw === "string" ? raw : prod}
+                                                        initialProduct={initialObj}
+                                                        onProductData={(obj) => {
+                                                            if (obj) setProductNames(prev => ({ ...prev, [idx]: obj.nombre }));
                                                         }}
                                                         onSelect={(id) => {
-                                                            const updated = [...products];
-                                                            updated[idx] = id;
-                                                            setProducts(updated);
-
-                                                            const updatedEd = [...editorials];
-                                                            if (!updatedEd[idx]) updatedEd[idx] = { product: "", pros: [""], contras: [""], winnerBadge: "", scores: [] };
-                                                            updatedEd[idx].product = id;
-                                                            setEditorials(updatedEd);
-
-                                                            if (!id) {
-                                                                setProductNames(prev => {
-                                                                    const copy = { ...prev };
-                                                                    delete copy[idx];
-                                                                    return copy;
-                                                                });
-                                                            }
+                                                            setProducts(prev => {
+                                                                const updated = [...prev];
+                                                                updated[idx] = id;
+                                                                return updated;
+                                                            });
+                                                            if (!id) setProductNames(prev => {
+                                                                const copy = { ...prev };
+                                                                delete copy[idx];
+                                                                return copy;
+                                                            });
                                                         }}
                                                     />
                                                 </div>
                                                 {products.length > 2 && (
-                                                    <Button type="button" variant="destructive" size="icon" className="mt-2 shrink-0 h-8 w-8 rounded-lg" onClick={() => removeProduct(idx)}>
+                                                    <Button type="button" variant="destructive" size="icon"
+                                                        className="mt-2 shrink-0 h-8 w-8 rounded-lg"
+                                                        onClick={() => removeProduct(idx)}>
                                                         <Trash2 className="w-3.5 h-3.5" />
                                                     </Button>
                                                 )}
@@ -263,253 +245,192 @@ export default function ComparisonForm({
                             </AccordionContent>
                         </AccordionItem>
 
-                        {/* 2. ENCABEZADOS GENERALES */}
-                        <AccordionItem value="sec-general" className="border rounded-xl bg-card px-6 py-2 shadow-sm">
+                        {/* 2. TÍTULOS */}
+                        <AccordionItem value="sec-general" className="border border-border rounded-xl bg-card px-6 py-2 shadow-sm">
                             <AccordionTrigger className="hover:no-underline">
                                 <div className="flex items-center gap-3 text-left">
                                     <Layers className="w-5 h-5 text-primary" />
                                     <div>
-                                        <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">2. Títulos e Identificadores</h3>
-                                        <p className="text-xs text-muted-foreground font-normal">Configura el título principal y la URL limpia.</p>
+                                        <h3 className="text-sm font-bold uppercase tracking-wider text-primary">2. Título e identificadores</h3>
+                                        <p className="text-xs text-muted-foreground font-normal">Título principal y veredicto rápido.</p>
                                     </div>
                                 </div>
                             </AccordionTrigger>
-                            <AccordionContent className="pt-4 pb-4 border-t space-y-4">
+                            <AccordionContent className="pt-4 pb-4 border-t border-border space-y-4">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div className="space-y-1.5">
-                                        <LabelWithTooltip htmlFor="title" label="Título Principal" required tooltip="Título indexable óptimo de 20 a 100 caracteres." />
-                                        <Input id="title" name="title" defaultValue={fields?.title ?? initialData?.title ?? ""} className={fieldErrors?.title ? "border-destructive h-9" : "h-9"} placeholder="Ej: Comparativa Avanzada..." />
-                                        {fieldErrors?.title && <Small className="text-destructive font-medium block">{fieldErrors.title[0]}</Small>}
+                                        <LabelWithTooltip htmlFor="title" label="Título principal" required tooltip="Entre 10 y 100 caracteres." />
+                                        <Input id="title" name="title"
+                                            defaultValue={fields?.title ?? initialData?.title ?? ""}
+                                            className="h-9 border-border"
+                                            placeholder="Ej: Sony WH-1000XM5 vs Bose QC45" />
+                                        {fieldErrors?.title && (
+                                            <Small className="text-destructive font-medium block">{fieldErrors.title[0]}</Small>
+                                        )}
                                     </div>
                                     <div className="space-y-1.5">
-                                        <LabelWithTooltip htmlFor="slug" label="Slug de URL" tooltip="Dejar vacío para cálculo automático." />
-                                        <Input id="slug" name="slug" defaultValue={fields?.slug ?? initialData?.slug ?? ""} placeholder="slug-automatico" className="font-mono text-sm h-9" />
+                                        <LabelWithTooltip htmlFor="slug" label="Slug de URL" tooltip="Dejar vacío para generación automática." />
+                                        <Input id="slug" name="slug"
+                                            defaultValue={fields?.slug ?? initialData?.slug ?? ""}
+                                            placeholder="sony-xm5-vs-bose-qc45"
+                                            className="font-mono text-sm h-9 border-border" />
                                     </div>
+                                </div>
+                                <div className="space-y-1.5">
+                                    <LabelWithTooltip htmlFor="veredictoRapido" label="Veredicto rápido" required tooltip="Resumen directo de quién gana y por qué. Máx 300 caracteres." />
+                                    <Textarea id="veredictoRapido" name="veredictoRapido" rows={2}
+                                        defaultValue={fields?.veredictoRapido ?? initialData?.veredictoRapido ?? ""}
+                                        className="text-sm border-border"
+                                        placeholder="Ej: Sony lidera en ANC y audio; Bose en comodidad y llamadas." />
+                                    {fieldErrors?.veredictoRapido && (
+                                        <Small className="text-destructive font-medium block">{fieldErrors.veredictoRapido[0]}</Small>
+                                    )}
                                 </div>
                             </AccordionContent>
                         </AccordionItem>
 
-                        {/* 3. PARÁMETROS PARA GRÁFICOS */}
-                        <AccordionItem value="sec-charts" className="border rounded-xl bg-card px-6 py-2 shadow-sm">
+                        {/* 3. ESPECIFICACIONES + SCORES */}
+                        <AccordionItem value="sec-specs" className="border border-border rounded-xl bg-card px-6 py-2 shadow-sm">
                             <AccordionTrigger className="hover:no-underline">
                                 <div className="flex items-center gap-3 text-left">
                                     <BarChart3 className="w-5 h-5 text-primary" />
                                     <div>
-                                        <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">3. Puntuaciones Cuantitativas para Gráficos</h3>
-                                        <p className="text-xs text-muted-foreground font-normal">Valores limpios (0 - 100) para alimentar los gráficos de barras o radar.</p>
+                                        <h3 className="text-sm font-bold uppercase tracking-wider text-primary">3. Especificaciones y scores</h3>
+                                        <p className="text-xs text-muted-foreground font-normal">Valores para la tabla comparativa y puntuaciones (0–100) para el radar.</p>
                                     </div>
                                 </div>
                             </AccordionTrigger>
-                            <AccordionContent className="pt-4 pb-4 border-t space-y-4">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    {products.map((_, idx) => {
-                                        const ed = editorials[idx] || { winnerBadge: "", scores: [] };
-                                        return (
-                                            <div key={idx} className="p-4 border rounded-lg bg-muted/20 space-y-3">
-                                                <span className="text-xs font-bold text-primary block border-b pb-1 truncate">
-                                                    {productNames[idx] || `(Falta elegir producto)`}
-                                                </span>
-                                                <div className="space-y-1.5">
-                                                    <label className="text-[11px] font-medium text-muted-foreground">Insignia Visual Destacada (Badge)</label>
-                                                    <Input name={`analisisEditorial[${idx}][winnerBadge]`} defaultValue={ed.winnerBadge} placeholder="Ej: Calidad/Precio" className="h-8 text-xs" />
-                                                </div>
-                                                <div className="space-y-2 pt-1">
-                                                    <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">Criterios Cuantitativos</span>
-                                                    <div className="space-y-2">
-                                                        {[0, 1, 2].map((sIdx) => {
-                                                            const scoreItem = ed.scores?.[sIdx] || { criterion: "", score: 80 };
-                                                            return (
-                                                                <div key={sIdx} className="grid grid-cols-3 gap-2 items-center">
-                                                                    <Input className="h-7 text-xs col-span-2" value={scoreItem.criterion} placeholder="Criterio (Ej: Cámara)" onChange={(e) => updateEditorialScore(idx, sIdx, "criterion", e.target.value)} />
-                                                                    <input type="hidden" name={`analisisEditorial[${idx}][scores][${sIdx}][criterion]`} value={scoreItem.criterion} />
-                                                                    <Input type="number" className="h-7 text-xs" value={scoreItem.score} min={0} max={100} onChange={(e) => updateEditorialScore(idx, sIdx, "score", parseInt(e.target.value, 10) || 0)} />
-                                                                    <input type="hidden" name={`analisisEditorial[${idx}][scores][${sIdx}][score]`} value={scoreItem.score} />
-                                                                </div>
-                                                            );
-                                                        })}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </AccordionContent>
-                        </AccordionItem>
-
-                        {/* 4. MATRIZ TÉCNICA */}
-                        <AccordionItem value="sec-specs" className="border rounded-xl bg-card px-6 py-2 shadow-sm">
-                            <AccordionTrigger className="hover:no-underline">
-                                <div className="flex items-center gap-3 text-left">
-                                    <Sparkles className="w-5 h-5 text-primary" />
-                                    <div>
-                                        <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">4. Matriz de Especificaciones</h3>
-                                        <p className="text-xs text-muted-foreground font-normal">Filas de atributos puros para alimentar la tabla comparativa visual.</p>
-                                    </div>
-                                </div>
-                            </AccordionTrigger>
-                            <AccordionContent className="pt-4 pb-4 border-t space-y-4">
+                            <AccordionContent className="pt-4 pb-4 border-t border-border space-y-4">
                                 <div className="flex justify-end">
-                                    <Button type="button" variant="outline" size="sm" onClick={addSpecRow} className="gap-1.5 text-xs">
-                                        <Plus className="w-3.5 h-3.5" /> Añadir Atributo
+                                    <Button type="button" variant="outline" size="sm" onClick={addSpec} className="gap-1.5 text-xs">
+                                        <Plus className="w-3.5 h-3.5" /> Añadir fila
                                     </Button>
                                 </div>
                                 <div className="space-y-4">
-                                    {specs.map((spec, idx) => (
-                                        <div key={idx} className="p-4 border rounded-xl bg-secondary/10 space-y-3 relative shadow-sm">
-                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
-                                                <div className="space-y-1">
-                                                    <label className="text-[11px] font-medium text-muted-foreground">Atributo</label>
-                                                    <Input name={`especificaciones[${idx}][key]`} defaultValue={spec.key} placeholder="Ej: Memoria RAM" className="h-8 text-xs" required />
+                                    {specs.map((spec, sIdx) => (
+                                        <div key={sIdx} className="p-4 border border-border rounded-xl bg-muted-neutral space-y-3 relative shadow-sm">
+
+                                            {/* Cabecera de la fila */}
+                                            <div className="flex items-center gap-3">
+                                                <div className="flex-1 space-y-1">
+                                                    <label className="text-[11px] font-medium text-muted-foreground">Característica</label>
+                                                    <Input
+                                                        name={`especificaciones[${sIdx}][key]`}
+                                                        value={spec.key}
+                                                        onChange={e => updateSpecKey(sIdx, e.target.value)}
+                                                        placeholder="Ej: Batería"
+                                                        className="h-8 text-xs border-border"
+                                                        required
+                                                    />
                                                 </div>
-                                                <div className="space-y-1">
-                                                    <label className="text-[11px] font-medium text-muted-foreground">Categoría de Bloque</label>
-                                                    <Input name={`especificaciones[${idx}][category]`} defaultValue={spec.category ?? "General"} placeholder="Ej: Hardware" className="h-8 text-xs" />
+                                                <div className="flex items-center gap-2 h-8 px-3 border border-border rounded bg-card mt-5">
+                                                    <span className="text-[10px] font-bold text-muted-foreground whitespace-nowrap">Diferencia clave</span>
+                                                    <input type="hidden" name={`especificaciones[${sIdx}][isKeyDifference]`} value={String(spec.isKeyDifference)} />
+                                                    <Switch
+                                                        checked={spec.isKeyDifference}
+                                                        onCheckedChange={checked => updateSpecIsKeyDifference(sIdx, checked)}
+                                                        className="scale-75"
+                                                    />
                                                 </div>
-                                                <div className="flex items-center gap-2 h-8 px-2 border rounded bg-background justify-between">
-                                                    <span className="text-[10px] font-bold text-muted-foreground">¿Resaltar Diferencia?</span>
-                                                    <input type="hidden" name={`especificaciones[${idx}][isKeyDifference]`} value={String(spec.isKeyDifference)} />
-                                                    <Switch checked={spec.isKeyDifference} onCheckedChange={(checked) => updateSpecIsKeyDifference(idx, checked)} className="scale-75" />
-                                                </div>
+                                                {specs.length > 1 && (
+                                                    <Button type="button" variant="ghost" size="icon"
+                                                        onClick={() => removeSpec(sIdx)}
+                                                        className="mt-5 h-8 w-8 text-destructive hover:bg-destructive/10 shrink-0">
+                                                        <Trash2 className="w-3.5 h-3.5" />
+                                                    </Button>
+                                                )}
                                             </div>
 
+                                            {/* Valores y scores por producto */}
                                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                                                 {products.map((_, pIdx) => (
-                                                    <div key={pIdx} className="bg-background p-2 rounded border space-y-1">
+                                                    <div key={pIdx} className="bg-card p-3 rounded border border-border space-y-2">
                                                         <span className="text-[10px] font-semibold text-muted-foreground block truncate">
-                                                            Valor para: {productNames[pIdx] || `(Falta producto)`}
+                                                            {productNames[pIdx] || `Producto ${pIdx + 1}`}
                                                         </span>
-                                                        <Input name={`especificaciones[${idx}][values][${pIdx}]`} defaultValue={spec.values?.[pIdx] ?? ""} placeholder="Ej: 12 GB LPDDR5X" required className="h-7 text-xs" />
+                                                        <div className="space-y-1">
+                                                            <label className="text-[10px] text-muted-foreground">Valor (tabla)</label>
+                                                            <Input
+                                                                name={`especificaciones[${sIdx}][values][${pIdx}]`}
+                                                                value={spec.values[pIdx] ?? ""}
+                                                                onChange={e => updateSpecValue(sIdx, pIdx, e.target.value)}
+                                                                placeholder="Ej: 30h"
+                                                                className="h-7 text-xs border-border"
+                                                                required
+                                                            />
+                                                        </div>
+                                                        <div className="space-y-1">
+                                                            <label className="text-[10px] text-muted-foreground">Score radar (0–100)</label>
+                                                            <Input
+                                                                type="number"
+                                                                name={`especificaciones[${sIdx}][scores][${pIdx}]`}
+                                                                value={spec.scores[pIdx] ?? 80}
+                                                                onChange={e => updateSpecScore(sIdx, pIdx, parseInt(e.target.value, 10) || 0)}
+                                                                min={0}
+                                                                max={100}
+                                                                className="h-7 text-xs border-border"
+                                                            />
+                                                        </div>
                                                     </div>
                                                 ))}
                                             </div>
 
-                                            {specs.length > 1 && (
-                                                <Button type="button" variant="ghost" size="icon" onClick={() => removeSpecRow(idx)} className="absolute top-2 right-2 h-6 w-6 text-destructive hover:bg-destructive/10">
-                                                    <Trash2 className="w-3.5 h-3.5" />
-                                                </Button>
-                                            )}
                                         </div>
                                     ))}
                                 </div>
                             </AccordionContent>
                         </AccordionItem>
 
-                        {/* 5. CIERRE Y CAPTACIÓN COMERCIAL */}
-                        <AccordionItem value="sec-conversion" className="border rounded-xl bg-card px-6 py-2 shadow-sm border-emerald-500/20">
-                            <AccordionTrigger className="hover:no-underline">
-                                <div className="flex items-center gap-3 text-left">
-                                    <Target className="text-emerald-600 w-5 h-5" />
-                                    <div>
-                                        <h3 className="text-sm font-bold uppercase tracking-wider text-emerald-800">5. Conversión y Captación de Leads</h3>
-                                        <p className="text-xs text-emerald-600 font-normal">Disparadores comerciales de llamadas a la acción y veredictos ejecutivos.</p>
-                                    </div>
-                                </div>
-                            </AccordionTrigger>
-                            <AccordionContent className="pt-4 pb-4 border-t space-y-4">
-                                <div className="flex items-center justify-between border border-emerald-100 bg-emerald-50/20 p-3 rounded-lg">
-                                    <div className="space-y-0.5">
-                                        <span className="text-xs font-bold text-emerald-900 block">Formulario de Asesoría Incrustado</span>
-                                        <span className="text-[11px] text-muted-foreground block">Activa una caja de captura inmediata para clientes potenciales con dudas.</span>
-                                    </div>
-                                    <input type="hidden" name="ctaConfig[leadFormActive]" value={String(ctaConfig.leadFormActive)} />
-                                    <Switch checked={ctaConfig.leadFormActive} onCheckedChange={(val) => setCtaConfig({ ...ctaConfig, leadFormActive: val })} />
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div className="space-y-1">
-                                        <label className="text-xs font-medium">Texto del Botón Principal (CTA)</label>
-                                        <Input name="ctaConfig[buttonText]" value={ctaConfig.buttonText} onChange={(e) => setCtaConfig({ ...ctaConfig, buttonText: e.target.value })} className="h-9 text-sm" required />
-                                    </div>
-                                    <div className="space-y-1">
-                                        <label className="text-xs font-medium">Enlace de Redirección Alternativo</label>
-                                        <Input name="ctaConfig[targetUrl]" value={ctaConfig.targetUrl || ""} onChange={(e) => setCtaConfig({ ...ctaConfig, targetUrl: e.target.value })} className="h-9 text-sm" placeholder="Ej: /checkout" />
-                                    </div>
-                                </div>
-                                <div className="space-y-3 pt-2">
-                                    <div className="space-y-1">
-                                        <LabelWithTooltip htmlFor="veredictoRapido" label="Veredicto Comercial Rápido" tooltip="El único block de texto corto superior para guiar la intención inmediata de compra." />
-                                        <Textarea id="veredictoRapido" name="veredictoRapido" rows={3} defaultValue={fields?.veredictoRapido ?? initialData?.veredictoRapido ?? ""} className="text-sm" placeholder="Ej: Compra el Modelo A si priorizas autonomía..." />
-                                    </div>
-                                </div>
-                            </AccordionContent>
-                        </AccordionItem>
-
-                        {/* 6. PUNTOS CUALITATIVOS EDITORIALES */}
-                        <AccordionItem value="sec-editorial" className="border rounded-xl bg-card px-6 py-2 shadow-sm">
-                            <AccordionTrigger className="hover:no-underline">
-                                <div className="flex items-center gap-3 text-left">
-                                    <FileText className="w-5 h-5 text-primary" />
-                                    <div>
-                                        <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">6. Puntos Editorial Clave (Pros y Contras)</h3>
-                                        <p className="text-xs text-muted-foreground font-normal">Listas cortas de viñetas que el usuario lee de un vistazo rápido.</p>
-                                    </div>
-                                </div>
-                            </AccordionTrigger>
-                            <AccordionContent className="pt-4 pb-4 border-t space-y-4">
-                                <div className="space-y-4">
-                                    {products.map((_, idx) => {
-                                        const ed = editorials[idx] || { pros: [""], contras: [""] };
-                                        return (
-                                            <div key={idx} className="p-4 border rounded-xl bg-secondary/10 space-y-3">
-                                                <span className="text-xs font-bold text-primary block bg-background px-2 py-1 rounded border w-fit max-w-full truncate">
-                                                    {productNames[idx] || `(Falta producto)`}
-                                                </span>
-                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
-                                                    <div className="p-3 bg-emerald-50/20 border border-emerald-500/10 rounded-lg space-y-2">
-                                                        <div className="flex items-center justify-between border-b border-emerald-500/10 pb-1">
-                                                            <span className="text-[10px] font-bold text-emerald-700 uppercase">A Favor (Pros)</span>
-                                                            <Button type="button" variant="ghost" size="sm" onClick={() => addPro(idx)} className="h-5 text-[10px] text-emerald-700 px-1">Añadir</Button>
-                                                        </div>
-                                                        {ed.pros.map((pro, pIdx) => (
-                                                            <Input key={pIdx} name={`analisisEditorial[${idx}][pros][${pIdx}]`} defaultValue={pro} placeholder="Ventaja" className="h-7 text-xs bg-background" />
-                                                        ))}
-                                                    </div>
-                                                    <div className="p-3 bg-destructive/5 border border-destructive/10 rounded-lg space-y-2">
-                                                        <div className="flex items-center justify-between border-b border-destructive/10 pb-1">
-                                                            <span className="text-[10px] font-bold text-destructive uppercase">En Contra (Contras)</span>
-                                                            <Button type="button" variant="ghost" size="sm" onClick={() => addContra(idx)} className="h-5 text-[10px] text-destructive px-1">Añadir</Button>
-                                                        </div>
-                                                        {ed.contras.map((contra, cIdx) => (
-                                                            <Input key={cIdx} name={`analisisEditorial[${idx}][contras][${cIdx}]`} defaultValue={contra} placeholder="Desventaja" className="h-7 text-xs bg-background" />
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </AccordionContent>
-                        </AccordionItem>
-
-                        {/* 7. PREGUNTAS FRECUENTES */}
-                        <AccordionItem value="sec-faqs" className="border rounded-xl bg-card px-6 py-2 shadow-sm">
+                        {/* 4. FAQs */}
+                        <AccordionItem value="sec-faqs" className="border border-border rounded-xl bg-card px-6 py-2 shadow-sm">
                             <AccordionTrigger className="hover:no-underline">
                                 <div className="flex items-center gap-3 text-left">
                                     <HelpCircle className="w-5 h-5 text-primary" />
                                     <div>
-                                        <h3 className="text-sm font-bold uppercase tracking-wider text-foreground">7. Módulo FAQ (Estructura de Datos)</h3>
-                                        <p className="text-xs text-muted-foreground font-normal">Preguntas típicas cortas y directas para captura de clics en Google.</p>
+                                        <h3 className="text-sm font-bold uppercase tracking-wider text-primary">4. Preguntas frecuentes</h3>
+                                        <p className="text-xs text-muted-foreground font-normal">Para SEO y featured snippets en Google.</p>
                                     </div>
                                 </div>
                             </AccordionTrigger>
-                            <AccordionContent className="pt-4 pb-4 border-t space-y-4">
+                            <AccordionContent className="pt-4 pb-4 border-t border-border space-y-4">
                                 <div className="flex justify-end">
                                     <Button type="button" variant="outline" size="sm" onClick={addFaq} className="gap-1.5 text-xs">
-                                        <Plus className="w-3.5 h-3.5" /> Nueva Pregunta
+                                        <Plus className="w-3.5 h-3.5" /> Nueva pregunta
                                     </Button>
                                 </div>
+                                {faqs.length === 0 && (
+                                    <p className="text-xs text-muted-foreground text-center py-4">
+                                        Sin preguntas aún. Añade al menos una para mejorar el SEO.
+                                    </p>
+                                )}
                                 <div className="space-y-3">
                                     {faqs.map((faq, idx) => (
-                                        <div key={idx} className="p-4 border bg-secondary/30 rounded-xl space-y-3 relative">
+                                        <div key={idx} className="p-4 border border-border bg-muted-neutral rounded-xl space-y-3 relative">
                                             <div className="space-y-1">
                                                 <label className="text-xs font-medium text-muted-foreground">Pregunta</label>
-                                                <Input name={`faqItems[${idx}][pregunta]`} defaultValue={faq.pregunta} placeholder="¿Cuál tiene mejor batería?" className="h-8 text-xs bg-background" required />
+                                                <Input
+                                                    name={`faqItems[${idx}][pregunta]`}
+                                                    defaultValue={faq.pregunta}
+                                                    placeholder="¿Cuál tiene mejor batería?"
+                                                    className="h-8 text-xs bg-card border-border"
+                                                    required
+                                                />
                                             </div>
                                             <div className="space-y-1">
-                                                <label className="text-xs font-medium text-muted-foreground">Respuesta Directa</label>
-                                                <Textarea name={`faqItems[${idx}][respuesta]`} defaultValue={faq.respuesta} rows={2} placeholder="El modelo A rinde más debido a..." className="text-xs bg-background" required />
+                                                <label className="text-xs font-medium text-muted-foreground">Respuesta</label>
+                                                <Textarea
+                                                    name={`faqItems[${idx}][respuesta]`}
+                                                    defaultValue={faq.respuesta}
+                                                    rows={2}
+                                                    placeholder="El Sony XM5 con 30h supera al Bose QC45..."
+                                                    className="text-xs bg-card border-border"
+                                                    required
+                                                />
                                             </div>
-                                            <Button type="button" variant="ghost" size="sm" onClick={() => removeFaq(idx)} className="text-[10px] text-destructive h-6 font-semibold ml-auto block hover:bg-destructive/10">
-                                                Remover Bloque
+                                            <Button type="button" variant="ghost" size="sm"
+                                                onClick={() => removeFaq(idx)}
+                                                className="text-[10px] text-destructive h-6 font-semibold ml-auto block hover:bg-destructive/10">
+                                                Eliminar
                                             </Button>
                                         </div>
                                     ))}
@@ -520,28 +441,29 @@ export default function ComparisonForm({
                     </Accordion>
                 </div>
 
-                {/* SIDEBAR DERECHO CONTROLES (PANEL COMPACTO FLOTANTE STICKY) */}
+                {/* ── SIDEBAR ── */}
                 <aside className="space-y-6 lg:sticky lg:top-6 self-start">
-                    <Card>
-                        <CardHeader className="pb-3 border-b">
+
+                    <Card className="border-border">
+                        <CardHeader className="pb-3 border-b border-border">
                             <div className="flex items-center gap-2">
                                 <Settings className="w-4 h-4 text-muted-foreground" />
                                 <CardTitle className="text-xs uppercase tracking-wider">Visibilidad</CardTitle>
                             </div>
                         </CardHeader>
                         <CardContent className="space-y-3 pt-4">
-                            <div className="flex items-center justify-between p-3 border rounded-xl bg-secondary/40 shadow-inner">
-                                <div className="flex flex-col">
-                                    <span className="text-xs font-bold">Publicar en tienda</span>
-                                    <span className="text-[10px] text-muted-foreground font-medium">Visible a usuarios</span>
+                            <div className="flex items-center justify-between p-3 border border-border rounded-xl bg-muted-neutral">
+                                <div>
+                                    <span className="text-xs font-bold block">Publicar</span>
+                                    <span className="text-[10px] text-muted-foreground">Visible en tienda</span>
                                 </div>
                                 <input type="hidden" name="isActive" value={String(isActive)} />
                                 <Switch checked={isActive} onCheckedChange={setIsActive} className="scale-90" />
                             </div>
-                            <div className="flex items-center justify-between p-3 border rounded-xl bg-secondary/40 shadow-inner">
-                                <div className="flex flex-col">
-                                    <span className="text-xs font-bold">Destacar comparativa</span>
-                                    <span className="text-[10px] text-muted-foreground font-medium">Home y carruseles</span>
+                            <div className="flex items-center justify-between p-3 border border-border rounded-xl bg-muted-neutral">
+                                <div>
+                                    <span className="text-xs font-bold block">Destacar</span>
+                                    <span className="text-[10px] text-muted-foreground">Home y carruseles</span>
                                 </div>
                                 <input type="hidden" name="isFeatured" value={String(isFeatured)} />
                                 <Switch checked={isFeatured} onCheckedChange={setIsFeatured} className="scale-90" />
@@ -549,24 +471,29 @@ export default function ComparisonForm({
                         </CardContent>
                     </Card>
 
-                    <Card>
-                        <CardHeader className="pb-3 border-b">
+                    <Card className="border-border">
+                        <CardHeader className="pb-3 border-b border-border">
                             <div className="flex items-center gap-2">
                                 <Sparkles className="w-4 h-4 text-muted-foreground" />
-                                <CardTitle className="text-xs uppercase tracking-wider">SEO Meta-Tags</CardTitle>
+                                <CardTitle className="text-xs uppercase tracking-wider">SEO</CardTitle>
                             </div>
                         </CardHeader>
                         <CardContent className="space-y-3 pt-4">
                             <div className="space-y-1.5">
-                                <LabelWithTooltip htmlFor="metaTitle" label="Meta Title" tooltip="Título específico para la pestaña de búsqueda (Máx 60 carac.)." />
-                                <Input id="metaTitle" name="metaTitle" maxLength={60} defaultValue={fields?.metaTitle ?? initialData?.metaTitle ?? ""} className="text-xs h-8" placeholder="Título SEO sugerido" />
-                            </div>
-                            <div className="space-y-1.5">
-                                <LabelWithTooltip htmlFor="metaDescription" label="Meta Description" tooltip="Resumen corto que indexará Google en las búsquedas (Máx 160 carac.)." />
-                                <Textarea id="metaDescription" name="metaDescription" maxLength={160} rows={3} defaultValue={fields?.metaDescription ?? initialData?.metaDescription ?? ""} className="text-xs resize-none" placeholder="Descripción resumida..." />
+                                <LabelWithTooltip htmlFor="metaDescription" label="Meta description" tooltip="Máx 160 caracteres. Se genera automáticamente si se deja vacío." />
+                                <Textarea
+                                    id="metaDescription"
+                                    name="metaDescription"
+                                    maxLength={160}
+                                    rows={3}
+                                    defaultValue={fields?.metaDescription ?? initialData?.metaDescription ?? ""}
+                                    className="text-xs resize-none border-border"
+                                    placeholder="Comparativa técnica entre Sony XM5 y Bose QC45..."
+                                />
                             </div>
                         </CardContent>
                     </Card>
+
                 </aside>
             </div>
         </div>

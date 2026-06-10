@@ -6,59 +6,57 @@ import { ComparisonSchema, ComparisonFormValues } from "@/src/schemas/comparison
 import { revalidateTag, revalidatePath } from "next/cache";
 
 export interface ActionResponse {
-    success: boolean;
-    message: string;
-    errors?: Record<string, string[]>;
-    fields?: Partial<ComparisonFormValues>;
+    success:  boolean;
+    message:  string;
+    errors?:  Record<string, string[]>;
+    fields?:  Partial<ComparisonFormValues>;
 }
 
-/**
- * Helper para reconstruir la estructura anidada de FormData de forma segura.
- * Controla explícitamente cuándo convertir a Number para no romper la validación Zod de los strings.
- */
+// ── Parser de FormData ────────────────────────────────────────
+// Reconstruye la estructura anidada desde los campos planos del formulario.
+// Solo convierte a number los campos `scores[N]` — los valores de specs
+// son strings técnicos ("30h", "8 micrófonos") y no deben castearse.
+
 function parseNestedFormData(formData: FormData): Record<string, unknown> {
     const root: Record<string, any> = {};
 
     for (const [flatKey, value] of formData.entries()) {
-        // Ignorar claves internas inyectadas por Next.js / React
         if (flatKey.startsWith("$")) continue;
 
-        const pathParts = flatKey.match(/[^\[\]]+/g);
-        if (!pathParts) continue;
+        const parts = flatKey.match(/[^\[\]]+/g);
+        if (!parts) continue;
 
         let current = root;
 
-        for (let i = 0; i < pathParts.length; i++) {
-            const part = pathParts[i];
-            const isLast = i === pathParts.length - 1;
+        for (let i = 0; i < parts.length; i++) {
+            const part   = parts[i];
+            const isLast = i === parts.length - 1;
 
             if (isLast) {
-                let finalValue: unknown = value;
-                
-                if (value === "true") {
-                    finalValue = true;
-                } else if (value === "false") {
-                    finalValue = false;
-                } else if (typeof value === "string") {
+                let final: unknown = value;
+
+                if (value === "true")       { final = true;  }
+                else if (value === "false") { final = false; }
+                else if (typeof value === "string") {
                     const trimmed = value.trim();
-                    // FIX CRÍTICO: Solo convertimos a número explícitamente si el campo se llama 'score'
-                    // Esto evita que valores técnicos como "120" fallen al esperar un string.
-                    if (part === "score" && trimmed !== "" && !isNaN(Number(trimmed))) {
-                        finalValue = Number(trimmed);
-                    } else {
-                        finalValue = trimmed;
-                    }
+                    // scores son índices numéricos dentro de especificaciones[N][scores][N]
+                    const isScore = part !== "key" && !isNaN(Number(part)) &&
+                        parts[parts.length - 3] === "especificaciones" &&
+                        parts[parts.length - 2] !== "values";
+
+                    final = (isScore && trimmed !== "" && !isNaN(Number(trimmed)))
+                        ? Number(trimmed)
+                        : trimmed;
                 }
 
-                current[part] = finalValue;
+                current[part] = final;
             } else {
-                const nextPart = pathParts[i + 1];
-                const shouldBeArray = !isNaN(Number(nextPart));
+                const next         = parts[i + 1];
+                const nextIsIndex  = !isNaN(Number(next));
 
                 if (current[part] === undefined) {
-                    current[part] = shouldBeArray ? [] : {};
+                    current[part] = nextIsIndex ? [] : {};
                 }
-                
                 current = current[part];
             }
         }
@@ -67,37 +65,34 @@ function parseNestedFormData(formData: FormData): Record<string, unknown> {
     return root;
 }
 
+// ── Actions ───────────────────────────────────────────────────
+
 export async function createComparisonAction(
-    _prevState: ActionResponse,
+    _prev: ActionResponse,
     formData: unknown
 ): Promise<ActionResponse> {
-    const rawFields = formData instanceof FormData ? parseNestedFormData(formData) : formData;
-    const validatedFields = ComparisonSchema.safeParse(rawFields);
-    
-    if (!validatedFields.success) {
+    const raw       = formData instanceof FormData ? parseNestedFormData(formData) : formData;
+    const validated = ComparisonSchema.safeParse(raw);
+
+    if (!validated.success) {
         return {
             success: false,
-            message: "Por favor, revisa los campos en rojo. Hay errores de validación.",
-            errors: validatedFields.error.flatten().fieldErrors,
-            fields: rawFields as Partial<ComparisonFormValues>
+            message: "Revisa los campos marcados en rojo.",
+            errors:  validated.error.flatten().fieldErrors,
+            fields:  raw as Partial<ComparisonFormValues>,
         };
     }
 
     try {
-        await ComparisonService.create(validatedFields.data);
-
+        await ComparisonService.create(validated.data);
         revalidateTag("comparisons");
         revalidatePath("/comparativas");
-
-        return { 
-            success: true, 
-            message: "Comparativa creada y publicada de forma exitosa." 
-        };
-    } catch (error: unknown) {
+        return { success: true, message: "Comparativa creada correctamente." };
+    } catch (error) {
         return {
             success: false,
-            message: error instanceof Error ? error.message : "Ocurrió un error inesperado al procesar la solicitud con el servidor.",
-            fields: rawFields as Partial<ComparisonFormValues>,
+            message: error instanceof Error ? error.message : "Error inesperado al crear la comparativa.",
+            fields:  raw as Partial<ComparisonFormValues>,
         };
     }
 }
@@ -105,68 +100,60 @@ export async function createComparisonAction(
 export async function updateComparisonAction(
     id: string,
     slug: string,
-    _prevState: ActionResponse,
+    _prev: ActionResponse,
     formData: unknown
 ): Promise<ActionResponse> {
-    const rawFields = formData instanceof FormData ? parseNestedFormData(formData) : formData;
-    const validatedFields = ComparisonSchema.safeParse(rawFields);
-    
-    if (!validatedFields.success) {
+    const raw       = formData instanceof FormData ? parseNestedFormData(formData) : formData;
+    const validated = ComparisonSchema.safeParse(raw);
+
+    if (!validated.success) {
         return {
             success: false,
-            message: "Existen errores de validación en los datos ingresados.",
-            errors: validatedFields.error.flatten().fieldErrors,
-            fields: rawFields as Partial<ComparisonFormValues>,
+            message: "Revisa los campos marcados en rojo.",
+            errors:  validated.error.flatten().fieldErrors,
+            fields:  raw as Partial<ComparisonFormValues>,
         };
     }
 
     try {
-        const result = await ComparisonService.update(id, validatedFields.data);
+        const result  = await ComparisonService.update(id, validated.data);
         const newSlug = result.data?.slug || slug;
 
         revalidateTag("comparisons");
         revalidateTag(`comparison-${slug}`);
         revalidatePath("/comparativas");
         revalidatePath(`/comparativas/${slug}`);
-        
+
         if (newSlug !== slug) {
             revalidateTag(`comparison-${newSlug}`);
             revalidatePath(`/comparativas/${newSlug}`);
         }
 
-        return { 
-            success: true, 
-            message: "Comparativa actualizada y sincronizada correctamente." 
-        };
-    } catch (error: unknown) {
+        return { success: true, message: "Comparativa actualizada correctamente." };
+    } catch (error) {
         return {
             success: false,
-            message: error instanceof Error ? error.message : "Fallo al intentar actualizar el registro en la base de datos.",
-            fields: rawFields as Partial<ComparisonFormValues>,
+            message: error instanceof Error ? error.message : "Error inesperado al actualizar la comparativa.",
+            fields:  raw as Partial<ComparisonFormValues>,
         };
     }
 }
 
 export async function deleteComparisonAction(
-    id: string, 
+    id: string,
     slug: string,
-    _prevState: ActionResponse
+    _prev: ActionResponse
 ): Promise<ActionResponse> {
     try {
         await ComparisonService.delete(id);
-
         revalidateTag("comparisons");
         revalidateTag(`comparison-${slug}`);
         revalidatePath("/comparativas");
-
-        return { 
-            success: true, 
-            message: "La comparativa ha sido dada de baja del catálogo." 
-        };
-    } catch (error: unknown) {
+        return { success: true, message: "Comparativa eliminada correctamente." };
+    } catch (error) {
         return {
             success: false,
-            message: error instanceof Error ? error.message : "Fallo crítico al intentar eliminar la comparativa."
+            message: error instanceof Error ? error.message : "Error inesperado al eliminar la comparativa.",
         };
     }
 }

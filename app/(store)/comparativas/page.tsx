@@ -6,6 +6,7 @@ import { ComparisonService } from "@/src/services/comparison-service";
 import { Comparison } from "@/src/schemas/comparison.schema";
 import { H1, H2, P } from "@/components/ui/Typography";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
+import { Badge } from "@/components/ui/badge";
 
 // ─────────────────────────────────────────────────────────────
 // METADATA (SEO)
@@ -20,6 +21,7 @@ export const metadata: Metadata = {
         type: "website",
     },
 };
+
 // ─────────────────────────────────────────────────────────────
 // COMPONENT
 // ─────────────────────────────────────────────────────────────
@@ -38,7 +40,7 @@ export default async function ComparisonsPage() {
     return (
         <main className="min-h-screen bg-background text-foreground antialiased max-w-screen-2xl mx-auto px-4 md:px-8 py-12 space-y-10">
             {/* Cabecera de la sección */}
-            <header className="space-y-4 ">
+            <header className="space-y-4">
                 <Breadcrumbs
                     items={breadcrumbItems}
                     current="Comparativas"
@@ -49,12 +51,12 @@ export default async function ComparisonsPage() {
                     <span className="text-xs font-bold tracking-widest text-action-cta uppercase block">
                         Centro de Análisis
                     </span>
-                    <H1>
+                    <H1 className="text-primary">
                         Comparativas a fondo
                     </H1>
                 </div>
 
-                <P>
+                <P className="text-muted-foreground">
                     Evaluamos minuciosamente el hardware, rendimiento y valor comercial de cada dispositivo para asistirte en una elección precisa y transparente.
                 </P>
             </header>
@@ -68,32 +70,29 @@ export default async function ComparisonsPage() {
                         <Link
                             key={item._id}
                             href={`/comparativas/${item.slug}`}
-                            className="group flex flex-col justify-between p-6 rounded-xl border border-border bg-background hover:border-border-hover transition-colors duration-300 outline-none"
+                            className="group flex flex-col justify-between p-6 rounded-xl border border-border bg-card hover:border-border-hover transition-colors duration-300 outline-none"
                         >
                             <div className="space-y-4">
-                                <div className="space-y-1">
+                                <div className="space-y-2">
                                     {item.isFeatured && (
-                                        <span>
+                                        <Badge variant="secondary" className="bg-action-cta text-white hover:bg-action-cta-hover border-none">
                                             Destacado
-                                        </span>
+                                        </Badge>
                                     )}
-                                    <H2>
+                                    <H2 className="text-xl font-bold tracking-tight text-primary">
                                         {item.title}
                                     </H2>
-
                                 </div>
-
-
                             </div>
 
-                            <div className="text-xs font-bold tracking-wide text-foreground mt-6 pt-4 border-t border-border group-hover:text-action-cta transition-colors">
+                            <div className="text-xs font-bold tracking-wide text-primary mt-6 pt-4 border-t border-border group-hover:text-action-cta transition-colors">
                                 Ver análisis técnico
                             </div>
                         </Link>
                     ))}
                 </div>
             ) : (
-                <div className="flex flex-col items-center justify-center py-20 text-center space-y-2 rounded-xl border border-dashed border-border bg-background-secondary">
+                <div className="flex flex-col items-center justify-center py-20 text-center space-y-2 rounded-xl border border-dashed border-border bg-muted-neutral">
                     <p className="text-sm font-bold text-foreground">No se encontraron comparativas</p>
                     <p className="text-xs text-muted-foreground">Estamos preparando nuevos análisis técnicos. Regresa pronto.</p>
                 </div>

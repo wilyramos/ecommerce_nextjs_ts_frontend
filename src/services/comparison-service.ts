@@ -6,88 +6,72 @@ import { verifySession } from "../auth/dal";
 const API_URL = process.env.API_URL || "http://localhost:4000/api";
 
 export class ComparisonService {
-    /**
-     * Obtiene el listado de comparativas con filtros (público o administrativo).
-     */
-    static async getAll(filters: { isActive?: boolean; isFeatured?: boolean; search?: string; limit?: number; page?: number } = {}) {
+
+    static async getAll(filters: {
+        isActive?:   boolean;
+        isFeatured?: boolean;
+        search?:     string;
+        limit?:      number;
+        page?:       number;
+    } = {}) {
         const params = new URLSearchParams();
-        if (filters.isActive !== undefined) params.append("isActive", String(filters.isActive));
+        if (filters.isActive   !== undefined) params.append("isActive",   String(filters.isActive));
         if (filters.isFeatured !== undefined) params.append("isFeatured", String(filters.isFeatured));
-        if (filters.search) params.append("search", filters.search);
-        if (filters.limit) params.append("limit", String(filters.limit));
-        if (filters.page) params.append("page", String(filters.page));
+        if (filters.search)                   params.append("search",     filters.search);
+        if (filters.limit)                    params.append("limit",      String(filters.limit));
+        if (filters.page)                     params.append("page",       String(filters.page));
 
         const res = await fetch(`${API_URL}/comparisons?${params.toString()}`, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-            next: { tags: ["comparisons"] }
+            next: { tags: ["comparisons"] },
         });
 
         if (!res.ok) throw new Error("Error al obtener las comparativas");
-        return await res.json();
+        return res.json();
     }
 
-    /**
-     * Recupera una comparativa específica mediante su slug con soporte para gráficos y CTA comerciales.
-     */
-    static async getBySlug(slug: string, isPublic: boolean = true): Promise<{ status: string; data: Comparison | null }> {
-        const res = await fetch(`${API_URL}/comparisons/slug/${slug}?isPublic=${isPublic}`, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-            next: { tags: [`comparison-${slug}`], revalidate: 3600 }
+    static async getBySlug(slug: string): Promise<{ status: string; data: Comparison | null }> {
+        const res = await fetch(`${API_URL}/comparisons/slug/${slug}`, {
+            next: { tags: [`comparison-${slug}`], revalidate: 3600 },
         });
 
         if (res.status === 404) return { status: "not_found", data: null };
         if (!res.ok) throw new Error("Error al obtener la comparativa");
-
-        return await res.json();
+        return res.json();
     }
 
-    /**
-     * Recupera una comparativa específica mediante su ID único (Para administración).
-     */
     static async getById(id: string): Promise<{ status: string; data: Comparison }> {
         const session = await verifySession();
         const res = await fetch(`${API_URL}/comparisons/${id}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${session.token}`
-            },
-            next: { tags: [`comparison-${id}`] }
+            headers: { Authorization: `Bearer ${session.token}` },
+            next:    { tags: [`comparison-${id}`] },
         });
 
         if (!res.ok) throw new Error("Comparativa no encontrada");
-        return await res.json();
+        return res.json();
     }
 
-    /**
-     * Obtiene comparativas vinculadas a un producto específico para enlazado interno SEO e impacto comercial.
-     */
-    static async getRelatedToProduct(productId: string, limit?: number): Promise<{ status: string; data: Comparison[] }> {
+    static async getRelatedToProduct(
+        productId: string,
+        limit?: number
+    ): Promise<{ status: string; data: Comparison[] }> {
         const params = limit ? `?limit=${limit}` : "";
         const res = await fetch(`${API_URL}/comparisons/product/${productId}${params}`, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-            next: { tags: [`product-comparisons-${productId}`] }
+            next: { tags: [`product-comparisons-${productId}`] },
         });
 
         if (!res.ok) throw new Error("Error al obtener comparativas del producto");
-        return await res.json();
+        return res.json();
     }
 
-    /**
-     * Envía la petición de creación al backend resolviendo la sesión internamente.
-     */
     static async create(data: ComparisonFormValues) {
         const session = await verifySession();
         const res = await fetch(`${API_URL}/comparisons`, {
-            method: "POST",
+            method:  "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${session.token}`
+                Authorization:  `Bearer ${session.token}`,
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
         });
 
         const result = await res.json();
@@ -95,18 +79,15 @@ export class ComparisonService {
         return result;
     }
 
-    /**
-     * Envía la petición de actualización al backend resolviendo la sesión internamente.
-     */
     static async update(id: string, data: Partial<ComparisonFormValues>) {
         const session = await verifySession();
         const res = await fetch(`${API_URL}/comparisons/${id}`, {
-            method: "PUT",
+            method:  "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${session.token}`
+                Authorization:  `Bearer ${session.token}`,
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
         });
 
         const result = await res.json();
@@ -114,16 +95,11 @@ export class ComparisonService {
         return result;
     }
 
-    /**
-     * Ejecuta el borrado lógico en el backend resolviendo la sesión internamente.
-     */
     static async delete(id: string) {
         const session = await verifySession();
         const res = await fetch(`${API_URL}/comparisons/${id}`, {
-            method: "DELETE",
-            headers: {
-                "Authorization": `Bearer ${session.token}`
-            }
+            method:  "DELETE",
+            headers: { Authorization: `Bearer ${session.token}` },
         });
 
         const result = await res.json();

@@ -1,62 +1,62 @@
 // File: frontend/components/store/comparisons/FaqSection.tsx
-import { ComparisonFAQ } from "@/src/schemas/comparison.schema";
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "@/components/ui/accordion";
-import { MessageCircleQuestion } from "lucide-react";
+"use client";
 
-interface FaqSectionProps {
+import { useState } from "react";
+import { ComparisonFAQ } from "@/src/schemas/comparison.schema";
+import { H2 } from "@/components/ui/Typography";
+import { ChevronDown } from "lucide-react";
+
+interface Props {
     items: ComparisonFAQ[];
 }
 
-export default function FaqSection({ items }: FaqSectionProps) {
-    if (!items || items.length === 0) return null;
+export default function FaqSection({ items }: Props) {
+    const [open, setOpen] = useState<number | null>(null);
 
-    const jsonLd = {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        mainEntity: items.map((item) => ({
-            "@type": "Question",
-            name: item.pregunta,
-            acceptedAnswer: { "@type": "Answer", text: item.respuesta },
-        })),
-    };
+    if (!items.length) return null;
 
     return (
-        <section className="space-y-4" aria-label="Preguntas frecuentes">
+        <section className="space-y-4">
+            {/* JSON-LD para Google featured snippets */}
             <script
                 type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type":    "FAQPage",
+                        mainEntity: items.map(item => ({
+                            "@type":          "Question",
+                            name:             item.pregunta,
+                            acceptedAnswer:   { "@type": "Answer", text: item.respuesta },
+                        })),
+                    }),
+                }}
             />
-
-            <div className="flex items-center gap-3 border-b border-border pb-3">
-                <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-muted-neutral border border-border text-muted-foreground shrink-0">
-                    <MessageCircleQuestion className="w-4 h-4" />
-                </div>
-                <h2 className="text-lg md:text-xl font-bold tracking-tight text-primary">
-                    Respuestas Rápidas Frecuentes
-                </h2>
-            </div>
-
-            <Accordion type="single" collapsible className="w-full divide-y divide-border border border-border rounded-xl bg-card px-4">
-                {items.map((item, idx) => (
-                    <AccordionItem
-                        key={idx}
-                        value={`faq-${idx}`}
-                        className="border-0"
-                    >
-                        <AccordionTrigger className="text-left text-sm font-semibold text-foreground py-3.5 hover:no-underline hover:text-primary transition-colors">
-                            {item.pregunta}
-                        </AccordionTrigger>
-                        <AccordionContent className="text-xs md:text-sm leading-relaxed text-muted-foreground pb-4 whitespace-pre-line">
-                            {item.respuesta}
-                        </AccordionContent>
-                    </AccordionItem>
+            <H2 className="text-xl font-bold tracking-tight border-b border-border pb-2 text-primary">
+                Preguntas frecuentes
+            </H2>
+            <div className="divide-y divide-border rounded-xl border border-border bg-card overflow-hidden">
+                {items.map((item, i) => (
+                    <div key={i}>
+                        <button
+                            className="w-full flex items-center justify-between px-5 py-4 text-left text-sm font-medium hover:bg-muted-neutral transition-colors text-foreground"
+                            onClick={() => setOpen(open === i ? null : i)}
+                            aria-expanded={open === i}
+                        >
+                            <span>{item.pregunta}</span>
+                            <ChevronDown
+                                className="w-4 h-4 text-muted-foreground shrink-0 transition-transform"
+                                style={{ transform: open === i ? "rotate(180deg)" : "rotate(0deg)" }}
+                            />
+                        </button>
+                        {open === i && (
+                            <div className="px-5 pb-4 text-sm text-muted-foreground leading-relaxed">
+                                {item.respuesta}
+                            </div>
+                        )}
+                    </div>
                 ))}
-            </Accordion>
+            </div>
         </section>
     );
 }

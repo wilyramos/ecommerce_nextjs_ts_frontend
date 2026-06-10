@@ -393,7 +393,7 @@ export default function ProductDetails({ producto }: Props) {
                         <div className="flex items-center justify-between py-3">
                             <div className="flex items-center gap-2.5 text-muted-foreground">
                                 <CreditCard className="w-4 h-4 shrink-0" />
-                                <span className="hidden md:text-xs font-semibold">Medios de pago:</span>
+                                <span className="hidden md:block md:text-xs font-semibold">Medios de pago:</span>
                             </div>
                             <div className="">
                                 <PaymentMethods />

@@ -1,4 +1,5 @@
 // File: frontend/app/(store)/comparativas/[slug]/page.tsx
+
 import { Metadata } from "next";
 import { ComparisonService } from "@/src/services/comparison-service";
 import { Comparison } from "@/src/schemas/comparison.schema";
@@ -6,9 +7,8 @@ import { H1, H2 } from "@/components/ui/Typography";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import ProductGallery from "@/components/store/comparisons/ProductGallery";
 import ComparisonTable from "@/components/store/comparisons/ComparisonTable";
-import ComparisonCharts from "@/components/store/comparisons/ComparisonCharts";
+import ComparisonRadar from "@/components/store/comparisons/ComparisonRadar";
 import QuickVerdict from "@/components/store/comparisons/QuickVerdict";
-import EditorialAnalysis from "@/components/store/comparisons/EditorialAnalysis";
 import FaqSection from "@/components/store/comparisons/FaqSection";
 import { notFound } from "next/navigation";
 
@@ -18,55 +18,37 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params;
-
     try {
-        const res = await ComparisonService.getBySlug(slug, true);
-        if (!res?.data) {
-            return { title: "Comparativa no encontrada" };
-        }
-        const comparison = res.data as Comparison;
-
-        const title = comparison.metaTitle || comparison.title;
-        const description = comparison.metaDescription || comparison.veredictoRapido;
-
+        const res = await ComparisonService.getBySlug(slug);
+        if (!res?.data) return { title: "Comparativa no encontrada" };
+        const c = res.data as Comparison;
+        const title = c.title;
+        const description = c.metaDescription || c.veredictoRapido;
         return {
             title,
             description,
-            openGraph: {
-                title,
-                description,
-                type: "article",
-                url: `/comparativas/${slug}`,
-            },
-            twitter: {
-                card: "summary_large_image",
-                title,
-                description,
-            }
+            openGraph: { title, description, type: "article", url: `/comparativas/${slug}` },
+            twitter: { card: "summary_large_image", title, description },
         };
-    } catch (error) {
-        console.error("Error generating metadata:", error);
+    } catch {
         return {};
     }
 }
 
 export default async function ComparisonDetailPage({ params }: Props) {
     const { slug } = await params;
-    const res = await ComparisonService.getBySlug(slug, true);
+    const res = await ComparisonService.getBySlug(slug);
+    if (!res?.data) notFound();
 
-    if (!res?.data) {
-        notFound();
-    }
     const comparison = res.data as Comparison;
-    const breadcrumbItems = [{ label: "Comparativas", href: "/comparativas" }];
 
     return (
-        <article className="min-h-screen bg-background text-foreground antialiased max-w-screen-2xl mx-auto px-4 md:px-8 py-12 space-y-14">
+        <article className="min-h-screen bg-background text-foreground antialiased max-w-screen-xl mx-auto px-4 md:px-8 py-12 space-y-14">
 
-            {/* 1 · Navegación y título */}
+            {/* 1 · Título */}
             <header className="space-y-4">
                 <Breadcrumbs
-                    items={breadcrumbItems}
+                    items={[{ label: "Comparativas", href: "/comparativas" }]}
                     current={comparison.title}
                     className="p-0 text-muted-foreground"
                 />
@@ -76,34 +58,30 @@ export default async function ComparisonDetailPage({ params }: Props) {
             </header>
 
             {/* 2 · Galería de productos */}
-            <section className="max-w-7xl mx-auto">
+            <section>
                 <ProductGallery products={comparison.products} />
             </section>
 
-            {/* 3 · Veredicto Rápido de Venta & Caja Captación Leads */}
-            <section className="grid grid-cols-1 gap-6 items-stretch">
-                <div className="flex">
-                    <QuickVerdict content={comparison.veredictoRapido} />
-                </div>
+            {/* 3 · Veredicto rápido */}
+            <section>
+                <QuickVerdict content={comparison.veredictoRapido} />
             </section>
 
-            {/* 4 · Gráficos visuales interactivos */}
-            <section className="space-y-6 bg-muted-neutral p-6 md:p-8 rounded-2xl border border-border">
-                <div className="space-y-1">
-                    <H2 className="text-xl md:text-2xl font-bold tracking-tight text-primary">
-                        Métricas y Balance de Rendimiento
-                    </H2>
-                </div>
-                <ComparisonCharts
-                    analisisEditorial={comparison.analisisEditorial}
+            {/* 4 · Radar */}
+            <section className="space-y-4">
+                <H2 className="text-xl font-bold tracking-tight border-b border-border pb-2 text-primary">
+                    Análisis visual comparativo
+                </H2>
+                <ComparisonRadar
+                    specs={comparison.especificaciones}
                     products={comparison.products}
                 />
             </section>
 
-            {/* 5 · Matriz técnica limpia */}
+            {/* 5 · Tabla técnica */}
             <section className="space-y-4">
-                <H2 className="text-xl md:text-2xl font-bold tracking-tight border-b border-border pb-2 text-primary">
-                    Ficha Técnica Comparativa
+                <H2 className="text-xl font-bold tracking-tight border-b border-border pb-2 text-primary">
+                    Especificaciones técnicas
                 </H2>
                 <ComparisonTable
                     products={comparison.products}
@@ -111,19 +89,11 @@ export default async function ComparisonDetailPage({ params }: Props) {
                 />
             </section>
 
-            {/* 6 · Análisis detallado de Pros y Contras por producto */}
-            <section className="space-y-6">
-                <H2 className="text-xl md:text-2xl font-bold tracking-tight border-b border-border pb-2 text-primary">
-                    Ventajas y Desventajas de cada Opción
-                </H2>
-                <EditorialAnalysis
-                    items={comparison.analisisEditorial}
-                    products={comparison.products}
-                />
-            </section>
+            {/* 6 · FAQ */}
+            {comparison.faqItems.length > 0 && (
+                <FaqSection items={comparison.faqItems} />
+            )}
 
-            {/* 7 · Preguntas frecuentes */}
-            <FaqSection items={comparison.faqItems} />
         </article>
     );
 }
