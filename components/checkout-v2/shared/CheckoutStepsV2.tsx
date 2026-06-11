@@ -5,8 +5,8 @@ import Link from 'next/link'
 import { cn } from '@/lib/utils'
 
 const STEPS = [
-    { label: 'Datos y envío', path: '/checkout-v2' },
-    { label: 'Pago',          path: '/checkout-v2/payment' },
+    { label: 'Datos y envío', path: '/checkout' },
+    { label: 'Pago',          path: '/checkout/payment' },
 ]
 
 export default function CheckoutStepsV2() {
@@ -23,13 +23,13 @@ export default function CheckoutStepsV2() {
                     <div className={cn(
                         'flex items-center gap-1.5 text-[11px] font-semibold transition-colors duration-200',
                         isActive && 'text-foreground',
-                        isDone   && 'text-muted-foreground hover:text-foreground cursor-pointer',
+                        isDone   && 'text-muted-foreground transition-colors',
                         !isActive && !isDone && 'text-muted-foreground/30 pointer-events-none'
                     )}>
                         <span className={cn(
                             'w-[18px] h-[18px] rounded-full flex items-center justify-center shrink-0 border transition-all duration-200',
                             isActive && 'bg-foreground border-foreground text-background text-[9px] font-bold',
-                            isDone   && 'bg-action-cta border-action-cta',
+                            isDone   && 'bg-action-cta border-action-cta group-hover:opacity-90',
                             !isActive && !isDone && 'border-border'
                         )}>
                             {isDone ? (
@@ -46,7 +46,6 @@ export default function CheckoutStepsV2() {
                             )}
                         </span>
 
-                        {/* Label: siempre visible en activo, oculto en móvil para el resto */}
                         <span className={cn(isActive ? 'inline' : 'hidden sm:inline')}>
                             {step.label}
                         </span>
@@ -55,10 +54,16 @@ export default function CheckoutStepsV2() {
 
                 return (
                     <div key={step.path} className="flex items-center">
-                        {isDone
-                            ? <Link href={step.path} className="rounded outline-none focus-visible:ring-2 focus-visible:ring-ring">{content}</Link>
-                            : content
-                        }
+                        {isDone ? (
+                            <Link 
+                                href={step.path} 
+                                className="group rounded outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer hover:text-foreground transition-colors"
+                            >
+                                {content}
+                            </Link>
+                        ) : (
+                            content
+                        )}
 
                         {index < STEPS.length - 1 && (
                             <div className="mx-2.5 flex items-center gap-0.5" aria-hidden>
