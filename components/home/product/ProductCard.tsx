@@ -251,17 +251,18 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                     </h3>
 
                     {/* Precio + Sin stock */}
+                    {/* Precio + Sin stock */}
                     <div className="flex items-end justify-between gap-2 mt-0.5">
-                        <div className="flex flex-col leading-none gap-0.5">
+                        <div className="flex items-baseline gap-1.5">
+                            <span className="text-sm md:text-base text-foreground font-medium leading-none">
+                                <span className="text-[11px] md:text-[13px] text-muted-foreground font-light">S/</span>
+                                {" "}{precio.toFixed(2)}
+                            </span>
                             {(product.precioComparativo ?? 0) > 0 && (
                                 <span className="text-[10px] md:text-xs text-muted-foreground line-through">
                                     S/ {product.precioComparativo!.toFixed(2)}
                                 </span>
                             )}
-                            <span className="text-sm md:text-base text-foreground font-medium leading-none">
-                                <span className="text-[11px] md:text-[13px] text-muted-foreground font-light">S/</span>
-                                {" "}{precio.toFixed(2)}
-                            </span>
                         </div>
 
                         {stock <= 0 && (
