@@ -1,5 +1,3 @@
-// File: frontend/components/admin/products/ProductsTable.tsx
-
 "use client";
 
 import Link from "next/link";
@@ -32,7 +30,11 @@ import {
     SelectItem,
 } from "@/components/ui/select";
 
-export default function ProductsTable({ products, categories, brands }: {
+export default function ProductsTable({
+    products,
+    categories,
+    brands,
+}: {
     products: ProductsAPIResponse | null;
     categories: CategoryListResponse;
     brands: Brand[];
@@ -45,8 +47,6 @@ export default function ProductsTable({ products, categories, brands }: {
     const stockSort = useColumnFilter("stockSort");
     const brandFilter = useColumnFilter("brand");
     const activeFilter = useColumnFilter("isActive");
-    const nuevoFilter = useColumnFilter("esNuevo");
-    const destacadoFilter = useColumnFilter("esDestacado");
     const categoryFilter = useColumnFilter("category");
 
     const noProducts = !products || products.products.length === 0;
@@ -59,8 +59,6 @@ export default function ProductsTable({ products, categories, brands }: {
             stockSort,
             brandFilter,
             activeFilter,
-            nuevoFilter,
-            destacadoFilter,
             categoryFilter,
         ].forEach((f) => f.reset());
 
@@ -69,6 +67,7 @@ export default function ProductsTable({ products, categories, brands }: {
 
     return (
         <div className="w-full h-full text-foreground">
+            {/* ── Clear filters ── */}
             <div className="flex justify-end mb-2 pr-1">
                 <button
                     onClick={clearFilters}
@@ -81,20 +80,25 @@ export default function ProductsTable({ products, categories, brands }: {
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="w-full">
+                        {/* Nombre */}
+                        <TableHead className="w-full min-w-[200px]">
                             <Input
                                 placeholder="Nombre"
                                 value={nameFilter.value}
                                 onChange={(e) => nameFilter.setValue(e.target.value)}
                             />
                         </TableHead>
-                        <TableHead className="w-full">
+
+                        {/* SKU */}
+                        <TableHead className="w-[120px]">
                             <Input
                                 placeholder="SKU"
                                 value={skuFilter.value}
                                 onChange={(e) => skuFilter.setValue(e.target.value)}
                             />
                         </TableHead>
+
+                        {/* Precio */}
                         <TableHead className="w-[90px]">
                             <Select
                                 value={priceSort.value || undefined}
@@ -109,6 +113,8 @@ export default function ProductsTable({ products, categories, brands }: {
                                 </SelectContent>
                             </Select>
                         </TableHead>
+
+                        {/* Stock */}
                         <TableHead className="w-[90px]">
                             <Select
                                 value={stockSort.value || undefined}
@@ -123,6 +129,8 @@ export default function ProductsTable({ products, categories, brands }: {
                                 </SelectContent>
                             </Select>
                         </TableHead>
+
+                        {/* Marca */}
                         <TableHead className="w-[130px]">
                             <Select
                                 value={brandFilter.value || undefined}
@@ -140,7 +148,9 @@ export default function ProductsTable({ products, categories, brands }: {
                                 </SelectContent>
                             </Select>
                         </TableHead>
-                        <TableHead className="w-[130px]">
+
+                        {/* Categoría */}
+                        <TableHead className="w-[140px]">
                             <Select
                                 value={categoryFilter.value || undefined}
                                 onValueChange={categoryFilter.setValue}
@@ -157,7 +167,9 @@ export default function ProductsTable({ products, categories, brands }: {
                                 </SelectContent>
                             </Select>
                         </TableHead>
-                        <TableHead className="w-[60px]">
+
+                        {/* Estado */}
+                        <TableHead className="w-[90px]">
                             <Select
                                 value={activeFilter.value || undefined}
                                 onValueChange={activeFilter.setValue}
@@ -172,8 +184,8 @@ export default function ProductsTable({ products, categories, brands }: {
                             </Select>
                         </TableHead>
 
-
-                        <TableHead className="w-[80px] text-center">
+                        {/* Acciones */}
+                        <TableHead className="w-[70px] text-center">
                             Acciones
                         </TableHead>
                     </TableRow>
@@ -183,8 +195,8 @@ export default function ProductsTable({ products, categories, brands }: {
                     {noProducts ? (
                         <TableRow>
                             <TableCell
-                                colSpan={10}
-                                className="text-center py-8 text-muted-foreground font-semibold"
+                                colSpan={8}
+                                className="text-center py-10 text-muted-foreground font-semibold"
                             >
                                 No se encontraron productos.
                             </TableCell>
@@ -192,6 +204,7 @@ export default function ProductsTable({ products, categories, brands }: {
                     ) : (
                         products.products.map((p) => (
                             <TableRow key={p._id}>
+                                {/* Nombre + imagen */}
                                 <TableCell className="font-bold">
                                     <Link
                                         href={`/admin/products/${p._id}`}
@@ -214,7 +227,7 @@ export default function ProductsTable({ products, categories, brands }: {
                                                 No img
                                             </div>
                                         )}
-                                        <span className="line-clamp-2 max-w-[180px] leading-snug">
+                                        <span className="line-clamp-2  leading-snug">
                                             {p.isFrontPage && (
                                                 <span className="text-[10px] font-bold text-action-cta mr-1 tracking-wide">
                                                     [FRONT]
@@ -225,44 +238,67 @@ export default function ProductsTable({ products, categories, brands }: {
                                     </Link>
                                 </TableCell>
 
-                                <TableCell className="font-mono text-muted-foreground">
+                                {/* SKU */}
+                                <TableCell className="font-mono text-[12px] text-muted-foreground">
                                     {p.sku}
                                 </TableCell>
 
-                                <TableCell className="font-bold">
+                                {/* Precio */}
+                                <TableCell className="font-bold tabular-nums">
                                     S/ {p.precio?.toFixed(2)}
                                 </TableCell>
 
-                                <TableCell className="font-bold">
-                                    {p.stock}
+                                {/* Stock */}
+                                <TableCell>
+                                    <span
+                                        className={
+                                            p.stock !== undefined
+                                                ? p.stock === 0
+                                                    ? "font-bold text-destructive"
+                                                    : p.stock <= 5
+                                                        ? "font-bold text-warning"
+                                                        : "font-bold"
+                                                : "font-bold"
+                                        }
+                                    >
+                                        {p.stock ?? "-"}
+                                    </span>
                                 </TableCell>
 
-                                <TableCell className="text-muted-foreground">
+                                {/* Marca */}
+                                <TableCell className="text-muted-foreground text-[13px]">
                                     {p.brand?.nombre || "—"}
                                 </TableCell>
 
-                                <TableCell className="text-muted-foreground">
-                                    —
+                                {/* Categoría */}
+                                <TableCell className="text-muted-foreground text-[13px]">
+                                    {"-"}
                                 </TableCell>
 
                                 {/* Estado */}
                                 <TableCell>
                                     <div className="flex justify-center">
                                         {p.isActive ? (
-                                            <Check className="w-4 h-4 text-success" strokeWidth={3} />
+                                            <Check
+                                                className="w-4 h-4 text-success"
+                                                strokeWidth={3}
+                                            />
                                         ) : (
-                                            <X className="w-4 h-4 text-destructive" strokeWidth={3} />
+                                            <X
+                                                className="w-4 h-4 text-destructive"
+                                                strokeWidth={3}
+                                            />
                                         )}
                                     </div>
                                 </TableCell>
 
-
-
-
                                 {/* Acciones */}
                                 <TableCell>
                                     <div className="flex justify-center">
-                                        <ProductMenuAction productId={p._id} productSlug={p.slug} />
+                                        <ProductMenuAction
+                                            productId={p._id}
+                                            productSlug={p.slug}
+                                        />
                                     </div>
                                 </TableCell>
                             </TableRow>
