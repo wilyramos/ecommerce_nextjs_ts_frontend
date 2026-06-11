@@ -20,9 +20,12 @@ export default function FeaturedCollectionsSection({ section, columns }: Feature
                 }}
             >
                 {section.blocks.map((block: SectionBlock, idx) => {
+                    // Evaluación estricta: Solo es un enlace válido si existe, no es nulo y no es un string vacío
+                    const hasValidLink = typeof block.linkTo === "string" && block.linkTo.trim() !== "";
+
                     const FeaturedBlockContent = (
                         <div
-                            className="group relative block overflow-hidden "
+                            className="group relative block overflow-hidden"
                             style={{
                                 aspectRatio: columns <= 2 ? "16/7" : columns === 3 ? "4/3" : "1/1"
                             }}
@@ -42,7 +45,7 @@ export default function FeaturedCollectionsSection({ section, columns }: Feature
                             )}
 
                             {/* Gradiente sutil para legibilidad del texto */}
-                            <div className="absolute inset-0 bg-gradient-to-t " />
+                            <div className="absolute inset-0 bg-gradient-to-t" />
 
                             <div className="absolute inset-x-0 bottom-0 p-6 flex flex-col items-start gap-1">
                                 {block.title && (
@@ -55,18 +58,28 @@ export default function FeaturedCollectionsSection({ section, columns }: Feature
                                         {block.subtitle}
                                     </p>
                                 )}
-
-
                             </div>
                         </div>
                     );
 
-                    return block.linkTo ? (
-                        <Link key={block._id || idx} href={block.linkTo} className="block outline-none focus-visible:ring-2 focus-visible:ring-action-cta rounded-[var(--radius-lg)]">
-                            {FeaturedBlockContent}
-                        </Link>
-                    ) : (
-                        <div key={block._id || idx} className="block">
+                    // Al usar prefijos diferentes en los keys para Link y div eliminamos cualquier conflicto de hidratación de React
+                    if (hasValidLink) {
+                        return (
+                            <Link
+                                key={`link-${block._id || idx}`}
+                                href={block.linkTo!.trim()}
+                                className="block outline-none focus-visible:ring-2 focus-visible:ring-action-cta rounded-[var(--radius-lg)]"
+                            >
+                                {FeaturedBlockContent}
+                            </Link>
+                        );
+                    }
+
+                    return (
+                        <div
+                            key={`static-${block._id || idx}`}
+                            className="block rounded-[var(--radius-lg)] overflow-hidden"
+                        >
                             {FeaturedBlockContent}
                         </div>
                     );

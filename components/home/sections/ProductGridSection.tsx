@@ -33,7 +33,7 @@ export default function ProductGridSection({ section, columns }: ProductGridSect
                             <Link
                                 key={block._id || idx}
                                 href={block.linkTo || "#"}
-                                className="group block aspect-square  overflow-hidden relative shadow-xs border border-border"
+                                className="group block aspect-square  overflow-hidden relative "
                             >
                                 <Image
                                     src={block.imageUrl}
