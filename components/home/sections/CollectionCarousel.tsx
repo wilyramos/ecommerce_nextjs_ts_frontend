@@ -24,6 +24,8 @@ function toApiProduct(p: CollectionProduct): TApiProduct {
         isActive: true,
         rating: 0,
         numReviews: 0,
+        brand: p.brand,
+        atributos: p.atributos ?? {},
     } as TApiProduct;
 }
 

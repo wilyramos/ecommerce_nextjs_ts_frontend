@@ -31,6 +31,14 @@ export const collectionProductSchema = z.object({
     slug: z.string(),
     categoria: z.any().optional(),
     stock: z.number().optional(),
+    brand: z.union([
+        z.string(),
+        z.object({
+            _id: z.string(),
+            nombre: z.string(),
+        }).passthrough()
+    ]).optional().nullable(),
+    atributos: z.record(z.string(), z.string()).default({}),
 });
 
 // ─── COLECCIÓN SCHEMA BASE (Lecturas de la API) ──────────────────────────────

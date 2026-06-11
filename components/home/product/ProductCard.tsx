@@ -33,6 +33,19 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
         return Array.from(colors);
     }, [product]);
 
+    // --- NUEVO (hasta 30 días desde createdAt) ---
+    const isNew = useMemo(() => {
+        if (!product.createdAt) return false;
+        const days = (Date.now() - new Date(product.createdAt).getTime()) / (1000 * 60 * 60 * 24);
+        return days <= 30;
+    }, [product.createdAt]);
+
+    // --- DESCUENTO ---
+    const discountPct =
+        product.precioComparativo && product.precioComparativo > precio
+            ? Math.round(((product.precioComparativo - precio) / product.precioComparativo) * 100)
+            : 0;
+
     useEffect(() => {
         const filterColor = searchParams.get("Color") || searchParams.get("color");
         const mainColor = product.atributos?.Color || product.atributos?.color;
@@ -105,11 +118,6 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
         setStartX(null);
     };
 
-    const discountPct =
-        product.precioComparativo && product.precioComparativo > precio
-            ? Math.round(((product.precioComparativo - precio) / product.precioComparativo) * 100)
-            : 0;
-
     return (
         <div
             className="group relative flex flex-col bg-background"
@@ -120,16 +128,16 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
         >
-            {/* Hover overlay — fuera del Link para no interferir con clicks */}
+
+            {/* Hover overlay */}
             <div className="absolute inset-0 bg-foreground opacity-0 group-hover:opacity-[0.04] transition-opacity duration-300 pointer-events-none z-0" />
 
-            <Link href={`/productos/${product.slug}`} className="relative flex flex-col h-full">
+            <Link href={`/productos/${product.slug}`} className="relative z-10 flex flex-col h-full">
 
                 {/* ── IMAGEN ── */}
                 <div className="relative w-full aspect-square bg-background-secondary overflow-hidden">
                     {previewImages.length > 0 ? (
                         <>
-                            {/* Carrusel */}
                             <div
                                 className="flex w-full h-full transition-transform duration-500 ease-in-out"
                                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -158,7 +166,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                                 })}
                             </div>
 
-                            {/* Controles de navegación */}
+                            {/* Controles navegación */}
                             {previewImages.length > 1 && (
                                 <>
                                     <button
@@ -177,7 +185,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                                     </button>
 
                                     {/* Contador */}
-                                    <div className="absolute bottom-2 right-2 px-1.5 py-0.5 bg-white/90 border border-border/30 shadow-xs pointer-events-none md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
+                                    <div className="absolute bottom-2 right-2 px-1 flex items-center justify-center py-0.5 bg-white/90 border border-border/30 shadow-xs pointer-events-none md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                                         <span className="text-[9px] font-semibold text-foreground/80 tabular-nums tracking-wide select-none leading-none">
                                             {currentIndex + 1}
                                             <span className="mx-[2px] text-muted-foreground/50 font-normal">/</span>
@@ -193,12 +201,15 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                         </div>
                     )}
 
-                    {/* Badge descuento */}
-                    {discountPct > 0 && (
-                        <div className="absolute top-2 left-2 pointer-events-none">
-                            <span className="px-1.5 py-0.5 bg-destructive text-destructive-foreground text-[10px] font-bold uppercase tracking-wider leading-none">
-                                -{discountPct}%
-                            </span>
+                    {/* Badges: Nuevo y/o Descuento — top-left, apilados */}
+                    {isNew && (
+                        <div className="absolute top-2 left-2 pointer-events-none flex flex-col gap-1">
+                            {isNew && (
+                                <span className="px-1.5 py-0.5 bg-destructive text-destructive-foreground text-[10px] font-bold uppercase tracking-wider leading-none">
+                                    Nuevo
+                                </span>
+                            )}
+
                         </div>
                     )}
                 </div>
@@ -233,7 +244,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                                         )}
                                         aria-label={`Color ${c}`}
                                     >
-                                        <ColorCircle color={c} size={11} />
+                                        <ColorCircle color={c} size={8} />
                                     </button>
                                 ))}
                                 {uniqueColors.length > 4 && (
@@ -245,28 +256,43 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                         )}
                     </div>
 
-                    {/* Nombre */}
-                    <h3 className="text-[12px] md:text-[13px] text-foreground leading-snug line-clamp-2 min-h-[2.4rem]">
+                    {/* Nombre — altura fija para 2 líneas exactas, overflow oculto limpio */}
+                    <h3
+                        className="text-[12px] md:text-[13px] text-foreground leading-[1.35] overflow-hidden"
+                        style={{
+                            display: "-webkit-box",
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: "vertical",
+                            minHeight: "calc(1.35em * 2)",
+                        }}
+                    >
                         {product.nombre}
                     </h3>
 
-                    {/* Precio + Sin stock */}
-                    {/* Precio + Sin stock */}
-                    <div className="flex items-end justify-between gap-2 mt-0.5">
-                        <div className="flex items-baseline gap-1.5">
-                            <span className="text-sm md:text-base text-foreground font-medium leading-none">
+                    {/* Precio + precio comparativo + badge descuento + sin stock */}
+                    <div className="flex items-center justify-between gap-2 mt-0.5">
+                        <div className="flex items-baseline gap-1.5 flex-wrap min-w-0">
+                            {/* Precio actual */}
+                            <span className="text-sm md:text-base text-foreground font-medium leading-none shrink-0">
                                 <span className="text-[11px] md:text-[13px] text-muted-foreground font-light">S/</span>
                                 {" "}{precio.toFixed(2)}
                             </span>
-                            {(product.precioComparativo ?? 0) > 0 && (
-                                <span className="text-[10px] md:text-xs text-muted-foreground line-through">
-                                    S/ {product.precioComparativo!.toFixed(2)}
-                                </span>
+
+                            {/* Precio comparativo + badge descuento al lado */}
+                            {discountPct > 0 && (
+                                <>
+                                    <span className="text-[10px] md:text-xs text-muted-foreground line-through leading-none shrink-0">
+                                        S/ {product.precioComparativo!.toFixed(2)}
+                                    </span>
+                                    <span className="text-[10px] font-bold text-destructive leading-none shrink-0">
+                                        -{discountPct}%
+                                    </span>
+                                </>
                             )}
                         </div>
 
                         {stock <= 0 && (
-                            <span className="inline-flex items-center bg-destructive/10 px-1.5 py-0.5 text-[10px] font-medium text-destructive whitespace-nowrap leading-tight">
+                            <span className="inline-flex items-center bg-destructive/10 px-1.5 py-0.5 text-[10px] font-medium text-destructive whitespace-nowrap leading-tight shrink-0">
                                 Sin stock
                             </span>
                         )}

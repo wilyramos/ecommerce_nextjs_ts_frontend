@@ -1,73 +1,69 @@
 "use client";
 import Link from "next/link";
+import { useRef, useState } from "react";
 import { TAdvertisement } from "@/src/schemas/advertisement.schema";
-import { ArrowRight, Tag, Truck, Zap, Gift } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 interface TopBarAdProps {
     ads: TAdvertisement[];
 }
 
-// Íconos rotativos para dar contexto visual a cada aviso
-const ICONS = [Truck, Tag, Zap, Gift];
-
 export default function TopBarAd({ ads }: TopBarAdProps) {
+    const [paused, setPaused] = useState(false);
+    const trackRef = useRef<HTMLDivElement>(null);
+
     if (!ads || ads.length === 0) return null;
 
     const repeated = [...ads, ...ads, ...ads];
-    const duration = `${ads.length * 6}s`;
+    const duration = `${Math.max(ads.length * 7, 14)}s`;
 
     return (
-        <div className="w-full h-8 bg-action-cta text-action-cta-foreground select-none overflow-hidden relative">
+        <div
+            className="w-full h-8 bg-foreground text-background select-none overflow-hidden relative"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+        >
             <style>{`
                 @keyframes marquee {
-                    0%   { transform: translateX(0%); }
-                    100% { transform: translateX(-33.333%); }
-                }
-                @keyframes marquee-paused {
-                    0%   { transform: translateX(0%); }
-                    100% { transform: translateX(-33.333%); }
-                }
-                .marquee-track:hover {
-                    animation-play-state: paused;
+                    from { transform: translateX(0); }
+                    to   { transform: translateX(-33.333%); }
                 }
             `}</style>
 
-            {/* Fade edges para sensación de profundidad */}
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-16 z-10"
-                style={{ background: "linear-gradient(to right, var(--color-action-cta, #000) 0%, transparent 100%)" }} />
-            <div className="pointer-events-none absolute inset-y-0 right-0 w-16 z-10"
-                style={{ background: "linear-gradient(to left, var(--color-action-cta, #000) 0%, transparent 100%)" }} />
+            {/* Fade edges */}
+            <div
+                className="pointer-events-none absolute inset-y-0 left-0 w-12 z-10"
+                style={{ background: "linear-gradient(to right, var(--foreground, #000) 0%, transparent 100%)" }}
+            />
+            <div
+                className="pointer-events-none absolute inset-y-0 right-0 w-12 z-10"
+                style={{ background: "linear-gradient(to left, var(--foreground, #000) 0%, transparent 100%)" }}
+            />
 
             <div
-                className="marquee-track flex items-center h-full w-max"
-                style={{ animation: `marquee ${duration} linear infinite` }}
+                ref={trackRef}
+                className="flex items-center h-full w-max"
+                style={{
+                    animation: `marquee ${duration} linear infinite`,
+                    animationPlayState: paused ? "paused" : "running",
+                }}
             >
                 {repeated.map((ad, i) => {
-                    const ContentWrapper = ad.linkTo ? Link : "div";
-                    const Icon = ICONS[i % ICONS.length];
-
-                    return (
-                        <ContentWrapper
-                            key={i}
-                            href={ad.linkTo || "#"}
-                            className={`
-                                flex items-center gap-2 px-10 h-full
-                                text-[11px] font-semibold tracking-wide whitespace-nowrap
-                                transition-opacity duration-150
-                                ${ad.linkTo ? "hover:opacity-75 cursor-pointer group" : "cursor-default"}
-                            `}
-                        >
-                            {/* Ícono contextual */}
-                            <Icon size={12} className="shrink-0 opacity-80" strokeWidth={2.5} />
-
-                            <span className="uppercase tracking-widest text-[10px] font-semibold">
+                    const inner = (
+                        <span className={`
+                            flex items-center gap-2.5 px-8 h-full
+                            text-[10px] font-medium tracking-wide whitespace-nowrap
+                            transition-opacity duration-200
+                            ${ad.linkTo ? "cursor-pointer group hover:opacity-70" : "cursor-default"}
+                        `}>
+                            <span className="uppercase tracking-[0.12em] text-[10px] font-semibold opacity-90">
                                 {ad.title}
                             </span>
 
                             {ad.subtitle && (
                                 <>
-                                    <span className="opacity-40 text-[10px]">—</span>
-                                    <span className="opacity-90 font-medium normal-case tracking-normal">
+                                    <span className="opacity-25 font-light">·</span>
+                                    <span className="opacity-70 font-normal normal-case tracking-normal text-[10px]">
                                         {ad.subtitle}
                                     </span>
                                 </>
@@ -75,15 +71,22 @@ export default function TopBarAd({ ads }: TopBarAdProps) {
 
                             {ad.linkTo && (
                                 <ArrowRight
-                                    size={11}
-                                    className="shrink-0 opacity-70 transition-transform duration-150 group-hover:translate-x-0.5"
-                                    strokeWidth={2.5}
+                                    size={10}
+                                    className="shrink-0 opacity-50 group-hover:opacity-90 group-hover:translate-x-0.5 transition-all duration-200"
+                                    strokeWidth={2}
                                 />
                             )}
 
-                            {/* Divisor entre items */}
-                            <span className="ml-8 opacity-20 text-xs">|</span>
-                        </ContentWrapper>
+                            <span className="ml-6 opacity-15 font-thin text-[10px]">|</span>
+                        </span>
+                    );
+
+                    return ad.linkTo ? (
+                        <Link key={i} href={ad.linkTo}>
+                            {inner}
+                        </Link>
+                    ) : (
+                        <div key={i}>{inner}</div>
                     );
                 })}
             </div>

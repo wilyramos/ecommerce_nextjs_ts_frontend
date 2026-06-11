@@ -37,9 +37,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
 
         <>
 
-            <pre>
-                {JSON.stringify(order, null, 2)}
-            </pre>
+         
             <AdminPageWrapper
                 title={`Detalle de Orden: ${order.orderNumber}`}
                 breadcrumbItems={[{ label: "Órdenes", href: "/admin/orders" }]}

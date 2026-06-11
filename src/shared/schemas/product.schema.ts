@@ -1,3 +1,5 @@
+//File: frontend/src/shared/schemas/product.schema.ts
+
 import { z } from "zod";
 
 // Esquema para manejar objetos poblados o IDs simples
