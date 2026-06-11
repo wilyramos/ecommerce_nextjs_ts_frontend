@@ -33,7 +33,6 @@ export default function CatalogMobileFilters({ filters }: Props) {
                         px-3 py-2
                         text-[13px]
                         font-medium
-                        rounded-md
                         border border-border
                         bg-background
                         text-foreground

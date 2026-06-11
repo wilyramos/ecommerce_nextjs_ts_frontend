@@ -22,7 +22,7 @@ export default function CheckoutLayout({ children }: { children: ReactNode }) {
             {/* --- HEADER --- */}
             <header className="bg-background border-b border-border sticky top-0 z-30 shrink-0">
                 <div className="h-14 px-4 sm:px-8 flex items-center justify-between max-w-screen-xl w-full mx-auto gap-4">
-                    
+
                     {/* Botón de retroceso dinámico a la izquierda */}
                     <div className="flex items-center flex-1 sm:flex-initial">
                         <Link
@@ -51,7 +51,7 @@ export default function CheckoutLayout({ children }: { children: ReactNode }) {
 
             {/* --- CONTENEDOR SPLIT --- */}
             <div className="relative flex flex-col lg:flex-row flex-1 bg-background-secondary lg:bg-background">
-                
+
                 {/* Fondo gris absoluto lateral (Solo en escritorio) */}
                 <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-[50%] xl:w-[calc(50%-20px)] bg-background-secondary border-l border-border pointer-events-none z-0" />
 

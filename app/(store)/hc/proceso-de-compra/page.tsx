@@ -5,121 +5,148 @@ import {
     Package,
     Truck,
     ShieldCheck,
-    ArrowRight
+    ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
 
-export default function ProcesoCompraPage() {
-    const pasos = [
-        {
-            icon: ShoppingCart,
-            title: "Selección de productos",
-            description: "Explora nuestras categorías y variantes. Una vez encuentres lo que buscas, agrégalo a tu bolsa de compra."
-        },
-        {
-            icon: CreditCard,
-            title: "Pago seguro",
-            description: "Finaliza tu pedido utilizando Visa, Mastercard, American Express, Mercado Pago o Yape. Procesamos tu pago con cifrado de nivel bancario.",
-            extra: ["Cifrado SSL de 256 bits", "Privacidad garantizada"]
-        },
-        {
-            icon: CheckCircle2,
-            title: "Confirmación",
-            description: "Recibirás un correo electrónico automático con el resumen detallado y número de orden. También podemos notificarte vía WhatsApp."
-        },
-        {
-            icon: Package,
-            title: "Preparación",
-            description: "Cada dispositivo y accesorio pasa por un control de calidad y un embalaje protector antes de salir de nuestro centro de distribución."
-        },
-        {
-            icon: Truck,
-            title: "Envío y Seguimiento",
-            description: "Despachamos a nivel nacional. Si estás en Cañete, disfruta de nuestra entrega prioritaria el mismo día.",
-            extra: ["Cañete: < 24h", "Provincias: 48h - 72h"]
-        }
-    ];
+const pasos = [
+    {
+        icon: ShoppingCart,
+        title: "Elige tus productos",
+        description:
+            "Explora nuestro catálogo, selecciona variantes de color, talla o modelo y agrégalos a tu bolsa.",
+    },
+    {
+        icon: CreditCard,
+        title: "Paga de forma segura",
+        description:
+            "Aceptamos Visa, Mastercard, American Express, Mercado Pago y Yape. Tu información viaja cifrada con SSL de 256 bits.",
+        tags: ["SSL 256 bits", "Datos protegidos"],
+    },
+    {
+        icon: CheckCircle2,
+        title: "Recibe tu confirmación",
+        description:
+            "Te enviamos un correo con el resumen y número de orden. También podemos notificarte por WhatsApp.",
+    },
+    {
+        icon: Package,
+        title: "Preparamos tu pedido",
+        description:
+            "Cada producto pasa por control de calidad y se embala de forma segura antes de salir de nuestro almacén.",
+    },
+    {
+        icon: Truck,
+        title: "Enviamos a todo el país",
+        description:
+            "Despacho nacional con seguimiento en tiempo real. Si estás en Cañete, recibes tu pedido el mismo día.",
+        tags: ["Cañete: mismo día", "Provincias: 48–72 h"],
+    },
+];
 
+export default function ProcesoCompraPage() {
     return (
-        <section className="max-w-4xl mx-auto px-4 py-12 md:py-20 animate-in fade-in duration-700">
-            
-            {/* Header Estilo Apple */}
-            <header className="mb-16 text-center md:text-left">
-                <h1 className="text-4xl md:text-5xl font-bold text-[var(--store-text)] tracking-tight mb-4">
-                    Comprar es tan simple <br className="hidden md:block" /> 
+        <section className="max-w-3xl mx-auto px-4 py-12 md:py-20">
+
+            {/* ── HEADER ── */}
+            <header className="mb-12 space-y-3">
+                <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                    Cómo comprar
+                </p>
+                <h1 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight leading-tight">
+                    Tu pedido en 5 pasos simples
                 </h1>
-                <p className="text-lg text-[var(--store-text-muted)] max-w-2xl leading-relaxed">
-                    Hemos diseñado un proceso de compra fluido y transparente para que tu única preocupación sea disfrutar de tu nuevo gadget.
+                <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-xl">
+                    Diseñamos cada etapa para que sea rápida, clara y sin sorpresas.
                 </p>
             </header>
 
-            {/* Timeline de Pasos */}
-            <div className="space-y-12 relative">
-                {pasos.map((paso, index) => (
-                    <div key={index} className="relative flex gap-6 md:gap-10 group">
-                        
-                        {/* Línea conectora visual */}
-                        {index !== pasos.length - 1 && (
-                            <div className="absolute left-6 top-12 bottom-[-48px] w-px bg-[var(--store-border)] hidden md:block" />
-                        )}
+            {/* ── TIMELINE ── */}
+            <ol className="relative space-y-0">
+                {pasos.map((paso, index) => {
+                    const Icon = paso.icon;
+                    const isLast = index === pasos.length - 1;
 
-                        {/* Icono con contenedor Apple */}
-                        <div className="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-[var(--store-surface)] border border-[var(--store-border)] flex items-center justify-center shadow-sm group-hover:border-[var(--store-primary)] transition-colors duration-300">
-                            <paso.icon className="w-6 h-6 text-[var(--store-text)] group-hover:text-[var(--store-primary)] transition-colors" />
-                        </div>
+                    return (
+                        <li key={index} className="relative flex gap-5">
 
-                        {/* Contenido */}
-                        <div className="pt-2 md:pt-3 flex-1 pb-12 border-b border-[var(--store-border)] last:border-0">
-                            <h2 className="text-xl font-bold text-[var(--store-text)] mb-2 tracking-tight">
-                                {index + 1}. {paso.title}
-                            </h2>
-                            <p className="text-[var(--store-text-muted)] leading-relaxed text-sm md:text-base max-w-2xl">
-                                {paso.description}
-                            </p>
-                            
-                            {paso.extra && (
-                                <div className="mt-4 flex flex-wrap gap-2">
-                                    {paso.extra.map((ex, i) => (
-                                        <span key={i} className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-md bg-[var(--store-bg)] text-[var(--store-text-muted)] border border-[var(--store-border)]">
-                                            {ex}
-                                        </span>
-                                    ))}
+                            {/* Columna izquierda: número + línea */}
+                            <div className="flex flex-col items-center">
+                                <div className="w-9 h-9 shrink-0 rounded-full border border-border bg-background-secondary flex items-center justify-center z-10">
+                                    <Icon size={16} className="text-foreground" />
                                 </div>
-                            )}
-                        </div>
-                    </div>
-                ))}
-            </div>
+                                {!isLast && (
+                                    <div className="w-px flex-1 bg-border/60 my-1" />
+                                )}
+                            </div>
 
-            {/* Recomendación Destacada */}
-            <div className="mt-20 p-8 md:p-10 rounded-[2.5rem] bg-[var(--store-text)] text-[var(--store-surface)] relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-8 opacity-10">
-                    <ShieldCheck size={120} />
-                </div>
-                <div className="relative z-10 max-w-xl">
-                    <h3 className="text-2xl font-bold mb-4 tracking-tight">Tu satisfacción es nuestra prioridad.</h3>
-                    <p className="text-[var(--store-text-muted)] text-sm md:text-base leading-relaxed mb-6">
-                        Recomendamos verificar el estado del empaque al recibirlo. Conserva siempre tu comprobante (boleta o factura) para gestionar garantías de forma rápida a través de nuestro centro de soporte.
+                            {/* Contenido */}
+                            <div className={`pb-8 flex-1 ${isLast ? "" : ""}`}>
+                                <div className="flex items-center gap-2 mb-1">
+                                    <span className="text-[10px] font-bold text-muted-foreground tabular-nums">
+                                        {String(index + 1).padStart(2, "0")}
+                                    </span>
+                                    <h2 className="text-sm font-bold text-foreground">
+                                        {paso.title}
+                                    </h2>
+                                </div>
+                                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                                    {paso.description}
+                                </p>
+                                {paso.tags && (
+                                    <div className="mt-2.5 flex flex-wrap gap-1.5">
+                                        {paso.tags.map((tag, i) => (
+                                            <span
+                                                key={i}
+                                                className="text-[10px] font-semibold px-2 py-0.5 bg-background-secondary border border-border text-muted-foreground rounded-sm"
+                                            >
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </li>
+                    );
+                })}
+            </ol>
+
+            {/* ── BANNER GARANTÍA ── */}
+            <div className="mt-10 border border-border rounded-sm p-6 md:p-8 bg-background-secondary flex flex-col md:flex-row gap-5 md:items-start">
+                <ShieldCheck size={28} className="text-foreground shrink-0 mt-0.5" />
+                <div className="space-y-2">
+                    <h3 className="text-sm font-bold text-foreground">
+                        Tu compra está respaldada
+                    </h3>
+                    <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                        Todos nuestros productos son{" "}
+                        <span className="font-semibold text-foreground">100% originales</span> con
+                        garantía de{" "}
+                        <span className="font-semibold text-foreground">12 meses</span> por fallas
+                        de origen. Conserva tu boleta o factura para gestionar cambios sin
+                        contratiempos.
                     </p>
-                    <Link 
-                        href="/hc/contacto-y-soporte" 
-                        className="text-[var(--store-primary)] font-semibold flex items-center gap-2 hover:underline"
+                    <Link
+                        href="/hc/contacto-y-soporte"
+                        className="inline-flex items-center gap-1.5 text-xs font-semibold text-action-cta hover:text-action-cta-hover transition-colors group/link mt-1"
                     >
-                        Contactar a un especialista <ArrowRight size={16} />
+                        Hablar con un especialista
+                        <ArrowRight size={13} className="group-hover/link:translate-x-0.5 transition-transform" />
                     </Link>
                 </div>
             </div>
 
-            {/* Footer de Página */}
-            <footer className="mt-20 text-center space-y-6">
-                <p className="text-xs text-[var(--store-text-muted)] font-medium tracking-widest uppercase">
+            {/* ── FOOTER ── */}
+            <footer className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-border">
+                <p className="text-xs text-muted-foreground font-medium">
                     GoPhone · Calidad a tu alcance
                 </p>
                 <Link
                     href="/"
-                    className="inline-flex items-center justify-center px-8 py-3 bg-[var(--store-primary)] text-white rounded-full font-semibold text-sm hover:bg-[var(--store-primary-hover)] transition-all active:scale-95 shadow-lg shadow-blue-500/20"
+                    className="inline-flex items-center gap-2 px-5 py-2 bg-foreground text-background text-xs font-semibold rounded-sm hover:opacity-90 transition-opacity active:scale-95"
                 >
                     Volver a la tienda
+                    <ArrowRight size={13} />
                 </Link>
             </footer>
         </section>

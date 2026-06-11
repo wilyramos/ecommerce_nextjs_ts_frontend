@@ -207,7 +207,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                             fill
                             priority
                             className={cn(
-                                "object-contain transition-transform duration-500 ease-out  md:p-8",
+                                "object-contain transition-transform duration-500 ease-out ",
                                 zoom ? "scale-[2.5]" : "scale-100"
                             )}
                             style={zoom ? { transformOrigin: `${position.x}% ${position.y}%` } : undefined}

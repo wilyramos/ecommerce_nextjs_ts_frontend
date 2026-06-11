@@ -1,5 +1,3 @@
-// File: frontend/components/store/ProductDetails.tsx
-
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
@@ -15,7 +13,7 @@ import PaymentMethods from '../PaymentMethods';
 import ColorCircle from '@/components/ui/ColorCircle';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ChevronRight, CreditCard, MessageCircle, Truck } from 'lucide-react';
+import { ChevronRight, CreditCard, MessageCircle, Truck, ShieldCheck } from 'lucide-react';
 import { H1, H3, H4 } from '@/components/ui/Typography';
 import {
     Select,
@@ -142,7 +140,7 @@ export default function ProductDetails({ producto }: Props) {
 
                 <section className='md:col-span-5 px-2 md:px-0 space-y-2'>
                     <div className="space-y-4">
-                        <header className="pt-1 pb-4 border-b border-border space-y-3">
+                        <header className="pt-1 pb-2 space-y-3">
 
                             {/* Breadcrumb marca / línea + SKU */}
                             <div className="flex items-center justify-between w-full select-none">
@@ -371,7 +369,32 @@ export default function ProductDetails({ producto }: Props) {
                     )}
 
                     {/* Fichas de Logística de Tienda */}
-                    <div className="/80 pt-2 divide-y divide-border/40 select-none">
+                    <div className="divide-y divide-border/40 select-none">
+
+
+                        {/* Medios de pago */}
+                        <div className="flex items-center justify-between py-3">
+                            <div className="flex items-center gap-2.5 text-muted-foreground">
+                                <CreditCard className="w-4 h-4 shrink-0" />
+                                <span className="hidden md:block md:text-xs font-semibold">Medios de pago:</span>
+                            </div>
+                            <div className="">
+                                <PaymentMethods />
+                            </div>
+                        </div>
+
+                        {/* Garantía */}
+                        <div className="flex items-center justify-between py-3">
+                            <div className="flex items-center gap-2.5 text-muted-foreground">
+                                <ShieldCheck className="w-4 h-4 shrink-0 text-foreground" />
+                                <span className="text-xs font-semibold">Garantía de fábrica:</span>
+                            </div>
+                            <div className="text-right text-xs">
+                                <span className="inline-flex items-center font-bold text-foreground bg-muted-neutral/30 px-2 py-0.5 rounded-sm border border-border/60">
+                                    12 meses de garantía
+                                </span>
+                            </div>
+                        </div>
 
                         {/* Envío */}
                         <div className="flex items-center justify-between py-3">
@@ -389,16 +412,6 @@ export default function ProductDetails({ producto }: Props) {
                             </div>
                         </div>
 
-                        {/* Medios de pago */}
-                        <div className="flex items-center justify-between py-3">
-                            <div className="flex items-center gap-2.5 text-muted-foreground">
-                                <CreditCard className="w-4 h-4 shrink-0" />
-                                <span className="hidden md:block md:text-xs font-semibold">Medios de pago:</span>
-                            </div>
-                            <div className="">
-                                <PaymentMethods />
-                            </div>
-                        </div>
 
                         {/* Consulta por WhatsApp */}
                         <a
@@ -419,20 +432,12 @@ export default function ProductDetails({ producto }: Props) {
                         </a>
 
                         <div>
-
                             <Link href="/politicas-de-cambios-y-devoluciones" className="flex items-center gap-2.5 text-muted-foreground text-xs font-semibold hover:text-action-cta transition-colors underline-offset-2 hover:underline py-3">
                                 Ver políticas de cambios y devoluciones
                             </Link>
                         </div>
 
                         <div className="flex flex-row justify-between md:gap-x-4 gap-y-2 py-3 text-[10px] md:text-xs text-muted-foreground uppercase ">
-                            {/* <Link href="/terminos-y-condiciones" className="hover:text-action-cta transition-colors underline-offset-2 hover:underline">
-                                Términos y Condiciones
-                            </Link> */}
-
-                            {/* <Link href="/libro-de-reclamaciones" className="hover:text-action-cta transition-colors underline-offset-2 hover:underline">
-                                Libro de Reclamaciones
-                            </Link> */}
                         </div>
 
                     </div>
