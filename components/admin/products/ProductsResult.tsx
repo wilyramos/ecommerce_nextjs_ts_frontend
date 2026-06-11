@@ -10,6 +10,12 @@ type ProductsResultProps = {
     itemsPerPage: number;
     params: {
         query?: string;
+        nombre?: string;
+        sku?: string;
+        sort?: string;
+        brand?: string;
+        isActive?: string;
+        category?: string;
     };
 };
 
@@ -18,10 +24,29 @@ export default async function ProductsResultsAdmin({
     itemsPerPage,
     params
 }: ProductsResultProps) {
+    // 1. Desestructurar el parámetro compuesto 'sort' y el resto de filtros
+    const { sort, ...restParams } = params;
+
+    // 2. Inicializar los ordenamientos específicos esperados por el servicio
+    let precioSort: "asc" | "desc" | undefined = undefined;
+    let stockSort: "asc" | "desc" | undefined = undefined;
+
+    // 3. Parsear el valor del Select ("precio-asc" | "precio-desc" | "stock-asc" | "stock-desc")
+    if (sort) {
+        if (sort.startsWith("precio-")) {
+            precioSort = sort.replace("precio-", "") as "asc" | "desc";
+        } else if (sort.startsWith("stock-")) {
+            stockSort = sort.replace("stock-", "") as "asc" | "desc";
+        }
+    }
+
+    // 4. Consumir los servicios de forma asíncrona pasando los parámetros formateados
     const productsData = await getProductsByAdmin({
         page: currentPage,
         limit: itemsPerPage,
-        ...params
+        precioSort,
+        stockSort,
+        ...restParams
     });
 
     const categories = await getAllSubcategories();

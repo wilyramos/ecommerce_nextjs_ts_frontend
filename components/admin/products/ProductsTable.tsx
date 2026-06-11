@@ -3,7 +3,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Check, X } from "lucide-react";
 
 import ProductMenuAction from "./ProductMenuActionts";
 import { useColumnFilter } from "@/hooks/useColumnFilter";
@@ -29,6 +28,7 @@ import {
     SelectContent,
     SelectItem,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 export default function ProductsTable({
     products,
@@ -43,8 +43,7 @@ export default function ProductsTable({
 
     const nameFilter = useColumnFilter("nombre");
     const skuFilter = useColumnFilter("sku");
-    const priceSort = useColumnFilter("precioSort");
-    const stockSort = useColumnFilter("stockSort");
+    const sortFilter = useColumnFilter("sort");        // precio-asc | precio-desc | stock-asc | stock-desc
     const brandFilter = useColumnFilter("brand");
     const activeFilter = useColumnFilter("isActive");
     const categoryFilter = useColumnFilter("category");
@@ -52,260 +51,247 @@ export default function ProductsTable({
     const noProducts = !products || products.products.length === 0;
 
     const clearFilters = () => {
-        [
-            nameFilter,
-            skuFilter,
-            priceSort,
-            stockSort,
-            brandFilter,
-            activeFilter,
-            categoryFilter,
-        ].forEach((f) => f.reset());
-
+        [nameFilter, skuFilter, sortFilter, brandFilter, activeFilter, categoryFilter]
+            .forEach((f) => f.reset());
         router.replace(window.location.pathname);
     };
 
     return (
-        <div className="w-full h-full text-foreground">
-            {/* ── Clear filters ── */}
-            <div className="flex justify-end mb-2 pr-1">
-                <button
-                    onClick={clearFilters}
-                    className="text-[11px] font-bold text-muted-foreground hover:text-action-cta transition-colors outline-none cursor-pointer"
-                >
-                    Limpiar filtros
-                </button>
+        <div className="w-full h-full flex flex-col text-foreground">
+
+            {/* ── Filtros ── */}
+            <div className="px-1 pt-1 pb-3 space-y-2 shrink-0">
+                {/* Fila 1: nombre + sku */}
+                <div className="flex gap-2">
+                    <Input
+                        placeholder="Buscar por nombre…"
+                        value={nameFilter.value}
+                        onChange={(e) => nameFilter.setValue(e.target.value)}
+                        className="flex-1 h-8 text-[13px]"
+                    />
+                    <Input
+                        placeholder="SKU"
+                        value={skuFilter.value}
+                        onChange={(e) => skuFilter.setValue(e.target.value)}
+                        className="w-[130px] h-8 text-[13px]"
+                    />
+                </div>
+
+                {/* Fila 2: selects + limpiar */}
+                <div className="flex flex-wrap gap-2 items-center">
+                    <Select value={brandFilter.value || undefined} onValueChange={brandFilter.setValue}>
+                        <SelectTrigger className="h-8 w-[130px] text-[13px]">
+                            <SelectValue placeholder="Marca" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {brands.map((b) => (
+                                <SelectItem key={b._id} value={b._id}>{b.nombre}</SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+
+                    <Select value={categoryFilter.value || undefined} onValueChange={categoryFilter.setValue}>
+                        <SelectTrigger className="h-8 w-[140px] text-[13px]">
+                            <SelectValue placeholder="Categoría" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {categories.map((c) => (
+                                <SelectItem key={c._id} value={c._id}>{c.nombre}</SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+
+                    <Select value={activeFilter.value || undefined} onValueChange={activeFilter.setValue}>
+                        <SelectTrigger className="h-8 w-[120px] text-[13px]">
+                            <SelectValue placeholder="Estado" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="true">Activos</SelectItem>
+                            <SelectItem value="false">Inactivos</SelectItem>
+                        </SelectContent>
+                    </Select>
+
+                    <Select value={sortFilter.value || undefined} onValueChange={sortFilter.setValue}>
+                        <SelectTrigger className="h-8 w-[150px] text-[13px]">
+                            <SelectValue placeholder="Ordenar por" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="precio-asc">Precio ↑</SelectItem>
+                            <SelectItem value="precio-desc">Precio ↓</SelectItem>
+                            <SelectItem value="stock-asc">Stock ↑</SelectItem>
+                            <SelectItem value="stock-desc">Stock ↓</SelectItem>
+                        </SelectContent>
+                    </Select>
+
+                    <button
+                        onClick={clearFilters}
+                        className="ml-auto text-[11px] font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                    >
+                        Limpiar filtros
+                    </button>
+                </div>
             </div>
 
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        {/* Nombre */}
-                        <TableHead className="w-full min-w-[200px]">
-                            <Input
-                                placeholder="Nombre"
-                                value={nameFilter.value}
-                                onChange={(e) => nameFilter.setValue(e.target.value)}
-                            />
-                        </TableHead>
-
-                        {/* SKU */}
-                        <TableHead className="w-[120px]">
-                            <Input
-                                placeholder="SKU"
-                                value={skuFilter.value}
-                                onChange={(e) => skuFilter.setValue(e.target.value)}
-                            />
-                        </TableHead>
-
-                        {/* Precio */}
-                        <TableHead className="w-[90px]">
-                            <Select
-                                value={priceSort.value || undefined}
-                                onValueChange={priceSort.setValue}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Precio" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="asc">Asc</SelectItem>
-                                    <SelectItem value="desc">Desc</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </TableHead>
-
-                        {/* Stock */}
-                        <TableHead className="w-[90px]">
-                            <Select
-                                value={stockSort.value || undefined}
-                                onValueChange={stockSort.setValue}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Stock" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="asc">Asc</SelectItem>
-                                    <SelectItem value="desc">Desc</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </TableHead>
-
-                        {/* Marca */}
-                        <TableHead className="w-[130px]">
-                            <Select
-                                value={brandFilter.value || undefined}
-                                onValueChange={brandFilter.setValue}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Marca" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {brands.map((b) => (
-                                        <SelectItem key={b._id} value={b._id}>
-                                            {b.nombre}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </TableHead>
-
-                        {/* Categoría */}
-                        <TableHead className="w-[140px]">
-                            <Select
-                                value={categoryFilter.value || undefined}
-                                onValueChange={categoryFilter.setValue}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Categoría" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {categories.map((c) => (
-                                        <SelectItem key={c._id} value={c._id}>
-                                            {c.nombre}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </TableHead>
-
-                        {/* Estado */}
-                        <TableHead className="w-[90px]">
-                            <Select
-                                value={activeFilter.value || undefined}
-                                onValueChange={activeFilter.setValue}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Estado" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="true">Activos</SelectItem>
-                                    <SelectItem value="false">Inactivos</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </TableHead>
-
-                        {/* Acciones */}
-                        <TableHead className="w-[70px] text-center">
-                            Acciones
-                        </TableHead>
-                    </TableRow>
-                </TableHeader>
-
-                <TableBody>
-                    {noProducts ? (
-                        <TableRow>
-                            <TableCell
-                                colSpan={8}
-                                className="text-center py-10 text-muted-foreground font-semibold"
-                            >
-                                No se encontraron productos.
-                            </TableCell>
+            {/* ── Tabla ── */}
+            <div className="flex-1 min-h-0 overflow-auto">
+                <Table>
+                    <TableHeader>
+                        <TableRow className="hover:bg-transparent">
+                            <TableHead className="w-[44%] min-w-[220px] text-[11px] uppercase tracking-wider">
+                                Producto
+                            </TableHead>
+                            <TableHead className="hidden sm:table-cell w-[13%] text-[11px] uppercase tracking-wider">
+                                SKU
+                            </TableHead>
+                            <TableHead className="w-[9%] text-[11px] uppercase tracking-wider">
+                                Precio
+                            </TableHead>
+                            <TableHead className="w-[8%] text-[11px] uppercase tracking-wider">
+                                Stock
+                            </TableHead>
+                            <TableHead className="hidden md:table-cell w-[10%] text-[11px] uppercase tracking-wider">
+                                Marca
+                            </TableHead>
+                            <TableHead className="hidden lg:table-cell w-[11%] text-[11px] uppercase tracking-wider">
+                                Categoría
+                            </TableHead>
+                            <TableHead className="w-[9%] text-[11px] uppercase tracking-wider text-center">
+                                Estado
+                            </TableHead>
+                            <TableHead className="w-[6%] text-center" />
                         </TableRow>
-                    ) : (
-                        products.products.map((p) => (
-                            <TableRow key={p._id}>
-                                {/* Nombre + imagen */}
-                                <TableCell className="font-bold">
-                                    <Link
-                                        href={`/admin/products/${p._id}`}
-                                        className="flex gap-2.5 items-center focus-visible:outline-none focus-visible:text-action-cta"
-                                    >
-                                        {p.imagenes?.[0] ? (
-                                            <div className="h-8 w-8 relative shrink-0 bg-background-secondary border border-border rounded-[var(--radius-sm)] overflow-hidden flex items-center justify-center p-0.5">
-                                                <Image
-                                                    src={p.imagenes[0]}
-                                                    alt={p.nombre}
-                                                    width={32}
-                                                    height={32}
-                                                    className="object-contain mix-blend-multiply"
-                                                    quality={60}
-                                                    unoptimized
-                                                />
-                                            </div>
-                                        ) : (
-                                            <div className="h-8 w-8 shrink-0 flex items-center justify-center rounded-[var(--radius-sm)] border border-border bg-background-secondary text-muted-foreground text-[9px] font-bold uppercase tracking-wider">
-                                                No img
-                                            </div>
-                                        )}
-                                        <span className="line-clamp-2  leading-snug">
-                                            {p.isFrontPage && (
-                                                <span className="text-[10px] font-bold text-action-cta mr-1 tracking-wide">
-                                                    [FRONT]
-                                                </span>
-                                            )}
-                                            {p.nombre}
-                                        </span>
-                                    </Link>
-                                </TableCell>
+                    </TableHeader>
 
-                                {/* SKU */}
-                                <TableCell className="font-mono text-[12px] text-muted-foreground">
-                                    {p.sku}
-                                </TableCell>
-
-                                {/* Precio */}
-                                <TableCell className="font-bold tabular-nums">
-                                    S/ {p.precio?.toFixed(2)}
-                                </TableCell>
-
-                                {/* Stock */}
-                                <TableCell>
-                                    <span
-                                        className={
-                                            p.stock !== undefined
-                                                ? p.stock === 0
-                                                    ? "font-bold text-destructive"
-                                                    : p.stock <= 5
-                                                        ? "font-bold text-warning"
-                                                        : "font-bold"
-                                                : "font-bold"
-                                        }
-                                    >
-                                        {p.stock ?? "-"}
-                                    </span>
-                                </TableCell>
-
-                                {/* Marca */}
-                                <TableCell className="text-muted-foreground text-[13px]">
-                                    {p.brand?.nombre || "—"}
-                                </TableCell>
-
-                                {/* Categoría */}
-                                <TableCell className="text-muted-foreground text-[13px]">
-                                    {"-"}
-                                </TableCell>
-
-                                {/* Estado */}
-                                <TableCell>
-                                    <div className="flex justify-center">
-                                        {p.isActive ? (
-                                            <Check
-                                                className="w-4 h-4 text-success"
-                                                strokeWidth={3}
-                                            />
-                                        ) : (
-                                            <X
-                                                className="w-4 h-4 text-destructive"
-                                                strokeWidth={3}
-                                            />
-                                        )}
-                                    </div>
-                                </TableCell>
-
-                                {/* Acciones */}
-                                <TableCell>
-                                    <div className="flex justify-center">
-                                        <ProductMenuAction
-                                            productId={p._id}
-                                            productSlug={p.slug}
-                                        />
-                                    </div>
+                    <TableBody>
+                        {noProducts ? (
+                            <TableRow>
+                                <TableCell
+                                    colSpan={8}
+                                    className="text-center py-14 text-muted-foreground text-[13px]"
+                                >
+                                    No se encontraron productos.
                                 </TableCell>
                             </TableRow>
-                        ))
-                    )}
-                </TableBody>
-            </Table>
+                        ) : (
+                            products.products.map((p) => (
+                                <TableRow key={p._id} className="group">
+
+                                    {/* Producto */}
+                                    <TableCell className="py-2.5">
+                                        <Link
+                                            href={`/admin/products/${p._id}`}
+                                            className="flex gap-2.5 items-center focus-visible:outline-none"
+                                        >
+                                            {/* Imagen */}
+                                            {p.imagenes?.[0] ? (
+                                                <div className="h-9 w-9 relative shrink-0 rounded-[var(--radius-sm)] border border-border bg-background-secondary overflow-hidden flex items-center justify-center p-0.5">
+                                                    <Image
+                                                        src={p.imagenes[0]}
+                                                        alt={p.nombre}
+                                                        width={36}
+                                                        height={36}
+                                                        className="object-contain mix-blend-multiply"
+                                                        quality={60}
+                                                        unoptimized
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <div className="h-9 w-9 shrink-0 flex items-center justify-center rounded-[var(--radius-sm)] border border-border bg-background-secondary text-muted-foreground text-[9px] font-bold uppercase tracking-wider">
+                                                    No img
+                                                </div>
+                                            )}
+
+                                            {/* Nombre */}
+                                            <span className="line-clamp-2 leading-snug text-[13px] font-medium group-hover:text-action-cta transition-colors">
+                                                {p.isFrontPage && (
+                                                    <span className="text-[10px] font-semibold text-action-cta mr-1 tracking-wide">
+                                                        [FRONT]
+                                                    </span>
+                                                )}
+                                                {p.nombre}
+                                            </span>
+                                        </Link>
+                                    </TableCell>
+
+                                    {/* SKU */}
+                                    <TableCell className="hidden sm:table-cell py-2.5">
+                                        <span className="font-mono text-[12px] text-muted-foreground">
+                                            {p.sku}
+                                        </span>
+                                    </TableCell>
+
+                                    {/* Precio */}
+                                    <TableCell className="py-2.5 tabular-nums text-[13px] font-medium whitespace-nowrap">
+                                        S/ {p.precio?.toFixed(2)}
+                                    </TableCell>
+
+                                    {/* Stock */}
+                                    <TableCell className="py-2.5">
+
+
+                                        <span
+                                            className={
+                                                p.stock !== undefined
+                                                    ? p.stock === 0
+                                                        ? "font-bold text-destructive"
+                                                        : p.stock <= 5
+                                                            ? "font-bold text-warning"
+                                                            : "font-bold"
+                                                    : "font-bold"
+                                            }
+                                        >
+                                            {p.stock !== undefined ? p.stock : "—"}
+                                        </span>
+                                    </TableCell>
+
+                                    {/* Marca */}
+                                    <TableCell className="hidden md:table-cell py-2.5 text-[13px] text-muted-foreground max-w-[110px] truncate">
+                                        {p.brand?.nombre || "—"}
+                                    </TableCell>
+
+                                    {/* Categoría */}
+                                    <TableCell className="hidden lg:table-cell py-2.5 text-[13px] text-muted-foreground max-w-[120px] truncate">
+                                        {"—"}
+                                    </TableCell>
+
+                                    {/* Estado */}
+                                    <TableCell className="py-2.5">
+                                        <div className="flex justify-center">
+                                            <span
+                                                className={cn(
+                                                    "inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full whitespace-nowrap",
+                                                    p.isActive
+                                                        ? "bg-success/10 text-success"
+                                                        : "bg-destructive/10 text-destructive"
+                                                )}
+                                            >
+                                                <span
+                                                    className={cn(
+                                                        "w-1.5 h-1.5 rounded-full shrink-0",
+                                                        p.isActive ? "bg-success" : "bg-destructive"
+                                                    )}
+                                                />
+                                                {p.isActive ? "Activo" : "Inactivo"}
+                                            </span>
+                                        </div>
+                                    </TableCell>
+
+                                    {/* Acciones */}
+                                    <TableCell className="py-2.5">
+                                        <div className="flex justify-center">
+                                            <ProductMenuAction
+                                                productId={p._id}
+                                                productSlug={p.slug}
+                                            />
+                                        </div>
+                                    </TableCell>
+
+                                </TableRow>
+                            ))
+                        )}
+                    </TableBody>
+                </Table>
+            </div>
         </div>
     );
 }
