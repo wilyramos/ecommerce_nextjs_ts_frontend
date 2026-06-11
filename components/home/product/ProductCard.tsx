@@ -245,7 +245,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                             )}
                         </div>
 
-                        <h3 className="text-[13px] text-foreground leading-[1.3] line-clamp-3 min-h-[3.5rem] md:min-h-[3.5rem]">
+                        <h3 className="text-[13px] text-foreground leading-[1.3] line-clamp-3 md:line-clamp-2 min-h-[3.5rem] md:min-h-[3.5rem]">
                             {product.nombre}
                         </h3>
 
