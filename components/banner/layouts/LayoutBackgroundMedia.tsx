@@ -11,8 +11,6 @@ export default function LayoutBackgroundMedia({ banner }: { banner: SliderBanner
     const [loaded, setLoaded] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
 
-    // Definición de variables de diseño
-    // Lógica de colores actualizada
     const isDark = design.theme !== "light";
     const bg = design.bgColor ?? (isDark ? "#000000" : "#ffffff");
     const text = design.textColor ?? (isDark ? "#a8a8a8" : "#0f0f0f");
@@ -34,15 +32,15 @@ export default function LayoutBackgroundMedia({ banner }: { banner: SliderBanner
 
     const content = (
         <div
-            className="banner-slot group relative w-full overflow-hidden flex items-end justify-center text-center "
+            className="banner-slot group relative w-full overflow-hidden flex items-end justify-center text-center"
             style={{ backgroundColor: bg }}
         >
             {/* ── Media de fondo ────────────────────────────────────── */}
-            {isVideo ? (
+            {isVideo && media?.videoUrl ? (
                 <video
                     ref={videoRef}
-                    src={media!.videoUrl!}
-                    poster={media!.videoPoster ?? media!.imageUrl}
+                    src={media.videoUrl}
+                    poster={media.imageUrl}
                     autoPlay
                     muted
                     loop
@@ -52,9 +50,11 @@ export default function LayoutBackgroundMedia({ banner }: { banner: SliderBanner
             ) : media?.imageUrl ? (
                 <Image
                     src={media.imageUrl}
-                    alt={media.altText ?? title ?? ""}
+                    alt={title || "Slider Background Asset"}
                     fill
-                    className={`absolute inset-0 object-cover transition-transform duration-[1800ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04] ${media.objectFit === "contain" ? "object-contain" : "object-cover"}`}
+                    className={`absolute inset-0 transition-transform duration-[1800ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04] ${
+                        media.objectFit === "contain" ? "object-contain" : "object-cover"
+                    }`}
                     sizes="100vw"
                     priority
                     unoptimized
@@ -143,7 +143,7 @@ export default function LayoutBackgroundMedia({ banner }: { banner: SliderBanner
             href={destUrl}
             target={openInNewTab ? "_blank" : undefined}
             rel={openInNewTab ? "noopener noreferrer" : undefined}
-            aria-label={title ?? banner.name}
+            aria-label={title || "Slider Banner Link"}
         >
             {content}
         </Link>

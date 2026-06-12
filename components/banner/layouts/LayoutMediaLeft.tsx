@@ -1,4 +1,3 @@
-// File: src/components/banner/layouts/LayoutMediaLeft.tsx
 "use client";
 
 import Link from "next/link";
@@ -16,11 +15,11 @@ export default function LayoutMediaLeft({ banner }: { banner: SliderBanner }) {
         return () => clearTimeout(t);
     }, []);
 
-    // Lógica de colores actualizada
     const isDark = design.theme !== "light";
     const bg = design.bgColor ?? (isDark ? "#000000" : "#ffffff");
     const text = design.textColor ?? (isDark ? "#a8a8a8" : "#0f0f0f");
     const accent = design.accentColor ?? "#ff6000";
+    
     const fadeUp = (delay: number): React.CSSProperties => ({
         opacity: loaded ? 1 : 0,
         transform: loaded ? "translateY(0px)" : "translateY(14px)",
@@ -29,7 +28,7 @@ export default function LayoutMediaLeft({ banner }: { banner: SliderBanner }) {
 
     const content = (
         <div
-            className="banner-slot group relative w-full overflow-hidden flex items-center "
+            className="banner-slot group relative w-full overflow-hidden flex items-center"
             style={{ backgroundColor: bg }}
         >
             <div className="relative z-10 w-full max-w-6xl mx-auto h-full flex flex-row items-center px-4 sm:px-10">
@@ -44,14 +43,14 @@ export default function LayoutMediaLeft({ banner }: { banner: SliderBanner }) {
                             transition: "opacity 0.8s ease, transform 0.8s cubic-bezier(0.16,1,0.3,1)",
                         }}
                     >
-                        {/* Contenedor relativo al 100% para que la imagen ocupe todo el espacio */}
                         <div className="relative w-full h-full">
                             <Image
                                 src={media.imageUrl}
-                                alt={media.altText ?? title ?? ""}
+                                alt={title || "Slider Banner Left Content"}
                                 fill
-                                className={`transition-transform duration-[2000ms] group-hover:scale-105
-                           ${media.objectFit === "contain" ? "object-contain" : "object-cover"}`}
+                                className={`transition-transform duration-[2000ms] group-hover:scale-105 ${
+                                    media.objectFit === "contain" ? "object-contain" : "object-cover"
+                                }`}
                                 sizes="(max-width: 640px) 50vw, 40vw"
                                 priority
                                 unoptimized
@@ -78,10 +77,7 @@ export default function LayoutMediaLeft({ banner }: { banner: SliderBanner }) {
 
                     {title && (
                         <div style={fadeUp(0.2)}>
-                            <h2
-                                className="font-bold leading-[1.1] tracking-[-0.03em]
-                                           text-[clamp(1rem,2.5vw,2.8rem)] line-clamp-3"
-                            >
+                            <h2 className="font-bold leading-[1.1] tracking-[-0.03em] text-[clamp(1rem,2.5vw,2.8rem)] line-clamp-3">
                                 {title}
                             </h2>
                         </div>
@@ -90,8 +86,7 @@ export default function LayoutMediaLeft({ banner }: { banner: SliderBanner }) {
                     {description && (
                         <div style={fadeUp(0.3)}>
                             <p
-                                className="text-[10px] sm:text-[13px] md:text-sm
-                                           leading-relaxed line-clamp-2 sm:line-clamp-4 max-w-[32ch]"
+                                className="text-[10px] sm:text-[13px] md:text-sm leading-relaxed line-clamp-2 sm:line-clamp-4 max-w-[32ch]"
                                 style={{ opacity: 0.75 }}
                             >
                                 {description}
@@ -129,7 +124,7 @@ export default function LayoutMediaLeft({ banner }: { banner: SliderBanner }) {
             href={destUrl}
             target={openInNewTab ? "_blank" : undefined}
             rel={openInNewTab ? "noopener noreferrer" : undefined}
-            aria-label={title ?? banner.name}
+            aria-label={title || "Slider Banner Link"}
         >
             {content}
         </Link>

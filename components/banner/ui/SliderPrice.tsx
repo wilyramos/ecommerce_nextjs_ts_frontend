@@ -1,14 +1,16 @@
-// File: src/components/banner/ui/SliderPrice.tsx
 import type { SliderPrice as TSliderPrice } from "@/src/schemas/slider.schema";
 
 interface Props {
     price: TSliderPrice;
-    textColor: string;    // Cambiado de 'color' a 'textColor'
+    textColor: string;
     accentColor: string;
     isDark: boolean;
 }
 
 export default function SliderPrice({ price, textColor, accentColor, isDark }: Props) {
+    // Símbolo de moneda predeterminado para el proyecto (ya que no existe en el esquema de base de datos)
+    const currencySymbol = "S/";
+
     return (
         <div
             className="inline-flex flex-col gap-1 w-fit"
@@ -20,7 +22,7 @@ export default function SliderPrice({ price, textColor, accentColor, isDark }: P
                     className="w-fit text-[9px] sm:text-[11px] font-bold uppercase tracking-widest leading-none rounded-sm px-2 py-1 shadow-sm"
                     style={{
                         backgroundColor: accentColor,
-                        color: "#ffffff", // Texto blanco para contrastar con el acento
+                        color: "#ffffff", // Texto blanco para garantizar contraste con el color de acento
                     }}
                 >
                     {price.label}
@@ -36,7 +38,7 @@ export default function SliderPrice({ price, textColor, accentColor, isDark }: P
                             className="mr-1 align-top font-bold text-[0.4em]"
                             style={{ opacity: isDark ? 0.6 : 0.5 }}
                         >
-                            {price.currency ?? "S/"}
+                            {currencySymbol}
                         </span>
 
                         {price.current.toFixed(2)}
@@ -58,7 +60,7 @@ export default function SliderPrice({ price, textColor, accentColor, isDark }: P
                         className="text-xs sm:text-sm md:text-base font-medium leading-none tracking-tight line-through decoration-[1.5px]"
                         style={{ opacity: isDark ? 0.4 : 0.3 }}
                     >
-                        {price.currency ?? "S/"}{price.compare.toFixed(2)}
+                        {currencySymbol}{price.compare.toFixed(2)}
                     </span>
                 )}
             </div>

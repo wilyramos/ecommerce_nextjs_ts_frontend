@@ -1,18 +1,12 @@
-// File: src/components/admin/slider/SliderTable.tsx
 "use client";
 
-import {
-    useState, useCallback, useTransition,
-    useRef, useEffect,
-} from "react";
+import { useState, useCallback, useTransition, useRef, useEffect } from "react";
 import { reorderSliderBannersAction, type ReorderItem } from "@/actions/slider-actions";
 import type { SliderBanner }  from "@/src/schemas/slider.schema";
 import BannerRow              from "./BannerRow";
 import EmptyStateSlider       from "./EmptyStateSlider";
 import Alert                  from "@/components/ui/Alert";
-import {
-    Table, TableHeader, TableHead, TableBody,
-} from "@/components/ui/table";
+import { Table, TableHeader, TableHead, TableBody } from "@/components/ui/table";
 
 interface SliderTableProps {
     banners: SliderBanner[];
@@ -29,8 +23,8 @@ export default function SliderTable({ banners }: SliderTableProps) {
     const debounceRef                     = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
-        if (!dragSourceId) setItems(banners);
-    }, [banners, dragSourceId]);
+        setItems(banners);
+    }, [banners]);
 
     const handleDragStart = useCallback((id: string) => {
         setDragSourceId(id);
@@ -56,7 +50,9 @@ export default function SliderTable({ banners }: SliderTableProps) {
         const reordered = [...items];
         const [moved]   = reordered.splice(sourceIdx, 1);
         reordered.splice(targetIdx, 0, moved);
-        setItems(reordered);
+        
+        // Optimistic order update on client
+        setItems(reordered.map((item, index) => ({ ...item, order: index })));
         setDragSourceId(null);
         setDragOverId(null);
 
@@ -72,7 +68,7 @@ export default function SliderTable({ banners }: SliderTableProps) {
                 const result = await reorderSliderBannersAction(payload);
                 if (!result.success) {
                     setErrorMsg(result.message);
-                    setItems(banners); // rollback
+                    setItems(banners);
                 }
             });
         }, 300);

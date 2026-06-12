@@ -1,4 +1,3 @@
-// File: src/components/banner/layouts/LayoutDefault.tsx
 "use client";
 
 import Link from "next/link";
@@ -29,7 +28,7 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
 
     const content = (
         <div
-            className="banner-slot group relative w-full overflow-hidden flex items-center "
+            className="banner-slot group relative w-full overflow-hidden flex items-center"
             style={{ backgroundColor: bg }}
         >
             <div className="relative z-10 w-full max-w-6xl mx-auto h-full flex flex-row items-center px-4 sm:px-10">
@@ -52,10 +51,7 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
 
                     {title && (
                         <div style={fadeUp(0.2)}>
-                            <h2
-                                className="font-bold leading-[1.1] tracking-[-0.03em]
-                                           text-[clamp(1rem,2.5vw,2.8rem)] line-clamp-3"
-                            >
+                            <h2 className="font-bold leading-[1.1] tracking-[-0.03em] text-[clamp(1rem,2.5vw,2.8rem)] line-clamp-3">
                                 {title}
                             </h2>
                         </div>
@@ -64,8 +60,7 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                     {description && (
                         <div style={fadeUp(0.3)}>
                             <p
-                                className="text-[10px] sm:text-[13px] md:text-sm
-                                           leading-relaxed line-clamp-2 sm:line-clamp-4 max-w-[32ch]"
+                                className="text-[10px] sm:text-[13px] md:text-sm leading-relaxed line-clamp-2 sm:line-clamp-4 max-w-[32ch]"
                                 style={{ opacity: 0.75 }}
                             >
                                 {description}
@@ -92,24 +87,24 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                         </div>
                     )}
                 </div>
+
                 {/* ── Media (derecha) ───────────────────────────────── */}
                 {media?.imageUrl && (
                     <div
-                        className="w-1/2 h-full pointer-events-none" // Quitamos flex, justify, items y p-2
+                        className="w-1/2 h-full pointer-events-none"
                         style={{
                             opacity: loaded ? 1 : 0,
                             transform: loaded ? "translateX(0) scale(1)" : "translateX(20px) scale(0.95)",
                             transition: "opacity 0.8s ease, transform 0.8s cubic-bezier(0.16,1,0.3,1)",
                         }}
                     >
-                        {/* Contenedor relativo que ocupa el 100% del espacio del padre */}
                         <div className="relative w-full h-full">
                             <Image
                                 src={media.imageUrl}
-                                alt={media.altText ?? title ?? ""}
+                                alt={title || "Slider Banner Content"}
                                 fill
-                                className={`transition-transform duration-[2000ms] group-hover:scale-105
-                          ${media.objectFit === "contain" ? "object-contain" : "object-cover"}`}
+                                className={`transition-transform duration-[2000ms] group-hover:scale-105 ${media.objectFit === "contain" ? "object-contain" : "object-cover"
+                                    }`}
                                 sizes="(max-width: 640px) 50vw, 40vw"
                                 priority
                                 unoptimized
@@ -128,7 +123,7 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
             href={destUrl}
             target={openInNewTab ? "_blank" : undefined}
             rel={openInNewTab ? "noopener noreferrer" : undefined}
-            aria-label={title ?? banner.name}
+            aria-label={title || "Slider Banner Link"}
         >
             {content}
         </Link>

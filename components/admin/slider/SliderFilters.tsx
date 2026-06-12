@@ -1,10 +1,9 @@
-// File: src/components/admin/slider/SliderFilters.tsx
 "use client";
 
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useState, useTransition }    from "react";
 import { useDebouncedCallback }                    from "use-debounce";
-import { Search, X }                              from "lucide-react";
+import { Search, X }                               from "lucide-react";
 import { Input }                                  from "@/components/ui/input";
 import {
     Select, SelectTrigger, SelectValue,
@@ -26,7 +25,7 @@ export default function SliderFilters({ filters }: SliderFiltersProps) {
     const pathname     = usePathname();
     const searchParams = useSearchParams();
     const [isPending, startTransition] = useTransition();
-    const [searchValue, setSearchValue] = useState(filters.search ?? "");
+    const [searchValue, setSearchValue] = useState<string>(filters.search ?? "");
 
     const setParam = useCallback(
         (key: string, value: string | undefined) => {
@@ -77,6 +76,8 @@ export default function SliderFilters({ filters }: SliderFiltersProps) {
                     <Button
                         onClick={handleSearchClear}
                         variant="ghost"
+                        size="icon"
+                        className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 text-muted-foreground hover:text-foreground"
                         aria-label="Limpiar búsqueda"
                     >
                         <X className="h-3.5 w-3.5" />

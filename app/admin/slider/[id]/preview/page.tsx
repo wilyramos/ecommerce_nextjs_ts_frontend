@@ -1,5 +1,3 @@
-// File: frontend/app/(admin)/admin/slider/[id]/preview/page.tsx
-
 import { notFound } from "next/navigation";
 import Link from "next/link";
 
@@ -27,7 +25,8 @@ export default async function SliderBannerPreviewPage({ params }: Props) {
     if (!banner) notFound();
 
     const layout = banner.design.layout;
-    const theme = banner.design.theme;
+    const theme = banner.design.theme ?? "dark";
+    const currencySymbol = "S/";
 
     return (
         <AdminPageWrapper
@@ -108,23 +107,10 @@ export default async function SliderBannerPreviewPage({ params }: Props) {
                     <Card title="Contenido de Campaña">
                         <div className="space-y-2">
                             <Row
-                                label="Nombre Interno"
-                                value={banner.name}
+                                label="Identificador Portada"
+                                value={banner.title || "Banner sin título"}
+                                truncate
                             />
-
-                            {banner.tags && banner.tags.length > 0 && (
-                                <Row
-                                    label="Etiquetas"
-                                    value={banner.tags.join(", ")}
-                                />
-                            )}
-
-                            {banner.title && (
-                                <Row
-                                    label="Título"
-                                    value={banner.title}
-                                />
-                            )}
 
                             {banner.subtitle && (
                                 <Row
@@ -166,13 +152,13 @@ export default async function SliderBannerPreviewPage({ params }: Props) {
                             <div className="space-y-2">
                                 <Row
                                     label="Precio Actual"
-                                    value={`${banner.price.currency ?? "S/"} ${banner.price.current.toFixed(2)}`}
+                                    value={`${currencySymbol} ${banner.price.current.toFixed(2)}`}
                                 />
 
                                 {banner.price.compare !== undefined && banner.price.compare !== null && (
                                     <Row
                                         label="Precio Comparativo"
-                                        value={`${banner.price.currency ?? "S/"} ${banner.price.compare.toFixed(2)}`}
+                                        value={`${currencySymbol} ${banner.price.compare.toFixed(2)}`}
                                     />
                                 )}
 

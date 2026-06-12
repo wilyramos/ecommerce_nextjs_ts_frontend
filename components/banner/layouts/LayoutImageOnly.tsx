@@ -1,4 +1,3 @@
-// File: src/components/banner/layouts/LayoutImageOnly.tsx
 "use client";
 
 import Link from "next/link";
@@ -13,33 +12,30 @@ export default function LayoutImageOnly({ banner }: { banner: SliderBanner }) {
     const isVideo = Boolean(media?.videoUrl);
     const bg = design.bgColor ?? "#000000";
 
-    console.log("Rendering LayoutImageOnly with media:", banner);
-
     const content = (
         <div
-            className="banner-slot group relative w-full overflow-hidden "
+            className="banner-slot group relative w-full overflow-hidden"
             style={{ backgroundColor: bg }}
         >
-            {isVideo ? (
+            {isVideo && media?.videoUrl ? (
                 <video
                     ref={videoRef}
-                    src={media!.videoUrl}
-                    poster={media!.videoPoster ?? media!.imageUrl}
+                    src={media.videoUrl}
+                    poster={media.imageUrl}
                     autoPlay
                     muted
                     loop
                     playsInline
-                    className="absolute inset-0 w-full h-full object-cover
-                               transition-transform duration-[1800ms]
-                               group-hover:scale-[1.03]"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1800ms] group-hover:scale-[1.03]"
                 />
             ) : media?.imageUrl ? (
                 <Image
                     src={media.imageUrl}
-                    alt={media.altText ?? title ?? ""}
+                    alt={title || "Slider Banner Image"}
                     fill
-                    className={`transition-transform duration-[1800ms] group-hover:scale-[1.03]
-                               ${media.objectFit === "contain" ? "object-contain" : "object-cover"}`}
+                    className={`transition-transform duration-[1800ms] group-hover:scale-[1.03] ${
+                        media.objectFit === "contain" ? "object-contain" : "object-cover"
+                    }`}
                     sizes="100vw"
                     priority
                     unoptimized
@@ -55,7 +51,7 @@ export default function LayoutImageOnly({ banner }: { banner: SliderBanner }) {
             href={destUrl}
             target={openInNewTab ? "_blank" : undefined}
             rel={openInNewTab ? "noopener noreferrer" : undefined}
-            aria-label={title ?? banner.name}
+            aria-label={title || "Slider Banner Link"}
         >
             {content}
         </Link>

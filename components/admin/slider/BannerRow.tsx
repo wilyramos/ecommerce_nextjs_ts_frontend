@@ -1,14 +1,9 @@
-//File: frontend/components/admin/slider/BannerRow.tsx
-
 "use client";
 
 import { useOptimistic, useTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import {
-    GripVertical, Pencil, Eye, Layers,
-    ToggleLeft, ToggleRight,
-} from "lucide-react";
+import { GripVertical, Pencil, Eye, Layers, ToggleLeft, ToggleRight } from "lucide-react";
 import { toggleSliderBannerAction } from "@/actions/slider-actions";
 import type { SliderBanner } from "@/src/schemas/slider.schema";
 import DeleteSliderButton from "./DeleteSliderButton";
@@ -34,8 +29,12 @@ interface BannerRowProps {
 
 export default function BannerRow({
     banner,
-    isDragging, isDragOver,
-    onDragStart, onDragOver, onDragEnd, onDrop,
+    isDragging,
+    isDragOver,
+    onDragStart,
+    onDragOver,
+    onDragEnd,
+    onDrop,
     onError,
 }: BannerRowProps) {
     const [isPending, startTransition] = useTransition();
@@ -62,7 +61,7 @@ export default function BannerRow({
                 isDragOver ? "bg-[var(--color-action-primary-light)]" : "",
             ].join(" ")}
         >
-            {/* Handle */}
+            {/* Control Drag Handle */}
             <TableCell className="w-8 px-3">
                 <GripVertical
                     className="h-4 w-4 cursor-grab active:cursor-grabbing"
@@ -70,26 +69,23 @@ export default function BannerRow({
                 />
             </TableCell>
 
-            {/* Thumbnail + nombre interno + título */}
+            {/* Preview de Portada + Título + Subtítulo */}
             <TableCell>
                 <div className="flex items-center gap-3 min-w-0">
                     <div
-                        className="relative h-9 w-14 shrink-0 rounded-md overflow-hidden"
+                        className="relative h-9 w-14 shrink-0 rounded-md overflow-hidden bg-[var(--color-bg-tertiary)]"
                         style={{ border: "1px solid var(--color-border-subtle)" }}
                     >
                         {banner.media?.imageUrl ? (
                             <Image
                                 src={banner.media.imageUrl}
-                                alt={banner.media.altText ?? banner.name}
+                                alt={banner.title || "Slider Media"}
                                 fill
                                 className="object-cover"
                                 sizes="56px"
                             />
                         ) : (
-                            <div
-                                className="flex h-full w-full items-center justify-center"
-                                style={{ background: "var(--color-bg-tertiary)" }}
-                            >
+                            <div className="flex h-full w-full items-center justify-center">
                                 <Layers
                                     className="h-3.5 w-3.5"
                                     style={{ color: "var(--color-text-tertiary)" }}
@@ -98,27 +94,25 @@ export default function BannerRow({
                         )}
                     </div>
                     <div className="min-w-0">
-                        {/* name es el identificador interno, siempre presente */}
                         <p
                             className="text-sm font-medium truncate"
                             style={{ color: "var(--color-text-primary)" }}
                         >
-                            {banner.name}
+                            {banner.title || <span className="italic text-muted-foreground">Sin título</span>}
                         </p>
-                        {/* título es el texto visible en el banner, opcional */}
-                        {banner.title && (
+                        {banner.subtitle && (
                             <p
                                 className="text-xs truncate mt-0.5"
                                 style={{ color: "var(--color-text-tertiary)" }}
                             >
-                                {banner.title}
+                                {banner.subtitle}
                             </p>
                         )}
                     </div>
                 </div>
             </TableCell>
 
-            {/* Layout */}
+            {/* Estructura del Layout */}
             <TableCell>
                 <span
                     className="text-xs px-2 py-0.5 rounded-full"
@@ -131,7 +125,7 @@ export default function BannerRow({
                 </span>
             </TableCell>
 
-            {/* Orden */}
+            {/* Posición Indexada */}
             <TableCell>
                 <span
                     className="text-sm tabular-nums"
@@ -141,7 +135,7 @@ export default function BannerRow({
                 </span>
             </TableCell>
 
-            {/* Estado */}
+            {/* Estado de Visibilidad */}
             <TableCell>
                 <span
                     className="text-xs px-2 py-0.5 rounded-full font-medium"
@@ -154,16 +148,17 @@ export default function BannerRow({
                 </span>
             </TableCell>
 
-            {/* Acciones */}
+            {/* Acciones del Administrador */}
             <TableCell className="text-right">
                 <div className="flex items-center justify-end gap-0.5">
-                    <ActionIcon href={`/admin/slider/${banner._id}/preview`} label="Preview">
+                    <ActionIcon href={`/admin/slider/${banner._id}/preview`} label="Vista previa">
                         <Eye className="h-3.5 w-3.5" />
                     </ActionIcon>
                     <ActionIcon href={`/admin/slider/${banner._id}`} label="Editar">
                         <Pencil className="h-3.5 w-3.5" />
                     </ActionIcon>
                     <button
+                        type="button"
                         onClick={handleToggle}
                         disabled={isPending}
                         className="flex h-7 w-7 items-center justify-center rounded-lg transition-colors disabled:opacity-40"
@@ -181,7 +176,7 @@ export default function BannerRow({
                     </button>
                     <DeleteSliderButton
                         bannerId={banner._id}
-                        bannerName={banner.name}
+                        bannerName={banner.title ?? "Banner sin título"}
                     />
                 </div>
             </TableCell>
