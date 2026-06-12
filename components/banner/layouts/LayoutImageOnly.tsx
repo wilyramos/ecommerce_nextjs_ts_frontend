@@ -26,7 +26,7 @@ export default function LayoutImageOnly({ banner }: { banner: SliderBanner }) {
                     muted
                     loop
                     playsInline
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1800ms] group-hover:scale-[1.03]"
+                    className="absolute inset-0 w-full h-full object-cover "
                 />
             ) : media?.imageUrl ? (
                 <Image

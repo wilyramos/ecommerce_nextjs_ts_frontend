@@ -48,7 +48,7 @@ export default function LayoutMediaLeft({ banner }: { banner: SliderBanner }) {
                                 src={media.imageUrl}
                                 alt={title || "Slider Banner Left Content"}
                                 fill
-                                className={`transition-transform duration-[2000ms] group-hover:scale-105 ${
+                                className={`transition-transform  ${
                                     media.objectFit === "contain" ? "object-contain" : "object-cover"
                                 }`}
                                 sizes="(max-width: 640px) 50vw, 40vw"

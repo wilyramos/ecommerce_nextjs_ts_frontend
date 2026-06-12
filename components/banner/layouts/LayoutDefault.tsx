@@ -103,7 +103,7 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                                 src={media.imageUrl}
                                 alt={title || "Slider Banner Content"}
                                 fill
-                                className={`transition-transform duration-[2000ms] group-hover:scale-105 ${media.objectFit === "contain" ? "object-contain" : "object-cover"
+                                className={` ${media.objectFit === "contain" ? "object-contain" : "object-cover"
                                     }`}
                                 sizes="(max-width: 640px) 50vw, 40vw"
                                 priority
