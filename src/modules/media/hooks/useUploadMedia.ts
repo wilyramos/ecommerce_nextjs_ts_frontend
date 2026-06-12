@@ -1,6 +1,4 @@
 import { useState, useCallback } from 'react';
-import { ZodError } from 'zod';
-import { MediaService } from '../services/media.service';
 
 import type {
     Media,
@@ -113,106 +111,117 @@ export function useUploadMedia(options: UseUploadMediaOptions): UseUploadMediaRe
 
     // ─── Upload Core Engine ───────────────────────────────────────────────────
 
-    const upload = useCallback(
-        async (files: File[]): Promise<void> => {
-            const { valid, errors: validationErrors } = validateFiles(files);
+    const upload = useCallback(async (files: File[]): Promise<void> => {
+        const { valid, errors: validationErrors } = validateFiles(files);
 
-            if (validationErrors.length > 0 && valid.length === 0) {
-                onError?.(
-                    validationErrors.map((reason, index) => ({
-                        index,
-                        filename: files[index]?.name ?? 'unknown',
-                        reason,
-                    }))
-                );
-                return;
-            }
+        if (validationErrors.length > 0 && valid.length === 0) {
+            onError?.(validationErrors.map((reason, i) => ({
+                index: i, filename: files[i]?.name ?? 'unknown', reason,
+            })));
+            return;
+        }
 
-            const incomingStates: FileUploadState[] = valid.map((file) => ({
-                file,
-                status: 'uploading',
-                progress: 0,
-                previewUrl: file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined,
-            }));
+        const incomingStates: FileUploadState[] = valid.map((file) => ({
+            file, status: 'uploading', progress: 0,
+            previewUrl: file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined,
+        }));
 
-            setFileStates((prev) => {
-                const filteredPrev = prev.filter(
-                    (ps) => !valid.some((vf) => vf.name === ps.file.name && vf.size === ps.file.size)
-                );
-                return [...filteredPrev, ...incomingStates];
+        setFileStates((prev) => [...prev.filter(
+            (ps) => !valid.some((vf) => vf.name === ps.file.name && vf.size === ps.file.size)
+        ), ...incomingStates]);
+
+        setIsUploading(true);
+        setGlobalProgress(0);
+
+        const results = await Promise.allSettled(valid.map(async (file) => {
+            // 1. Pedir firma al backend
+
+            const signRes = await fetch('/api/media/sign', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ folder }),
+            });
+            if (!signRes.ok) throw new Error('Error al firmar la subida');
+            const { signature, timestamp, publicId, apiKey, cloudName } = await signRes.json();
+
+            // 2. Subir directo a Cloudinary con XHR para tener progreso
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('api_key', apiKey);
+            formData.append('timestamp', String(timestamp));
+            formData.append('signature', signature);
+            formData.append('public_id', publicId);
+            formData.append('folder', folder);
+
+            const resourceType = file.type.startsWith('video/') ? 'video' : 'image';
+
+            const cloudinaryResult = await new Promise<Record<string, unknown>>((resolve, reject) => {
+                const xhr = new XMLHttpRequest();
+                xhr.upload.addEventListener('progress', (e) => {
+                    if (e.lengthComputable) {
+                        const pct = Math.round((e.loaded / e.total) * 95);
+                        setGlobalProgress(pct);
+                        setFileStates((prev) => prev.map((item) =>
+                            item.file === file ? { ...item, progress: pct } : item
+                        ));
+                    }
+                });
+                xhr.addEventListener('load', () => {
+                    const json = JSON.parse(xhr.responseText);
+                    if (xhr.status >= 400) reject(new Error(json.error?.message ?? `Error ${xhr.status}`));
+                    else resolve(json);
+                });
+                xhr.addEventListener('error', () => reject(new Error('Error de red con Cloudinary')));
+                xhr.open('POST', `https://api.cloudinary.com/v1_1/${cloudName}/${resourceType}/upload`);
+                xhr.send(formData);
             });
 
-            setIsUploading(true);
-            setGlobalProgress(0);
+            // 3. Registrar en tu base de datos
+            const registerRes = await fetch('/api/media/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    secureUrl: cloudinaryResult.secure_url,
+                    publicId: cloudinaryResult.public_id,
+                    format: cloudinaryResult.format,
+                    bytes: cloudinaryResult.bytes,
+                    width: cloudinaryResult.width,
+                    height: cloudinaryResult.height,
+                    duration: cloudinaryResult.duration,
+                    resourceType,
+                    folder,
+                }),
+            });
+            if (!registerRes.ok) throw new Error('Error al registrar el medio en la base de datos');
+            const { data } = await registerRes.json();
+            return data;
+        }));
 
-            try {
-                const response = await MediaService.upload(
-                    { files: valid, folder },
-                    (progress) => {
-                        setGlobalProgress(progress);
-                        setFileStates((prev) =>
-                            prev.map((item) =>
-                                valid.some((vf) => vf.name === item.file.name && vf.size === item.file.size) &&
-                                    item.status === 'uploading'
-                                    ? { ...item, progress }
-                                    : item
-                            )
-                        );
-                    }
-                );
+        const succeeded: Media[] = [];
+        const failed: UploadErrorItem[] = [];
 
-                const failedIndices = new Set(response.errors?.map((e) => e.index) ?? []);
-
-                setFileStates((prev) =>
-                    prev.map((item) => {
-                        const validIndex = valid.findIndex((vf) => vf.name === item.file.name && vf.size === item.file.size);
-                        if (validIndex === -1) return item;
-
-                        if (failedIndices.has(validIndex)) {
-                            const errItem = response.errors?.find((e) => e.index === validIndex);
-                            return { ...item, status: 'error', progress: 0, error: errItem?.reason || 'Error en servidor' };
-                        }
-
-                        const successIndex = validIndex - [...failedIndices].filter((fi) => fi < validIndex).length;
-                        return {
-                            ...item,
-                            status: 'success',
-                            progress: 100,
-                            result: response.data[successIndex],
-                        };
-                    })
-                );
-
-                setGlobalProgress(100);
-
-                if (response.failed === 0) {
-                    onSuccess?.(response.data);
-                } else if (response.uploaded > 0) {
-                    onPartialSuccess?.(response.data, response.errors ?? []);
-                } else {
-                    onError?.(response.errors ?? []);
-                }
-            } catch (err) {
-                const message =
-                    err instanceof ZodError ? 'Respuesta inesperada del servidor' :
-                        err instanceof Error ? err.message :
-                            'Error desconocido al subir archivos';
-
-                setFileStates((prev) =>
-                    prev.map((item) =>
-                        valid.some((vf) => vf.name === item.file.name && vf.size === item.file.size)
-                            ? { ...item, status: 'error', progress: 0, error: message }
-                            : item
-                    )
-                );
-
-                onError?.(valid.map((file, index) => ({ index, filename: file.name, reason: message })));
-            } finally {
-                setIsUploading(false);
+        results.forEach((r, i) => {
+            if (r.status === 'fulfilled') {
+                succeeded.push(r.value);
+                setFileStates((prev) => prev.map((item) =>
+                    item.file === valid[i] ? { ...item, status: 'success', progress: 100, result: r.value } : item
+                ));
+            } else {
+                failed.push({ index: i, filename: valid[i].name, reason: r.reason?.message ?? 'Error desconocido' });
+                setFileStates((prev) => prev.map((item) =>
+                    item.file === valid[i] ? { ...item, status: 'error', progress: 0, error: r.reason?.message } : item
+                ));
             }
-        },
-        [folder, validateFiles, onSuccess, onError, onPartialSuccess]
-    );
+        });
+
+        setGlobalProgress(100);
+        setIsUploading(false);
+
+        if (failed.length === 0) onSuccess?.(succeeded);
+        else if (succeeded.length > 0) onPartialSuccess?.(succeeded, failed);
+        else onError?.(failed);
+
+    }, [folder, validateFiles, onSuccess, onError, onPartialSuccess]);
 
     // ─── Retry Automatizado Sin Pérdida de Contexto ───────────────────────────
 
