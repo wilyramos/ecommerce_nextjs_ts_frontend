@@ -5,7 +5,6 @@ import FeaturesList from "@/components/home/FeaturesList";
 import BrandsList from "@/components/home/BrandsList";
 import CarruselPrincipal from "@/components/home/CarruselPrincipal";
 import HomepageSectionsWrapper from "@/components/home/sections/HomepageSectionsWrapper";
-import GlobalAdContainer from "@/components/home/GlobalAdContainer";
 import HomepageSections from "@/components/home/sections/HomepageSections";
 
 // Metadata for SEO and social sharing
@@ -65,7 +64,6 @@ export const metadata: Metadata = {
 export default function HomePage() {
     return (
         <>
-            <GlobalAdContainer />
 
             <section>
                 <CarruselPrincipal />

@@ -5,6 +5,8 @@ import NavBar from "@/components/navigation/NavBar";
 import { metadata as globalMetadata } from "@/app/layout";
 import type { Metadata } from "next";
 import WhatsappButton from "@/components/home/WhatsappButton";
+import GlobalAdContainer from "@/components/home/GlobalAdContainer";
+import TopBarAdServer from "@/components/home/TopBarAdServer";
 
 // Extendemos metadata global para esta sección
 export const metadata: Metadata = {
@@ -42,22 +44,28 @@ export const metadata: Metadata = {
     }
 };
 
+
+
 export default function layout({ children }: { children: React.ReactNode }) {
     return (
         <>
             <section className="flex flex-col min-h-screen">
-                {/* Asegura que el header sea inferior al z-9999 del banner */}
-                <header className="relative z-40">
+                {/* Top bar sticky con hide-on-scroll — encima del navbar */}
+                <TopBarAdServer />
+
+                <header className="sticky top-0 z-40">
                     <NavBar />
                 </header>
 
-                <main className="flex-1 pt-12 md:pt-20">
+                <main className="flex-1">
                     {children}
                 </main>
 
                 <Footer />
             </section>
 
+            {/* Modal global — se renderiza fuera del flow */}
+            <GlobalAdContainer />
             <WhatsappButton />
         </>
     );

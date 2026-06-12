@@ -11,7 +11,7 @@ interface FeaturedCollectionsSectionProps {
 
 export default function FeaturedCollectionsSection({ section, columns }: FeaturedCollectionsSectionProps) {
     return (
-        <section className="space-y-6">
+        <section className="space-y-2">
             <SectionHeader title={section.title} />
             <div
                 className="grid gap-4"
@@ -47,7 +47,7 @@ export default function FeaturedCollectionsSection({ section, columns }: Feature
                             {/* Gradiente sutil para legibilidad del texto */}
                             <div className="absolute inset-0 bg-gradient-to-t" />
 
-                            <div className="absolute inset-x-0 bottom-0 p-6 flex flex-col items-start gap-1">
+                            <div className="absolute inset-x-0 bottom-0 p-2 flex flex-col items-start gap-1">
                                 {block.title && (
                                     <h3 className="text-white font-black text-lg uppercase tracking-[0.1em]">
                                         {block.title}

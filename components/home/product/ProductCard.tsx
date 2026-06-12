@@ -132,7 +132,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
             {/* Hover overlay */}
             <div className="absolute inset-0 bg-foreground opacity-0 group-hover:opacity-[0.04] transition-opacity duration-300 pointer-events-none z-0" />
 
-            <Link href={`/productos/${product.slug}`} className="relative z-10 flex flex-col h-full">
+            <Link href={`/productos/${product.slug}`} className="relative flex flex-col h-full">
 
                 {/* ── IMAGEN ── */}
                 <div className="relative w-full aspect-square bg-background-secondary overflow-hidden">

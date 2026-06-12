@@ -12,7 +12,8 @@ import ButtonSearchMobile from "./ButtonSearchMobile";
 export default function NavBar() {
     return (
         <NavBarClient>
-            <header className="sticky top-0 z-50 h-12 flex flex-col justify-center text-foreground bg-background border-b border-border transition-colors duration-300">
+            {/* Quitamos sticky/z-50 aquí — NavBarClient ya lo maneja */}
+            <header className="h-12 flex flex-col justify-center text-foreground bg-background border-b border-border transition-colors duration-300">
                 <div className="max-w-screen-2xl w-full mx-auto grid grid-cols-3 items-center px-4 md:px-6">
 
                     {/* Left column */}
@@ -20,13 +21,12 @@ export default function NavBar() {
                         <div className="md:hidden">
                             <ServerSheetMobile />
                         </div>
-
                         <div className="hidden md:flex">
                             <ButtonSearchFormStore />
                         </div>
                     </div>
 
-                    {/* Center column - LOGO SIEMPRE CENTRADO */}
+                    {/* Center column */}
                     <div className="flex justify-center">
                         <Link href="/" className="flex items-center max-w-[140px]">
                             <Logo color="black" />
@@ -45,7 +45,6 @@ export default function NavBar() {
                                     <AiOutlineUser className="h-6 w-6" />
                                 </div>
                             </Link>
-
                             <ButtonShowCart />
                         </div>
 
@@ -58,8 +57,8 @@ export default function NavBar() {
                 </div>
             </header>
 
-            <div className="hidden md:block sticky z-40 w-full border-b border-border bg-background transition-colors duration-300">
-                <div className="max-w-screen-2xl mx-auto px-4 md:px-6 flex  gap-6 ">
+            <div className="hidden md:block w-full border-b border-border bg-background transition-colors duration-300">
+                <div className="max-w-screen-2xl mx-auto px-4 md:px-6 flex gap-6">
                     <ServerCategorias />
                 </div>
             </div>
