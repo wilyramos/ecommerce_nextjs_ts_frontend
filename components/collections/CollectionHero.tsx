@@ -84,6 +84,7 @@ export default function CollectionHero({ context }: Props) {
                     priority
                     className="object-cover object-center"
                     sizes="100vw"
+                    unoptimized
                 />
             ) : (
                 <div
@@ -93,7 +94,7 @@ export default function CollectionHero({ context }: Props) {
             )}
 
             {hasImage && (
-                <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent" />
             )}
 
             {/* ── CONTENIDO ── */}

@@ -30,7 +30,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
     const fullTitle = `${title} | GoPhone`;
     const description = collectionSeoDesc
         ?? collectionDesc
-        ?? `Explora ${displayName} al mejor precio en Perú. Envíos a todo el país y garantía oficial.`;
+        ?? `Explora ${displayName} al mejor precio.`;
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? "https://gophone.pe";
     const canonical = `${baseUrl}/colecciones/${slug}`;
