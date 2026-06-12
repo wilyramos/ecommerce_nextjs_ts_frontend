@@ -49,6 +49,8 @@ export const metadata: Metadata = {
 export default function layout({ children }: { children: React.ReactNode }) {
     return (
         <>
+                        <ScrollToTop /> 
+
             <section className="flex flex-col min-h-screen">
                 {/* Top bar sticky con hide-on-scroll — encima del navbar */}
                 <TopBarAdServer />
