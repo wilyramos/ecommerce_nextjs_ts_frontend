@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Image from "next/image";
 import type { CartItem } from "@/src/schemas";
 import { useCartStore } from "@/src/store/cartStore";
@@ -20,15 +21,21 @@ export default function ItemCarrito({ item }: { item: CartItem }) {
         : null;
 
     return (
-        <div className="flex flex-col py-2 gap-2 ">
-            {/* Nombre ocupa todo el ancho superior */}
-            <p className="text-[13px] font-medium leading-tight text-[var(--color-text-primary)]">
+        <div className="flex flex-col py-2 gap-2">
+            {/* Nombre con Link */}
+            <Link
+                href={`/productos/${item.slug}`}
+                className="text-[13px] font-medium leading-tight text-[var(--color-text-primary)] hover:underline"
+            >
                 {item.nombre}
-            </p>
+            </Link>
 
             <div className="flex gap-3 items-center">
-                {/* Imagen */}
-                <div className="relative w-14 h-14 flex-shrink-0 overflow-hidden bg-[var(--color-bg-secondary)]">
+                {/* Imagen con Link */}
+                <Link
+                    href={`/productos/${item.slug}`}
+                    className="relative w-14 h-14 flex-shrink-0 overflow-hidden bg-[var(--color-bg-secondary)] block"
+                >
                     {imageSrc ? (
                         <Image
                             src={imageSrc}
@@ -43,18 +50,16 @@ export default function ItemCarrito({ item }: { item: CartItem }) {
                             <MdOutlineImageNotSupported size={16} />
                         </div>
                     )}
-                </div>
+                </Link>
 
-                {/* Info al costado de la imagen */}
+                {/* Info — sin cambios */}
                 <div className="flex flex-col flex-1 min-w-0 gap-2">
-                    {/* Atributos */}
                     {atributos && (
                         <p className="text-[11px] text-[var(--color-text-tertiary)] -mt-1">
                             {atributos}
                         </p>
                     )}
 
-                    {/* Cantidad + Precio Unitario + Eliminar */}
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                             <div className="flex items-center gap-2">
@@ -76,8 +81,7 @@ export default function ItemCarrito({ item }: { item: CartItem }) {
                                     <Plus size={8} strokeWidth={2.5} />
                                 </button>
                             </div>
-                            
-                            {/* Precio al costado de las cantidades */}
+
                             <span className="text-[12px] font-semibold text-[var(--color-text-primary)]">
                                 S/ {subtotal.toFixed(2)}
                             </span>

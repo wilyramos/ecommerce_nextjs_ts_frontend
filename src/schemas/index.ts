@@ -454,6 +454,7 @@ const CartItemSchema = ApiProductSchema.pick({
     precio: true,
     imagenes: true,
     stock: true,
+    slug: true,
 }).extend({
     cantidad: z.number().min(1, { message: 'La cantidad debe ser al menos 1' }),
     subtotal: z.number().min(0, { message: 'El subtotal debe ser al menos 0' }),

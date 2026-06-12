@@ -102,6 +102,7 @@ export const useCartStore = create<Store>()(
                                 ...cart,
                                 {
                                     _id: item._id,
+                                    slug: item.slug,
                                     nombre: item.nombre,
                                     precio,
                                     cantidad: 1,

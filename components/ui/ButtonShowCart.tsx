@@ -44,7 +44,7 @@ export default function ButtonShowCart() {
                         className="text-foreground group-hover:text-action-cta transition-colors"
                     />
                     {carrito.length > 0 && (
-                        <span className="absolute top-1 right-1 bg-action-cta text-action-cta-foreground text-[9px] font-black rounded-full h-4 w-4 flex items-center justify-center shadow-md animate-in zoom-in-50 duration-200">
+                        <span className="absolute top-1 right-1 bg-action-cta text-action-cta-foreground text-[9px] font-semibold rounded-full h-4 w-4 flex items-center justify-center shadow-md animate-in zoom-in-50 duration-200">
                             {carrito.length}
                         </span>
                     )}
@@ -102,8 +102,8 @@ export default function ButtonShowCart() {
                             <div className="flex justify-between items-baseline pt-2 border-t border-transparent">
                                 <span className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Total </span>
                                 <div className="text-right select-all ">
-                                    <span className="text-xs font-black text-foreground mr-1">S/</span>
-                                    <span className="text-2xl font-black text-foreground ">
+                                    <span className="text-xs font-semibold text-foreground mr-1">S/</span>
+                                    <span className="text-2xl font-semibold text-foreground ">
                                         {total}
                                     </span>
                                 </div>
