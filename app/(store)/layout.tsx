@@ -7,6 +7,7 @@ import type { Metadata } from "next";
 import WhatsappButton from "@/components/home/WhatsappButton";
 import GlobalAdContainer from "@/components/home/GlobalAdContainer";
 import TopBarAdServer from "@/components/home/TopBarAdServer";
+import ScrollToTop from "@/components/navigation/ScrollToTop";
 
 // Extendemos metadata global para esta sección
 export const metadata: Metadata = {
@@ -49,7 +50,7 @@ export const metadata: Metadata = {
 export default function layout({ children }: { children: React.ReactNode }) {
     return (
         <>
-                        <ScrollToTop /> 
+            <ScrollToTop />
 
             <section className="flex flex-col min-h-screen">
                 {/* Top bar sticky con hide-on-scroll — encima del navbar */}
