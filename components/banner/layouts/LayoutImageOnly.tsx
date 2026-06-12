@@ -13,6 +13,8 @@ export default function LayoutImageOnly({ banner }: { banner: SliderBanner }) {
     const isVideo = Boolean(media?.videoUrl);
     const bg = design.bgColor ?? "#000000";
 
+    console.log("Rendering LayoutImageOnly with media:", banner);
+
     const content = (
         <div
             className="banner-slot group relative w-full overflow-hidden "

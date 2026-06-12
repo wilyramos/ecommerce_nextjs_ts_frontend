@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from "react";
 import { Info, ImageIcon, Link as LinkIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,11 +17,43 @@ interface SectionProps {
     fieldErrors?: Record<string, string[]>;
 }
 
+function isVideoUrl(url: string): boolean {
+    const clean = url.split('?')[0].toLowerCase();
+    return (
+        clean.endsWith('.mp4') ||
+        clean.endsWith('.webm') ||
+        clean.endsWith('.mov') ||
+        clean.includes('/video/upload/')
+    );
+}
+
 export default function GeneralSection({ initialData, fields, fieldErrors }: SectionProps) {
     const val = (name: string, fallback?: string) => fields?.[name] ?? fallback ?? "";
     const err = (name: string) => fieldErrors?.[name]?.[0];
 
-    const defaultMediaUrl = val("media.imageUrl", initialData?.media?.imageUrl) || val("media.videoUrl", initialData?.media?.videoUrl);
+    // Estado separado para imagen y video
+    const [mediaImageUrl, setMediaImageUrl] = useState(
+        val("media.imageUrl", initialData?.media?.imageUrl) || ""
+    );
+    const [mediaVideoUrl, setMediaVideoUrl] = useState(
+        val("media.videoUrl", initialData?.media?.videoUrl) || ""
+    );
+
+    function handleMediaChange(urls: string[]) {
+        const url = urls[0] ?? '';
+        if (!url) {
+            setMediaImageUrl('');
+            setMediaVideoUrl('');
+            return;
+        }
+        if (isVideoUrl(url)) {
+            setMediaVideoUrl(url);
+            setMediaImageUrl('');
+        } else {
+            setMediaImageUrl(url);
+            setMediaVideoUrl('');
+        }
+    }
 
     return (
         <div className="space-y-6">
@@ -139,11 +172,16 @@ export default function GeneralSection({ initialData, fields, fieldErrors }: Sec
                             name="media.imageUrl"
                             label="Imagen o Video de Portada"
                             folder="banners"
-                            defaultValue={defaultMediaUrl}
+                            defaultValue={mediaImageUrl || mediaVideoUrl}
                             multiple={false}
                             maxFiles={1}
                             accept="both"
+                            onChange={handleMediaChange}
                         />
+                        {/* Campos ocultos con el valor correcto según tipo */}
+                        <input type="hidden" name="media.imageUrl" value={mediaImageUrl} />
+                        <input type="hidden" name="media.videoUrl" value={mediaVideoUrl} />
+
                         {(err("media.imageUrl") || err("media.videoUrl")) && (
                             <p className="text-[10px] text-destructive font-semibold">
                                 {err("media.imageUrl") || err("media.videoUrl")}
@@ -162,39 +200,37 @@ export default function GeneralSection({ initialData, fields, fieldErrors }: Sec
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-1">
-                            <LabelWithTooltip htmlFor="media.videoUrl" label="URL de Contingencia (Video)" tooltip="URL de video secundaria opcional." />
-                            <Input
-                                name="media.videoUrl"
-                                defaultValue={val("media.videoUrl", initialData?.media?.videoUrl)}
-                                placeholder="Auto-completado si subes un archivo de video"
-                                className="h-10 text-xs bg-background-secondary border-border/40 rounded-sm text-muted-foreground/70"
+                            <LabelWithTooltip
+                                htmlFor="media.videoPoster"
+                                label="Poster del Video"
+                                tooltip="Miniatura que se muestra antes de que el video cargue."
                             />
-                        </div>
-                        <div className="space-y-1">
-                            <LabelWithTooltip htmlFor="media.videoPoster" label="Poster del Video" tooltip="Miniatura para el video." />
                             <Input
                                 name="media.videoPoster"
                                 defaultValue={val("media.videoPoster", initialData?.media?.videoPoster)}
                                 className="h-10 text-xs bg-background-secondary border-border/40 rounded-sm"
                             />
                         </div>
-                    </div>
-
-                    <div className="space-y-1">
-                        <Label className="text-xs font-bold text-foreground">Object Fit</Label>
-                        <Select
-                            name="media.objectFit"
-                            defaultValue={val("media.objectFit", initialData?.media?.objectFit ?? "cover")}
-                        >
-                            <SelectTrigger className="h-10 text-xs bg-background-secondary border-border/40 rounded-sm">
-                                <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent className="bg-background border border-border rounded-sm">
-                                {SliderObjectFitEnum.options.map((opt) => (
-                                    <SelectItem key={opt} value={opt} className="text-xs uppercase">{opt}</SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
+                        <div className="space-y-1">
+                            <LabelWithTooltip
+                                htmlFor="media.objectFit"
+                                label="Object Fit"
+                                tooltip="Cómo se ajusta el media al contenedor."
+                            />
+                            <Select
+                                name="media.objectFit"
+                                defaultValue={val("media.objectFit", initialData?.media?.objectFit ?? "cover")}
+                            >
+                                <SelectTrigger className="h-10 text-xs bg-background-secondary border-border/40 rounded-sm">
+                                    <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent className="bg-background border border-border rounded-sm">
+                                    {SliderObjectFitEnum.options.map((opt) => (
+                                        <SelectItem key={opt} value={opt} className="text-xs uppercase">{opt}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
                     </div>
                 </CardContent>
             </Card>
