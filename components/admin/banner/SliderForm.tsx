@@ -4,10 +4,7 @@ import { useState, useEffect } from "react";
 import * as React from "react";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import {
-    Info, ImageIcon, Link as LinkIcon, DollarSign,
-    Clock, Palette, RotateCcw, Calendar as CalendarIcon, ChevronDownIcon,
-} from "lucide-react";
+import { ChevronDownIcon } from "lucide-react";
 
 import Alert from "@/components/ui/Alert";
 import { Input } from "@/components/ui/input";
@@ -29,31 +26,31 @@ import {
 } from "@/src/schemas/slider.schema";
 import { z } from "zod";
 
-type SliderTheme  = z.infer<typeof SliderThemeEnum>;
+type SliderTheme = z.infer<typeof SliderThemeEnum>;
 type SliderLayout = z.infer<typeof SliderLayoutEnum>;
 
 interface ColorPalette {
-    bgColor:     string;
+    bgColor: string;
     accentColor: string;
-    textColor:   string;
+    textColor: string;
 }
 
 interface SliderFormProps {
-    initialData?:  SliderBanner;
-    fields?:       Record<string, string>;
-    fieldErrors?:  Record<string, string[]>;
+    initialData?: SliderBanner;
+    fields?: Record<string, string>;
+    fieldErrors?: Record<string, string[]>;
     generalError?: string;
 }
 
 const LAYOUT_LABELS: Record<SliderLayout, string> = {
-    "image-only":       "Solo imagen",
-    "default":          "Default (Media Derecha)",
-    "media-left":       "Media Izquierda",
+    "image-only": "Solo imagen",
+    "default": "Default (Media Derecha)",
+    "media-left": "Media Izquierda",
     "background-media": "Fondo con Media",
 };
 
 const THEME_PRESETS: Record<Exclude<SliderTheme, "custom">, ColorPalette> = {
-    dark:  { bgColor: "#000000", accentColor: "#ff6000", textColor: "#a8a8a8" },
+    dark: { bgColor: "#000000", accentColor: "#ff6000", textColor: "#a8a8a8" },
     light: { bgColor: "#ffffff", accentColor: "#ff6000", textColor: "#0f0f0f" },
 };
 
@@ -107,7 +104,7 @@ export default function SliderForm({
         const url = urls[0] ?? "";
         if (!url) { setMediaImageUrl(""); setMediaVideoUrl(""); return; }
         if (isVideoUrl(url)) { setMediaVideoUrl(url); setMediaImageUrl(""); }
-        else                 { setMediaImageUrl(url); setMediaVideoUrl(""); }
+        else { setMediaImageUrl(url); setMediaVideoUrl(""); }
     }
 
     // ── Appearance ────────────────────────────────────────────────────────────
@@ -118,9 +115,9 @@ export default function SliderForm({
         (fields?.["design.layout"] as SliderLayout) || initialData?.design?.layout || "default"
     );
     const [colors, setColors] = useState<ColorPalette>({
-        bgColor:     fields?.["design.bgColor"]     || initialData?.design?.bgColor     || THEME_PRESETS.dark.bgColor,
+        bgColor: fields?.["design.bgColor"] || initialData?.design?.bgColor || THEME_PRESETS.dark.bgColor,
         accentColor: fields?.["design.accentColor"] || initialData?.design?.accentColor || THEME_PRESETS.dark.accentColor,
-        textColor:   fields?.["design.textColor"]   || initialData?.design?.textColor   || THEME_PRESETS.dark.textColor,
+        textColor: fields?.["design.textColor"] || initialData?.design?.textColor || THEME_PRESETS.dark.textColor,
     });
 
     const isCustom = theme === "custom";
@@ -140,20 +137,20 @@ export default function SliderForm({
 
     // ── Countdown ─────────────────────────────────────────────────────────────
     const initialCountdownDate = parseInitialDate(fields?.["countdown.endsAt"] || initialData?.countdown?.endsAt);
-    const [countdownOpen, setCountdownOpen]     = useState(false);
-    const [countdownDate, setCountdownDate]     = useState<Date | null>(initialCountdownDate);
-    const [countdownTime, setCountdownTime]     = useState(initialCountdownDate ? format(initialCountdownDate, "HH:mm") : "00:00");
+    const [countdownOpen, setCountdownOpen] = useState(false);
+    const [countdownDate, setCountdownDate] = useState<Date | null>(initialCountdownDate);
+    const [countdownTime, setCountdownTime] = useState(initialCountdownDate ? format(initialCountdownDate, "HH:mm") : "00:00");
 
     // ── Schedule ──────────────────────────────────────────────────────────────
     const initialStart = parseInitialDate(initialData?.schedule?.startsAt);
-    const initialEnd   = parseInitialDate(initialData?.schedule?.endsAt);
+    const initialEnd = parseInitialDate(initialData?.schedule?.endsAt);
 
     const [openStart, setOpenStart] = useState(false);
-    const [openEnd,   setOpenEnd]   = useState(false);
+    const [openEnd, setOpenEnd] = useState(false);
     const [startDate, setStartDate] = useState<Date | null>(initialStart);
     const [startTime, setStartTime] = useState(initialStart ? format(initialStart, "HH:mm") : "00:00");
-    const [endDate,   setEndDate]   = useState<Date | null>(initialEnd);
-    const [endTime,   setEndTime]   = useState(initialEnd   ? format(initialEnd,   "HH:mm") : "00:00");
+    const [endDate, setEndDate] = useState<Date | null>(initialEnd);
+    const [endTime, setEndTime] = useState(initialEnd ? format(initialEnd, "HH:mm") : "00:00");
 
     return (
         <div className="space-y-4">
@@ -166,8 +163,7 @@ export default function SliderForm({
 
                     {/* Información General */}
                     <Card className="border-[color:var(--color-border)] bg-background">
-                        <CardHeader className="flex flex-row items-center gap-2 border-b border-[color:var(--color-border)]/60 pb-4">
-                            <Info className="w-3.5 h-3.5 text-muted-foreground/80" />
+                        <CardHeader className="border-b border-[color:var(--color-border)]/60 pb-4">
                             <CardTitle className="text-xs font-bold uppercase tracking-wider">Información General</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-5 pt-5">
@@ -194,15 +190,12 @@ export default function SliderForm({
                                 </div>
                                 <div className="space-y-1">
                                     <LabelWithTooltip htmlFor="destUrl" label="URL de Destino" tooltip="Enlace al hacer clic. Opcional." />
-                                    <div className="relative">
-                                        <LinkIcon className="absolute left-3 top-3 w-3.5 h-3.5 text-muted-foreground" />
-                                        <Input
-                                            name="destUrl"
-                                            defaultValue={val("destUrl", initialData?.destUrl)}
-                                            placeholder="/productos/slug..."
-                                            className="h-10 text-xs bg-background-secondary border-border/40 rounded-sm pl-9"
-                                        />
-                                    </div>
+                                    <Input
+                                        name="destUrl"
+                                        defaultValue={val("destUrl", initialData?.destUrl)}
+                                        placeholder="/productos/slug..."
+                                        className="h-10 text-xs bg-background-secondary border-border/40 rounded-sm"
+                                    />
                                 </div>
                             </div>
 
@@ -244,8 +237,7 @@ export default function SliderForm({
 
                     {/* Recursos del Banner */}
                     <Card className="border-[color:var(--color-border)] bg-background">
-                        <CardHeader className="flex flex-row items-center gap-2 border-b border-[color:var(--color-border)]/60 pb-4">
-                            <ImageIcon className="w-3.5 h-3.5 text-muted-foreground/80" />
+                        <CardHeader className="border-b border-[color:var(--color-border)]/60 pb-4">
                             <CardTitle className="text-xs font-bold uppercase tracking-wider">Recursos del Banner</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-5 pt-5">
@@ -291,8 +283,7 @@ export default function SliderForm({
 
                     {/* Precio */}
                     <Card className="border-[color:var(--color-border)] bg-background">
-                        <CardHeader className="flex flex-row items-center gap-2 border-b border-[color:var(--color-border)]/60 pb-4">
-                            <DollarSign className="w-3.5 h-3.5 text-green-600" />
+                        <CardHeader className="border-b border-[color:var(--color-border)]/60 pb-4">
                             <CardTitle className="text-xs font-bold uppercase tracking-wider">Precio</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4 pt-5">
@@ -348,8 +339,7 @@ export default function SliderForm({
 
                     {/* Countdown */}
                     <Card className="border-[color:var(--color-border)] bg-background">
-                        <CardHeader className="flex flex-row items-center gap-2 border-b border-[color:var(--color-border)]/60 pb-4">
-                            <Clock className="w-3.5 h-3.5 text-orange-500" />
+                        <CardHeader className="border-b border-[color:var(--color-border)]/60 pb-4">
                             <CardTitle className="text-xs font-bold uppercase tracking-wider">Countdown</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4 pt-5">
@@ -428,10 +418,7 @@ export default function SliderForm({
                     {/* Apariencia */}
                     <Card className="border-[color:var(--color-border)] bg-background">
                         <CardHeader className="flex flex-row items-center justify-between pb-2 border-b border-[color:var(--color-border)]/60">
-                            <div className="flex items-center gap-2">
-                                <Palette className="w-3.5 h-3.5 text-muted-foreground/80" />
-                                <CardTitle className="text-xs font-bold uppercase tracking-wider">Apariencia</CardTitle>
-                            </div>
+                            <CardTitle className="text-xs font-bold uppercase tracking-wider">Apariencia</CardTitle>
                             <Button
                                 type="button"
                                 variant="ghost"
@@ -439,7 +426,7 @@ export default function SliderForm({
                                 className="h-6 w-6"
                                 onClick={() => { setTheme("dark"); setLayout("default"); setColors(THEME_PRESETS.dark); }}
                             >
-                                <RotateCcw className="w-3.5 h-3.5" />
+                                Reajustar
                             </Button>
                         </CardHeader>
                         <CardContent className="space-y-4 pt-5">
@@ -504,8 +491,7 @@ export default function SliderForm({
 
                     {/* Publicación */}
                     <Card className="border-[color:var(--color-border)] bg-background">
-                        <CardHeader className="flex flex-row items-center gap-2 border-b border-[color:var(--color-border)]/60 pb-4">
-                            <CalendarIcon className="w-3.5 h-3.5 text-muted-foreground/80" />
+                        <CardHeader className="border-b border-[color:var(--color-border)]/60 pb-4">
                             <CardTitle className="text-xs font-bold uppercase tracking-wider">Publicación</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-4 pt-5">
