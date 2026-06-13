@@ -151,7 +151,6 @@ export function useUploadMedia(options: UseUploadMediaOptions): UseUploadMediaRe
             formData.append('timestamp', String(timestamp));
             formData.append('signature', signature);
             formData.append('public_id', publicId);
-            formData.append('folder', folder);
 
             const resourceType = file.type.startsWith('video/') ? 'video' : 'image';
 
@@ -176,18 +175,18 @@ export function useUploadMedia(options: UseUploadMediaOptions): UseUploadMediaRe
                 xhr.send(formData);
             });
 
-            // 3. Registrar en tu base de datos
+            // En useUploadMedia, paso 3 — fix definitivo
             const registerRes = await fetch('/api/media/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    secureUrl: cloudinaryResult.secure_url,
-                    publicId: cloudinaryResult.public_id,
-                    format: cloudinaryResult.format,
-                    bytes: cloudinaryResult.bytes,
-                    width: cloudinaryResult.width,
-                    height: cloudinaryResult.height,
-                    duration: cloudinaryResult.duration,
+                    secureUrl: String(cloudinaryResult.secure_url ?? ''),
+                    publicId: String(cloudinaryResult.public_id ?? ''),
+                    format: String(cloudinaryResult.format ?? ''),
+                    bytes: Number(cloudinaryResult.bytes ?? 0),
+                    width: cloudinaryResult.width != null ? Number(cloudinaryResult.width) : undefined,
+                    height: cloudinaryResult.height != null ? Number(cloudinaryResult.height) : undefined,
+                    duration: cloudinaryResult.duration != null ? Number(cloudinaryResult.duration) : undefined,
                     resourceType,
                     folder,
                 }),
