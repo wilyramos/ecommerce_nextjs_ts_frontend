@@ -203,7 +203,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
 
                     {/* Badges: Superior Izquierda (Nuevo) */}
                     {isNew && (
-                        <div className="absolute top-2 left-2 pointer-events-none z-10">
+                        <div className="absolute top-2 left-2 pointer-events-none ">
                             <span className="px-1.5 py-0.5 bg-destructive text-destructive-foreground text-[10px] font-bold uppercase tracking-wider leading-none">
                                 Nuevo
                             </span>
@@ -212,7 +212,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
 
                     {/* Badge de Descuento: Superior Derecha Arriba */}
                     {discountPct > 0 && (
-                        <div className="absolute top-2 right-2 pointer-events-none z-10">
+                        <div className="absolute top-2 right-2 pointer-events-none z-1">
                             <span className="px-1.5 py-1 bg-primary text-destructive-foreground text-[10px] leading-none ">
                                 {discountPct}% OFF
                             </span>
