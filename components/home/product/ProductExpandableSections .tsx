@@ -112,7 +112,7 @@ export default function ProductExpandableSections({ producto }: Props) {
     );
 
     return (
-        <Accordion type="multiple" className="w-full divide-y divide-border border-y border-border">
+        <Accordion type="multiple" className="w-full divide-y divide-border border-b border-border">
 
             {/* ── INFORMACIÓN ── */}
             <AccordionItem value="info" className="border-none">

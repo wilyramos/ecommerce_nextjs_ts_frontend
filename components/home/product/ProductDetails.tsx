@@ -1,3 +1,4 @@
+// File: frontend/components/home/product/ProductDetails.tsx
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
@@ -14,7 +15,7 @@ import ColorCircle from '@/components/ui/ColorCircle';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronRight, CreditCard, MessageCircle, Truck, ShieldCheck } from 'lucide-react';
-import { H1, H3, H4 } from '@/components/ui/Typography';
+import { H1 } from '@/components/ui/Typography';
 import {
     Select,
     SelectTrigger,
@@ -22,6 +23,7 @@ import {
     SelectItem,
     SelectValue,
 } from "@/components/ui/select";
+import ProductComplementary from './ProductComplementary';
 
 type Props = {
     producto: ProductWithCategoryResponse;
@@ -138,7 +140,7 @@ export default function ProductDetails({ producto }: Props) {
                     <ImagenesProductoCarousel images={variantImages} />
                 </div>
 
-                <section className='md:col-span-5 px-2 md:px-0 space-y-2'>
+                <section className='md:col-span-5 px-2 md:px-0 space-y-2 pb-1'>
                     <div className="space-y-4">
                         <header className="pt-1 pb-2 space-y-3">
 
@@ -230,7 +232,7 @@ export default function ProductDetails({ producto }: Props) {
 
                             return (
                                 <fieldset key={key} className="space-y-2.5">
-                                    <legend className="text-xs font-semibold uppercase tracking-wider text-muted-foreground select-none">
+                                    <legend className="text-xs font-semibold uppercase text-muted-foreground tracking-wider select-none">
                                         Selección de {key}:
                                     </legend>
 
@@ -371,14 +373,13 @@ export default function ProductDetails({ producto }: Props) {
                     {/* Fichas de Logística de Tienda */}
                     <div className="divide-y divide-border/40 select-none">
 
-
                         {/* Medios de pago */}
                         <div className="flex items-center justify-between py-3">
                             <div className="flex items-center gap-2.5 text-muted-foreground">
                                 <CreditCard className="w-4 h-4 shrink-0" />
                                 <span className="hidden md:block md:text-xs font-semibold">Medios de pago:</span>
                             </div>
-                            <div className="">
+                            <div>
                                 <PaymentMethods />
                             </div>
                         </div>
@@ -390,7 +391,7 @@ export default function ProductDetails({ producto }: Props) {
                                 <span className="text-xs font-semibold">Garantía de fábrica:</span>
                             </div>
                             <div className="text-right text-xs">
-                                <span className="inline-flex items-center font-bold text-foreground bg-muted-neutral/30 px-2 py-0.5 rounded-sm border border-border/60">
+                                <span className="inline-flex items-center font-bold text-foreground bg-muted-neutral/30 px-2 py-0.5  border border-border/60">
                                     12 meses de garantía
                                 </span>
                             </div>
@@ -412,7 +413,6 @@ export default function ProductDetails({ producto }: Props) {
                             </div>
                         </div>
 
-
                         {/* Consulta por WhatsApp */}
                         <a
                             href={`https://wa.me/51925054636?text=Consulta%20${encodeURIComponent(producto.nombre)}`}
@@ -428,7 +428,6 @@ export default function ProductDetails({ producto }: Props) {
                                 WhatsApp
                                 <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
                             </span>
-
                         </a>
 
                         <div>
@@ -442,50 +441,9 @@ export default function ProductDetails({ producto }: Props) {
 
                     </div>
 
-                    {/* Módulo de Complementarios */}
-                    <section className="mt-2 pt-4 ">
-                        {producto.complementarios && producto.complementarios.length > 0 && (
-                            <div className="space-y-3">
-                                <H3 className="text-xs uppercase tracking-wider text-muted-foreground select-none">
-                                    Completa tu ecosistema
-                                </H3>
-
-                                <div className="flex flex-wrap gap-3">
-                                    {producto.complementarios.map((comp) => {
-                                        const isPopulated = typeof comp !== 'string';
-                                        if (!isPopulated) return null;
-
-                                        return (
-                                            <Link
-                                                key={comp._id}
-                                                href={`/productos/${comp.slug}`}
-                                                className="group flex-1 min-w-[150px] max-w-[240px] flex flex-col gap-3 p-3 transition-colors border border-border bg-card rounded-[var(--radius-md)] hover:border-muted-foreground/60 outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                                            >
-                                                <div className="relative aspect-square overflow-hidden bg-background-secondary  flex items-center justify-center p-2 select-none">
-                                                    <Image
-                                                        src={comp.imagenes?.[0] || "/logo.png"}
-                                                        alt={comp.nombre}
-                                                        fill
-                                                        className="object-contain p-1.5 transition-transform duration-500 group-hover:scale-105 mix-blend-multiply"
-                                                        unoptimized
-                                                    />
-                                                </div>
-
-                                                <div className="space-y-1 min-w-0">
-                                                    <H4 className="text-[11px] leading-tight line-clamp-2 truncate-2-lines uppercase">
-                                                        {comp.nombre}
-                                                    </H4>
-                                                    <p className="text-xs font-black font-mono text-foreground select-all">
-                                                        S/ {comp.precio.toFixed(2)}
-                                                    </p>
-                                                </div>
-                                            </Link>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        )}
-                    </section>
+                    {/* Módulo de Complementarios Independiente */}
+                    <ProductComplementary complementarios={producto.complementarios} />
+                    
                 </section>
             </article>
 

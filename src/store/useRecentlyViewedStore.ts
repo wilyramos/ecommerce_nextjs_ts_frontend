@@ -15,7 +15,7 @@ export const useRecentlyViewedStore = create<RecentlyViewedState>()(
             history: [],
             addProduct: (product) => set((state) => {
                 const filtered = state.history.filter((p) => p.slug !== product.slug);
-                const updated = [product, ...filtered].slice(0, 5);
+                const updated = [product, ...filtered].slice(0, 6);
                 return { history: updated };
             }),
             clearHistory: () => set({ history: [] }),

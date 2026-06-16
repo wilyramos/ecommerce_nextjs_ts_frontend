@@ -6,7 +6,7 @@ const items = [
   { accent: false, text: "Envío gratis" },
   { accent: true, text: "Envio a todo Cañete" },
   { accent: false, text: "Envíos a todo Perú" },
-  { accent: true, text: "Paga hasta 6 cuotas sin intereses" },
+  { accent: true, text: "Paga hasta en 12 cuotas" },
   { accent: false, text: "Paga con tarjeta o Yape" },
 ];
 
