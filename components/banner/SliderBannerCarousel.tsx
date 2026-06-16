@@ -25,7 +25,7 @@ export default function SliderBannerCarousel({
 }: Props) {
     if (!banners.length) return null;
 
-    const autoPlaySpeed = 5000;
+    const autoPlaySpeed = 8000;
 
     return (
         <div

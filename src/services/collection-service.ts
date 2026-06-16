@@ -187,7 +187,11 @@ export async function getActiveCollections(): Promise<Collection[]> {
     try {
         const res = await fetch(
             `${API_URL}/collections/public/active`,
-            { next: { tags: ["collections-list"] } }
+            { 
+                next: { 
+                    tags: ["collections-list"] 
+                } 
+            }
         );
         if (!res.ok) return [];
         return collectionsArraySchema.parse(await res.json());

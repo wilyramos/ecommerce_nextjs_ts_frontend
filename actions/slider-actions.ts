@@ -1,3 +1,5 @@
+// File: frontend/src/actions/slider-action.ts
+
 "use server";
 
 import { revalidateTag, revalidatePath } from "next/cache";

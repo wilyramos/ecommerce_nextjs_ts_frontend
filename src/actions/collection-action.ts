@@ -154,15 +154,12 @@ export async function removeProductFromCollectionAction(
     }
 }
 
-// ... (Funciones anteriores se mantienen exactamente igual)
-
 export async function updateGeneralOrderAction(
     orderedIds: string[]
 ): Promise<ActionResponse> {
     try {
         await collectionService.updateGeneralOrder(orderedIds);
 
-        // Se revalida la vista del listado general en el admin
         revalidatePath("/admin/collections");
         revalidateTag("collections-list");
 
@@ -178,7 +175,6 @@ export async function updateHomepageOrderAction(
     try {
         await collectionService.updateHomepageOrder(orderedIds);
 
-        // Revalida las secciones públicas de la página de inicio y el panel
         revalidatePath("/admin/collections");
         revalidateTag("homepage-sections");
 
