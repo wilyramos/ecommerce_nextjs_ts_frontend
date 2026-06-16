@@ -19,7 +19,7 @@ export default function HomepageSections2({ sections }: HomepageSectionsProps) {
                 const columns = section.settings?.gridColumns ?? 4;
 
                 return (
-                    <article key={section._id} className="w-full max-w-7xl mx-auto px-4 sm:px-6">
+                    <article key={section._id} className="w-full max-w-7xl mx-auto px-4">
                         {section.type === "rich_text" && (
                             <RichTextSection section={section} />
                         )}

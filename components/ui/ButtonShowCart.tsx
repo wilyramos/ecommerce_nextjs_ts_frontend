@@ -59,10 +59,10 @@ export default function ButtonShowCart() {
                 <SheetHeader className="p-6 border-b border-border bg-card">
                     <div className="flex flex-col gap-1">
                         <div className="flex items-center justify-between">
-                            <SheetTitle className="text-lg font-semibold  text-foreground uppercase">
+                            <SheetTitle className="text-lg font-semibold  text-foreground">
                                 Carrito
                             </SheetTitle>
-                            <span className="text-xs font-bold text-muted-foreground bg-background-secondary px-2.5 py-1 border border-border rounded-full">
+                            <span className="text-xs font-bold text-muted-foreground bg-background-secondary px-2.5 py-1 border border-border">
                                 {carrito.length} {carrito.length === 1 ? 'Ítem' : 'Ítems'}
                             </span>
                         </div>

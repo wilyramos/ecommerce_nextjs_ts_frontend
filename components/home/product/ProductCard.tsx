@@ -201,15 +201,21 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                         </div>
                     )}
 
-                    {/* Badges: Nuevo y/o Descuento — top-left, apilados */}
+                    {/* Badges: Superior Izquierda (Nuevo) */}
                     {isNew && (
-                        <div className="absolute top-2 left-2 pointer-events-none flex flex-col gap-1">
-                            {isNew && (
-                                <span className="px-1.5 py-0.5 bg-destructive text-destructive-foreground text-[10px] font-bold uppercase tracking-wider leading-none">
-                                    Nuevo
-                                </span>
-                            )}
+                        <div className="absolute top-2 left-2 pointer-events-none z-10">
+                            <span className="px-1.5 py-0.5 bg-destructive text-destructive-foreground text-[10px] font-bold uppercase tracking-wider leading-none">
+                                Nuevo
+                            </span>
+                        </div>
+                    )}
 
+                    {/* Badge de Descuento: Superior Derecha Arriba */}
+                    {discountPct > 0 && (
+                        <div className="absolute top-2 right-2 pointer-events-none z-10">
+                            <span className="px-1.5 py-1 bg-primary text-destructive-foreground text-[10px] leading-none ">
+                                {discountPct}% OFF
+                            </span>
                         </div>
                     )}
                 </div>
@@ -256,7 +262,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                         )}
                     </div>
 
-                    {/* Nombre — altura fija para 2 líneas exactas, overflow oculto limpio */}
+                    {/* Nombre — altura fija para 2 líneas exactas */}
                     <h3
                         className="text-[12px] md:text-[13px] text-foreground leading-[1.35] overflow-hidden"
                         style={{
@@ -269,7 +275,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                         {product.nombre}
                     </h3>
 
-                    {/* Precio + precio comparativo + badge descuento + sin stock */}
+                    {/* Precio + precio comparativo + sin stock */}
                     <div className="flex items-center justify-between gap-2 mt-0.5">
                         <div className="flex items-baseline gap-1.5 flex-wrap min-w-0">
                             {/* Precio actual */}
@@ -278,16 +284,11 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                                 {" "}{precio.toFixed(2)}
                             </span>
 
-                            {/* Precio comparativo + badge descuento al lado */}
+                            {/* Precio comparativo debajo/lado */}
                             {discountPct > 0 && (
-                                <>
-                                    <span className="text-[10px] md:text-xs text-muted-foreground line-through leading-none shrink-0">
-                                        S/ {product.precioComparativo!.toFixed(2)}
-                                    </span>
-                                    <span className="text-[10px] font-bold text-destructive leading-none shrink-0">
-                                        -{discountPct}%
-                                    </span>
-                                </>
+                                <span className="text-[10px] md:text-xs text-muted-foreground line-through leading-none shrink-0">
+                                    S/ {product.precioComparativo!.toFixed(2)}
+                                </span>
                             )}
                         </div>
 

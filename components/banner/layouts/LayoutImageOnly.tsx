@@ -33,7 +33,7 @@ export default function LayoutImageOnly({ banner }: { banner: SliderBanner }) {
                     src={media.imageUrl}
                     alt={title || "Slider Banner Image"}
                     fill
-                    className={`transition-transform duration-[1800ms] group-hover:scale-[1.03] ${
+                    className={` ${
                         media.objectFit === "contain" ? "object-contain" : "object-cover"
                     }`}
                     sizes="100vw"

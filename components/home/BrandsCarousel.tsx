@@ -9,7 +9,7 @@ import HeaderConTituloConControles from "../ui/HeaderConTituloConControles";
 import { routes } from "@/lib/routes";
 
 const AbsoluteHeaderWrapper = (p: ButtonGroupProps) => (
-    <div className="absolute inset-x-0 top-0 z-20 px-4 md:px-8">
+    <div className="absolute inset-x-0 top-0 z-20 px-4">
         <HeaderConTituloConControles
             {...p}
             label="Partners"
@@ -20,15 +20,17 @@ const AbsoluteHeaderWrapper = (p: ButtonGroupProps) => (
 );
 
 export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {
+
     const responsive = {
-        desktop: { breakpoint: { max: 3000, min: 1280 }, items: 6 },
-        laptop: { breakpoint: { max: 1280, min: 1024 }, items: 5 },
-        tablet: { breakpoint: { max: 1024, min: 640 }, items: 4 },
-        mobile: { breakpoint: { max: 640, min: 0 }, items: 3, partialVisibilityGutter: 20 }
+        desktop: { breakpoint: { max: 3000, min: 1280 }, items: 6, partialVisibilityGutter: 40 },
+        laptop: { breakpoint: { max: 1280, min: 1024 }, items: 5, partialVisibilityGutter: 30 },
+        tablet: { breakpoint: { max: 1024, min: 640 }, items: 5, partialVisibilityGutter: 30 },
+        mobile: { breakpoint: { max: 640, min: 0 }, items: 4, partialVisibilityGutter: 20 }
     };
 
+
     return (
-        <section className="relative max-w-7xl mx-auto px-4 md:px-8 py-10">
+        <section className="relative max-w-7xl mx-auto px-4 py-10">
             <Carousel
                 responsive={responsive}
                 infinite
