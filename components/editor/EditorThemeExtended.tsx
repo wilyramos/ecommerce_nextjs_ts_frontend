@@ -1,4 +1,4 @@
-// File: frontend/components/form/editor/EditorThemeExtended.ts
+// File: frontend/components/ui/RichTextEditorExtended.tsx
 
 const EditorThemeExtended = {
   ltr: "text-left",

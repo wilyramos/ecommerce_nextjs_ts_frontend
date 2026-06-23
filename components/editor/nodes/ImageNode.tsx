@@ -10,7 +10,7 @@ import {
   LexicalNode,
 } from "lexical";
 
-type SerializedImageNode = Spread<
+export type SerializedImageNode = Spread<
   {
     src: string;
     alt: string;
@@ -22,11 +22,11 @@ export class ImageNode extends DecoratorNode<React.ReactElement> {
   __src: string;
   __alt: string;
 
-  static getType() {
+  static getType(): string {
     return "image";
   }
 
-  static clone(node: ImageNode) {
+  static clone(node: ImageNode): ImageNode {
     return new ImageNode(node.__src, node.__alt, node.__key);
   }
 
@@ -36,33 +36,33 @@ export class ImageNode extends DecoratorNode<React.ReactElement> {
     this.__alt = alt;
   }
 
-  createDOM() {
+  createDOM(): HTMLElement {
     const div = document.createElement("div");
     div.className = "lexical-image-container my-3 block text-center";
     return div;
   }
 
-  updateDOM() {
+  updateDOM(): false {
     return false;
   }
 
   static importDOM(): DOMConversionMap | null {
     return {
       img: () => ({
-        conversion: (domNode: Node): DOMConversionOutput => {
+        conversion: (domNode: Node): DOMConversionOutput | null => {
           if (domNode instanceof HTMLImageElement) {
             const { src, alt } = domNode;
             const nodeOutput = $createImageNode(src, alt);
             return { node: nodeOutput };
           }
-          return { node: null };
+          return null;
         },
         priority: 1,
       }),
     };
   }
 
-  exportDOM() {
+  exportDOM(): { element: HTMLElement } {
     const element = document.createElement("img");
     element.setAttribute("src", this.__src);
     element.setAttribute("alt", this.__alt);
@@ -83,7 +83,7 @@ export class ImageNode extends DecoratorNode<React.ReactElement> {
     return new ImageNode(json.src, json.alt);
   }
 
-  decorate() {
+  decorate(): React.ReactElement {
     return React.createElement("img", {
       src: this.__src,
       alt: this.__alt,
@@ -92,7 +92,7 @@ export class ImageNode extends DecoratorNode<React.ReactElement> {
   }
 }
 
-export function $createImageNode(src: string, alt: string) {
+export function $createImageNode(src: string, alt: string): ImageNode {
   return new ImageNode(src, alt);
 }
 

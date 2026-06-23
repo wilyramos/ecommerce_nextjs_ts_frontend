@@ -30,7 +30,7 @@ export default function AdminPageWrapper({
     const hasBreadcrumb = breadcrumbItems.length > 0 || breadcrumbCurrent;
 
     return (
-        <div className="flex flex-col min-h-screen bg-background-secondary text-foreground select-none">
+        <div className="flex flex-col  bg-background-secondary text-foreground select-none">
             {/* ── HEADER ── */}
             <header className="shrink-0 border-b border-border bg-background px-4 py-4 md:px-8">
                 <div className="max-w-screen-2xl mx-auto space-y-2">

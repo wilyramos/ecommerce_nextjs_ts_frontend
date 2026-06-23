@@ -1,9 +1,8 @@
-// File: frontend/components/form/FormMediaField.tsx
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
 import Image from 'next/image';
-import { FaTimes, FaFilm, FaPlus, FaCloudUploadAlt, FaRegImage } from 'react-icons/fa';
+import { FaTimes, FaFilm, FaPlus, FaCloudUploadAlt, FaRegImage, FaGripVertical } from 'react-icons/fa';
 import { UploadDropzone } from '@/src/modules/media/feedback/UploadDropzone';
 import { UploadProgress } from '@/src/modules/media/feedback/UploadProgress';
 import { UploadError } from '@/src/modules/media/feedback/UploadError';
@@ -46,6 +45,7 @@ export function FormMediaField({
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [activeTab, setActiveTab] = useState<'upload' | 'library'>('upload');
     const [selectedUrls, setSelectedUrls] = useState<string[]>([]);
+    const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
 
     useEffect(() => {
         if (Array.isArray(defaultValue)) {
@@ -60,6 +60,37 @@ export function FormMediaField({
         if (onChange) {
             onChange(urls);
         }
+    };
+
+    // Manejadores para Drag & Drop
+    const handleDragStart = (e: React.DragEvent<HTMLDivElement>, index: number) => {
+        setDraggedIndex(index);
+        e.dataTransfer.effectAllowed = 'move';
+    };
+
+    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+    };
+
+    const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetIndex: number) => {
+        e.preventDefault();
+        if (draggedIndex === null || draggedIndex === targetIndex) return;
+
+        const newUrls = [...selectedUrls];
+        const draggedUrl = newUrls[draggedIndex];
+        
+        // Remover del índice original
+        newUrls.splice(draggedIndex, 1);
+        // Insertar en el nuevo índice
+        newUrls.splice(targetIndex, 0, draggedUrl);
+        
+        setDraggedIndex(null);
+        triggerChange(newUrls);
+    };
+
+    const handleDragEnd = () => {
+        setDraggedIndex(null);
     };
 
     const uploader = useUploadMedia({
@@ -117,7 +148,7 @@ export function FormMediaField({
         }
     }, [selectedUrls, onChange]);
 
-    const renderThumbnail = (url: string) => {
+    const renderThumbnail = (url: string, index: number) => {
         if (!url) return null;
 
         const isVideo = url.includes('/video/') || url.endsWith('.mp4') || url.endsWith('.webm');
@@ -125,15 +156,37 @@ export function FormMediaField({
             ? buildVideoThumbnailUrl(url, { width: 200, height: 200 })
             : buildCloudinaryUrl(url, 'image', { width: 200, height: 200, crop: 'fill' });
 
+        const isDragging = draggedIndex === index;
+
         return (
-            <div key={url} className="relative aspect-square rounded-lg border border-[color:var(--color-border)] overflow-hidden group select-none">
+            <div
+                key={url}
+                draggable
+                onDragStart={(e) => handleDragStart(e, index)}
+                onDragOver={handleDragOver}
+                onDrop={(e) => handleDrop(e, index)}
+                onDragEnd={handleDragEnd}
+                className={`relative aspect-square rounded-lg border border-[color:var(--color-border)] overflow-hidden group select-none cursor-grab active:cursor-grabbing transition-all ${
+                    isDragging ? 'opacity-50 scale-95 ring-2 ring-[color:var(--color-action-cta)]' : ''
+                }`}
+            >
+                {/* Badge de Orden */}
+                <div className="absolute top-1 left-1 z-30 flex items-center justify-center w-6 h-6 rounded-full bg-[color:var(--color-action-cta)] text-white text-xs font-bold">
+                    {index + 1}
+                </div>
+
+                {/* Icono de Drag */}
+                <div className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/30 transition-colors z-20 opacity-0 group-hover:opacity-100">
+                    <FaGripVertical className="w-5 h-5 text-white drop-shadow-md" />
+                </div>
+
                 <Image
                     src={thumbSrc}
                     alt="Vista previa de archivo"
                     fill
                     sizes="(max-width: 640px) 33vw, (max-width: 1024px) 20vw, 15vw"
                     className="object-cover transition-transform group-hover:scale-105"
-                    priority={false}
+                    priority={index === 0}
                     unoptimized
                     quality={isVideo ? 20 : 25}
                 />
@@ -145,7 +198,7 @@ export function FormMediaField({
                 <button
                     type="button"
                     onClick={() => handleRemoveUrl(url)}
-                    className="absolute top-1.5 right-1.5 z-20 flex items-center justify-center w-5 h-5 rounded-full bg-[color:var(--color-foreground)]/70 text-[color:var(--color-background)] hover:bg-[color:var(--color-destructive)] transition-colors outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[color:var(--color-ring)]"
+                    className="absolute bottom-1.5 right-1.5 z-20 flex items-center justify-center w-5 h-5 rounded-full bg-[color:var(--color-foreground)]/70 text-[color:var(--color-background)] hover:bg-[color:var(--color-destructive)] transition-colors outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[color:var(--color-ring)]"
                 >
                     <FaTimes className="text-[10px]" />
                 </button>
@@ -162,8 +215,14 @@ export function FormMediaField({
         <div className="space-y-2">
             {label && <Label className="text-xs font-semibold uppercase tracking-wider text-[color:var(--color-muted-foreground)]">{label}</Label>}
 
+            {selectedUrls.length > 0 && (
+                <p className="text-xs text-[color:var(--color-muted-foreground)] italic">
+                    Arrastra las imágenes para reordenarlas • La imagen 1 será la portada
+                </p>
+            )}
+
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
-                {selectedUrls.map(renderThumbnail)}
+                {selectedUrls.map((url, index) => renderThumbnail(url, index))}
 
                 {(multiple || selectedUrls.length === 0) && (selectedUrls.length < maxFiles) && (
                     <button
