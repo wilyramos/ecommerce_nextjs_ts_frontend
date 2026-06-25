@@ -29,7 +29,7 @@ export default async function AdminPage() {
             title="Panel de administración"
             showBackButton={false}
         >
-            <div className="p-4 space-y-8">
+            <div className="p-2 space-y-8">
 
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
 
