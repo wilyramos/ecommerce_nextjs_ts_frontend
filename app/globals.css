@@ -22,8 +22,8 @@
   --secondary: #dbdbdb;      
   --secondary-foreground: #0f0f0f;  /* Gris ultra oscuro neutro (sin matiz naranja) para alta legibilidad */
 
-  --muted: #4d4d4d;           /* #FFEDD5 */
-  --muted-foreground: oklch(0.45 0 0);      /* Gris neutro medio para descripciones secundarias y metadatos */
+  --muted: #e2e2e2;           /* #f6f6f6 */
+  --muted-foreground: oklch(0.45 0 0);
 
   /* Estructura y Formularios */
   --border: oklch(0.90 0 0);                /* Gris neutro sutil para líneas divisorias y bordes */

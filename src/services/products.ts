@@ -323,7 +323,7 @@ type GetProductsByAdminParams = {
     barcode?: string;
     precioSort?: "asc" | "desc";
     stockSort?: "asc" | "desc";
-    isActive?: string;
+    isActive?: boolean;
     esNuevo?: string;
     esDestacado?: string;
     query?: string;

@@ -1,3 +1,5 @@
+//File: frontend/app/admin/slider/page.tsx
+
 import { SliderService } from "@/src/services/slider-service";
 import AdminPageWrapper  from "@/components/admin/AdminPageWrapper";
 import NuevoBanner       from "@/components/admin/slider/NuevoBanner";

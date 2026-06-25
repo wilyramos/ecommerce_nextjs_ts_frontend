@@ -1,47 +1,180 @@
-import { Suspense } from "react";
+//File: frontend/app/admin/products/page.tsx
 
-// UI
-import SpinnerLoading from "@/components/ui/SpinnerLoading";
+import { getProductsByAdmin } from "@/src/services/products";
+import { getAllSubcategories } from "@/src/services/categorys";
+import { getBrands } from "@/src/services/brands";
 
-// Admin
-import AddProductButton from "@/components/admin/products/AddProductButton";
-import ProductSearchInput from "@/components/admin/products/ProductSearchInput";
-import ProductsResultsAdmin from "@/components/admin/products/ProductsResult";
 import AdminPageWrapper from "@/components/admin/AdminPageWrapper";
+import AddProductButton from "@/components/admin/products/AddProductButton";
+import ProductsFilters from "@/components/admin/products/ProductsFilters";
+import ProductsTable from "@/components/admin/products/ProductsTable";
+import Pagination from "@/components/ui/Pagination";
 
-type SearchParams = Promise<{
+/**
+ * SearchParams interface - Define todos los parámetros de búsqueda posibles
+ */
+interface SearchParams {
     page?: string;
     limit?: string;
-    query?: string;
-}>;
+    nombre?: string;
+    sku?: string;
+    barcode?: string;
+    sort?: string;
+    brand?: string;
+    isActive?: string;
+    category?: string;
+}
 
-export default async function ProductsPage({
-    searchParams,
-}: {
-    searchParams: SearchParams;
-}) {
+interface PageProps {
+    searchParams: Promise<SearchParams>;
+}
+
+/**
+ * ProductsPage
+ * 
+ * Página admin de productos con:
+ * - Validación centralizada de parámetros
+ * - Fetches en paralelo
+ * - Estructura limpia y mantenible
+ */
+export default async function ProductsPage({ searchParams }: PageProps) {
     const params = await searchParams;
-    const currentPage = Number(params.page) || 1;
-    const itemsPerPage = Number(params.limit) || 10;
 
+    /**
+     * ────────────────────────────────────────────────────────────────
+     * 1. VALIDAR Y NORMALIZAR PARÁMETROS
+     * ────────────────────────────────────────────────────────────────
+     * 
+     * Esto centraliza toda la lógica de validación en un solo lugar
+     * evitando que los parámetros inválidos se pasen al servicio o UI
+     */
+
+    // Validar page y limit
+    const page = Math.max(1, Number(params.page ?? 1));
+    const limit = Math.max(1, Math.min(Number(params.limit ?? 10), 100));
+
+    // Normalizar strings de búsqueda (trim + undefined si vacío)
+    const nombre = params.nombre?.trim() || undefined;
+    const sku = params.sku?.trim() || undefined;
+    const barcode = params.barcode?.trim() || undefined;
+    const brand = params.brand?.trim() || undefined;
+    const category = params.category?.trim() || undefined;
+
+    /**
+     * Parsear sort parameter
+     * Formato esperado: "precio-asc" | "precio-desc" | "stock-asc" | "stock-desc"
+     */
+    let precioSort: "asc" | "desc" | undefined = undefined;
+    let stockSort: "asc" | "desc" | undefined = undefined;
+
+    if (params.sort) {
+        const [field, direction] = params.sort.split("-") as [string, "asc" | "desc"];
+
+        if (field === "precio" && ["asc", "desc"].includes(direction)) {
+            precioSort = direction;
+        } else if (field === "stock" && ["asc", "desc"].includes(direction)) {
+            stockSort = direction;
+        }
+    }
+
+    /**
+     * Parsear isActive boolean flag
+     */
+    const isActive =
+        params.isActive === "true"
+            ? true
+            : params.isActive === "false"
+                ? false
+                : undefined;
+
+    /**
+     * ────────────────────────────────────────────────────────────────
+     * 2. HACER FETCHES EN PARALELO
+     * ────────────────────────────────────────────────────────────────
+     * 
+     * Promise.all() ejecuta los 3 requests simultáneamente
+     * Esto es mucho más rápido que hacerlos secuencialmente
+     */
+    const [productsData, categories, brands] = await Promise.all([
+        // Request 1: Productos filtrados
+        getProductsByAdmin({
+            page,
+            limit,
+            nombre,
+            sku,
+            barcode,
+            precioSort,
+            stockSort,
+            brand,
+            isActive,
+            category,
+        }),
+
+        // Request 2: Categorías (para filtros)
+        getAllSubcategories(),
+
+        // Request 3: Marcas (para filtros)
+        getBrands(),
+    ]);
+
+    /**
+     * ────────────────────────────────────────────────────────────────
+     * 3. CALCULAR VALORES PARA PAGINACIÓN
+     * ────────────────────────────────────────────────────────────────
+     */
+    const totalProducts = productsData?.totalProducts ?? 0;
+    const totalPages = productsData?.totalPages ?? 1;
+    const productsToShow = productsData?.products ?? [];
+
+    /**
+     * ────────────────────────────────────────────────────────────────
+     * 4. RENDERIZAR
+     * ────────────────────────────────────────────────────────────────
+     */
     return (
         <AdminPageWrapper
             title="Productos"
+            breadcrumbCurrent="Productos"
             showBackButton={false}
-            actions={
-                <div className="flex items-center gap-3">
-                    <ProductSearchInput />
-                    <AddProductButton />
-                </div>
-            }
+            actions={<AddProductButton />}
         >
-            <Suspense fallback={<SpinnerLoading />}>
-                <ProductsResultsAdmin
-                    currentPage={currentPage}
-                    itemsPerPage={itemsPerPage}
-                    params={params}
+            <div className="space-y-5">
+                {/* Componente de Filtros */}
+                <ProductsFilters
+                    filters={{
+                        nombre: params.nombre,
+                        sku: params.sku,
+                        barcode: params.barcode,
+                        sort: params.sort,
+                        brand: params.brand,
+                        isActive: params.isActive,
+                        category: params.category,
+                    }}
+                    brands={brands}
+                    categories={categories}
                 />
-            </Suspense>
+
+                {/* Tabla de Productos */}
+                <ProductsTable products={productsToShow} />
+
+                {/* Paginación (solo si hay productos) */}
+                {totalProducts > 0 && (
+                    <div className="flex flex-col items-center gap-3 pt-4 border-t border-[var(--color-border-subtle)]">
+                        {/* Info de cantidad */}
+                        <p className="text-xs text-[var(--color-text-tertiary)] uppercase tracking-wider">
+                            Mostrando {productsToShow.length} de {totalProducts} productos
+                        </p>
+
+                        {/* Componente de Paginación */}
+                        <Pagination
+                            currentPage={page}
+                            totalPages={totalPages}
+                            limit={limit}
+                            pathname="/admin/products"
+                        />
+                    </div>
+                )}
+            </div>
         </AdminPageWrapper>
     );
 }
