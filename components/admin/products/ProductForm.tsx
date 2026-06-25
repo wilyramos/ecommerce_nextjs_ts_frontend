@@ -1,14 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Info } from "lucide-react";
+
+// Configuración de Pricing Modular (Buenos Precios)
+import { PRICING_RULES, calculateSuggestedPrice } from "@/lib/pricing-rules";
 
 // Types
 import type { ProductWithCategoryResponse } from "@/src/schemas";
 import type { CategoryListResponse } from "@/src/schemas/category.schema";
-
 import type { TBrand } from "@/src/schemas/brands";
 import type { ProductLine } from "@/src/schemas/line.schema";
+import type { Collection } from "@/src/schemas/collection.schema";
 
 // UI Components
 import { Input } from "@/components/ui/input";
@@ -27,7 +30,6 @@ import ComplementaryProductsSection from "./ComplementaryProductsSection";
 import SEOProduct from "./SEOproduct";
 import TagsInput from "./TagsInput";
 import ShippingDimensions from "./ShippingDimensions";
-import type { Collection } from "@/src/schemas/collection.schema";
 import BarcodeInput from "./BarcodeInput";
 
 // Componente Unificado de Medios
@@ -53,8 +55,47 @@ export default function ProductForm({
     const [selectedBrandId, setSelectedBrandId] = useState<string | undefined>(initialBrandId);
     const [masterImages] = useState<string[]>(() => Array.from(new Set(product?.imagenes || [])));
 
-    // Estado local para mantener el valor sincronizado del código de barras si es requerido antes del submit
+    // Estado local para mantener el valor sincronizado del código de barras
     const [, setBarcode] = useState(product?.barcode || "");
+
+    // --- ESTADOS PARA MOTOR DE PRECIOS AGRESIVOS ---
+    const [costo, setCosto] = useState<number>(product?.costo || 0);
+    const [precioVenta, setPrecioVenta] = useState<string>(product?.precio?.toString() || "");
+    const [precioRegular, setPrecioRegular] = useState<string>(product?.precioComparativo?.toString() || "");
+    const [targetMargin, setTargetMargin] = useState<string>("18");
+    const [activeRuleLabel, setActiveRuleLabel] = useState<string>("");
+
+    // Auto-calculador inteligente basado en reglas de volumen y competitividad
+    useEffect(() => {
+        if (costo > 0 && !product?.precio) {
+            const matchedRule = PRICING_RULES.find(
+                (rule) => costo >= rule.minCost && costo < rule.maxCost
+            );
+
+            if (matchedRule) {
+                setTargetMargin(matchedRule.defaultMargin.toString());
+                setActiveRuleLabel(matchedRule.label);
+
+                const venta = calculateSuggestedPrice(costo, matchedRule.defaultMargin);
+                // Precio tachado de marketing competitivo (incremento sutil del ~15% para no inflar artificialmente)
+                const regular = venta / 0.85;
+
+                setPrecioVenta(venta.toFixed(2));
+                setPrecioRegular(regular.toFixed(2));
+            }
+        }
+    }, [costo, product?.precio]);
+
+    // Recalcular manualmente si el administrador altera el Selector de Margen Comercial
+    const handleMarginChange = (newMargin: string) => {
+        setTargetMargin(newMargin);
+        if (costo > 0) {
+            const venta = calculateSuggestedPrice(costo, parseFloat(newMargin));
+            const regular = venta / 0.85;
+            setPrecioVenta(venta.toFixed(2));
+            setPrecioRegular(regular.toFixed(2));
+        }
+    };
 
     const filteredLines = lines.filter(line => {
         if (!selectedBrandId) return false;
@@ -133,34 +174,112 @@ export default function ProductForm({
                     <ProductDescriptionEditor initialHTML={product?.descripcion || ""} />
                 </section>
 
-                {/* 4. PRECIOS, INVENTARIO E IDENTIFICACIÓN */}
-                <section className="p-5 border border-border/60 bg-background ">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
-                        <div className="space-y-1">
-                            <LabelWithTooltip htmlFor="precio" label="Precio Venta" tooltip="El precio de venta del producto." />
-                            <Input type="number" id="precio" name="precio" defaultValue={product?.precio} className="h-10 font-bold text-foreground bg-background-secondary border border-border/40 focus:border-muted-foreground/60 text-xs" />
+                {/* 4. PRECIOS COMPETITIVOS, INVENTARIO E IDENTIFICACIÓN */}
+                <section className="p-5 border border-border/60 bg-background space-y-4">
+                    <div className="flex items-center justify-between border-b border-border/40 pb-2">
+                        <div className="flex items-center gap-2">
+                            <Info className="w-4 h-4 text-action-cta" />
+                            <h2 className="text-[11px] font-bold uppercase tracking-wider text-foreground">Estructura Comercial de Precios</h2>
                         </div>
+                        {activeRuleLabel && (
+                            <span className="text-[10px] bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 px-2 py-0.5 font-bold uppercase tracking-wider">
+                                {activeRuleLabel}
+                            </span>
+                        )}
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                        {/* COSTO */}
                         <div className="space-y-1">
-                            <LabelWithTooltip htmlFor="precioComparativo" label="Precio Regular (Tachado)" tooltip="El precio regular del producto antes de la oferta." />
-                            <Input type="number" id="precioComparativo" name="precioComparativo" defaultValue={product?.precioComparativo} className="h-10 text-muted-foreground/80 bg-background-secondary border border-border/40 focus:border-muted-foreground/60 text-xs" />
+                            <LabelWithTooltip htmlFor="costo" label="Costo de Adquisición" required tooltip="Costo real neto del artículo en almacén." />
+                            <div className="relative">
+                                <span className="absolute left-3 top-2.5 text-xs text-muted-foreground font-semibold">S/</span>
+                                <Input
+                                    type="number"
+                                    id="costo"
+                                    name="costo"
+                                    step="0.01"
+                                    value={costo || ""}
+                                    onChange={(e) => setCosto(parseFloat(e.target.value) || 0)}
+                                    className="h-10 pl-8 bg-background-secondary border border-border/40 text-xs font-bold text-foreground"
+                                />
+                            </div>
                         </div>
+
+                        {/* MARGEN DE RETORNO COMPETITIVO */}
                         <div className="space-y-1">
-                            <LabelWithTooltip htmlFor="costo" label="Costo Unitario" tooltip="El costo unitario del producto." />
-                            <Input type="number" id="costo" name="costo" defaultValue={product?.costo} className="h-10 bg-background-secondary border border-border/40 focus:border-muted-foreground/60 text-xs" />
+                            <LabelWithTooltip htmlFor="targetMargin" label="Margen Comercial Sugerido" tooltip="Estrategia de ganancia neta optimizada para tecnología." />
+                            <Select value={targetMargin} onValueChange={handleMarginChange}>
+                                <SelectTrigger id="targetMargin" className="w-full h-10 text-xs bg-background-secondary font-semibold">
+                                    <SelectValue placeholder="Margen" />
+                                </SelectTrigger>
+                                <SelectContent className="bg-background text-foreground text-xs">
+                                    <SelectItem value="35">35% Margen Agresivo (Accesorios Económicos)</SelectItem>
+                                    <SelectItem value="25">25% Margen Competitivo (Accesorios Premium)</SelectItem>
+                                    <SelectItem value="18">18% Margen Ajustado (Gama Media / Gadgets)</SelectItem>
+                                    <SelectItem value="10">10% Margen Ajustado (Tablets / Gama Alta)</SelectItem>
+                                    <SelectItem value="6">6% Margen de Volumen (iPhones / Laptops)</SelectItem>
+                                    <SelectItem value="4">4% Margen Rompe Precios (Liquidación Directa)</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        {/* PRECIO VENTA FINAL */}
+                        <div className="space-y-1 relative">
+                            <LabelWithTooltip htmlFor="precio" label="Precio Venta Final" tooltip="Monto neto visible y editable. Sincronizado automáticamente con decimales psicológicos." />
+                            <div className="relative">
+                                <span className="absolute left-3 top-2.5 text-xs text-foreground font-bold">S/</span>
+                                <Input
+                                    type="number"
+                                    id="precio"
+                                    name="precio"
+                                    step="0.01"
+                                    value={precioVenta}
+                                    onChange={(e) => setPrecioVenta(e.target.value)}
+                                    className="h-10 pl-8 font-black text-foreground bg-background-secondary border border-border/40 text-xs"
+                                />
+                            </div>
+                            {costo > 0 && parseFloat(precioVenta) > 0 && (
+                                <span className="absolute right-2 -bottom-5 text-[9px] text-emerald-500 font-bold font-mono">
+                                    Utilidad: +S/ {(parseFloat(precioVenta) - costo).toFixed(2)}
+                                </span>
+                            )}
+                        </div>
+
+                        {/* PRECIO REGULAR (TACHADO) */}
+                        <div className="space-y-1 relative">
+                            <LabelWithTooltip htmlFor="precioComparativo" label="Precio Regular (Tachado)" tooltip="Precio de referencia estándar del mercado peruano." />
+                            <div className="relative">
+                                <span className="absolute left-3 top-2.5 text-xs text-muted-foreground">S/</span>
+                                <Input
+                                    type="number"
+                                    id="precioComparativo"
+                                    name="precioComparativo"
+                                    step="0.01"
+                                    value={precioRegular}
+                                    onChange={(e) => setPrecioRegular(e.target.value)}
+                                    className="h-10 pl-8 text-muted-foreground/80 bg-background-secondary border border-border/40 text-xs line-through"
+                                />
+                            </div>
+                            {parseFloat(precioRegular) > parseFloat(precioVenta) && (
+                                <span className="absolute right-2 -bottom-5 text-[9px] text-action-cta font-bold">
+                                    Oferta Visible: -{Math.round(((parseFloat(precioRegular) - parseFloat(precioVenta)) / parseFloat(precioRegular)) * 100)}%
+                                </span>
+                            )}
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-border/40">
+                    {/* CONTROL LOGÍSTICO Y OPERATIVO */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-border/40">
                         <div className="space-y-1">
                             <LabelWithTooltip htmlFor="stock" label="Stock Global" tooltip="La cantidad disponible del producto en inventario." />
-                            <Input type="number" id="stock" name="stock" defaultValue={product?.stock} className="h-10 bg-background-secondary border border-border/40 focus:border-muted-foreground/60 text-xs" />
+                            <Input type="number" id="stock" name="stock" defaultValue={product?.stock} className="h-10 bg-background-secondary border border-border/40 text-xs" />
                         </div>
                         <div className="space-y-1">
                             <LabelWithTooltip htmlFor="sku" label="SKU" tooltip="El código de identificación único del producto." />
-                            <Input id="sku" name="sku" defaultValue={product?.sku} placeholder="Ejem: IPH-15-TI" className="h-10 bg-background-secondary border border-border/40 focus:border-muted-foreground/60 text-xs font-mono" />
+                            <Input id="sku" name="sku" defaultValue={product?.sku} placeholder="Ejem: IPH-15-TI" className="h-10 bg-background-secondary border border-border/40 text-xs font-mono" />
                         </div>
 
-                        {/* INPUT CON ESCÁNER DE CÓDIGO DE BARRAS INTEGRADO */}
                         <BarcodeInput
                             defaultValue={product?.barcode}
                             onChange={(value) => setBarcode(value)}
@@ -168,7 +287,7 @@ export default function ProductForm({
 
                         <div className="space-y-1">
                             <LabelWithTooltip htmlFor="diasEnvio" label="Días de despacho" tooltip="El número de días que toma el envío del producto." />
-                            <Input type="number" id="diasEnvio" name="diasEnvio" defaultValue={product?.diasEnvio ?? 1} className="h-10 bg-background-secondary border border-border/40 focus:border-muted-foreground/60 text-xs" />
+                            <Input type="number" id="diasEnvio" name="diasEnvio" defaultValue={product?.diasEnvio ?? 1} className="h-10 bg-background-secondary border border-border/40 text-xs" />
                         </div>
                     </div>
                 </section>
