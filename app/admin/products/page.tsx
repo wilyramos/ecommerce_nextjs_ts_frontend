@@ -1,4 +1,4 @@
-//File: frontend/app/admin/products/page.tsx
+// File: frontend/app/admin/products/page.tsx
 
 import { getProductsByAdmin } from "@/src/services/products";
 import { getAllSubcategories } from "@/src/services/categorys";
@@ -8,7 +8,7 @@ import AdminPageWrapper from "@/components/admin/AdminPageWrapper";
 import AddProductButton from "@/components/admin/products/AddProductButton";
 import ProductsFilters from "@/components/admin/products/ProductsFilters";
 import ProductsTable from "@/components/admin/products/ProductsTable";
-import Pagination from "@/components/ui/Pagination";
+import PaginationBanner from "@/components/ui/PaginationBanner";
 
 /**
  * SearchParams interface - Define todos los parámetros de búsqueda posibles
@@ -31,11 +31,10 @@ interface PageProps {
 
 /**
  * ProductsPage
- * 
- * Página admin de productos con:
+ * * Página admin de productos con:
  * - Validación centralizada de parámetros
  * - Fetches en paralelo
- * - Estructura limpia y mantenible
+ * - Estructura limpia y mantenible con paginación avanzada estilo Shopify
  */
 export default async function ProductsPage({ searchParams }: PageProps) {
     const params = await searchParams;
@@ -44,8 +43,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
      * ────────────────────────────────────────────────────────────────
      * 1. VALIDAR Y NORMALIZAR PARÁMETROS
      * ────────────────────────────────────────────────────────────────
-     * 
-     * Esto centraliza toda la lógica de validación en un solo lugar
+     * * Esto centraliza toda la lógica de validación en un solo lugar
      * evitando que los parámetros inválidos se pasen al servicio o UI
      */
 
@@ -91,8 +89,7 @@ export default async function ProductsPage({ searchParams }: PageProps) {
      * ────────────────────────────────────────────────────────────────
      * 2. HACER FETCHES EN PARALELO
      * ────────────────────────────────────────────────────────────────
-     * 
-     * Promise.all() ejecuta los 3 requests simultáneamente
+     * * Promise.all() ejecuta los 3 requests simultáneamente
      * Esto es mucho más rápido que hacerlos secuencialmente
      */
     const [productsData, categories, brands] = await Promise.all([
@@ -157,23 +154,16 @@ export default async function ProductsPage({ searchParams }: PageProps) {
                 {/* Tabla de Productos */}
                 <ProductsTable products={productsToShow} />
 
-                {/* Paginación (solo si hay productos) */}
-                {totalProducts > 0 && (
-                    <div className="flex flex-col items-center gap-3 pt-4 border-t border-[var(--color-border-subtle)]">
-                        {/* Info de cantidad */}
-                        <p className="text-xs text-[var(--color-text-tertiary)] uppercase tracking-wider">
-                            Mostrando {productsToShow.length} de {totalProducts} productos
-                        </p>
-
-                        {/* Componente de Paginación */}
-                        <Pagination
-                            currentPage={page}
-                            totalPages={totalPages}
-                            limit={limit}
-                            pathname="/admin/products"
-                        />
-                    </div>
-                )}
+                {/* Banner de Paginación Avanzada */}
+                <PaginationBanner
+                    currentPage={page}
+                    totalPages={totalPages}
+                    limit={limit}
+                    totalItems={totalProducts}
+                    itemsShown={productsToShow.length}
+                    pathname="/admin/products"
+                    limitOptions={[10, 25, 50, 100]}
+                />
             </div>
         </AdminPageWrapper>
     );
