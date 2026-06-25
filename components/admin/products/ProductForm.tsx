@@ -1,4 +1,3 @@
-// File: frontend/components/admin/products/ProductForm.tsx
 "use client";
 
 import { useState } from "react";
@@ -29,6 +28,7 @@ import SEOProduct from "./SEOproduct";
 import TagsInput from "./TagsInput";
 import ShippingDimensions from "./ShippingDimensions";
 import type { Collection } from "@/src/schemas/collection.schema";
+import BarcodeInput from "./BarcodeInput";
 
 // Componente Unificado de Medios
 import { FormMediaField } from "@/components/form/FormMediaField";
@@ -53,6 +53,9 @@ export default function ProductForm({
     const [selectedBrandId, setSelectedBrandId] = useState<string | undefined>(initialBrandId);
     const [masterImages] = useState<string[]>(() => Array.from(new Set(product?.imagenes || [])));
 
+    // Estado local para mantener el valor sincronizado del código de barras si es requerido antes del submit
+    const [, setBarcode] = useState(product?.barcode || "");
+
     const filteredLines = lines.filter(line => {
         if (!selectedBrandId) return false;
         const lineBrandId = typeof line.brand === "object" ? line.brand._id : line.brand;
@@ -63,7 +66,7 @@ export default function ProductForm({
     const dynamicCategoryAttributes = currentCategory?.attributes || [];
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 p-0 select-none    text-foreground">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 p-0 select-none text-foreground">
 
             {/* =================== COLUMNA PRINCIPAL (3/4) =================== */}
             <div className="lg:col-span-3 space-y-4">
@@ -81,16 +84,13 @@ export default function ProductForm({
                             <Input id="nombre" name="nombre" defaultValue={product?.nombre} className="h-10 text-xs font-medium bg-background-secondary border border-border/40 focus:border-muted-foreground/60 transition-colors " />
                         </div>
 
-
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-
-                            
-                             <ClientCategoryAttributes
-                            categorias={categorias}
-                            initialCategoryId={product?.categoria?._id}
-                            currentAttributes={product?.atributos}
-                            onCategoryChange={setSelectedCategoryId}
-                        />
+                            <ClientCategoryAttributes
+                                categorias={categorias}
+                                initialCategoryId={product?.categoria?._id}
+                                currentAttributes={product?.atributos}
+                                onCategoryChange={setSelectedCategoryId}
+                            />
                             <div className="space-y-1">
                                 <LabelWithTooltip htmlFor="brand" label="Marca" required tooltip="La marca a la que pertenece el producto." />
                                 <BrandCombobox brands={brands} value={selectedBrandId} onChange={(val) => setSelectedBrandId(val)} />
@@ -111,8 +111,6 @@ export default function ProductForm({
                                 </Select>
                             </div>
                         </div>
-
-                   
                     </div>
                 </section>
 
@@ -161,10 +159,13 @@ export default function ProductForm({
                             <LabelWithTooltip htmlFor="sku" label="SKU" tooltip="El código de identificación único del producto." />
                             <Input id="sku" name="sku" defaultValue={product?.sku} placeholder="Ejem: IPH-15-TI" className="h-10 bg-background-secondary border border-border/40 focus:border-muted-foreground/60 text-xs font-mono" />
                         </div>
-                        <div className="space-y-1">
-                            <LabelWithTooltip htmlFor="barcode" label="Código de Barras" tooltip="El código de barras del producto." />
-                            <Input id="barcode" name="barcode" defaultValue={product?.barcode} className="h-10 bg-background-secondary border border-border/40 focus:border-muted-foreground/60 text-xs font-mono" />
-                        </div>
+
+                        {/* INPUT CON ESCÁNER DE CÓDIGO DE BARRAS INTEGRADO */}
+                        <BarcodeInput
+                            defaultValue={product?.barcode}
+                            onChange={(value) => setBarcode(value)}
+                        />
+
                         <div className="space-y-1">
                             <LabelWithTooltip htmlFor="diasEnvio" label="Días de despacho" tooltip="El número de días que toma el envío del producto." />
                             <Input type="number" id="diasEnvio" name="diasEnvio" defaultValue={product?.diasEnvio ?? 1} className="h-10 bg-background-secondary border border-border/40 focus:border-muted-foreground/60 text-xs" />

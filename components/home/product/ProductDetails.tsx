@@ -443,7 +443,7 @@ export default function ProductDetails({ producto }: Props) {
 
                     {/* Módulo de Complementarios Independiente */}
                     <ProductComplementary complementarios={producto.complementarios} />
-                    
+
                 </section>
             </article>
 

@@ -320,6 +320,7 @@ type GetProductsByAdminParams = {
     limit?: number;
     nombre?: string;
     sku?: string;
+    barcode?: string;
     precioSort?: "asc" | "desc";
     stockSort?: "asc" | "desc";
     isActive?: string;

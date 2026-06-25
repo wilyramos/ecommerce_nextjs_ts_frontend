@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 
 import ProductMenuAction from "./ProductMenuActionts";
 import { useColumnFilter } from "@/hooks/useColumnFilter";
+import BarcodeFilterInput from "./BarcodeFilterInput";
 
 import type { ProductsAPIResponse } from "@/src/schemas";
 import type { CategoryListResponse } from "@/src/schemas/category.schema";
@@ -43,6 +44,7 @@ export default function ProductsTable({
 
     const nameFilter = useColumnFilter("nombre");
     const skuFilter = useColumnFilter("sku");
+    const barcodeFilter = useColumnFilter("barcode");
     const sortFilter = useColumnFilter("sort");        // precio-asc | precio-desc | stock-asc | stock-desc
     const brandFilter = useColumnFilter("brand");
     const activeFilter = useColumnFilter("isActive");
@@ -51,7 +53,7 @@ export default function ProductsTable({
     const noProducts = !products || products.products.length === 0;
 
     const clearFilters = () => {
-        [nameFilter, skuFilter, sortFilter, brandFilter, activeFilter, categoryFilter]
+        [nameFilter, skuFilter, barcodeFilter, sortFilter, brandFilter, activeFilter, categoryFilter] // ← ADICIONADO barcodeFilter
             .forEach((f) => f.reset());
         router.replace(window.location.pathname);
     };
@@ -61,7 +63,7 @@ export default function ProductsTable({
 
             {/* ── Filtros ── */}
             <div className="px-1 pt-1 pb-3 space-y-2 shrink-0">
-                {/* Fila 1: nombre + sku */}
+                {/* Fila 1: nombre + sku + barcode */}
                 <div className="flex gap-2">
                     <Input
                         placeholder="Buscar por nombre…"
@@ -74,6 +76,11 @@ export default function ProductsTable({
                         value={skuFilter.value}
                         onChange={(e) => skuFilter.setValue(e.target.value)}
                         className="w-[130px] h-8 text-[13px]"
+                    />
+                    {/* INPUT INTEGRADO CON ESCÁNER */}
+                    <BarcodeFilterInput
+                        value={barcodeFilter.value}
+                        onChange={(val) => barcodeFilter.setValue(val)}
                     />
                 </div>
 
@@ -227,8 +234,6 @@ export default function ProductsTable({
 
                                     {/* Stock */}
                                     <TableCell className="py-2.5">
-
-
                                         <span
                                             className={
                                                 p.stock !== undefined
