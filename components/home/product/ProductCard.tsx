@@ -204,7 +204,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                     {/* Badges: Superior Izquierda (Nuevo) */}
                     {isNew && (
                         <div className="absolute top-2 left-2 pointer-events-none ">
-                            <span className="px-1.5 py-0.5 bg-destructive text-destructive-foreground text-[10px]  uppercase tracking-wider leading-none">
+                            <span className="px-1.5 py-1 bg-destructive text-destructive-foreground text-[10px]  uppercase tracking-wider leading-none">
                                 Nuevo
                             </span>
                         </div>
