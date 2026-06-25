@@ -1,10 +1,16 @@
+//File: frontend/app/(store)/loading.tsx
 import React from 'react'
-import SpinnerLoading from '@/components/ui/SpinnerLoading'
+import SpinnerLoadingV2 from '@/components/ui/SpinnerLoadingV2'
 
-export default function loading() {
+export default function Loading() {
     return (
-        <div>
-            <SpinnerLoading />
+        <div
+            className="min-h-screen flex items-center justify-center"
+            role="status"
+            aria-live="polite"
+            aria-label="Cargando contenido"
+        >
+            <SpinnerLoadingV2 />
         </div>
     )
 }
