@@ -50,7 +50,7 @@ export default function CreateProductForm({ categorias, brands, lines, initialDa
 
     return (
         <form
-            className="flex flex-col gap-4 w-full max-w-5xl mx-auto select-none bg-background text-foreground"
+            className="flex flex-col gap-4 w-full max-screen-2xl mx-auto "
             noValidate
             action={dispatch}
         >

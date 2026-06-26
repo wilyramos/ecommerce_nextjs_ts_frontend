@@ -54,7 +54,7 @@ export default function PaginationBanner({
 
     return (
         <div 
-            className={`flex flex-col md:flex-row items-center justify-between gap-4 pt-4 border-t border-[var(--color-border-subtle)] w-full transition-opacity ${
+            className={`flex flex-col md:flex-row items-center justify-between gap-4 pt-4 border-t border-border w-full transition-opacity ${
                 isPending ? "opacity-50 pointer-events-none" : "opacity-100"
             }`}
         >
@@ -84,7 +84,7 @@ export default function PaginationBanner({
 
                 {/* Contador de elementos */}
                 <p className="text-xs text-gray-500 font-normal tracking-wide">
-                    Mostrando <span className="font-semibold text-gray-900">{fromItem}</span> – <span className="font-semibold text-gray-900">{toItem}</span> de <span className="font-semibold text-gray-900">{totalItems}</span> resultados
+                    <span className="font-semibold text-gray-900">{fromItem}</span> – <span className="font-semibold text-gray-900">{toItem}</span> de <span className="font-semibold text-gray-900">{totalItems}</span> resultados
                 </p>
             </div>
 

@@ -172,7 +172,7 @@ export default function ProductsTable({ products }: ProductsTableProps) {
                                     {/* ───────────────────────────────────────── */}
                                     <TableCell className="hidden sm:table-cell py-2.5">
                                         <code className="text-[12px] text-muted-foreground bg-muted/40 px-1.5 py-0.5 rounded ">
-                                            {product.sku}
+                                            {product.sku || "—"}
                                         </code>
                                     </TableCell>
 
