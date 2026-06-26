@@ -121,11 +121,10 @@ export default function ProductForm({
     const dynamicCategoryAttributes = currentCategory?.attributes || [];
 
     return (
-        // Se asegura que el grid sea plano (p-0 w-full h-auto) sin overflows internos
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 p-0 w-full text-foreground">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 p-0 w-full text-foreground h-auto items-start">
 
             {/* =================== COLUMNA PRINCIPAL (3/4) =================== */}
-            <div className="lg:col-span-3 space-y-4 ">
+            <div className="lg:col-span-3 space-y-4">
 
                 {/* 1. INFORMACIÓN BÁSICA Y CATEGORIZACIÓN */}
                 <section className="p-5 border border-border/60 bg-background space-y-5">
@@ -140,7 +139,7 @@ export default function ProductForm({
                             <Input id="nombre" name="nombre" defaultValue={product?.nombre} className="h-10 text-xs font-medium bg-background-secondary border border-border/40 focus:border-muted-foreground/60 transition-colors " />
                         </div>
 
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                             <ClientCategoryAttributes
                                 categorias={categorias}
                                 initialCategoryId={product?.categoria?._id}
@@ -153,7 +152,7 @@ export default function ProductForm({
                                 <input type="hidden" name="brand" value={selectedBrandId || ""} />
                             </div>
 
-                            <div className="space-y-1">
+                            <div className="space-y-1 sm:col-span-2 md:col-span-1">
                                 <LabelWithTooltip htmlFor="line" label="Línea / Familia" tooltip="La línea o familia a la que pertenece el producto." />
                                 <Select key={selectedBrandId} name="line" defaultValue={initialLineId}>
                                     <SelectTrigger disabled={!selectedBrandId || filteredLines.length === 0} className="w-full">
@@ -183,9 +182,6 @@ export default function ProductForm({
                     />
                 </section>
 
-
-
-
                 {/* 4. PRECIOS COMPETITIVOS, INVENTARIO E IDENTIFICACIÓN */}
                 <section className="p-5 border border-border/60 bg-background space-y-4">
                     <div className="flex items-center justify-between border-b border-border/40 pb-2">
@@ -200,7 +196,7 @@ export default function ProductForm({
                         )}
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 items-end">
                         {/* COSTO */}
                         <div className="space-y-1">
                             <LabelWithTooltip htmlFor="costo" label="Costo de Adquisición" required tooltip="Costo real neto del artículo en almacén." />
@@ -252,14 +248,14 @@ export default function ProductForm({
                                 />
                             </div>
                             {costo > 0 && parseFloat(precioVenta) > 0 && (
-                                <span className="absolute right-2 -bottom-5 text-[9px] text-emerald-500 font-bold font-mono">
+                                <span className="absolute right-2 -bottom-5 text-[9px] text-emerald-500 font-bold font-mono whitespace-nowrap">
                                     Utilidad: +S/ {(parseFloat(precioVenta) - costo).toFixed(2)}
                                 </span>
                             )}
                         </div>
 
                         {/* PRECIO REGULAR (TACHADO) */}
-                        <div className="space-y-1 relative">
+                        <div className="space-y-1 relative mt-4 sm:mt-0">
                             <LabelWithTooltip htmlFor="precioComparativo" label="Precio Regular (Tachado)" tooltip="Precio de referencia estándar del mercado peruano." />
                             <div className="relative">
                                 <span className="absolute left-3 top-2.5 text-xs text-muted-foreground">S/</span>
@@ -274,7 +270,7 @@ export default function ProductForm({
                                 />
                             </div>
                             {parseFloat(precioRegular) > parseFloat(precioVenta) && (
-                                <span className="absolute right-2 -bottom-5 text-[9px] text-action-cta font-bold">
+                                <span className="absolute right-2 -bottom-5 text-[9px] text-action-cta font-bold whitespace-nowrap">
                                     Oferta Visible: -{Math.round(((parseFloat(precioRegular) - parseFloat(precioVenta)) / parseFloat(precioRegular)) * 100)}%
                                 </span>
                             )}
@@ -305,7 +301,7 @@ export default function ProductForm({
                 </section>
 
                 {/* 5. VARIANTES */}
-                <section className="p-5 border border-border/60 bg-background ">
+                <section className="p-5 border border-border/60 bg-background">
                     <ProductVariantsForm
                         product={product}
                         categoryAttributes={dynamicCategoryAttributes}
@@ -317,20 +313,20 @@ export default function ProductForm({
                     <SpecificationsSection initial={product?.especificaciones} />
                     <ComplementaryProductsSection initialItems={product?.complementarios || []} />
                 </div>
+
+                {/* 3. DESCRIPCIÓN DETALLADA (Reordenado dentro del flujo principal de la izquierda) */}
+                <section className="p-5 border border-border/60 bg-background space-y-3">
+                    <Label className="text-[11px] font-bold uppercase tracking-wider text-foreground">Descripción Detallada</Label>
+                    <ProductDescriptionEditor initialHTML={product?.descripcion || ""} />
+                </section>
             </div>
 
-            <section className="p-5 border border-border/60 bg-background space-y-3">
-                <Label className="text-[11px] font-bold uppercase tracking-wider text-foreground">Descripción Detallada</Label>
-                <ProductDescriptionEditor initialHTML={product?.descripcion || ""} />
-            </section>
-
             {/* =================== COLUMNA LATERAL (1/4) =================== */}
-            {/* Se elimina 'sticky' por completo. Ahora los elementos bajan planos y limpios */}
-            <aside className="space-y-4 h-auto">
-                <div className="p-4 border border-border/60 bg-background ">
+            <aside className="space-y-4 h-auto lg:sticky lg:top-4">
+                <div className="p-4 border border-border/60 bg-background">
                     <ProductSwitches product={product} allCollections={allCollections} />
                 </div>
-                <div className="p-4 border border-border/60 bg-background ">
+                <div className="p-4 border border-border/60 bg-background">
                     <TagsInput initial={product?.tags || []} />
                 </div>
                 <ShippingDimensions product={product} />
