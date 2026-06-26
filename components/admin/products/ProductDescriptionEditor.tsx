@@ -142,7 +142,7 @@ export default function ProductDescriptionEditor({ initialHTML = "" }) {
     };
 
     return (
-        <div className="w-full border border-border/60 rounded-sm overflow-hidden bg-background text-foreground ">
+        <div className="w-full border border-border/60 rounded-sm overflow-hidden bg-background text-foreground">
             <input type="hidden" name="descripcion" value={html} />
 
             <LexicalComposer initialConfig={editorConfig}>
@@ -157,16 +157,16 @@ export default function ProductDescriptionEditor({ initialHTML = "" }) {
 
                 {isHTMLMode ? (
                     <textarea
-                        className="w-full h-[320px] p-4 font-mono text-xs bg-background-secondary border-t border-border/40 text-foreground outline-none resize-none"
+                        className="w-full h-[320px] p-4 font-mono text-xs bg-background-secondary border-t border-border/40 text-foreground outline-none resize-none overflow-y-auto"
                         value={html}
                         onChange={(e) => setHtml(e.target.value)}
                     />
                 ) : (
-                    <div className="relative border-t border-border/40">
+                    <div className="relative border-t border-border/40 h-[320px]">
                         <RichTextPlugin
                             contentEditable={
                                 <ContentEditable
-                                    className="min-h-[320px] max-h-[600px] overflow-y-auto p-4 md:p-5 outline-none prose prose-sm max-w-none dark:prose-invert"
+                                    className="h-full overflow-y-auto p-4 md:p-5 outline-none prose prose-sm max-w-none dark:prose-invert"
                                 />
                             }
                             placeholder={

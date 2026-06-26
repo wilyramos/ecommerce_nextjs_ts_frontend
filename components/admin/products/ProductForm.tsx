@@ -65,7 +65,23 @@ export default function ProductForm({
     const [targetMargin, setTargetMargin] = useState<string>("18");
     const [activeRuleLabel, setActiveRuleLabel] = useState<string>("");
 
-    // Auto-calculador inteligente basado en reglas de volumen y competitividad
+    // Determinar la regla inicial (Flujo de Edición)
+    useEffect(() => {
+        if (product?.costo) {
+            const currentCost = product.costo;
+            const matchedRule = PRICING_RULES.find(
+                (rule) => currentCost >= rule.minCost && currentCost < rule.maxCost
+            );
+            if (matchedRule) {
+                setActiveRuleLabel(matchedRule.label);
+                if (product.precio) {
+                    setTargetMargin(matchedRule.defaultMargin.toString());
+                }
+            }
+        }
+    }, [product]);
+
+    // Auto-calculador inteligente (Sólo para productos nuevos)
     useEffect(() => {
         if (costo > 0 && !product?.precio) {
             const matchedRule = PRICING_RULES.find(
@@ -77,7 +93,6 @@ export default function ProductForm({
                 setActiveRuleLabel(matchedRule.label);
 
                 const venta = calculateSuggestedPrice(costo, matchedRule.defaultMargin);
-                // Precio tachado de marketing competitivo (incremento sutil del ~15% para no inflar artificialmente)
                 const regular = venta / 0.85;
 
                 setPrecioVenta(venta.toFixed(2));
@@ -86,7 +101,6 @@ export default function ProductForm({
         }
     }, [costo, product?.precio]);
 
-    // Recalcular manualmente si el administrador altera el Selector de Margen Comercial
     const handleMarginChange = (newMargin: string) => {
         setTargetMargin(newMargin);
         if (costo > 0) {
@@ -107,10 +121,11 @@ export default function ProductForm({
     const dynamicCategoryAttributes = currentCategory?.attributes || [];
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 p-0 select-none text-foreground">
+        // Se asegura que el grid sea plano (p-0 w-full h-auto) sin overflows internos
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 p-0 w-full text-foreground">
 
             {/* =================== COLUMNA PRINCIPAL (3/4) =================== */}
-            <div className="lg:col-span-3 space-y-4">
+            <div className="lg:col-span-3 space-y-4 ">
 
                 {/* 1. INFORMACIÓN BÁSICA Y CATEGORIZACIÓN */}
                 <section className="p-5 border border-border/60 bg-background space-y-5">
@@ -168,11 +183,8 @@ export default function ProductForm({
                     />
                 </section>
 
-                {/* 3. DESCRIPCIÓN ENRIQUECIDA */}
-                <section className="p-5 border border-border/60 bg-background space-y-3">
-                    <Label className="text-[11px] font-bold uppercase tracking-wider text-foreground">Descripción Detallada</Label>
-                    <ProductDescriptionEditor initialHTML={product?.descripcion || ""} />
-                </section>
+
+
 
                 {/* 4. PRECIOS COMPETITIVOS, INVENTARIO E IDENTIFICACIÓN */}
                 <section className="p-5 border border-border/60 bg-background space-y-4">
@@ -307,18 +319,22 @@ export default function ProductForm({
                 </div>
             </div>
 
+            <section className="p-5 border border-border/60 bg-background space-y-3">
+                <Label className="text-[11px] font-bold uppercase tracking-wider text-foreground">Descripción Detallada</Label>
+                <ProductDescriptionEditor initialHTML={product?.descripcion || ""} />
+            </section>
+
             {/* =================== COLUMNA LATERAL (1/4) =================== */}
-            <aside className="space-y-4">
-                <div className="sticky top-6 space-y-4">
-                    <div className="p-4 border border-border/60 bg-background ">
-                        <ProductSwitches product={product} allCollections={allCollections} />
-                    </div>
-                    <div className="p-4 border border-border/60 bg-background ">
-                        <TagsInput initial={product?.tags || []} />
-                    </div>
-                    <ShippingDimensions product={product} />
-                    <SEOProduct product={product} />
+            {/* Se elimina 'sticky' por completo. Ahora los elementos bajan planos y limpios */}
+            <aside className="space-y-4 h-auto">
+                <div className="p-4 border border-border/60 bg-background ">
+                    <ProductSwitches product={product} allCollections={allCollections} />
                 </div>
+                <div className="p-4 border border-border/60 bg-background ">
+                    <TagsInput initial={product?.tags || []} />
+                </div>
+                <ShippingDimensions product={product} />
+                <SEOProduct product={product} />
             </aside>
         </div>
     );

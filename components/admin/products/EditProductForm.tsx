@@ -61,20 +61,25 @@ export default function EditProductForm({ product, categorias, brands, lines, al
 
     return (
         <form
-            className="flex flex-col gap-2 w-full "
+            className="flex flex-col min-h-full w-full"
             noValidate
             action={dispatch}
             onSubmit={handleSubmit}
         >
-            <ProductForm
-                key={product._id} // Fuerza re-render si cambia el ID (buena práctica)
-                product={product} // Pasamos los datos actuales para rellenar el form
-                categorias={categoriasOrdenadas}
-                brands={brands}
-                lines={lines} // Pasamos las líneas al formulario genérico
-                allCollections={allCollections} // Pasamos todas las colecciones al formulario genérico
-            />
-            <div className="flex justify-end py-4 border-t border-border sticky bottom-0 z-10 px-4 bg-background">
+            {/* Contenedor del contenido del formulario que mantiene el grid */}
+            <div className="flex-1 pb-4">
+                <ProductForm
+                    key={product._id}
+                    product={product}
+                    categorias={categoriasOrdenadas}
+                    brands={brands}
+                    lines={lines}
+                    allCollections={allCollections}
+                />
+            </div>
+
+            {/* Botón inferior verdaderamente fijado en la base del formulario */}
+            <div className="flex justify-end py-4 border-t border-border sticky bottom-0 z-10 px-4 bg-background mt-auto">
                 <Button type="submit">
                     {state.success ? "Actualizado" : "Actualizar producto"}
                 </Button>
