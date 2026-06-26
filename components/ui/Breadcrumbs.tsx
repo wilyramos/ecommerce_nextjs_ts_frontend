@@ -56,7 +56,7 @@ export default function Breadcrumbs({ items, current, className }: Props) {
     return (
         <nav
             aria-label="Breadcrumb"
-            className={cn("w-full overflow-hidden", className)}
+            className={cn("w-full overflow-hidden px-2", className)}
         >
             <script
                 type="application/ld+json"

@@ -63,7 +63,7 @@ export default async function ProductPageServer({ producto }: Props) {
                 {producto.nombre} - GOPHONE
             </h1>
 
-            <section className="container mx-auto px-2 md:px-6 pt-1 md:pt-5">
+            <section className="container mx-auto px-2 md:px-6 py-1 md:pt-5">
                 {/* Navegación de migas de pan */}
                 <Breadcrumbs
                     items={breadcrumbSegments}

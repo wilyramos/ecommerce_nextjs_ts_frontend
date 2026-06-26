@@ -135,18 +135,18 @@ export default function ProductDetails({ producto }: Props) {
 
     return (
         <>
-            <article className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 mx-auto text-foreground bg-background">
+            <article className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 mx-auto text-foreground bg-background px-2 ">
                 <div className='md:col-span-7'>
                     <ImagenesProductoCarousel images={variantImages} />
                 </div>
 
-                <section className='md:col-span-5 px-2 md:px-0 space-y-2 pb-1'>
-                    <div className="space-y-4">
-                        <header className="pt-1 pb-2 space-y-3">
+                <section className='md:col-span-5 md:px-0 space-y-2 pb-1'>
+                    <div className="space-y-1">
+                        <header className="py-1 space-y-1">
 
                             {/* Breadcrumb marca / línea + SKU */}
-                            <div className="flex items-center justify-between w-full select-none">
-                                <div className="flex items-center gap-1.5 flex-wrap">
+                            <div className="flex items-center justify-between w-full ">
+                                <div className="flex items-center gap-1 flex-wrap">
                                     {producto.brand && (
                                         <Link
                                             href={`/catalogo/${producto.brand.slug}`}
@@ -176,13 +176,13 @@ export default function ProductDetails({ producto }: Props) {
                             </div>
 
                             {/* Nombre */}
-                            <H1 className="leading-tight font-semibold">
+                            <H1 className="leading-tight font-normal">
                                 {producto.nombre}
                             </H1>
 
                             {/* Color sin variantes */}
                             {!producto.variants?.length && colorAtributo && (
-                                <div className="flex items-center gap-2 select-none">
+                                <div className="flex items-center gap-2 ">
                                     <span className="text-xs font-semibold text-muted-foreground">Color:</span>
                                     <div className="flex items-center gap-1.5">
                                         {(Array.isArray(colorAtributo) ? colorAtributo : [colorAtributo]).map((c) => (
@@ -196,18 +196,18 @@ export default function ProductDetails({ producto }: Props) {
                             <div className="flex items-baseline gap-3 flex-wrap pt-1">
                                 <div className="flex items-baseline gap-0.5 text-foreground select-all">
                                     <span className="text-sm">S/</span>
-                                    <span className="text-2xl md:text-3xl font-semibold ">
+                                    <span className="text-2xl md:text-3xl font-normal ">
                                         {precio.toFixed(2)}
                                     </span>
                                 </div>
 
                                 {hasDiscount && (
-                                    <div className="flex items-center gap-2 select-none">
-                                        <span className="text-sm font-semibold text-muted-foreground line-through">
+                                    <div className="flex items-center gap-2 ">
+                                        <span className=" text-muted-foreground line-through">
                                             S/ {precioComparativo!.toFixed(2)}
                                         </span>
-                                        <span className="text-[10px] font-black px-2 py-0.5 bg-destructive/10 text-destructive">
-                                            −{Math.round(((precioComparativo! - precio) / precioComparativo!) * 100)}%
+                                        <span className="  px-2 py-0.5 bg-destructive/10 text-destructive">
+                                            −{Math.round(((precioComparativo! - precio) / precioComparativo!) * 100)}% OFF
                                         </span>
                                     </div>
                                 )}
@@ -215,7 +215,7 @@ export default function ProductDetails({ producto }: Props) {
 
                             {/* Stock agotado */}
                             {stock === 0 && (
-                                <div className="pt-1 select-none">
+                                <div className="pt-1 ">
                                     <span className="inline-flex items-center text-xs uppercase tracking-wider text-destructive bg-destructive/10 border border-destructive/20 px-2.5 py-1 ">
                                         Sin stock
                                     </span>
@@ -231,8 +231,8 @@ export default function ProductDetails({ producto }: Props) {
                             const useDropdown = !isColor && availableValues.length > MAX_VISIBLE_OPTIONS;
 
                             return (
-                                <fieldset key={key} className="space-y-2.5">
-                                    <legend className="text-xs font-semibold uppercase text-muted-foreground tracking-wider select-none">
+                                <fieldset key={key} className="space-y-1.5">
+                                    <legend className="text-xs font-semibold uppercase text-muted-foreground tracking-wider ">
                                         Selección de {key}:
                                     </legend>
 
@@ -277,7 +277,7 @@ export default function ProductDetails({ producto }: Props) {
                                                                 </span>
                                                             )}
                                                         </div>
-                                                        <span className={cn("text-[11px] text-center truncate capitalize w-full tracking-tight select-none", selected ? "font-semibold text-foreground" : "font-semibold text-muted-foreground", outOfStock && "line-through")}>
+                                                        <span className={cn("text-[11px] text-center truncate capitalize w-full tracking-tight ", selected ? "font-semibold text-foreground" : "font-semibold text-muted-foreground", outOfStock && "line-through")}>
                                                             {val}
                                                         </span>
                                                     </button>
@@ -323,7 +323,7 @@ export default function ProductDetails({ producto }: Props) {
                                                         onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                         disabled={outOfStock}
                                                         className={cn(
-                                                            "h-9 px-4 relative overflow-hidden transition-all border text-xs font-semibold  cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring select-none",
+                                                            "h-9 px-4 relative overflow-hidden transition-all border text-xs font-semibold  cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring ",
                                                             selected
                                                                 ? "border-foreground bg-background ring-1 ring-foreground text-foreground"
                                                                 : "border-border bg-card text-muted-foreground hover:border-muted-foreground/60 hover:text-foreground",
@@ -347,7 +347,7 @@ export default function ProductDetails({ producto }: Props) {
                         })}
 
                         {/* Botones de Acción Módulos */}
-                        <section className="flex justify-between items-center gap-4 pt-4 select-none">
+                        <section className="flex justify-between items-center gap-4 pt-4 ">
                             <div className="hidden md:flex flex-1">
                                 <AddProductToCart
                                     product={producto}
@@ -371,15 +371,15 @@ export default function ProductDetails({ producto }: Props) {
                     )}
 
                     {/* Fichas de Logística de Tienda */}
-                    <div className="divide-y divide-border/40 select-none">
+                    <div className="divide-y divide-border/40 ">
 
                         {/* Medios de pago */}
                         <div className="flex items-center justify-between py-3">
                             <div className="flex items-center gap-2.5 text-muted-foreground">
                                 <CreditCard className="w-4 h-4 shrink-0" />
-                                <span className="hidden md:block md:text-xs font-semibold">Medios de pago:</span>
+                                <span className="text-xs font-semibold">Medios de pago:</span>
                             </div>
-                            <div>
+                            <div >
                                 <PaymentMethods />
                             </div>
                         </div>
@@ -450,7 +450,7 @@ export default function ProductDetails({ producto }: Props) {
             <ProductExpandableSections producto={producto} />
 
             {/* Sticky Mobile Add To Cart */}
-            <div className="md:hidden fixed bottom-0 left-0 w-full bg-card p-4  shadow-lg z-50 select-none pb-safe">
+            <div className="md:hidden fixed bottom-0 left-0 w-full bg-card p-4  shadow-lg z-50  pb-safe">
                 <AddProductToCart
                     product={producto}
                     variant={allAttributesSelected ? selectedVariant ?? undefined : undefined}

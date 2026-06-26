@@ -217,7 +217,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                     )}
 
                     {/* Zoom Button (Desktop Only) */}
-                    <div className="absolute top-4 right-4 p-2.5 bg-[var(--color-bg-primary)]/60 backdrop-blur-lg rounded-full text-[var(--color-text-primary)] opacity-0 md:group-hover:opacity-100 transition-opacity">
+                    <div className="absolute top-4 right-4 p-2.5 bg-[var(--color-bg-primary)]/60 backdrop-blur-lg  text-[var(--color-text-primary)] opacity-0 md:group-hover:opacity-100 transition-opacity">
                         {zoom ? <ZoomOut size={18} strokeWidth={1.5} /> : <ZoomIn size={18} strokeWidth={1.5} />}
                     </div>
 
@@ -226,14 +226,14 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                         <>
                             <button
                                 onClick={(e) => { e.stopPropagation(); prevImage(); }}
-                                className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-[var(--color-bg-primary)]/70 md:bg-[var(--color-bg-primary)]/50 backdrop-blur-xs text-[var(--color-text-primary)]  opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-[var(--color-bg-primary)] active:scale-90 z-10"
+                                className="absolute left-0 md:left-2 top-1/2 -translate-y-1/2 p-1  bg-[var(--color-bg-primary)]/70 md:bg-[var(--color-bg-primary)]/50  text-[var(--color-text-primary)]  opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-[var(--color-bg-primary)] active:scale-90 z-10"
                                 aria-label="Anterior"
                             >
                                 <ChevronLeft size={20} strokeWidth={1.5} />
                             </button>
                             <button
                                 onClick={(e) => { e.stopPropagation(); nextImage(); }}
-                                className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-[var(--color-bg-primary)]/70 md:bg-[var(--color-bg-primary)]/50 backdrop-blur-xs text-[var(--color-text-primary)] opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-[var(--color-bg-primary)] active:scale-90 z-10"
+                                className="absolute right-0 md:right-2 top-1/2 -translate-y-1/2 p-1  bg-[var(--color-bg-primary)]/70 md:bg-[var(--color-bg-primary)]/50  text-[var(--color-text-primary)] opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-[var(--color-bg-primary)] active:scale-90 z-10"
                                 aria-label="Siguiente"
                             >
                                 <ChevronRight size={20} strokeWidth={1.5} />
@@ -250,7 +250,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                                 key={idx}
                                 onClick={() => setSelectedIndex(idx)}
                                 onMouseEnter={() => setSelectedIndex(idx)}
-                                className={`transition-all duration-500 rounded-full
+                                className={`transition-all duration-500 
                                     ${selectedIndex === idx
                                         ? "w-8 h-1 bg-[var(--color-text-primary)]"
                                         : "w-1.5 h-1.5 bg-[var(--color-border-default)]"}`}
