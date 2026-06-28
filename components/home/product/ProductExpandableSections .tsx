@@ -55,7 +55,7 @@ export default function ProductExpandableSections({ producto }: Props) {
                 <table className="w-full text-left border-collapse border border-border text-sm">
                     <tbody className="divide-y divide-border/50">
                         {specsArray.map((spec) => (
-                            <tr key={spec.key} className="hover:bg-background-secondary transition-colors">
+                            <tr key={spec.key} className="">
                                 <td className="px-3 py-2 text-xs text-muted-foreground font-medium w-[42%] border-r border-border/50">
                                     {spec.key}
                                 </td>
@@ -82,7 +82,7 @@ export default function ProductExpandableSections({ producto }: Props) {
                     </thead>
                     <tbody className="divide-y divide-border/50">
                         {hasWeight && (
-                            <tr className="hover:bg-background-secondary transition-colors">
+                            <tr className="">
                                 <td className="px-3 py-2 text-xs text-muted-foreground font-medium w-[42%] border-r border-border/50">
                                     Peso
                                 </td>
@@ -92,7 +92,7 @@ export default function ProductExpandableSections({ producto }: Props) {
                             </tr>
                         )}
                         {hasDimensions && (
-                            <tr className="hover:bg-background-secondary transition-colors">
+                            <tr className="">
                                 <td className="px-3 py-2 text-xs text-muted-foreground font-medium border-r border-border/50">
                                     <div className="flex items-center gap-1">
                                         <Ruler size={10} />
@@ -115,11 +115,11 @@ export default function ProductExpandableSections({ producto }: Props) {
         <Accordion type="multiple" className="w-full divide-y divide-border border-b border-border px-2">
 
             {/* ── INFORMACIÓN ── */}
-            <AccordionItem value="info" className="border-none hover:bg-background-secondary transition-colors">
+            <AccordionItem value="info" className="border-none  transition-colors">
                 <AccordionTrigger className="hover:no-underline group px-0 py-3 outline-none">
                     <div className="flex items-center gap-2.5">
                         <Info size={15} className="text-muted-foreground shrink-0" />
-                        <span className="text-sm  text-foreground">
+                        <span className="text-sm  text-foreground hover:text-action-cta-hover transition-colors">
                             Información del producto
                         </span>
                     </div>
@@ -142,11 +142,11 @@ export default function ProductExpandableSections({ producto }: Props) {
             </AccordionItem>
 
             {/* ── ENVÍOS ── */}
-            <AccordionItem value="envios" className="border-none hover:bg-background-secondary transition-colors">
+            <AccordionItem value="envios" className="border-none ">
                 <AccordionTrigger className="hover:no-underline group px-0 py-3 outline-none">
                     <div className="flex items-center gap-2.5">
                         <Truck size={15} className="text-muted-foreground shrink-0" />
-                        <span className="text-sm  text-foreground">
+                        <span className="text-sm  text-foreground hover:text-action-cta-hover transition-colors">
                             Entrega y devoluciones
                         </span>
                     </div>
@@ -196,16 +196,16 @@ export default function ProductExpandableSections({ producto }: Props) {
             </AccordionItem>
 
             {/* ── GARANTÍA ── */}
-            <AccordionItem value="garantia" className="border-none hover:bg-background-secondary transition-colors">
+            <AccordionItem value="garantia" className="border-none ">
                 <AccordionTrigger className="hover:no-underline group px-0 py-3 outline-none">
                     <div className="flex items-center gap-2.5">
                         <ShieldCheck size={15} className="text-muted-foreground shrink-0" />
-                        <span className="text-sm  text-foreground">
+                        <span className="text-sm  text-foreground hover:text-action-cta-hover transition-colors">
                             Garantía
                         </span>
                     </div>
                 </AccordionTrigger>
-                <AccordionContent className="pb-6 pt-1 px-0 border border-border/50">
+                <AccordionContent className=" ">
                     <div className="space-y-2">
                         <p className="text-xs text-muted-foreground leading-relaxed">
                             Todos los productos son{" "}

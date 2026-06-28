@@ -1,3 +1,5 @@
+//File: frontend/components/home/sections/HomepageSections2.tsx
+
 import { SectionResponse } from "@/src/schemas/section.schema";
 import RichTextSection from "./RichTextSection";
 import ProductGridSection from "./ProductGridSection";
@@ -10,7 +12,8 @@ interface HomepageSectionsProps {
 export default function HomepageSections2({ sections }: HomepageSectionsProps) {
     return (
         <div className="space-y-10 md:my-10">
-            {sections.map((section) => {
+
+               {sections.map((section) => {
                 // Filtro preventivo estructural de nodos vacíos
                 if (section.type !== "rich_text" && (!section.blocks || section.blocks.length === 0)) {
                     return null;
@@ -29,7 +32,9 @@ export default function HomepageSections2({ sections }: HomepageSectionsProps) {
                         )}
 
                         {section.type === "featured_collections" && (
-                            <FeaturedCollectionsSection section={section} columns={columns} />
+                            <FeaturedCollectionsSection section={section} 
+
+                            />
                         )}
                     </article>
                 );

@@ -1,3 +1,5 @@
+//File: frontend/components/form/FormMediaField.tsx
+
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
@@ -79,12 +81,12 @@ export function FormMediaField({
 
         const newUrls = [...selectedUrls];
         const draggedUrl = newUrls[draggedIndex];
-        
+
         // Remover del índice original
         newUrls.splice(draggedIndex, 1);
         // Insertar en el nuevo índice
         newUrls.splice(targetIndex, 0, draggedUrl);
-        
+
         setDraggedIndex(null);
         triggerChange(newUrls);
     };
@@ -166,9 +168,8 @@ export function FormMediaField({
                 onDragOver={handleDragOver}
                 onDrop={(e) => handleDrop(e, index)}
                 onDragEnd={handleDragEnd}
-                className={`relative aspect-square rounded-lg border border-[color:var(--color-border)] overflow-hidden group select-none cursor-grab active:cursor-grabbing transition-all ${
-                    isDragging ? 'opacity-50 scale-95 ring-2 ring-[color:var(--color-action-cta)]' : ''
-                }`}
+                className={`relative aspect-square rounded-lg border border-[color:var(--color-border)] overflow-hidden group select-none cursor-grab active:cursor-grabbing transition-all ${isDragging ? 'opacity-50 scale-95 ring-2 ring-[color:var(--color-action-cta)]' : ''
+                    }`}
             >
                 {/* Badge de Orden */}
                 <div className="absolute top-1 left-1 z-30 flex items-center justify-center w-6 h-6 rounded-full bg-[color:var(--color-action-cta)] text-white text-xs font-bold">
@@ -215,11 +216,7 @@ export function FormMediaField({
         <div className="space-y-2">
             {label && <Label className="text-xs font-semibold uppercase tracking-wider text-[color:var(--color-muted-foreground)]">{label}</Label>}
 
-            {selectedUrls.length > 0 && (
-                <p className="text-xs text-[color:var(--color-muted-foreground)] italic">
-                    Arrastra las imágenes para reordenarlas • La imagen 1 será la portada
-                </p>
-            )}
+
 
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
                 {selectedUrls.map((url, index) => renderThumbnail(url, index))}

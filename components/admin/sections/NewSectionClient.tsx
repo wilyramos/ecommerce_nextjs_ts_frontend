@@ -28,7 +28,6 @@ export default function NewSectionClient() {
             state={state}
             isPending={isPending}
             titleLabel="Nueva Sección de Tienda"
-            subtitleLabel=" "
         />
     );
 }

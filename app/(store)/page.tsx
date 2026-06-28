@@ -78,7 +78,6 @@ export default function HomePage() {
 
             <HomepageSectionsWrapper />
 
-
             <section className="my-2 md:my-5">
                 <BrandsList />
             </section>

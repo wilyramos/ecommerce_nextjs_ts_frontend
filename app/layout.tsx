@@ -19,27 +19,7 @@ export const metadata: Metadata = {
     },
     description:
         "iPhones, accesorios, repuestos y tecnología con envío rápido en Perú. GoPhone: calidad, garantía y atención personalizada desde Cañete.",
-    keywords: [
-        "GoPhone",
-        "iPhone Perú",
-        "Apple",
-        "Accesorios iPhone",
-        "Tecnología",
-        "Repuestos iPhone",
-        "Tienda online",
-        "Cañete",
-        "San Vicente",
-        "Imperial",
-        "Asia",
-        "Lunahuana",
-        "Electrónica",
-        "Smartphones",
-        "Gadgets",
-        "Ofertas",
-        "Promociones",
-        "Envío rápido",
-        "Garantía"
-    ],
+
     authors: [{ name: "GoPhone", url: "https://gophone.pe" }],
     creator: "GoPhone",
     openGraph: {
@@ -63,7 +43,7 @@ export const metadata: Metadata = {
         card: "summary_large_image",
         title: "GoPhone | Calidad a tu alcance",
         description:
-            "Tecnología con garantía, precios competitivos y atención personalizada. Compra iPhones y accesorios con envío rápido.",
+            "Compra iPhones, accesorios y repuestos con garantía y envío rápido. GoPhone: tecnología confiable desde Cañete para todo el Perú.",
         images: ["https://gophone.pe/logomini.svg"]
     },
     icons: {

@@ -14,7 +14,7 @@ import PaymentMethods from '../PaymentMethods';
 import ColorCircle from '@/components/ui/ColorCircle';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ChevronRight, CreditCard, MessageCircle, Truck, ShieldCheck } from 'lucide-react';
+import { ChevronRight, CreditCard, Truck, ShieldCheck } from 'lucide-react';
 import { H1 } from '@/components/ui/Typography';
 import {
     Select,
@@ -24,6 +24,8 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import ProductComplementary from './ProductComplementary';
+import { GoLinkExternal } from "react-icons/go";
+
 
 type Props = {
     producto: ProductWithCategoryResponse;
@@ -141,7 +143,7 @@ export default function ProductDetails({ producto }: Props) {
                 </div>
 
                 <section className='md:col-span-5 md:px-0 space-y-2 pb-1'>
-                    <div className="space-y-1">
+                    <div className="space-y-4">
                         <header className="py-1 space-y-1">
 
                             {/* Breadcrumb marca / línea + SKU */}
@@ -233,7 +235,7 @@ export default function ProductDetails({ producto }: Props) {
                             return (
                                 <fieldset key={key} className="space-y-1.5">
                                     <legend className="text-xs font-semibold uppercase text-muted-foreground tracking-wider ">
-                                        Selección de {key}:
+                                        {key}:
                                     </legend>
 
                                     {isColor ? (
@@ -263,8 +265,8 @@ export default function ProductDetails({ producto }: Props) {
                                                                     src={variantForValue.imagenes[0]}
                                                                     alt={val}
                                                                     fill
-                                                                    className="object-cover"
-                                                                    quality={30}
+                                                                    className="fill object-fill"
+                                                                    quality={10}
                                                                     unoptimized
                                                                 />
                                                             ) : (
@@ -364,7 +366,7 @@ export default function ProductDetails({ producto }: Props) {
                         </section>
                     </div>
 
-                    {showPaymentNotice && precio > 50 && (
+                    {showPaymentNotice && precio > 150 && (
                         <div className="pt-2">
                             <PaymentNotice price={precio} installments={6} />
                         </div>
@@ -421,8 +423,9 @@ export default function ProductDetails({ producto }: Props) {
                             className="flex items-center justify-between py-3 hover:bg-background-secondary  px-1 -mx-1 transition-colors group outline-none focus-visible:ring-2 focus-visible:ring-ring"
                         >
                             <div className="flex items-center gap-2.5 text-muted-foreground">
-                                <MessageCircle className="w-4 h-4 group-hover:text-success transition-colors shrink-0" />
-                                <span className="text-xs font-semibold">¿Tienes dudas o deseas asesoría?</span>
+                                <GoLinkExternal className="w-3.5 h-3.5 text-muted-foreground inline-block mr-1" />
+
+                                <span className="text-xs font-semibold">¿Deseas asesoría?</span>
                             </div>
                             <span className="text-xs font-semibold text-success flex items-center gap-1">
                                 WhatsApp
@@ -430,7 +433,7 @@ export default function ProductDetails({ producto }: Props) {
                             </span>
                         </a>
 
-                        <div>
+                        <div className="flex items-center justify-start gap-2.5">
                             <Link href="/politicas-de-cambios-y-devoluciones" className="flex items-center gap-2.5 text-muted-foreground text-xs font-semibold hover:text-action-cta transition-colors underline-offset-2 hover:underline py-3">
                                 Ver políticas de cambios y devoluciones
                             </Link>

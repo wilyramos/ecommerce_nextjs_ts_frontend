@@ -13,13 +13,20 @@ export const SectionTypeEnum = z.enum([
 ]);
 export type SectionType = z.infer<typeof SectionTypeEnum>;
 
+export const VideoAspectRatioEnum = z.enum([
+    '9:16',
+    '1:1',
+    '16:9'
+]);
+export type VideoAspectRatio = z.infer<typeof VideoAspectRatioEnum>;
+
 // ============================================================================
 // ── SUB-SCHEMAS DE SOPORTE
 // ============================================================================
 
 export const SectionSettingsSchema = z.object({
     bodyText: z.string().optional(),
-    gridColumns: z.coerce.number().int().min(1).max(8).default(4) // 💡 Corregido de max(6) a max(8)
+    gridColumns: z.coerce.number().int().min(1).max(8).default(4)
 });
 export type SectionSettings = z.infer<typeof SectionSettingsSchema>;
 
@@ -27,24 +34,26 @@ export type SectionSettings = z.infer<typeof SectionSettingsSchema>;
  * Referencia simplificada del producto devuelto por el populate del Backend.
  */
 export const ProductRefSchema = z.object({
-    _id:      z.string(),
-    nombre:   z.string().trim().optional().or(z.null()),
-    precio:   z.number().min(0).optional().or(z.null()),
+    _id: z.string(),
+    nombre: z.string().trim().optional().or(z.null()),
+    precio: z.number().min(0).optional().or(z.null()),
     imagenes: z.array(z.string()).optional().default([]),
-    slug:     z.string().trim().optional().or(z.null()),
-    stock:    z.number().int().optional().or(z.null()),
+    slug: z.string().trim().optional().or(z.null()),
+    stock: z.number().int().optional().or(z.null()),
 });
 export type ProductRef = z.infer<typeof ProductRefSchema>;
 
 /**
- * Bloque de contenido flexible.
+ * Bloque de contenido flexible optimizado para Imágenes y Videos con Proporción de Aspecto.
  */
 export const SectionBlockSchema = z.object({
-    _id:       z.string().optional(),
-    title:     z.string().trim().optional().or(z.literal('')),
-    subtitle:  z.string().trim().optional().or(z.literal('')),
-    imageUrl:  z.string().optional().or(z.literal('')),
-    linkTo:    z.string().trim().optional().or(z.literal('')),
+    _id: z.string().optional(),
+    title: z.string().trim().optional().or(z.literal('')),
+    subtitle: z.string().trim().optional().or(z.literal('')),
+    imageUrl: z.string().optional().or(z.literal('')),
+    videoUrl: z.string().optional().or(z.literal('')),
+    aspectRatio: VideoAspectRatioEnum.default('16:9'),
+    linkTo: z.string().trim().optional().or(z.literal('')),
     productId: z.union([
         z.string(),
         ProductRefSchema,
@@ -59,10 +68,10 @@ export type SectionBlock = z.infer<typeof SectionBlockSchema>;
 // ============================================================================
 
 export const SectionFiltersSchema = z.object({
-    type:     SectionTypeEnum.optional(),
+    type: SectionTypeEnum.optional(),
     isActive: z.boolean().optional(),
-    page:     z.coerce.number().int().positive().default(1),
-    limit:    z.coerce.number().int().positive().default(10)
+    page: z.coerce.number().int().positive().default(1),
+    limit: z.coerce.number().int().positive().default(10)
 });
 export type SectionFilters = z.infer<typeof SectionFiltersSchema>;
 
@@ -71,12 +80,12 @@ export type SectionFilters = z.infer<typeof SectionFiltersSchema>;
 // ============================================================================
 
 export const CreateSectionDTOSchema = z.object({
-    title:    z.string().trim().min(2, 'El título es obligatorio (mín. 2 caracteres)'),
-    type:     SectionTypeEnum,
-    order:    z.coerce.number().int().nonnegative('El orden debe ser 0 o mayor').default(0),
+    title: z.string().trim().min(2, 'El título es obligatorio (mín. 2 caracteres)'),
+    type: SectionTypeEnum,
+    order: z.coerce.number().int().nonnegative('El orden debe ser 0 o mayor').default(0),
     isActive: z.boolean().default(true),
     settings: SectionSettingsSchema,
-    blocks:   z.array(SectionBlockSchema)
+    blocks: z.array(SectionBlockSchema)
         .default([])
         .refine((val) => val.length <= 8, {
             message: "La sección no puede contener más de 8 bloques de contenido."
@@ -89,14 +98,14 @@ export type CreateSectionDTO = z.infer<typeof CreateSectionDTOSchema>;
 // ============================================================================
 
 export const SectionResponseSchema = z.object({
-    _id:       z.string(),
-    title:     z.string().trim(),
-    slug:      z.string().trim(),
-    type:      SectionTypeEnum,
-    order:     z.number().int().default(0),
-    isActive:  z.boolean().default(true),
-    settings:  SectionSettingsSchema.default({}),
-    blocks:    z.array(SectionBlockSchema).default([]),
+    _id: z.string(),
+    title: z.string().trim(),
+    slug: z.string().trim(),
+    type: SectionTypeEnum,
+    order: z.number().int().default(0),
+    isActive: z.boolean().default(true),
+    settings: SectionSettingsSchema.default({}),
+    blocks: z.array(SectionBlockSchema).default([]),
     createdAt: z.preprocess((val) => (typeof val === "string" ? new Date(val) : val), z.date()).optional(),
     updatedAt: z.preprocess((val) => (typeof val === "string" ? new Date(val) : val), z.date()).optional()
 });
@@ -117,7 +126,7 @@ export const SectionPaginatedApiResponseSchema = z.object({
     data: z.array(SectionResponseSchema),
     meta: z.object({
         total: z.number(),
-        page:  z.number(),
+        page: z.number(),
         pages: z.number(),
         limit: z.number()
     })
@@ -129,13 +138,13 @@ export type SectionPaginatedApiResponse = z.infer<typeof SectionPaginatedApiResp
 // ============================================================================
 
 export const SECTION_TYPE_LABELS: Record<SectionType, string> = {
-    featured_collections: 'Grilla de Colecciones / Imágenes',
-    product_grid:         'Cuadrícula de Productos',
-    rich_text:            'Contenido de Texto Enriquecido',
+    featured_collections: 'Grilla de Colecciones / Imágenes / Videos',
+    product_grid: 'Cuadrícula de Productos',
+    rich_text: 'Contenido de Texto Enriquecido',
 };
 
 export const SECTION_TYPE_COLORS: Record<SectionType, string> = {
     featured_collections: 'indigo',
-    product_grid:         'emerald',
-    rich_text:            'amber',
+    product_grid: 'emerald',
+    rich_text: 'amber',
 };

@@ -29,23 +29,9 @@ interface PageProps {
     searchParams: Promise<SearchParams>;
 }
 
-/**
- * ProductsPage
- * * Página admin de productos con:
- * - Validación centralizada de parámetros
- * - Fetches en paralelo
- * - Estructura limpia y mantenible con paginación avanzada estilo Shopify
- */
 export default async function ProductsPage({ searchParams }: PageProps) {
     const params = await searchParams;
 
-    /**
-     * ────────────────────────────────────────────────────────────────
-     * 1. VALIDAR Y NORMALIZAR PARÁMETROS
-     * ────────────────────────────────────────────────────────────────
-     * * Esto centraliza toda la lógica de validación en un solo lugar
-     * evitando que los parámetros inválidos se pasen al servicio o UI
-     */
 
     // Validar page y limit
     const page = Math.max(1, Number(params.page ?? 1));
@@ -58,10 +44,6 @@ export default async function ProductsPage({ searchParams }: PageProps) {
     const brand = params.brand?.trim() || undefined;
     const category = params.category?.trim() || undefined;
 
-    /**
-     * Parsear sort parameter
-     * Formato esperado: "precio-asc" | "precio-desc" | "stock-asc" | "stock-desc"
-     */
     let precioSort: "asc" | "desc" | undefined = undefined;
     let stockSort: "asc" | "desc" | undefined = undefined;
 
@@ -75,9 +57,6 @@ export default async function ProductsPage({ searchParams }: PageProps) {
         }
     }
 
-    /**
-     * Parsear isActive boolean flag
-     */
     const isActive =
         params.isActive === "true"
             ? true
@@ -85,13 +64,6 @@ export default async function ProductsPage({ searchParams }: PageProps) {
                 ? false
                 : undefined;
 
-    /**
-     * ────────────────────────────────────────────────────────────────
-     * 2. HACER FETCHES EN PARALELO
-     * ────────────────────────────────────────────────────────────────
-     * * Promise.all() ejecuta los 3 requests simultáneamente
-     * Esto es mucho más rápido que hacerlos secuencialmente
-     */
     const [productsData, categories, brands] = await Promise.all([
         // Request 1: Productos filtrados
         getProductsByAdmin({
@@ -131,7 +103,6 @@ export default async function ProductsPage({ searchParams }: PageProps) {
     return (
         <AdminPageWrapper
             title="Productos"
-            breadcrumbCurrent="Productos"
             showBackButton={false}
             actions={<AddProductButton />}
         >

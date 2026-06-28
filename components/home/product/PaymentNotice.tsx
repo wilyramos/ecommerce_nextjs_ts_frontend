@@ -1,3 +1,5 @@
+//File: frontend/components/home/product/PaymentNotice.tsx
+
 "use client";
 
 type Props = {

@@ -37,8 +37,6 @@ export default async function AdminSectionsPage({ searchParams }: PageProps) {
     return (
         <AdminPageWrapper
             title="Secciones de la Tienda"
-            breadcrumbItems={[{ label: "Panel", href: "/admin" }]}
-            breadcrumbCurrent="Secciones"
             showBackButton={false}
             actions={
                 <Link

@@ -62,7 +62,7 @@ export default function AdminPageWrapper({
             </header>
 
             {/* ── CONTENT ── */}
-            <main className="flex-1 px-4 py-6 md:px-8">
+            <main className="flex-1 px-2 py-6 md:px-6">
                 <div className="max-w-screen-2xl mx-auto">
                     {children}
                 </div>

@@ -36,7 +36,6 @@ export default function EditSectionClient({ sectionData }: EditSectionClientProp
             isPending={isPending}
             initialData={sectionData}
             titleLabel={`Editar Sección: ${sectionData.title}`}
-            subtitleLabel="Flujo asincrónico nativo de edición"
         />
     );
 }

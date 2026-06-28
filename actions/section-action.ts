@@ -25,6 +25,7 @@ export interface FormActionState {
     };
 }
 
+// Modificar exclusivamente la función interna parseSectionFormData:
 function parseSectionFormData(formData: FormData): {
     title: string;
     type: string | undefined;
@@ -39,13 +40,15 @@ function parseSectionFormData(formData: FormData): {
     const rawBlocksString = formData.get("blocksData")?.toString();
     let rawBlocksData: SectionBlock[] = rawBlocksString ? JSON.parse(rawBlocksString) : [];
 
-    // Limpieza e inicialización desde el Formulario: Sanitización del campo linkTo y cadenas vacías
     rawBlocksData = rawBlocksData.map(block => ({
         ...block,
         title: block.title?.trim() || undefined,
         subtitle: block.subtitle?.trim() || undefined,
         linkTo: block.linkTo?.trim() === "" ? undefined : block.linkTo?.trim(),
         productId: block.productId === "" ? undefined : block.productId,
+        imageUrl: block.imageUrl === "" ? undefined : block.imageUrl,
+        videoUrl: block.videoUrl === "" ? undefined : block.videoUrl,
+        aspectRatio: block.aspectRatio || "16:9",
     }));
 
     return {

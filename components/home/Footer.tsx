@@ -18,8 +18,7 @@ export default function Footer() {
 
     const brandLinks = [
         { label: "Apple", href: routes.catalog({ brand: 'apple' }) },
-        { label: "Samsung", href: routes.catalog({ brand: 'samsung' }) },
-        { label: "Xiaomi", href: routes.catalog({ brand: 'xiaomi' }) },
+        { label: "iFans", href: routes.catalog({ brand: 'ifans' }) },
     ];
 
     const helpCenterLinks = [
