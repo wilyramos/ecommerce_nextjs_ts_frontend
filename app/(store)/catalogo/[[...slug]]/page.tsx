@@ -1,40 +1,31 @@
-//File: frontend/app/%28store%29/catalogo/%5B%5B...slug%5D%5D/page.tsx
-
+// File: frontend/app/(store)/catalogo/[[...slug]]/page.tsx
 import { notFound } from "next/navigation";
 import { getCatalogData } from "@/src/services/catalog";
 import CatalogLayout from "@/components/catalog/CatalogLayout";
 import type { Metadata } from "next";
 
-// Definición de Props para Next.js 15
 type Props = {
     params: Promise<{ slug?: string[] }>;
     searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-// =====================================================================
-// =====================================================================
 export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
     const { slug } = await params;
     const resolvedSearchParams = await searchParams;
-
     const slugs = slug || [];
 
-    // Obtenemos los datos (deduplicado automáticamente por Next.js)
     const data = await getCatalogData(slugs, resolvedSearchParams);
-
-    if (!data) return { title: "Catálogo | GoPhone" };
+    if (!data) return { title: "Catálogo" };
 
     const { categoryName, brandName, lineName, searchQuery } = data.context;
 
-    // 1. Construcción Inteligente del Título
+    // 1. Construcción Inteligente del Título (Limpio para que el template lo complete)
     let title = "Catálogo de Productos";
 
     if (searchQuery) {
         title = `Resultados para "${searchQuery}"`;
     } else {
         const parts = [];
-
-        // Prioridad de especificidad
         if (lineName) parts.push(lineName);
         if (brandName) parts.push(brandName);
         if (categoryName) parts.push(categoryName);
@@ -44,27 +35,34 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
         }
     }
 
-    const fullTitle = `${title} | GoPhone`;
     const description = `Compra ${title} al mejor precio en Perú. Envíos a todo el país y garantía oficial. Descubre ofertas en ${brandName || 'tecnología'} y más.`;
 
-    // 2. URL Canónica
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://gophone.pe";
+    // 2. URL Canónica Limpia (Sin parámetros de tracking o de filtrado)
     const canonicalPath = slugs.length > 0 ? `/catalogo/${slugs.join("/")}` : "/catalogo";
 
+    // 3. Control estricto de Indexación frente a Query Parameters
+    const queryKeys = Object.keys(resolvedSearchParams);
+    const hasActiveFilters = queryKeys.some(key => 
+        ["sort", "priceRange", "min", "max", "page", "atributos"].includes(key)
+    );
+
+    // No se indexan búsquedas internas, fallbacks o listados con filtros aplicados
+    const shouldIndex = !data.isFallback && !searchQuery && !hasActiveFilters;
+
     return {
-        title: fullTitle,
+        title: title, // Next.js automáticamente renderizará: "Nombre del Catálogo | GoPhone"
         description: description,
         alternates: {
-            canonical: `${baseUrl}${canonicalPath}`,
+            canonical: canonicalPath,
         },
         openGraph: {
-            title: fullTitle,
+            title: `${title} | GoPhone`,
             description: description,
-            url: `${baseUrl}${canonicalPath}`,
+            url: canonicalPath,
             siteName: "GoPhone",
             images: [
                 {
-                    url: `${baseUrl}/images/og-catalog.jpg`,
+                    url: "/images/og-main.jpg", // Resuelve de forma absoluta mediante la metadataBase global
                     width: 1200,
                     height: 630,
                     alt: title,
@@ -75,12 +73,11 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
         },
         twitter: {
             card: "summary_large_image",
-            title: fullTitle,
+            title: `${title} | GoPhone`,
             description: description,
         },
         robots: {
-            // Evitar indexar búsquedas internas o páginas vacías
-            index: !data.isFallback && !searchQuery,
+            index: shouldIndex,
             follow: true,
         },
     };
@@ -89,12 +86,9 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
 export default async function Page({ params, searchParams }: Props) {
     const { slug } = await params;
     const resolvedSearchParams = await searchParams;
-
     const slugs = slug || [];
 
-    // Llamada al servicio
     const data = await getCatalogData(slugs, resolvedSearchParams);
-
     if (!data) return notFound();
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://gophone.pe";
@@ -109,7 +103,7 @@ export default async function Page({ params, searchParams }: Props) {
         ]
     };
 
-    // 2. Schema de Colección
+    // 2. Schema de Colección (CollectionPage)
     const collectionSchema = {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
@@ -122,7 +116,7 @@ export default async function Page({ params, searchParams }: Props) {
             "itemListElement": data.products.map((product, index) => ({
                 "@type": "ListItem",
                 "position": index + 1,
-                "url": `${baseUrl}/producto/${product.slug}`,
+                "url": `${baseUrl}/productos/${product.slug}`,
                 "name": product.nombre
             }))
         }
@@ -130,7 +124,6 @@ export default async function Page({ params, searchParams }: Props) {
 
     return (
         <>
-            {/* Inyección de Datos Estructurados */}
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbList) }}

@@ -99,7 +99,7 @@ export default function Breadcrumbs({ items, current, className }: Props) {
                 {current && (
                     <li className="flex items-center min-w-0 text-foreground font-semibold">
                         <span className="mx-2 text-muted-foreground/40 select-none">/</span>
-                        <span className="truncate min-w-0 max-w-[150px] sm:max-w-[240px]" aria-current="page">
+                        <span className="truncate min-w-0 max-w-[20px] sm:max-w-[180px]" aria-current="page">
                             {current}
                         </span>
                     </li>
