@@ -1,5 +1,4 @@
 // File: frontend/app/(store)/productos/[slug]/page.tsx
-
 import { GetProductsBySlug } from '@/src/services/products';
 import ProductPageServer from '@/components/home/product/ProductPageServer';
 import { Suspense } from 'react';
@@ -8,52 +7,49 @@ import { notFound } from 'next/navigation';
 import ProductJsonLd from '@/components/seo/ProductJsonLd';
 import ProductSkeleton from '@/components/product/skeletons/ProductSkeleton';
 
-type Params = Promise<{ slug: string }>;
+type Props = {
+    params: Promise<{ slug: string }>;
+};
 
-export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params;
     const product = await GetProductsBySlug(slug);
 
-    if (!product) notFound();
+    if (!product) {
+        return {
+            title: "Producto no encontrado",
+            robots: { index: false, follow: true }
+        };
+    }
 
     const categoryName = product.categoria?.nombre || 'General';
-    const image = product.imagenes?.[0] || 'https://www.gophone.pe/logobw.jpg';
-    const url = `https://www.gophone.pe/productos/${product.slug}`;
+    const image = product.imagenes?.[0] || '/images/og-main.jpg'; 
+    const url = `/productos/${product.slug}`;
 
-    // ← Usar metaTitle/metaDescription si existen, sino fallback automático
-    const title = product.metaTitle?.trim()
-        || product.nombre;
+    const title = product.metaTitle?.trim() || product.nombre;
+    const description = product.metaDescription?.trim() || 
+        (product.descripcion
+            ? product.descripcion.replace(/<[^>]+>/g, '').slice(0, 160).trim()
+            : `Compra ${product.nombre} en GoPhone. Calidad y tecnología con garantía oficial.`);
 
-    const description = product.metaDescription?.trim()
-        || (product.descripcion
-            ? product.descripcion.replace(/<[^>]+>/g, '').slice(0, 160)
-            : 'Descubre nuestros productos en GoPhone. Calidad y tecnología a tu alcance.');
-
-    // Fusionar tags del producto con keywords base
     const productTags = product.tags ?? [];
     const keywords = [
         product.nombre,
         categoryName,
         ...productTags,
         'GoPhone',
-        'Cañete',
-        'Productos',
-        'Tienda Online',
-        'San Vicente de Cañete',
-        'Perú',
-        'iPhone',
-        'Celulares',
-        'Accesorios',
-        'Tecnología',
-        'Smartphones',
+        'Cañete'
     ].filter(Boolean);
 
     return {
         title,
         description,
         keywords,
+        alternates: {
+            canonical: url,
+        },
         openGraph: {
-            title,
+            title: `${title} | GoPhone`,
             description,
             url,
             siteName: 'GoPhone',
@@ -66,44 +62,32 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
                     height: 630,
                 },
             ],
-            locale: 'es_PE',
         },
         twitter: {
             card: 'summary_large_image',
-            title,
+            title: `${title} | GoPhone`,
             description,
             images: [image],
-            creator: '@GoPhone',
-        },
-        icons: {
-            icon: "/logobw.jpg",
-            apple: "/logobw.jpg",
-        },
-        alternates: {
-            canonical: url,
-        },
-        robots: {
-            index: true,
-            follow: true,
         },
         other: {
             "product:category": categoryName,
-            "product:availability": (product?.stock ?? 0) > 0 ? "in stock" : "out of stock",
-            "product:price:amount": product?.precio ? product.precio.toFixed(2) : "",
+            "product:availability": (product.stock ?? 0) > 0 ? "in stock" : "out of stock",
+            "product:price:amount": product.precio ? product.precio.toFixed(2) : "0.00",
             "product:price:currency": "PEN",
-            ...(product.weight && {
-                "product:weight": `${product.weight} kg`,
-            }),
         }
     };
 }
 
-export default async function pageProduct({ params }: { params: Params }) {
+export default async function PageProduct({ params }: Props) {
     const { slug } = await params;
     const producto = await GetProductsBySlug(slug);
 
+    if (!producto) {
+        notFound();
+    }
+
     return (
-        <main className='md:max-w-screen-2xl mx-auto'>
+        <main className='md:max-w-screen-2xl mx-auto w-full'>
             <ProductJsonLd producto={producto} />
             <Suspense fallback={<ProductSkeleton />}>
                 <ProductPageServer producto={producto} />

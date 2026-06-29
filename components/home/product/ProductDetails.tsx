@@ -15,7 +15,6 @@ import ColorCircle from '@/components/ui/ColorCircle';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ChevronRight, CreditCard, Truck, ShieldCheck } from 'lucide-react';
-import { H1 } from '@/components/ui/Typography';
 import {
     Select,
     SelectTrigger,
@@ -178,9 +177,9 @@ export default function ProductDetails({ producto }: Props) {
                             </div>
 
                             {/* Nombre */}
-                            <H1 className="leading-tight font-normal">
+                            <h1 className="text-xl font-semibold text-foreground sm:text-2xl scroll-m-auto">
                                 {producto.nombre}
-                            </H1>
+                            </h1>
 
                             {/* Color sin variantes */}
                             {!producto.variants?.length && colorAtributo && (

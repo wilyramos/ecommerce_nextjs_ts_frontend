@@ -1,36 +1,33 @@
-//File: frontend/components/seo/ProductJsonLd.tsx
-
-import type { ProductWithCategoryResponse } from "@/src/schemas"
+// File: frontend/components/seo/ProductJsonLd.tsx
+import type { ProductWithCategoryResponse } from "@/src/schemas";
 
 export default function ProductJsonLd({ producto }: { producto: ProductWithCategoryResponse }) {
-    if (!producto) return null
+    if (!producto) return null;
 
-    const firstImage = producto.imagenes?.[0] || 'https://www.gophone.pe/logomini.svg'
-    const url = `https://www.gophone.pe/productos/${producto.slug}`
-    const brand = producto.atributos?.Marca || 'GoPhone'
+    const firstImage = producto.imagenes?.[0] || '/images/og-main.jpg';
+    const url = `https://gophone.pe/productos/${producto.slug}`;
+    const brandName = producto.atributos?.Marca || producto.brand?.nombre || 'GoPhone';
 
-    // Price siempre como string con 2 decimales
-    const price = (producto.precio ?? 0).toFixed(2)
-
+    const price = (producto.precio ?? 0).toFixed(2);
     const availability = (producto.stock ?? 0) > 0
         ? 'https://schema.org/InStock'
-        : 'https://schema.org/OutOfStock'
+        : 'https://schema.org/OutOfStock';
 
-    const structuredData = {
+    // Generar objeto base limpio sin saltos de línea HTML
+    const plainDescription = producto.descripcion
+        ? producto.descripcion.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 200)
+        : 'Descubre los detalles de este producto en nuestra tienda oficial.';
+
+    const structuredData: Record<string, unknown> = {
         '@context': 'https://schema.org',
         '@type': 'Product',
         name: producto.nombre,
         image: [firstImage],
-        description:
-            producto.descripcion?.replace(/\r?\n|\r/g, ' ').trim() ||
-            'No description available',        // category: producto.categoria?.nombre || 'General',
-        sku: producto.sku?.replace(/[^a-zA-Z0-9_-]/g, ''),
-        gtin13: producto.barcode,
+        description: plainDescription,
         brand: {
             '@type': 'Brand',
-            name: brand,
+            name: brandName,
         },
-        releaseDate: producto.createdAt,
         offers: {
             '@type': 'Offer',
             url,
@@ -58,12 +55,12 @@ export default function ProductJsonLd({ producto }: { producto: ProductWithCateg
                     handlingTime: {
                         '@type': 'QuantitativeValue',
                         value: 1,
-                        unitCode: 'd'
+                        unitCode: 'DAY'
                     },
                     transitTime: {
                         '@type': 'QuantitativeValue',
                         value: 3,
-                        unitCode: 'd'
+                        unitCode: 'DAY'
                     }
                 }
             },
@@ -76,6 +73,14 @@ export default function ProductJsonLd({ producto }: { producto: ProductWithCateg
                 returnFees: 'https://schema.org/FreeReturn'
             }
         }
+    };
+
+    // Agregar identificadores únicamente si existen y son válidos
+    const cleanSku = producto.sku?.replace(/[^a-zA-Z0-9_-]/g, '');
+    if (cleanSku) structuredData.sku = cleanSku;
+    
+    if (producto.barcode && producto.barcode.trim().length > 0) {
+        structuredData.gtin13 = producto.barcode.trim();
     }
 
     return (
@@ -83,5 +88,5 @@ export default function ProductJsonLd({ producto }: { producto: ProductWithCateg
             type="application/ld+json"
             dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
-    )
+    );
 }

@@ -7,7 +7,6 @@ import { apiProductListSchema, productsResponseAllSchema, ApiProductsSchema } fr
 // new
 
 import { ApiProductWithCategorySchema, productsAPIResponse, productsWithCategoryAPIResponse, productsApiResponseWithFilters } from "@/src/schemas";
-import { notFound } from "next/navigation";
 import { cache } from "react";
 
 
@@ -38,7 +37,7 @@ export const GetProductsBySlug = async (slug: string) => {
     });
 
     if (!req.ok) {
-        return notFound();
+        return null;
     }
 
     const json = await req.json();
