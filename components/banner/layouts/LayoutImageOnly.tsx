@@ -14,7 +14,7 @@ export default function LayoutImageOnly({ banner }: { banner: SliderBanner }) {
 
     const content = (
         <div
-            className="banner-slot group relative w-full overflow-hidden"
+            className="banner-slot group relative w-full h-full overflow-hidden"
             style={{ backgroundColor: bg }}
         >
             {isVideo && media?.videoUrl ? (
@@ -29,15 +29,16 @@ export default function LayoutImageOnly({ banner }: { banner: SliderBanner }) {
                     className="absolute inset-0 w-full h-full object-cover"
                 />
             ) : (
-                <>
+                <div className="absolute inset-0 w-full h-full">
                     {/* Imagen Desktop */}
                     {media?.imageUrl && (
                         <Image
                             src={media.imageUrl}
                             alt={title || "Slider Banner Image"}
                             fill
-                            className={`${media.mobileImageUrl ? "max-md:hidden" : ""} ${media.objectFit === "contain" ? "object-contain" : "object-cover"
-                                }`}
+                            className={`w-full h-full ${media.mobileImageUrl ? "max-md:hidden" : ""} ${
+                                media.objectFit === "contain" ? "object-contain" : "object-cover"
+                            }`}
                             sizes="100vw"
                             priority
                             unoptimized
@@ -50,13 +51,13 @@ export default function LayoutImageOnly({ banner }: { banner: SliderBanner }) {
                             src={media.mobileImageUrl}
                             alt={title || "Slider Banner Mobile Image"}
                             fill
-                            className="md:hidden object-cover"
+                            className="md:hidden w-full h-full object-cover"
                             sizes="100vw"
                             priority
                             unoptimized
                         />
                     )}
-                </>
+                </div>
             )}
         </div>
     );
@@ -68,6 +69,7 @@ export default function LayoutImageOnly({ banner }: { banner: SliderBanner }) {
             href={destUrl}
             target={openInNewTab ? "_blank" : undefined}
             rel={openInNewTab ? "noopener noreferrer" : undefined}
+            className="w-full block"
             aria-label={title || "Slider Banner Link"}
         >
             {content}
