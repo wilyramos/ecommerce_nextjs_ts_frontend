@@ -1,5 +1,3 @@
-// File: frontend/components/store/Footer.tsx
-
 "use client";
 
 import Link from "next/link";
@@ -126,7 +124,7 @@ export default function Footer() {
                         {/* Column: Visítanos */}
                         <div className="flex flex-col gap-4">
                             <h3 className="text-[10px] uppercase tracking-[0.2em] font-black text-foreground">
-                                Visítanos
+                                Nos ubicamos en
                             </h3>
                             <div className="text-xs text-muted-foreground  leading-relaxed space-y-0.5">
                                 <p>Jr. O Higgins 120</p>
@@ -138,9 +136,9 @@ export default function Footer() {
 
                 {/* Bottom Bar: Legal & Global */}
                 <div className="mt-16 pt-6 border-t border-border">
-                    <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
 
-                        <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8 order-2 md:order-1">
+                        <div className="flex flex-col sm:flex-row items-center gap-4 md:gap-8 order-2 lg:order-1">
                             <span
                                 className="text-[11px] text-muted-foreground "
                                 suppressHydrationWarning
@@ -172,15 +170,11 @@ export default function Footer() {
                             </Link>
                         </div>
 
-                        <div className="flex items-center gap-6 order-1 md:order-2">
-
-                            <div className="">
-                                <span className="text-[11px] text-muted-foreground ">
-                                    Medios de pago:
-                                </span>
-
-                                <PaymentMethods />
-                            </div>
+                        <div className="flex flex-col items-center lg:items-end gap-2 order-1 lg:order-2 w-full lg:w-auto border-b lg:border-b-0 pb-6 lg:pb-0 border-border">
+                            <span className="text-[11px] text-muted-foreground">
+                                Medios de pago:
+                            </span>
+                            <PaymentMethods />
                         </div>
 
                     </div>
