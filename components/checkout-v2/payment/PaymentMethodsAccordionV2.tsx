@@ -34,6 +34,7 @@ export default function PaymentMethodsSelector({ order }: Props) {
                             <Image src="/payments/diners-small.svg" alt="Diners Club" width={28} height={18} className="object-contain w-auto max-h-4.5 mix-blend-multiply" />
                         </div>
                         <Image src="/payments/yape-small.svg" alt="Yape" width={24} height={24} className="object-contain w-auto max-h-4.5 mix-blend-multiply" />
+                        <Image src="/payments/cuotelao-small.svg" alt="Cuotelao" width={24} height={24} className="object-contain w-auto max-h-4.5 mix-blend-multiply" />
                     </div>
                 </div>
 
