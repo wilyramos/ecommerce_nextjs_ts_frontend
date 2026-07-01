@@ -26,21 +26,38 @@ export default function LayoutImageOnly({ banner }: { banner: SliderBanner }) {
                     muted
                     loop
                     playsInline
-                    className="absolute inset-0 w-full h-full object-cover "
+                    className="absolute inset-0 w-full h-full object-cover"
                 />
-            ) : media?.imageUrl ? (
-                <Image
-                    src={media.imageUrl}
-                    alt={title || "Slider Banner Image"}
-                    fill
-                    className={` ${
-                        media.objectFit === "contain" ? "object-contain" : "object-cover"
-                    }`}
-                    sizes="100vw"
-                    priority
-                    unoptimized
-                />
-            ) : null}
+            ) : (
+                <>
+                    {/* Imagen Desktop */}
+                    {media?.imageUrl && (
+                        <Image
+                            src={media.imageUrl}
+                            alt={title || "Slider Banner Image"}
+                            fill
+                            className={`${media.mobileImageUrl ? "max-md:hidden" : ""} ${media.objectFit === "contain" ? "object-contain" : "object-cover"
+                                }`}
+                            sizes="100vw"
+                            priority
+                            unoptimized
+                        />
+                    )}
+
+                    {/* Imagen Mobile 1x1 */}
+                    {media?.mobileImageUrl && (
+                        <Image
+                            src={media.mobileImageUrl}
+                            alt={title || "Slider Banner Mobile Image"}
+                            fill
+                            className="md:hidden object-cover"
+                            sizes="100vw"
+                            priority
+                            unoptimized
+                        />
+                    )}
+                </>
+            )}
         </div>
     );
 

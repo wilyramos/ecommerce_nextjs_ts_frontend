@@ -100,15 +100,18 @@ function mapFormDataToBanner(formData: FormData): SliderBannerFormValues {
 
     // ── Media ──────────────────────────────────────────────
     const imageUrl = formString(formData, "media.imageUrl");
+    const mobileImageUrl = formString(formData, "media.mobileImageUrl"); 
     const videoUrl = formString(formData, "media.videoUrl");
     const rawObjectFit = formString(formData, "media.objectFit");
     
     const parsedObjectFit = SliderObjectFitEnum.safeParse(rawObjectFit);
     const objectFit = parsedObjectFit.success ? parsedObjectFit.data : "cover";
 
-    const media: SliderMedia | undefined = (imageUrl || videoUrl)
+    // Incluimos mobileImageUrl en la evaluación para asegurar que se cree el objeto
+    const media: SliderMedia | undefined = (imageUrl || mobileImageUrl || videoUrl)
         ? {
             imageUrl: imageUrl || undefined,
+            mobileImageUrl: mobileImageUrl || undefined, 
             videoUrl: videoUrl || undefined,
             objectFit,
           }

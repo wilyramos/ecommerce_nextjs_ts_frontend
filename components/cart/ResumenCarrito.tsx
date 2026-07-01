@@ -15,6 +15,10 @@ export default function ResumenCarrito() {
     const totalUnidades = cart.reduce((acc, item) => acc + item.cantidad, 0);
     const router = useRouter();
 
+    // Regla logística espejo del backend y del checkout
+    const shippingCost = total < 49 ? 10 : 0;
+    const totalFinal = total + shippingCost;
+
     if (cart.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-20 text-center bg-background">
@@ -66,14 +70,20 @@ export default function ResumenCarrito() {
                         <li>
                             <div className="flex justify-between items-center">
                                 <span>Tarifa de envío</span>
-                                <span className="text-[10px] md:text-xs font-bold uppercase text-action-cta bg-background-secondary rounded-sm px-2.5 py-0.5 border border-border">
-                                    Gratis
-                                </span>
+                                {shippingCost > 0 ? (
+                                    <span className="font-semibold text-foreground">
+                                        S/ {shippingCost.toFixed(2)}
+                                    </span>
+                                ) : (
+                                    <span className="text-[10px] md:text-xs font-bold uppercase text-action-cta bg-background-secondary rounded-sm px-2.5 py-0.5 border border-border">
+                                        Gratis
+                                    </span>
+                                )}
                             </div>
                         </li>
                         <li className="flex justify-between border-t border-border pt-2 md:pt-3 text-base md:text-lg font-bold">
                             <span className="text-foreground">Total</span>
-                            <span className="text-foreground">S/ {total.toFixed(2)}</span>
+                            <span className="text-foreground">S/ {totalFinal.toFixed(2)}</span>
                         </li>
                     </ul>
 
@@ -92,8 +102,6 @@ export default function ResumenCarrito() {
                             <Button variant="outline" size="sm" disabled>
                                 Aplicar
                             </Button>
-
-
                         </div>
                     </div>
 

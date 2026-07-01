@@ -123,9 +123,15 @@
 /* --- CONTENEDORES MULTIMEDIA --- */
 .banner-slot {
   width: 100%;
-  /* 24/9 o 3/1 lo hará más delgado (menos alto) que 36/9, que es el ratio original del banner */
   aspect-ratio: var(--banner-ratio, 36 / 9);
-  
-  /* Reducido de 180px a 140px para que no se estire de más en celulares pequeños */
   min-height: 140px; 
+}
+
+/* Forzar que todo el bloque mantenga la proporción 1x1 exacta en dispositivos móviles */
+@media (max-width: 767px) {
+  .banner-slot {
+    aspect-ratio: 1 / 1 !important;
+    min-height: unset !important;
+    height: auto !important;
+  }
 }

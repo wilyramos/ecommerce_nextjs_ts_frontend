@@ -1,3 +1,5 @@
+//File: frontend/app/%28checkout%29/checkout/layout.tsx
+
 "use client"
 
 import { ReactNode } from 'react'

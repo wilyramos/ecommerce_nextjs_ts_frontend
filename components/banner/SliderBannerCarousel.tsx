@@ -43,11 +43,16 @@ export default function SliderBannerCarousel({
                 arrows={banners.length > 1}
                 showDots={false}
                 containerClass="w-full"
+                /* Sobreescribimos los estilos internos que inyecta 'react-multi-carousel-track' 
+                  y 'react-multi-carousel-item' para asegurar que respeten el aspect-ratio 1x1 en móviles.
+                */
+                itemClass="h-[var(--banner-h)] max-md:h-auto w-full flex"
+                sliderClass="h-[var(--banner-h)] max-md:h-auto"
                 customLeftArrow={<CarouselArrow direction="left" />}
                 customRightArrow={<CarouselArrow direction="right" />}
             >
-                {banners.map((banner) => (
-                    <SliderBannerSlide key={banner._id} banner={banner} />
+                {banners.map((banner, index) => (
+                    <SliderBannerSlide key={banner._id || index} banner={banner} />
                 ))}
             </Carousel>
         </div>

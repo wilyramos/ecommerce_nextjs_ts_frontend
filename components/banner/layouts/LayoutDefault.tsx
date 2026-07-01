@@ -22,54 +22,47 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
 
     const fadeUp = (delay: number): React.CSSProperties => ({
         opacity: loaded ? 1 : 0,
-        transform: loaded ? "translateY(0px)" : "translateY(14px)",
-        transition: `opacity 0.7s ease ${delay}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
+        transform: loaded ? "translateY(0px)" : "translateY(10px)",
+        transition: `opacity 0.6s ease ${delay}s, transform 0.6s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
     });
 
     const content = (
         <div
-            className="banner-slot group relative w-full overflow-hidden flex items-center"
+            className="banner-slot group relative w-full h-full overflow-hidden flex flex-col md:flex-row select-none"
             style={{ backgroundColor: bg }}
         >
-            <div className="relative z-10 w-full max-w-6xl mx-auto h-full flex flex-row items-center px-4 sm:px-10">
-
-                {/* ── Texto (izquierda) ─────────────────────────────── */}
-                <div
-                    className="flex flex-col justify-center items-start w-1/2 h-full pr-2 sm:pr-4 gap-2 sm:gap-4 overflow-hidden"
-                    style={{ color: text }}
-                >
+            {/* ── CONTENEDOR DE TEXTO: W-FULL en móvil, MD:W-1/2 en escritorio ── */}
+            <div className="w-full md:w-1/2 flex flex-col justify-center p-5 sm:p-6 md:p-12 z-10 box-border shrink-0">
+                <div className="flex flex-col gap-0.5 md:gap-2 w-full">
                     {subtitle && (
-                        <div style={fadeUp(0.1)}>
-                            <span
-                                className="inline-block text-[10px] sm:text-sm md:text-base font-bold uppercase px-2.5 py-1"
-                                style={{ borderLeft: `3px solid ${accent}` }}
-                            >
-                                {subtitle}
-                            </span>
-                        </div>
+                        <span
+                            className="text-[9px] sm:text-xs font-black tracking-[0.15em] uppercase"
+                            style={{ color: accent, ...fadeUp(0.1) }}
+                        >
+                            {subtitle}
+                        </span>
                     )}
 
                     {title && (
-                        <div style={fadeUp(0.2)}>
-                            <h2 className="font-bold leading-[1.1] tracking-[-0.03em] text-[clamp(1rem,2.5vw,2.8rem)] line-clamp-3">
-                                {title}
-                            </h2>
-                        </div>
+                        <h2
+                            className="text-lg sm:text-2xl md:text-4xl font-black tracking-tight uppercase leading-tight line-clamp-2 md:line-clamp-3 text-balance"
+                            style={{ color: isDark ? "#ffffff" : "#0f0f0f", ...fadeUp(0.18) }}
+                        >
+                            {title}
+                        </h2>
                     )}
 
                     {description && (
-                        <div style={fadeUp(0.3)}>
-                            <p
-                                className="text-[10px] sm:text-[13px] md:text-sm leading-relaxed line-clamp-2 sm:line-clamp-4 max-w-[32ch]"
-                                style={{ opacity: 0.75 }}
-                            >
-                                {description}
-                            </p>
-                        </div>
+                        <p
+                            className="text-[11px] sm:text-sm leading-snug max-w-[40ch] line-clamp-1 md:line-clamp-3 mt-0.5"
+                            style={{ color: text, opacity: 0.8, ...fadeUp(0.28) }}
+                        >
+                            {description}
+                        </p>
                     )}
 
                     {price?.current !== undefined && price.current !== null && (
-                        <div style={fadeUp(0.45)} className="mt-0 sm:mt-1">
+                        <div className="mt-1 md:mt-4" style={fadeUp(0.35)}>
                             <SliderPrice
                                 price={price}
                                 textColor={text}
@@ -80,39 +73,54 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                     )}
 
                     {terms && (
-                        <div style={fadeUp(0.50)} className="mt-1 sm:mt-2">
-                            <p className="text-[8px] sm:text-[9px] font-medium tracking-wide uppercase" style={{ opacity: 0.45 }}>
+                        <div style={fadeUp(0.40)} className="mt-1 md:mt-5 hidden sm:block">
+                            <p className="text-[8px] sm:text-[9px] font-medium tracking-wide uppercase opacity-50" style={{ color: text }}>
                                 {terms}
                             </p>
                         </div>
                     )}
                 </div>
+            </div>
 
-                {/* ── Media (derecha) ───────────────────────────────── */}
-                {media?.imageUrl && (
-                    <div
-                        className="w-1/2 h-full pointer-events-none"
-                        style={{
-                            opacity: loaded ? 1 : 0,
-                            transform: loaded ? "translateX(0) scale(1)" : "translateX(20px) scale(0.95)",
-                            transition: "opacity 0.8s ease, transform 0.8s cubic-bezier(0.16,1,0.3,1)",
-                        }}
-                    >
-                        <div className="relative w-full h-full">
+            {/* ── CONTENEDOR MULTIMEDIA: Ocupa todo el ancho (w-full) y llena el espacio vertical libre (flex-1) ── */}
+            {media?.imageUrl && (
+                <div
+                    className="w-full flex-1 md:h-full md:w-1/2 relative pointer-events-none overflow-hidden"
+                    style={{
+                        opacity: loaded ? 1 : 0,
+                        transition: "opacity 0.6s ease",
+                    }}
+                >
+                    {/* El contenedor interno fill debe ser w-full h-full absoluto */}
+                    <div className="absolute inset-0 w-full h-full">
+                        {/* Imagen de Escritorio (Desktop) */}
+                        <Image
+                            src={media.imageUrl}
+                            alt={title || "Slider Banner Content"}
+                            fill
+                            className={`w-full h-full ${media.mobileImageUrl ? "max-md:hidden" : ""} ${
+                                media.objectFit === "contain" ? "object-contain" : "object-cover"
+                            }`}
+                            sizes="100vw"
+                            priority
+                            unoptimized
+                        />
+
+                        {/* Imagen Móvil 1x1 Dedicada */}
+                        {media.mobileImageUrl && (
                             <Image
-                                src={media.imageUrl}
-                                alt={title || "Slider Banner Content"}
+                                src={media.mobileImageUrl}
+                                alt={title || "Slider Banner Content Mobile"}
                                 fill
-                                className={` ${media.objectFit === "contain" ? "object-contain" : "object-cover"
-                                    }`}
-                                sizes="(max-width: 640px) 50vw, 40vw"
+                                className="md:hidden w-full h-full object-cover"
+                                sizes="100vw"
                                 priority
                                 unoptimized
                             />
-                        </div>
+                        )}
                     </div>
-                )}
-            </div>
+                </div>
+            )}
         </div>
     );
 
@@ -123,6 +131,7 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
             href={destUrl}
             target={openInNewTab ? "_blank" : undefined}
             rel={openInNewTab ? "noopener noreferrer" : undefined}
+            className="w-full block"
             aria-label={title || "Slider Banner Link"}
         >
             {content}

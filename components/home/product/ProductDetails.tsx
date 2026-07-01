@@ -1,4 +1,3 @@
-// File: frontend/components/home/product/ProductDetails.tsx
 "use client";
 
 import { useState, useEffect, useMemo } from 'react';
@@ -24,7 +23,6 @@ import {
 } from "@/components/ui/select";
 import ProductComplementary from './ProductComplementary';
 import { GoLinkExternal } from "react-icons/go";
-
 
 type Props = {
     producto: ProductWithCategoryResponse;
@@ -104,7 +102,6 @@ export default function ProductDetails({ producto }: Props) {
 
     const variantImages = useMemo(() => {
         let images: string[] = [];
-
         if (selectedVariant?.imagenes && selectedVariant.imagenes.length > 0) {
             images = selectedVariant.imagenes;
         } else {
@@ -112,9 +109,7 @@ export default function ProductDetails({ producto }: Props) {
             const allVariantsImages = producto.variants?.flatMap(v => v.imagenes ?? []) ?? [];
             images = [...generalImages, ...allVariantsImages];
         }
-
         const cleaned = Array.from(new Set(images.filter(img => img && img.trim() !== "")));
-
         return cleaned.length > 0 ? cleaned : ["/logoapp.svg"];
     }, [selectedVariant, producto.imagenes, producto.variants]);
 
@@ -133,6 +128,9 @@ export default function ProductDetails({ producto }: Props) {
     };
 
     const colorAtributo = !producto.variants?.length && (producto.atributos?.color || producto.atributos?.Color || producto.atributos?.COLOR || null);
+
+    // Lógica logística actualizada para marketing
+    const isFreeShipping = precio >= 49;
 
     return (
         <>
@@ -398,18 +396,24 @@ export default function ProductDetails({ producto }: Props) {
                             </div>
                         </div>
 
-                        {/* Envío */}
+                        {/* Envío con Gancho de Marketing (Solo muestra costo si es Gratis) */}
+                        {/* Envío limpio (sin mensajes de incentivo) */}
                         <div className="flex items-center justify-between py-3">
                             <div className="flex items-center gap-2.5 text-muted-foreground">
                                 <Truck className="w-4 h-4 shrink-0" />
-                                <span className="text-xs font-semibold">Entrega estimada:</span>
+                                <span className="text-xs font-semibold text-muted-foreground">
+                                    Envío:
+                                </span>
                             </div>
                             <div className="text-right text-xs">
-                                <span className="font-semibold text-foreground">
-                                    {getDeliveryRange(producto.diasEnvio || 1)}
+                                <span className={cn(
+                                    "font-bold block text-sm",
+                                    isFreeShipping ? "text-action-cta" : "text-foreground"
+                                )}>
+                                    {isFreeShipping ? "Gratis" : ""}
                                 </span>
-                                <span className="text-muted-foreground font-medium ml-1.5">
-                                    ({producto.diasEnvio || 1} día{(producto.diasEnvio || 1) !== 1 ? "s" : ""})
+                                <span className="text-muted-foreground font-medium text-xs block mt-0.5">
+                                    Entrega: {getDeliveryRange(producto.diasEnvio || 1)}
                                 </span>
                             </div>
                         </div>

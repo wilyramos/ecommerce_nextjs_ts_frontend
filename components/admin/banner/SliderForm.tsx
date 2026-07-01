@@ -152,6 +152,11 @@ export default function SliderForm({
     const [endDate, setEndDate] = useState<Date | null>(initialEnd);
     const [endTime, setEndTime] = useState(initialEnd ? format(initialEnd, "HH:mm") : "00:00");
 
+
+    const [mediaMobileUrl, setMediaMobileUrl] = useState(
+    val("media.mobileImageUrl", initialData?.media?.mobileImageUrl) || ""
+);
+
     return (
         <div className="space-y-4">
             {generalError && <Alert variant="error" mode="banner">{generalError}</Alert>}
@@ -260,6 +265,19 @@ export default function SliderForm({
                                         {err("media.imageUrl") || err("media.videoUrl")}
                                     </p>
                                 )}
+
+                                <FormMediaField
+        name="media.mobileImageUrl"
+        label="Imagen (Mobile 1x1)"
+        folder="banners"
+        defaultValue={mediaMobileUrl}
+        multiple={false}
+        maxFiles={1}
+        accept="image"
+        onChange={(urls) => setMediaMobileUrl(urls[0] ?? "")}
+    />
+
+    <input type="hidden" name="media.mobileImageUrl" value={mediaMobileUrl} />
                             </div>
 
                             <div className="space-y-1">

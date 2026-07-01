@@ -22,6 +22,7 @@ const optionalString = z.string().optional().or(z.literal(""));
 
 export const SliderMediaSchema = z.object({
     imageUrl: optionalString,
+    mobileImageUrl: optionalString, // Nuevo campo
     videoUrl: optionalString,
     objectFit: SliderObjectFitEnum.default("cover"),
 });
