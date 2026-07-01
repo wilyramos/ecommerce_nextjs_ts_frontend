@@ -64,7 +64,7 @@ export default function ClientCarouselCategorias({ categorias }: { categorias: C
                         {/* Textos: Jerarquía Pequeño/Normal */}
                         <div className="mt-4 px-1 space-y-0.5">
 
-                            <div className="flex items-center justify-between">
+                            <div className="flex items-center justify-center gap-1">
                                 <h3 className="text-[8px] md:text-sm  hover:text-destructive transition-colors duration-300">
                                     {c.nombre}
                                 </h3>

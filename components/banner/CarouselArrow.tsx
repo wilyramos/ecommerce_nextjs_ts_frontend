@@ -19,12 +19,11 @@ export function CarouselArrow({ onClick, direction }: ArrowProps) {
             aria-label={direction === "left" ? "Anterior" : "Siguiente"}
             className={`
                 absolute top-1/2 -translate-y-1/2 z-20
-                hidden sm:flex items-center justify-center
-                w-12 h-14
+                flex items-center justify-center
+                w-9 h-9
                 bg-white/10 dark:bg-black/10
                 text-black dark:text-white
-                backdrop-blur-md
-                border border-black/15 dark:border-white/15
+                backdrop-blur-xs
                 hover:bg-black hover:dark:bg-white
                 hover:text-white hover:dark:text-black
                 transition-all duration-200 cursor-pointer

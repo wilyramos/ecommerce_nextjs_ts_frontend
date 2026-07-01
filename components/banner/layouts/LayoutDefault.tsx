@@ -121,7 +121,7 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                                     sizes="100vw"
                                     priority
                                     unoptimized
-                                bag-current
+                                    
                                 />
                             )}
                         </div>

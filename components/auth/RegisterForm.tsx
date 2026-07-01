@@ -62,7 +62,7 @@ export default function RegisterForm() {
             {/* Divider */}
             <div className="relative text-center text-sm text-black my-6">
                 <hr className="border-gray-300 mb-2" />
-                <span className="bg-primary px-2 absolute -top-3 left-1/2 -translate-x-1/2">
+                <span className="bg-white px-2 absolute -top-3 left-1/2 -translate-x-1/2">
                     O bien
                 </span>
             </div>

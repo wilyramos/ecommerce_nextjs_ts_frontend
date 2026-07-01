@@ -140,7 +140,7 @@ export default function Footer() {
 
                         <div className="flex flex-col sm:flex-row items-center gap-4 md:gap-8 order-2 lg:order-1">
                             <span
-                                className="text-[11px] text-muted-foreground "
+                                className="text-[8px] text-muted-foreground "
                                 suppressHydrationWarning
                             >
                                 © {new Date().getFullYear()} GoPhone Inc.
@@ -150,7 +150,7 @@ export default function Footer() {
                                     <div key={link.href} className="flex items-center gap-4">
                                         <Link
                                             href={link.href}
-                                            className="text-[11px] text-muted-foreground  hover:text-foreground transition-colors focus-visible:outline-hidden"
+                                            className="text-[8px] text-muted-foreground  hover:text-foreground transition-colors focus-visible:outline-hidden"
                                         >
                                             {link.label}
                                         </Link>
@@ -163,7 +163,7 @@ export default function Footer() {
 
                             <Link
                                 href="/libro-de-reclamaciones"
-                                className="inline-flex items-center gap-2 px-3 py-2 border border-border text-xs  text-muted-foreground hover:text-foreground hover:bg-background-secondary transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+                                className="inline-flex items-center gap-2 px-3 py-2 border border-border text-[8px]  text-muted-foreground hover:text-foreground hover:bg-background-secondary transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
                             >
                                 <FaBookOpen className="w-3.5 h-3.5 text-amber-500 shrink-0" />
                                 Libro de Reclamaciones
@@ -171,7 +171,7 @@ export default function Footer() {
                         </div>
 
                         <div className="flex flex-col items-center lg:items-end gap-2 order-1 lg:order-2 w-full lg:w-auto border-b lg:border-b-0 pb-6 lg:pb-0 border-border">
-                            <span className="text-[11px] text-muted-foreground">
+                            <span className="text-[8px] text-muted-foreground">
                                 Medios de pago:
                             </span>
                             <PaymentMethods />
