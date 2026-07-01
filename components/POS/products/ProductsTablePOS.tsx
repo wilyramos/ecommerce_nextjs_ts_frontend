@@ -36,7 +36,7 @@ export default function ProductsTablePOS({ products }: { products?: ProductsAPIR
                                     className="flex items-center gap-3 text-slate-700 hover:text-blue-600 transition-colors"
                                 >
                                     <Image
-                                        src={product.imagenes?.[0] || "/logo.png"}
+                                        src={product.imagenes?.[0] || "/logogophone.png"}
                                         alt={product.nombre}
                                         width={40}
                                         height={40}

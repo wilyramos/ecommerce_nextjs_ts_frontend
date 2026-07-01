@@ -23,10 +23,10 @@ export default function CheckoutLayout({ children }: { children: ReactNode }) {
 
             {/* --- HEADER --- */}
             <header className="bg-background border-b border-border sticky top-0 z-30 shrink-0">
-                <div className="h-14 px-4 sm:px-8 flex items-center justify-between max-w-screen-xl w-full mx-auto gap-4">
+                <div className="h-14 px-4 sm:px-8 grid grid-cols-[auto_1fr_auto] items-center max-w-screen-xl w-full mx-auto gap-2 sm:gap-4">
 
                     {/* Botón de retroceso dinámico a la izquierda */}
-                    <div className="flex items-center flex-1 sm:flex-initial">
+                    <div className="flex items-center shrink-0">
                         <Link
                             href={backHref}
                             className="flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground hover:text-foreground transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring rounded p-1 shrink-0"
@@ -37,14 +37,14 @@ export default function CheckoutLayout({ children }: { children: ReactNode }) {
                     </div>
 
                     {/* Pasos del Checkout en el centro */}
-                    <div className="flex justify-center flex-shrink-0">
+                    <div className="flex justify-center min-w-0 overflow-hidden">
                         <CheckoutStepsV2 />
                     </div>
 
                     {/* Logo en el extremo derecho */}
-                    <div className="flex items-center justify-end flex-1 sm:flex-initial">
+                    <div className="flex items-center justify-end shrink-0">
                         <Link href="/" className="outline-none focus-visible:ring-2 focus-visible:ring-ring rounded shrink-0 p-1">
-                            <Logo color="black" size={24} />
+                            <Logo color="black" />
                         </Link>
                     </div>
 

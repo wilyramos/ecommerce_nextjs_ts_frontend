@@ -3,7 +3,6 @@
 import { redirect } from "next/navigation";
 import { orderService } from "@/src/services/order-service";
 import PaymentMethodsAccordionV2 from "@/components/checkout-v2/payment/PaymentMethodsAccordionV2";
-import { FiCreditCard } from "react-icons/fi";
 import { getTokenOptional } from "@/src/auth/dal";
 
 type PaymentPageProps = { searchParams: Promise<{ orderNumber?: string }> }
@@ -36,15 +35,14 @@ export default async function PaymentPage({ searchParams }: PaymentPageProps) {
     }
 
     return (
-        <div className="space-y-5">
-            <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-full bg-background-secondary border border-border flex items-center justify-center text-foreground shrink-0">
-                    <FiCreditCard size={14} strokeWidth={2} />
-                </div>
-                <div>
-                    <h2 className="text-base font-bold text-foreground leading-none">Método de pago</h2>
-                    <p className="text-xs text-muted-foreground mt-0.5">Elige cómo quieres pagar.</p>
-                </div>
+        <div className="space-y-6">
+            <div className="border-b border-border pb-5">
+                <h1 className="text-xl font-bold tracking-tight text-foreground">
+                    Método de pago
+                </h1>
+                <p className="text-xs text-muted-foreground mt-1">
+                    Elige cómo quieres pagar.
+                </p>
             </div>
             <PaymentMethodsAccordionV2 key={order.orderNumber} order={order} />
         </div>

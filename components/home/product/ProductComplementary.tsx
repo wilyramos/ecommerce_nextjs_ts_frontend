@@ -33,7 +33,7 @@ export default function ProductComplementary({ complementarios }: ProductComplem
                             >
                                 <div className="relative aspect-square overflow-hidden bg-background-secondary flex items-center justify-center p-2 select-none">
                                     <Image
-                                        src={comp.imagenes?.[0] || "/logo.png"}
+                                        src={comp.imagenes?.[0] || "/logogophone.png"}
                                         alt={comp.nombre}
                                         fill
                                         className="object-contain p-1.5 transition-transform duration-500 group-hover:scale-105 mix-blend-multiply"
