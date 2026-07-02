@@ -27,7 +27,7 @@ export default function CollectionSection({ section, slug }: Props) {
 
                 <Link
                     href={`/colecciones/${slug}`}
-                    className="hidden md:flex items-center gap-1 text-sm text-foreground hover:text-action-cta font-medium transition-colors duration-200"
+                    className="flex items-center gap-1 text-xs md:text-sm text-foreground hover:text-action-cta font-medium transition-colors duration-200"
                 >
                     Ver todo
                     <ChevronRight size={12} strokeWidth={3} />

@@ -7,7 +7,6 @@ import { TicketPercent, Truck, ShieldCheck, ArrowLeftRight } from "lucide-react"
 
 type Feature = {
     title: string;
-    description: string;
     icon: typeof TicketPercent;
     url?: string;
 };
@@ -15,25 +14,21 @@ type Feature = {
 const features: Feature[] = [
     {
         title: "Ofertas exclusivas",
-        description: "Precios especiales para ti",
         icon: TicketPercent,
         url: "/ofertas"
     },
     {
-        title: "Envíos rápidos",
-        description: "A todo el país en tiempo récord",
+        title: "Envíos a todo el país",
         icon: Truck,
         url: "/hc/proceso-de-compra"
     },
     {
         title: "Pago 100% seguro",
-        description: "Tus datos están protegidos",
         icon: ShieldCheck,
         url: "/hc/preguntas-frecuentes"
     },
     {
         title: "Cambios y devoluciones",
-        description: "Garantía de satisfacción total",
         icon: ArrowLeftRight,
         url: "/hc/garantias-y-devoluciones"
     },
@@ -61,9 +56,7 @@ export default function MinimalFeatures() {
                                     <h3 className="text-[10px] md:text-sm font-semibold text-foreground leading-snug tracking-tight">
                                         {feature.title}
                                     </h3>
-                                    <p className=" text-[8px] md:text-xs text-muted-foreground leading-relaxed">
-                                        {feature.description}
-                                    </p>
+
                                 </div>
                             </div>
                         );
