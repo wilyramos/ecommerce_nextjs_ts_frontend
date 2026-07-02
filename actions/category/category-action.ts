@@ -2,12 +2,11 @@
 
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import getToken from "@/src/auth/token";
 import { categoryPayloadSchema } from "@/src/schemas/category.schema";
 import { SuccessResponse, ErrorResponse } from "@/src/schemas";
-
+import { revalidatePath, revalidateTag } from "next/cache";
 // ─────────────────────────────────────────────────────────────
 // Tipos compartidos
 // ─────────────────────────────────────────────────────────────
@@ -113,7 +112,12 @@ export async function createCategoryAction(
         });
 
         const result = await handleResponse(res, "Error interno en el servidor remoto.");
-        if (!result.errors.length) revalidatePath("/admin/category");
+        if (!result.errors.length) {
+            revalidatePath("/admin/category");
+            
+            // Purga el caché global del storefront para renderizar la nueva categoría de inmediato
+            revalidateTag("categories"); 
+        }
         return result;
     } catch (error) {
         return {
@@ -161,6 +165,10 @@ export async function editCategoryAction(
         if (!result.errors.length) {
             revalidatePath("/admin/category");
             revalidatePath(`/admin/category/edit/${id}`);
+            
+            // Invalida la lista de categorías global y la entidad por ID/Slug específica modificada
+            revalidateTag("categories");
+            revalidateTag(`category-${id}`);
         }
         return result;
     } catch (error) {
@@ -199,6 +207,10 @@ export async function deleteCategoryAction(
         
         if (!result.errors.length) {
             revalidatePath("/admin/category");
+            
+            // Invalida la lista global y la entidad eliminada para que no aparezcan en la tienda
+            revalidateTag("categories");
+            revalidateTag(`category-${categoryId}`);
             isSuccessful = true;
         } else {
             errorResult = result;
@@ -213,16 +225,13 @@ export async function deleteCategoryAction(
         };
     }
 
-    // 1. Si hubo errores, se retorna el estado para que lo pinte el componente
     if (errorResult) {
         return errorResult;
     }
 
-    // 2. Si fue exitoso, Next.js ejecuta la redirección de forma nativa sin bloqueos
     if (isSuccessful) {
         redirect("/admin/products/category");
     }
 
-    // Fallback por requerimiento de tipo de firma
     return { errors: [], success: "" };
 }

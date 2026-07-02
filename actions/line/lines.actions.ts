@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
-import { LineFormValues, ActionState } from "@/src/schemas/line.schema"; // Importamos ActionState del schema
+import { LineFormValues, ActionState } from "@/src/schemas/line.schema";
 
 const API_URL = process.env.API_URL;
 

@@ -1,10 +1,10 @@
-// File: frontend/actions/brand/create-brand-action.ts
+// File: frontend/actions/brand/edit-brand-action.ts
 "use server";
 
 import getToken from "@/src/auth/token";
 import { ErrorResponse } from "@/src/schemas";
 import { updateBrandSchema } from "@/src/schemas/brands";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache"; // Agrupado en una sola línea
 
 export type ActionStateType = { errors: string[]; success: string };
 
@@ -20,8 +20,8 @@ export async function editBrandAction(
             nombre: formData.get("nombre"),
             descripcion: formData.get("descripcion"),
             logo: formData.get("logo") ? (formData.get("logo") as string) : undefined
-
         });
+        
         if (!parsed.success) {
             return { errors: parsed.error.errors.map(e => e.message), success: "" };
         }
@@ -39,7 +39,10 @@ export async function editBrandAction(
             const { message } = ErrorResponse.parse(await res.json());
             return { errors: [message || "Error al editar"], success: "" };
         }
+
+        // 1. Limpia la vista en el panel de control
         revalidatePath("/admin/brands");
+                revalidateTag("brands-storefront"); 
 
         return { errors: [], success: "Marca actualizada correctamente" };
     } catch {

@@ -1,9 +1,12 @@
+//File: frontend/actions/brand/create-brand-action.ts
+
 "use server";
 
 import getToken from "@/src/auth/token";
 import { createBrandSchema } from "@/src/schemas/brands";
 import { ErrorResponse } from "@/src/schemas";
 import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 export type ActionStateType = { errors: string[]; success: string };
 
@@ -46,7 +49,9 @@ export async function createBrandAction(
             return { errors: [err.message || "Error al crear"], success: "" };
         }
 
+        // Invalidaciones correctas
         revalidatePath("/admin/brands");
+        revalidateTag("brands-storefront");
 
         return { errors: [], success: "Marca creada correctamente" };
     } catch (error) {
