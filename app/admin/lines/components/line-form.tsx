@@ -15,7 +15,7 @@ import {
 
 import { createLineAction, updateLineAction } from "@/actions/line/lines.actions";
 
-import type { Brand } from "@/src/services/brands";
+import type { Brand } from "@/src/schemas/brand.schema";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

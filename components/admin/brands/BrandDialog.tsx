@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Brand } from "@/src/services/brands";
+import type { Brand } from "@/src/schemas/brand.schema";
 import { toast } from "sonner";
 import { MediaUploader, MediaImage } from "@/src/modules/media";
 import type { Media } from "@/src/modules/media/types/media.types";

@@ -1,6 +1,6 @@
 "use client";
 
-import { Brand } from "@/src/services/brands";
+import type { Brand } from "@/src/schemas/brand.schema";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

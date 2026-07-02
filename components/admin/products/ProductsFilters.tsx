@@ -16,8 +16,7 @@ import {
 import BarcodeFilterInput from "./BarcodeFilterInput";
 
 import type { CategoryListResponse } from "@/src/schemas/category.schema";
-import type { Brand } from "@/src/services/brands";
-
+import type { Brand } from "@/src/schemas/brand.schema";
 /**
  * Props para el componente ProductsFilters
  */

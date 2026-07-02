@@ -9,8 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { LineForm } from "./line-form";
 import { ProductLine } from "@/src/schemas/line.schema";
-import type { Brand } from "@/src/services/brands";
-
+import type { Brand } from "@/src/schemas/brand.schema";
 interface LineModalProps {
     isOpen: boolean;
     onClose: () => void;

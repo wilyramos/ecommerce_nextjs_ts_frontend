@@ -6,8 +6,7 @@ import { Plus } from "lucide-react";
 
 import { ProductLine, initialState } from "@/src/schemas/line.schema";
 import { deleteLineAction } from "@/actions/line/lines.actions";
-import type { Brand } from "@/src/services/brands";
-
+import type { Brand } from "@/src/schemas/brand.schema";
 import { Button } from "@/components/ui/button";
 import { LineModal } from "./line-modal";
 import { ConfirmModal } from "@/components/ui/modals/confirm-modal";
