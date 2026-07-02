@@ -28,6 +28,7 @@ export default function ProductResultSearch({ item }: Props) {
                     <Image
                         src={imagen}
                         alt={item.nombre}
+                        unoptimized
                         fill
                         sizes="(max-width: 640px) 33vw, 20vw"
                         className="object-contain p-3 transition-transform duration-500 group-hover:scale-105 mix-blend-multiply"

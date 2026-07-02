@@ -67,6 +67,7 @@ export default function FiltersSidebar(
                     width={40}
                     height={40}
                     className="object-contain max-h-12"
+                    unoptimized
                 />
             </div>
 

@@ -52,7 +52,7 @@ export default function ClientCarouselCategorias({ categorias }: { categorias: C
                                     alt={c.nombre}
                                     fill
                                     className="object-cover transition-transform duration-700 group-hover:scale-110"
-
+                                    unoptimized
                                 />
                             ) : (
                                 <div className="flex h-full items-center justify-center text-[var(--color-text-tertiary)] opacity-20">

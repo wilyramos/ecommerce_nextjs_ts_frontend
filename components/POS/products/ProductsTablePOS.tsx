@@ -41,6 +41,7 @@ export default function ProductsTablePOS({ products }: { products?: ProductsAPIR
                                         width={40}
                                         height={40}
                                         className="rounded border object-cover"
+                                        unoptimized
                                     />
                                     <div>
                                         <p className="font-medium truncate max-w-xs">{product.nombre}</p>

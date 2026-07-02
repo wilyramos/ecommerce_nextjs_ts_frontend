@@ -42,6 +42,7 @@ export default function ResumenFinalCarrito() {
                                                         height={48}
                                                         quality={70}
                                                         className="w-12 h-12 object-cover rounded-lg border border-[var(--color-border-subtle)]"
+                                                        unoptimized
                                                     />
                                                 ) : (
                                                     <div className="flex items-center justify-center w-12 h-12 bg-[var(--color-bg-secondary)] rounded-lg border border-[var(--color-border-subtle)]">

@@ -68,6 +68,7 @@ export default function ProductCardPOS({ product }: { product: ProductWithCatego
                             fill
                             sizes="(max-width: 768px) 50vw, 25vw"
                             className="object-contain mix-blend-multiply p-2 transition-transform duration-300 group-hover:scale-105"
+                            unoptimized
                         />
                     ) : (
                         <span className="text-xs text-[var(--admin-text-muted)] font-medium">Sin imagen</span>

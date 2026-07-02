@@ -41,6 +41,7 @@ export default function ProductGridSection({ section, columns }: ProductGridSect
                                     fill
                                     sizes={`(max-width: 640px) 100vw, ${Math.floor(100 / columns)}vw`}
                                     className="object-cover transition-transform "
+                                    unoptimized
                                 />
                                 {(block.title || block.subtitle) && (
                                     <div className="absolute inset-0 ">

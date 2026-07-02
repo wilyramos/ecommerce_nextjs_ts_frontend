@@ -46,6 +46,7 @@ export default function CartItemsList() {
                                 height={70}
                                 className="w-10 h-10 rounded-lg object-cover border border-gray-200 flex-shrink-0"
                                 quality={1}
+                                unoptimized
                             />
 
                             <div className="flex flex-col gap-1 min-w-0">

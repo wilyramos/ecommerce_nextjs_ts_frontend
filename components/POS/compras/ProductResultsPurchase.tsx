@@ -61,6 +61,7 @@ export default function ProductResultsPurchase({ dataProducts }: ProductResultsP
                                     height={48}
                                     className="object-cover"
                                     quality={20}
+                                    unoptimized
                                 />
                             ) : (
                                 <div className="w-12 h-12 flex items-center justify-center bg-gray-200">

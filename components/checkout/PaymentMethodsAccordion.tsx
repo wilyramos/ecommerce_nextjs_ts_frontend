@@ -45,10 +45,10 @@ export default function PaymentMethodsAccordion({ order }: { order: TOrderPopula
                             </div>
 
                             <div className="flex items-center gap-2">
-                                <Image src="/payments/visa.png" alt="Visa" width={32} height={20} className="object-contain w-auto h-4" />
-                                <Image src="/payments/mastercard.png" alt="Mastercard" width={32} height={20} className="object-contain w-auto h-4" />
+                                <Image src="/payments/visa.png" alt="Visa" width={32} height={20} className="object-contain w-auto h-4" unoptimized/>
+                                <Image src="/payments/mastercard.png" alt="Mastercard" width={32} height={20} className="object-contain w-auto h-4" unoptimized/>
                                 <div className="w-px h-4 bg-border mx-1 hidden sm:block" />
-                                <Image src="/payments/izipay.png" alt="Izipay" width={40} height={20} className="object-contain w-auto h-4 hidden sm:block" />
+                                <Image src="/payments/izipay.png" alt="Izipay" width={40} height={20} className="object-contain w-auto h-4 hidden sm:block" unoptimized/>
                             </div>
                         </div>
                     </AccordionTrigger>
@@ -84,6 +84,7 @@ export default function PaymentMethodsAccordion({ order }: { order: TOrderPopula
                                 width={32}
                                 height={32}
                                 className="object-contain rounded-[var(--radius-sm)] border border-border"
+                                unoptimized
                             />
                         </div>
                     </AccordionTrigger>
@@ -114,7 +115,7 @@ export default function PaymentMethodsAccordion({ order }: { order: TOrderPopula
                             </div>
 
                             <div className="flex items-center">
-                                <Image src="/payments/mercadopago.png" alt="Mercado Pago" width={60} height={24} className="object-contain w-auto h-5" />
+                                <Image src="/payments/mercadopago.png" alt="Mercado Pago" width={60} height={24} className="object-contain w-auto h-5" unoptimized />
                             </div>
                         </div>
                     </AccordionTrigger>
@@ -147,7 +148,7 @@ export default function PaymentMethodsAccordion({ order }: { order: TOrderPopula
                             </div>
 
                             <div className="flex items-center">
-                                <Image src="/payments/culqi.png" alt="Culqi" width={50} height={20} className="object-contain w-auto h-4" />
+                                <Image src="/payments/culqi.png" alt="Culqi" width={50} height={20} className="object-contain w-auto h-4" unoptimized/>
                             </div>
                         </div>
                     </AccordionTrigger>

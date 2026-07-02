@@ -1,3 +1,5 @@
+//File: frontend/components/ui/Logo.tsx
+
 import Image from "next/image";
 
 type LogoProps = {

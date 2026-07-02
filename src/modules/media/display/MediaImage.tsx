@@ -116,6 +116,7 @@ export function MediaImage({
         className={imageClasses}
         onLoad={handleLoad}
         onError={handleError}
+        unoptimized
       />
     </div>
   );

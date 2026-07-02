@@ -378,7 +378,7 @@ export default function ProductDetails({ producto }: Props) {
                                 <CreditCard className="w-4 h-4 shrink-0" />
                                 <span className="text-xs font-semibold">Medios de pago:</span>
                             </div>
-                            <div >
+                            <div>
                                 <PaymentMethods />
                             </div>
                         </div>

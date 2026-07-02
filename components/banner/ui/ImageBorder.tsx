@@ -153,6 +153,7 @@ export default function ImageBorder({
                 `.trim()}
                 sizes={sizes}
                 priority={priority}
+                unoptimized
             />
         </div>
     );

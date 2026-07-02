@@ -41,6 +41,7 @@ export default function NotFound() {
                             fill
                             className="object-contain"
                             priority
+                            unoptimized
                         />
                     </div>
                     <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60 mt-4">

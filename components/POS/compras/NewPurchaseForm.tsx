@@ -99,6 +99,7 @@ export default function NewPurchaseForm() {
                                                     width={30}
                                                     height={30}
                                                     className="rounded"
+                                                    unoptimized
                                                 />
                                             ) : (
                                                 <div className="w-8 h-8 bg-gray-200 rounded flex items-center justify-center text-gray-400 text-xs">

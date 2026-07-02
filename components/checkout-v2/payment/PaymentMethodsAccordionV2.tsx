@@ -5,6 +5,7 @@
 import Image from "next/image";
 import CheckoutCulqi from "@/components/checkout-v2/culqi/CheckoutCulqi";
 import type { OrderResponse } from "@/src/schemas/order.schema";
+import PaymentMethods from "@/components/home/PaymentMethods";
 
 interface Props {
     order: OrderResponse;
@@ -27,14 +28,7 @@ export default function PaymentMethodsSelector({ order }: Props) {
                     </div>
 
                     <div className="flex items-center gap-2 shrink-0">
-                        <Image src="/payments/visa-small.svg" alt="Visa" width={28} height={18} className="object-contain w-auto max-h-4.5 mix-blend-multiply" />
-                        <Image src="/payments/master-small.svg" alt="Mastercard" width={28} height={18} className="object-contain w-auto max-h-4.5 mix-blend-multiply" />
-                        <Image src="/payments/amex-small.svg" alt="American Express" width={28} height={18} className="object-contain w-auto max-h-4.5 mix-blend-multiply" />
-                        <div className="hidden sm:block">
-                            <Image src="/payments/diners-small.svg" alt="Diners Club" width={28} height={18} className="object-contain w-auto max-h-4.5 mix-blend-multiply" />
-                        </div>
-                        <Image src="/payments/yape-small.svg" alt="Yape" width={24} height={24} className="object-contain w-auto max-h-4.5 mix-blend-multiply" />
-                        <Image src="/payments/cuotelao-small.svg" alt="Cuotelao" width={24} height={24} className="object-contain w-auto max-h-4.5 mix-blend-multiply" />
+                        <PaymentMethods />
                     </div>
                 </div>
 

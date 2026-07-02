@@ -54,6 +54,7 @@ export default function BrandsCarousel({ brands }: { brands: TBrand[] }) {
                                     alt={b.nombre}
                                     fill
                                     className="object-contain p-4 filter grayscale opacity-60 "
+                                    unoptimized
                                 />
                             ) : (
                                 <div className="flex flex-col items-center gap-1 text-[var(--color-text-tertiary)] opacity-30">

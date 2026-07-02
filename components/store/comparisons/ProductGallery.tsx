@@ -25,6 +25,7 @@ export default function ProductGallery({ products }: Props) {
                                 alt={p.nombre}
                                 fill
                                 className="object-contain p-2"
+                                unoptimized
                             />
                         </div>
                     ) : (

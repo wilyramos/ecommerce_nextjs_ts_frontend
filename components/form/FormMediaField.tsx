@@ -190,6 +190,7 @@ export function FormMediaField({
                     priority={index === 0}
                     unoptimized
                     quality={isVideo ? 20 : 25}
+                    
                 />
                 {isVideo && (
                     <div className="absolute inset-0 flex items-center justify-center bg-[color:var(--color-foreground)]/20 z-10">
