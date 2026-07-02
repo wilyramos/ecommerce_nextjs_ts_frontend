@@ -1,4 +1,4 @@
-//File: line.schema.ts
+// File: line.schema.ts
 
 import { z } from "zod";
 
@@ -29,6 +29,7 @@ export interface ProductLine {
   category?: BaseEntity;
   isActive: boolean;
   createdAt: string;
+  updatedAt?: string; // <-- AÑADIDO: Soporte para la propiedad updatedAt en el frontend
 }
 
 // --- NUEVO: Tipos para Server Actions (Movido aquí para evitar el error) ---

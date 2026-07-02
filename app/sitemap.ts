@@ -1,12 +1,13 @@
 import { GetAllProductsSlug } from "@/src/services/products";
 import { getCategories } from "@/src/services/categorys";
-import { getActiveBrands, type Brand } from "@/src/services/brands";
+import { getActiveBrands } from "@/src/services/brands";
 import { linesService } from "@/src/services/lines.service";
 import { collectionService } from "@/src/services/collection-service";
 import { ComparisonService } from "@/src/services/comparison-service";
 import type { Comparison } from "@/src/schemas/comparison.schema";
 import type { Collection } from "@/src/schemas/collection.schema";
 import type { ProductLine } from "@/src/schemas/line.schema";
+import type { Brand } from "@/src/schemas/brand.schema";
 import type { MetadataRoute } from "next";
 
 type ChangeFreq = "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
@@ -42,6 +43,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         return hasStarted && hasNotEnded;
     });
 
+    // 1. Productos
     const productUrls: MetadataRoute.Sitemap = products.map((p) => ({
         url: `${baseUrl}/productos/${p.slug}`,
         lastModified: p.updatedAt ? new Date(p.updatedAt) : new Date(),
@@ -49,6 +51,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.8,
     }));
 
+    // 2. Categorías (Asegura actualización dinámica)
     const categoryUrls: MetadataRoute.Sitemap = categories.map((c) => ({
         url: `${baseUrl}/catalogo/${c.slug}`,
         lastModified: c.updatedAt ? new Date(c.updatedAt) : new Date(),
@@ -56,20 +59,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.9,
     }));
 
+    // 3. Marcas (Corregido de createdAt a updatedAt/now para forzar rastreo en Search Console)
     const brandUrls: MetadataRoute.Sitemap = brands.map((b) => ({
         url: `${baseUrl}/catalogo/${b.slug}`,
-        lastModified: b.createdAt ? new Date(b.createdAt) : new Date(),
+        lastModified: b.updatedAt ? new Date(b.updatedAt) : b.createdAt ? new Date(b.createdAt) : new Date(),
         changeFrequency: "weekly",
         priority: 0.85,
     }));
 
+    // 4. Líneas (Corregido de createdAt a updatedAt/now para evitar fechas obsoletas de 2025)
     const lineUrls: MetadataRoute.Sitemap = lines.map((l) => ({
         url: `${baseUrl}/catalogo/${l.slug}`,
-        lastModified: l.createdAt ? new Date(l.createdAt) : new Date(),
+        lastModified: l.updatedAt ? new Date(l.updatedAt) : l.createdAt ? new Date(l.createdAt) : new Date(),
         changeFrequency: "weekly",
         priority: 0.85,
     }));
 
+    // 5. Colecciones
     const collectionUrls: MetadataRoute.Sitemap = activeCollections.map((c) => ({
         url: `${baseUrl}/colecciones/${c.slug}`,
         lastModified: c.updatedAt ? new Date(c.updatedAt) : new Date(),
@@ -77,6 +83,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.9,
     }));
 
+    // 6. Comparativas
     const comparisonUrls: MetadataRoute.Sitemap = comparisons.map((c: Comparison) => ({
         url: `${baseUrl}/comparativas/${c.slug}`,
         lastModified: c.updatedAt ? new Date(c.updatedAt) : new Date(),
@@ -84,6 +91,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.7,
     }));
 
+    // 7. Páginas Estáticas
     const staticPages = [
         { url: "", priority: 1.0, changefreq: "daily" as ChangeFreq },
         { url: "/catalogo", priority: 1.0, changefreq: "daily" as ChangeFreq },
