@@ -24,7 +24,6 @@ export default function PaymentMethodsSelector({ order }: Props) {
                             height={18}
                             className="object-contain w-auto h-4.5 mix-blend-multiply select-none"
                         />
-                        <span className="text-xs text-muted-foreground font-semibold">(Tarjetas o Yape)</span>
                     </div>
 
                     <div className="flex items-center gap-2 shrink-0">
