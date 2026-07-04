@@ -11,10 +11,10 @@ export default async function CheckoutStepOnePage() {
     if (session?.user) {
         const { nombre, apellidos, telefono, tipoDocumento, numeroDocumento, email } = session.user
         defaultProfile = {
-            nombre:          nombre          ?? '',
-            apellidos:       apellidos       ?? '',
-            telefono:        telefono        ?? '',
-            tipoDocumento:   tipoDocumento   ?? undefined,
+            nombre: nombre ?? '',
+            apellidos: apellidos ?? '',
+            telefono: telefono ?? '',
+            tipoDocumento: tipoDocumento ?? undefined,
             numeroDocumento: numeroDocumento ?? '',
         }
         lockedEmail = email

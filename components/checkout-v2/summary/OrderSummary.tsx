@@ -43,19 +43,19 @@ export default function OrderSummary() {
             {/* Cupón */}
             <div className="py-4 border-b border-border">
                 <div className="flex gap-2">
-                    <input
-                        type="text"
-                        placeholder="Código de descuento"
-                        disabled
-                        className="flex-1 h-9 px-3 text-xs bg-background border border-border rounded-[var(--radius-sm)] text-foreground placeholder:text-muted-foreground/50 disabled:opacity-40 disabled:cursor-not-allowed outline-none focus:ring-1 focus:ring-ring"
-                    />
-                    <button
-                        disabled
-                        className="h-9 px-4 text-xs font-semibold border border-border rounded-[var(--radius-sm)] text-muted-foreground disabled:opacity-40 disabled:cursor-not-allowed bg-background"
-                    >
-                        Aplicar
-                    </button>
-                </div>
+    <input
+        type="text"
+        placeholder="Código de descuento"
+        disabled
+        className="flex-1 min-w-0 h-9 px-3 text-xs bg-background border border-border rounded-[var(--radius-sm)] text-foreground placeholder:text-muted-foreground/50 disabled:opacity-40 disabled:cursor-not-allowed outline-none focus:ring-1 focus:ring-ring"
+    />
+    <button
+        disabled
+        className="h-9 px-4 text-xs font-semibold border border-border rounded-[var(--radius-sm)] text-muted-foreground disabled:opacity-40 disabled:cursor-not-allowed bg-background shrink-0"
+    >
+        Aplicar
+    </button>
+</div>
             </div>
 
             {/* Totales */}

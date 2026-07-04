@@ -1,3 +1,4 @@
+// File: frontend/components/checkout-v2/form/ShippingAddressSection.tsx
 'use client'
 
 import { useMemo } from 'react'
@@ -49,7 +50,8 @@ function NativeSelect({ id, label, value, options, disabled, hasError, onChange 
                 onChange={e => onChange(e.target.value)}
                 disabled={disabled || options.length === 0}
                 className={cn(
-                    "peer h-11 w-full border border-border px-3 pt-4 pb-1 text-xs",
+                    // SE CAMBIA 'text-xs' POR 'text-base md:text-xs' PARA EVITAR ZOOM EN MÓVILES
+                    "peer h-11 w-full border border-border px-3 pt-4 pb-1 text-base md:text-xs",
                     "transition-all outline-none rounded-md text-foreground appearance-none",
                     "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
                     "focus-visible:border-ring focus-visible:ring-ring focus-visible:ring-[1px]",
@@ -66,7 +68,7 @@ function NativeSelect({ id, label, value, options, disabled, hasError, onChange 
                 htmlFor={id}
                 className={cn(
                     "absolute left-3 text-muted-foreground pointer-events-none transition-all origin-left select-none",
-                    value ? "top-1 text-[10px]" : "top-3 text-xs"
+                    value ? "top-1 text-[10px]" : "top-3 text-base md:text-xs"
                 )}
             >
                 {label}
@@ -126,7 +128,6 @@ export default function ShippingAddressSection({ values, errors, disabled, notes
         <fieldset className="space-y-4 text-foreground" disabled={disabled}>
             <legend className="sr-only">Dirección de envío</legend>
 
-            {/* Errores al tope */}
             {fieldErrors.length > 0 && (
                 <ul className="space-y-0.5 rounded-md border border-destructive/20 bg-destructive/5 px-3 py-2">
                     {fieldErrors.map((msg) => (
@@ -137,8 +138,7 @@ export default function ShippingAddressSection({ values, errors, disabled, notes
                 </ul>
             )}
 
-            {/* Ubigeo */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <NativeSelect
                     id="shipping-field-departamento"
                     label="Departamento"

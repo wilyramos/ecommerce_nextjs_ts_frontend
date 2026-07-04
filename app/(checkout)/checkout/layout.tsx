@@ -1,5 +1,3 @@
-//File: frontend/app/%28checkout%29/checkout/layout.tsx
-
 "use client"
 
 import { ReactNode } from 'react'
@@ -32,12 +30,12 @@ export default function CheckoutLayout({ children }: { children: ReactNode }) {
                             className="flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground hover:text-foreground transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring rounded p-1 shrink-0"
                         >
                             <FiArrowLeft size={13} strokeWidth={2.5} />
-                            <span className="inline">Volver</span>
+                            <span className="hidden xs:inline">Volver</span>
                         </Link>
                     </div>
 
                     {/* Pasos del Checkout en el centro */}
-                    <div className="flex justify-center min-w-0 overflow-hidden">
+                    <div className="flex justify-center min-w-0 overflow-hidden px-1">
                         <CheckoutStepsV2 />
                     </div>
 
