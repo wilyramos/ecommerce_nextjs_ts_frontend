@@ -36,7 +36,7 @@ function buildInitialProfile(
         apellidos: defaultProfile?.apellidos ?? '',
         email: lockedEmail ?? defaultProfile?.email ?? '',
         telefono: defaultProfile?.telefono ?? '',
-        tipoDocumento: defaultProfile?.tipoDocumento ?? undefined,
+        tipoDocumento: defaultProfile?.tipoDocumento ?? 'DNI',
         numeroDocumento: defaultProfile?.numeroDocumento ?? '',
     }
 }

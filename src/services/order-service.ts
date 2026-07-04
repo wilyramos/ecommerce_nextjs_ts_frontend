@@ -12,12 +12,8 @@ import {
     OrderStatusOnlyResponseSchema
 } from "@/src/schemas/order.schema";
 
-// ─── Constantes ───────────────────────────────────────────────────────────────
-
 const API_URL = process.env.API_URL || "http://localhost:4000/api";
 const BASE = `${API_URL}/orders/v2`;
-
-// ─── Helper: fetch autenticado o público ─────────────────────────────────────
 
 function buildHeaders(token?: string): HeadersInit {
     const headers: Record<string, string> = { "Content-Type": "application/json" };
@@ -25,9 +21,6 @@ function buildHeaders(token?: string): HeadersInit {
     return headers;
 }
 
-/**
- * Fetch tipado con validación Zod estricta.
- */
 async function apiFetch<T>(
     url: string,
     schema: { safeParse: (data: unknown) => { success: boolean; data?: T; error?: { message: string } } },
@@ -50,14 +43,8 @@ async function apiFetch<T>(
     return parsed.data as T;
 }
 
-// ─── Servicio de órdenes ─────────────────────────────────────────────────────
-
 export const orderService = {
 
-    /**
-     * Crea una nueva orden (guest o autenticado).
-     * El token es opcional para soportar el flujo de invitados tipo Shopify.
-     */
     async createOrder(dto: CreateOrderDTO, token?: string): Promise<OrderResponse> {
         const response = await apiFetch<{ ok: true; data: OrderResponse }>(
             `${BASE}`,
@@ -71,9 +58,6 @@ export const orderService = {
         return response.data;
     },
 
-    /**
-     * Obtiene una orden por su ObjectId. Requiere autenticación.
-     */
     async getOrderById(id: string, token: string): Promise<OrderResponse> {
         const response = await apiFetch<{ ok: true; data: OrderResponse }>(
             `${BASE}/${id}`,
@@ -83,10 +67,6 @@ export const orderService = {
         return response.data;
     },
 
-    /**
-     * Obtiene una orden por su número comercial (ORD-...).
-     * Accesible sin autenticación para confirmación de compra de invitados.
-     */
     async getOrderByNumber(orderNumber: string, token?: string): Promise<OrderResponse> {
         const response = await apiFetch<{ ok: true; data: OrderResponse }>(
             `${BASE}/number/${orderNumber}`,
@@ -96,9 +76,6 @@ export const orderService = {
         return response.data;
     },
 
-    /**
-     * Historial paginado del usuario autenticado.
-     */
     async getMyOrders(
         token: string,
         page = 1,
@@ -112,9 +89,6 @@ export const orderService = {
         );
     },
 
-    /**
-     * Historial de un invitado filtrado por email.
-     */
     async getGuestOrders(
         email: string,
         page = 1,
@@ -145,9 +119,6 @@ export const orderService = {
 
     // ── Admin ──────────────────────────────────────────────────────────────────
 
-    /**
-     * Lista todas las órdenes con filtros (admin / vendedor).
-     */
     async getAllOrders(
         token: string,
         filters: Partial<OrderFilters> = {}
@@ -169,12 +140,13 @@ export const orderService = {
     },
 
     /**
-     * Actualiza el estado logístico de una orden (admin).
+     * Actualiza el estado logístico de una orden incluyendo auditoría.
      */
     async updateOrderStatus(
         id: string,
         status: string,
-        token: string
+        token: string,
+        reason?: string
     ): Promise<OrderResponse> {
         const response = await apiFetch<{ ok: true; data: OrderResponse }>(
             `${BASE}/admin/${id}/status`,
@@ -182,15 +154,12 @@ export const orderService = {
             {
                 method: "PATCH",
                 headers: buildHeaders(token),
-                body: JSON.stringify({ status }),
+                body: JSON.stringify({ status, reason }),
             }
         );
         return response.data;
     },
 
-    /**
-     * Asigna número de tracking a una orden (admin).
-     */
     async assignTracking(
         id: string,
         trackingNumber: string,
@@ -209,15 +178,16 @@ export const orderService = {
     },
 
     /**
-     * Cancela una orden. Requiere autenticación del propietario o admin.
+     * Cancela una orden incluyendo auditoría del motivo.
      */
-    async cancelOrder(id: string, token: string): Promise<OrderResponse> {
+    async cancelOrder(id: string, token: string, reason?: string): Promise<OrderResponse> {
         const response = await apiFetch<{ ok: true; data: OrderResponse }>(
             `${BASE}/${id}/cancel`,
             OrderApiResponseSchema,
             {
                 method: "PATCH",
                 headers: buildHeaders(token),
+                body: JSON.stringify({ reason }),
             }
         );
         return response.data;

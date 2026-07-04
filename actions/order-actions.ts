@@ -14,8 +14,6 @@ import {
     type PaymentStatus,
 } from "@/src/schemas/order.schema";
 
-// ─── Tipos de estado para useActionState ─────────────────────────────────────
-
 export type ActionState<T = unknown> =
     | { ok: true; data: T; error?: never }
     | { ok: false; error: string; data?: never };
@@ -27,8 +25,6 @@ export type PaginatedOrdersState = ActionState<{
     pages: number;
 }>;
 
-// ─── Helper: Extrae mensajes de error de forma uniforme ──────────────────────
-
 function toErrorState(err: unknown): ActionState<never> {
     const message = err instanceof Error ? err.message : "Error inesperado. Intenta de nuevo.";
     return { ok: false, error: message };
@@ -38,10 +34,6 @@ function toErrorState(err: unknown): ActionState<never> {
 // 1. CREAR ORDEN (guest o autenticado)
 // ════════════════════════════════════════════════════════════════════════════
 
-/**
- * Valida y crea una orden.
- * Redirige a /checkout/payment?orderId=[_id] si tiene éxito.
- */
 export async function createOrderAction(
     _prevState: ActionState<OrderResponse> | undefined,
     formData: FormData
@@ -137,7 +129,7 @@ export async function loadGuestOrdersAction(
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// 5. CANCELAR ORDEN (Usuario autenticado)
+// 5. CANCELAR ORDEN (Soporta motivo de auditoría)
 // ════════════════════════════════════════════════════════════════════════════
 
 export async function cancelOrderAction(
@@ -148,10 +140,12 @@ export async function cancelOrderAction(
     if (!session) return { ok: false, error: "Debes iniciar sesión." };
 
     const orderId = (formData.get("orderId") as string | null)?.trim();
+    const reason = (formData.get("reason") as string | null)?.trim() || undefined;
+    
     if (!orderId) return { ok: false, error: "ID de orden inválido." };
 
     try {
-        const order = await orderService.cancelOrder(orderId, session.token);
+        const order = await orderService.cancelOrder(orderId, session.token, reason);
         revalidatePath("/account/orders");
         return { ok: true, data: order };
     } catch (err) {
@@ -188,7 +182,7 @@ export async function getAllOrdersAction(
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// 7. ADMIN — Actualizar estado de la orden
+// 7. ADMIN — Actualizar estado de la orden (Soporta motivo de auditoría)
 // ════════════════════════════════════════════════════════════════════════════
 
 export async function updateOrderStatusAction(
@@ -200,6 +194,7 @@ export async function updateOrderStatusAction(
 
     const orderId = (formData.get("orderId") as string | null)?.trim();
     const status = (formData.get("status") as string | null)?.trim();
+    const reason = (formData.get("reason") as string | null)?.trim() || undefined;
 
     if (!orderId) return { ok: false, error: "ID de orden requerido." };
 
@@ -207,7 +202,7 @@ export async function updateOrderStatusAction(
     if (!parsedStatus.success) return { ok: false, error: "Estado inválido." };
 
     try {
-        const order = await orderService.updateOrderStatus(orderId, parsedStatus.data, session.token);
+        const order = await orderService.updateOrderStatus(orderId, parsedStatus.data, session.token, reason);
         revalidatePath("/admin/orders");
         revalidatePath(`/admin/orders/${orderId}`);
         return { ok: true, data: order };
@@ -242,7 +237,6 @@ export async function assignTrackingAction(
         return toErrorState(err);
     }
 }
-
 
 export async function checkOrderStatusAction(
     orderNumber: string

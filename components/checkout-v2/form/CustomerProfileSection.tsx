@@ -1,3 +1,4 @@
+// File: frontend/components/checkout-v2/form/CustomerProfileSection.tsx
 'use client'
 
 import * as React from 'react'
@@ -90,7 +91,7 @@ export default function CustomerProfileSection({ values, errors, disabled, locke
 
                 {renderField('telefono', 'Nro de teléfono', 'tel')}
 
-                {/* Select nativo — mismo patrón que InputV2 */}
+                {/* Selector de Documento Corregido */}
                 <div className="relative w-full group flex flex-col justify-end h-11">
                     <select
                         id="profile-field-tipoDocumento"
@@ -102,17 +103,17 @@ export default function CustomerProfileSection({ values, errors, disabled, locke
                             "transition-all outline-none rounded-md text-foreground appearance-none",
                             "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
                             "focus-visible:border-ring focus-visible:ring-ring focus-visible:ring-[1px]",
-                            !values.tipoDocumento && "text-transparent",
                             errors['customerProfile.tipoDocumento'] && "border-destructive focus-visible:ring-destructive/20"
                         )}
                     >
-                        <option value="" disabled />
-                        <option value="DNI">DNI</option>
-                        <option value="RUC">RUC</option>
-                        <option value="CE">Carnet Ext.</option>
+                        {/* Se quita el atributo disabled de la opción por defecto para que no cause conflictos visuales */}
+                        <option value="">Seleccionar...</option>
+                        <option value="DNI" className="text-foreground bg-background">DNI</option>
+                        <option value="RUC" className="text-foreground bg-background">RUC</option>
+                        <option value="CE" className="text-foreground bg-background">Carnet Ext.</option>
                     </select>
 
-                    {/* Flecha SVG custom para reemplazar la flecha nativa */}
+                    {/* Flecha SVG custom */}
                     <svg
                         className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground"
                         xmlns="http://www.w3.org/2000/svg"
@@ -130,6 +131,7 @@ export default function CustomerProfileSection({ values, errors, disabled, locke
                         htmlFor="profile-field-tipoDocumento"
                         className={cn(
                             "absolute left-3 text-[10px] text-muted-foreground pointer-events-none transition-all origin-left select-none",
+                            "peer-focus:top-1 peer-focus:text-[10px]",
                             values.tipoDocumento ? "top-1" : "top-3 text-xs"
                         )}
                     >

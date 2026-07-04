@@ -1,3 +1,5 @@
+// File: frontend/src/schemas/order.schema.ts
+
 import { z } from "zod";
 import { productSchema } from "./product.schema";
 
@@ -51,9 +53,6 @@ export const CustomerProfileSchema = z.object({
 });
 export type CustomerProfile = z.infer<typeof CustomerProfileSchema>;
 
-/**
- * Estructura exacta que espera el backend para procesar la orden (Input del Carrito).
- */
 export const CartItemInputSchema = z.object({
     productId: z.string().regex(/^[0-9a-fA-F]{24}$/, 'ID de producto inválido'),
     variantId: z.string().regex(/^[0-9a-fA-F]{24}$/, 'ID de variante inválido').optional(),
@@ -61,11 +60,6 @@ export const CartItemInputSchema = z.object({
 });
 export type CartItemInput = z.infer<typeof CartItemInputSchema>;
 
-/**
- * Ítem histórico devuelto por la API.
- * Permite que `productId` sea el ID string clásico o el sub-esquema del producto
- * completamente poblado con sus variantes, stocks dinámicos e imágenes.
- */
 export const OrderItemResponseSchema = z.object({
     productId:         z.union([z.string().regex(/^[0-9a-fA-F]{24}$/), productSchema]),
     variantId:         z.string().optional(),
@@ -90,9 +84,17 @@ export type PaymentInfo = z.infer<typeof PaymentInfoSchema>;
 
 export const StatusHistorySchema = z.object({
     status:    OrderStatusEnum,
-    changedAt: z.coerce.date() 
+    changedAt: z.coerce.date(),
+    actionBy:  z.string().optional(), // Inyectado para auditoría de historial
+    reason:    z.string().optional()  // Motivo del cambio de estado
 });
 export type StatusHistory = z.infer<typeof StatusHistorySchema>;
+
+export const DeviceInfoSchema = z.object({
+    ipAddress: z.string().optional(),
+    userAgent: z.string().optional()
+});
+export type DeviceInfo = z.infer<typeof DeviceInfoSchema>;
 
 // ============================================================================
 // ── FILTROS DE CONSULTA
@@ -117,6 +119,7 @@ export const CreateOrderDTOSchema = z.object({
     customerProfile: CustomerProfileSchema,
     items:           z.array(CartItemInputSchema).min(1, 'El carrito no puede estar vacío'),
     shippingAddress: ShippingAddressSchema,
+    shippingMethod:  z.string().trim().optional(),
     notes:           z.string().max(300, 'Las notas no pueden superar los 300 caracteres').optional(),
     currency:        z.string().default('PEN')
 });
@@ -127,11 +130,10 @@ export type CreateOrderDTO = z.infer<typeof CreateOrderDTOSchema>;
 // ============================================================================
 
 export const OrderResponseSchema = z.object({
-    _id:          z.string(),
-    orderNumber:  z.string(),
-    culqiOrderId: z.string().optional(), // Inyectado para habilitar el flujo multipago (ord_live_...)
+    _id:           z.string(),
+    orderNumber:   z.string(),
+    culqiOrderId:  z.string().optional(),
     
-    // user puede ser el ObjectId string o el documento poblado de forma opcional.
     user: z.union([
         z.string().regex(/^[0-9a-fA-F]{24}$/),
         z.object({
@@ -142,20 +144,29 @@ export const OrderResponseSchema = z.object({
         })
     ]).optional(), 
 
-    customerProfile: CustomerProfileSchema,
-    items:           z.array(OrderItemResponseSchema),
-    subtotal:        z.number(),
-    shippingCost:    z.number(),
-    totalPrice:      z.number(),
-    currency:        z.string(),
-    status:          OrderStatusEnum,
-    statusHistory:   z.array(StatusHistorySchema),
-    shippingAddress: ShippingAddressSchema,
-    payment:         PaymentInfoSchema.optional(),
-    trackingNumber:  z.string().optional(),
-    notes:           z.string().optional(),
-    createdAt:       z.coerce.date(),
-    updatedAt:       z.coerce.date()
+    customerProfile:       CustomerProfileSchema,
+    items:                 z.array(OrderItemResponseSchema),
+    subtotal:              z.number(),
+    shippingCost:          z.number(),
+    totalPrice:            z.number(),
+    currency:              z.string(),
+    status:                OrderStatusEnum,
+    statusHistory:         z.array(StatusHistorySchema),
+    shippingAddress:       ShippingAddressSchema,
+    shippingMethod:        z.string().optional(),
+    estimatedDeliveryDate: z.coerce.date().optional(),
+    payment:               PaymentInfoSchema.optional(),
+    trackingNumber:        z.string().optional(),
+    notes:                 z.string().optional(),
+    
+    // Campos rápidos de auditoría raíz
+    canceledAt:            z.coerce.date().optional(),
+    canceledBy:            z.string().optional(),
+    cancelReason:          z.string().optional(),
+    
+    deviceInfo:            DeviceInfoSchema.optional(),
+    createdAt:             z.coerce.date(),
+    updatedAt:             z.coerce.date()
 });
 export type OrderResponse = z.infer<typeof OrderResponseSchema>;
 
