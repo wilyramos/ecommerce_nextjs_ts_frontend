@@ -72,6 +72,7 @@ export default function ClientCategoriasDesktop({
                     </div>
                     <Link
                         href={linkHref}
+                        prefetch={false}
                         className="text-[11px] text-muted-foreground hover:text-primary transition-colors mt-4 inline-flex items-center gap-1 uppercase font-bold tracking-wider focus-visible:outline-none"
                     >
                         Ver todo
@@ -97,16 +98,16 @@ export default function ClientCategoriasDesktop({
     return (
         <NavigationMenu className="w-full">
             <NavigationMenuList>
-                {/* Categorías Root sin subcategorías primero */}
+                {/* Categorías Root sin subcategorías */}
                 {rootNoSub.map((cat) => (
                     <NavigationMenuItem key={cat._id}>
-                        <Link href={routes.catalog({ category: cat.slug })} className={navigationMenuTriggerStyle()}>
+                        <Link href={routes.catalog({ category: cat.slug })} prefetch={false} className={navigationMenuTriggerStyle()}>
                             {cat.nombre}
                         </Link>
                     </NavigationMenuItem>
                 ))}
 
-                {/* Categorías con subcategorías después */}
+                {/* Categorías con subcategorías */}
                 {rootWithSub.map(({ cat, sub }) => (
                     <NavigationMenuItem key={cat._id}>
                         <NavigationMenuTrigger>{cat.nombre}</NavigationMenuTrigger>
@@ -119,7 +120,7 @@ export default function ClientCategoriasDesktop({
                     </NavigationMenuItem>
                 ))}
 
-                {/* Tendencias al final */}
+                {/* Tendencias */}
                 {collections.length > 0 && (
                     <NavigationMenuItem>
                         <NavigationMenuTrigger>Tendencias</NavigationMenuTrigger>
@@ -148,6 +149,7 @@ function NavItem({ href, title, image }: NavItemProps) {
             <NavigationMenuLink asChild>
                 <Link
                     href={href}
+                    prefetch={false}
                     className="flex items-center gap-3 px-2 py-1.5 rounded-[var(--radius-sm)] hover:bg-accent transition-colors group w-full min-h-[44px]"
                 >
                     <div className="relative size-7 shrink-0 overflow-hidden rounded-[var(--radius-sm)] bg-background-secondary flex items-center justify-center border border-border">

@@ -85,8 +85,8 @@ export type PaymentInfo = z.infer<typeof PaymentInfoSchema>;
 export const StatusHistorySchema = z.object({
     status:    OrderStatusEnum,
     changedAt: z.coerce.date(),
-    actionBy:  z.string().optional(), // Inyectado para auditoría de historial
-    reason:    z.string().optional()  // Motivo del cambio de estado
+    actionBy:  z.string().optional(),
+    reason:    z.string().optional()
 });
 export type StatusHistory = z.infer<typeof StatusHistorySchema>;
 
@@ -130,10 +130,9 @@ export type CreateOrderDTO = z.infer<typeof CreateOrderDTOSchema>;
 // ============================================================================
 
 export const OrderResponseSchema = z.object({
-    _id:           z.string(),
-    orderNumber:   z.string(),
-    culqiOrderId:  z.string().optional(),
-    
+    _id:                   z.string(),
+    orderNumber:           z.string(),
+    culqiOrderId:          z.string().optional(),
     user: z.union([
         z.string().regex(/^[0-9a-fA-F]{24}$/),
         z.object({
@@ -143,7 +142,6 @@ export const OrderResponseSchema = z.object({
             email:     z.string()
         })
     ]).optional(), 
-
     customerProfile:       CustomerProfileSchema,
     items:                 z.array(OrderItemResponseSchema),
     subtotal:              z.number(),
@@ -158,12 +156,9 @@ export const OrderResponseSchema = z.object({
     payment:               PaymentInfoSchema.optional(),
     trackingNumber:        z.string().optional(),
     notes:                 z.string().optional(),
-    
-    // Campos rápidos de auditoría raíz
     canceledAt:            z.coerce.date().optional(),
     canceledBy:            z.string().optional(),
     cancelReason:          z.string().optional(),
-    
     deviceInfo:            DeviceInfoSchema.optional(),
     createdAt:             z.coerce.date(),
     updatedAt:             z.coerce.date()
@@ -229,10 +224,6 @@ export const TERMINAL_STATUSES: OrderStatus[] = [
     'delivered',
     'canceled',
 ];
-
-// ============================================================================
-// ── 5. RESPUESTAS OPTIMIZADAS PARA POLLING
-// ============================================================================
 
 export const OrderStatusOnlyResponseSchema = z.object({
     ok: z.literal(true),

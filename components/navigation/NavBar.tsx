@@ -12,7 +12,6 @@ import ButtonSearchMobile from "./ButtonSearchMobile";
 export default function NavBar() {
     return (
         <NavBarClient>
-            {/* Quitamos sticky/z-50 aquí — NavBarClient ya lo maneja */}
             <header className="h-12 flex flex-col justify-center text-foreground bg-background border-b border-border transition-colors duration-300">
                 <div className="max-w-screen-2xl w-full mx-auto grid grid-cols-3 items-center px-4 md:px-6">
 
@@ -28,7 +27,7 @@ export default function NavBar() {
 
                     {/* Center column */}
                     <div className="flex justify-center">
-                        <Link href="/" className="flex items-center max-w-[140px]">
+                        <Link href="/" prefetch={false} className="flex items-center max-w-[140px]">
                             <Logo color="black" />
                         </Link>
                     </div>
@@ -38,6 +37,7 @@ export default function NavBar() {
                         <div className="hidden md:flex items-center gap-1">
                             <Link
                                 href="/auth/registro"
+                                prefetch={false}
                                 className="flex items-center gap-1 text-foreground rounded-full transition-colors duration-200 hover:text-action-cta"
                                 aria-label="Cuenta"
                             >

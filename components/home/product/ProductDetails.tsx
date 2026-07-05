@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import AddProductToCart from './AddProductToCart';
 import ImagenesProductoCarousel from './ImagenesProductoCarousel';
 import type { ProductWithCategoryResponse, TApiVariant } from '@/src/schemas';
@@ -34,6 +34,9 @@ export default function ProductDetails({ producto }: Props) {
     const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
     const [selectedVariant, setSelectedVariant] = useState<TApiVariant | null>(null);
     const searchParams = useSearchParams();
+    
+    // Referencia para evitar re-sincronizaciones infinitas de la URL en el render inicial
+    const isFirstRender = useRef(true);
 
     const allAttributes = useMemo(() => {
         const attrs: Record<string, string[]> = {};
@@ -48,6 +51,7 @@ export default function ProductDetails({ producto }: Props) {
 
     const showPaymentNotice = producto.categoria ?? false;
 
+    // Sincronización de los parámetros de la URL hacia el estado
     useEffect(() => {
         const initialAttrs: Record<string, string> = {};
         Object.keys(allAttributes).forEach(attr => {
@@ -64,6 +68,7 @@ export default function ProductDetails({ producto }: Props) {
             : null;
 
         setSelectedVariant(matched);
+        isFirstRender.current = false;
     }, [allAttributes, searchParams, producto.variants]);
 
     const updateSelectedVariant = (attrKey: string, attrValue: string | null) => {
@@ -85,7 +90,11 @@ export default function ProductDetails({ producto }: Props) {
         Object.entries(newAttributes).forEach(([k, v]) => {
             if (v) params.set(k, v);
         });
-        window.history.replaceState(null, "", `${window.location.pathname}?${params.toString()}`);
+        
+        // Ejecución controlada del reemplazo de estado en el historial
+        if (!isFirstRender.current) {
+            window.history.replaceState(null, "", `${window.location.pathname}?${params.toString()}`);
+        }
     };
 
     const getAvailableValues = (attrKey: string): string[] => {
@@ -128,8 +137,6 @@ export default function ProductDetails({ producto }: Props) {
     };
 
     const colorAtributo = !producto.variants?.length && (producto.atributos?.color || producto.atributos?.Color || producto.atributos?.COLOR || null);
-
-    // Lógica logística actualizada para marketing
     const isFreeShipping = precio >= 49;
 
     return (
@@ -149,6 +156,7 @@ export default function ProductDetails({ producto }: Props) {
                                     {producto.brand && (
                                         <Link
                                             href={`/catalogo/${producto.brand.slug}`}
+                                            prefetch={false}
                                             className="text-[10px] font-semibold text-muted-foreground hover:text-action-cta transition-colors uppercase tracking-wider focus-visible:outline-hidden"
                                         >
                                             {producto.brand.nombre}
@@ -160,6 +168,7 @@ export default function ProductDetails({ producto }: Props) {
                                     {producto.line && typeof producto.line === 'object' && (
                                         <Link
                                             href={`/catalogo/${producto.line.slug}`}
+                                            prefetch={false}
                                             className="text-[10px] font-semibold text-muted-foreground hover:text-action-cta transition-colors uppercase tracking-wider focus-visible:outline-hidden"
                                         >
                                             {producto.line.nombre}
@@ -351,6 +360,7 @@ export default function ProductDetails({ producto }: Props) {
                                 <AddProductToCart
                                     product={producto}
                                     variant={selectedVariant ?? undefined}
+                                Dino-prefetch
                                 />
                             </div>
                             <div className="flex-1">
@@ -396,8 +406,7 @@ export default function ProductDetails({ producto }: Props) {
                             </div>
                         </div>
 
-                        {/* Envío con Gancho de Marketing (Solo muestra costo si es Gratis) */}
-                        {/* Envío limpio (sin mensajes de incentivo) */}
+                        {/* Envío */}
                         <div className="flex items-center justify-between py-3">
                             <div className="flex items-center gap-2.5 text-muted-foreground">
                                 <Truck className="w-4 h-4 shrink-0" />
@@ -427,7 +436,6 @@ export default function ProductDetails({ producto }: Props) {
                         >
                             <div className="flex items-center gap-2.5 text-muted-foreground">
                                 <GoLinkExternal className="w-3.5 h-3.5 text-muted-foreground inline-block mr-1" />
-
                                 <span className="text-xs font-semibold">¿Deseas asesoría?</span>
                             </div>
                             <span className="text-xs font-semibold text-success flex items-center gap-1">
@@ -436,8 +444,13 @@ export default function ProductDetails({ producto }: Props) {
                             </span>
                         </a>
 
+                        {/* Enlace institucional corregido */}
                         <div className="flex items-center justify-start gap-2.5">
-                            <Link href="/politicas-de-cambios-y-devoluciones" className="flex items-center gap-2.5 text-muted-foreground text-xs font-semibold hover:text-action-cta transition-colors underline-offset-2 hover:underline py-3">
+                            <Link 
+                                href="/politicas-de-cambios-y-devoluciones" 
+                                prefetch={false}
+                                className="flex items-center gap-2.5 text-muted-foreground text-xs font-semibold hover:text-action-cta transition-colors underline-offset-2 hover:underline py-3"
+                            >
                                 Ver políticas de cambios y devoluciones
                             </Link>
                         </div>
@@ -447,7 +460,6 @@ export default function ProductDetails({ producto }: Props) {
 
                     </div>
 
-                    {/* Módulo de Complementarios Independiente */}
                     <ProductComplementary complementarios={producto.complementarios} />
 
                 </section>
@@ -455,7 +467,6 @@ export default function ProductDetails({ producto }: Props) {
 
             <ProductExpandableSections producto={producto} />
 
-            {/* Sticky Mobile Add To Cart */}
             <div className="md:hidden fixed bottom-0 left-0 w-full bg-card p-4  shadow-lg z-50  pb-safe">
                 <AddProductToCart
                     product={producto}

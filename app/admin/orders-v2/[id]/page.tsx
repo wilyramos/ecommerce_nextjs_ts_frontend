@@ -7,6 +7,7 @@ import { getTokenOptional } from "@/src/auth/dal";
 import Image from "next/image";
 import UpdateStatusForm from "@/components/admin/orders/UpdateStatusForm";
 import AssignTrackingForm from "@/components/admin/orders/AssignTrackingForm";
+import RefundOrderForm from "@/components/admin/orders/RefundOrderForm";
 import { ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS } from "@/src/schemas/order.schema";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -248,7 +249,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                                         <span className="text-foreground uppercase font-bold">{order.payment.provider}</span>
                                     </div>
                                     {order.payment.method && (
-                                        <div className="flex justify-between border-b stream pb-1.5">
+                                        <div className="flex justify-between border-b pb-1.5">
                                             <span className="text-muted-foreground">Método:</span>
                                             <span className="text-foreground uppercase font-bold">{order.payment.method}</span>
                                         </div>
@@ -297,6 +298,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                         <CardContent className="space-y-5">
                             <UpdateStatusForm orderId={order._id} currentStatus={order.status} />
                             <AssignTrackingForm orderId={order._id} trackingNumber={order.trackingNumber} />
+                            <RefundOrderForm orderId={order._id} orderStatus={order.status} paymentStatus={order.payment?.status} />
                         </CardContent>
                     </Card>
                 </div>

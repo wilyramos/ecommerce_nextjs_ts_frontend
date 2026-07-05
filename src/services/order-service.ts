@@ -76,11 +76,7 @@ export const orderService = {
         return response.data;
     },
 
-    async getMyOrders(
-        token: string,
-        page = 1,
-        limit = 10
-    ): Promise<OrderPaginatedApiResponse> {
+    async getMyOrders(token: string, page = 1, limit = 10): Promise<OrderPaginatedApiResponse> {
         const params = new URLSearchParams({ page: String(page), limit: String(limit) });
         return apiFetch<OrderPaginatedApiResponse>(
             `${BASE}/my?${params}`,
@@ -89,11 +85,7 @@ export const orderService = {
         );
     },
 
-    async getGuestOrders(
-        email: string,
-        page = 1,
-        limit = 10
-    ): Promise<OrderPaginatedApiResponse> {
+    async getGuestOrders(email: string, page = 1, limit = 10): Promise<OrderPaginatedApiResponse> {
         const params = new URLSearchParams({ email, page: String(page), limit: String(limit) });
         return apiFetch<OrderPaginatedApiResponse>(
             `${BASE}/guest?${params}`,
@@ -101,10 +93,7 @@ export const orderService = {
         );
     },
 
-    async getOrderStatusByNumber(
-        orderNumber: string,
-        token?: string
-    ): Promise<{ status: OrderStatus; paymentStatus?: PaymentStatus }> {
+    async getOrderStatusByNumber(orderNumber: string, token?: string): Promise<{ status: OrderStatus; paymentStatus?: PaymentStatus }> {
         const response = await apiFetch<{ ok: true; data: { status: OrderStatus; payment?: { status: PaymentStatus } } }>(
             `${BASE}/number/${orderNumber}/status`,
             OrderStatusOnlyResponseSchema,
@@ -119,10 +108,7 @@ export const orderService = {
 
     // ── Admin ──────────────────────────────────────────────────────────────────
 
-    async getAllOrders(
-        token: string,
-        filters: Partial<OrderFilters> = {}
-    ): Promise<OrderPaginatedApiResponse> {
+    async getAllOrders(token: string, filters: Partial<OrderFilters> = {}): Promise<OrderPaginatedApiResponse> {
         const params = new URLSearchParams();
         if (filters.status) params.set("status", filters.status);
         if (filters.email) params.set("email", filters.email);
@@ -139,15 +125,7 @@ export const orderService = {
         );
     },
 
-    /**
-     * Actualiza el estado logístico de una orden incluyendo auditoría.
-     */
-    async updateOrderStatus(
-        id: string,
-        status: string,
-        token: string,
-        reason?: string
-    ): Promise<OrderResponse> {
+    async updateOrderStatus(id: string, status: string, token: string, reason?: string): Promise<OrderResponse> {
         const response = await apiFetch<{ ok: true; data: OrderResponse }>(
             `${BASE}/admin/${id}/status`,
             OrderApiResponseSchema,
@@ -160,11 +138,7 @@ export const orderService = {
         return response.data;
     },
 
-    async assignTracking(
-        id: string,
-        trackingNumber: string,
-        token: string
-    ): Promise<OrderResponse> {
+    async assignTracking(id: string, trackingNumber: string, token: string): Promise<OrderResponse> {
         const response = await apiFetch<{ ok: true; data: OrderResponse }>(
             `${BASE}/admin/${id}/tracking`,
             OrderApiResponseSchema,
@@ -177,9 +151,19 @@ export const orderService = {
         return response.data;
     },
 
-    /**
-     * Cancela una orden incluyendo auditoría del motivo.
-     */
+    async refundOrder(id: string, token: string, reason?: string): Promise<OrderResponse> {
+        const response = await apiFetch<{ ok: true; data: OrderResponse }>(
+            `${BASE}/admin/${id}/refund`,
+            OrderApiResponseSchema,
+            {
+                method: "PATCH",
+                headers: buildHeaders(token),
+                body: JSON.stringify({ reason }),
+            }
+        );
+        return response.data;
+    },
+
     async cancelOrder(id: string, token: string, reason?: string): Promise<OrderResponse> {
         const response = await apiFetch<{ ok: true; data: OrderResponse }>(
             `${BASE}/${id}/cancel`,

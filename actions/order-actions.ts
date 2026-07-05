@@ -31,7 +31,7 @@ function toErrorState(err: unknown): ActionState<never> {
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// 1. CREAR ORDEN (guest o autenticado)
+// 1. CREAR ORDEN
 // ════════════════════════════════════════════════════════════════════════════
 
 export async function createOrderAction(
@@ -69,12 +69,10 @@ export async function createOrderAction(
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// 2. OBTENER ORDEN POR NÚMERO (Confirmación / Tracking público)
+// 2. OBTENER ORDEN POR NÚMERO
 // ════════════════════════════════════════════════════════════════════════════
 
-export async function getOrderByNumberAction(
-    orderNumber: string
-): Promise<ActionState<OrderResponse>> {
+export async function getOrderByNumberAction(orderNumber: string): Promise<ActionState<OrderResponse>> {
     const token = await getTokenOptional();
     try {
         const order = await orderService.getOrderByNumber(orderNumber, token);
@@ -85,7 +83,7 @@ export async function getOrderByNumberAction(
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// 3. MIS ÓRDENES (Usuario autenticado)
+// 3. MIS ÓRDENES
 // ════════════════════════════════════════════════════════════════════════════
 
 export async function loadMyOrdersAction(
@@ -107,7 +105,7 @@ export async function loadMyOrdersAction(
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// 4. ÓRDENES DE INVITADO por email
+// 4. ÓRDENES DE INVITADO
 // ════════════════════════════════════════════════════════════════════════════
 
 export async function loadGuestOrdersAction(
@@ -129,7 +127,7 @@ export async function loadGuestOrdersAction(
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// 5. CANCELAR ORDEN (Soporta motivo de auditoría)
+// 5. CANCELAR ORDEN
 // ════════════════════════════════════════════════════════════════════════════
 
 export async function cancelOrderAction(
@@ -167,9 +165,7 @@ export type AdminOrderFiltersInput = {
     to?: string;
 };
 
-export async function getAllOrdersAction(
-    filters: AdminOrderFiltersInput = {}
-): Promise<PaginatedOrdersState> {
+export async function getAllOrdersAction(filters: AdminOrderFiltersInput = {}): Promise<PaginatedOrdersState> {
     const session = await getSession();
     if (!session) return { ok: false, error: "No autorizado." };
 
@@ -182,7 +178,7 @@ export async function getAllOrdersAction(
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// 7. ADMIN — Actualizar estado de la orden (Soporta motivo de auditoría)
+// 7. ADMIN — Actualizar estado logístico
 // ════════════════════════════════════════════════════════════════════════════
 
 export async function updateOrderStatusAction(
@@ -238,11 +234,34 @@ export async function assignTrackingAction(
     }
 }
 
-export async function checkOrderStatusAction(
-    orderNumber: string
-): Promise<ActionState<{ status: OrderStatus; paymentStatus?: PaymentStatus }>> {
+// ════════════════════════════════════════════════════════════════════════════
+// 9. ADMIN — Ejecutar Reembolso manual
+// ════════════════════════════════════════════════════════════════════════════
+
+export async function refundOrderAction(
+    _prevState: ActionState<OrderResponse> | undefined,
+    formData: FormData
+): Promise<ActionState<OrderResponse>> {
+    const session = await getSession();
+    if (!session) return { ok: false, error: "No autorizado." };
+
+    const orderId = (formData.get("orderId") as string | null)?.trim();
+    const reason = (formData.get("reason") as string | null)?.trim() || undefined;
+
+    if (!orderId) return { ok: false, error: "ID de orden requerido." };
+
+    try {
+        const order = await orderService.refundOrder(orderId, session.token, reason);
+        revalidatePath("/admin/orders");
+        revalidatePath(`/admin/orders/${orderId}`);
+        return { ok: true, data: order };
+    } catch (err) {
+        return toErrorState(err);
+    }
+}
+
+export async function checkOrderStatusAction(orderNumber: string): Promise<ActionState<{ status: OrderStatus; paymentStatus?: PaymentStatus }>> {
     const token = await getTokenOptional();
-    
     try {
         const orderStatusData = await orderService.getOrderStatusByNumber(orderNumber, token);
         return { ok: true, data: orderStatusData };

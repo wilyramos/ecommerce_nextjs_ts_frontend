@@ -1,5 +1,3 @@
-// File: frontend/components/home/pages/SidebarPages.tsx
-
 "use client";
 
 import Link from "next/link";
@@ -54,6 +52,7 @@ export default function SidebarPages() {
                                     <Link
                                         key={item.name}
                                         href={item.href}
+                                        prefetch={false}
                                         className={cn(
                                             "flex items-center gap-3 px-3 py-2 rounded-[var(--radius-sm)] text-xs font-bold transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring",
                                             isActive
@@ -72,6 +71,7 @@ export default function SidebarPages() {
                     <div className="pt-2 border-t border-border/60">
                         <Link
                             href="/hc"
+                            prefetch={false}
                             className="flex items-center justify-between px-3 py-2.5 rounded-[var(--radius-sm)] bg-background-secondary border border-border group hover:border-muted-foreground transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring"
                         >
                             <span className="text-xs font-bold text-foreground">
@@ -94,6 +94,7 @@ export default function SidebarPages() {
                             <Link
                                 key={item.name}
                                 href={item.href}
+                                prefetch={false}
                                 className={cn(
                                     "flex flex-col items-center justify-center gap-0.5 w-full h-full outline-none transition-colors",
                                     isActive ? "text-action-cta" : "text-muted-foreground hover:text-foreground"
@@ -109,6 +110,7 @@ export default function SidebarPages() {
 
                     <Link
                         href="/hc"
+                        prefetch={false}
                         className="flex flex-col items-center justify-center gap-0.5 w-full h-full text-muted-foreground hover:text-foreground outline-none transition-colors"
                     >
                         <RiExternalLinkLine className="w-4 h-4 shrink-0" />

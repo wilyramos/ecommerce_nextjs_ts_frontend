@@ -82,7 +82,11 @@ export default function TopBarAd({ ads }: TopBarAdProps) {
                     );
 
                     return ad.linkTo ? (
-                        <Link key={i} href={ad.linkTo}>
+                        <Link 
+                            key={i} 
+                            href={ad.linkTo}
+                            prefetch={false} // Evita que se precarguen todas las páginas promocionadas globalmente
+                        >
                             {inner}
                         </Link>
                     ) : (
