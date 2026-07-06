@@ -1,5 +1,4 @@
-//File: frontend/components/home/product/ImagenesProductoCarousel.tsx
-
+// File: frontend/components/home/product/ImagenesProductoCarousel.tsx
 "use client";
 
 import { useState, useMemo, useEffect, useRef } from "react";
@@ -117,14 +116,12 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
     }
 
     return (
-        <div className="w-full flex flex-col md:flex-row gap-4 lg:gap-6 bg-[var(--color-bg-primary)] select-none rounded-lg sticky top-24">
+        /* Se removió la clase sticky y top-24 del contenedor para el scroll asimétrico limpio */
+        <div className="w-full flex flex-col md:flex-row gap-4 lg:gap-6 bg-[var(--color-bg-primary)] select-none rounded-lg">
 
             {/* DESKTOP THUMBNAILS */}
-
             {uniqueImages.length > 1 && (
                 <div className="hidden md:flex flex-col items-center w-[120px] shrink-0 gap-1">
-
-                    {/* Botón scroll arriba */}
                     <button
                         onClick={() => scrollThumbs("up")}
                         className={cn(
@@ -136,7 +133,6 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                         <ChevronUp size={14} strokeWidth={1.5} />
                     </button>
 
-                    {/* Lista de miniaturas */}
                     <div
                         ref={thumbnailsRef}
                         className="w-full flex flex-col gap-2 overflow-y-auto max-h-[600px] py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
@@ -166,7 +162,6 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                         ))}
                     </div>
 
-                    {/* Botón scroll abajo */}
                     <button
                         onClick={() => scrollThumbs("down")}
                         className={cn(
@@ -183,17 +178,18 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
             {/* MAIN IMAGE */}
             <div className="flex-1 relative group">
                 <div
-                    className={`relative aspect-square overflow-hidden bg-[var(--color-bg-primary)] transition-all duration-700 ease-in-out 
-                        ${zoom ? "cursor-zoom-out" : "cursor-zoom-in"}`}
+                    className={cn(
+                        "relative aspect-square overflow-hidden bg-[var(--color-bg-primary)] transition-all duration-700 ease-in-out",
+                        zoom ? "cursor-zoom-out" : "cursor-zoom-in"
+                    )}
                     onMouseMove={handleMouseMove}
                     onClick={() => setZoom(!zoom)}
                     onTouchStart={handleTouchStart}
                     onTouchMove={handleTouchMove}
                     onTouchEnd={handleTouchEnd}
                 >
-
                     {uniqueImages.length > 1 && (
-                        <div className="md:hidden absolute bottom-3 right-3 z-20 px-2 py-0.5 bg-background/80 backdrop-blur-sm border border-border">
+                        <div className="md:hidden absolute bottom-3 right-3 z-20 px-2 py-0.5 flex bg-background/80 backdrop-blur-sm border border-border">
                             <span className="text-[10px] font-bold text-foreground tracking-widest">
                                 {selectedIndex + 1} <span className="text-muted-foreground">/</span> {uniqueImages.length}
                             </span>
@@ -207,7 +203,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                             fill
                             priority
                             className={cn(
-                                "object-contain transition-transform duration-500 ease-out ",
+                                "object-contain transition-transform duration-500 ease-out",
                                 zoom ? "scale-[2.5]" : "scale-100"
                             )}
                             style={zoom ? { transformOrigin: `${position.x}% ${position.y}%` } : undefined}
@@ -216,24 +212,22 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                         />
                     )}
 
-                    {/* Zoom Button (Desktop Only) */}
-                    <div className="absolute top-4 right-4 p-2.5 bg-[var(--color-bg-primary)]/60 backdrop-blur-lg  text-[var(--color-text-primary)] opacity-0 md:group-hover:opacity-100 transition-opacity">
+                    <div className="absolute top-4 right-4 p-2.5 bg-[var(--color-bg-primary)]/60 backdrop-blur-lg text-[var(--color-text-primary)] opacity-0 md:group-hover:opacity-100 transition-opacity">
                         {zoom ? <ZoomOut size={18} strokeWidth={1.5} /> : <ZoomIn size={18} strokeWidth={1.5} />}
                     </div>
 
-                    {/* Navigation Controls */}
                     {uniqueImages.length > 1 && !zoom && (
                         <>
                             <button
                                 onClick={(e) => { e.stopPropagation(); prevImage(); }}
-                                className="absolute left-0 md:left-2 top-1/2 -translate-y-1/2 p-1  bg-[var(--color-bg-primary)]/70 md:bg-[var(--color-bg-primary)]/50  text-[var(--color-text-primary)]  opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-[var(--color-bg-primary)] active:scale-90 z-10"
+                                className="absolute left-0 md:left-2 top-1/2 -translate-y-1/2 p-1 bg-[var(--color-bg-primary)]/70 md:bg-[var(--color-bg-primary)]/50 text-[var(--color-text-primary)] opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-[var(--color-bg-primary)] active:scale-90 z-10"
                                 aria-label="Anterior"
                             >
                                 <ChevronLeft size={20} strokeWidth={1.5} />
                             </button>
                             <button
                                 onClick={(e) => { e.stopPropagation(); nextImage(); }}
-                                className="absolute right-0 md:right-2 top-1/2 -translate-y-1/2 p-1  bg-[var(--color-bg-primary)]/70 md:bg-[var(--color-bg-primary)]/50  text-[var(--color-text-primary)] opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-[var(--color-bg-primary)] active:scale-90 z-10"
+                                className="absolute right-0 md:right-2 top-1/2 -translate-y-1/2 p-1 bg-[var(--color-bg-primary)]/70 md:bg-[var(--color-bg-primary)]/50 text-[var(--color-text-primary)] opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-[var(--color-bg-primary)] active:scale-90 z-10"
                                 aria-label="Siguiente"
                             >
                                 <ChevronRight size={20} strokeWidth={1.5} />
@@ -241,24 +235,6 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                         </>
                     )}
                 </div>
-
-                {/* MOBILE PAGINATION */}
-                {/* {uniqueImages.length > 1 && (
-                    <div className="flex md:hidden justify-center items-center gap-2 my-2">
-                        {uniqueImages.map((_, idx) => (
-                            <button
-                                key={idx}
-                                onClick={() => setSelectedIndex(idx)}
-                                onMouseEnter={() => setSelectedIndex(idx)}
-                                className={`transition-all duration-500 
-                                    ${selectedIndex === idx
-                                        ? "w-8 h-1 bg-[var(--color-text-primary)]"
-                                        : "w-1.5 h-1.5 bg-[var(--color-border-default)]"}`}
-                                aria-label={`Imagen ${idx + 1}`}
-                            />
-                        ))}
-                    </div>
-                )} */}
             </div>
         </div>
     );

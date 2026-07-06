@@ -1,4 +1,4 @@
-// app/productos/[slug]/ProductPageServer.tsx
+// File: frontend/app/(store)/productos/[slug]/ProductPageServer.tsx
 import ProductDetails from '@/components/home/product/ProductDetails';
 import ProductosRelated from '@/components/home/product/ProductosRelated';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
@@ -25,7 +25,6 @@ export default async function ProductPageServer({ producto }: Props) {
         { label: "Catálogo", href: routes.catalog() }
     ];
 
-    // 1. Agregar Categoría
     if (producto.categoria && typeof producto.categoria === 'object') {
         breadcrumbSegments.push({
             label: producto.categoria.nombre,
@@ -33,7 +32,6 @@ export default async function ProductPageServer({ producto }: Props) {
         });
     }
 
-    // 2. Agregar Marca (acumulando categoría si existe)
     if (producto.brand && typeof producto.brand === 'object') {
         breadcrumbSegments.push({
             label: producto.brand.nombre,
@@ -44,7 +42,6 @@ export default async function ProductPageServer({ producto }: Props) {
         });
     }
 
-    // 3. Agregar Línea (acumulando anteriores)
     if (producto.line && typeof producto.line === 'object') {
         breadcrumbSegments.push({
             label: producto.line.nombre,
@@ -58,33 +55,27 @@ export default async function ProductPageServer({ producto }: Props) {
 
     return (
         <>
-            {/* Título oculto para SEO (H1 debe ser único y descriptivo) */}
             <h1 className="sr-only">
                 {producto.nombre} - GOPHONE
             </h1>
 
             <section className="container mx-auto px-2 md:px-6 py-1 md:pt-5">
-                {/* Navegación de migas de pan */}
                 <Breadcrumbs
                     items={breadcrumbSegments}
-                    current={producto.nombre} // El nombre del producto es el último nivel (texto no clicable)
+                    current={producto.nombre}
                 />
 
-                <div className="flex flex-col lg:flex-row gap-12 pt-1">
-                    <div className="w-full">
-                        <ProductDetails producto={producto} />
-                    </div>
-
+                {/* Se adaptó el contenedor eliminando el div hijo innecesario */}
+                <div className="pt-2">
+                    <ProductDetails producto={producto} />
                 </div>
             </section>
 
-            {/* Productos Relacionados (Por Línea/Marca) */}
-            <section className="container mx-auto px-4 md:px-6 py-4 ">
+            <section className="container mx-auto px-4 md:px-6 py-4">
                 <ProductosRelated slug={producto.slug} />
             </section>
 
-            {/* Vistos Recientemente (Client Component) */}
-            <section className="container mx-auto px-4 md:px-6 py-4 ">
+            <section className="container mx-auto px-4 md:px-6 py-4">
                 <RecentViewed currentProduct={producto} />
             </section>
         </>

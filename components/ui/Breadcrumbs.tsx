@@ -17,12 +17,13 @@ interface Props {
 export default function Breadcrumbs({ items, current, className }: Props) {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://gophone.pe";
     
-    // Lógica de colapso: si hay más de 4 items, mostramos el primero, la elipsis y el último
-    const shouldCollapse = items.length > 4;
+    // Lógica de colapso si la ruta intermedia es muy larga
+    const shouldCollapse = items.length > 3;
     const displayItems = shouldCollapse 
         ? [items[0], { label: "...", href: "#" }, items[items.length - 1]] 
         : items;
 
+    // Se mantiene la estructura completa para SEO, incluyendo el item actual
     const schemaItems = [
         {
             "@type": "ListItem",
@@ -75,10 +76,9 @@ export default function Breadcrumbs({ items, current, className }: Props) {
                     </Link>
                 </li>
 
-                {/* Items con lógica de elipsis de texto */}
+                {/* Items navegables de la jerarquía */}
                 {displayItems.map((item, index) => (
                     <li key={`${item.label}-${index}`} className="flex items-center min-w-0">
-                        {/* Divisor tipográfico limpio sin icono */}
                         <span className="mx-2 text-muted-foreground/40 select-none">/</span>
                         {item.label === "..." ? (
                             <span className="cursor-default tracking-widest text-muted-foreground/40 px-1">
@@ -87,23 +87,13 @@ export default function Breadcrumbs({ items, current, className }: Props) {
                         ) : (
                             <Link
                                 href={item.href}
-                                className="hover:text-action-cta truncate min-w-0 max-w-[100px] sm:max-w-[180px] transition-colors"
+                                className="hover:text-action-cta truncate min-w-0 max-w-[120px] sm:max-w-[180px] transition-colors"
                             >
                                 {item.label}
                             </Link>
                         )}
                     </li>
                 ))}
-
-                {/* Separador e indicador textual para el Item Actual (Visible de forma profesional) */}
-                {current && (
-                    <li className="flex items-center min-w-0 text-foreground font-semibold">
-                        <span className="mx-2 text-muted-foreground/40 select-none">/</span>
-                        <span className="truncate min-w-0 max-w-[20px] sm:max-w-[180px]" aria-current="page">
-                            {current}
-                        </span>
-                    </li>
-                )}
             </ol>
         </nav>
     );

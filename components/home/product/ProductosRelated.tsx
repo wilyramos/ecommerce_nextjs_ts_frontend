@@ -13,7 +13,7 @@ export default async function ProductosRelated({ slug }: { slug: string }) {
     return (
         <section className="flex flex-col mx-auto w-full">
             <h2 className="text-md tracking-tighter text-[var(--color-text-primary)]">
-                También te puede interesar
+                Productos similares
             </h2>
             <div>
                 <div className="border-b border-2 border-action-cta w-14 md:w-20 mb-4"></div>
