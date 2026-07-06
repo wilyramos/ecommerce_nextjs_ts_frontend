@@ -9,7 +9,7 @@ import {
 import type { ProductWithCategoryResponse } from "@/src/schemas";
 import { getDeliveryRange } from "@/lib/utils";
 import Link from "next/link";
-import { ListChecks, ChevronRight, FileText, Package, Ruler } from "lucide-react";
+import { ChevronRight, FileText, Package, Ruler } from "lucide-react";
 
 type Props = {
     producto: ProductWithCategoryResponse;
@@ -42,7 +42,7 @@ export default function ProductExpandableSections({ producto }: Props) {
                     <AccordionTrigger className="hover:no-underline group py-3 outline-none">
                         <div className="flex items-center gap-2.5">
                             <span className="text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
-                                Descripción del producto
+                                Información del producto
                             </span>
                         </div>
                     </AccordionTrigger>
@@ -60,9 +60,8 @@ export default function ProductExpandableSections({ producto }: Props) {
                 <AccordionItem value="specs" className="border-none">
                     <AccordionTrigger className="hover:no-underline group py-3 outline-none">
                         <div className="flex items-center gap-2.5">
-                            <ListChecks size={15} className="text-muted-foreground shrink-0" />
                             <span className="text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
-                                Especificaciones técnicas
+                                Especificaciones
                             </span>
                         </div>
                     </AccordionTrigger>
