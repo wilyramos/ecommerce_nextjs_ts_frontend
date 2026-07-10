@@ -1,7 +1,8 @@
+// File: frontend/components/catalog/CatalogHeader.tsx
 "use client";
 
 import Link from "next/link";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, ChevronRight } from "lucide-react";
 import {
     Select,
     SelectContent,
@@ -28,30 +29,28 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
     const currentSort = searchParams.get("sort") || "recientes";
 
     return (
-        <div className="w-full flex flex-col gap-8 pt-2 pb-4 border-b border-border">
+        <div className="w-full flex flex-col gap-4 pt-1 pb-4 border-b border-border select-none">
             {/* Breadcrumbs */}
             <nav aria-label="Breadcrumb">
-                <ol className="flex items-center flex-wrap gap-x-1.5 text-sm text-muted-foreground">
+                <ol className="flex items-center flex-wrap gap-x-1.5 text-[11px] font-medium  tracking-wider text-muted-foreground/80">
                     {breadcrumbs.map((crumb, index) => {
                         const isLast = index === breadcrumbs.length - 1;
-                        const isFirst = index === 0;
 
                         return (
                             <li key={`${crumb.label}-${index}`} className="flex items-center">
                                 {index > 0 && (
-                                    <span className="mx-1 opacity-40">/</span>
+                                    <ChevronRight className="w-3 h-3 mx-1 opacity-40 text-foreground" />
                                 )}
 
                                 {isLast ? (
-                                    <span className="text-foreground font-medium" aria-current="page">
+                                    <span className="text-foreground font-semibold" aria-current="page">
                                         {crumb.label}
                                     </span>
                                 ) : (
                                     <Link
                                         href={crumb.href}
-                                        className="flex items-center gap-1 hover:text-foreground transition-colors duration-200"
+                                        className="hover:text-action-cta transition-colors duration-150"
                                     >
-                                        {isFirst}
                                         {crumb.label}
                                     </Link>
                                 )}
@@ -61,71 +60,44 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
                 </ol>
             </nav>
 
-            {/* Header */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                <div className="space-y-1.5">
-                    <div className="flex items-baseline gap-4">
-                        <h1 className="text-xl md:text-2xl font-semibold tracking-tighter text-foreground uppercase">
-                            {title.map((part, i) => (
-                                <span
-                                    key={i}
-                                    className={part.italic ? "font-light italic" : ""}
-                                >
-                                    {part.text}{" "}
-                                </span>
-                            ))}
-                        </h1>
+            {/* Header Title & Sorting */}
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mt-2">
+                <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                    <h1 className="text-xl md:text-2xl font-bold tracking-tight text-primary uppercase">
+                        {title.map((part, i) => (
+                            <span
+                                key={i}
+                                className={part.italic ? "font-normal italic text-muted-foreground/90 lowercase first-letter:uppercase" : ""}
+                            >
+                                {part.text}{" "}
+                            </span>
+                        ))}
+                    </h1>
 
-                        <span className="h-6 w-[1px] bg-border hidden sm:block" />
-
-                        <span className="text-[11px] font-bold tracking-widest text-action-cta uppercase">
-                            {totalProducts} Items
-                        </span>
-                    </div>
+                    <span className="text-[11px] font-bold tracking-widest text-action-cta bg-action-cta/10 px-2 py-0.5 rounded-sm uppercase">
+                        {totalProducts} Items
+                    </span>
                 </div>
 
                 {/* Sorting */}
-                <div className="hidden md:flex items-center gap-4">
-                    <div className="group relative flex items-center">
-                        <div className="absolute left-3 z-10 pointer-events-none">
-                            <ArrowUpDown className="w-3.5 h-3.5" />
-                        </div>
-
+                <div className="hidden md:flex items-center">
+                    <div className="relative flex items-center">
+                        <ArrowUpDown className="absolute left-3.5 w-3.5 h-3.5 text-muted-foreground pointer-events-none z-10" />
                         <Select
                             value={currentSort}
                             onValueChange={(val) => updateFilter("sort", val)}
                         >
-                            <SelectTrigger className="w-[200px] h-11 pl-9 pr-4  ">
+                            <SelectTrigger className="w-[210px] h-10 pl-9 pr-4 text-xs font-semibold uppercase tracking-wider border-border bg-background hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-150 rounded-none cursor-pointer">
                                 <SelectValue placeholder="Ordenar por" />
                             </SelectTrigger>
 
-                            <SelectContent
-                                align="end"
-                                className=""
-                            >
-                                <SelectItem value="relevancia">
-                                    Relevancia
-                                </SelectItem>
-
-                                <SelectItem value="recientes">
-                                    Más Recientes
-                                </SelectItem>
-
-                                <SelectItem value="discount">
-                                    Mayor Descuento
-                                </SelectItem>
-
-                                <SelectItem value="price-asc">
-                                    Precio: Menor a Mayor
-                                </SelectItem>
-
-                                <SelectItem value="price-desc">
-                                    Precio: Mayor a Menor
-                                </SelectItem>
-
-                                <SelectItem value="name-asc">
-                                    Nombre: A - Z
-                                </SelectItem>
+                            <SelectContent align="end" className="rounded-none border-border">
+                                <SelectItem value="relevancia" className="text-xs uppercase tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Relevancia</SelectItem>
+                                <SelectItem value="recientes" className="text-xs uppercase tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Más Recientes</SelectItem>
+                                <SelectItem value="discount" className="text-xs uppercase tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Mayor Descuento</SelectItem>
+                                <SelectItem value="price-asc" className="text-xs uppercase tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Precio: Menor a Mayor</SelectItem>
+                                <SelectItem value="price-desc" className="text-xs uppercase tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Precio: Mayor a Menor</SelectItem>
+                                <SelectItem value="name-asc" className="text-xs uppercase tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Nombre: A - Z</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>

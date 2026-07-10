@@ -47,21 +47,21 @@ export default function ActiveFiltersSidebar() {
     }
 
     return (
-        <div className="mb-6 select-none animate-in fade-in duration-200">
-            <div className="flex items-center justify-between mb-3">
-                <span className="text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+        <div className="mb-6 select-none animate-in fade-in duration-150">
+            <div className="flex items-center justify-between mb-3.5 pb-1 border-b border-border/40">
+                <span className="text-[10px] font-bold uppercase tracking-[0.12em] text-primary">
                     Filtros activos
                 </span>
                 <button
                     onClick={() => router.push('/catalogo')}
-                    className="flex items-center gap-1.5 text-[10px] uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors outline-none cursor-pointer"
+                    className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-muted-foreground hover:text-action-cta transition-colors outline-none cursor-pointer"
                 >
-                    <RotateCcw className="w-3 h-3" />
-                    Limpiar
+                    <RotateCcw className="w-2.5 h-2.5" />
+                    Limpiar todo
                 </button>
             </div>
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5">
                 {currentSlugs.map((slug) => (
                     <Chip key={slug} label={slug.replace(/-/g, " ")} onRemove={() => removeSlug(slug)} />
                 ))}
@@ -86,13 +86,13 @@ function Chip({ label, onRemove }: { label: string; onRemove: () => void }) {
         <button
             onClick={onRemove}
             className={cn(
-                "group inline-flex items-center gap-2 pl-3 pr-2 py-1 text-[11px] uppercase tracking-wider",
-                "text-muted-foreground bg-background border border-border rounded-sm",
-                "hover:border-foreground hover:text-foreground transition-all duration-150 outline-none"
+                "group inline-flex items-center gap-2 pl-2.5 pr-1.5 py-1 text-[10px] font-semibold uppercase tracking-wider rounded-none",
+                "text-primary bg-background border border-border",
+                "hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-150 outline-none cursor-pointer"
             )}
         >
-            <span className="truncate max-w-[160px]">{label}</span>
-            <X className="w-3 h-3 flex-shrink-0 opacity-70 group-hover:opacity-100" />
+            <span className="truncate max-w-[150px] font-medium capitalize">{label}</span>
+            <X className="w-3 h-3 flex-shrink-0 text-muted-foreground group-hover:text-primary-foreground transition-colors" />
         </button>
     );
 }
