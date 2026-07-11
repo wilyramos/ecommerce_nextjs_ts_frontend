@@ -1,3 +1,4 @@
+// File: frontend/components/home/product/ProductExpandableSections.tsx
 "use client";
 
 import {
@@ -34,21 +35,19 @@ export default function ProductExpandableSections({ producto }: Props) {
     const defaultOpen = hasDescripcion ? "descripcion" : "specs";
 
     return (
-        <Accordion type="multiple" defaultValue={[defaultOpen]} className="w-full divide-y divide-border border-b border-border px-1">
+        <Accordion type="multiple" defaultValue={[defaultOpen]} className="w-full divide-y divide-border/40 border-b border-border/40 px-0.5">
 
             {/* DESCRIPCIÓN */}
             {hasDescripcion && (
                 <AccordionItem value="descripcion" className="border-none">
-                    <AccordionTrigger className="hover:no-underline group py-3 outline-none">
-                        <div className="flex items-center gap-2.5">
-                            <span className="text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
-                                Información del producto
-                            </span>
-                        </div>
+                    <AccordionTrigger className="hover:no-underline group py-2.5 outline-none">
+                        <span className="text-xs font-bold  text-foreground tracking-wider transition-colors group-hover:text-action-cta">
+                            Información del producto
+                        </span>
                     </AccordionTrigger>
-                    <AccordionContent className="pb-6 pt-1">
+                    <AccordionContent className="pb-5 pt-0.5">
                         <div
-                            className="prose prose-sm max-w-none text-muted-foreground prose-headings:text-foreground prose-strong:text-foreground prose-p:leading-relaxed prose-p:text-sm prose-a:text-action-cta"
+                            className="prose prose-sm max-w-none text-xs text-muted-foreground leading-relaxed prose-headings:text-foreground prose-headings:font-semibold prose-strong:text-foreground prose-strong:font-semibold prose-p:text-xs prose-p:leading-relaxed prose-a:text-action-cta"
                             dangerouslySetInnerHTML={{ __html: descripcionRaw }}
                         />
                     </AccordionContent>
@@ -58,24 +57,22 @@ export default function ProductExpandableSections({ producto }: Props) {
             {/* ESPECIFICACIONES */}
             {hasSpecs && (
                 <AccordionItem value="specs" className="border-none">
-                    <AccordionTrigger className="hover:no-underline group py-3 outline-none">
-                        <div className="flex items-center gap-2.5">
-                            <span className="text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
-                                Especificaciones
-                            </span>
-                        </div>
+                    <AccordionTrigger className="hover:no-underline group py-2.5 outline-none">
+                        <span className="text-xs font-bold  text-foreground tracking-wider transition-colors group-hover:text-action-cta">
+                            Especificaciones
+                        </span>
                     </AccordionTrigger>
-                    <AccordionContent className="pb-6 pt-1 space-y-4">
+                    <AccordionContent className="pb-5 pt-0.5 space-y-3">
                         {specsArray.length > 0 && (
-                            <div className="overflow-x-auto w-full border border-border rounded-md">
-                                <table className="w-full text-left border-collapse text-sm">
-                                    <tbody className="divide-y divide-border/50">
+                            <div className="overflow-x-auto w-full border border-border/60 rounded-xs">
+                                <table className="w-full text-left border-collapse text-xs">
+                                    <tbody className="divide-y divide-border/40">
                                         {specsArray.map((spec) => (
-                                            <tr key={spec.key} className="hover:bg-muted/10 transition-colors">
-                                                <td className="px-3 py-2.5 text-xs text-muted-foreground font-semibold w-[35%] border-r border-border/50 bg-muted/5">
+                                            <tr key={spec.key} className="hover:bg-muted/5 transition-colors">
+                                                <td className="px-2.5 py-2 text-[11px] text-muted-foreground font-semibold w-[35%] border-r border-border/40 bg-muted/10 select-none  tracking-tight">
                                                     {spec.key}
                                                 </td>
-                                                <td className="px-3 py-2.5 text-xs text-foreground break-words">
+                                                <td className="px-2.5 py-2 text-[11px] text-foreground font-medium break-words">
                                                     {spec.value}
                                                 </td>
                                             </tr>
@@ -86,39 +83,39 @@ export default function ProductExpandableSections({ producto }: Props) {
                         )}
 
                         {hasPhysicalData && (
-                            <div className="overflow-x-auto w-full border border-border rounded-md">
-                                <table className="w-full text-left border-collapse text-sm">
+                            <div className="overflow-x-auto w-full border border-border/60 rounded-xs">
+                                <table className="w-full text-left border-collapse text-xs">
                                     <thead>
                                         <tr>
-                                            <th colSpan={2} className="px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground border-b border-border bg-muted/30">
-                                                <div className="flex items-center gap-1.5">
-                                                    <Package size={12} />
+                                            <th colSpan={2} className="px-2.5 py-1.5 text-[9px] font-bold  tracking-widest text-muted-foreground border-b border-border/40 bg-muted/20 select-none">
+                                                <div className="flex items-center gap-1">
+                                                    <Package size={11} className="text-muted-foreground/80" />
                                                     Físico y embalaje
                                                 </div>
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody className="divide-y divide-border/50">
+                                    <tbody className="divide-y divide-border/40">
                                         {hasWeight && (
-                                            <tr className="hover:bg-muted/10 transition-colors">
-                                                <td className="px-3 py-2.5 text-xs text-muted-foreground font-semibold w-[35%] border-r border-border/50 bg-muted/5">
+                                            <tr className="hover:bg-muted/5 transition-colors">
+                                                <td className="px-2.5 py-2 text-[11px] text-muted-foreground font-semibold w-[35%] border-r border-border/40 bg-muted/10 select-none  tracking-tight">
                                                     Peso
                                                 </td>
-                                                <td className="px-3 py-2.5 text-xs text-foreground">
+                                                <td className="px-2.5 py-2 text-[11px] text-foreground font-medium">
                                                     {producto.weight} kg
                                                 </td>
                                             </tr>
                                         )}
                                         {hasDimensions && (
-                                            <tr className="hover:bg-muted/10 transition-colors">
-                                                <td className="px-3 py-2.5 text-xs text-muted-foreground font-semibold border-r border-border/50 bg-muted/5">
+                                            <tr className="hover:bg-muted/5 transition-colors">
+                                                <td className="px-2.5 py-2 text-[11px] text-muted-foreground font-semibold border-r border-border/40 bg-muted/10 select-none  tracking-tight">
                                                     <div className="flex items-center gap-1">
-                                                        <Ruler size={11} />
+                                                        <Ruler size={10} className="text-muted-foreground/60" />
                                                         Dimensiones
                                                     </div>
                                                 </td>
-                                                <td className="px-3 py-2.5 text-xs text-foreground">
-                                                    {producto.dimensions?.length} × {producto.dimensions?.width} × {producto.dimensions?.height} <span className="text-[10px] text-muted-foreground">cm</span>
+                                                <td className="px-2.5 py-2 text-[11px] text-foreground font-medium">
+                                                    {producto.dimensions?.length} × {producto.dimensions?.width} × {producto.dimensions?.height} <span className="text-[10px] text-muted-foreground font-normal">cm</span>
                                                 </td>
                                             </tr>
                                         )}
@@ -132,43 +129,41 @@ export default function ProductExpandableSections({ producto }: Props) {
 
             {/* ENVÍOS Y DEVOLUCIONES */}
             <AccordionItem value="envios" className="border-none">
-                <AccordionTrigger className="hover:no-underline group py-3 outline-none">
-                    <div className="flex items-center gap-2.5">
-                        <span className="text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
-                            Entrega y devoluciones
-                        </span>
-                    </div>
+                <AccordionTrigger className="hover:no-underline group py-2.5 outline-none">
+                    <span className="text-xs font-bold  text-foreground tracking-wider transition-colors group-hover:text-action-cta">
+                        Entrega y devoluciones
+                    </span>
                 </AccordionTrigger>
-                <AccordionContent className="pb-6 pt-1">
+                <AccordionContent className="pb-5 pt-0.5">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div className="border border-border bg-muted/10 p-4 space-y-1.5 rounded-md">
-                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                        <div className="border border-border/60 bg-muted/10 p-3 space-y-1 rounded-xs">
+                            <p className="text-[9px] font-bold  tracking-wider text-muted-foreground select-none">
                                 Fecha estimada
                             </p>
-                            <p className="text-xl font-extrabold text-foreground tracking-tight leading-none">
+                            <p className="text-base font-bold text-foreground tracking-tight leading-tight">
                                 {getDeliveryRange(producto.diasEnvio || 1)}
                             </p>
-                            <p className="text-xs text-muted-foreground pt-1">
+                            <p className="text-[11px] text-muted-foreground font-normal pt-0.5">
                                 Tiempo estimado de llegada a domicilio.
                             </p>
                         </div>
 
-                        <div className="border border-border bg-muted/10 p-4 space-y-2.5 rounded-md flex flex-col justify-between">
+                        <div className="border border-border/60 bg-muted/10 p-3 space-y-2 rounded-xs flex flex-col justify-between">
                             <div>
-                                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+                                <p className="text-[9px] font-bold  tracking-wider text-muted-foreground select-none">
                                     Devoluciones
                                 </p>
-                                <p className="text-xs text-muted-foreground leading-relaxed mt-1">
-                                    <span className="text-foreground font-medium">7 días</span> para cambios por fallas técnicas de origen.
+                                <p className="text-[11px] text-muted-foreground font-normal leading-relaxed mt-0.5">
+                                    <span className="text-foreground font-semibold">7 días</span> para cambios por fallas técnicas de origen.
                                 </p>
                             </div>
                             <Link
                                 href="/hc/garantias-y-devoluciones"
-                                className="inline-flex items-center text-xs text-action-cta hover:underline group/link pt-2"
+                                className="inline-flex items-center text-[11px] font-bold text-action-cta hover:underline  tracking-wider group/link pt-1"
                             >
-                                <FileText size={12} className="mr-1.5" />
+                                <FileText size={11} className="mr-1" />
                                 Ver términos
-                                <ChevronRight size={12} className="ml-0.5 group-hover/link:translate-x-0.5 transition-transform" />
+                                <ChevronRight size={11} className="ml-0.5 group-hover/link:translate-x-0.5 transition-transform" />
                             </Link>
                         </div>
                     </div>
@@ -177,22 +172,20 @@ export default function ProductExpandableSections({ producto }: Props) {
 
             {/* GARANTÍA */}
             <AccordionItem value="garantia" className="border-none">
-                <AccordionTrigger className="hover:no-underline group py-3 outline-none">
-                    <div className="flex items-center gap-2.5">
-                        <span className="text-sm font-semibold text-foreground transition-colors group-hover:text-primary">
-                            Garantía
-                        </span>
-                    </div>
+                <AccordionTrigger className="hover:no-underline group py-2.5 outline-none">
+                    <span className="text-xs font-bold  text-foreground tracking-wider transition-colors group-hover:text-action-cta">
+                        Garantía
+                    </span>
                 </AccordionTrigger>
-                <AccordionContent className="pb-4">
-                    <div className="space-y-2 text-xs text-muted-foreground leading-relaxed">
+                <AccordionContent className="pb-4 pt-0.5">
+                    <div className="space-y-1.5 text-xs text-muted-foreground font-normal leading-relaxed">
                         <p>
-                            Todos los productos son <span className="text-foreground font-medium">100% originales</span>.
+                            Todos los productos son <span className="text-foreground font-semibold">100% originales</span>.
                         </p>
                         <p>
-                            La garantía es de <span className="text-foreground font-medium">12 meses</span> por fallas técnicas de origen, con respaldo oficial de la marca.
+                            La garantía es de <span className="text-foreground font-semibold">12 meses</span> por fallas técnicas de origen, con respaldo oficial de la marca.
                         </p>
-                        <p className="border-l-2 border-border pl-3 py-0.5 text-muted-foreground/80 italic">
+                        <p className="border-l-2 border-border pl-2.5 py-0.5 text-muted-foreground/80 italic text-[11px]">
                             Conserva tu comprobante de compra para hacer efectiva la cobertura.
                         </p>
                     </div>

@@ -9,7 +9,7 @@ const H1 = ({ className, ...props }: ComponentPropsWithoutRef<"h1">) => (
       "scroll-m-20 text-xl font-bold tracking-tight text-foreground sm:text-2xl select-none",
       className
     )}
-    {...props}
+{    ...props}
   />
 )
 
@@ -19,37 +19,37 @@ const H2 = ({ className, ...props }: ComponentPropsWithoutRef<"h2">) => (
       "scroll-m-20 text-lg font-bold tracking-tight text-foreground select-none",
       className
     )}
-    {...props}
+{    ...props}
   />
 )
 
 const H3 = ({ className, ...props }: ComponentPropsWithoutRef<"h3">) => (
   <h3
     className={cn(
-      "scroll-m-20 text-base font-bold tracking-tight text-foreground select-none",
+      "scroll-m-20 text-sm font-bold uppercase tracking-wider text-muted-foreground select-none",
       className
     )}
-    {...props}
+{    ...props}
   />
 )
 
 const H4 = ({ className, ...props }: ComponentPropsWithoutRef<"h4">) => (
   <h4
     className={cn(
-      "scroll-m-20 text-sm font-bold tracking-tight text-foreground select-none",
+      "scroll-m-20 text-xs font-bold uppercase tracking-wider text-muted-foreground select-none",
       className
     )}
-    {...props}
+{    ...props}
   />
 )
 
 const P = ({ className, ...props }: ComponentPropsWithoutRef<"p">) => (
   <p
     className={cn(
-      "text-sm font-medium leading-relaxed text-foreground",
+      "text-xs font-normal leading-relaxed text-muted-foreground",
       className
     )}
-    {...props}
+{    ...props}
   />
 )
 
@@ -59,27 +59,27 @@ const Lead = ({ className, ...props }: ComponentPropsWithoutRef<"p">) => (
       "text-sm font-semibold text-muted leading-normal",
       className
     )}
-    {...props}
+{    ...props}
   />
 )
 
 const Muted = ({ className, ...props }: ComponentPropsWithoutRef<"p">) => (
   <p
     className={cn(
-      "text-xs font-medium tracking-normal text-muted-foreground",
+      "text-[11px] font-medium tracking-normal text-muted-foreground",
       className
     )}
-    {...props}
+{    ...props}
   />
 )
 
 const Small = ({ className, ...props }: ComponentPropsWithoutRef<"small">) => (
   <small
     className={cn(
-      "text-xs font-normal text-muted-foreground",
+      "text-[10px] font-medium text-muted-foreground uppercase tracking-wider",
       className
     )}
-    {...props}
+{    ...props}
   />
 )
 
@@ -89,30 +89,30 @@ const Blockquote = ({
 }: ComponentPropsWithoutRef<"blockquote">) => (
   <blockquote
     className={cn(
-      "mt-3 border-l-2 border-border pl-3 italic text-xs text-muted-foreground",
+      "mt-2 border-l-2 border-border pl-3 italic text-xs text-muted-foreground/80",
       className
     )}
-    {...props}
+{    ...props}
   />
 )
 
 const Ul = ({ className, ...props }: ComponentPropsWithoutRef<"ul">) => (
   <ul
     className={cn(
-      "my-2 ml-4 list-disc space-y-1 text-sm font-medium text-foreground",
+      "my-2 ml-4 list-disc space-y-1 text-xs font-normal text-muted-foreground",
       className
     )}
-    {...props}
+{    ...props}
   />
 )
 
 const Ol = ({ className, ...props }: ComponentPropsWithoutRef<"ol">) => (
   <ol
     className={cn(
-      "my-2 ml-4 list-decimal space-y-1 text-sm font-medium text-foreground",
+      "my-2 ml-4 list-decimal space-y-1 text-xs font-normal text-muted-foreground",
       className
     )}
-    {...props}
+{    ...props}
   />
 )
 
@@ -122,7 +122,7 @@ const Li = ({ className, ...props }: ComponentPropsWithoutRef<"li">) => (
       "leading-relaxed",
       className
     )}
-    {...props}
+{    ...props}
   />
 )
 
@@ -132,10 +132,10 @@ const InlineCode = ({
 }: ComponentPropsWithoutRef<"code">) => (
   <code
     className={cn(
-      "relative rounded-[var(--radius-sm)] bg-muted-neutral px-1 py-0.5 font-mono text-[11px] font-semibold text-foreground border border-border/40",
+      "relative rounded-[var(--radius-sm)] bg-muted-neutral px-1 py-0.5 font-mono text-[10px] font-semibold text-foreground border border-border/40",
       className
     )}
-    {...props}
+{    ...props}
   />
 )
 
@@ -145,7 +145,7 @@ const Pre = ({ className, ...props }: ComponentPropsWithoutRef<"pre">) => (
       "my-3 overflow-x-auto rounded-[var(--radius-md)] border border-border bg-background-secondary p-3 text-xs font-mono text-foreground",
       className
     )}
-    {...props}
+{    ...props}
   />
 )
 
@@ -155,7 +155,7 @@ const Hr = ({ className, ...props }: ComponentPropsWithoutRef<"hr">) => (
       "my-3 border-border",
       className
     )}
-    {...props}
+{    ...props}
   />
 )
 
@@ -166,7 +166,7 @@ const Table = ({ className, ...props }: ComponentPropsWithoutRef<"table">) => (
         "w-full border-collapse text-left text-xs text-foreground",
         className
       )}
-      {...props}
+  {    ...props}
     />
   </div>
 )
@@ -177,27 +177,27 @@ const Tr = ({ className, ...props }: ComponentPropsWithoutRef<"tr">) => (
       "border-b border-border last:border-0 transition-colors hover:bg-background-secondary data-[state=selected]:bg-background-secondary",
       className
     )}
-    {...props}
+{    ...props}
   />
 )
 
 const Th = ({ className, ...props }: ComponentPropsWithoutRef<"th">) => (
   <th
     className={cn(
-      "px-3 py-2 text-left font-bold text-foreground bg-background-secondary border-b border-border select-none uppercase tracking-wider",
+      "px-3 py-2 text-left font-semibold text-muted-foreground bg-background-secondary border-b border-border select-none uppercase tracking-wider text-[10px]",
       className
     )}
-    {...props}
+{    ...props}
   />
 )
 
 const Td = ({ className, ...props }: ComponentPropsWithoutRef<"td">) => (
   <td
     className={cn(
-      "px-3 py-2 text-left align-middle font-medium text-foreground",
+      "px-3 py-2 text-left align-middle font-normal text-foreground",
       className
     )}
-    {...props}
+{    ...props}
   />
 )
 
