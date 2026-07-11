@@ -386,7 +386,7 @@ export default function ProductDetails({ producto }: Props) {
                 )}
 
                 {/* Fichas de Logística de Tienda */}
-                <div className="divide-y divide-border/40 border-t border-b border-border/40 mt-2">
+                <div className="border-y border-border/40 mt-2">
 
                     {/* Medios de pago */}
                     <div className="flex items-center justify-between py-2.5">
@@ -441,7 +441,7 @@ export default function ProductDetails({ producto }: Props) {
                             <GoLinkExternal className="w-3.5 h-3.5 text-muted-foreground/80" />
                             <span className="text-xs font-semibold">¿Deseas asesoría?</span>
                         </div>
-                        <span className="text-xs font-bold text-success flex items-center gap-0.5 uppercase tracking-wider">
+                        <span className="text-xs text-foreground flex items-center gap-0.5 tracking-wider">
                             WhatsApp
                             <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
                         </span>
