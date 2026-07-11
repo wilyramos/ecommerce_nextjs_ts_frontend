@@ -6,6 +6,7 @@ import { useCartStore } from "@/src/store/cartStore";
 import { FaPlus } from "react-icons/fa";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface Props {
     product: ProductWithCategoryResponse;
@@ -36,6 +37,11 @@ export default function AddProductToCart({ product, variant }: Props) {
 
     const handleClick = () => {
         // 1. Validar si faltan seleccionar variantes
+
+        if (product.isActive === false) {
+            toast.error("Este producto no está disponible para la venta comercial.");
+            return;
+        }
         if (isSelectionIncomplete) {
             toast.error("Por favor, selecciona una variante antes de añadir al carrito.");
             return;
@@ -71,10 +77,12 @@ export default function AddProductToCart({ product, variant }: Props) {
         <div className="w-full">
             <Button
                 onClick={handleClick}
-                disabled={isVisuallyDisabled}
                 variant={isOutOfStock ? "destructive" : "accent"}
                 size="default"
-                className="w-full  "
+                className={cn(
+                    "w-full",
+                    isVisuallyDisabled && "opacity-50 cursor-not-allowed pointer-events-auto"
+                )}
             >
                 <FaPlus size={14} />
                 {isOutOfStock ? "Sin stock" : "Añadir al carrito"}

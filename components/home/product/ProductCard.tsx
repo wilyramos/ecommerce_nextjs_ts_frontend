@@ -135,7 +135,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
             <Link href={`/productos/${product.slug}`} className="relative flex flex-col h-full">
 
                 {/* ── IMAGEN ── */}
-                <div className="relative w-full aspect-square bg-background-secondary overflow-hidden">
+                <div className="relative w-full aspect-square overflow-hidden">
                     {previewImages.length > 0 ? (
                         <>
                             <div

@@ -6,11 +6,12 @@ import { IoBagCheckOutline } from "react-icons/io5";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils"; // Importación añadida
 
 interface Props {
     product: ProductWithCategoryResponse;
-    variant?: VariantCart; // Variante seleccionada (opcional)
-    disabled?: boolean;    // Prop opcional que viene del padre
+    variant?: VariantCart; 
+    disabled?: boolean;    
 }
 
 export default function ShopNowButton({ product, variant, disabled }: Props) {
@@ -19,29 +20,28 @@ export default function ShopNowButton({ product, variant, disabled }: Props) {
 
     const stock = variant?.stock ?? product.stock ?? 0;
 
-    // Detectamos si falta seleccionar variante para mostrar el mensaje correcto
     const hasVariants = product.variants && product.variants.length > 0;
-    // Si tiene variantes y no se ha pasado una variante válida, está incompleto
     const isSelectionIncomplete = hasVariants && !variant;
 
-    // Determinamos si visualmente debe verse bloqueado
-    // Consideramos la prop 'disabled' del padre O si no hay stock O si falta selección
-    const isVisuallyDisabled = disabled || stock <= 0 || isSelectionIncomplete;
+    // Se incluye product.isActive === false en el bloqueo visual
+    const isVisuallyDisabled = disabled || stock <= 0 || isSelectionIncomplete || product.isActive === false;
 
     const handleClick = () => {
-        // 1. Validar si faltan opciones (Variantes)
+        if (product.isActive === false) {
+            toast.error("Este producto no está disponible actualmente.");
+            return;
+        }
+        
         if (isSelectionIncomplete) {
             toast.error("Por favor, selecciona las opciones para continuar.");
             return;
         }
 
-        // 2. Validar stock
         if (stock <= 0) {
             toast.error("Lo sentimos, este producto se encuentra agotado.");
             return;
         }
 
-        // 3. Proceso de compra
         addToCart(product, variant);
         toast.success("Producto procesado, yendo al carrito...");
         router.push("/carrito");
@@ -50,13 +50,16 @@ export default function ShopNowButton({ product, variant, disabled }: Props) {
     return (
         <Button
             onClick={handleClick}
-            disabled={isVisuallyDisabled}
+            // SE ELIMINÓ EL disabled NATIVO AQUÍ
             variant={stock <= 0 ? "destructive" : "secondary"}
             size="default"
-            className="w-full"
+            className={cn(
+                "w-full",
+                isVisuallyDisabled && "opacity-50 cursor-not-allowed pointer-events-auto"
+            )}
         >
             <IoBagCheckOutline size={18} />
-            {stock <= 0 ? "Agotado" : "Comprar ahora"}
+            {product.isActive === false ? "No disponible" : stock <= 0 ? "Agotado" : "Comprar ahora"}
         </Button>
     );
 }

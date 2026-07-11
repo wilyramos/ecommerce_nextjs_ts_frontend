@@ -63,7 +63,7 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
             {/* Header Title & Sorting */}
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mt-2">
                 <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                    <h1 className="text-xl md:text-2xl font-bold tracking-tight text-primary uppercase">
+                    <h1 className="text-xl md:text-2xl font-bold tracking-tight text-primary capitalize">
                         {title.map((part, i) => (
                             <span
                                 key={i}
@@ -87,17 +87,17 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
                             value={currentSort}
                             onValueChange={(val) => updateFilter("sort", val)}
                         >
-                            <SelectTrigger className="w-[210px] h-10 pl-9 pr-4 text-xs font-semibold uppercase tracking-wider border-border bg-background hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-150 rounded-none cursor-pointer">
+                            <SelectTrigger className="w-[210px] h-10 pl-9 pr-4 text-xs font-semibold tracking-wider border-border bg-background hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-150 rounded-none cursor-pointer">
                                 <SelectValue placeholder="Ordenar por" />
                             </SelectTrigger>
 
                             <SelectContent align="end" className="rounded-none border-border">
-                                <SelectItem value="relevancia" className="text-xs uppercase tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Relevancia</SelectItem>
-                                <SelectItem value="recientes" className="text-xs uppercase tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Más Recientes</SelectItem>
-                                <SelectItem value="discount" className="text-xs uppercase tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Mayor Descuento</SelectItem>
-                                <SelectItem value="price-asc" className="text-xs uppercase tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Precio: Menor a Mayor</SelectItem>
-                                <SelectItem value="price-desc" className="text-xs uppercase tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Precio: Mayor a Menor</SelectItem>
-                                <SelectItem value="name-asc" className="text-xs uppercase tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Nombre: A - Z</SelectItem>
+                                <SelectItem value="relevancia" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Relevancia</SelectItem>
+                                <SelectItem value="recientes" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Más Recientes</SelectItem>
+                                <SelectItem value="discount" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Mayor Descuento</SelectItem>
+                                <SelectItem value="price-asc" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Precio: Menor a Mayor</SelectItem>
+                                <SelectItem value="price-desc" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Precio: Mayor a Menor</SelectItem>
+                                <SelectItem value="name-asc" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Nombre: A - Z</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>

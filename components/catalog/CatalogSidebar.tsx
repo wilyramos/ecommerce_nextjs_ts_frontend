@@ -44,7 +44,7 @@ function PriceRangeFilter({ filters }: { filters: CatalogFilters }) {
 
     return (
         <AccordionItem value="item-price" className="border-b border-border py-1">
-            <AccordionTrigger className="text-[11px] font-bold uppercase tracking-[0.12em] text-primary hover:no-underline py-3 px-0 hover:text-action-cta transition-colors">
+            <AccordionTrigger className="text-[11px] font-bold capitalize tracking-[0.12em] text-primary hover:no-underline py-3 px-0 hover:text-action-cta transition-colors">
                 Precio
             </AccordionTrigger>
             <AccordionContent className="pt-4 pb-3 px-1">
@@ -79,7 +79,7 @@ function PriceRangeFilter({ filters }: { filters: CatalogFilters }) {
                 {hasCustomRange && (
                     <button
                         onClick={clearPriceRange}
-                        className="mt-3 text-[11px] font-bold uppercase tracking-wider text-action-cta hover:text-action-cta-hover transition-colors block w-full text-center py-1.5 border border-dashed border-action-cta/30 hover:border-action-cta-hover bg-action-cta/5"
+                        className="mt-3 text-[11px] font-bold capitalize tracking-wider text-action-cta hover:text-action-cta-hover transition-colors block w-full text-center py-1.5 border border-dashed border-action-cta/30 hover:border-action-cta-hover bg-action-cta/5"
                     >
                         Restablecer precio
                     </button>
@@ -119,7 +119,7 @@ export default function CatalogSidebar({ filters }: Props) {
     }), [filters]);
 
     const triggerClass =
-        "text-[11px] font-bold uppercase tracking-[0.12em] text-primary hover:no-underline py-3 px-0 hover:text-action-cta transition-colors";
+        "text-[11px] font-bold capitalize tracking-[0.12em] text-primary hover:no-underline py-3 px-0 hover:text-action-cta transition-colors";
 
     const row =
         "flex items-center gap-2.5 px-2 py-1.5 cursor-pointer transition-all duration-150 hover:bg-neutral-50 rounded-sm group text-muted-foreground hover:text-primary";
