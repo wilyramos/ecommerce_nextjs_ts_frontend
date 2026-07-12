@@ -78,7 +78,7 @@ export default function CatalogSidebar({ filters }: Props) {
         "transition-colors duration-150 cursor-pointer";
 
     return (
-        <div className="w-full pb-6 select-none text-foreground bg-background border border-border/60 p-4">
+        <div className="w-full pb-6 select-none text-foreground bg-background md:border md:border-border/60 md:p-4 p-2">
             <ActiveFiltersSidebar />
             
             <Accordion
