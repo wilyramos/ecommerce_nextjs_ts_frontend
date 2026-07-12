@@ -1,7 +1,6 @@
-// File: frontend/components/catalog/CatalogSidebar.tsx
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useCatalogNav } from "./hooks/useCatalogNav";
 import type { CatalogFilters } from "@/src/schemas/catalog";
 import { cn } from "@/lib/utils";
@@ -12,7 +11,7 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
-import * as SliderPrimitive from "@radix-ui/react-slider";
+import PriceRangeFilter from "./PriceRangeFilter";
 import ActiveFiltersSidebar from "./ActiveFiltersSidebar";
 import ColorCircle from "../ui/ColorCircle";
 
@@ -20,76 +19,6 @@ interface Props {
     filters: CatalogFilters;
 }
 
-// ─── Price Range Slider ────────────────────────────────────────────────────────
-function PriceRangeFilter({ filters }: { filters: CatalogFilters }) {
-    const { searchParams, setPriceRange, clearPriceRange } = useCatalogNav();
-
-    const globalMin = filters.price[0]?.min ?? 0;
-    const globalMax = filters.price[0]?.max ?? 9999;
-
-    const urlMin = searchParams.get('priceMin');
-    const urlMax = searchParams.get('priceMax');
-
-    const [localValues, setLocalValues] = useState<[number, number]>([
-        urlMin ? Number(urlMin) : globalMin,
-        urlMax ? Number(urlMax) : globalMax,
-    ]);
-
-    const hasCustomRange = !!urlMin || !!urlMax;
-
-    const fmt = (n: number) =>
-        new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN', maximumFractionDigits: 0 }).format(n);
-
-    if (globalMin === globalMax || (globalMin === 0 && globalMax === 9999)) return null;
-
-    return (
-        <AccordionItem value="item-price" className="border-b border-border py-1">
-            <AccordionTrigger className="text-[11px] font-bold capitalize tracking-[0.12em] text-primary hover:no-underline py-3 px-0 hover:text-action-cta transition-colors">
-                Precio
-            </AccordionTrigger>
-            <AccordionContent className="pt-4 pb-3 px-1">
-                <SliderPrimitive.Root
-                    className="relative flex w-full touch-none select-none items-center"
-                    min={globalMin}
-                    max={globalMax}
-                    step={1}
-                    value={localValues}
-                    onValueChange={(vals) => setLocalValues(vals as [number, number])}
-                    onValueCommit={(vals) => {
-                        const [min, max] = vals as [number, number];
-                        if (min === globalMin && max === globalMax) {
-                            clearPriceRange();
-                        } else {
-                            setPriceRange(min, max);
-                        }
-                    }}
-                >
-                    <SliderPrimitive.Track className="relative h-[2px] w-full grow overflow-hidden rounded-full bg-muted">
-                        <SliderPrimitive.Range className="absolute h-full bg-action-cta" />
-                    </SliderPrimitive.Track>
-                    <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border border-primary bg-background ring-offset-background transition-transform focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-action-cta disabled:pointer-events-none cursor-grab active:cursor-grabbing hover:scale-110" />
-                    <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border border-primary bg-background ring-offset-background transition-transform focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-action-cta disabled:pointer-events-none cursor-grab active:cursor-grabbing hover:scale-110" />
-                </SliderPrimitive.Root>
-
-                <div className="flex justify-between mt-3">
-                    <span className="text-xs font-semibold tabular-nums text-primary">{fmt(localValues[0])}</span>
-                    <span className="text-xs font-semibold tabular-nums text-primary">{fmt(localValues[1])}</span>
-                </div>
-
-                {hasCustomRange && (
-                    <button
-                        onClick={clearPriceRange}
-                        className="mt-3 text-[11px] font-bold capitalize tracking-wider text-action-cta hover:text-action-cta-hover transition-colors block w-full text-center py-1.5 border border-dashed border-action-cta/30 hover:border-action-cta-hover bg-action-cta/5"
-                    >
-                        Restablecer precio
-                    </button>
-                )}
-            </AccordionContent>
-        </AccordionItem>
-    );
-}
-
-// ─── Sidebar principal ─────────────────────────────────────────────────────────
 export default function CatalogSidebar({ filters }: Props) {
     const {
         setCategory,
@@ -102,40 +31,56 @@ export default function CatalogSidebar({ filters }: Props) {
         searchParams,
     } = useCatalogNav();
 
-    const sortedFilters = useMemo(() => ({
-        categories: [...filters.categories].sort((a, b) => a.nombre.localeCompare(b.nombre)),
-        brands: [...filters.brands].sort((a, b) => a.nombre.localeCompare(b.nombre)),
-        lines: [...filters.lines].sort((a, b) => a.nombre.localeCompare(b.nombre)),
-        atributos: [...filters.atributos]
-            .sort((a, b) => a.name.localeCompare(b.name))
-            .map((attr) => ({
-                ...attr,
-                values: [...attr.values].sort((a, b) => {
-                    const va = typeof a === 'string' ? a : a.value;
-                    const vb = typeof b === 'string' ? b : b.value;
-                    return va.localeCompare(vb);
-                }),
-            })),
-    }), [filters]);
+    const sortedFilters = useMemo(() => {
+        const priorityOrder: Record<string, number> = {
+            "color": 1,
+            "compatibilidad": 2,
+            "modelo compatible": 3,
+            "ram": 4,
+        };
+
+        return {
+            categories: [...filters.categories].sort((a, b) => a.nombre.localeCompare(b.nombre)),
+            brands: [...filters.brands].sort((a, b) => a.nombre.localeCompare(b.nombre)),
+            lines: [...filters.lines].sort((a, b) => a.nombre.localeCompare(b.nombre)),
+            atributos: [...filters.atributos]
+                .sort((a, b) => {
+                    const nameA = a.name.toLowerCase();
+                    const nameB = b.name.toLowerCase();
+                    const priorityA = priorityOrder[nameA] ?? 999;
+                    const priorityB = priorityOrder[nameB] ?? 999;
+                    if (priorityA !== priorityB) return priorityA - priorityB;
+                    return nameA.localeCompare(nameB);
+                })
+                .map((attr) => ({
+                    ...attr,
+                    values: [...attr.values].sort((a, b) => {
+                        const va = typeof a === 'string' ? a : a.value;
+                        const vb = typeof b === 'string' ? b : b.value;
+                        return va.localeCompare(vb);
+                    }),
+                })),
+        };
+    }, [filters]);
 
     const triggerClass =
-        "text-[11px] font-bold capitalize tracking-[0.12em] text-primary hover:no-underline py-3 px-0 hover:text-action-cta transition-colors";
+        "text-xs font-bold capitalize tracking-wider text-primary hover:no-underline py-3 px-0 hover:text-neutral-600 transition-colors";
 
     const row =
-        "flex items-center gap-2.5 px-2 py-1.5 cursor-pointer transition-all duration-150 hover:bg-neutral-50 rounded-sm group text-muted-foreground hover:text-primary";
+        "flex items-center gap-3 px-2 py-2 cursor-pointer transition-all duration-150 hover:bg-neutral-50 rounded-sm group text-muted-foreground hover:text-primary";
 
     const checkboxClass =
         "w-4 h-4 border-muted rounded-none " +
         "data-[state=checked]:bg-primary " +
         "data-[state=checked]:border-primary " +
         "data-[state=checked]:text-primary-foreground " +
-        "focus-visible:ring-0 focus-visible:ring-offset-0 " +
+        "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 " +
         "transition-colors duration-150 cursor-pointer";
 
     return (
         <div className="w-full pb-6 select-none text-foreground bg-background border border-border/60 p-4">
             <ActiveFiltersSidebar />
-
+            
             <Accordion
                 type="multiple"
                 className="w-full space-y-1"
@@ -159,15 +104,18 @@ export default function CatalogSidebar({ filters }: Props) {
                                             <button
                                                 onClick={() => setCategory(cat.slug)}
                                                 className={cn(
-                                                    "w-full text-left flex items-center justify-between px-2 py-1.5 text-xs transition-all duration-150 outline-none font-medium border-l-2 border-transparent cursor-pointer",
+                                                    "w-full text-left flex items-center justify-between px-2 py-2 text-xs transition-all duration-150 outline-none font-medium rounded-sm cursor-pointer",
                                                     active
-                                                        ? "bg-neutral-50 text-action-cta font-bold border-action-cta pl-2.5"
+                                                        ? "bg-neutral-100 text-primary font-bold"
                                                         : "text-muted-foreground hover:bg-neutral-50 hover:text-primary"
                                                 )}
                                             >
                                                 <span>{cat.nombre}</span>
                                                 {cat.count !== undefined && (
-                                                    <span className={cn("text-[10px] font-bold tabular-nums px-1.5 py-0.5 rounded-sm bg-neutral-100 text-muted-foreground/80", active && "bg-action-cta/10 text-action-cta")}>
+                                                    <span className={cn(
+                                                        "text-[10px] font-bold tabular-nums px-1.5 py-0.5 rounded-sm bg-neutral-100 text-muted-foreground/80", 
+                                                        active && "bg-neutral-200/80 text-primary"
+                                                    )}>
                                                         {cat.count}
                                                     </span>
                                                 )}
@@ -194,7 +142,10 @@ export default function CatalogSidebar({ filters }: Props) {
                                         <div
                                             key={brand.id}
                                             onClick={() => setBrand(brand.slug)}
-                                            className={cn(row, active && "bg-neutral-50 text-primary font-bold border-l-2 border-primary rounded-l-none pl-2.5")}
+                                            className={cn(
+                                                row, 
+                                                active && "bg-neutral-100 text-primary font-bold"
+                                            )}
                                         >
                                             <Checkbox checked={active} className={checkboxClass} />
                                             <span className="text-xs font-medium flex-1">
@@ -227,7 +178,10 @@ export default function CatalogSidebar({ filters }: Props) {
                                         <div
                                             key={line.id}
                                             onClick={() => setLine(line.slug)}
-                                            className={cn(row, active && "bg-neutral-50 text-primary font-bold border-l-2 border-primary rounded-l-none pl-2.5")}
+                                            className={cn(
+                                                row, 
+                                                active && "bg-neutral-100 text-primary font-bold"
+                                            )}
                                         >
                                             <Checkbox checked={active} className={checkboxClass} />
                                             <span className="text-xs font-medium flex-1">
@@ -246,10 +200,9 @@ export default function CatalogSidebar({ filters }: Props) {
                     </AccordionItem>
                 )}
 
-                {/* ATRIBUTOS */}
+                {/* ATRIBUTOS EN GENERAL */}
                 {sortedFilters.atributos.map((attr, idx) => {
                     const isColorAttr = attr.name.toLowerCase().includes("color");
-
                     return (
                         <AccordionItem key={idx} value={`attr-${idx}`} className="border-b border-border py-1">
                             <AccordionTrigger className={triggerClass}>
@@ -261,16 +214,18 @@ export default function CatalogSidebar({ filters }: Props) {
                                         const strVal = typeof val === 'string' ? val : val.value;
                                         const count = typeof val === 'string' ? undefined : val.count;
                                         const isChecked = searchParams.getAll(attr.name).includes(strVal);
-
                                         return (
                                             <div
                                                 key={strVal}
                                                 onClick={() => updateFilter(attr.name, strVal)}
-                                                className={cn(row, isChecked && "bg-neutral-50 text-primary font-bold border-l-2 border-primary rounded-l-none pl-2.5")}
+                                                className={cn(
+                                                    row, 
+                                                    isChecked && "bg-neutral-100 text-primary font-bold"
+                                                )}
                                             >
                                                 <Checkbox checked={isChecked} className={checkboxClass} />
                                                 <div className="flex items-center gap-2 flex-1">
-                                                    {isColorAttr && <ColorCircle color={strVal} size={11}  />}
+                                                    {isColorAttr && <ColorCircle color={strVal} size={12} />}
                                                     <span className="text-xs font-medium capitalize">
                                                         {strVal}
                                                     </span>

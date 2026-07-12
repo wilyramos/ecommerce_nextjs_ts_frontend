@@ -1,4 +1,3 @@
-// File: frontend/components/catalog/CatalogHeader.tsx
 "use client";
 
 import Link from "next/link";
@@ -32,7 +31,7 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
         <div className="w-full flex flex-col gap-4 pt-1 pb-4 border-b border-border select-none">
             {/* Breadcrumbs */}
             <nav aria-label="Breadcrumb">
-                <ol className="flex items-center flex-wrap gap-x-1.5 text-[11px] font-medium  tracking-wider text-muted-foreground/80">
+                <ol className="flex items-center flex-wrap gap-x-1.5 text-[11px] font-medium tracking-wider text-muted-foreground/80">
                     {breadcrumbs.map((crumb, index) => {
                         const isLast = index === breadcrumbs.length - 1;
 
@@ -49,7 +48,7 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
                                 ) : (
                                     <Link
                                         href={crumb.href}
-                                        className="hover:text-action-cta transition-colors duration-150"
+                                        className="hover:text-neutral-600 transition-colors duration-150"
                                     >
                                         {crumb.label}
                                     </Link>
@@ -74,7 +73,7 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
                         ))}
                     </h1>
 
-                    <span className="text-[11px] font-bold tracking-widest text-action-cta bg-action-cta/10 px-2 py-0.5 rounded-sm uppercase">
+                    <span className="text-[10px] font-bold tracking-widest text-primary bg-neutral-100 px-2 py-0.5 rounded-sm uppercase">
                         {totalProducts} Items
                     </span>
                 </div>
@@ -87,17 +86,17 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
                             value={currentSort}
                             onValueChange={(val) => updateFilter("sort", val)}
                         >
-                            <SelectTrigger className="w-[210px] h-10 pl-9 pr-4 text-xs font-semibold tracking-wider border-border bg-background hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-150 rounded-none cursor-pointer">
+                            <SelectTrigger className="w-[210px] h-10 pl-9 pr-4 text-xs font-semibold tracking-wider border-border bg-background hover:bg-neutral-50 hover:text-primary transition-all duration-150 rounded-none cursor-pointer">
                                 <SelectValue placeholder="Ordenar por" />
                             </SelectTrigger>
 
                             <SelectContent align="end" className="rounded-none border-border">
-                                <SelectItem value="relevancia" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Relevancia</SelectItem>
-                                <SelectItem value="recientes" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Más Recientes</SelectItem>
-                                <SelectItem value="discount" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Mayor Descuento</SelectItem>
-                                <SelectItem value="price-asc" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Precio: Menor a Mayor</SelectItem>
-                                <SelectItem value="price-desc" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Precio: Mayor a Menor</SelectItem>
-                                <SelectItem value="name-asc" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-action-cta focus:text-white">Nombre: A - Z</SelectItem>
+                                <SelectItem value="relevancia" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-neutral-100 focus:text-primary">Relevancia</SelectItem>
+                                <SelectItem value="recientes" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-neutral-100 focus:text-primary">Más Recientes</SelectItem>
+                                <SelectItem value="discount" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-neutral-100 focus:text-primary">Mayor Descuento</SelectItem>
+                                <SelectItem value="price-asc" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-neutral-100 focus:text-primary">Precio: Menor a Mayor</SelectItem>
+                                <SelectItem value="price-desc" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-neutral-100 focus:text-primary">Precio: Mayor a Menor</SelectItem>
+                                <SelectItem value="name-asc" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-neutral-100 focus:text-primary">Nombre: A - Z</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>

@@ -53,7 +53,7 @@ export default function MinimalFeatures() {
 
                                 {/* Contenido de texto */}
                                 <div className="relative z-10 flex flex-col">
-                                    <h3 className="text-[10px] md:text-sm font-semibold text-foreground leading-snug tracking-tight">
+                                    <h3 className="text-[10px] md:text-sm  text-foreground leading-snug tracking-tight">
                                         {feature.title}
                                     </h3>
 
