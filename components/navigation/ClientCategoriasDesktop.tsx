@@ -6,7 +6,7 @@ import Image from "next/image";
 import { routes } from "@/lib/routes";
 import type { Collection } from "@/src/schemas/collection.schema";
 import { FiImage, FiArrowRight } from "react-icons/fi";
-import { Lead, Muted } from "@/components/ui/Typography";
+import { Lead } from "@/components/ui/Typography";
 import { CategoryResponse } from "@/src/schemas/category.schema";
 
 import {
@@ -57,7 +57,6 @@ export default function ClientCategoriasDesktop({
 
     const renderDropdown = (
         title: string,
-        description: string,
         linkHref: string,
         items: { _id: string; title: string; slug: string; image?: string | null; isCollection?: boolean }[]
     ) => (
@@ -66,9 +65,7 @@ export default function ClientCategoriasDesktop({
                 <div className="bg-background-secondary p-4 flex flex-col justify-between border-r border-border">
                     <div>
                         <Lead className="mb-1 text-foreground">{title}</Lead>
-                        <Muted className="line-clamp-3 leading-relaxed font-medium">
-                            {description}
-                        </Muted>
+                      
                     </div>
                     <Link
                         href={linkHref}
@@ -96,7 +93,7 @@ export default function ClientCategoriasDesktop({
     );
 
     return (
-        <NavigationMenu className="w-full">
+        <NavigationMenu className="w-full bg-black">
             <NavigationMenuList>
                 {/* Categorías Root sin subcategorías */}
                 {rootNoSub.map((cat) => (
@@ -113,7 +110,6 @@ export default function ClientCategoriasDesktop({
                         <NavigationMenuTrigger>{cat.nombre}</NavigationMenuTrigger>
                         {renderDropdown(
                             cat.nombre,
-                            cat.descripcion || `Explora lo mejor en ${cat.nombre.toLowerCase()}.`,
                             routes.catalog({ category: cat.slug }),
                             sub.map(s => ({ _id: s._id, title: s.nombre, slug: s.slug, image: s.image }))
                         )}
@@ -126,7 +122,6 @@ export default function ClientCategoriasDesktop({
                         <NavigationMenuTrigger>Tendencias</NavigationMenuTrigger>
                         {renderDropdown(
                             "Tendencias",
-                            "Descubre las colecciones más populares y exclusivas del momento.",
                             "/colecciones",
                             collections.map(c => ({ _id: c._id, title: c.name, slug: c.slug, image: c.image, isCollection: true }))
                         )}

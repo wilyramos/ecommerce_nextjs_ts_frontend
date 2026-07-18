@@ -12,7 +12,7 @@ import ButtonSearchMobile from "./ButtonSearchMobile";
 export default function NavBar() {
     return (
         <NavBarClient>
-            <header className="h-12 flex flex-col justify-center text-foreground bg-background border-b border-border transition-colors duration-300">
+            <header className="h-12 flex flex-col justify-center text-foreground bg-background border-b border-background transition-colors duration-300">
                 <div className="max-w-screen-2xl w-full mx-auto grid grid-cols-3 items-center px-4 md:px-6">
 
                     {/* Left column */}
@@ -57,7 +57,7 @@ export default function NavBar() {
                 </div>
             </header>
 
-            <div className="hidden md:block w-full border-b border-border bg-background transition-colors duration-300">
+            <div className="hidden md:block w-full border-b border-border bg-primary transition-colors duration-300">
                 <div className="max-w-screen-2xl mx-auto px-4 md:px-6 flex gap-6">
                     <ServerCategorias />
                 </div>
