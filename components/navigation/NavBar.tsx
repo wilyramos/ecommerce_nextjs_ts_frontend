@@ -57,7 +57,7 @@ export default function NavBar() {
                 </div>
             </header>
 
-            <div className="hidden md:block w-full border-b border-border bg-primary transition-colors duration-300">
+            <div className="hidden md:block w-full bg-primary transition-colors duration-300">
                 <div className="max-w-screen-2xl mx-auto px-4 md:px-6 flex gap-6">
                     <ServerCategorias />
                 </div>

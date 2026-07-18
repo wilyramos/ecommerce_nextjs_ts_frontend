@@ -7,7 +7,7 @@ export default function NavBarClient({ children }: { children: ReactNode }) {
     return (
         <div
             id="navbar-fixed"
-            className="sticky top-0 left-0 w-full z-[22] text-foreground bg-background"
+            className="sticky top-0 left-0 w-full z-[22]"
         >
             {children}
         </div>
