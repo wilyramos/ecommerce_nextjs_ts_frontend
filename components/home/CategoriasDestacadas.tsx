@@ -1,79 +1,58 @@
 "use client";
-
-import Carousel, { ButtonGroupProps } from "react-multi-carousel";
 import Image from "next/image";
 import Link from "next/link";
 import { ImageOff } from "lucide-react";
-import HeaderConTituloConControles from "../ui/HeaderConTituloConControles";
 import type { CategoryListResponse } from "@/src/schemas/category.schema";
 import { routes } from "@/lib/routes";
+import HeaderConTituloConControles from "@/components/ui/HeaderConTituloConControles";
 
-const AbsoluteHeaderWrapper = (p: ButtonGroupProps) => (
-    <div className="absolute inset-x-0 top-0 z-20 px-4">
-        <HeaderConTituloConControles
-            {...p}
-            viewAllHref="/categorias"
-            title={<>Categorías <span className="text-[var(--color-accent-warm)] font-light italic">destacadas.</span></>}
-        />
-    </div>
-);
-
-export default function ClientCarouselCategorias({ categorias }: { categorias: CategoryListResponse }) {
-    const responsive = {
-        desktop: { breakpoint: { max: 3000, min: 1280 }, items: 6, partialVisibilityGutter: 40 },
-        laptop: { breakpoint: { max: 1280, min: 1024 }, items: 5, partialVisibilityGutter: 30 },
-        tablet: { breakpoint: { max: 1024, min: 640 }, items: 5, partialVisibilityGutter: 30 },
-        mobile: { breakpoint: { max: 640, min: 0 }, items: 4, partialVisibilityGutter: 20 }
-    };
+export default function CategoriasDestacadas({ categorias }: { categorias: CategoryListResponse }) {
+    const categoriasVisibles = categorias.slice(0, 8);
 
     return (
-        <section className="relative max-w-7xl mx-auto px-4 pt-12 md:pt-24 pb-6">
-            <Carousel
-                responsive={responsive}
-                infinite
-                autoPlaySpeed={6000}
-                arrows={false}
-                renderButtonGroupOutside
-                customButtonGroup={<AbsoluteHeaderWrapper />}
-                itemClass=" py-4"
-                partialVisible
-            >
-                {categorias.map(c => (
+        <section className="max-w-7xl mx-auto px-4 py-12 md:py-16 select-none">
+            {/* Header */}
+            <HeaderConTituloConControles
+                title="Categorías destacadas"
+                viewAllHref="/categorias"
+            />
+                
+
+            {/* Grid adaptable */}
+            <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-5 lg:gap-6">
+                {categoriasVisibles.map((c) => (
                     <Link
                         key={c._id}
                         href={routes.catalog({ category: c.slug })}
-                        className="group flex flex-col transition-all duration-500"
+                        className="group flex flex-col items-center text-center transition-all duration-300"
                     >
-                        {/* Contenedor de Imagen: Sin bordes pesados, fondo muy suave */}
-                        <div className="relative aspect-square overflow-hidden  ">
-                            {c.image ? (
-                                <Image
-                                    src={c.image}
-                                    alt={c.nombre}
-                                    fill
-                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                                    unoptimized
-                                />
-                            ) : (
-                                <div className="flex h-full items-center justify-center text-[var(--color-text-tertiary)] opacity-20">
-                                    <ImageOff size={40} strokeWidth={1} />
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Textos: Jerarquía Pequeño/Normal */}
-                        <div className="mt-4 px-1 space-y-0.5">
-
-                            <div className="flex items-center justify-center gap-1">
-                                <h3 className="text-[8px] md:text-sm  hover:text-destructive transition-colors duration-300">
-                                    {c.nombre}
-                                </h3>
-
+                        {/* Círculo */}
+                        <div className="relative w-full aspect-square rounded-full overflow-hidden bg-background border border-border group-hover:border-action-cta group-hover:shadow-lg transition-all duration-300 flex items-center justify-center flex-shrink-0">
+                            <div className="relative w-full h-full">
+                                {c.image ? (
+                                    <Image
+                                        src={c.image}
+                                        alt={c.nombre}
+                                        fill
+                                        className="object-contain p-2 md:p-3 transition-transform duration-500 group-hover:scale-110"
+                                        unoptimized
+                                        sizes="(max-width: 640px) 150px, (max-width: 1024px) 180px, 200px"
+                                    />
+                                ) : (
+                                    <div className="flex h-full items-center justify-center text-muted-foreground/30">
+                                        <ImageOff size={32} strokeWidth={1} />
+                                    </div>
+                                )}
                             </div>
                         </div>
+
+                        {/* Nombre */}
+                        <h3 className="mt-3 md:mt-4 text-xs md:text-sm font-medium text-foreground group-hover:text-action-cta transition-colors duration-200 line-clamp-2 w-full px-1">
+                            {c.nombre}
+                        </h3>
                     </Link>
                 ))}
-            </Carousel>
+            </div>
         </section>
     );
 }

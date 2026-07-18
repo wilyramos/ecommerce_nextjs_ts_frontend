@@ -13,6 +13,24 @@ interface Props extends ButtonGroupProps {
 }
 
 export default function HeaderConTituloConControles({ title, viewAllHref, label }: Props) {
+    // Función interna para procesar el string y estilizar la segunda palabra
+    const formatTitle = (node: React.ReactNode): React.ReactNode => {
+        if (typeof node !== "string") return node;
+
+        const words = node.trim().split(/\s+/);
+        if (words.length < 2) return node;
+
+        return (
+            <>
+                {words[0]}{" "}
+                <span className="text-action-cta font-light italic">
+                    {words[1]}
+                </span>
+                {words.length > 2 && " " + words.slice(2).join(" ")}
+            </>
+        );
+    };
+
     return (
         <div className="w-full flex flex-col gap-2 mb-6 select-none">
             <div className="flex items-center justify-between">
@@ -24,7 +42,7 @@ export default function HeaderConTituloConControles({ title, viewAllHref, label 
                         </span>
                     )}
                     <h2 className="text-lg md:text-xl font-bold tracking-tight text-foreground">
-                        {title}
+                        {formatTitle(title)}
                     </h2>
                 </div>
 

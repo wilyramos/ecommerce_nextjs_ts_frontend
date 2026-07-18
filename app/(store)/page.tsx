@@ -69,13 +69,15 @@ export default function HomePage() {
                 <CarruselPrincipal />
             </section>
 
-
-            <HomepageSections />
-
-            <section className="my-2 md:my-10">
+              <section className="my-2 md:my-10">
                 <CategoriasDestacadasWrapper />
             </section>
 
+
+
+            <HomepageSections />
+
+          
             <HomepageSectionsWrapper />
 
             <section className="my-2 md:my-5">
