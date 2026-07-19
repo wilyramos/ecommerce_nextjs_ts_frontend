@@ -1,30 +1,61 @@
 "use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { ImageOff } from "lucide-react";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+
 import type { CategoryListResponse } from "@/src/schemas/category.schema";
 import { routes } from "@/lib/routes";
-import HeaderConTituloConControles from "@/components/ui/HeaderConTituloConControles";
+
+const responsive = {
+    superLargeDesktop: {
+        breakpoint: { max: 4000, min: 1440 },
+        items: 7,
+        slidesToSlide: 2
+    },
+    desktop: {
+        breakpoint: { max: 1440, min: 1024 },
+        items: 6,
+        slidesToSlide: 2
+    },
+    tablet: {
+        breakpoint: { max: 1024, min: 768 },
+        items: 4,
+        slidesToSlide: 1
+    },
+    mobileLarge: {
+        breakpoint: { max: 768, min: 480 },
+        items: 3,
+        slidesToSlide: 1
+    },
+    mobile: {
+        breakpoint: { max: 480, min: 0 },
+        items: 3,
+        slidesToSlide: 1
+    }
+};
 
 export default function CategoriasDestacadas({ categorias }: { categorias: CategoryListResponse }) {
-    const categoriasVisibles = categorias.slice(0, 8);
+    const categoriasVisibles = categorias.slice(0, 12);
 
     return (
-        <section className="max-w-7xl mx-auto px-4 py-12 md:py-16 select-none">
-            {/* Header */}
-            <HeaderConTituloConControles
-                title="Categorías destacadas"
-                viewAllHref="/categorias"
-            />
-                
-
-            {/* Grid adaptable */}
-            <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-5 lg:gap-6">
+        <section className="max-w-7xl mx-auto px-4 select-none relative py-4">
+            <Carousel
+                responsive={responsive}
+                infinite={true}
+                arrows={false}
+                draggable={true}
+                swipeable={true}
+                itemClass="px-2 md:px-3"
+                className="py-2"
+            >
                 {categoriasVisibles.map((c) => (
                     <Link
                         key={c._id}
                         href={routes.catalog({ category: c.slug })}
-                        className="group flex flex-col items-center text-center transition-all duration-300"
+                        className="group flex flex-col items-center text-center transition-all duration-300 focus:outline-none"
                     >
                         {/* Círculo */}
                         <div className="relative w-full aspect-square rounded-full overflow-hidden bg-background border border-border group-hover:border-action-cta group-hover:shadow-lg transition-all duration-300 flex items-center justify-center flex-shrink-0">
@@ -52,7 +83,7 @@ export default function CategoriasDestacadas({ categorias }: { categorias: Categ
                         </h3>
                     </Link>
                 ))}
-            </div>
+            </Carousel>
         </section>
     );
 }

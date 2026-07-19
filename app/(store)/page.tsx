@@ -69,7 +69,7 @@ export default function HomePage() {
                 <CarruselPrincipal />
             </section>
 
-              <section className="my-2 md:my-5">
+              <section>
                 <CategoriasDestacadasWrapper />
             </section>
 
