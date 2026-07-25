@@ -1,21 +1,20 @@
-// File: frontend/app/layout.tsx
 import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { Toaster } from 'sonner';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import MercadoPagoProvider from "@/components/provider/MercadoPagoProvider";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({
     subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-    // metadataBase permite usar rutas relativas en canónicas e imágenes en todo el proyecto
     metadataBase: new URL("https://gophone.pe"),
     title: {
         default: "GoPhone - Calidad a tu alcance",
-        template: "%s | GoPhone" // Corregido espacio al final
+        template: "%s | GoPhone"
     },
     description: "Accesorios y calidad a tu alcance. Envíos a todo el Perú. Compra iPhones, accesorios y repuestos con garantía y envío rápido. GoPhone: tecnología confiable desde Cañete para todo el Perú.",
     authors: [{ name: "GoPhone", url: "https://gophone.pe" }],
@@ -67,6 +66,7 @@ export default function RootLayout({
                         richColors={false}
                     />
                 </GoogleOAuthProvider>
+                <Analytics />
             </body>
         </html>
     );
