@@ -4,7 +4,7 @@ import { useState, useMemo, useCallback } from "react";
 import { Info, Zap } from "lucide-react";
 
 // Types
-import type { ProductWithCategoryResponse } from "@/src/schemas";
+import type { ProductWithCategoryResponse, ProductAttributeDetail } from "@/src/schemas";
 import type { CategoryListResponse } from "@/src/schemas/category.schema";
 import type { TBrand } from "@/src/schemas/brands";
 import type { ProductLine } from "@/src/schemas/line.schema";
@@ -60,6 +60,29 @@ export default function ProductForm({
     const [manualPriceOverride, setManualPriceOverride] = useState<boolean>(!!product?.precio);
     const [, setBarcode] = useState(product?.barcode || "");
 
+    // Tipado estricto del estado local mapeado desde Mongoose o Zod
+    const [atributosDetalle, setAtributosDetalle] = useState<Record<string, ProductAttributeDetail>>(
+        (product?.atributosDetalle as Record<string, ProductAttributeDetail>) || {}
+    );
+
+    // Tipado seguro y actualización estructurada de las especificaciones de metadata
+    const handleUpdateAttributeDetail = (
+        attrName: string,
+        field: keyof ProductAttributeDetail,
+        value: string | boolean | null | undefined
+    ) => {
+        setAtributosDetalle(prev => {
+            const currentAttr = prev[attrName] || { value: "", icon: null, isFeatured: false };
+            return {
+                ...prev,
+                [attrName]: {
+                    ...currentAttr,
+                    [field]: value
+                }
+            };
+        });
+    };
+
     // Filtered lines based on selected brand
     const filteredLines = useMemo(() => {
         if (!selectedBrandId) return [];
@@ -113,6 +136,8 @@ export default function ProductForm({
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 p-0 select-none text-foreground">
+            {/* Serialización limpia para el payload atómico enviado al backend */}
+            <input type="hidden" name="atributosDetalle" value={JSON.stringify(atributosDetalle)} />
 
             {/* =================== COLUMNA PRINCIPAL (3/4) =================== */}
             <div className="lg:col-span-3 space-y-4">
@@ -147,6 +172,8 @@ export default function ProductForm({
                                 categorias={categorias}
                                 initialCategoryId={product?.categoria?._id}
                                 currentAttributes={product?.atributos}
+                                currentAtributosDetalle={atributosDetalle}
+                                onAttributeDetailChange={handleUpdateAttributeDetail}
                                 onCategoryChange={setSelectedCategoryId}
                             />
                             <div className="space-y-1">
@@ -179,7 +206,7 @@ export default function ProductForm({
                                             placeholder={!selectedBrandId ? "Selecciona marca" : "Selecciona línea"}
                                         />
                                     </SelectTrigger>
-                                    <SelectContent className="bg-background border border-border text-foreground">
+                                    <SelectContent className="bg-background border border-border rounded-sm text-foreground">
                                         {filteredLines.map((line) => (
                                             <SelectItem key={line._id} value={line._id}>
                                                 {line.nombre}

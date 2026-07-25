@@ -136,6 +136,9 @@ export const categoryAttributeSchema = z.object({
             { message: 'No se permiten valores duplicados dentro del mismo atributo' }
         ),
     isVariant: z.boolean().optional(),
+    
+      icon: z.string().nullable().optional(),
+      isFilterable: z.boolean().default(true),
 });
 
 export type CategoryAttribute = z.infer<typeof categoryAttributeSchema>;
@@ -153,6 +156,7 @@ export const categoryBaseSchema = z.object({
     slug: z.string().optional(),
     parent: z.string().nullable().optional(),
     attributes: categoryAttributesArraySchema.optional(),
+    
     image: z.string().url('Debe ser una URL válida').optional(),
     isActive: z.boolean().optional(),
 });
@@ -195,6 +199,14 @@ export const especificacionSchema = z.object({
     value: z.string().min(1),
 });
 
+export const productAttributeDetailSchema = z.object({
+    value: z.string().min(1),
+    icon: z.string().nullable().optional(),
+    isFeatured: z.boolean().default(false),
+});
+
+export type ProductAttributeDetail = z.infer<typeof productAttributeDetailSchema>;
+
 // ---------- Dimensiones ----------
 export const dimensionsSchema = z.object({
     length: z.number().min(0, 'El largo no puede ser negativo'),
@@ -232,6 +244,7 @@ export const productBaseSchema = z.object({
     esDestacado: z.boolean().optional().default(false),
     esNuevo: z.boolean().optional().default(false),
     atributos: atributosSchema.optional(),
+    atributosDetalle: z.record(z.string(), productAttributeDetailSchema).optional(),
     especificaciones: z.array(especificacionSchema)
         .optional()
         .refine((specs) => {
@@ -289,6 +302,7 @@ export const ApiProductSchema = productBaseSchema
                 slug: z.string(),
             })
         ]).optional().nullable(),
+        atributosDetalle: z.record(z.string(), productAttributeDetailSchema).optional().default({}),
         complementarios: z.union([
             z.array(z.string()),
             z.array(ComplementaryProductSchema)

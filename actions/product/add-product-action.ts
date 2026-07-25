@@ -2,7 +2,7 @@
 
 import getToken from "@/src/auth/token";
 import { especificacionSchema } from "@/src/schemas";
-import type { TApiVariant, TEspecificacion } from "@/src/schemas";
+import type { TApiVariant, TEspecificacion, ProductAttributeDetail } from "@/src/schemas";
 
 type ActionStateType = {
     errors: string[];
@@ -19,15 +19,27 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         };
     }
 
-    // 1. Atributos
+    // 1. Atributos Planos (Filtros Rápidos)
     const atributosString = formData.get('atributos') as string;
     let atributos: Record<string, string> = {};
     if (atributosString) {
         try {
             atributos = JSON.parse(atributosString);
         } catch (error) {
-            console.error("Error en createProduct Action:", error);
+            console.error("Error en createProduct Action (atributos):", error);
             return { errors: ["Error al procesar atributos. Formato JSON inválido."], success: "" };
+        }
+    }
+
+    // 1b. Atributos Detalle (Metadata, Iconos y Destaques Visuales) - NUEVO
+    const atributosDetalleString = formData.get('atributosDetalle') as string;
+    let atributosDetalle: Record<string, ProductAttributeDetail> = {};
+    if (atributosDetalleString) {
+        try {
+            atributosDetalle = JSON.parse(atributosDetalleString);
+        } catch (error) {
+            console.error("Error en createProduct Action (atributosDetalle):", error);
+            return { errors: ["Error al procesar detalles de atributos visuales."], success: "" };
         }
     }
 
@@ -38,13 +50,14 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         try {
             especificaciones = especificacionSchema.array().parse(JSON.parse(OwlsString));
         } catch (error) {
-            console.error("Error en createProduct Action:", error);
+            console.error("Error en createProduct Action (especificaciones):", error);
             return { errors: ["Las especificaciones son inválidas."], success: "" };
         }
     }
 
     // 3. Variantes
-    const rawVariants = formData.get("variants") ? JSON.parse(formData.get("variants") as string) : [];
+    const variantsRawString = formData.get("variants") as string;
+    const rawVariants: TApiVariant[] = variantsRawString ? JSON.parse(variantsRawString) : [];
     const cleanedVariants = rawVariants.map((variant: TApiVariant) => {
         const filteredAttributes: Record<string, string> = {};
         Object.entries(variant.atributos).forEach(([key, value]) => {
@@ -53,14 +66,14 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         return { ...variant, atributos: filteredAttributes };
     });
 
-    // 4. Captura e Inyección Segura de Slugs del Sistema
+    // 4. Captura de Colecciones del Sistema y Etiquetas
     const systemCollectionsRaw = formData.get("systemCollections") as string;
     const systemCollectionsIds: string[] = systemCollectionsRaw ? JSON.parse(systemCollectionsRaw) : [];
-    console.log("System Collections IDs a enviar al backend:", systemCollectionsIds);
 
     const tagsRaw = formData.get('tags') as string;
     const tags: string[] = tagsRaw ? JSON.parse(tagsRaw) : [];
 
+    // 5. Dimensiones Logísticas
     const dimLength = formData.get('dimensions.length') as string;
     const dimWidth = formData.get('dimensions.width') as string;
     const dimHeight = formData.get('dimensions.height') as string;
@@ -87,6 +100,7 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         barcode: formData.get('barcode') || undefined,
         imagenes: formData.getAll('imagenes[]') as string[],
         atributos,
+        atributosDetalle, // Inyección tipada
         especificaciones,
         variants: cleanedVariants,
         complementarios,
@@ -97,12 +111,10 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         dimensions,
         metaTitle: formData.get('metaTitle') || undefined,
         metaDescription: formData.get('metaDescription') || undefined,
-
         collections: systemCollectionsIds,
     };
 
-
-    // 6. Enviar al Backend
+    // 6. Enviar al Backend vía POST
     try {
         const token = await getToken();
         const response = await fetch(`${process.env.API_URL}/products`, {
@@ -111,7 +123,7 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify(productData) // Nota: Asegúrate de mapear "systemCollections" en tu createProductSchema de Zod compartida si es necesario.
+            body: JSON.stringify(productData)
         });
 
         const json = await response.json();
@@ -122,7 +134,7 @@ export async function createProduct(prevState: ActionStateType, formData: FormDa
         return { errors: [], success: "Producto creado exitosamente" };
 
     } catch (error) {
-        console.error("Error en createProduct Action:", error);
+        console.error("Error en createProduct Action de red:", error);
         return { errors: ["Error de conexión con el servidor."], success: "" };
     }
 }

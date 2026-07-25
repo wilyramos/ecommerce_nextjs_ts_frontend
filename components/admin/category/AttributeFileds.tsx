@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { FormMediaField } from "@/components/form/FormMediaField"; // Importamos tu componente existente
 import type { CategoryAttribute } from "@/src/schemas/category.schema";
 
 type Props = { defaultAttributes?: CategoryAttribute[] };
@@ -30,7 +31,17 @@ export default function AttributeFields({ defaultAttributes }: Props) {
     const handleNameChange = (i: number, val: string) => update((d) => { d[i].name = val; });
     const handleValueChange = (i: number, j: number, val: string) => update((d) => { d[i].values[j] = val; });
     const handleIsVariantChange = (i: number, val: boolean) => update((d) => { d[i].isVariant = val; });
-    const addAttribute = () => setAttributes((prev) => [...prev, { name: "", values: [""], isVariant: false }]);
+    const handleIsFilterableChange = (i: number, val: boolean) => update((d) => { d[i].isFilterable = val; });
+
+    // Función para manejar el cambio de ícono desde FormMediaField
+    const handleIconChange = (i: number, urls: string[] | string | null | undefined) => {
+        update((d) => {
+            // Normalizamos: si es un array, tomamos el primero; si es string, lo usamos; si no, vacío.
+            const url = Array.isArray(urls) ? urls[0] : (urls || "");
+            d[i].icon = url;
+        });
+    };
+    const addAttribute = () => setAttributes((prev) => [...prev, { name: "", values: [""], isVariant: false, isFilterable: true, icon: "" }]);
     const removeAttribute = (i: number) => update((d) => { d.splice(i, 1); });
     const addValue = (i: number) => update((d) => { d[i].values.push(""); });
     const removeValue = (i: number, j: number) => update((d) => { d[i].values.splice(j, 1); });
@@ -51,12 +62,11 @@ export default function AttributeFields({ defaultAttributes }: Props) {
 
             <input type="hidden" name="attributes" value={JSON.stringify(attributes)} />
 
-            {/* Grid responsive: 1 col móvil, 2 col tablet, 3 col escritorio */}
             <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 {attributes.map((attr, i) => {
                     const isColor = attr.name.toLowerCase() === "color";
                     return (
-                        <Card key={i} className="flex flex-col h-full shadow-sm hover:shadow-md transition-shadow">
+                        <Card key={i} className="flex flex-col h-full shadow-sm">
                             <CardHeader className="flex flex-row items-center justify-between py-3 px-4 bg-muted/30">
                                 <CardTitle className="text-sm font-bold truncate">
                                     {attr.name || `Atributo ${i + 1}`}
@@ -71,6 +81,16 @@ export default function AttributeFields({ defaultAttributes }: Props) {
                                     <Label className="text-xs font-medium text-muted-foreground">Nombre</Label>
                                     <Input value={attr.name} onChange={(e) => handleNameChange(i, e.target.value)} placeholder="Ej: Color, Talla..." className="h-9" />
                                 </div>
+
+                                <FormMediaField
+                                    name={`icon-${i}`}
+                                    label="Icono del atributo"
+                                    folder="general"
+                                    defaultValue={attr.icon ? [attr.icon] : []}
+                                    multiple={false}
+                                    accept="image"
+                                    onChange={(urls) => handleIconChange(i, urls)}
+                                />
 
                                 <div className="space-y-2">
                                     <Label className="text-xs font-medium text-muted-foreground">Valores</Label>
@@ -111,7 +131,6 @@ export default function AttributeFields({ defaultAttributes }: Props) {
                                                 ) : (
                                                     <Input value={val} onChange={(e) => handleValueChange(i, j, e.target.value)} placeholder="Ej: Rojo, M..." className="h-9" />
                                                 )}
-
                                                 {attr.values.length > 1 && (
                                                     <Button type="button" variant="ghost" size="icon" className="h-9 w-9 shrink-0 text-muted-foreground hover:text-destructive" onClick={() => removeValue(i, j)}>
                                                         <X className="h-4 w-4" />
@@ -125,9 +144,15 @@ export default function AttributeFields({ defaultAttributes }: Props) {
                                     </Button>
                                 </div>
 
-                                <div className="flex items-center gap-2 pt-2 border-t">
-                                    <Switch checked={attr.isVariant ?? false} onCheckedChange={(v) => handleIsVariantChange(i, v)} />
-                                    <Label className="text-xs font-medium cursor-pointer">Variante de producto</Label>
+                                <div className="space-y-3 pt-2 border-t">
+                                    <div className="flex items-center justify-between">
+                                        <Label className="text-xs font-medium cursor-pointer">Variante de producto</Label>
+                                        <Switch checked={attr.isVariant ?? false} onCheckedChange={(v) => handleIsVariantChange(i, v)} />
+                                    </div>
+                                    <div className="flex items-center justify-between">
+                                        <Label className="text-xs font-medium cursor-pointer">¿Mostrar como filtro?</Label>
+                                        <Switch checked={attr.isFilterable ?? true} onCheckedChange={(v) => handleIsFilterableChange(i, v)} />
+                                    </div>
                                 </div>
                             </CardContent>
                         </Card>

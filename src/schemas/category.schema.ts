@@ -38,6 +38,9 @@ export const categoryAttributeSchema = z.object({
     ),
 
   isVariant: z.boolean().default(false),
+
+  icon: z.string().nullable().optional(),
+  isFilterable: z.boolean().default(true),
 });
 
 export type CategoryAttribute = z.infer<typeof categoryAttributeSchema>;

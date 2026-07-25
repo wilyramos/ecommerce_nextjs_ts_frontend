@@ -1,10 +1,9 @@
-// File: frontend/components/home/product/ProductDetails.tsx
 "use client";
 
 import { useState, useEffect, useMemo, useRef } from 'react';
 import AddProductToCart from './AddProductToCart';
 import ImagenesProductoCarousel from './ImagenesProductoCarousel';
-import type { ProductWithCategoryResponse, TApiVariant } from '@/src/schemas';
+import type { ProductWithCategoryResponse, TApiVariant, ProductAttributeDetail } from '@/src/schemas';
 import ShopNowButton from './ShopNowButton';
 import PaymentNotice from './PaymentNotice';
 import ProductExpandableSections from './ProductExpandableSections ';
@@ -36,8 +35,47 @@ export default function ProductDetails({ producto }: Props) {
     const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
     const [selectedVariant, setSelectedVariant] = useState<TApiVariant | null>(null);
     const searchParams = useSearchParams();
-
     const isFirstRender = useRef(true);
+
+    const categoryAttributesMap = useMemo(() => {
+        const map = new Map<string, string>();
+        if (producto.categoria && typeof producto.categoria === 'object' && producto.categoria.attributes) {
+            (producto.categoria.attributes as Array<{ name: string; icon?: string | null }>).forEach((attr) => {
+                if (attr.icon && attr.icon.trim() !== '') {
+                    map.set(attr.name.toLowerCase().trim(), attr.icon.trim());
+                }
+            });
+        }
+        return map;
+    }, [producto.categoria]);
+
+    const featuredAttributes = useMemo(() => {
+        const rawDetalle = producto.atributosDetalle;
+        if (!rawDetalle) return [];
+
+        const entries: [string, ProductAttributeDetail][] = Array.isArray(rawDetalle)
+            ? rawDetalle
+            : Object.entries(rawDetalle);
+
+        return entries
+            .filter(([, detail]) => {
+                if (!detail) return false;
+                return Boolean(detail.isFeatured) && Boolean(detail.value && String(detail.value).trim() !== '');
+            })
+            .map(([key, detail]) => {
+                const normalizedKey = key.toLowerCase().trim();
+                const iconFromCategory = categoryAttributesMap.get(normalizedKey);
+                const finalIcon = detail.icon && detail.icon.trim() !== ''
+                    ? detail.icon
+                    : (iconFromCategory || null);
+
+                return {
+                    key,
+                    value: detail.value,
+                    icon: finalIcon
+                };
+            });
+    }, [producto.atributosDetalle, categoryAttributesMap]);
 
     const allAttributes = useMemo(() => {
         const attrs: Record<string, string[]> = {};
@@ -50,7 +88,7 @@ export default function ProductDetails({ producto }: Props) {
         return attrs;
     }, [producto.variants]);
 
-    const showPaymentNotice = producto.categoria ?? false;
+    const showPaymentNotice = Boolean(producto.categoria);
 
     useEffect(() => {
         const initialAttrs: Record<string, string> = {};
@@ -121,7 +159,6 @@ export default function ProductDetails({ producto }: Props) {
         return cleaned.length > 0 ? cleaned : ["/logoapp.svg"];
     }, [selectedVariant, producto.imagenes, producto.variants]);
 
-
     const precio = selectedVariant?.precio ?? producto.precio ?? 0;
     const precioComparativo = selectedVariant?.precioComparativo ?? producto.precioComparativo ?? null;
     const stock = !selectedVariant ? (producto.stock ?? 0) : (selectedVariant.stock ?? 0);
@@ -139,107 +176,138 @@ export default function ProductDetails({ producto }: Props) {
         return variant?.stock === 0;
     };
 
-
     return (
-        <article className="grid grid-cols-1 lg:grid-cols-12 gap-2 md:gap-6 lg:gap-10 mx-auto text-foreground bg-background px-2 items-start w-full min-w-0">
+        <article className="flex flex-col lg:grid lg:grid-cols-12 gap-2 md:gap-6 lg:gap-10 mx-auto text-foreground bg-background px-2 items-start w-full min-w-0">
 
-            {/* ── COLUMNA IZQUIERDA ── */}
-            <div className="col-span-1 lg:col-span-7 flex flex-col gap-8 w-full min-w-0 overflow-hidden">
+            {/* ── 1. CARRUSEL DE IMÁGENES (Móvil: orden 1 | Desktop: Columna izquierda arriba) ── */}
+            <div className="order-1 lg:order-none lg:col-span-7 w-full min-w-0 overflow-hidden">
                 <ImagenesProductoCarousel images={variantImages} />
-
-                <div className="hidden lg:block border-t border-border/60 pt-4">
-                    <ProductExpandableSections producto={producto} />
-                </div>
             </div>
 
-            {/* ── COLUMNA DERECHA ── */}
-            <section className="col-span-1 lg:col-span-5 w-full min-w-0 lg:sticky lg:top-24 space-y-4 lg:pb-6">
-                <div className="space-y-4">
-                    <header className="py-1 space-y-1">
-
-                        {/* Breadcrumb marca / línea + SKU */}
-                        <div className="flex items-center justify-between w-full">
-                            <div className="flex items-center gap-1 flex-wrap">
-                                {producto.brand && (
-                                    <Link
-                                        href={`/catalogo/${producto.brand.slug}`}
-                                        prefetch={false}
-                                        className="text-[10px] font-semibold text-muted-foreground hover:text-action-cta transition-colors uppercase tracking-wider focus-visible:outline-none"
-                                    >
-                                        {producto.brand.nombre}
-                                    </Link>
-                                )}
-                                {producto.brand && producto.line && (
-                                    <span className="text-[10px] text-border">/</span>
-                                )}
-                                {producto.line && typeof producto.line === 'object' && (
-                                    <Link
-                                        href={`/catalogo/${producto.line.slug}`}
-                                        prefetch={false}
-                                        className="text-[10px] font-semibold text-muted-foreground hover:text-action-cta transition-colors uppercase tracking-wider focus-visible:outline-none"
-                                    >
-                                        {producto.line.nombre}
-                                    </Link>
-                                )}
-                            </div>
-
-                            {(selectedVariant?.sku || producto.sku) && (
-                                <Small className="normal-case tracking-normal">
-                                    {selectedVariant?.sku || producto.sku}
-                                </Small>
+            {/* ── 2. PANEL DE CONVERSIÓN Y COMPRA (Móvil: orden 2 | Desktop: Columna derecha completa) ── */}
+            <section className="order-2 lg:order-none lg:col-span-5 w-full min-w-0 lg:sticky lg:top-24 space-y-4 lg:pb-6">
+                <header className="py-1 space-y-2">
+                    {/* Breadcrumbs y SKU */}
+                    <div className="flex items-center justify-between w-full">
+                        <div className="flex items-center gap-1 flex-wrap">
+                            {producto.brand && (
+                                <Link
+                                    href={`/catalogo/${producto.brand.slug}`}
+                                    prefetch={false}
+                                    className="text-[10px] font-semibold text-muted-foreground hover:text-action-cta transition-colors uppercase tracking-wider focus-visible:outline-none"
+                                >
+                                    {producto.brand.nombre}
+                                </Link>
+                            )}
+                            {producto.brand && producto.line && (
+                                <span className="text-[10px] text-border">/</span>
+                            )}
+                            {producto.line && typeof producto.line === 'object' && (
+                                <Link
+                                    href={`/catalogo/${producto.line.slug}`}
+                                    prefetch={false}
+                                    className="text-[10px] font-semibold text-muted-foreground hover:text-action-cta transition-colors uppercase tracking-wider focus-visible:outline-none"
+                                >
+                                    {producto.line.nombre}
+                                </Link>
                             )}
                         </div>
 
-                        {/* Nombre */}
-                        <H1 className="select-text tracking-tight font-semibold">
-                            {producto.nombre}
-                        </H1>
-
-                        {/* Color sin variantes */}
-                        {!producto.variants?.length && colorAtributo && (
-                            <div className="flex items-center gap-2 pt-0.5">
-                                <span className="text-xs font-semibold text-muted-foreground">Color:</span>
-                                <div className="flex items-center gap-1.5">
-                                    {(Array.isArray(colorAtributo) ? colorAtributo : [colorAtributo]).map((c) => (
-                                        <ColorCircle key={c} color={c} size={16} />
-                                    ))}
-                                </div>
-                            </div>
+                        {(selectedVariant?.sku || producto.sku) && (
+                            <Small className="normal-case tracking-normal">
+                                SKU: {selectedVariant?.sku || producto.sku}
+                            </Small>
                         )}
+                    </div>
 
-                        {/* Precios */}
-                        <div className="flex items-baseline gap-2.5 flex-wrap pt-1.5">
-                            <div className="flex items-baseline gap-0.5 text-foreground select-all">
-                                <span className="text-xs font-medium">S/</span>
-                                <span className="text-2xl md:text-3xl font-normal tracking-tight">
-                                    {precio.toFixed(2)}
-                                </span>
-                            </div>
+                    {/* Nombre del Producto */}
+                    <H1 className="select-text tracking-tight font-semibold">
+                        {producto.nombre}
+                    </H1>
 
-                            {hasDiscount && (
-                                <div className="flex items-center gap-2">
-                                    <span className="text-xs text-muted-foreground line-through font-normal">
-                                        S/ {precioComparativo!.toFixed(2)}
-                                    </span>
-                                    <span className="px-1.5 py-0.5 bg-destructive/10 text-destructive text-[10px] font-bold uppercase tracking-wider rounded-xs">
-                                        {Math.round(((precioComparativo! - precio) / precioComparativo!) * 100)}% OFF
-                                    </span>
-                                </div>
-                            )}
+                    {/* Precios */}
+                    <div className="flex items-baseline gap-2.5 flex-wrap pt-1">
+                        <div className="flex items-baseline gap-0.5 text-foreground select-all">
+                            <span className="text-xs font-medium">S/</span>
+                            <span className="text-2xl md:text-3xl font-bold tracking-tight">
+                                {precio.toFixed(2)}
+                            </span>
                         </div>
 
-                        {/* Stock agotado */}
-                        {stock === 0 && (
-                            <div className="pt-1.5">
-                                <span className="inline-flex items-center text-[10px] uppercase font-bold tracking-wider text-destructive bg-destructive/10 border border-destructive/20 px-2 py-0.5 rounded-xs">
-                                    Sin stock
+                        {hasDiscount && (
+                            <div className="flex items-center gap-2">
+                                <span className="text-xl text-muted-foreground line-through font-normal">
+                                    S/ {precioComparativo!.toFixed(2)}
+                                </span>
+                                <span className="px-1.5 py-0 bg-destructive/10 text-destructive text-lg  uppercase tracking-wider rounded-xs">
+                                    {Math.round(((precioComparativo! - precio) / precioComparativo!) * 100)}% OFF
                                 </span>
                             </div>
                         )}
+                    </div>
 
-                    </header>
+                    {/* Indicador de Stock */}
+                    {stock === 0 && (
+                        <div className="pt-1">
+                            <span className="inline-flex items-center text-[10px] uppercase font-bold tracking-wider text-destructive bg-destructive/10 border border-destructive/20 px-2 py-0.5 rounded-xs">
+                                Sin stock
+                            </span>
+                        </div>
+                    )}
+                </header>
 
-                    {/* Atributos y Variantes */}
+                {/* Atributos Destacados */}
+                {featuredAttributes.length > 0 && (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 py-1">
+                        {featuredAttributes.map((attr) => {
+                            const valueLower = attr.value.toLowerCase().trim();
+                            const isCheckAttribute = ["si", "sí", "true", "aplica", "incluido", "yes"].includes(valueLower);
+
+                            return (
+                                <div
+                                    key={attr.key}
+                                    className="flex items-center justify-center gap-2 p-1.5 rounded-xs border border-border/50 bg-card/40 min-w-0"
+                                >
+                                    {attr.icon && (
+                                        <Image
+                                            src={attr.icon}
+                                            alt={attr.key}
+                                            width={18}
+                                            height={18}
+                                            className="object-contain w-9 h-9 shrink-0"
+                                            unoptimized
+                                            quality={50}
+                                        />
+                                    )}
+                                    <div className="flex flex-col min-w-0 leading-tight">
+                                        <span className="text-[10px] font-medium text-muted-foreground uppercase">
+                                            {attr.key}
+                                        </span>
+                                        {!isCheckAttribute && (
+                                            <span className="text-md font-semibold text-foreground uppercase">
+                                                {attr.value}
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
+
+                {/* Selección de Atributos y Variantes */}
+                <div className="space-y-3">
+                    {!producto.variants?.length && colorAtributo && (
+                        <div className="flex items-center gap-2">
+                            <span className="text-xs font-semibold text-muted-foreground">Color:</span>
+                            <div className="flex items-center gap-1.5">
+                                {(Array.isArray(colorAtributo) ? colorAtributo : [colorAtributo]).map((c) => (
+                                    <ColorCircle key={c} color={c} size={16} />
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
                     {Object.entries(allAttributes).map(([key]) => {
                         const availableValues = getAvailableValues(key);
                         const isColor = key.toLowerCase() === "color";
@@ -252,7 +320,7 @@ export default function ProductDetails({ producto }: Props) {
                                 </legend>
 
                                 {isColor ? (
-                                    <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
+                                    <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 gap-2">
                                         {availableValues.map((val) => {
                                             const outOfStock = isOptionOutOfStock(key, val);
                                             const selected = selectedAttributes[key] === val;
@@ -265,34 +333,27 @@ export default function ProductDetails({ producto }: Props) {
                                                     onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                     disabled={outOfStock}
                                                     className={cn(
-                                                        "relative group flex flex-col items-center justify-between gap-1.5 p-2 border w-full transition-all cursor-pointer outline-none rounded-xs text-xs font-semibold focus-visible:ring-2 focus-visible:ring-ring",
+                                                        "relative flex items-center gap-2 p-1.5 border w-full transition-all cursor-pointer outline-none rounded-xs text-xs font-semibold focus-visible:ring-2 focus-visible:ring-ring",
                                                         selected
-                                                            ? "border-foreground bg-background shadow-xs ring-1 ring-foreground"
-                                                            : "border-border bg-background-secondary/40 hover:bg-background-secondary hover:border-muted-foreground/60",
-                                                        outOfStock && "opacity-40 cursor-not-allowed bg-muted-neutral/40"
+                                                            ? "border-foreground bg-background ring-1 ring-foreground"
+                                                            : "border-border bg-card hover:border-muted-foreground/60",
+                                                        outOfStock && "opacity-40 cursor-not-allowed bg-muted/20"
                                                     )}
                                                 >
-                                                    <div className={cn("relative w-8 h-8 overflow-hidden rounded-full border border-border shrink-0 flex items-center justify-center bg-card", outOfStock && "grayscale")}>
+                                                    <div className="relative w-6 h-6 overflow-hidden rounded-full border border-border shrink-0 flex items-center justify-center bg-card">
                                                         {variantForValue?.imagenes?.[0] ? (
                                                             <Image
                                                                 src={variantForValue.imagenes[0]}
                                                                 alt={val}
                                                                 fill
                                                                 className="object-cover"
-                                                                quality={10}
                                                                 unoptimized
                                                             />
                                                         ) : (
-                                                            <ColorCircle color={val} size={32} />
-                                                        )}
-
-                                                        {outOfStock && (
-                                                            <span className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-                                                                <div className="w-[120%] border-t border-destructive/70 -rotate-45" />
-                                                            </span>
+                                                            <ColorCircle color={val} size={20} />
                                                         )}
                                                     </div>
-                                                    <span className={cn("text-[10px] text-center truncate capitalize w-full tracking-tight font-semibold", selected ? "text-foreground" : "text-muted-foreground", outOfStock && "line-through")}>
+                                                    <span className={cn("text-[10px] truncate capitalize font-semibold", selected ? "text-foreground" : "text-muted-foreground", outOfStock && "line-through")}>
                                                         {val}
                                                     </span>
                                                 </button>
@@ -342,16 +403,10 @@ export default function ProductDetails({ producto }: Props) {
                                                         selected
                                                             ? "border-foreground bg-background ring-1 ring-foreground text-foreground"
                                                             : "border-border bg-card text-muted-foreground hover:border-muted-foreground/60 hover:text-foreground",
-                                                        outOfStock && "opacity-40 text-muted-foreground/60 bg-background-secondary border-border cursor-not-allowed"
+                                                        outOfStock && "opacity-40 text-muted-foreground/60 border-border cursor-not-allowed"
                                                     )}
                                                 >
                                                     <span className={cn(outOfStock && "line-through")}>{val}</span>
-
-                                                    {outOfStock && (
-                                                        <span className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-                                                            <div className="w-[110%] border-t border-muted-foreground/40 -rotate-[15deg]" />
-                                                        </span>
-                                                    )}
                                                 </button>
                                             );
                                         })}
@@ -360,116 +415,104 @@ export default function ProductDetails({ producto }: Props) {
                             </fieldset>
                         );
                     })}
-
-                    {/* Botones de Acción Módulos */}
-                    <section className="flex justify-between items-center gap-3 pt-2">
-                        <div className="hidden md:flex flex-1">
-                            <AddProductToCart
-                                product={producto}
-                                variant={selectedVariant ?? undefined}
-                            />
-                        </div>
-                        <div className="flex-1">
-                            <ShopNowButton
-                                disabled={((producto.variants?.length ?? 0) > 0 && (!allAttributesSelected || !selectedVariant)) || stock <= 0}
-                                product={producto}
-                                variant={selectedVariant ?? undefined}
-                            />
-                        </div>
-                    </section>
                 </div>
 
-                {showPaymentNotice && precio > 150 && (
-                    <div className="pt-1">
-                        <PaymentNotice price={precio} installments={6} />
+                {/* Botones de Acción */}
+                <section className="flex justify-between items-center gap-3 pt-2">
+                    <div className="hidden md:flex flex-1">
+                        <AddProductToCart
+                            product={producto}
+                            variant={selectedVariant ?? undefined}
+                        />
                     </div>
+                    <div className="flex-1">
+                        <ShopNowButton
+                            disabled={((producto.variants?.length ?? 0) > 0 && (!allAttributesSelected || !selectedVariant)) || stock <= 0}
+                            product={producto}
+                            variant={selectedVariant ?? undefined}
+                        />
+                    </div>
+                </section>
+
+                {showPaymentNotice && precio > 150 && (
+                    <PaymentNotice price={precio} installments={6} />
                 )}
 
-                {/* Fichas de Logística de Tienda */}
-                <div className="border-y border-border/40 mt-2">
-
-                    {/* Medios de pago */}
-                    <div className="flex items-center justify-between py-2.5">
+                {/* Bloque Logístico Consolidado */}
+                <div className="border-y border-border/40 divide-y divide-border/30 my-2">
+                    <div className="flex items-center justify-between py-2">
                         <div className="flex items-center gap-2 text-muted-foreground">
-                            <CreditCard className="w-3.5 h-3.5 shrink-0 text-muted-foreground/80" />
-                            <span className="text-xs font-semibold">Medios de pago:</span>
+                            <CreditCard className="w-3.5 h-3.5 shrink-0" />
+                            <span className="text-xs font-medium">Pagos seguros:</span>
                         </div>
-                        <div>
-                            <PaymentMethods />
+                        <PaymentMethods />
+                    </div>
+
+                    <div className="flex items-center justify-between py-2 text-xs">
+                        <div className="flex items-center gap-2 text-muted-foreground">
+                            <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
+                            <span className="font-medium">Garantía oficial:</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                            <span className="font-bold text-foreground">12 meses</span>
+                            <a
+                                href="/politicas-de-cambios-y-devoluciones"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                title="Ver políticas de garantía"
+                                className="text-muted-foreground hover:text-action-cta transition-colors p-0.5 rounded-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                            >
+                                <GoLinkExternal className="w-3 h-3" />
+                            </a>
                         </div>
                     </div>
 
-                    {/* Garantía */}
-                    <div className="flex items-center justify-between py-2.5">
+                    <div className="flex items-center justify-between py-2 text-xs">
                         <div className="flex items-center gap-2 text-muted-foreground">
-                            <ShieldCheck className="w-3.5 h-3.5 shrink-0 text-muted-foreground/80" />
-                            <span className="text-xs font-semibold">Garantía de fábrica:</span>
+                            <Truck className="w-3.5 h-3.5 shrink-0" />
+                            <span className="font-medium">Envío:</span>
                         </div>
                         <div className="text-right">
-                            <span className="inline-flex items-center text-[11px] font-bold text-foreground bg-muted-neutral/30 px-2 py-0.5 border border-border/60 rounded-xs">
-                                12 meses de garantía
-                            </span>
-                        </div>
-                    </div>
-
-                    {/* Envío */}
-                    <div className="flex items-center justify-between py-2.5">
-                        <div className="flex items-center gap-2 text-muted-foreground">
-                            <Truck className="w-3.5 h-3.5 shrink-0 text-muted-foreground/80" />
-                            <span className="text-xs font-semibold">Envío:</span>
-                        </div>
-                        <div className="text-right flex flex-col items-end">
                             {isFreeShipping && (
-                                <span className="font-bold text-xs text-action-cta uppercase tracking-wider leading-none">
+                                <span className="font-bold text-action-cta uppercase mr-1">
                                     Gratis
                                 </span>
                             )}
-                            <Muted className={cn("mt-0.5 font-medium", !isFreeShipping && "text-xs text-foreground")}>
-                                Entrega: {getDeliveryRange(producto.diasEnvio || 1)}
+                            <Muted className="inline font-medium text-foreground">
+                                ({getDeliveryRange(producto.diasEnvio || 1)})
                             </Muted>
                         </div>
                     </div>
 
-                    {/* Consulta por WhatsApp */}
-                    <a
-                        href={`https://wa.me/51925054636?text=Consulta%20${encodeURIComponent(producto.nombre)}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="flex items-center justify-between py-2.5 hover:bg-background-secondary px-1 -mx-1 transition-colors group outline-none rounded-xs focus-visible:ring-2 focus-visible:ring-ring"
-                    >
-                        <div className="flex items-center gap-2 text-muted-foreground">
-                            <GoLinkExternal className="w-3.5 h-3.5 text-muted-foreground/80" />
-                            <span className="text-xs font-semibold">¿Deseas asesoría?</span>
-                        </div>
-                        <span className="text-xs text-muted-foreground flex items-center gap-0.5 tracking-wider">
-                            WhatsApp
-                            <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
-                        </span>
-                    </a>
-
-                    {/* Enlace de políticas */}
-                    <div className="flex items-center justify-start">
-                        <Link
-                            href="/politicas-de-cambios-y-devoluciones"
-                            prefetch={false}
-                            className="flex items-center text-xs font-semibold text-muted-foreground hover:text-action-cta transition-colors underline-offset-4 hover:underline py-2.5"
+                    <div className="flex items-center justify-between py-2 text-xs">
+                        <a
+                            href={`https://wa.me/51925054636?text=Consulta%20${encodeURIComponent(producto.nombre)}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="flex items-center gap-1.5 text-muted-foreground hover:text-action-cta transition-colors w-full justify-between"
                         >
-                            Ver políticas de cambios y devoluciones
-                        </Link>
+                            <span className="flex items-center gap-2 font-medium">
+                                <GoLinkExternal className="w-3.5 h-3.5" />
+                                ¿Dudas sobre el producto?
+                            </span>
+                            <span className="flex items-center text-foreground font-semibold">
+                                Asesoría WhatsApp
+                                <ChevronRight className="w-3.5 h-3.5" />
+                            </span>
+                        </a>
                     </div>
                 </div>
 
                 <ProductComplementary complementarios={producto.complementarios} />
-
             </section>
 
-            {/* ── RESPONSIVE COMPONENTE INYECTADO ABAJO ── */}
-            <div className="col-span-1 lg:hidden mt-4 w-full">
+            {/* ── 3. DETALLES Y ESPECIFICACIONES (Móvil: orden 3, debajo de todo | Desktop: Columna izquierda debajo de imágenes) ── */}
+            <div className="order-3 lg:order-none lg:col-span-7 w-full border-t border-border/60 pt-4 mt-4 lg:mt-0">
                 <ProductExpandableSections producto={producto} />
             </div>
 
-            {/* Barra fija inferior de carrito para móviles */}
-            <div className="md:hidden fixed bottom-0 left-0 w-full bg-card p-3.5 border-t border-border shadow-lg z-50 pb-safe">
+            {/* Barra fija inferior para dispositivos móviles */}
+            <div className="md:hidden fixed bottom-0 left-0 w-full bg-card p-3 border-t border-border shadow-lg z-50 pb-safe">
                 <AddProductToCart
                     product={producto}
                     variant={allAttributesSelected ? selectedVariant ?? undefined : undefined}
