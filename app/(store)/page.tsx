@@ -1,13 +1,13 @@
+// app/page.tsx
 import { Metadata } from "next";
 import { metadata as globalMetadata } from "@/app/layout";
-import CategoriasDestacadasWrapper from "@/components/home/CategoriasDestacadasWrapper";
-import FeaturesList from "@/components/home/FeaturesList";
-import BrandsList from "@/components/home/BrandsList";
 import CarruselPrincipal from "@/components/home/CarruselPrincipal";
-import HomepageSectionsWrapper from "@/components/home/sections/HomepageSectionsWrapper";
+import FeaturesList from "@/components/home/FeaturesList";
+import CategoriasDestacadasWrapper from "@/components/home/CategoriasDestacadasWrapper";
 import HomepageSections from "@/components/home/sections/HomepageSections";
+import HomepageSectionsWrapper from "@/components/home/sections/HomepageSectionsWrapper";
+import BrandsList from "@/components/home/BrandsList";
 
-// Metadata for SEO and social sharing
 export const metadata: Metadata = {
     ...globalMetadata,
     title: {
@@ -63,30 +63,36 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
     return (
-        <>
-
-            <section>
+        <main className="flex flex-col gap-4 md:gap-8 pb-12">
+            {/* 1. Hero / Promociones Principales */}
+            <section aria-label="Banners principales">
                 <CarruselPrincipal />
             </section>
 
-              <section>
+            {/* 2. Barra de Confianza e Incentivos (Inmediatamente tras el Banner) */}
+            <section aria-label="Beneficios de compra">
+                <FeaturesList />
+            </section>
+
+            {/* 3. Navegación por Categorías Destacadas */}
+            <section aria-label="Categorías principales">
                 <CategoriasDestacadasWrapper />
             </section>
 
+            {/* 4. Colecciones Destacadas Vía Backend (Listados/Carruseles) */}
+            <section aria-label="Colecciones de productos">
+                <HomepageSections />
+            </section>
 
+            {/* 5. Escaparate Dinámico de Secciones Avanzadas */}
+            <section aria-label="Secciones dinámicas">
+                <HomepageSectionsWrapper />
+            </section>
 
-            <HomepageSections />
-
-          
-            <HomepageSectionsWrapper />
-
-            <section className="my-2 md:my-5">
+            {/* 6. Marcas Oficiales */}
+            <section aria-label="Marcas oficiales">
                 <BrandsList />
             </section>
-
-            <section className="">
-                <FeaturesList />
-            </section>
-        </>
+        </main>
     );
 }

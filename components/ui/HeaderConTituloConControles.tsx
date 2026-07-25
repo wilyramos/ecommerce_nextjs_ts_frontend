@@ -1,64 +1,26 @@
+// components/ui/HeaderConTituloConControles.tsx
 "use client";
 
 import React from "react";
-import Link from "next/link";
-import { ChevronRight } from "lucide-react";
 import type { ButtonGroupProps } from "react-multi-carousel";
+import SectionHeader from "@/components/home/sections/SectionHeader";
 
 interface Props extends ButtonGroupProps {
     title: React.ReactNode;
     viewAllHref?: string;
     label?: string;
-    isStaticGrid?: boolean;
 }
 
-export default function HeaderConTituloConControles({ title, viewAllHref, label }: Props) {
-    // Función interna para procesar el string y estilizar la segunda palabra
-    const formatTitle = (node: React.ReactNode): React.ReactNode => {
-        if (typeof node !== "string") return node;
-
-        const words = node.trim().split(/\s+/);
-        if (words.length < 2) return node;
-
-        return (
-            <>
-                {words[0]}{" "}
-                <span className="text-action-cta font-light italic">
-                    {words[1]}
-                </span>
-                {words.length > 2 && " " + words.slice(2).join(" ")}
-            </>
-        );
-    };
-
+export default function HeaderConTituloConControles({
+    title,
+    viewAllHref,
+    label,
+}: Props) {
     return (
-        <div className="w-full flex flex-col gap-2 mb-6 select-none">
-            <div className="flex items-center justify-between">
-                {/* Título y Etiqueta superior */}
-                <div className="flex flex-col">
-                    {label && (
-                        <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-0.5">
-                            {label}
-                        </span>
-                    )}
-                    <h2 className="text-lg md:text-xl font-bold tracking-tight text-foreground">
-                        {formatTitle(title)}
-                    </h2>
-                </div>
-
-                {/* Enlace de acción */}
-                <div className="flex items-center gap-4">
-                    {viewAllHref && (
-                        <Link
-                            href={viewAllHref}
-                            className="flex items-center gap-1 text-xs md:text-sm text-foreground hover:text-action-cta font-medium transition-colors duration-200"
-                        >
-                            Ver todo
-                            <ChevronRight size={14} className="mt-0.5" strokeWidth={2.5} />
-                        </Link>
-                    )}
-                </div>
-            </div>
-        </div>
+        <SectionHeader
+            title={title}
+            subtitle={label}
+            viewAllHref={viewAllHref}
+        />
     );
 }
