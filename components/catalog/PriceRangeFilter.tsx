@@ -35,7 +35,7 @@ export default function PriceRangeFilter({ filters }: { filters: CatalogFilters 
     return (
         <AccordionItem value="item-price" className="border-b border-border py-1">
             {/* MONOCROMO: Hover del título cambiado a gris oscuro neutro */}
-            <AccordionTrigger className="text-xs font-bold capitalize tracking-wider text-primary hover:no-underline py-3 px-0 hover:text-neutral-600 transition-colors">
+            <AccordionTrigger className="text-xs font-bold capitalize  text-primary hover:no-underline py-3 px-0 hover:text-neutral-600 transition-colors">
                 Precio
             </AccordionTrigger>
             <AccordionContent className="pt-4 pb-3 px-1">
@@ -67,11 +67,11 @@ export default function PriceRangeFilter({ filters }: { filters: CatalogFilters 
 
                 <div className="flex justify-between mt-3.5">
                     <div className="flex flex-col">
-                        <span className="text-[10px] capitalize font-bold tracking-wider text-muted-foreground">Min</span>
+                        <span className="text-[10px] capitalize font-bold  text-muted-foreground">Min</span>
                         <span className="text-xs font-semibold tabular-nums text-primary">{fmt(localValues[0])}</span>
                     </div>
                     <div className="flex flex-col text-right">
-                        <span className="text-[10px] capitalize font-bold tracking-wider text-muted-foreground">Max</span>
+                        <span className="text-[10px] capitalize font-bold  text-muted-foreground">Max</span>
                         <span className="text-xs font-semibold tabular-nums text-primary">{fmt(localValues[1])}</span>
                     </div>
                 </div>

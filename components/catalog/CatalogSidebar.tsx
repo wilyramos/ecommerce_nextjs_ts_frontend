@@ -84,7 +84,7 @@ export default function CatalogSidebar({ filters }: Props) {
             <Accordion
                 type="multiple"
                 className="w-full space-y-1"
-                defaultValue={["item-categories", "item-brands", "item-price"]}
+                defaultValue={["item-categories", "item-price"]}
             >
                 {/* PRECIO */}
                 <PriceRangeFilter filters={filters} />
