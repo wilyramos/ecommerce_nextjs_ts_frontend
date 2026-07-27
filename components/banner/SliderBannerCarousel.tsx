@@ -8,7 +8,6 @@ import { CarouselArrow } from "./CarouselArrow";
 
 interface Props {
     banners: SliderBanner[];
-    /** Alto del banner. Default: "420px" mobile / "460px" desktop */
     height?: {
         mobile?: string;
         desktop?: string;
@@ -21,18 +20,17 @@ const responsive = {
 
 export default function SliderBannerCarousel({
     banners,
-    height = { mobile: "420px", desktop: "460px" },
+    height = { mobile: "420px", desktop: "auto" },
 }: Props) {
     if (!banners.length) return null;
 
-    const autoPlaySpeed = 8000; // 8 segundos
+    const autoPlaySpeed = 8000;
 
     return (
         <div
-            className="relative w-full"
+            className="relative w-full overflow-hidden md:[aspect-ratio:36/9]"
             style={{
                 "--banner-h-mobile": height.mobile,
-                "--banner-h": height.desktop,
             } as React.CSSProperties}
         >
             <Carousel
@@ -42,12 +40,9 @@ export default function SliderBannerCarousel({
                 autoPlaySpeed={autoPlaySpeed}
                 arrows={banners.length > 1}
                 showDots={false}
-                containerClass="w-full"
-                /* Sobreescribimos los estilos internos que inyecta 'react-multi-carousel-track' 
-                  y 'react-multi-carousel-item' para asegurar que respeten el aspect-ratio 1x1 en móviles.
-                */
-                itemClass="h-[var(--banner-h)] max-md:h-auto w-full flex"
-                sliderClass="h-[var(--banner-h)] max-md:h-auto"
+                containerClass="w-full h-full"
+                itemClass="h-[var(--banner-h-mobile)] md:h-full [aspect-ratio:36/9] w-full flex"
+                sliderClass="h-[var(--banner-h-mobile)] md:h-full"
                 customLeftArrow={<CarouselArrow direction="left" />}
                 customRightArrow={<CarouselArrow direction="right" />}
             >
@@ -55,6 +50,12 @@ export default function SliderBannerCarousel({
                     <SliderBannerSlide key={banner._id || index} banner={banner} />
                 ))}
             </Carousel>
+
+            {/* Capa de degradado en la parte inferior para suavizar el corte */}
+            <div 
+                className="absolute bottom-0 left-0 right-0 h-16 md:h-24 bg-gradient-to-t from-background via-background/40 to-transparent pointer-events-none z-[1]" 
+                aria-hidden="true"
+            />
         </div>
     );
 }

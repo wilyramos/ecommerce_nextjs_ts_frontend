@@ -64,26 +64,28 @@ export const metadata: Metadata = {
 export default function HomePage() {
     return (
         <main className="flex flex-col gap-4 md:gap-8 pb-12">
-            {/* 1. Hero / Promociones Principales */}
-            <section aria-label="Banners principales">
-                <CarruselPrincipal />
-            </section>
-
-            {/* 2. Barra de Confianza e Incentivos (Inmediatamente tras el Banner) */}
-            <section aria-label="Beneficios de compra">
-                <FeaturesList />
-            </section>
+            {/* 1. Hero / Promociones Principales con Features superpuesto */}
+            <div className="relative">
+                <section aria-label="Banners principales">
+                    <CarruselPrincipal />
+                </section>
+                
+                {/* 2. Barra de Confianza e Incentivos superpuesta */}
+                <section aria-label="Beneficios de compra" className="relative z-10 -mt-6 md:-mt-8 px-4">
+                    <FeaturesList />
+                </section>
+            </div>
 
             {/* 3. Navegación por Categorías Destacadas */}
             <section aria-label="Categorías principales">
                 <CategoriasDestacadasWrapper />
             </section>
-
-            {/* 4. Colecciones Destacadas Vía Backend (Listados/Carruseles) */}
+            
+            {/* 4. Colecciones Destacadas Vía Backend */}
             <section aria-label="Colecciones de productos">
                 <HomepageSections />
             </section>
-
+            
             {/* 5. Escaparate Dinámico de Secciones Avanzadas */}
             <section aria-label="Secciones dinámicas">
                 <HomepageSectionsWrapper />
