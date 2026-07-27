@@ -50,12 +50,6 @@ export default function SliderBannerCarousel({
                     <SliderBannerSlide key={banner._id || index} banner={banner} />
                 ))}
             </Carousel>
-
-            {/* Capa de degradado en la parte inferior para suavizar el corte */}
-            <div 
-                className="absolute bottom-0 left-0 right-0 h-16 md:h-24 bg-gradient-to-t from-background via-background/40 to-transparent pointer-events-none z-[1]" 
-                aria-hidden="true"
-            />
         </div>
     );
 }
