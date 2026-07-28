@@ -177,7 +177,7 @@ export default function ProductDetails({ producto }: Props) {
     };
 
     return (
-        <article className="flex flex-col lg:grid lg:grid-cols-12 gap-2 md:gap-6 lg:gap-10 mx-auto text-foreground items-start w-full min-w-0">
+        <article className="flex flex-col lg:grid lg:grid-cols-12 gap-2 md:gap-6 lg:gap-10 mx-auto text-foreground items-start w-full min-w-0 bg-background p-4 md:p-6 lg:p-8">
 
             {/* ── 1. CARRUSEL DE IMÁGENES (Móvil: orden 1 | Desktop: Columna izquierda arriba) ── */}
             <div className="order-1 lg:order-none lg:col-span-7 w-full min-w-0 overflow-hidden">
@@ -239,7 +239,7 @@ export default function ProductDetails({ producto }: Props) {
                                 <span className="text-xl text-muted-foreground line-through font-normal">
                                     S/ {precioComparativo!.toFixed(2)}
                                 </span>
-                                <span className="px-1.5 py-0 bg-destructive/10 text-destructive text-lg  uppercase tracking-wider ">
+                                <span className="px-1.5 py-0 bg-destructive/10 text-destructive text-lg uppercase tracking-wider ">
                                     {Math.round(((precioComparativo! - precio) / precioComparativo!) * 100)}% OFF
                                 </span>
                             </div>
@@ -266,15 +266,15 @@ export default function ProductDetails({ producto }: Props) {
                             return (
                                 <div
                                     key={attr.key}
-                                    className="flex items-center justify-center gap-2 p-1.5  border border-border/50 bg-card/40 min-w-0"
+                                    className="flex flex-col items-center text-center gap-1.5 p-2.5 border border-border/50 bg-card/40 min-w-0"
                                 >
                                     {attr.icon && (
                                         <Image
                                             src={attr.icon}
                                             alt={attr.key}
-                                            width={18}
-                                            height={18}
-                                            className="object-contain w-9 h-9 shrink-0"
+                                            width={32}
+                                            height={32}
+                                            className="object-contain w-10 h-10 shrink-0"
                                             unoptimized
                                             quality={50}
                                         />
@@ -284,7 +284,7 @@ export default function ProductDetails({ producto }: Props) {
                                             {attr.key}
                                         </span>
                                         {!isCheckAttribute && (
-                                            <span className="text-md font-semibold text-foreground uppercase">
+                                            <span className="text-sm font-semibold text-foreground uppercase">
                                                 {attr.value}
                                             </span>
                                         )}
@@ -333,7 +333,7 @@ export default function ProductDetails({ producto }: Props) {
                                                     onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                     disabled={outOfStock}
                                                     className={cn(
-                                                        "relative flex items-center gap-2 p-1.5 border w-full transition-all cursor-pointer outline-none  text-xs font-semibold focus-visible:ring-2 focus-visible:ring-ring",
+                                                        "relative flex items-center gap-2 p-1.5 border w-full transition-all cursor-pointer outline-none text-xs font-semibold focus-visible:ring-2 focus-visible:ring-ring",
                                                         selected
                                                             ? "border-foreground bg-background ring-1 ring-foreground"
                                                             : "border-border bg-card hover:border-muted-foreground/60",
@@ -399,7 +399,7 @@ export default function ProductDetails({ producto }: Props) {
                                                     onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                     disabled={outOfStock}
                                                     className={cn(
-                                                        "h-8 px-3.5 relative overflow-hidden transition-all border text-xs font-semibold cursor-pointer outline-none  focus-visible:ring-2 focus-visible:ring-ring",
+                                                        "h-8 px-3.5 relative overflow-hidden transition-all border text-xs font-semibold cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring",
                                                         selected
                                                             ? "border-foreground bg-background ring-1 ring-foreground text-foreground"
                                                             : "border-border bg-card text-muted-foreground hover:border-muted-foreground/60 hover:text-foreground",
@@ -460,7 +460,7 @@ export default function ProductDetails({ producto }: Props) {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 title="Ver políticas de garantía"
-                                className="text-muted-foreground hover:text-action-cta transition-colors p-0.5  focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                                className="text-muted-foreground hover:text-action-cta transition-colors p-0.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                             >
                                 <GoLinkExternal className="w-3 h-3" />
                             </a>
