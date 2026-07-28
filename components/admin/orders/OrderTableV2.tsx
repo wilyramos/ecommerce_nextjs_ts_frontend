@@ -99,7 +99,6 @@ export default function OrderTableV2({ orders }: Props) {
                 <TableBody className="text-xs">
                     {orders.map((order) => {
                         const totalUnits = order.items.reduce((sum, item) => sum + item.quantity, 0);
-                        const initials = `${order.customerProfile.nombre?.[0] || ""}${order.customerProfile.apellidos?.[0] || ""}`.toUpperCase();
 
                         return (
                             <TableRow key={order._id} className="hover:bg-muted/30 transition-colors">
