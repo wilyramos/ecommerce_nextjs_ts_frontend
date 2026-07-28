@@ -29,6 +29,24 @@ export const TipoDocumentoEnum = z.enum(['DNI', 'RUC', 'CE']);
 export type TipoDocumento = z.infer<typeof TipoDocumentoEnum>;
 
 // ============================================================================
+// ── ESTADÍSTICAS TIPO SHOPIFY
+// ============================================================================
+
+export const OrderShopifyStatsSchema = z.object({
+    paidOrders: z.number(),
+    itemsDiscounted: z.number(),
+    paidRevenue: z.number(),
+    pendingFulfillment: z.number(),
+    salesReversals: z.number(),
+});
+export type OrderShopifyStats = z.infer<typeof OrderShopifyStatsSchema>;
+
+export const OrderStatsApiResponseSchema = z.object({
+    ok: z.literal(true),
+    data: OrderShopifyStatsSchema,
+});
+
+// ============================================================================
 // ── SUB-SCHEMAS DE SOPORTE
 // ============================================================================
 
@@ -130,9 +148,9 @@ export type CreateOrderDTO = z.infer<typeof CreateOrderDTOSchema>;
 // ============================================================================
 
 export const OrderResponseSchema = z.object({
-    _id:                   z.string(),
-    orderNumber:           z.string(),
-    culqiOrderId:          z.string().optional(),
+    _id:                    z.string(),
+    orderNumber:            z.string(),
+    culqiOrderId:           z.string().optional(),
     user: z.union([
         z.string().regex(/^[0-9a-fA-F]{24}$/),
         z.object({
@@ -142,26 +160,26 @@ export const OrderResponseSchema = z.object({
             email:     z.string()
         })
     ]).optional(), 
-    customerProfile:       CustomerProfileSchema,
-    items:                 z.array(OrderItemResponseSchema),
-    subtotal:              z.number(),
-    shippingCost:          z.number(),
-    totalPrice:            z.number(),
-    currency:              z.string(),
-    status:                OrderStatusEnum,
-    statusHistory:         z.array(StatusHistorySchema),
-    shippingAddress:       ShippingAddressSchema,
-    shippingMethod:        z.string().optional(),
+    customerProfile:        CustomerProfileSchema,
+    items:                  z.array(OrderItemResponseSchema),
+    subtotal:               z.number(),
+    shippingCost:           z.number(),
+    totalPrice:             z.number(),
+    currency:               z.string(),
+    status:                 OrderStatusEnum,
+    statusHistory:          z.array(StatusHistorySchema),
+    shippingAddress:        ShippingAddressSchema,
+    shippingMethod:         z.string().optional(),
     estimatedDeliveryDate: z.coerce.date().optional(),
-    payment:               PaymentInfoSchema.optional(),
-    trackingNumber:        z.string().optional(),
-    notes:                 z.string().optional(),
-    canceledAt:            z.coerce.date().optional(),
-    canceledBy:            z.string().optional(),
-    cancelReason:          z.string().optional(),
-    deviceInfo:            DeviceInfoSchema.optional(),
-    createdAt:             z.coerce.date(),
-    updatedAt:             z.coerce.date()
+    payment:                PaymentInfoSchema.optional(),
+    trackingNumber:         z.string().optional(),
+    notes:                  z.string().optional(),
+    canceledAt:             z.coerce.date().optional(),
+    canceledBy:             z.string().optional(),
+    cancelReason:           z.string().optional(),
+    deviceInfo:             DeviceInfoSchema.optional(),
+    createdAt:              z.coerce.date(),
+    updatedAt:              z.coerce.date()
 });
 export type OrderResponse = z.infer<typeof OrderResponseSchema>;
 

@@ -1,12 +1,11 @@
-// File: app/(admin)/admin/orders-v2/page.tsx
+// File: frontend/app/(admin)/admin/orders-v2/page.tsx
 
 import { orderService } from "@/src/services/order-service";
 import AdminPageWrapper from "@/components/admin/AdminPageWrapper";
 import OrderFiltersV2 from "@/components/admin/orders/OrderFiltersV2";
 import OrderTableV2 from "@/components/admin/orders/OrderTableV2";
-import Pagination from "@/components/ui/Pagination";
-import { getTokenOptional } from "@/src/auth/dal";
-import type { OrderResponse, OrderStatus } from "@/src/schemas/order.schema";
+import PaginationBanner from "@/components/ui/PaginationBanner";
+import type { OrderStatus } from "@/src/schemas/order.schema";
 
 interface SearchParams {
     page?: string;
@@ -24,12 +23,10 @@ interface PageProps {
 
 export default async function AdminOrdersPage({ searchParams }: PageProps) {
     const params = await searchParams;
-    const token = await getTokenOptional();
 
     const page = Math.max(1, Number(params.page ?? 1));
     const limit = Math.max(1, Number(params.limit ?? 20));
 
-    // Mapeo riguroso de filtros admitidos por tu orderService
     const filters = {
         page,
         limit,
@@ -40,44 +37,108 @@ export default async function AdminOrdersPage({ searchParams }: PageProps) {
         to: params.to || undefined,
     };
 
-    const res = await orderService.getAllOrders(token ?? "", filters);
+    // Petición en paralelo
+    const [{ orders, meta }, stats] = await Promise.all([
+        orderService.getAllOrders(filters),
+        orderService.getOrderStats({ from: filters.from, to: filters.to }),
+    ]);
 
-    const orders = (res?.data || []) as OrderResponse[];
-    const total = Number(res?.meta?.total ?? 0);
-    const pages = Math.max(1, Number(res?.meta?.pages ?? 1));
+    const formatMoney = (amount: number) => {
+        return new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN' }).format(amount);
+    };
 
     return (
         <AdminPageWrapper
             title="Gestión de Pedidos"
-            breadcrumbItems={[{ label: "Panel", href: "/admin" }]}
-            breadcrumbCurrent="Órdenes"
             showBackButton={false}
         >
+            {/* ─── BARRA DE ESTADÍSTICAS ENFOCADA EN ÓRDENES PAGADAS Y STOCK ─── */}
+            <div className="rounded-lg border border-border bg-card shadow-sm p-4 mb-6">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 divide-y md:divide-y-0 md:divide-x divide-border">
+                    
+                    {/* Órdenes Pagadas */}
+                    <div className="flex flex-col px-4 py-2 first:pl-0">
+                        <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                            Órdenes Pagadas
+                        </span>
+                        <span className="text-2xl font-bold text-foreground mt-1">
+                            {stats.paidOrders}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground mt-0.5">Pagos confirmados</span>
+                    </div>
+
+                    {/* Stock Descontado */}
+                    <div className="flex flex-col px-4 py-2">
+                        <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                            Items Descontados
+                        </span>
+                        <span className="text-2xl font-bold text-foreground mt-1">
+                            {stats.itemsDiscounted}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground mt-0.5">Unidades fuera de stock</span>
+                    </div>
+
+                    {/* Ingresos Recaudados */}
+                    <div className="flex flex-col px-4 py-2">
+                        <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                            Ingresos Cobrados
+                        </span>
+                        <span className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">
+                            {formatMoney(stats.paidRevenue)}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground mt-0.5">Ventas efectivas</span>
+                    </div>
+
+                    {/* Pendientes de Despacho */}
+                    <div className="flex flex-col px-4 py-2">
+                        <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                            Por Despachar
+                        </span>
+                        <span className="text-2xl font-bold text-amber-600 dark:text-amber-400 mt-1">
+                            {stats.pendingFulfillment}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground mt-0.5">Pagados en preparación</span>
+                    </div>
+
+                    {/* Reversiones por Reembolso */}
+                    <div className="flex flex-col px-4 py-2 last:pr-0">
+                        <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                            Reembolsos
+                        </span>
+                        <span className="text-2xl font-bold text-rose-600 dark:text-rose-400 mt-1">
+                            {formatMoney(stats.salesReversals)}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground mt-0.5">Stock restituido</span>
+                    </div>
+
+                </div>
+            </div>
+
+            {/* ─── FILTROS Y TABLA ─── */}
             <div className="space-y-5">
-                <OrderFiltersV2 
+                <OrderFiltersV2
                     filters={{
                         status: params.status,
                         email: params.email,
                         from: params.from,
                         to: params.to
-                    }} 
+                    }}
                 />
 
-                <OrderTableV2 orders={orders} />
+                <div className="rounded-lg border border-border bg-card shadow-sm overflow-hidden">
+                    <OrderTableV2 orders={orders} />
+                </div>
 
-                {total > 0 && (
-                    <div className="flex flex-col items-center gap-3 pt-6 border-t border-border">
-                        <p className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
-                            Mostrando {orders.length} de {total} órdenes registradas
-                        </p>
-                        <Pagination
-                            currentPage={page}
-                            totalPages={pages}
-                            limit={limit}
-                            pathname="/admin/orders"
-                        />
-                    </div>
-                )}
+                {/* ─── BANNER DE PAGINACIÓN CUSTOM COMPLETO ─── */}
+                <PaginationBanner
+                    currentPage={meta.page}
+                    totalPages={meta.pages}
+                    limit={meta.limit || limit}
+                    totalItems={meta.total}
+                    itemsShown={orders.length}
+                    pathname="/admin/orders-v2"
+                    limitOptions={[10, 20, 50, 100]}
+                />
             </div>
         </AdminPageWrapper>
     );

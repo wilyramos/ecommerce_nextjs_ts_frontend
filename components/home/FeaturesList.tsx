@@ -58,7 +58,7 @@ export default function FeaturesList() {
                             <div className="shrink-0 text-foreground transition-transform duration-200 group-hover:scale-110">
                                 <IconComponent className="w-5 h-5 md:w-6 md:h-6" />
                             </div>
-                            <h3 className="text-xs md:text-sm text-foreground leading-tight">
+                            <h3 className="text-xs md:text-sm text-muted-foreground leading-tight">
                                 {feature.title}
                             </h3>
                         </div>
