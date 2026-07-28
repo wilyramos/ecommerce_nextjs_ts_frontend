@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { orderService } from "@/src/services/order-service";
 import PaymentMethodsAccordionV2 from "@/components/checkout-v2/payment/PaymentMethodsAccordionV2";
-import { getTokenOptional } from "@/src/auth/dal";
+// Ya no necesitamos importar getTokenOptional aquí
 
 type PaymentPageProps = { searchParams: Promise<{ orderNumber?: string }> }
 
@@ -12,11 +12,11 @@ export default async function PaymentPage({ searchParams }: PaymentPageProps) {
 
     if (!orderNumber) redirect("/checkout")
 
-    const token = await getTokenOptional()
     let order
 
     try {
-        order = await orderService.getOrderByNumber(orderNumber, token)
+        // Llamada limpia y autónoma al servicio (el token se gestiona internamente)
+        order = await orderService.getOrderByNumber(orderNumber)
     } catch (error) {
         console.error("❌ Error recuperando orden:", error)
         return (
@@ -28,7 +28,7 @@ export default async function PaymentPage({ searchParams }: PaymentPageProps) {
 
     if (order.payment?.status === "approved") {
         return (
-            <p className="text-center py-10 text-sm font-semibold text-success select-none">
+            <p className="text-center py-10 text-sm font-semibold text-emerald-600 dark:text-emerald-400 select-none">
                 El pago ya fue procesado y aprobado.
             </p>
         )
