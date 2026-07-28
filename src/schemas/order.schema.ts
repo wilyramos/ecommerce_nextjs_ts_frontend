@@ -114,6 +114,21 @@ export const DeviceInfoSchema = z.object({
 });
 export type DeviceInfo = z.infer<typeof DeviceInfoSchema>;
 
+export const InvoiceInfoSchema = z.object({
+    tipo:              z.enum(['boleta', 'factura', 'nota_credito', 'anulacion']),
+    serie:             z.string(),
+    numero:            z.number(),
+    pdfUrl:            z.string().nullish(),
+    xmlUrl:            z.string().nullish(),
+    cdrUrl:            z.string().nullish(),
+    nubefactEnlace:    z.string().nullish(),
+    sunatResponseCode: z.string().nullish(),
+    sunatDescription:  z.string().nullish(),
+    sunatTicketNumero: z.string().nullish(),
+    generatedAt:       z.coerce.date()
+});
+export type InvoiceInfo = z.infer<typeof InvoiceInfoSchema>;
+
 // ============================================================================
 // ── FILTROS DE CONSULTA
 // ============================================================================
@@ -174,12 +189,15 @@ export const OrderResponseSchema = z.object({
     payment:                PaymentInfoSchema.optional(),
     trackingNumber:         z.string().optional(),
     notes:                  z.string().optional(),
+    invoice:                InvoiceInfoSchema.optional(),
     canceledAt:             z.coerce.date().optional(),
     canceledBy:             z.string().optional(),
     cancelReason:           z.string().optional(),
     deviceInfo:             DeviceInfoSchema.optional(),
     createdAt:              z.coerce.date(),
-    updatedAt:              z.coerce.date()
+    updatedAt:              z.coerce.date(),
+    creditNote: InvoiceInfoSchema.optional(),
+    voidInfo: InvoiceInfoSchema.optional(),
 });
 export type OrderResponse = z.infer<typeof OrderResponseSchema>;
 

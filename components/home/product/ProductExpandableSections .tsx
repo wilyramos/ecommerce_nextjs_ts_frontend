@@ -41,21 +41,21 @@ export default function ProductExpandableSections({ producto }: Props) {
 
     if (!hasDescripcion && !hasSpecs) return null;
 
-    const defaultOpen = hasDescripcion ? "descripcion" : "specs";
+    // const defaultOpen = hasDescripcion ? "descripcion" : "specs";
 
     return (
-        <Accordion type="multiple" defaultValue={[defaultOpen]} className="w-full divide-y divide-border/40 border-b border-border/40 px-0.5">
+        <Accordion type="multiple" className="w-full divide-y divide-border/40 border-b border-border/40 px-0.5">
             {/* DESCRIPCIÓN */}
             {hasDescripcion && (
                 <AccordionItem value="descripcion" className="border-none">
                     <AccordionTrigger className="hover:no-underline group py-2.5 outline-none">
-                        <span className="text-xs font-bold text-foreground tracking-wider transition-colors group-hover:text-action-cta">
+                        <span className="text-md font-semibold text-foreground  transition-colors group-hover:text-action-cta">
                             Información del producto
                         </span>
                     </AccordionTrigger>
                     <AccordionContent className="pb-5 pt-0.5">
                         <div
-                            className="prose prose-sm max-w-none text-xs text-muted-foreground leading-relaxed prose-headings:text-foreground prose-headings:font-semibold prose-strong:text-foreground prose-strong:font-semibold prose-p:text-xs prose-p:leading-relaxed prose-a:text-action-cta"
+                            className="prose prose-sm max-w-none text-md text-muted-foreground leading-relaxed prose-headings:text-foreground prose-headings:font-semibold prose-strong:text-foreground prose-strong:font-semibold prose-p:text-md prose-p:leading-relaxed prose-a:text-action-cta"
                             dangerouslySetInnerHTML={{ __html: descripcionRaw }}
                         />
                     </AccordionContent>
@@ -66,14 +66,14 @@ export default function ProductExpandableSections({ producto }: Props) {
             {hasSpecs && (
                 <AccordionItem value="specs" className="border-none">
                     <AccordionTrigger className="hover:no-underline group py-2.5 outline-none">
-                        <span className="text-xs font-bold text-foreground tracking-wider transition-colors group-hover:text-action-cta">
+                        <span className="text-md font-semibold text-foreground  transition-colors group-hover:text-action-cta">
                             Especificaciones
                         </span>
                     </AccordionTrigger>
                     <AccordionContent className="pb-5 pt-0.5 space-y-3">
                         {specsArray.length > 0 && (
                             <div className="overflow-x-auto w-full border border-border/60 rounded-xs">
-                                <table className="w-full text-left border-collapse text-xs">
+                                <table className="w-full text-left border-collapse text-md">
                                     <tbody className="divide-y divide-border/40">
                                         {specsArray.map((spec) => (
                                             <tr key={spec.key} className="hover:bg-muted/5 transition-colors">
@@ -92,10 +92,10 @@ export default function ProductExpandableSections({ producto }: Props) {
 
                         {hasPhysicalData && (
                             <div className="overflow-x-auto w-full border border-border/60 rounded-xs">
-                                <table className="w-full text-left border-collapse text-xs">
+                                <table className="w-full text-left border-collapse text-md">
                                     <thead>
                                         <tr>
-                                            <th colSpan={2} className="px-2.5 py-1.5 text-[9px] font-bold tracking-widest text-muted-foreground border-b border-border/40 bg-muted/20 select-none">
+                                            <th colSpan={2} className="px-2.5 py-1.5 text-[9px] font-semibold tracking-widest text-muted-foreground border-b border-border/40 bg-muted/20 select-none">
                                                 <div className="flex items-center gap-1">
                                                     <Package size={11} className="text-muted-foreground/80" />
                                                     Físico y embalaje

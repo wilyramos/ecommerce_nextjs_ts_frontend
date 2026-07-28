@@ -1,4 +1,5 @@
 // File: frontend/src/services/order-service.ts
+
 import { getTokenOptional } from "../auth/dal";
 import {
     OrderApiResponseSchema,
@@ -214,7 +215,67 @@ export const orderService = {
         return response.data;
     },
 
-    // En frontend/src/services/order-service.ts
+    async resendConfirmationEmail(id: string): Promise<{ success: boolean; message: string }> {
+        const response = await apiFetch<{ ok: true; data: { success: boolean; message: string } }>(
+            `${BASE}/admin/${id}/resend-email`,
+            {
+                safeParse: (d: unknown) => {
+                    const res = d as { ok?: boolean; data?: { success: boolean; message: string } };
+                    return {
+                        success: true,
+                        data: {
+                            ok: true as const,
+                            data: res?.data ?? { success: false, message: "Respuesta inválida" },
+                        },
+                    };
+                },
+            },
+            {
+                method: "POST",
+                headers: await authHeaders(),
+            }
+        );
+        return response.data;
+    },
+
+    async generateBoleta(id: string): Promise<OrderResponse> {
+        const response = await apiFetch<{ ok: true; data: OrderResponse }>(
+            `${BASE}/admin/${id}/generate-boleta`,
+            OrderApiResponseSchema,
+            {
+                method: "POST",
+                headers: await authHeaders(),
+            }
+        );
+        return response.data;
+    },
+    // File: frontend/src/services/order-service.ts
+
+    async generateCreditNote(id: string, reason: string): Promise<OrderResponse> {
+        const response = await apiFetch<{ ok: true; data: OrderResponse }>(
+            `${BASE}/admin/${id}/generate-credit-note`,
+            OrderApiResponseSchema,
+            {
+                method: "POST",
+                headers: await authHeaders(),
+                body: JSON.stringify({ reason }),
+            }
+        );
+        return response.data;
+    },
+
+    async generateVoid(id: string, motivo: string): Promise<OrderResponse> {
+        const response = await apiFetch<{ ok: true; data: OrderResponse }>(
+            `${BASE}/admin/${id}/generate-void`,
+            OrderApiResponseSchema,
+            {
+                method: "POST",
+                headers: await authHeaders(),
+                body: JSON.stringify({ motivo }),
+            }
+        );
+        return response.data;
+    },
 
     getOrdersPDFUrl(
         orderIds: string[],
@@ -228,19 +289,4 @@ export const orderService = {
         });
         return `/api/admin/orders/pdf?${params.toString()}`;
     }
-
-    // async triggerCleanupExpiredOrders(hours = 24): Promise<{ canceledCount: number }> {
-    //     const response = await apiFetch<{ ok: true; data: { canceledCount: number } }>(
-    //         `${BASE}/admin/cleanup-expired`,
-    //         {
-    //             safeParse: (d: any) => ({ success: true, data: d })
-    //         },
-    //         {
-    //             method: "POST",
-    //             headers: await authHeaders(),
-    //             body: JSON.stringify({ hours }),
-    //         }
-    //     );
-    //     return response.data;
-    // }
 };

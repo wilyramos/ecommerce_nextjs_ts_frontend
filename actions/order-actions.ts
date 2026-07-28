@@ -1,4 +1,4 @@
-// File: frontend/src/actions/order.actions.ts
+// File: frontend/src/actions/order-actions.ts
 "use server";
 
 import { revalidatePath } from "next/cache";
@@ -258,28 +258,90 @@ export async function refundOrderAction(
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// 10. ADMIN — Limpieza manual de órdenes expiradas (Awaiting Payment +24h)
-// TODO: Implementar un endpoint en el backend para limpiar órdenes expiradas y luego llamar a ese endpoint desde aquí.
+// 10. ADMIN — Reenviar Correo de Confirmación Manualmente
 // ════════════════════════════════════════════════════════════════════════════
 
-// export async function cleanupExpiredOrdersAction(hours = 24): Promise<ActionState<{ canceledCount: number }>> {
-//     const session = await getSession();
-//     if (!session) return { ok: false, error: "No autorizado." };
+export async function resendOrderConfirmationAction(
+    orderId: string
+): Promise<ActionState<{ success: boolean; message: string }>> {
+    const session = await getSession();
+    if (!session) return { ok: false, error: "No autorizado." };
 
-//     try {
-//         const res = await orderService.triggerCleanupExpiredOrders(hours);
-//         revalidatePath("/admin/orders-v2");
-//         return { ok: true, data: res };
-//     } catch (err) {
-//         return toErrorState(err);
-//     }
-// }
+    if (!orderId) return { ok: false, error: "ID de orden requerido." };
+
+    try {
+        const res = await orderService.resendConfirmationEmail(orderId);
+        return { ok: true, data: res };
+    } catch (err) {
+        return toErrorState(err);
+    }
+}
 
 // ════════════════════════════════════════════════════════════════════════════
-// 11. CHECK ESTADO DE ORDEN
+// 11. ADMIN — Generar Boleta Electrónica (Nubefact / SUNAT)
 // ════════════════════════════════════════════════════════════════════════════
 
-export async function checkOrderStatusAction(orderNumber: string): Promise<ActionState<{ status: OrderStatus; paymentStatus?: PaymentStatus }>> {
+export async function generateBoletaAction(
+    orderId: string
+): Promise<ActionState<OrderResponse>> {
+    const session = await getSession();
+    if (!session) return { ok: false, error: "No autorizado." };
+
+    if (!orderId) return { ok: false, error: "ID de orden requerido." };
+
+    try {
+        const order = await orderService.generateBoleta(orderId);
+        revalidatePath("/admin/orders-v2");
+        revalidatePath(`/admin/orders-v2/${orderId}`);
+        return { ok: true, data: order };
+    } catch (err) {
+        return toErrorState(err);
+    }
+}
+
+// File: frontend/src/actions/order-actions.ts
+
+export async function generateCreditNoteAction(
+    orderId: string,
+    reason: string
+): Promise<ActionState<OrderResponse>> {
+    const session = await getSession();
+    if (!session) return { ok: false, error: "No autorizado." };
+
+    try {
+        const order = await orderService.generateCreditNote(orderId, reason);
+        revalidatePath("/admin/orders-v2");
+        revalidatePath(`/admin/orders-v2/${orderId}`);
+        return { ok: true, data: order };
+    } catch (err) {
+        return toErrorState(err);
+    }
+}
+
+export async function generateVoidAction(
+    orderId: string,
+    motivo: string
+): Promise<ActionState<OrderResponse>> {
+    const session = await getSession();
+    if (!session) return { ok: false, error: "No autorizado." };
+
+    try {
+        const order = await orderService.generateVoid(orderId, motivo);
+        revalidatePath("/admin/orders-v2");
+        revalidatePath(`/admin/orders-v2/${orderId}`);
+        return { ok: true, data: order };
+    } catch (err) {
+        return toErrorState(err);
+    }
+}
+
+// ════════════════════════════════════════════════════════════════════════════
+// 12. CHECK ESTADO DE ORDEN
+// ════════════════════════════════════════════════════════════════════════════
+
+export async function checkOrderStatusAction(
+    orderNumber: string
+): Promise<ActionState<{ status: OrderStatus; paymentStatus?: PaymentStatus }>> {
     try {
         const orderStatusData = await orderService.getOrderStatusByNumber(orderNumber);
         return { ok: true, data: orderStatusData };

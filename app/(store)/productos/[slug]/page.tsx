@@ -87,7 +87,7 @@ export default async function PageProduct({ params }: Props) {
     }
 
     return (
-        <main className='md:max-w-screen-2xl mx-auto w-full'>
+        <main className='md:max-w-screen-2xl mx-auto w-full px-2 md:px-6'>
             <ProductJsonLd producto={producto} />
             <Suspense fallback={<ProductSkeleton />}>
                 <ProductPageServer producto={producto} />

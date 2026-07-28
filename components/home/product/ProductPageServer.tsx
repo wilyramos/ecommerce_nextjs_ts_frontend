@@ -59,7 +59,7 @@ export default async function ProductPageServer({ producto }: Props) {
                 {producto.nombre} - GOPHONE
             </h1>
 
-            <section className="container mx-auto px-2 md:px-6 py-1 md:pt-5">
+            <section className="container mx-auto  py-1 md:pt-5">
                 <Breadcrumbs
                     items={breadcrumbSegments}
                     current={producto.nombre}
@@ -71,11 +71,11 @@ export default async function ProductPageServer({ producto }: Props) {
                 </div>
             </section>
 
-            <section className="container mx-auto px-4 md:px-6 py-4">
+            <section className="container mx-auto  py-4">
                 <ProductosRelated slug={producto.slug} />
             </section>
 
-            <section className="container mx-auto px-4 md:px-6 py-4">
+            <section className="container mx-auto  py-4">
                 <RecentViewed currentProduct={producto} />
             </section>
         </>

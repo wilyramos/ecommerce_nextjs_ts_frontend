@@ -177,7 +177,7 @@ export default function ProductDetails({ producto }: Props) {
     };
 
     return (
-        <article className="flex flex-col lg:grid lg:grid-cols-12 gap-2 md:gap-6 lg:gap-10 mx-auto text-foreground bg-background px-2 items-start w-full min-w-0">
+        <article className="flex flex-col lg:grid lg:grid-cols-12 gap-2 md:gap-6 lg:gap-10 mx-auto text-foreground items-start w-full min-w-0">
 
             {/* ── 1. CARRUSEL DE IMÁGENES (Móvil: orden 1 | Desktop: Columna izquierda arriba) ── */}
             <div className="order-1 lg:order-none lg:col-span-7 w-full min-w-0 overflow-hidden">
@@ -239,7 +239,7 @@ export default function ProductDetails({ producto }: Props) {
                                 <span className="text-xl text-muted-foreground line-through font-normal">
                                     S/ {precioComparativo!.toFixed(2)}
                                 </span>
-                                <span className="px-1.5 py-0 bg-destructive/10 text-destructive text-lg  uppercase tracking-wider rounded-xs">
+                                <span className="px-1.5 py-0 bg-destructive/10 text-destructive text-lg  uppercase tracking-wider ">
                                     {Math.round(((precioComparativo! - precio) / precioComparativo!) * 100)}% OFF
                                 </span>
                             </div>
@@ -249,7 +249,7 @@ export default function ProductDetails({ producto }: Props) {
                     {/* Indicador de Stock */}
                     {stock === 0 && (
                         <div className="pt-1">
-                            <span className="inline-flex items-center text-[10px] uppercase font-bold tracking-wider text-destructive bg-destructive/10 border border-destructive/20 px-2 py-0.5 rounded-xs">
+                            <span className="inline-flex items-center text-[10px] uppercase font-bold tracking-wider text-foreground bg-foreground/10 border border-foreground/20 px-2 py-0.5 ">
                                 Sin stock
                             </span>
                         </div>
@@ -266,7 +266,7 @@ export default function ProductDetails({ producto }: Props) {
                             return (
                                 <div
                                     key={attr.key}
-                                    className="flex items-center justify-center gap-2 p-1.5 rounded-xs border border-border/50 bg-card/40 min-w-0"
+                                    className="flex items-center justify-center gap-2 p-1.5  border border-border/50 bg-card/40 min-w-0"
                                 >
                                     {attr.icon && (
                                         <Image
@@ -333,7 +333,7 @@ export default function ProductDetails({ producto }: Props) {
                                                     onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                     disabled={outOfStock}
                                                     className={cn(
-                                                        "relative flex items-center gap-2 p-1.5 border w-full transition-all cursor-pointer outline-none rounded-xs text-xs font-semibold focus-visible:ring-2 focus-visible:ring-ring",
+                                                        "relative flex items-center gap-2 p-1.5 border w-full transition-all cursor-pointer outline-none  text-xs font-semibold focus-visible:ring-2 focus-visible:ring-ring",
                                                         selected
                                                             ? "border-foreground bg-background ring-1 ring-foreground"
                                                             : "border-border bg-card hover:border-muted-foreground/60",
@@ -365,7 +365,7 @@ export default function ProductDetails({ producto }: Props) {
                                         value={selectedAttributes[key] || ""}
                                         onValueChange={(val) => updateSelectedVariant(key, val)}
                                     >
-                                        <SelectTrigger className="w-full border-border bg-card text-foreground focus:ring-ring font-semibold text-xs h-9 rounded-xs">
+                                        <SelectTrigger className="w-full border-border bg-card text-foreground focus:ring-ring font-semibold text-xs h-9 ">
                                             <SelectValue placeholder={`Seleccionar ${key}`} />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -399,7 +399,7 @@ export default function ProductDetails({ producto }: Props) {
                                                     onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                     disabled={outOfStock}
                                                     className={cn(
-                                                        "h-8 px-3.5 relative overflow-hidden transition-all border text-xs font-semibold cursor-pointer outline-none rounded-xs focus-visible:ring-2 focus-visible:ring-ring",
+                                                        "h-8 px-3.5 relative overflow-hidden transition-all border text-xs font-semibold cursor-pointer outline-none  focus-visible:ring-2 focus-visible:ring-ring",
                                                         selected
                                                             ? "border-foreground bg-background ring-1 ring-foreground text-foreground"
                                                             : "border-border bg-card text-muted-foreground hover:border-muted-foreground/60 hover:text-foreground",
@@ -460,7 +460,7 @@ export default function ProductDetails({ producto }: Props) {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 title="Ver políticas de garantía"
-                                className="text-muted-foreground hover:text-action-cta transition-colors p-0.5 rounded-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                                className="text-muted-foreground hover:text-action-cta transition-colors p-0.5  focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                             >
                                 <GoLinkExternal className="w-3 h-3" />
                             </a>

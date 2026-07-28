@@ -121,7 +121,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
 
             {/* DESKTOP THUMBNAILS */}
             {uniqueImages.length > 1 && (
-                <div className="hidden md:flex flex-col items-center w-[120px] shrink-0 gap-1">
+                <div className="hidden md:flex flex-col items-start w-[120px] gap-1 bg-background">
                     <button
                         onClick={() => scrollThumbs("up")}
                         className={cn(
@@ -176,7 +176,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
             )}
 
             {/* MAIN IMAGE */}
-            <div className="flex-1 relative group">
+            <div className="flex-1 relative group bg-background">
                 <div
                     className={cn(
                         "relative aspect-square overflow-hidden bg-[var(--color-bg-primary)] transition-all duration-700 ease-in-out",
