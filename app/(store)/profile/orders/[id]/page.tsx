@@ -1,8 +1,10 @@
+// File: frontend/app/(store)/profile/orders/[id]/page.tsx (o ruta equivalente de cliente)
+
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { orderService } from "@/src/services/order-service";
-import { getTokenOptional } from "@/src/auth/dal";
+import { getSession } from "@/src/auth/dal";
 import PaymentStatusBadge from "@/components/ui/PaymentStatusBadge";
 import OrderStepper from "@/components/ui/OrderStepper";
 import { BsArrowLeft } from "react-icons/bs";
@@ -11,7 +13,6 @@ type Props = {
     params: Promise<{ id: string }>;
 };
 
-// Interface para el objeto de producto poblado según tu esquema de Zod
 interface PopulatedProduct {
     _id: string;
     nombre: string;
@@ -23,16 +24,17 @@ interface PopulatedProduct {
 
 export default async function OrderProfilePage({ params }: Props) {
     const { id } = await params;
-    const token = await getTokenOptional();
-
-    // Bloqueo inmediato en servidor si no hay token activo de sesión
-    if (!token) {
+    
+    // Verificación de sesión general (opcional si es ruta protegida por middleware)
+    const session = await getSession();
+    if (!session) {
         return notFound();
     }
 
     let order;
     try {
-        order = await orderService.getOrderById(id, token);
+        // Llamada limpia y autónoma al servicio (el token se incluye internamente)
+        order = await orderService.getOrderById(id);
     } catch (error) {
         console.error("❌ Error cargando vista de detalle de orden del cliente:", error);
         return notFound();
@@ -91,7 +93,7 @@ export default async function OrderProfilePage({ params }: Props) {
                             </p>
                         )}
                         {order.trackingNumber && (
-                            <p className="bg-background-secondary border border-border p-2 rounded-sm mt-2 text-foreground font-bold">
+                            <p className="bg-muted border border-border p-2 rounded-sm mt-2 text-foreground font-bold">
                                 Tracking N°: <span className="font-mono select-all text-primary">{order.trackingNumber}</span>
                             </p>
                         )}
@@ -151,7 +153,6 @@ export default async function OrderProfilePage({ params }: Props) {
                 </h2>
                 <ul className="divide-y divide-border/60">
                     {order.items.map((item) => {
-                        // Type Narrowing seguro sin usar 'any' para extraer el ID primitivo de un string o un objeto poblado
                         const isPopulated = typeof item.productId === "object" && item.productId !== null;
                         const prodId = isPopulated
                             ? (item.productId as PopulatedProduct)._id || item.nombre
@@ -163,7 +164,7 @@ export default async function OrderProfilePage({ params }: Props) {
                             <li key={itemKey} className="flex items-center justify-between gap-4 py-4 first:pt-0 last:pb-0">
                                 <div className="flex items-center gap-4 min-w-0">
                                     {item.imagen && (
-                                        <div className="relative w-14 h-14 rounded-[var(--radius-sm)] overflow-hidden bg-background-secondary border border-border shrink-0 select-none">
+                                        <div className="relative w-14 h-14 rounded-[var(--radius-sm)] overflow-hidden bg-muted border border-border shrink-0 select-none">
                                             <Image
                                                 src={item.imagen}
                                                 alt={item.nombre}
@@ -178,11 +179,10 @@ export default async function OrderProfilePage({ params }: Props) {
                                             {item.nombre || "Producto sin nombre"}
                                         </p>
                                         
-                                        {/* Renderizado condicional estricto de atributos de variantes */}
                                         {item.variantAttributes && Object.keys(item.variantAttributes).length > 0 && (
                                             <div className="flex flex-wrap gap-1 mt-1">
                                                 {Object.entries(item.variantAttributes).map(([key, value]) => (
-                                                    <span key={key} className="text-[10px] text-muted-foreground font-medium bg-background-secondary px-1.5 py-0.5 rounded-xs border border-border">
+                                                    <span key={key} className="text-[10px] text-muted-foreground font-medium bg-muted px-1.5 py-0.5 rounded-xs border border-border">
                                                         {key}: <strong className="text-foreground">{value}</strong>
                                                     </span>
                                                 ))}

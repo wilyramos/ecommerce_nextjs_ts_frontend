@@ -2,8 +2,8 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect, useTransition, useCallback } from "react";
-import { useDebounce } from "use-debounce";
+import { useState, useTransition, useCallback } from "react";
+import { useDebouncedCallback } from "use-debounce";
 import { DateRange, type Range, type RangeKeyDict } from "react-date-range";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -12,7 +12,6 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Loader2, Search, Filter, RotateCcw, Calendar as CalendarIcon } from "lucide-react";
 import { ORDER_STATUS_LABELS } from "@/src/schemas/order.schema";
 
-// Estilos obligatorios de react-date-range
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 
@@ -25,7 +24,6 @@ interface Props {
     };
 }
 
-// Helpers para manejo de fechas
 function parseLocalDate(dateStr?: string): Date | undefined {
     if (!dateStr) return undefined;
     const [year, month, day] = dateStr.split("-").map(Number);
@@ -52,13 +50,8 @@ export default function OrderFiltersV2({ filters }: Props) {
     const searchParams = useSearchParams();
     const [isPending, startTransition] = useTransition();
 
-    // 1. Estado local del email + Debounce de 400ms
-    const [email, setEmail] = useState(filters.email ?? "");
-    const [debouncedEmail] = useDebounce(email, 400);
-
     const [status, setStatus] = useState(filters.status ?? "ALL");
 
-    // 2. Estado inicial de fechas (por defecto: últimos 7 días)
     const initialStartDate = parseLocalDate(filters.from) ?? getDefaultStartDate();
     const initialEndDate = parseLocalDate(filters.to) ?? new Date();
 
@@ -70,7 +63,6 @@ export default function OrderFiltersV2({ filters }: Props) {
         },
     ]);
 
-    // Helper para sincronizar la URL con los parámetros de búsqueda
     const updateQueryParams = useCallback(
         (targetEmail: string, targetStatus: string, targetStart?: Date, targetEnd?: Date) => {
             const fromStr = formatDateToString(targetStart);
@@ -91,43 +83,35 @@ export default function OrderFiltersV2({ filters }: Props) {
         [router, searchParams]
     );
 
-    // 3. Reactividad al cambiar el valor del email ya debouncado
-    useEffect(() => {
-        if (debouncedEmail !== (filters.email ?? "")) {
-            updateQueryParams(debouncedEmail, status, dateRange[0]?.startDate, dateRange[0]?.endDate);
-        }
-    }, [debouncedEmail, status, dateRange, filters.email, updateQueryParams]);
+    // Debounced callback para optimizar la escritura del email
+    const handleEmailDebounced = useDebouncedCallback((value: string) => {
+        updateQueryParams(value, status, dateRange[0]?.startDate, dateRange[0]?.endDate);
+    }, 400);
 
-    // 4. Reactividad inmediata en el Select de Estado Logístico
     const handleStatusChange = (newStatus: string) => {
         setStatus(newStatus);
-        updateQueryParams(debouncedEmail, newStatus, dateRange[0]?.startDate, dateRange[0]?.endDate);
+        const emailInput = (document.getElementById("email-filter-input") as HTMLInputElement)?.value || "";
+        updateQueryParams(emailInput, newStatus, dateRange[0]?.startDate, dateRange[0]?.endDate);
     };
 
-    // 5. Reactividad inmediata en la selección de Rango de Fechas
     const handleDateRangeChange = (ranges: RangeKeyDict) => {
         if (ranges.selection) {
-            const newRange = [ranges.selection];
-            setDateRange(newRange);
-
+            setDateRange([ranges.selection]);
+            const emailInput = (document.getElementById("email-filter-input") as HTMLInputElement)?.value || "";
             if (ranges.selection.startDate && ranges.selection.endDate) {
-                updateQueryParams(
-                    debouncedEmail,
-                    status,
-                    ranges.selection.startDate,
-                    ranges.selection.endDate
-                );
+                updateQueryParams(emailInput, status, ranges.selection.startDate, ranges.selection.endDate);
             }
         }
     };
 
-    // 6. Resetear filtros al valor inicial de 7 días
     const handleClear = () => {
+        setStatus("ALL");
+        const emailInput = document.getElementById("email-filter-input") as HTMLInputElement;
+        if (emailInput) emailInput.value = "";
+
         const defaultStart = getDefaultStartDate();
         const defaultEnd = new Date();
 
-        setEmail("");
-        setStatus("ALL");
         setDateRange([
             {
                 startDate: defaultStart,
@@ -149,33 +133,32 @@ export default function OrderFiltersV2({ filters }: Props) {
     const endDate = dateRange[0]?.endDate;
 
     const hasActiveFilters = Boolean(
-        email || 
+        filters.email || 
         (status && status !== "ALL")
     );
 
     const getDateRangeLabel = () => {
         if (!startDate || !endDate) return "Seleccionar rango de fechas";
-        
         const formatOptions: Intl.DateTimeFormatOptions = { day: "numeric", month: "short" };
         const startStr = startDate.toLocaleDateString("es-PE", formatOptions);
         const endStr = endDate.toLocaleDateString("es-PE", { ...formatOptions, year: "numeric" });
-
         return `${startStr} - ${endStr}`;
     };
 
     return (
-        <div className="bg-card border border-border p-3.5 rounded-lg shadow-sm space-y-3">
+        <div className="bg-card border border-border p-3.5 rounded-lg space-y-3">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-end">
                 
-                {/* Búsqueda por Email (Con useDebounce) */}
+                {/* Búsqueda por Email */}
                 <div className="space-y-1.5 lg:col-span-5">
                     <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1">
                         <Search className="w-3 h-3" /> Cliente / Email
                     </label>
                     <div className="relative">
                         <Input 
-                            value={email} 
-                            onChange={e => setEmail(e.target.value)} 
+                            id="email-filter-input"
+                            defaultValue={filters.email ?? ""}
+                            onChange={e => handleEmailDebounced(e.target.value)} 
                             placeholder="Buscar por correo electrónico..." 
                             className="h-9 text-xs pl-8 pr-8 bg-background" 
                         />
@@ -224,7 +207,7 @@ export default function OrderFiltersV2({ filters }: Props) {
                                 </span>
                             </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0 border border-border shadow-lg" align="end">
+                        <PopoverContent className="w-auto p-0 border border-border" align="end">
                             <DateRange
                                 editableDateInputs={true}
                                 onChange={handleDateRangeChange}

@@ -1,7 +1,9 @@
+// File: frontend/app/(store)/profile/orders/page.tsx
+
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { orderService } from "@/src/services/order-service";
-import { getTokenOptional } from "@/src/auth/dal";
+import { getSession } from "@/src/auth/dal";
 import OrderStatusBadge from "@/components/ui/OrderStatusBadge";
 import PaymentStatusBadge from "@/components/ui/PaymentStatusBadge";
 import Pagination from "@/components/ui/Pagination";
@@ -16,16 +18,16 @@ export default async function OrdersProfilePage({ searchParams }: PageOrdersProp
     const currentPage = Math.max(1, Number(page));
     const currentLimit = Math.max(1, Number(limit));
 
-    // Recuperamos el token de sesión de forma segura en el servidor
-    const token = await getTokenOptional();
-    if (!token) {
+    // Validamos sesión de forma segura
+    const session = await getSession();
+    if (!session) {
         redirect("/login?callbackUrl=/profile/orders");
     }
 
     let response;
     try {
-        // Invocación al nuevo servicio core unificado V2
-        response = await orderService.getMyOrders(token, currentPage, currentLimit);
+        // Llamada limpia y autónoma al servicio (el token se gestiona internamente)
+        response = await orderService.getMyOrders(currentPage, currentLimit);
     } catch (error) {
         console.error("❌ Error recuperando historial de órdenes del cliente:", error);
         return (
@@ -35,14 +37,13 @@ export default async function OrdersProfilePage({ searchParams }: PageOrdersProp
         );
     }
 
-    // Desestructuración basada exactamente en OrderPaginatedApiResponse
     const orders = (response?.data || []) as OrderResponse[];
     const totalPages = Math.max(1, Number(response?.meta?.pages ?? 1));
 
     if (orders.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-20 px-4 select-none">
-                <p className="text-[var(--color-text-secondary)] font-medium mb-6">Aún no tienes pedidos registrados.</p>
+                <p className="text-muted-foreground font-medium mb-6">Aún no tienes pedidos registrados.</p>
                 <Link 
                     href="/productos" 
                     className="text-xs font-bold uppercase tracking-wider bg-foreground text-background py-2.5 px-6 rounded-md hover:opacity-90 transition-opacity shadow-xs"
@@ -92,7 +93,6 @@ export default async function OrdersProfilePage({ searchParams }: PageOrdersProp
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        {/* Inyección de los estados tipados provenientes de la base de datos */}
                                         {o.payment && <PaymentStatusBadge status={o.payment.status} />}
                                         <OrderStatusBadge status={o.status} />
                                     </div>

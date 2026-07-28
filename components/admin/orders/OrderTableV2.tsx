@@ -126,9 +126,7 @@ export default function OrderTableV2({ orders }: Props) {
                                 {/* Cliente */}
                                 <TableCell>
                                     <div className="flex items-center gap-2.5">
-                                        <div className="w-7 h-7 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-[10px] flex items-center justify-center shrink-0">
-                                            {initials || "C"}
-                                        </div>
+                                      
                                         <div className="flex flex-col min-w-0">
                                             <span className="font-medium text-foreground truncate max-w-[160px]">
                                                 {order.customerProfile.nombre} {order.customerProfile.apellidos}

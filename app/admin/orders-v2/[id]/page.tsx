@@ -3,11 +3,12 @@
 import { notFound, redirect } from "next/navigation";
 import { orderService } from "@/src/services/order-service";
 import AdminPageWrapper from "@/components/admin/AdminPageWrapper";
-import { getTokenOptional } from "@/src/auth/dal";
+import { getSession } from "@/src/auth/dal";
 import Image from "next/image";
 import UpdateStatusForm from "@/components/admin/orders/UpdateStatusForm";
 import AssignTrackingForm from "@/components/admin/orders/AssignTrackingForm";
 import RefundOrderForm from "@/components/admin/orders/RefundOrderForm";
+import OrderPDFPrintModal from "@/components/admin/orders/OrderPDFPrintModal";
 import { ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS } from "@/src/schemas/order.schema";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -19,15 +20,15 @@ type Props = {
 
 export default async function AdminOrderDetailPage({ params }: Props) {
     const { id } = await params;
-    const token = await getTokenOptional();
     
-    if (!token) {
+    const session = await getSession();
+    if (!session) {
         redirect("/auth/login");
     }
 
     let order;
     try {
-        order = await orderService.getOrderById(id, token);
+        order = await orderService.getOrderById(id);
     } catch (error) {
         console.error("❌ Error cargando orden en administración:", error);
         return notFound();
@@ -41,9 +42,10 @@ export default async function AdminOrderDetailPage({ params }: Props) {
     return (
         <AdminPageWrapper
             title={`Orden ${order.orderNumber}`}
-            breadcrumbItems={[{ label: "Órdenes", href: "/admin/orders" }]}
+            breadcrumbItems={[{ label: "Órdenes", href: "/admin/orders-v2" }]}
             breadcrumbCurrent={order.orderNumber}
             showBackButton={true}
+            actions={<OrderPDFPrintModal orderIds={[order._id]} />}
         >
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start text-foreground">
                 

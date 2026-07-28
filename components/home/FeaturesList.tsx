@@ -32,12 +32,12 @@ const features: Feature[] = [
         url: "/hc/proceso-de-compra",
     },
     {
-        title: "Aceptamos todas las tarjetas",
+        title: "Todos los métodos de pago",
         icon: RiBankCardLine,
         url: "/hc/preguntas-frecuentes",
     },
     {
-        title: "Garantía y Devoluciones",
+        title: "Garantía de 1 año",
         icon: RiRefund2Line,
         url: "/hc/garantias-y-devoluciones",
     },
@@ -46,7 +46,7 @@ const features: Feature[] = [
 export default function FeaturesList() {
     return (
         <div className="max-w-7xl mx-auto select-none">
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-1 md:gap-2">
                 {features.map((feature) => {
                     const IconComponent = feature.icon;
 
@@ -55,7 +55,7 @@ export default function FeaturesList() {
                             className="group flex items-center  justify-center gap-2.5 md:gap-3 p-3.5 h-full bg-background border border-border"
                             aria-label={feature.title}
                         >
-                            <div className="shrink-0 text-foreground transition-transform duration-200 group-hover:scale-110">
+                            <div className="shrink-0 text-muted-foreground transition-transform duration-200 group-hover:scale-110">
                                 <IconComponent className="w-5 h-5 md:w-6 md:h-6" />
                             </div>
                             <h3 className="text-xs md:text-sm text-muted-foreground leading-tight">

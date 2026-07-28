@@ -214,6 +214,21 @@ export const orderService = {
         return response.data;
     },
 
+    // En frontend/src/services/order-service.ts
+
+    getOrdersPDFUrl(
+        orderIds: string[],
+        type: 'packing_slip' | 'sale_note' | 'shipping_label' = 'packing_slip',
+        format: 'A4' | 'thermal_80mm' = 'A4'
+    ): string {
+        const params = new URLSearchParams({
+            ids: orderIds.join(","),
+            type,
+            format,
+        });
+        return `/api/admin/orders/pdf?${params.toString()}`;
+    }
+
     // async triggerCleanupExpiredOrders(hours = 24): Promise<{ canceledCount: number }> {
     //     const response = await apiFetch<{ ok: true; data: { canceledCount: number } }>(
     //         `${BASE}/admin/cleanup-expired`,

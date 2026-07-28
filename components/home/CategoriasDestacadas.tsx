@@ -12,22 +12,22 @@ import { routes } from "@/lib/routes";
 const responsive = {
     superLargeDesktop: {
         breakpoint: { max: 4000, min: 1440 },
-        items: 7,
+        items: 10,
         slidesToSlide: 2
     },
     desktop: {
         breakpoint: { max: 1440, min: 1024 },
-        items: 6,
+        items: 8,
         slidesToSlide: 2
     },
     tablet: {
         breakpoint: { max: 1024, min: 768 },
-        items: 4,
+        items: 5,
         slidesToSlide: 1
     },
     mobileLarge: {
         breakpoint: { max: 768, min: 480 },
-        items: 3,
+        items: 4,
         slidesToSlide: 1
     },
     mobile: {
@@ -77,8 +77,7 @@ export default function CategoriasDestacadas({ categorias }: { categorias: Categ
                             </div>
                         </div>
 
-                        {/* Nombre */}
-                        <h3 className="mt-3 md:mt-4 text-xs md:text-sm font-medium text-foreground group-hover:text-action-cta transition-colors duration-200 line-clamp-2 w-full px-1">
+                        <h3 className="mt-3 md:mt-4 text-xs md:text-sm font-normal text-muted-foreground group-hover:text-action-cta transition-colors duration-200 line-clamp-2 w-full px-1">
                             {c.nombre}
                         </h3>
                     </Link>
