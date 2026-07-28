@@ -1,5 +1,4 @@
 // File: frontend/src/services/order-service.ts
-
 import { getTokenOptional } from "../auth/dal";
 import {
     OrderApiResponseSchema,
@@ -18,8 +17,6 @@ import {
 const API_URL = process.env.API_URL || "http://localhost:4000/api";
 const BASE = `${API_URL}/orders/v2`;
 
-// ─── HELPERS DE AUTENTICACIÓN ──────────────────────────────────────────────
-
 async function authHeaders(includeContentType = true): Promise<HeadersInit> {
     const token = await getTokenOptional();
     const headers: Record<string, string> = {};
@@ -33,8 +30,6 @@ async function authHeaders(includeContentType = true): Promise<HeadersInit> {
 
     return headers;
 }
-
-// ─── HELPER DE FETCH TIPADO ────────────────────────────────────────────────
 
 async function apiFetch<T>(
     url: string,
@@ -58,10 +53,7 @@ async function apiFetch<T>(
     return parsed.data as T;
 }
 
-// ─── SERVICIO CENTRALIZADO ─────────────────────────────────────────────────
-
 export const orderService = {
-
     async createOrder(dto: CreateOrderDTO): Promise<OrderResponse> {
         const response = await apiFetch<{ ok: true; data: OrderResponse }>(
             `${BASE}`,
@@ -94,7 +86,7 @@ export const orderService = {
         });
 
         if (!res.ok) throw new Error("Error al obtener la orden");
-        
+
         const parsed = OrderApiResponseSchema.parse(await res.json());
         return parsed.data;
     },
@@ -164,7 +156,7 @@ export const orderService = {
             cache: "no-store",
         });
 
-        if (!res.ok) throw new Error("Error al obtener estadísticas de órdenes pagadas");
+        if (!res.ok) throw new Error("Error al obtener estadísticas de las órdenes");
 
         const parsed = OrderStatsApiResponseSchema.parse(await res.json());
         return parsed.data;
@@ -221,4 +213,19 @@ export const orderService = {
         );
         return response.data;
     },
+
+    // async triggerCleanupExpiredOrders(hours = 24): Promise<{ canceledCount: number }> {
+    //     const response = await apiFetch<{ ok: true; data: { canceledCount: number } }>(
+    //         `${BASE}/admin/cleanup-expired`,
+    //         {
+    //             safeParse: (d: any) => ({ success: true, data: d })
+    //         },
+    //         {
+    //             method: "POST",
+    //             headers: await authHeaders(),
+    //             body: JSON.stringify({ hours }),
+    //         }
+    //     );
+    //     return response.data;
+    // }
 };

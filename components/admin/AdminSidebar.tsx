@@ -1,3 +1,4 @@
+// File: components/admin/AdminSidebar.tsx
 "use client";
 
 import { User } from "@/src/schemas";
@@ -7,6 +8,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import AdminMenu from "./AdminMenu";
 import Logo from "../ui/Logo";
+import { Badge } from "@/components/ui/badge";
 import {
     Tooltip,
     TooltipContent,
@@ -16,56 +18,132 @@ import {
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import {
-    Smartphone,
-    Receipt,
-    Images,
-    Layers,
-    Bookmark,
-    GitFork,
-    Folder,
-    Library,
-    BarChart,
+    ShoppingBag,
+    Receipt, BarChart3,
     ShieldCheck,
     MonitorSmartphone,
     ChevronRight,
     ChevronDown,
     Menu,
+    AlertCircle, Users,
+    UserCircle, ShoppingCart,
+    Settings,
+    Truck,
+    LayoutTemplate
 } from "lucide-react";
 
-type NavLink = {
+type SubItem = {
+    href: string;
+    label: string;
+    badge?: string;
+};
+
+type NavItemType = {
     href?: string;
     icon: React.ElementType;
     label: string;
-    children?: { href: string; label: string }[];
+    badge?: string;
+    children?: SubItem[];
     external?: boolean;
 };
 
-const links: NavLink[] = [
-    { href: "/admin/products", icon: Smartphone, label: "Productos" },
-    { href: "/admin/orders", icon: Receipt, label: "Órdenes" },
-    { href: "/admin/orders-v2", icon: Folder, label: "Órdenes nuevas" },
-    { href: "/admin/slider", icon: Images, label: "Slider" },
-    { href: "/admin/advertisements", icon: Images, label: "Avisos" },
-    { href: "/admin/sections", icon: Folder, label: "Secciones" },
-    { href: "/admin/comparisons", icon: Layers, label: "Comparativas" },
-    { href: "/admin/claims", icon: Layers, label: "Reclamos" },
-    { href: "/admin/media", icon: Images, label: "Medios" },
-    { href: "/admin/collections", icon: Library, label: "Colecciones" },
-    { href: "/admin/brands", icon: Bookmark, label: "Marcas" },
-    { href: "/admin/lines", icon: GitFork, label: "Líneas" },
-    { href: "/admin/products/category", icon: Folder, label: "Categorías" },
-    { href: "/admin/reports", icon: BarChart, label: "Reportes" },
-    { href: "/admin/pages", icon: Layers, label: "Páginas" },
+type NavSection = {
+    title?: string;
+    items: NavItemType[];
+};
+
+// ─── ESTRUCTURA NAVEGACIÓN AGRUPADA ESTILO SHOPIFY ────────────────────────────
+
+const navigationSections: NavSection[] = [
     {
-        icon: ShieldCheck,
-        label: "Usuarios",
-        children: [{ href: "/admin/users", label: "Lista de usuarios" }],
+        title: "Ventas & Operaciones",
+        items: [
+            { href: "/admin/orders-v2", icon: Receipt, label: "Órdenes" },
+            { 
+                href: "/admin/abandoned-carts", 
+                icon: ShoppingCart, 
+                label: "Carritos Abandonados", 
+                badge: "Próx." 
+            },
+            { href: "/admin/claims", icon: AlertCircle, label: "Libro de Reclamos" },
+            { href: "/pos", icon: MonitorSmartphone, label: "Punto de Venta", external: true },
+        ],
     },
     {
-        href: "/pos",
-        icon: MonitorSmartphone,
-        label: "Punto de Venta",
-        external: true,
+        title: "Catálogo",
+        items: [
+            {
+                icon: ShoppingBag,
+                label: "Productos",
+                children: [
+                    { href: "/admin/products", label: "Todos los productos" },
+                    { href: "/admin/inventory", label: "Inventario & Stock", badge: "Próx." },
+                    { href: "/admin/products/category", label: "Categorías" },
+                    { href: "/admin/collections", label: "Colecciones" },
+                    { href: "/admin/brands", label: "Marcas" },
+                    { href: "/admin/lines", label: "Líneas" },
+                    { href: "/admin/comparisons", label: "Comparativas" },
+                ],
+            },
+        ],
+    },
+    {
+        title: "Clientes",
+        items: [
+            { 
+                icon: Users, 
+                label: "Clientes & CRM", 
+                children: [
+                    { href: "/admin/customers", label: "Lista de Clientes", badge: "Próx." },
+                    { href: "/admin/customers/segments", label: "Segmentos", badge: "Próx." }
+                ] 
+            },
+        ],
+    },
+    {
+        title: "Contenido & Marketing",
+        items: [
+            {
+                icon: LayoutTemplate,
+                label: "Contenido y Marketing",
+                children: [
+                    { href: "/admin/slider", label: "Slider Principal" },
+                    { href: "/admin/advertisements", label: "Avisos & Banners" },
+                    { href: "/admin/sections", label: "Secciones del Home" },
+                    { href: "/admin/pages", label: "Páginas Estáticas" },
+                    { href: "/admin/media", label: "Biblioteca de Medios" },
+                    { href: "/admin/discounts", label: "Cupones & Descuentos", badge: "Próx." },
+                ],
+            },
+        ],
+    },
+    {
+        title: "Analítica",
+        items: [
+            {
+                icon: BarChart3,
+                label: "Reportes",
+                children: [
+                    { href: "/admin/reports/sales/products", label: "Ventas por Producto" },
+                    { href: "/admin/reports/sales/vendors", label: "Ventas por Vendedor" },
+                    { href: "/admin/reports/orders/status", label: "Estado de Órdenes" },
+                    { href: "/admin/reports/orders/payments", label: "Reporte de Pagos" },
+                ],
+            },
+        ],
+    },
+    {
+        title: "Ajustes del Sistema",
+        items: [
+            {
+                icon: ShieldCheck,
+                label: "Usuarios",
+                children: [{ href: "/admin/users", label: "Gestión de Usuarios" }],
+            },
+            { href: "/admin/shipping", icon: Truck, label: "Métodos de Envío", badge: "Próx." },
+            { href: "/admin/settings", icon: Settings, label: "Configuración Tienda", badge: "Próx." },
+            { href: "/admin/profile", icon: UserCircle, label: "Mi Perfil" },
+        ],
     },
 ];
 
@@ -78,17 +156,17 @@ function NavItem({
     onToggle,
     pathname,
 }: {
-    item: NavLink;
+    item: NavItemType;
     expanded: boolean;
     openMenus: Record<string, boolean>;
     onToggle: (label: string) => void;
     pathname: string;
 }) {
-    const { href, icon: Icon, label, children, external } = item;
+    const { href, icon: Icon, label, children, external, badge } = item;
 
     if (children) {
         const isOpen = openMenus[label];
-        const isChildActive = children.some((c) => c.href === pathname);
+        const isChildActive = children.some((c) => pathname.startsWith(c.href));
 
         return (
             <div className="space-y-0.5">
@@ -97,33 +175,36 @@ function NavItem({
                         <button
                             onClick={() => onToggle(label)}
                             className={cn(
-                                "group flex w-full items-center justify-between rounded-md px-3 py-2 text-[13px] font-medium transition-colors outline-none",
+                                "group flex w-full items-center justify-between rounded-md px-2.5 py-1.5 text-[13px] font-medium transition-colors outline-none",
                                 isChildActive
-                                    ? "bg-muted text-foreground"
-                                    : "text-muted-foreground hover:bg-background-secondary hover:text-foreground"
+                                    ? "bg-muted text-foreground font-semibold"
+                                    : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
                             )}
                         >
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-2.5 min-w-0">
                                 <Icon className="h-4 w-4 shrink-0" />
-                                <span className={cn("transition-opacity duration-200", expanded ? "opacity-100" : "opacity-0 hidden")}>
+                                <span className={cn("transition-opacity duration-200 truncate", expanded ? "opacity-100" : "opacity-0 hidden")}>
                                     {label}
                                 </span>
                             </div>
                             {expanded && (
-                                <ChevronDown className={cn("h-3.5 w-3.5 text-muted-foreground/60 transition-transform duration-200", isOpen && "rotate-180")} />
+                                <div className="flex items-center gap-1.5 shrink-0 ml-1">
+                                    {badge && <Badge variant="neutral" size="sm">{badge}</Badge>}
+                                    <ChevronDown className={cn("h-3.5 w-3.5 text-muted-foreground/60 transition-transform duration-200", isOpen && "rotate-180")} />
+                                </div>
                             )}
                         </button>
                     </TooltipTrigger>
                     {!expanded && (
                         <TooltipContent side="right" className="text-xs font-medium">
-                            {label}
+                            {label} {badge && `(${badge})`}
                         </TooltipContent>
                     )}
                 </Tooltip>
 
                 <div className={cn("grid overflow-hidden transition-all duration-200 ease-in-out", isOpen && expanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0")}>
-                    <div className="min-h-0 pl-7 pr-1">
-                        <div className="border-l border-border pl-2.5 space-y-0.5 py-1">
+                    <div className="min-h-0 pl-6 pr-1">
+                        <div className="border-l border-border pl-2 space-y-0.5 py-1">
                             {children.map((sub) => {
                                 const isActive = pathname === sub.href;
                                 return (
@@ -131,11 +212,14 @@ function NavItem({
                                         key={sub.href}
                                         href={sub.href}
                                         className={cn(
-                                            "block rounded-md px-3 py-1.5 text-[12px] font-medium transition-colors outline-none",
-                                            isActive ? "text-primary font-semibold" : "text-muted-foreground hover:text-foreground"
+                                            "flex items-center justify-between rounded-md px-2.5 py-1.5 text-[12px] font-medium transition-colors outline-none truncate",
+                                            isActive 
+                                                ? "text-primary font-semibold bg-primary/10" 
+                                                : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
                                         )}
                                     >
-                                        {sub.label}
+                                        <span className="truncate">{sub.label}</span>
+                                        {sub.badge && <Badge variant="neutral" size="sm" className="ml-1 shrink-0">{sub.badge}</Badge>}
                                     </Link>
                                 );
                             })}
@@ -146,7 +230,7 @@ function NavItem({
         );
     }
 
-    const isActive = href && (pathname === href || pathname.startsWith(`${href}/`));
+    const isActive = href && (pathname === href || (href !== "/admin" && pathname.startsWith(`${href}/`)));
 
     return (
         <Tooltip delayDuration={0}>
@@ -156,19 +240,26 @@ function NavItem({
                     target={external ? "_blank" : undefined}
                     rel={external ? "noopener noreferrer" : undefined}
                     className={cn(
-                        "group flex items-center gap-3 rounded-md px-3 py-2 text-[13px] font-medium transition-colors outline-none",
-                        isActive ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:bg-background-secondary hover:text-foreground"
+                        "group flex items-center justify-between rounded-md px-2.5 py-1.5 text-[13px] font-medium transition-colors outline-none",
+                        isActive 
+                            ? "bg-primary text-primary-foreground font-semibold shadow-sm" 
+                            : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
                     )}
                 >
-                    <Icon className="h-4 w-4 shrink-0" />
-                    <span className={cn("transition-opacity duration-200", expanded ? "opacity-100" : "opacity-0 hidden")}>
-                        {label}
-                    </span>
+                    <div className="flex items-center gap-2.5 min-w-0">
+                        <Icon className="h-4 w-4 shrink-0" />
+                        <span className={cn("transition-opacity duration-200 truncate", expanded ? "opacity-100" : "opacity-0 hidden")}>
+                            {label}
+                        </span>
+                    </div>
+                    {expanded && badge && (
+                        <Badge variant="neutral" size="sm" className="ml-1 shrink-0">{badge}</Badge>
+                    )}
                 </Link>
             </TooltipTrigger>
             {!expanded && (
                 <TooltipContent side="right" className="text-xs font-medium">
-                    {label}
+                    {label} {badge && `(${badge})`}
                 </TooltipContent>
             )}
         </Tooltip>
@@ -184,34 +275,35 @@ function MobileNavItem({
     onToggle,
     onClose,
 }: {
-    item: NavLink;
+    item: NavItemType;
     pathname: string;
     openMenus: Record<string, boolean>;
     onToggle: (label: string) => void;
     onClose: () => void;
 }) {
-    const { href, icon: Icon, label, children, external } = item;
+    const { href, icon: Icon, label, children, external, badge } = item;
 
     if (children) {
         const isOpen = openMenus[label];
-        const isChildActive = children.some((c) => c.href === pathname);
+        const isChildActive = children.some((c) => pathname.startsWith(c.href));
 
         return (
             <div>
                 <button
                     onClick={() => onToggle(label)}
                     className={cn(
-                        "flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors",
-                        isChildActive ? "bg-muted text-foreground" : "text-muted-foreground hover:bg-background-secondary hover:text-foreground"
+                        "flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                        isChildActive ? "bg-muted text-foreground" : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
                     )}
                 >
                     <Icon className="h-4 w-4 shrink-0" />
-                    <span className="flex-1 text-left">{label}</span>
+                    <span className="flex-1 text-left truncate">{label}</span>
+                    {badge && <Badge variant="neutral" size="sm" className="mr-1">{badge}</Badge>}
                     {isOpen ? <ChevronDown className="h-4 w-4 text-muted-foreground/60" /> : <ChevronRight className="h-4 w-4 text-muted-foreground/60" />}
                 </button>
 
                 {isOpen && (
-                    <div className="ml-7 mt-0.5 border-l border-border pl-2.5 space-y-0.5 py-1">
+                    <div className="ml-6 mt-0.5 border-l border-border pl-2.5 space-y-0.5 py-1">
                         {children.map((sub) => {
                             const isActive = pathname === sub.href;
                             return (
@@ -220,11 +312,12 @@ function MobileNavItem({
                                     href={sub.href}
                                     onClick={onClose}
                                     className={cn(
-                                        "block rounded-md px-3 py-1.5 text-[13px] font-medium transition-colors",
-                                        isActive ? "text-primary font-semibold" : "text-muted-foreground hover:text-foreground"
+                                        "flex items-center justify-between rounded-md px-2.5 py-1.5 text-[13px] font-medium transition-colors",
+                                        isActive ? "text-primary font-semibold bg-primary/10" : "text-muted-foreground hover:text-foreground"
                                     )}
                                 >
-                                    {sub.label}
+                                    <span className="truncate">{sub.label}</span>
+                                    {sub.badge && <Badge variant="neutral" size="sm">{sub.badge}</Badge>}
                                 </Link>
                             );
                         })}
@@ -234,7 +327,7 @@ function MobileNavItem({
         );
     }
 
-    const isActive = href && (pathname === href || pathname.startsWith(`${href}/`));
+    const isActive = href && (pathname === href || (href !== "/admin" && pathname.startsWith(`${href}/`)));
 
     return (
         <Link
@@ -243,17 +336,20 @@ function MobileNavItem({
             target={external ? "_blank" : undefined}
             rel={external ? "noopener noreferrer" : undefined}
             className={cn(
-                "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors",
-                isActive ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-background-secondary hover:text-foreground"
+                "flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                isActive ? "bg-primary text-primary-foreground font-semibold" : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
             )}
         >
-            <Icon className="h-4 w-4 shrink-0" />
-            <span>{label}</span>
+            <div className="flex items-center gap-2.5 min-w-0">
+                <Icon className="h-4 w-4 shrink-0" />
+                <span className="truncate">{label}</span>
+            </div>
+            {badge && <Badge variant="neutral" size="sm">{badge}</Badge>}
         </Link>
     );
 }
 
-// ─── NAV LIST GENERATOR ───────────────────────────────────────────────────────
+// ─── NAV LIST GENERATOR CON CABECERAS DE SECCIÓN ──────────────────────────────
 
 type NavListProps = {
     expanded: boolean;
@@ -267,14 +363,28 @@ function NavList({ expanded, openMenus, onToggle, onClose, isMobile = false }: N
     const pathname = usePathname();
 
     return (
-        <nav className="flex-1 overflow-y-auto px-2 py-3 space-y-0.5 scrollbar-none">
-            {links.map((item, i) => (
-                <div key={`${item.label}-${i}`}>
-                    {isMobile ? (
-                        <MobileNavItem item={item} pathname={pathname} openMenus={openMenus} onToggle={onToggle} onClose={onClose ?? (() => {})} />
-                    ) : (
-                        <NavItem item={item} expanded={expanded} openMenus={openMenus} onToggle={onToggle} pathname={pathname} />
+        <nav className="flex-1 overflow-y-auto px-2 py-3 space-y-4 scrollbar-none">
+            {navigationSections.map((section, idx) => (
+                <div key={section.title || idx} className="space-y-1">
+                    {section.title && expanded && (
+                        <h4 className="px-2 text-[10px] font-bold text-muted-foreground/70 uppercase tracking-wider select-none mb-1">
+                            {section.title}
+                        </h4>
                     )}
+
+                    {section.title && !expanded && idx > 0 && (
+                        <div className="my-2 border-t border-border/60 mx-1" />
+                    )}
+
+                    {section.items.map((item, i) => (
+                        <div key={`${item.label}-${i}`}>
+                            {isMobile ? (
+                                <MobileNavItem item={item} pathname={pathname} openMenus={openMenus} onToggle={onToggle} onClose={onClose ?? (() => {})} />
+                            ) : (
+                                <NavItem item={item} expanded={expanded} openMenus={openMenus} onToggle={onToggle} pathname={pathname} />
+                            )}
+                        </div>
+                    ))}
                 </div>
             ))}
         </nav>
@@ -285,16 +395,16 @@ function NavList({ expanded, openMenus, onToggle, onClose, isMobile = false }: N
 
 function UserFooter({ user, expanded }: { user: User; expanded: boolean }) {
     return (
-        <div className="border-t border-border p-2">
-            <div className={cn("flex items-center gap-2.5 rounded-md p-2 hover:bg-background-secondary transition-colors", expanded ? "justify-between" : "justify-center")}>
-                <div className="flex items-center gap-2.5 overflow-hidden">
-                    <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs font-bold shrink-0 border border-border">
-                        {user?.nombre?.charAt(0).toUpperCase()}
+        <div className="border-t border-border p-2 bg-card">
+            <div className={cn("flex items-center gap-2 rounded-md p-1.5 hover:bg-muted/50 transition-colors", expanded ? "justify-between" : "justify-center")}>
+                <div className="flex items-center gap-2 overflow-hidden">
+                    <div className="h-7 w-7 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-xs flex items-center justify-center shrink-0 border border-border">
+                        {user?.nombre?.charAt(0).toUpperCase() || "A"}
                     </div>
                     {expanded && (
                         <div className="flex flex-col truncate">
                             <span className="text-[12px] font-semibold text-foreground truncate leading-tight">{user?.nombre}</span>
-                            <span className="text-[11px] text-muted-foreground truncate leading-tight">{user?.email}</span>
+                            <span className="text-[10px] text-muted-foreground truncate leading-tight">{user?.email}</span>
                         </div>
                     )}
                 </div>
@@ -308,7 +418,10 @@ function UserFooter({ user, expanded }: { user: User; expanded: boolean }) {
 
 export function AdminSidebar({ user }: { user: User }) {
     const [expanded, setExpanded] = useState(true);
-    const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
+    const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({
+        Productos: true, // Abierto por defecto
+        "Contenido y Marketing": true, // Abierto por defecto
+    });
 
     const toggleMenu = (label: string) => {
         if (!expanded) {
@@ -321,28 +434,28 @@ export function AdminSidebar({ user }: { user: User }) {
 
     return (
         <TooltipProvider>
-            <div className={cn("flex h-full flex-col text-foreground transition-all duration-300 select-none border-r border-border bg-background relative", expanded ? "w-60" : "w-[60px]")}>
+            <div className={cn("flex h-full flex-col text-foreground transition-all duration-300 select-none border-r border-border bg-card relative", expanded ? "w-60" : "w-[60px]")}>
                 {/* Botón Colapsar */}
                 <button
                     onClick={() => {
                         setExpanded((c) => !c);
                         setOpenMenus({});
                     }}
-                    className="absolute -right-3 top-6 z-10 flex h-6 w-6 items-center justify-center rounded-full border border-border bg-background text-muted-foreground hover:text-foreground shadow-sm transition-colors outline-none"
+                    className="absolute -right-3 top-5 z-20 flex h-6 w-6 items-center justify-center rounded-full border border-border bg-background text-muted-foreground hover:text-foreground shadow-sm transition-colors outline-none"
                     aria-label={expanded ? "Colapsar menú" : "Expandir menú"}
                 >
                     <ChevronRight className={cn("h-3 w-3 transition-transform duration-300", expanded && "rotate-180")} />
                 </button>
 
                 {/* Logo */}
-                <div className={cn("flex h-14 shrink-0 items-center px-4", expanded ? "justify-start" : "justify-center")}>
+                <div className={cn("flex h-14 shrink-0 items-center px-3.5 border-b border-border/40", expanded ? "justify-start" : "justify-center")}>
                     <Logo />
                 </div>
 
-                {/* Enlaces (Tiene su propio scroll interno si la lista es enorme) */}
+                {/* Enlaces */}
                 <NavList expanded={expanded} openMenus={openMenus} onToggle={toggleMenu} />
 
-                {/* Usuario */}
+                {/* Usuario Footer */}
                 <UserFooter user={user} expanded={expanded} />
             </div>
         </TooltipProvider>
@@ -353,7 +466,10 @@ export function AdminSidebar({ user }: { user: User }) {
 
 export function MobileSidebar({ user }: { user: User }) {
     const [open, setOpen] = useState(false);
-    const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
+    const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({
+        Productos: true,
+        "Contenido y Marketing": true,
+    });
 
     const toggleMenu = (label: string) => setOpenMenus((prev) => ({ ...prev, [label]: !prev[label] }));
 
@@ -370,18 +486,18 @@ export function MobileSidebar({ user }: { user: User }) {
                     <SheetTitle>Menú de navegación</SheetTitle>
                 </VisuallyHidden>
 
-                <div className="flex h-14 items-center px-4 shrink-0">
+                <div className="flex h-14 items-center px-4 shrink-0 border-b border-border">
                     <Logo />
                 </div>
 
-                <div className="px-4 py-3 shrink-0 border-b border-border/50">
-                    <p className="text-[13px] font-semibold text-foreground truncate">{user?.nombre}</p>
-                    <p className="text-[11px] text-muted-foreground truncate">{user?.email}</p>
+                <div className="px-4 py-2.5 shrink-0 border-b border-border/50 bg-muted/30">
+                    <p className="text-[12px] font-semibold text-foreground truncate">{user?.nombre}</p>
+                    <p className="text-[10px] text-muted-foreground truncate">{user?.email}</p>
                 </div>
 
                 <NavList expanded={true} openMenus={openMenus} onToggle={toggleMenu} onClose={() => setOpen(false)} isMobile={true} />
 
-                <div className="border-t border-border p-3 shrink-0">
+                <div className="border-t border-border p-2 shrink-0">
                     <AdminMenu user={user} />
                 </div>
             </SheetContent>

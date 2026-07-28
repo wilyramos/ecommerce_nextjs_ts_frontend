@@ -4,7 +4,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-import { getSession, getTokenOptional } from "@/src/auth/dal";
+import { getSession } from "@/src/auth/dal";
 import { orderService } from "@/src/services/order-service";
 import {
     CreateOrderDTOSchema,
@@ -56,10 +56,8 @@ export async function createOrderAction(
         return { ok: false, error: first?.message ?? "Datos inválidos." };
     }
 
-    const token = await getTokenOptional();
-
     try {
-        const order = await orderService.createOrder(validation.data, token);
+        const order = await orderService.createOrder(validation.data);
         redirect(`/checkout/payment?orderNumber=${order.orderNumber}`);
     } catch (err) {
         const errorWithDigest = err as { digest?: string };
@@ -73,9 +71,8 @@ export async function createOrderAction(
 // ════════════════════════════════════════════════════════════════════════════
 
 export async function getOrderByNumberAction(orderNumber: string): Promise<ActionState<OrderResponse>> {
-    const token = await getTokenOptional();
     try {
-        const order = await orderService.getOrderByNumber(orderNumber, token);
+        const order = await orderService.getOrderByNumber(orderNumber);
         return { ok: true, data: order };
     } catch (err) {
         return toErrorState(err);
@@ -97,7 +94,7 @@ export async function loadMyOrdersAction(
     const limit = Number(formData.get("limit")) || 10;
 
     try {
-        const response = await orderService.getMyOrders(session.token, page, limit);
+        const response = await orderService.getMyOrders(page, limit);
         return { ok: true, data: { orders: response.data, ...response.meta } };
     } catch (err) {
         return toErrorState(err);
@@ -127,7 +124,7 @@ export async function loadGuestOrdersAction(
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// 5. CANCELAR ORDEN
+// 5. CANCELAR ORDEN (Cliente)
 // ════════════════════════════════════════════════════════════════════════════
 
 export async function cancelOrderAction(
@@ -143,7 +140,7 @@ export async function cancelOrderAction(
     if (!orderId) return { ok: false, error: "ID de orden inválido." };
 
     try {
-        const order = await orderService.cancelOrder(orderId, session.token, reason);
+        const order = await orderService.cancelOrder(orderId, reason);
         revalidatePath("/account/orders");
         return { ok: true, data: order };
     } catch (err) {
@@ -170,8 +167,8 @@ export async function getAllOrdersAction(filters: AdminOrderFiltersInput = {}): 
     if (!session) return { ok: false, error: "No autorizado." };
 
     try {
-        const response = await orderService.getAllOrders(session.token, filters);
-        return { ok: true, data: { orders: response.data, ...response.meta } };
+        const response = await orderService.getAllOrders(filters);
+        return { ok: true, data: { orders: response.orders, ...response.meta } };
     } catch (err) {
         return toErrorState(err);
     }
@@ -198,9 +195,9 @@ export async function updateOrderStatusAction(
     if (!parsedStatus.success) return { ok: false, error: "Estado inválido." };
 
     try {
-        const order = await orderService.updateOrderStatus(orderId, parsedStatus.data, session.token, reason);
-        revalidatePath("/admin/orders");
-        revalidatePath(`/admin/orders/${orderId}`);
+        const order = await orderService.updateOrderStatus(orderId, parsedStatus.data, reason);
+        revalidatePath("/admin/orders-v2");
+        revalidatePath(`/admin/orders-v2/${orderId}`);
         return { ok: true, data: order };
     } catch (err) {
         return toErrorState(err);
@@ -225,9 +222,9 @@ export async function assignTrackingAction(
     if (!trackingNumber) return { ok: false, error: "Número de tracking requerido." };
 
     try {
-        const order = await orderService.assignTracking(orderId, trackingNumber, session.token);
-        revalidatePath("/admin/orders");
-        revalidatePath(`/admin/orders/${orderId}`);
+        const order = await orderService.assignTracking(orderId, trackingNumber);
+        revalidatePath("/admin/orders-v2");
+        revalidatePath(`/admin/orders-v2/${orderId}`);
         return { ok: true, data: order };
     } catch (err) {
         return toErrorState(err);
@@ -251,19 +248,40 @@ export async function refundOrderAction(
     if (!orderId) return { ok: false, error: "ID de orden requerido." };
 
     try {
-        const order = await orderService.refundOrder(orderId, session.token, reason);
-        revalidatePath("/admin/orders");
-        revalidatePath(`/admin/orders/${orderId}`);
+        const order = await orderService.refundOrder(orderId, reason);
+        revalidatePath("/admin/orders-v2");
+        revalidatePath(`/admin/orders-v2/${orderId}`);
         return { ok: true, data: order };
     } catch (err) {
         return toErrorState(err);
     }
 }
 
+// ════════════════════════════════════════════════════════════════════════════
+// 10. ADMIN — Limpieza manual de órdenes expiradas (Awaiting Payment +24h)
+// TODO: Implementar un endpoint en el backend para limpiar órdenes expiradas y luego llamar a ese endpoint desde aquí.
+// ════════════════════════════════════════════════════════════════════════════
+
+// export async function cleanupExpiredOrdersAction(hours = 24): Promise<ActionState<{ canceledCount: number }>> {
+//     const session = await getSession();
+//     if (!session) return { ok: false, error: "No autorizado." };
+
+//     try {
+//         const res = await orderService.triggerCleanupExpiredOrders(hours);
+//         revalidatePath("/admin/orders-v2");
+//         return { ok: true, data: res };
+//     } catch (err) {
+//         return toErrorState(err);
+//     }
+// }
+
+// ════════════════════════════════════════════════════════════════════════════
+// 11. CHECK ESTADO DE ORDEN
+// ════════════════════════════════════════════════════════════════════════════
+
 export async function checkOrderStatusAction(orderNumber: string): Promise<ActionState<{ status: OrderStatus; paymentStatus?: PaymentStatus }>> {
-    const token = await getTokenOptional();
     try {
-        const orderStatusData = await orderService.getOrderStatusByNumber(orderNumber, token);
+        const orderStatusData = await orderService.getOrderStatusByNumber(orderNumber);
         return { ok: true, data: orderStatusData };
     } catch (err) {
         return toErrorState(err);
