@@ -7,6 +7,7 @@ import CategoriasDestacadasWrapper from "@/components/home/CategoriasDestacadasW
 import HomepageSections from "@/components/home/sections/HomepageSections";
 import HomepageSectionsWrapper from "@/components/home/sections/HomepageSectionsWrapper";
 import BrandsList from "@/components/home/BrandsList";
+import RecentViewed from "@/components/home/product/RecentViewed";
 
 export const metadata: Metadata = {
     ...globalMetadata,
@@ -91,7 +92,12 @@ export default function HomePage() {
                 <HomepageSectionsWrapper />
             </section>
 
-            {/* 6. Marcas Oficiales */}
+            {/* 6. Historial de Productos Vistos Recientemente */}
+            <section aria-label="Historial de navegación" className="max-w-7xl mx-auto">
+                <RecentViewed />
+            </section>
+
+            {/* 7. Marcas Oficiales */}
             <section aria-label="Marcas oficiales">
                 <BrandsList />
             </section>

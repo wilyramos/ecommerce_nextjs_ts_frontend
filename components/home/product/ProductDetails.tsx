@@ -258,7 +258,7 @@ export default function ProductDetails({ producto }: Props) {
 
                 {/* Atributos Destacados */}
                 {featuredAttributes.length > 0 && (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 py-1">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-1 py-1">
                         {featuredAttributes.map((attr) => {
                             const valueLower = attr.value.toLowerCase().trim();
                             const isCheckAttribute = ["si", "sí", "true", "aplica", "incluido", "yes"].includes(valueLower);
@@ -266,7 +266,7 @@ export default function ProductDetails({ producto }: Props) {
                             return (
                                 <div
                                     key={attr.key}
-                                    className="flex flex-col items-center text-center gap-1.5 p-2.5 border border-border/50 bg-card/40 min-w-0"
+                                    className="flex flex-col items-center text-center gap-1.5 p-2 min-w-0"
                                 >
                                     {attr.icon && (
                                         <Image
