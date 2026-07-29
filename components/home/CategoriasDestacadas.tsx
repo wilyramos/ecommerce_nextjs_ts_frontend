@@ -58,14 +58,14 @@ export default function CategoriasDestacadas({ categorias }: { categorias: Categ
                         className="group flex flex-col items-center text-center transition-all duration-300 focus:outline-none"
                     >
                         {/* Círculo */}
-                        <div className="relative w-full aspect-square rounded-full overflow-hidden bg-background border border-border group-hover:border-action-cta group-hover:shadow-lg transition-all duration-300 flex items-center justify-center flex-shrink-0">
+                        <div className="relative w-full aspect-square rounded-full overflow-hidden bg-background border border-border group-hover:border-primary/40 group-hover:shadow-md transition-all duration-300 flex items-center justify-center flex-shrink-0">
                             <div className="relative w-full h-full">
                                 {c.image ? (
                                     <Image
                                         src={c.image}
                                         alt={c.nombre}
                                         fill
-                                        className="object-contain p-2 md:p-3 transition-transform duration-500 group-hover:scale-110"
+                                        className="object-contain p-3 md:p-4 transition-transform duration-500 group-hover:scale-110"
                                         unoptimized
                                         sizes="(max-width: 640px) 150px, (max-width: 1024px) 180px, 200px"
                                     />
@@ -77,7 +77,7 @@ export default function CategoriasDestacadas({ categorias }: { categorias: Categ
                             </div>
                         </div>
 
-                        <h3 className="mt-3 md:mt-4 text-xs md:text-sm font-normal text-muted-foreground group-hover:text-action-cta transition-colors duration-200 line-clamp-2 w-full px-1">
+                        <h3 className="mt-3 md:mt-4 text-[11px] md:text-sm font-semibold text-foreground/80 group-hover:text-primary transition-colors duration-300 line-clamp-2 w-full px-1 leading-tight tracking-tight">
                             {c.nombre}
                         </h3>
                     </Link>

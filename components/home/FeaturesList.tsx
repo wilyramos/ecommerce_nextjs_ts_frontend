@@ -1,45 +1,38 @@
 "use client";
 
-import Link from "next/link";
-import {
-    RiShieldCheckLine,
-    RiTruckLine,
-    RiMapPin2Line,
-    RiBankCardLine,
-    RiRefund2Line,
-} from "react-icons/ri";
+import Image from "next/image";
 
 type Feature = {
     title: string;
-    icon: React.ComponentType<{ className?: string }>;
-    url?: string;
+    subtitle: string;
+    imageSrc: string;
 };
 
 const features: Feature[] = [
     {
-        title: "Equipos 100% Originales",
-        icon: RiShieldCheckLine,
-        url: "/hc/garantias",
+        title: "100% Originales",
+        subtitle: "Equipos garantizados",
+        imageSrc: "/features/original.png",
     },
     {
-        title: "Envío Gratis desde S/ 49",
-        icon: RiTruckLine,
-        url: "/ofertas",
+        title: "Envío Gratis",
+        subtitle: "Desde S/ 49",
+        imageSrc: "/features/envio-gratis.png",
     },
     {
-        title: "Envíos a todo el Perú",
-        icon: RiMapPin2Line,
-        url: "/hc/proceso-de-compra",
+        title: "A todo el Perú",
+        subtitle: "Envíos nacionales",
+        imageSrc: "/features/envio-a-todo-el-peru.png",
     },
     {
-        title: "Todos los métodos de pago",
-        icon: RiBankCardLine,
-        url: "/hc/preguntas-frecuentes",
+        title: "Pago Seguro",
+        subtitle: "Todos los métodos",
+        imageSrc: "/payments/culqi.png",
     },
     {
         title: "Garantía de 1 año",
-        icon: RiRefund2Line,
-        url: "/hc/garantias-y-devoluciones",
+        subtitle: "Compra protegida",
+        imageSrc: "/features/garantia.png",
     },
 ];
 
@@ -47,38 +40,33 @@ export default function FeaturesList() {
     return (
         <div className="max-w-7xl mx-auto select-none">
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-1 md:gap-2">
-                {features.map((feature) => {
-                    const IconComponent = feature.icon;
-
-                    const Content = (
+                {features.map((feature) => (
+                    <div key={feature.title} className="h-full">
                         <div
-                            className="group flex items-center  justify-center gap-2.5 md:gap-3 p-3.5 h-full bg-background border border-border"
-                            aria-label={feature.title}
+                            className="group flex flex-col xl:flex-row items-center justify-center gap-2 md:gap-3 p-3 md:p-3.5 h-full bg-background border border-border text-center xl:text-left hover:border-primary/40 hover:bg-accent/10 transition-colors duration-300"
+                            aria-label={`${feature.title} - ${feature.subtitle}`}
                         >
-                            <div className="shrink-0 text-muted-foreground transition-transform duration-200 group-hover:scale-110">
-                                <IconComponent className="w-5 h-5 md:w-6 md:h-6" />
+                            <div className="shrink-0 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 bg-muted/40 rounded-full transition-transform duration-300 group-hover:scale-110">
+                                <Image
+                                    src={feature.imageSrc}
+                                    alt={feature.title}
+                                    width={32}
+                                    height={32}
+                                    className="w-6 h-6 md:w-7 md:h-7 object-contain"
+                                    unoptimized
+                                />
                             </div>
-                            <h3 className="text-xs md:text-sm text-muted-foreground leading-tight">
-                                {feature.title}
-                            </h3>
+                            <div className="flex flex-col">
+                                <h3 className="text-xs md:text-sm font-bold text-foreground leading-tight tracking-tight">
+                                    {feature.title}
+                                </h3>
+                                <p className="hidden md:block text-[10px] md:text-xs text-muted-foreground mt-0.5 font-medium leading-tight">
+                                    {feature.subtitle}
+                                </p>
+                            </div>
                         </div>
-                    );
-
-                    return (
-                        <div key={feature.title} className="h-full">
-                            {feature.url ? (
-                                <Link
-                                    href={feature.url}
-                                    className="block h-full outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                                >
-                                    {Content}
-                                </Link>
-                            ) : (
-                                Content
-                            )}
-                        </div>
-                    );
-                })}
+                    </div>
+                ))}
             </div>
         </div>
     );
