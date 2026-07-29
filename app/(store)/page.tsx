@@ -70,7 +70,7 @@ export default function HomePage() {
                 <section aria-label="Banners principales">
                     <CarruselPrincipal />
                 </section>
-                
+
                 {/* 2. Barra de Confianza e Incentivos superpuesta */}
                 <section aria-label="Beneficios de compra" className="relative z-10 -mt-6 md:-mt-8 px-4">
                     <FeaturesList />
@@ -81,19 +81,19 @@ export default function HomePage() {
             <section aria-label="Categorías principales">
                 <CategoriasDestacadasWrapper />
             </section>
-            
+
             {/* 4. Colecciones Destacadas Vía Backend */}
             <section aria-label="Colecciones de productos">
                 <HomepageSections />
             </section>
-            
+
             {/* 5. Escaparate Dinámico de Secciones Avanzadas */}
             <section aria-label="Secciones dinámicas">
                 <HomepageSectionsWrapper />
             </section>
 
             {/* 6. Historial de Productos Vistos Recientemente */}
-            <section aria-label="Historial de navegación" className="max-w-7xl mx-auto">
+            <section aria-label="Historial de navegación" className="w-full max-w-7xl mx-auto px-4">
                 <RecentViewed />
             </section>
 
