@@ -77,7 +77,7 @@ const navigationSections: NavSection[] = [
                 label: "Productos",
                 children: [
                     { href: "/admin/products", label: "Todos los productos" },
-                    { href: "/admin/inventory", label: "Inventario & Stock", badge: "Próx." },
+                    { href: "/admin/inventory", label: "Inventario & Stock", badge: "New." },
                     { href: "/admin/products/category", label: "Categorías" },
                     { href: "/admin/collections", label: "Colecciones" },
                     { href: "/admin/brands", label: "Marcas" },
