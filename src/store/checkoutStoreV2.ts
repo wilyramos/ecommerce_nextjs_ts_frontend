@@ -1,4 +1,4 @@
-// File: src/store/checkoutStoreV2.ts
+// File: frontend/src/store/checkoutStoreV2.ts
 
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
@@ -8,38 +8,34 @@ import type {
     OrderResponse,
 } from '@/src/schemas/order.schema'
 
-// ─── Slice de la orden pendiente ──────────────────────────────────────────────
-// Solo los campos necesarios para el paso 2 (pasarela de pago).
-// No se persiste el objeto completo para evitar datos obsoletos en localStorage.
-
 type PendingOrder = Pick<
     OrderResponse,
     '_id' | 'orderNumber' | 'subtotal' | 'shippingCost' | 'totalPrice' | 'currency' | 'status'
 >
 
-// ─── Estado del store ─────────────────────────────────────────────────────────
+export interface AppliedDiscount {
+    code: string
+    discountAmount: number
+}
 
 interface CheckoutStoreV2 {
     customerProfile: CustomerProfile | null
     shippingAddress: ShippingAddress | null
     notes:           string
     pendingOrder:    PendingOrder | null
+    appliedDiscount: AppliedDiscount | null
 
     // ── Setters ───────────────────────────────────────────────────────────────
     setCustomerProfile: (profile: CustomerProfile) => void
     setShippingAddress: (address: ShippingAddress) => void
     setNotes:           (notes: string)            => void
     setPendingOrder:    (order: PendingOrder)       => void
+    setAppliedDiscount: (discount: AppliedDiscount | null) => void
+    clearDiscount:      () => void
 
-    // ── Selectores derivados ──────────────────────────────────────────────────
-    /** true cuando el paso 1 está completo y se puede avanzar al paso 2 */
     isStepOneComplete: () => boolean
-
-    // ── Reset ─────────────────────────────────────────────────────────────────
-    resetCheckout: () => void
+    resetCheckout:     () => void
 }
-
-// ─── Store ────────────────────────────────────────────────────────────────────
 
 export const useCheckoutStoreV2 = create<CheckoutStoreV2>()(
     devtools(
@@ -49,6 +45,7 @@ export const useCheckoutStoreV2 = create<CheckoutStoreV2>()(
                 shippingAddress: null,
                 notes:           '',
                 pendingOrder:    null,
+                appliedDiscount: null,
 
                 setCustomerProfile: (profile) =>
                     set({ customerProfile: profile }, false, 'checkout/setCustomerProfile'),
@@ -62,6 +59,12 @@ export const useCheckoutStoreV2 = create<CheckoutStoreV2>()(
                 setPendingOrder: (order) =>
                     set({ pendingOrder: order }, false, 'checkout/setPendingOrder'),
 
+                setAppliedDiscount: (discount) =>
+                    set({ appliedDiscount: discount }, false, 'checkout/setAppliedDiscount'),
+
+                clearDiscount: () =>
+                    set({ appliedDiscount: null }, false, 'checkout/clearDiscount'),
+
                 isStepOneComplete: () => {
                     const { customerProfile, shippingAddress } = get()
                     return customerProfile !== null && shippingAddress !== null
@@ -69,7 +72,7 @@ export const useCheckoutStoreV2 = create<CheckoutStoreV2>()(
 
                 resetCheckout: () =>
                     set(
-                        { customerProfile: null, shippingAddress: null, notes: '', pendingOrder: null },
+                        { customerProfile: null, shippingAddress: null, notes: '', pendingOrder: null, appliedDiscount: null },
                         false,
                         'checkout/reset'
                     ),

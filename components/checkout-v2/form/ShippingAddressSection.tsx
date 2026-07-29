@@ -1,4 +1,3 @@
-// File: frontend/components/checkout-v2/form/ShippingAddressSection.tsx
 'use client'
 
 import { useMemo } from 'react'
@@ -50,8 +49,7 @@ function NativeSelect({ id, label, value, options, disabled, hasError, onChange 
                 onChange={e => onChange(e.target.value)}
                 disabled={disabled || options.length === 0}
                 className={cn(
-                    // SE CAMBIA 'text-xs' POR 'text-base md:text-xs' PARA EVITAR ZOOM EN MÓVILES
-                    "peer h-11 w-full border border-border px-3 pt-4 pb-1 text-base md:text-xs",
+                    "peer h-11 w-full border bg-background border-border px-3 pt-4 pb-1 text-base sm:text-xs",
                     "transition-all outline-none rounded-md text-foreground appearance-none",
                     "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
                     "focus-visible:border-ring focus-visible:ring-ring focus-visible:ring-[1px]",
@@ -68,7 +66,7 @@ function NativeSelect({ id, label, value, options, disabled, hasError, onChange 
                 htmlFor={id}
                 className={cn(
                     "absolute left-3 text-muted-foreground pointer-events-none transition-all origin-left select-none",
-                    value ? "top-1 text-[10px]" : "top-3 text-base md:text-xs"
+                    value ? "top-1 text-[10px]" : "top-3 text-base sm:text-xs"
                 )}
             >
                 {label}
@@ -80,13 +78,13 @@ function NativeSelect({ id, label, value, options, disabled, hasError, onChange 
 export default function ShippingAddressSection({ values, errors, disabled, notes, onChange, onNotesChange }: Props) {
     const provincias = useMemo(() =>
         values.departamento ? Object.keys(locations[values.departamento] ?? {}) : []
-        , [values.departamento])
+    , [values.departamento])
 
     const distritos = useMemo(() =>
         values.departamento && values.provincia
             ? locations[values.departamento]?.[values.provincia] ?? []
             : []
-        , [values.departamento, values.provincia])
+    , [values.departamento, values.provincia])
 
     const handleDepartamentoChange = (val: string) => {
         onChange('departamento', val)
@@ -118,6 +116,7 @@ export default function ShippingAddressSection({ values, errors, disabled, notes
                 aria-invalid={hasError}
                 disabled={disabled}
                 className={cn(
+                    "text-base sm:text-xs",
                     hasError && "border-destructive focus-visible:ring-destructive/20 focus-visible:border-destructive"
                 )}
             />
@@ -125,11 +124,11 @@ export default function ShippingAddressSection({ values, errors, disabled, notes
     }
 
     return (
-        <fieldset className="space-y-4 text-foreground" disabled={disabled}>
+        <fieldset className="space-y-3.5 text-foreground" disabled={disabled}>
             <legend className="sr-only">Dirección de envío</legend>
 
             {fieldErrors.length > 0 && (
-                <ul className="space-y-0.5 rounded-md border border-destructive/20 bg-destructive/5 px-3 py-2">
+                <ul className="space-y-1 rounded-md border border-destructive/20 bg-destructive/5 px-3 py-2">
                     {fieldErrors.map((msg) => (
                         <li key={msg} className="text-[11px] text-destructive tracking-wide">
                             · {msg}
@@ -138,7 +137,7 @@ export default function ShippingAddressSection({ values, errors, disabled, notes
                 </ul>
             )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
                 <NativeSelect
                     id="shipping-field-departamento"
                     label="Departamento"
@@ -169,7 +168,7 @@ export default function ShippingAddressSection({ values, errors, disabled, notes
             </div>
 
             {renderField('direccion', 'Dirección (Calle, avenida, número)')}
-            {renderField('referencia', 'Referencia ( Opcional)')}
+            {renderField('referencia', 'Referencia (Opcional)')}
 
             <InputV2
                 id="shipping-notes"
@@ -178,6 +177,7 @@ export default function ShippingAddressSection({ values, errors, disabled, notes
                 onChange={e => onNotesChange(e.target.value)}
                 maxLength={300}
                 disabled={disabled}
+                className="text-base sm:text-xs"
             />
         </fieldset>
     )

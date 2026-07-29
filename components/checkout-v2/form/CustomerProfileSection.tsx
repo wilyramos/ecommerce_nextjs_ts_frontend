@@ -1,4 +1,3 @@
-// File: frontend/components/checkout-v2/form/CustomerProfileSection.tsx
 'use client'
 
 import * as React from 'react'
@@ -40,6 +39,7 @@ export default function CustomerProfileSection({ values, errors, disabled, locke
                 aria-invalid={hasError}
                 disabled={disabled}
                 className={cn(
+                    "text-base sm:text-xs",
                     hasError && "border-destructive focus-visible:ring-destructive/20 focus-visible:border-destructive"
                 )}
             />
@@ -47,11 +47,11 @@ export default function CustomerProfileSection({ values, errors, disabled, locke
     }
 
     return (
-        <fieldset className="space-y-4 text-foreground" disabled={disabled}>
+        <fieldset className="space-y-3.5 text-foreground" disabled={disabled}>
             <legend className="sr-only">Datos personales</legend>
 
             {fieldErrors.length > 0 && (
-                <ul className="space-y-0.5 rounded-md border border-destructive/20 bg-destructive/5 px-3 py-2">
+                <ul className="space-y-1 rounded-md border border-destructive/20 bg-destructive/5 px-3 py-2">
                     {fieldErrors.map((msg) => (
                         <li key={msg} className="text-[11px] text-destructive tracking-wide">
                             · {msg}
@@ -68,7 +68,7 @@ export default function CustomerProfileSection({ values, errors, disabled, locke
                             value={lockedEmail}
                             disabled
                             readOnly
-                            className="h-11 w-full px-3 pt-4 pb-1 text-base md:text-xs bg-muted/30 border border-border cursor-not-allowed select-none rounded-md text-foreground outline-none"
+                            className="h-11 w-full px-3 pt-4 pb-1 text-base sm:text-xs bg-muted/40 border border-border cursor-not-allowed select-none rounded-md text-muted-foreground outline-none"
                         />
                         <label className="absolute left-3 top-1 text-[10px] text-muted-foreground/70 select-none">
                             Correo electrónico
@@ -79,18 +79,16 @@ export default function CustomerProfileSection({ values, errors, disabled, locke
                 )}
             </div>
 
-            {/* Nombre / Apellidos */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Nombres */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 {renderField('nombre', 'Nombre')}
                 {renderField('apellidos', 'Apellidos')}
             </div>
 
-            {/* Teléfono · Tipo doc · Número doc */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-
+            {/* Documentación y Teléfono */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
                 {renderField('telefono', 'Nro de teléfono', 'tel')}
 
-                {/* Selector de Documento Corregido */}
                 <div className="relative w-full group flex flex-col justify-end h-11">
                     <select
                         id="profile-field-tipoDocumento"
@@ -98,7 +96,7 @@ export default function CustomerProfileSection({ values, errors, disabled, locke
                         onChange={e => onChange('tipoDocumento', (e.target.value as TipoDocumento) || undefined)}
                         disabled={disabled}
                         className={cn(
-                            "peer h-11 w-full border bg-background border-border px-3 pt-4 pb-1 text-base md:text-xs",
+                            "peer h-11 w-full border bg-background border-border px-3 pt-4 pb-1 text-base sm:text-xs",
                             "transition-all outline-none rounded-md text-foreground appearance-none",
                             "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
                             "focus-visible:border-ring focus-visible:ring-ring focus-visible:ring-[1px]",
@@ -127,16 +125,15 @@ export default function CustomerProfileSection({ values, errors, disabled, locke
                     <label
                         htmlFor="profile-field-tipoDocumento"
                         className={cn(
-                            "absolute left-3 text-[10px] text-muted-foreground pointer-events-none transition-all origin-left select-none",
-                            "peer-focus:top-1 peer-focus:text-[10px]",
-                            values.tipoDocumento ? "top-1 text-[10px]" : "top-3 text-xs"
+                            "absolute left-3 text-muted-foreground pointer-events-none transition-all origin-left select-none",
+                            values.tipoDocumento ? "top-1 text-[10px]" : "top-3 text-base sm:text-xs"
                         )}
                     >
-                        Tipo de documento
+                        Tipo de doc.
                     </label>
                 </div>
 
-                {renderField('numeroDocumento', 'Número de documento')}
+                {renderField('numeroDocumento', 'Nro. de documento')}
             </div>
         </fieldset>
     )

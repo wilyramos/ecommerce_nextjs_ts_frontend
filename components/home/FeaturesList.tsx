@@ -11,62 +11,71 @@ type Feature = {
 const features: Feature[] = [
     {
         title: "100% Originales",
-        subtitle: "Equipos garantizados",
+        subtitle: "Prodctos oficiales",
         imageSrc: "/features/original.png",
     },
     {
         title: "Envío Gratis",
-        subtitle: "Desde S/ 49",
+        subtitle: "Compras desde S/ 49",
         imageSrc: "/features/envio-gratis.png",
     },
     {
-        title: "A todo el Perú",
-        subtitle: "Envíos nacionales",
+        title: "Todo el Perú",
+        subtitle: "Cobertura nacional",
         imageSrc: "/features/envio-a-todo-el-peru.png",
     },
     {
         title: "Pago Seguro",
-        subtitle: "Todos los métodos",
+        subtitle: "Tarjetas, Yape y Plin",
         imageSrc: "/payments/culqi.png",
     },
     {
-        title: "Garantía de 1 año",
-        subtitle: "Compra protegida",
+        title: "Con Garantía",
+        subtitle: "Productos con respaldo",
         imageSrc: "/features/garantia.png",
     },
 ];
 
 export default function FeaturesList() {
     return (
-        <div className="max-w-7xl mx-auto select-none">
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-1 md:gap-2">
-                {features.map((feature) => (
-                    <div key={feature.title} className="h-full">
+        <div className="max-w-7xl mx-auto select-none px-2 sm:px-0">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-3">
+                {features.map((feature, index) => {
+                    const isLastOddItem =
+                        index === features.length - 1 && features.length % 2 !== 0;
+
+                    return (
                         <div
-                            className="group flex flex-col xl:flex-row items-center justify-center gap-2 md:gap-3 p-3 md:p-3.5 h-full bg-background border border-border text-center xl:text-left hover:border-primary/40 hover:bg-accent/10 transition-colors duration-300"
-                            aria-label={`${feature.title} - ${feature.subtitle}`}
+                            key={feature.title}
+                            className={`h-full ${isLastOddItem ? "col-span-2 sm:col-span-1" : "col-span-1"
+                                }`}
                         >
-                            <div className="shrink-0 flex items-center justify-center w-10 h-10 md:w-12 md:h-12 bg-muted/40 rounded-full transition-transform duration-300 group-hover:scale-110">
-                                <Image
-                                    src={feature.imageSrc}
-                                    alt={feature.title}
-                                    width={32}
-                                    height={32}
-                                    className="w-6 h-6 md:w-7 md:h-7 object-contain"
-                                    unoptimized
-                                />
-                            </div>
-                            <div className="flex flex-col">
-                                <h3 className="text-xs md:text-sm font-bold text-foreground leading-tight tracking-tight">
-                                    {feature.title}
-                                </h3>
-                                <p className="hidden md:block text-[10px] md:text-xs text-muted-foreground mt-0.5 font-medium leading-tight">
-                                    {feature.subtitle}
-                                </p>
+                            <div
+                                className="group flex flex-col xl:flex-row items-center justify-center gap-2 md:gap-3 p-2.5 sm:p-3 h-full bg-background border border-border text-center xl:text-left hover:border-border-hover hover:bg-muted-neutral transition-colors duration-200 rounded-md"
+                                aria-label={`${feature.title} - ${feature.subtitle}`}
+                            >
+                                <div className="shrink-0 flex items-center justify-center w-10 h-10 md:w-11 md:h-11 bg-muted/30 rounded-full transition-transform duration-200 group-hover:scale-105">
+                                    <Image
+                                        src={feature.imageSrc}
+                                        alt={feature.title}
+                                        width={26}
+                                        height={26}
+                                        className="w-6 h-6 md:w-7 md:h-7 object-contain"
+                                        unoptimized
+                                    />
+                                </div>
+                                <div className="flex flex-col min-w-0">
+                                    <h3 className="text-xs font-semibold text-foreground leading-snug tracking-tight">
+                                        {feature.title}
+                                    </h3>
+                                    <p className="text-[11px] text-muted-foreground mt-0.5 font-normal leading-tight">
+                                        {feature.subtitle}
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
         </div>
     );

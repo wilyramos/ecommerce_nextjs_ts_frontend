@@ -154,7 +154,8 @@ export const CreateOrderDTOSchema = z.object({
     shippingAddress: ShippingAddressSchema,
     shippingMethod:  z.string().trim().optional(),
     notes:           z.string().max(300, 'Las notas no pueden superar los 300 caracteres').optional(),
-    currency:        z.string().default('PEN')
+    currency:        z.string().default('PEN'),
+    discountCode:    z.string().trim().optional() // new
 });
 export type CreateOrderDTO = z.infer<typeof CreateOrderDTOSchema>;
 
@@ -179,6 +180,8 @@ export const OrderResponseSchema = z.object({
     items:                  z.array(OrderItemResponseSchema),
     subtotal:               z.number(),
     shippingCost:           z.number(),
+    discountCode:            z.string().optional(),
+    discountAmount:          z.number().optional(),
     totalPrice:             z.number(),
     currency:               z.string(),
     status:                 OrderStatusEnum,

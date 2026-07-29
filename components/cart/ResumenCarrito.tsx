@@ -2,22 +2,26 @@
 "use client";
 
 import { useCartStore } from "@/src/store/cartStore";
+import { useCheckoutStoreV2 } from "@/src/store/checkoutStoreV2";
 import ItemCarrito from "./ItemCarrito";
+import CouponInput from "@/components/checkout-v2/summary/CouponInput";
 import { useRouter } from "next/navigation";
 import { FaShoppingCart } from "react-icons/fa";
 import { H1, Muted, Small } from "../ui/Typography";
 import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 
 export default function ResumenCarrito() {
     const { cart } = useCartStore();
-    const total = cart.reduce((acc, item) => acc + item.subtotal, 0);
-    const totalUnidades = cart.reduce((acc, item) => acc + item.cantidad, 0);
+    const { appliedDiscount } = useCheckoutStoreV2();
     const router = useRouter();
 
-    // Regla logística espejo del backend y del checkout
+    const total = cart.reduce((acc, item) => acc + item.subtotal, 0);
+    const totalUnidades = cart.reduce((acc, item) => acc + item.cantidad, 0);
+
+    // Regla logística espejo del checkout y backend
     const shippingCost = total < 49 ? 10 : 0;
-    const totalFinal = total + shippingCost;
+    const discountAmount = appliedDiscount?.discountAmount ?? 0;
+    const totalFinal = Math.max(0, total + shippingCost - discountAmount);
 
     if (cart.length === 0) {
         return (
@@ -26,7 +30,7 @@ export default function ResumenCarrito() {
                 <Muted className="mb-6">Tu carrito está vacío.</Muted>
                 <button
                     onClick={() => router.push("/productos")}
-                    className="bg-foreground text-background px-6 py-2.5 rounded-full hover:bg-action-cta hover:text-primary-foreground transition-colors text-sm font-medium outline-none"
+                    className="bg-foreground text-background px-6 py-2.5 rounded-full hover:bg-action-cta hover:text-primary-foreground transition-colors text-sm font-medium outline-none cursor-pointer"
                 >
                     Seguir comprando
                 </button>
@@ -67,6 +71,15 @@ export default function ResumenCarrito() {
                                 S/ {total.toFixed(2)}
                             </span>
                         </li>
+
+                        {/* Descuento si está aplicado */}
+                        {discountAmount > 0 && (
+                            <li className="flex justify-between items-center text-success font-medium">
+                                <span>Descuento ({appliedDiscount?.code})</span>
+                                <span>-S/ {discountAmount.toFixed(2)}</span>
+                            </li>
+                        )}
+
                         <li>
                             <div className="flex justify-between items-center">
                                 <span>Tarifa de envío</span>
@@ -87,22 +100,12 @@ export default function ResumenCarrito() {
                         </li>
                     </ul>
 
-                    {/* CUPÓN */}
-                    <div className="pt-1 md:pt-2">
-                        <label className="text-xs md:text-sm font-medium text-muted-foreground mb-1 block">
-                            ¿Tienes un cupón?
+                    {/* SECCIÓN INTERACTIVA DE CUPÓN */}
+                    <div className="pt-1 md:pt-2 border-t border-border">
+                        <label className="text-xs font-medium text-muted-foreground mb-2 block">
+                            ¿Tienes un cupón de descuento?
                         </label>
-                        <div className="flex items-center gap-2">
-                            <Input
-                                type="text"
-                                placeholder="Ingresa tu cupón"
-                                disabled
-                                className="flex-1 border border-border bg-background-secondary rounded-sm px-3 py-2 text-xs text-foreground placeholder-muted-foreground/60 focus:outline-none opacity-50 cursor-not-allowed"
-                            />
-                            <Button variant="outline" size="sm" disabled>
-                                Aplicar
-                            </Button>
-                        </div>
+                        <CouponInput />
                     </div>
 
                     <Small className="text-[10px] md:text-xs text-muted-foreground/70">

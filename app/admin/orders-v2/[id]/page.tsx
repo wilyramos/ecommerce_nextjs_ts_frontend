@@ -22,6 +22,7 @@ import {
     Receipt,
     Package,
     Truck,
+    Tag,
 } from "lucide-react";
 
 type Props = {
@@ -45,6 +46,9 @@ export default async function AdminOrderDetailPage({ params }: Props) {
     const currency = order.currency || "PEN";
     const isCanceled = order.status === "canceled";
 
+    // Cálculo y verificación de descuento por cupón
+    const hasDiscount = Boolean(order.discountCode || (order.discountAmount && order.discountAmount > 0));
+
     return (
         <AdminPageWrapper
             title={`Orden ${order.orderNumber}`}
@@ -53,8 +57,8 @@ export default async function AdminOrderDetailPage({ params }: Props) {
         >
             <div className="space-y-6 text-foreground">
                 {/* ═══════════════════════════════════════════════
-            CABECERA DE ESTADO RÁPIDO
-        ═══════════════════════════════════════════════ */}
+                    CABECERA DE ESTADO RÁPIDO
+                ═══════════════════════════════════════════════ */}
                 <Card className="border-border/60">
                     <CardContent className="pt-5 pb-4">
                         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -75,12 +79,19 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                                     </Badge>
                                 )}
 
+                                {hasDiscount && (
+                                    <Badge variant="outline" className="text-[10px] font-bold uppercase gap-1 text-success border-success/30">
+                                        <Tag className="w-3 h-3" />
+                                        Cupón: {order.discountCode || "Aplicado"}
+                                    </Badge>
+                                )}
+
                                 <span className="text-xs text-muted-foreground font-medium">
                                     Creada: {new Date(order.createdAt).toLocaleString("es-PE")}
                                 </span>
                             </div>
 
-                            <div className="flex items-center gap-2 text-xs  text-muted-foreground">
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground">
                                 <span className="bg-muted px-2 py-1 rounded border border-border/40">
                                     ID: {order._id}
                                 </span>
@@ -91,8 +102,8 @@ export default async function AdminOrderDetailPage({ params }: Props) {
 
                 <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 items-start">
                     {/* ═══════════════════════════════════════════════
-              COLUMNA PRINCIPAL (Izquierda)
-          ═══════════════════════════════════════════════ */}
+                        COLUMNA PRINCIPAL (Izquierda)
+                    ═══════════════════════════════════════════════ */}
                     <div className="xl:col-span-2 space-y-6">
                         {/* PRODUCTOS */}
                         <Card>
@@ -157,7 +168,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                                                     </div>
                                                 )}
 
-                                                <div className="flex flex-wrap gap-2 text-[10px]  font-bold text-muted-foreground">
+                                                <div className="flex flex-wrap gap-2 text-[10px] font-bold text-muted-foreground">
                                                     {item.sku ? (
                                                         <span className="bg-muted px-1.5 py-0.5 rounded border border-border/40">
                                                             SKU: {item.sku}
@@ -174,13 +185,13 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                                             </div>
 
                                             <div className="text-right shrink-0 space-y-0.5">
-                                                <p className="text-sm font-bold ">
+                                                <p className="text-sm font-bold">
                                                     {currency} {item.price.toFixed(2)}
                                                 </p>
                                                 <p className="text-[11px] font-black text-muted-foreground">
                                                     × {item.quantity}
                                                 </p>
-                                                <p className="text-xs font-bold  text-foreground/80">
+                                                <p className="text-xs font-bold text-foreground/80">
                                                     {currency} {(item.price * item.quantity).toFixed(2)}
                                                 </p>
                                             </div>
@@ -230,7 +241,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                                         <p className="text-muted-foreground font-bold mb-0.5">
                                             Teléfono
                                         </p>
-                                        <p className=" font-medium select-all">
+                                        <p className="font-medium select-all">
                                             {order.customerProfile.telefono}
                                         </p>
                                     </div>
@@ -239,7 +250,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                                             <p className="text-muted-foreground font-bold mb-0.5">
                                                 {order.customerProfile.tipoDocumento}
                                             </p>
-                                            <p className=" font-medium select-all">
+                                            <p className="font-medium select-all">
                                                 {order.customerProfile.numeroDocumento}
                                             </p>
                                         </div>
@@ -359,14 +370,14 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                                                         {ORDER_STATUS_LABELS[history.status] ||
                                                             history.status}
                                                     </span>
-                                                    <span className="text-[11px]  text-muted-foreground">
+                                                    <span className="text-[11px] text-muted-foreground">
                                                         {new Date(history.changedAt).toLocaleString("es-PE")}
                                                     </span>
                                                 </div>
                                                 {history.actionBy && (
                                                     <p className="text-[11px] text-muted-foreground">
                                                         Por:{" "}
-                                                        <code className="bg-muted px-1.5 py-0.5 rounded text-[10px] ">
+                                                        <code className="bg-muted px-1.5 py-0.5 rounded text-[10px]">
                                                             {history.actionBy}
                                                         </code>
                                                     </p>
@@ -385,8 +396,8 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                     </div>
 
                     {/* ═══════════════════════════════════════════════
-              COLUMNA LATERAL (Derecha) — Sticky
-          ═══════════════════════════════════════════════ */}
+                        COLUMNA LATERAL (Derecha) — Sticky
+                    ═══════════════════════════════════════════════ */}
                     <div className="space-y-6 xl:sticky xl:top-6">
                         {/* TOTALES */}
                         <Card>
@@ -398,21 +409,36 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                             <CardContent className="space-y-3 text-sm">
                                 <div className="flex justify-between text-muted-foreground">
                                     <span>Subtotal</span>
-                                    <span className=" font-semibold text-foreground">
+                                    <span className="font-semibold text-foreground">
                                         {currency} {order.subtotal.toFixed(2)}
                                     </span>
                                 </div>
+
+                                {/* DESCUENTO POR CUPÓN */}
+                                {hasDiscount && (
+                                    <div className="flex justify-between text-success font-medium">
+                                        <span className="flex items-center gap-1.5">
+                                            <Tag className="w-3.5 h-3.5" />
+                                            Cupón ({order.discountCode || "Aplicado"})
+                                        </span>
+                                        <span className="font-bold">
+                                            -{currency} {(order.discountAmount ?? 0).toFixed(2)}
+                                        </span>
+                                    </div>
+                                )}
+
                                 <div className="flex justify-between text-muted-foreground">
                                     <span>Envío</span>
-                                    <span className=" font-semibold text-foreground">
+                                    <span className="font-semibold text-foreground">
                                         {currency} {order.shippingCost.toFixed(2)}
                                     </span>
                                 </div>
+
                                 <div className="flex justify-between items-center pt-3 border-t border-border/60">
-                                    <span className="font-black uppercase text-xs ">
+                                    <span className="font-black uppercase text-xs">
                                         Total
                                     </span>
-                                    <span className=" text-lg font-black">
+                                    <span className="text-lg font-black">
                                         {currency} {order.totalPrice.toFixed(2)}
                                     </span>
                                 </div>
@@ -480,7 +506,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                                                 <span className="text-muted-foreground block">
                                                     ID Transacción
                                                 </span>
-                                                <code className="block text-[10px]  bg-muted p-2 rounded border break-all select-all">
+                                                <code className="block text-[10px] bg-muted p-2 rounded border break-all select-all">
                                                     {order.payment.transactionId}
                                                 </code>
                                             </div>
@@ -524,7 +550,7 @@ export default async function AdminOrderDetailPage({ params }: Props) {
                                         Metadatos Técnicos
                                     </CardTitle>
                                 </CardHeader>
-                                <CardContent className="text-[11px]  space-y-1.5 select-all">
+                                <CardContent className="text-[11px] space-y-1.5 select-all">
                                     <p>
                                         <span className="text-muted-foreground font-semibold">
                                             IP:

@@ -3,48 +3,49 @@
 import { redirect } from "next/navigation";
 import { orderService } from "@/src/services/order-service";
 import PaymentMethodsAccordionV2 from "@/components/checkout-v2/payment/PaymentMethodsAccordionV2";
-// Ya no necesitamos importar getTokenOptional aquí
+import SyncPendingOrder from "@/components/checkout-v2/payment/SyncPendingOrder";
 
-type PaymentPageProps = { searchParams: Promise<{ orderNumber?: string }> }
+type PaymentPageProps = { searchParams: Promise<{ orderNumber?: string }> };
 
 export default async function PaymentPage({ searchParams }: PaymentPageProps) {
-    const { orderNumber } = await searchParams
+    const { orderNumber } = await searchParams;
 
-    if (!orderNumber) redirect("/checkout")
+    if (!orderNumber) redirect("/checkout");
 
-    let order
+    let order;
 
     try {
-        // Llamada limpia y autónoma al servicio (el token se gestiona internamente)
-        order = await orderService.getOrderByNumber(orderNumber)
+        order = await orderService.getOrderByNumber(orderNumber);
     } catch (error) {
-        console.error("❌ Error recuperando orden:", error)
+        console.error("❌ Error recuperando orden:", error);
         return (
             <p className="text-center py-10 text-sm text-muted-foreground select-none">
                 La orden no existe o expiró su tiempo de reserva.
             </p>
-        )
+        );
     }
 
     if (order.payment?.status === "approved") {
         return (
-            <p className="text-center py-10 text-sm font-semibold text-emerald-600 dark:text-emerald-400 select-none">
+            <p className="text-center py-10 text-sm font-semibold text-success select-none">
                 El pago ya fue procesado y aprobado.
             </p>
-        )
+        );
     }
 
     return (
         <div className="space-y-6">
+            <SyncPendingOrder order={order} />
+
             <div className="border-b border-border pb-5">
                 <h1 className="text-xl font-bold tracking-tight text-foreground">
                     Método de pago
                 </h1>
                 <p className="text-xs text-muted-foreground mt-1">
-                    Elige cómo quieres pagar.
+                    Elige cómo quieres pagar
                 </p>
             </div>
             <PaymentMethodsAccordionV2 key={order.orderNumber} order={order} />
         </div>
-    )
+    );
 }

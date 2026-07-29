@@ -59,6 +59,7 @@ export default function CheckoutForm({ defaultProfile, lockedEmail }: Props) {
         customerProfile: storedProfile,
         shippingAddress: storedAddress,
         notes: storedNotes,
+        appliedDiscount,
         setCustomerProfile,
         setShippingAddress,
         setNotes: storeSetNotes,
@@ -149,6 +150,7 @@ export default function CheckoutForm({ defaultProfile, lockedEmail }: Props) {
             shippingAddress: address,
             notes: notes || undefined,
             currency: 'PEN',
+            discountCode: appliedDiscount?.code,
         })
 
         if (result.success) {
@@ -189,6 +191,7 @@ export default function CheckoutForm({ defaultProfile, lockedEmail }: Props) {
             shippingAddress: address,
             notes: notes || undefined,
             currency: 'PEN',
+            discountCode: appliedDiscount?.code,
         }))
 
         startTransition(() => {

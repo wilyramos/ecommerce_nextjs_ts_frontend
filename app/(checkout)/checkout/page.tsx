@@ -1,3 +1,4 @@
+//File: frontend/app/%28checkout%29/checkout/page.tsx
 import { getSession } from '@/src/auth/dal'
 import CheckoutForm from '@/components/checkout-v2/form/CheckoutForm'
 import type { CustomerProfile } from '@/src/schemas/order.schema'
