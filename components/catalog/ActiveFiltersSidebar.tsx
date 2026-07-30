@@ -45,28 +45,27 @@ export default function ActiveFiltersSidebar() {
     }
 
     return (
-        <div className="mb-6 select-none animate-in fade-in duration-150">
-            <div className="flex items-center justify-between mb-3 pb-1.5 border-b border-border/60">
-                <span className="text-[10px] font-bold  tracking-[0.15em] text-primary">
+        <div className="mb-6 select-none animate-in fade-in duration-200">
+            <div className="flex items-center justify-between mb-3 pb-2 border-b border-border">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-primary">
                     Filtros Activos
                 </span>
-                {/* MONOCROMO: "Limpiar todo" ahora hace hover a gris oscuro */}
                 <button
                     onClick={() => router.push('/catalogo')}
-                    className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground hover:text-neutral-600 transition-colors outline-none cursor-pointer"
+                    className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground hover:text-primary transition-colors outline-none cursor-pointer"
                 >
                     <RotateCcw className="w-3 h-3" />
-                    Limpiar todo
+                    Limpiar
                 </button>
             </div>
             
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-2">
                 {currentSlugs.map((slug) => (
                     <Chip key={slug} label={slug.replace(/-/g, " ")} onRemove={() => removeSlug(slug)} />
                 ))}
                 {hasPriceFilter && (
                     <Chip
-                        label={`${priceMin ? fmt(priceMin) : '–'} – ${priceMax ? fmt(priceMax) : '–'}`}
+                        label={`${priceMin ? fmt(priceMin) : '–'} a ${priceMax ? fmt(priceMax) : '–'}`}
                         onRemove={clearPriceRange}
                     />
                 )}
@@ -83,14 +82,13 @@ function Chip({ label, onRemove }: { label: string; onRemove: () => void }) {
         <button
             onClick={onRemove}
             className={cn(
-                "group inline-flex items-center gap-2 pl-2.5 pr-2 py-1 text-[11px] font-medium rounded-none border transition-all duration-150 outline-none cursor-pointer",
-                "text-primary bg-background border-border",
-                /* MONOCROMO: Hover del chip cambia de color de borde a negro absoluto, manteniendo la sobriedad */
-                "hover:border-primary"
+                "group inline-flex items-center gap-1.5 pl-2.5 pr-2 py-1 text-[11px] font-medium rounded-md border transition-all duration-150 outline-none cursor-pointer",
+                "text-foreground bg-background border-border",
+                "hover:border-primary hover:bg-muted/30"
             )}
         >
-            <span className="truncate max-w-[160px] capitalize">{label}</span>
-            <X className="w-3 h-3 flex-shrink-0 text-muted-foreground group-hover:text-primary transition-colors" />
+            <span className="truncate max-w-[150px] capitalize">{label}</span>
+            <X className="w-3.5 h-3.5 flex-shrink-0 text-muted-foreground group-hover:text-primary transition-colors" />
         </button>
     );
 }

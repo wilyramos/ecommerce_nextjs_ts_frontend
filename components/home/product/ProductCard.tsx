@@ -16,6 +16,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
     const [previewImages, setPreviewImages] = useState<string[]>(product.imagenes ?? []);
     const [selectedColor, setSelectedColor] = useState<string | null>(null);
     const [startX, setStartX] = useState<number | null>(null);
+    const [isNew, setIsNew] = useState(false);
 
     const precio = product.precio ?? 0;
     const stock = product.stock ?? 0;
@@ -25,19 +26,21 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
         const colors = new Set<string>();
         const mainColor = product.atributos?.Color || product.atributos?.color;
         if (mainColor) colors.add(mainColor);
+        
         product.variants?.forEach((v) => {
             const vAttrs = v.atributos as Record<string, string> | undefined;
             const vColor = vAttrs?.Color || vAttrs?.color;
             if (vColor) colors.add(vColor);
         });
+        
         return Array.from(colors);
     }, [product]);
 
-    // --- NUEVO (hasta 30 días desde createdAt) ---
-    const isNew = useMemo(() => {
-        if (!product.createdAt) return false;
+    // --- NUEVO (Evaluado en cliente para evitar mismatch de hidratación) ---
+    useEffect(() => {
+        if (!product.createdAt) return;
         const days = (Date.now() - new Date(product.createdAt).getTime()) / (1000 * 60 * 60 * 24);
-        return days <= 30;
+        setIsNew(days <= 30);
     }, [product.createdAt]);
 
     // --- DESCUENTO ---
@@ -93,10 +96,8 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
     };
 
     // --- NAVEGACIÓN IMÁGENES ---
-    const nextImage = () =>
-        setCurrentIndex((prev) => (prev === previewImages.length - 1 ? 0 : prev + 1));
-    const prevImage = () =>
-        setCurrentIndex((prev) => (prev === 0 ? previewImages.length - 1 : prev - 1));
+    const nextImage = () => setCurrentIndex((prev) => (prev === previewImages.length - 1 ? 0 : prev + 1));
+    const prevImage = () => setCurrentIndex((prev) => (prev === 0 ? previewImages.length - 1 : prev - 1));
 
     const handleMouseEnter = () => { if (previewImages.length > 1) setCurrentIndex(1); };
     const handleMouseLeave = () => setCurrentIndex(0);
@@ -120,7 +121,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
 
     return (
         <div
-            className="group relative flex flex-col bg-background"
+            className="group relative flex flex-col bg-background h-full"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onTouchStart={handleTouchStart}
@@ -128,14 +129,12 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
         >
+            <div className="absolute inset-0 bg-foreground/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-md" />
 
-            {/* Hover overlay */}
-            <div className="absolute inset-0 bg-foreground opacity-0 group-hover:opacity-[0.04] transition-opacity duration-300 pointer-events-none z-0" />
-
-            <Link href={`/productos/${product.slug}`} className="relative flex flex-col h-full">
-
+            <Link href={`/productos/${product.slug}`} className="relative flex flex-col h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md">
+                
                 {/* ── IMAGEN ── */}
-                <div className="relative w-full aspect-square overflow-hidden">
+                <div className="relative w-full aspect-square overflow-hidden bg-background-secondary rounded-t-md">
                     {previewImages.length > 0 ? (
                         <>
                             <div
@@ -171,49 +170,46 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                                 <>
                                     <button
                                         onClick={(e) => { e.preventDefault(); e.stopPropagation(); prevImage(); }}
-                                        className="absolute left-1.5 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm text-foreground p-1 rounded-full opacity-0 md:group-hover:opacity-100 transition shadow-sm hover:scale-110 z-10 border border-border"
+                                        className="absolute left-1 top-1/2 -translate-y-1/2 bg-background/90 text-foreground p-1.5 rounded-full opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-muted"
                                         aria-label="Imagen anterior"
                                     >
-                                        <ChevronLeft size={14} />
+                                        <ChevronLeft size={16} strokeWidth={1.5} />
                                     </button>
                                     <button
                                         onClick={(e) => { e.preventDefault(); e.stopPropagation(); nextImage(); }}
-                                        className="absolute right-1.5 top-1/2 -translate-y-1/2 bg-background/80 backdrop-blur-sm text-foreground p-1 rounded-full opacity-0 md:group-hover:opacity-100 transition shadow-sm hover:scale-110 z-10 border border-border"
+                                        className="absolute right-1 top-1/2 -translate-y-1/2 bg-background/90 text-foreground p-1.5 rounded-full opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-muted"
                                         aria-label="Imagen siguiente"
                                     >
-                                        <ChevronRight size={14} />
+                                        <ChevronRight size={16} strokeWidth={1.5} />
                                     </button>
 
                                     {/* Contador */}
-                                    <div className="absolute bottom-2 right-2 px-1 flex items-center justify-center py-0.5 bg-white/90 border border-border/30 shadow-xs pointer-events-none md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
-                                        <span className="text-[9px] font-semibold text-foreground/80 tabular-nums tracking-wide select-none leading-none">
-                                            {currentIndex + 1}
-                                            <span className="mx-[2px] text-muted-foreground/50 font-normal">/</span>
-                                            {previewImages.length}
+                                    <div className="absolute bottom-2 right-2 px-1.5 py-0.5 bg-background/90 rounded-sm pointer-events-none md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
+                                        <span className="text-[10px] font-medium text-foreground tabular-nums tracking-wide leading-none">
+                                            {currentIndex + 1} <span className="text-muted-foreground/60">/</span> {previewImages.length}
                                         </span>
                                     </div>
                                 </>
                             )}
                         </>
                     ) : (
-                        <div className="flex items-center justify-center w-full h-full text-muted-foreground opacity-40">
-                            <MdOutlineImageNotSupported size={24} />
+                        <div className="flex items-center justify-center w-full h-full text-muted-foreground/30">
+                            <MdOutlineImageNotSupported size={28} />
                         </div>
                     )}
 
-                    {/* Badges: Superior Izquierda (Nuevo) */}
-                    {isNew && (
-                        <div className="absolute top-2 left-2 pointer-events-none ">
-                            <span className="px-1.5 py-1 bg-destructive text-destructive-foreground text-[10px]  uppercase tracking-wider leading-none">
+                    {/* Badges */}
+                    <div className="absolute top-2 left-2 flex flex-col gap-1 pointer-events-none">
+                        {isNew && (
+                            <span className="px-1.5 py-1 bg-primary text-primary-foreground text-[10px] font-medium tracking-wide rounded-sm leading-none">
                                 Nuevo
                             </span>
-                        </div>
-                    )}
-
-                    {/* Badge de Descuento: Superior Derecha Arriba */}
+                        )}
+                    </div>
+                    
                     {discountPct > 0 && (
-                        <div className="absolute top-2 right-2 pointer-events-none z-1">
-                            <span className="px-1.5 py-1 bg-primary text-destructive-foreground text-[10px] leading-none ">
+                        <div className="absolute top-2 right-2 pointer-events-none">
+                            <span className="px-1.5 py-1 bg-destructive text-destructive-foreground text-[10px] font-medium tracking-wide rounded-sm leading-none">
                                 {discountPct}% OFF
                             </span>
                         </div>
@@ -221,40 +217,31 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                 </div>
 
                 {/* ── INFO ── */}
-                <div className="flex flex-col px-2 md:px-3 py-2 gap-1.5">
-
+                <div className="flex flex-col flex-grow px-2 md:px-3 py-3 gap-2">
+                    
                     {/* Fila: marca + colores */}
-                    <div className="flex items-center justify-between gap-2 min-h-[16px]">
-                        {product.brand?.nombre ? (
-                            <span className="text-[10px] font-semibold text-muted-foreground/70 uppercase tracking-wide truncate">
-                                {product.brand.nombre}
-                            </span>
-                        ) : (
-                            <span />
-                        )}
+                    <div className="flex items-center justify-between gap-2 h-4">
+                        <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide truncate">
+                            {product.brand?.nombre || "\u00A0"}
+                        </span>
 
                         {uniqueColors.length > 0 && (
-                            <div
-                                className="flex items-center gap-1 shrink-0"
-                                onClick={(e) => e.preventDefault()}
-                            >
+                            <div className="flex items-center gap-0.5 shrink-0" onClick={(e) => e.preventDefault()}>
                                 {uniqueColors.slice(0, 4).map((c, index) => (
                                     <button
                                         key={`${c}-${index}`}
                                         onClick={(e) => handleColorSelect(e, c)}
                                         className={cn(
-                                            "outline-none rounded-full transition-transform duration-150",
-                                            selectedColor === c
-                                                ? "scale-110 ring-1 ring-offset-1 ring-foreground/20"
-                                                : "hover:scale-110"
+                                            "p-1 -m-1 outline-none rounded-full transition-transform duration-150 flex items-center justify-center",
+                                            selectedColor === c ? "scale-110" : "hover:scale-110"
                                         )}
-                                        aria-label={`Color ${c}`}
+                                        aria-label={`Seleccionar color ${c}`}
                                     >
-                                        <ColorCircle color={c} size={8} />
+                                        <ColorCircle color={c} size={10} />
                                     </button>
                                 ))}
                                 {uniqueColors.length > 4 && (
-                                    <span className="text-[9px] text-muted-foreground font-medium">
+                                    <span className="text-[10px] text-muted-foreground font-medium ml-1">
                                         +{uniqueColors.length - 4}
                                     </span>
                                 )}
@@ -262,29 +249,19 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                         )}
                     </div>
 
-                    {/* Nombre — altura fija para 2 líneas exactas */}
-                    <h3
-                        className="text-[12px] md:text-[13px] text-foreground leading-[1.35] overflow-hidden"
-                        style={{
-                            display: "-webkit-box",
-                            WebkitLineClamp: 2,
-                            WebkitBoxOrient: "vertical",
-                            minHeight: "calc(1.35em * 2)",
-                        }}
-                    >
+                    {/* Nombre */}
+                    <h3 className="text-xs md:text-sm text-foreground font-medium leading-snug line-clamp-2 min-h-[2.75rem]">
                         {product.nombre}
                     </h3>
 
-                    {/* Precio + precio comparativo + sin stock */}
-                    <div className="flex items-center justify-between gap-2 mt-0.5">
+                    {/* Precio y Stock (anclado al final mediante mt-auto) */}
+                    <div className="flex items-center justify-between gap-2 mt-auto pt-1">
                         <div className="flex items-baseline gap-1.5 flex-wrap min-w-0">
-                            {/* Precio actual */}
-                            <span className="text-sm md:text-base text-foreground font-medium leading-none shrink-0">
-                                <span className="text-[11px] md:text-[13px] text-muted-foreground font-light">S/</span>
-                                {" "}{precio.toFixed(2)}
+                            <span className="text-sm md:text-base text-foreground font-semibold leading-none shrink-0">
+                                <span className="text-[11px] md:text-xs text-muted-foreground font-normal mr-0.5">S/</span>
+                                {precio.toFixed(2)}
                             </span>
 
-                            {/* Precio comparativo debajo/lado */}
                             {discountPct > 0 && (
                                 <span className="text-[10px] md:text-xs text-muted-foreground line-through leading-none shrink-0">
                                     S/ {product.precioComparativo!.toFixed(2)}
@@ -293,7 +270,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                         </div>
 
                         {stock <= 0 && (
-                            <span className="inline-flex items-center bg-destructive/10 px-1.5 py-0.5 text-[10px] font-medium text-destructive whitespace-nowrap leading-tight shrink-0">
+                            <span className="inline-flex items-center bg-muted-neutral px-1.5 py-1 text-[10px] font-medium text-muted-neutral-foreground rounded-sm whitespace-nowrap leading-none shrink-0">
                                 Sin stock
                             </span>
                         )}

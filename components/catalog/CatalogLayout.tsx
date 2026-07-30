@@ -89,7 +89,7 @@ export default function CatalogLayout({
                 <main className="lg:col-span-9 xl:col-span-10 flex flex-col">
 
                     {/* Barra de Filtros Mobile integrada al ecosistema de color */}
-                    <div className="lg:hidden flex items-center justify-between sticky top-11 z-10 bg-background py-2 border-b border-border">
+                    <div className="lg:hidden flex items-center justify-between sticky top-11 z-10 bg-background-secondary py-2 border-b border-border">
                         <CatalogMobileFilters filters={filters} />
                         <CatalogMobileSort />
                     </div>

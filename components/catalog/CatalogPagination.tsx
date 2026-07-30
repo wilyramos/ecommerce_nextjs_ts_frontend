@@ -75,7 +75,10 @@ function PaginationButton({ href, isActive, isDisabled, children, className, ...
 
     if (isDisabled) {
         return (
-            <span className={cn(baseStyles, "border-transparent text-muted-foreground opacity-30 cursor-not-allowed")}>
+            <span 
+                className={cn(baseStyles, "border-transparent text-muted-foreground opacity-30 cursor-not-allowed")}
+                aria-disabled="true" // Opcional, refuerza la semántica
+            >
                 {children}
             </span>
         );
@@ -84,7 +87,8 @@ function PaginationButton({ href, isActive, isDisabled, children, className, ...
     return (
         <Link
             href={href}
-            scroll={false}
+            prefetch={false} // Evita saturar el servidor precargando todas las páginas a la vez
+            // Eliminamos scroll={false} para que el usuario vuelva arriba al cambiar de página
             className={cn(
                 baseStyles,
                 isActive

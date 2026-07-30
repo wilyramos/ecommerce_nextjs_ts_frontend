@@ -63,14 +63,14 @@ export default function CatalogSidebar({ filters }: Props) {
         };
     }, [filters]);
 
-    const triggerClass =
-        "text-xs font-bold capitalize tracking-wider text-primary hover:no-underline py-3 px-0 hover:text-neutral-600 transition-colors";
-
-    const row =
-        "flex items-center gap-3 px-2 py-2 cursor-pointer transition-all duration-150 hover:bg-neutral-50 rounded-sm group text-muted-foreground hover:text-primary";
+    const triggerClass = "text-[13px] font-semibold tracking-wide text-primary hover:no-underline py-3 px-1 hover:text-neutral-600 transition-colors";
+    
+    const rowClass = "flex items-center gap-3 px-2 py-2 cursor-pointer transition-all duration-200 hover:bg-muted/50 rounded-md group text-muted-foreground hover:text-primary outline-none";
+    
+    const badgeClass = "text-[10px] font-medium tabular-nums px-1.5 py-0.5 rounded-md bg-muted text-muted-foreground group-hover:bg-background-secondary transition-colors";
 
     const checkboxClass =
-        "w-4 h-4 border-muted rounded-none " +
+        "w-4 h-4 border-muted rounded-sm " +
         "data-[state=checked]:bg-primary " +
         "data-[state=checked]:border-primary " +
         "data-[state=checked]:text-primary-foreground " +
@@ -78,7 +78,7 @@ export default function CatalogSidebar({ filters }: Props) {
         "transition-colors duration-150 cursor-pointer";
 
     return (
-        <div className="w-full pb-6 select-none text-foreground bg-background md:border md:border-border/60 md:p-4 p-2">
+        <div className="w-full select-none text-foreground bg-background pb-8 lg:pb-4 lg:p-5">
             <ActiveFiltersSidebar />
             
             <Accordion
@@ -96,7 +96,7 @@ export default function CatalogSidebar({ filters }: Props) {
                             Categorías
                         </AccordionTrigger>
                         <AccordionContent className="pt-1 pb-2">
-                            <ul className="space-y-0.5">
+                            <ul className="space-y-0.5 pr-1">
                                 {sortedFilters.categories.map((cat) => {
                                     const active = isCategoryActive(cat.slug);
                                     return (
@@ -104,18 +104,14 @@ export default function CatalogSidebar({ filters }: Props) {
                                             <button
                                                 onClick={() => setCategory(cat.slug)}
                                                 className={cn(
-                                                    "w-full text-left flex items-center justify-between px-2 py-2 text-xs transition-all duration-150 outline-none font-medium rounded-sm cursor-pointer",
-                                                    active
-                                                        ? "bg-neutral-100 text-primary font-bold"
-                                                        : "text-muted-foreground hover:bg-neutral-50 hover:text-primary"
+                                                    rowClass,
+                                                    "w-full justify-between pl-2.5", 
+                                                    active && "bg-muted/50 text-primary font-semibold"
                                                 )}
                                             >
-                                                <span>{cat.nombre}</span>
+                                                <span className="text-xs">{cat.nombre}</span>
                                                 {cat.count !== undefined && (
-                                                    <span className={cn(
-                                                        "text-[10px] font-bold tabular-nums px-1.5 py-0.5 rounded-sm bg-neutral-100 text-muted-foreground/80", 
-                                                        active && "bg-neutral-200/80 text-primary"
-                                                    )}>
+                                                    <span className={cn(badgeClass, active && "bg-background-secondary text-primary")}>
                                                         {cat.count}
                                                     </span>
                                                 )}
@@ -135,24 +131,21 @@ export default function CatalogSidebar({ filters }: Props) {
                             Marcas
                         </AccordionTrigger>
                         <AccordionContent className="pt-1 pb-2">
-                            <div className="space-y-0.5 max-h-[220px] overflow-y-auto pr-1 scrollbar-none">
+                            <div className="space-y-0.5 max-h-[240px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-border">
                                 {sortedFilters.brands.map((brand) => {
                                     const active = isBrandActive(brand.slug);
                                     return (
                                         <div
                                             key={brand.id}
                                             onClick={() => setBrand(brand.slug)}
-                                            className={cn(
-                                                row, 
-                                                active && "bg-neutral-100 text-primary font-bold"
-                                            )}
+                                            className={cn(rowClass, active && "bg-muted/50 text-primary")}
                                         >
                                             <Checkbox checked={active} className={checkboxClass} />
-                                            <span className="text-xs font-medium flex-1">
+                                            <span className={cn("text-xs flex-1", active ? "font-semibold" : "font-medium")}>
                                                 {brand.nombre}
                                             </span>
                                             {brand.count !== undefined && (
-                                                <span className="text-[10px] font-bold tabular-nums px-1.5 py-0.5 rounded-sm bg-neutral-100 text-muted-foreground/80">
+                                                <span className={cn(badgeClass, active && "bg-background-secondary text-primary")}>
                                                     {brand.count}
                                                 </span>
                                             )}
@@ -171,24 +164,21 @@ export default function CatalogSidebar({ filters }: Props) {
                             Modelos
                         </AccordionTrigger>
                         <AccordionContent className="pt-1 pb-2">
-                            <div className="space-y-0.5 max-h-[220px] overflow-y-auto pr-1 scrollbar-none">
+                            <div className="space-y-0.5 max-h-[240px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-border">
                                 {sortedFilters.lines.map((line) => {
                                     const active = isLineActive(line.slug);
                                     return (
                                         <div
                                             key={line.id}
                                             onClick={() => setLine(line.slug)}
-                                            className={cn(
-                                                row, 
-                                                active && "bg-neutral-100 text-primary font-bold"
-                                            )}
+                                            className={cn(rowClass, active && "bg-muted/50 text-primary")}
                                         >
                                             <Checkbox checked={active} className={checkboxClass} />
-                                            <span className="text-xs font-medium flex-1">
+                                            <span className={cn("text-xs flex-1", active ? "font-semibold" : "font-medium")}>
                                                 {line.nombre}
                                             </span>
                                             {line.count !== undefined && (
-                                                <span className="text-[10px] font-bold tabular-nums px-1.5 py-0.5 rounded-sm bg-neutral-100 text-muted-foreground/80">
+                                                <span className={cn(badgeClass, active && "bg-background-secondary text-primary")}>
                                                     {line.count}
                                                 </span>
                                             )}
@@ -200,38 +190,36 @@ export default function CatalogSidebar({ filters }: Props) {
                     </AccordionItem>
                 )}
 
-                {/* ATRIBUTOS EN GENERAL */}
+                {/* ATRIBUTOS */}
                 {sortedFilters.atributos.map((attr, idx) => {
                     const isColorAttr = attr.name.toLowerCase().includes("color");
                     return (
                         <AccordionItem key={idx} value={`attr-${idx}`} className="border-b border-border py-1">
-                            <AccordionTrigger className={triggerClass}>
+                            <AccordionTrigger className={cn(triggerClass, "capitalize")}>
                                 {attr.name}
                             </AccordionTrigger>
                             <AccordionContent className="pt-1 pb-2">
-                                <div className="space-y-0.5 max-h-[220px] overflow-y-auto pr-1 scrollbar-none">
+                                <div className="space-y-0.5 max-h-[240px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-border">
                                     {attr.values.map((val) => {
                                         const strVal = typeof val === 'string' ? val : val.value;
                                         const count = typeof val === 'string' ? undefined : val.count;
                                         const isChecked = searchParams.getAll(attr.name).includes(strVal);
+                                        
                                         return (
                                             <div
                                                 key={strVal}
                                                 onClick={() => updateFilter(attr.name, strVal)}
-                                                className={cn(
-                                                    row, 
-                                                    isChecked && "bg-neutral-100 text-primary font-bold"
-                                                )}
+                                                className={cn(rowClass, isChecked && "bg-muted/50 text-primary")}
                                             >
                                                 <Checkbox checked={isChecked} className={checkboxClass} />
                                                 <div className="flex items-center gap-2 flex-1">
                                                     {isColorAttr && <ColorCircle color={strVal} size={12} />}
-                                                    <span className="text-xs font-medium capitalize">
+                                                    <span className={cn("text-xs capitalize", isChecked ? "font-semibold" : "font-medium")}>
                                                         {strVal}
                                                     </span>
                                                 </div>
                                                 {count !== undefined && (
-                                                    <span className="text-[10px] font-bold tabular-nums px-1.5 py-0.5 rounded-sm bg-neutral-100 text-muted-foreground/80">
+                                                    <span className={cn(badgeClass, isChecked && "bg-background-secondary text-primary")}>
                                                         {count}
                                                     </span>
                                                 )}

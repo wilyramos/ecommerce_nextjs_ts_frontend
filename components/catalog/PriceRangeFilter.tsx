@@ -34,11 +34,10 @@ export default function PriceRangeFilter({ filters }: { filters: CatalogFilters 
 
     return (
         <AccordionItem value="item-price" className="border-b border-border py-1">
-            {/* MONOCROMO: Hover del título cambiado a gris oscuro neutro */}
-            <AccordionTrigger className="text-xs font-bold capitalize  text-primary hover:no-underline py-3 px-0 hover:text-neutral-600 transition-colors">
+            <AccordionTrigger className="text-[13px] font-semibold tracking-wide text-primary hover:no-underline py-3 px-1 hover:text-neutral-600 transition-colors">
                 Precio
             </AccordionTrigger>
-            <AccordionContent className="pt-4 pb-3 px-1">
+            <AccordionContent className="pt-4 pb-3 px-2">
                 <SliderPrimitive.Root
                     className="relative flex w-full touch-none select-none items-center"
                     min={globalMin}
@@ -55,24 +54,22 @@ export default function PriceRangeFilter({ filters }: { filters: CatalogFilters 
                         }
                     }}
                 >
-                    <SliderPrimitive.Track className="relative h-[2px] w-full grow overflow-hidden rounded-full bg-muted">
-                        {/* MONOCROMO: Rango seleccionado ahora usa el color primario de la marca (Negro) */}
+                    <SliderPrimitive.Track className="relative h-[3px] w-full grow overflow-hidden rounded-full bg-muted">
                         <SliderPrimitive.Range className="absolute h-full bg-primary" />
                     </SliderPrimitive.Track>
 
-                    {/* MONOCROMO: Anillos de enfoque y hovers adaptados a Negro/Gris estructural */}
-                    <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border border-primary bg-background ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 disabled:pointer-events-none cursor-grab active:cursor-grabbing hover:scale-110 hover:border-neutral-600" />
-                    <SliderPrimitive.Thumb className="block h-4 w-4 rounded-full border border-primary bg-background ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 disabled:pointer-events-none cursor-grab active:cursor-grabbing hover:scale-110 hover:border-neutral-600" />
+                    <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border border-primary bg-background shadow-sm ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 disabled:pointer-events-none cursor-grab active:cursor-grabbing hover:scale-110" />
+                    <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border border-primary bg-background shadow-sm ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 disabled:pointer-events-none cursor-grab active:cursor-grabbing hover:scale-110" />
                 </SliderPrimitive.Root>
 
-                <div className="flex justify-between mt-3.5">
+                <div className="flex justify-between mt-4">
                     <div className="flex flex-col">
-                        <span className="text-[10px] capitalize font-bold  text-muted-foreground">Min</span>
-                        <span className="text-xs font-semibold tabular-nums text-primary">{fmt(localValues[0])}</span>
+                        <span className="text-[10px] font-semibold text-muted-foreground">Mínimo</span>
+                        <span className="text-xs font-medium tabular-nums text-foreground">{fmt(localValues[0])}</span>
                     </div>
                     <div className="flex flex-col text-right">
-                        <span className="text-[10px] capitalize font-bold  text-muted-foreground">Max</span>
-                        <span className="text-xs font-semibold tabular-nums text-primary">{fmt(localValues[1])}</span>
+                        <span className="text-[10px] font-semibold text-muted-foreground">Máximo</span>
+                        <span className="text-xs font-medium tabular-nums text-foreground">{fmt(localValues[1])}</span>
                     </div>
                 </div>
             </AccordionContent>
