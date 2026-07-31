@@ -78,7 +78,7 @@ export default function LayoutMediaLeft({ banner }: { banner: SliderBanner }) {
                     <div className="flex flex-col gap-0.5 md:gap-2 w-full">
                         {subtitle && (
                             <span
-                                className="text-[9px] sm:text-xs font-black tracking-[0.15em] uppercase"
+                                className="text-[9px] sm:text-xs font-semibold tracking-[0.15em] uppercase"
                                 style={{ color: accent, ...fadeUp(0.1) }}
                             >
                                 {subtitle}
@@ -87,7 +87,7 @@ export default function LayoutMediaLeft({ banner }: { banner: SliderBanner }) {
 
                         {title && (
                             <h2
-                                className="text-lg sm:text-2xl md:text-4xl font-black tracking-tight uppercase leading-tight line-clamp-2 md:line-clamp-3 text-balance"
+                                className="text-lg sm:text-2xl md:text-4xl font-semibold uppercase leading-tight line-clamp-2 md:line-clamp-3 text-balance"
                                 style={{ color: isDark ? "#ffffff" : "#0f0f0f", ...fadeUp(0.18) }}
                             >
                                 {title}

@@ -40,7 +40,7 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                         {subtitle && (
                             <div style={fadeUp(0.1)}>
                                 <span
-                                    className="inline-block text-[10px] sm:text-sm md:text-base font-bold uppercase px-2.5 py-1"
+                                    className="inline-block text-[10px] sm:text-sm md:text-base font-base uppercase px-2.5 py-1"
                                     style={{ borderLeft: `3px solid ${accent}` }}
                                 >
                                     {subtitle}
@@ -50,7 +50,7 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
 
                         {title && (
                             <div style={fadeUp(0.2)}>
-                                <h2 className="font-bold leading-[1.1] tracking-[-0.03em] text-[clamp(1rem,2.5vw,2.8rem)] line-clamp-3">
+                                <h2 className="font-semibold  text-[clamp(1rem,2.5vw,2.8rem)] line-clamp-3">
                                     {title}
                                 </h2>
                             </div>

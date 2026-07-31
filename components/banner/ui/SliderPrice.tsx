@@ -19,7 +19,7 @@ export default function SliderPrice({ price, textColor, accentColor, isDark }: P
             {/* ── Etiqueta superior (opcional) ──────────────────────── */}
             {price.label && (
                 <span
-                    className="w-fit text-[9px] sm:text-[11px] font-bold uppercase tracking-widest leading-none rounded-sm px-2 py-1 shadow-sm"
+                    className="w-fit text-[9px] sm:text-[11px] font-bold uppercase tracking-widest leading-none px-2 py-1 "
                     style={{
                         backgroundColor: accentColor,
                         color: "#ffffff", // Texto blanco para garantizar contraste con el color de acento
@@ -33,7 +33,7 @@ export default function SliderPrice({ price, textColor, accentColor, isDark }: P
 
                 {/* ── Precio actual ─────────────────────────────────── */}
                 {price.current !== undefined && price.current !== null && (
-                    <span className="font-black tracking-tighter leading-none text-[clamp(1.4rem,4.5vw,3rem)]">
+                    <span className="font-semibold tracking-tighter leading-none text-[clamp(1.4rem,4.5vw,3rem)]">
                         <span
                             className="mr-1 align-top font-bold text-[0.4em]"
                             style={{ opacity: isDark ? 0.6 : 0.5 }}

@@ -47,13 +47,13 @@ export default function FeaturesList() {
                         className="group flex items-center gap-1.5 p-1 sm:p-2.5 bg-background border border-transparent hover:border-border transition-all duration-300 rounded-lg min-w-[120px] max-w-[220px] w-auto"
                         aria-label="Característica de la tienda"
                     >
-                        <div className="shrink-0 flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 bg-muted/40 rounded-full transition-transform duration-300 group-hover:scale-105">
+                        <div className="shrink-0 flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 bg-muted/40 rounded-full transition-transform duration-300 group-hover:scale-105">
                             <Image
                                 src={feature.imageSrc}
                                 alt="Icono"
-                                width={24}
-                                height={24}
-                                className="w-4 h-4 sm:w-5 sm:h-5 object-contain opacity-90"
+                                width={36}
+                                height={36}
+                                className="w-9 h-9 sm:w-10 sm:h-10 object-contain opacity-90"
                                 unoptimized
                             />
                         </div>
