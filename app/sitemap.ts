@@ -1,3 +1,4 @@
+// sitemap.ts
 import { GetAllProductsSlug } from "@/src/services/products";
 import { getCategories } from "@/src/services/categorys";
 import { getActiveBrands } from "@/src/services/brands";
@@ -43,15 +44,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         return hasStarted && hasNotEnded;
     });
 
-    // 1. Productos
+    // 1. Productos (Frecuencia ajustada a semanal, prioridad reducida a 0.7 para jerarquía)
     const productUrls: MetadataRoute.Sitemap = products.map((p) => ({
         url: `${baseUrl}/productos/${p.slug}`,
         lastModified: p.updatedAt ? new Date(p.updatedAt) : new Date(),
-        changeFrequency: "daily",
-        priority: 0.8,
+        changeFrequency: "weekly",
+        priority: 0.7,
     }));
 
-    // 2. Categorías (Asegura actualización dinámica)
+    // 2. Categorías
     const categoryUrls: MetadataRoute.Sitemap = categories.map((c) => ({
         url: `${baseUrl}/catalogo/${c.slug}`,
         lastModified: c.updatedAt ? new Date(c.updatedAt) : new Date(),
@@ -59,20 +60,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.9,
     }));
 
-    // 3. Marcas (Corregido de createdAt a updatedAt/now para forzar rastreo en Search Console)
+    // 3. Marcas
     const brandUrls: MetadataRoute.Sitemap = brands.map((b) => ({
         url: `${baseUrl}/catalogo/${b.slug}`,
         lastModified: b.updatedAt ? new Date(b.updatedAt) : b.createdAt ? new Date(b.createdAt) : new Date(),
         changeFrequency: "weekly",
-        priority: 0.85,
+        priority: 0.8,
     }));
 
-    // 4. Líneas (Corregido de createdAt a updatedAt/now para evitar fechas obsoletas de 2025)
+    // 4. Líneas
     const lineUrls: MetadataRoute.Sitemap = lines.map((l) => ({
         url: `${baseUrl}/catalogo/${l.slug}`,
         lastModified: l.updatedAt ? new Date(l.updatedAt) : l.createdAt ? new Date(l.createdAt) : new Date(),
         changeFrequency: "weekly",
-        priority: 0.85,
+        priority: 0.8,
     }));
 
     // 5. Colecciones
@@ -80,7 +81,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: `${baseUrl}/colecciones/${c.slug}`,
         lastModified: c.updatedAt ? new Date(c.updatedAt) : new Date(),
         changeFrequency: "weekly",
-        priority: 0.9,
+        priority: 0.85,
     }));
 
     // 6. Comparativas
@@ -88,26 +89,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: `${baseUrl}/comparativas/${c.slug}`,
         lastModified: c.updatedAt ? new Date(c.updatedAt) : new Date(),
         changeFrequency: "monthly",
-        priority: 0.7,
+        priority: 0.6,
     }));
 
-    // 7. Páginas Estáticas
+    // 7. Páginas Estáticas (Prioridades y frecuencias ajustadas para coherencia)
     const staticPages = [
         { url: "", priority: 1.0, changefreq: "daily" as ChangeFreq },
-        { url: "/catalogo", priority: 1.0, changefreq: "daily" as ChangeFreq },
-        { url: "/ofertas", priority: 0.95, changefreq: "daily" as ChangeFreq },
-        { url: "/novedades", priority: 0.95, changefreq: "daily" as ChangeFreq },
-        { url: "/colecciones", priority: 0.9, changefreq: "weekly" as ChangeFreq },
-        { url: "/categorias", priority: 0.85, changefreq: "weekly" as ChangeFreq },
-        { url: "/comparativas", priority: 0.8, changefreq: "weekly" as ChangeFreq },
-        { url: "/hc/preguntas-frecuentes", priority: 0.7, changefreq: "monthly" as ChangeFreq },
-        { url: "/hc/contacto-y-soporte", priority: 0.6, changefreq: "monthly" as ChangeFreq },
-        { url: "/hc/garantias-y-devoluciones", priority: 0.6, changefreq: "monthly" as ChangeFreq },
-        { url: "/hc/proceso-de-compra", priority: 0.6, changefreq: "monthly" as ChangeFreq },
-        { url: "/store/legal/terminos-y-condiciones", priority: 0.4, changefreq: "yearly" as ChangeFreq },
-        { url: "/store/legal/politicas-de-privacidad", priority: 0.4, changefreq: "yearly" as ChangeFreq },
-        { url: "/store/legal/politicas-de-cambios-y-devoluciones", priority: 0.4, changefreq: "yearly" as ChangeFreq },
-        { url: "/store/legal/libro-de-reclamaciones", priority: 0.5, changefreq: "monthly" as ChangeFreq },
+        { url: "/catalogo", priority: 0.9, changefreq: "daily" as ChangeFreq },
+        { url: "/ofertas", priority: 0.85, changefreq: "daily" as ChangeFreq },
+        { url: "/novedades", priority: 0.85, changefreq: "daily" as ChangeFreq },
+        { url: "/colecciones", priority: 0.8, changefreq: "weekly" as ChangeFreq },
+        { url: "/categorias", priority: 0.8, changefreq: "weekly" as ChangeFreq },
+        { url: "/comparativas", priority: 0.7, changefreq: "weekly" as ChangeFreq },
+        { url: "/hc/preguntas-frecuentes", priority: 0.5, changefreq: "monthly" as ChangeFreq },
+        { url: "/hc/contacto-y-soporte", priority: 0.5, changefreq: "monthly" as ChangeFreq },
+        { url: "/hc/garantias-y-devoluciones", priority: 0.5, changefreq: "monthly" as ChangeFreq },
+        { url: "/hc/proceso-de-compra", priority: 0.5, changefreq: "monthly" as ChangeFreq },
+        { url: "/store/legal/terminos-y-condiciones", priority: 0.3, changefreq: "yearly" as ChangeFreq },
+        { url: "/store/legal/politicas-de-privacidad", priority: 0.3, changefreq: "yearly" as ChangeFreq },
+        { url: "/store/legal/politicas-de-cambios-y-devoluciones", priority: 0.3, changefreq: "yearly" as ChangeFreq },
+        { url: "/store/legal/libro-de-reclamaciones", priority: 0.3, changefreq: "yearly" as ChangeFreq },
     ];
 
     const staticSitemapUrls: MetadataRoute.Sitemap = staticPages.map((page) => ({
@@ -117,13 +118,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: page.priority,
     }));
 
+    // Ordenamiento sugerido: De mayor a menor prioridad para facilitar el rastreo
     return [
         ...staticSitemapUrls,
-        ...collectionUrls,
         ...categoryUrls,
+        ...collectionUrls,
         ...brandUrls,
         ...lineUrls,
-        ...comparisonUrls,
         ...productUrls,
+        ...comparisonUrls,
     ];
 }

@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 const H1 = ({ className, ...props }: ComponentPropsWithoutRef<"h1">) => (
   <h1
     className={cn(
-      "scroll-m-20 text-xl font-bold tracking-tight text-foreground sm:text-2xl select-none",
+      "scroll-m-20 text-lg font-semibold tracking-tight text-foreground sm:text-xl select-none",
       className
     )}
 {    ...props}
