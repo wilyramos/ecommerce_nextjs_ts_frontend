@@ -1,12 +1,14 @@
-// File: components/cart/ResumenCarrito.tsx
+// File: frontend/components/cart/ResumenCarrito.tsx
+
 "use client";
 
 import { useCartStore } from "@/src/store/cartStore";
 import { useCheckoutStoreV2 } from "@/src/store/checkoutStoreV2";
 import ItemCarrito from "./ItemCarrito";
 import CouponInput from "@/components/checkout-v2/summary/CouponInput";
+import AutomaticDiscountEvaluator from "@/components/checkout-v2/summary/AutomaticDiscountEvaluator";
 import { useRouter } from "next/navigation";
-import { FaShoppingCart } from "react-icons/fa";
+import { ShoppingCart, Tag, ArrowRight } from "lucide-react";
 import { H1, Muted, Small } from "../ui/Typography";
 import { Button } from "../ui/button";
 
@@ -18,29 +20,49 @@ export default function ResumenCarrito() {
     const total = cart.reduce((acc, item) => acc + item.subtotal, 0);
     const totalUnidades = cart.reduce((acc, item) => acc + item.cantidad, 0);
 
-    // Regla logística espejo del checkout y backend
-    const shippingCost = total < 49 ? 10 : 0;
+    const isFreeShippingByCoupon = appliedDiscount?.isFreeShipping ?? false;
+    const shippingCost = isFreeShippingByCoupon ? 0 : (total < 49 ? 10 : 0);
+
     const discountAmount = appliedDiscount?.discountAmount ?? 0;
+    const isAutomaticDiscount = appliedDiscount?.code.startsWith("AUTO-") ?? false;
+    const discountDisplayName = isAutomaticDiscount
+        ? appliedDiscount?.code.replace("AUTO-", "")
+        : appliedDiscount?.code;
+
     const totalFinal = Math.max(0, total + shippingCost - discountAmount);
+
+    const getItemDiscountAmount = (productId: string, variantId?: string) => {
+        if (!appliedDiscount?.itemDiscounts) return 0;
+        const match = appliedDiscount.itemDiscounts.find((d) => {
+            if (variantId) {
+                return d.productId === productId && d.variantId === variantId;
+            }
+            return d.productId === productId;
+        });
+        return match?.discountAmount ?? 0;
+    };
 
     if (cart.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-20 text-center bg-background">
-                <FaShoppingCart size={40} className="text-muted-foreground/40 mb-4" />
+                <ShoppingCart size={40} className="text-muted-foreground/40 mb-4" strokeWidth={1.5} />
                 <Muted className="mb-6">Tu carrito está vacío.</Muted>
-                <button
+                <Button
                     onClick={() => router.push("/productos")}
-                    className="bg-foreground text-background px-6 py-2.5 rounded-full hover:bg-action-cta hover:text-primary-foreground transition-colors text-sm font-medium outline-none cursor-pointer"
+                    className="bg-foreground text-background px-6 py-2.5 rounded-full hover:opacity-90 transition-opacity text-xs font-bold uppercase tracking-wider"
                 >
                     Seguir comprando
-                </button>
+                </Button>
             </div>
         );
     }
 
     return (
         <div className="max-w-7xl mx-auto py-1 md:py-8 bg-background text-foreground select-none">
-            <H1 className="text-lg md:text-2xl font-bold">
+            {/* Evaluación en tiempo real para promociones automáticas */}
+            <AutomaticDiscountEvaluator />
+
+            <H1 className="text-lg md:text-2xl font-bold uppercase tracking-wide">
                 Resumen del carrito
             </H1>
 
@@ -48,72 +70,84 @@ export default function ResumenCarrito() {
                 {totalUnidades} {totalUnidades === 1 ? "producto" : "productos"} en tu carrito.
             </Muted>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 md:gap-6 gap-3">
-
+            <div className="grid grid-cols-1 md:grid-cols-3 md:gap-6 gap-4">
                 {/* LISTA DE PRODUCTOS */}
-                <div className="md:col-span-2 bg-background rounded-sm p-2 md:p-4 border border-border">
-                    <ul className="divide-y divide-border">
-                        {cart.map((item) => (
-                            <ItemCarrito
-                                key={`${item._id}-${item.variant?._id ?? "base"}`}
-                                item={item}
-                            />
-                        ))}
-                    </ul>
+                <div className="md:col-span-2 bg-background p-2 md:p-4 border border-border">
+                    <div className="divide-y divide-border">
+                        {cart.map((item) => {
+                            const itemDiscount = getItemDiscountAmount(item._id, item.variant?._id);
+                            return (
+                                <ItemCarrito
+                                    key={`${item._id}-${item.variant?._id ?? "base"}`}
+                                    item={item}
+                                    discountAmount={itemDiscount}
+                                />
+                            );
+                        })}
+                    </div>
                 </div>
 
-                {/* RESUMEN DE ORDEN */}
-                <div className="bg-background rounded-sm px-4 py-4 md:p-6 flex flex-col gap-4 md:gap-5 border border-border sticky top-4 h-fit">
-                    <ul className="text-xs md:text-sm text-muted-foreground space-y-2 md:space-y-3">
-                        <li className="flex justify-between items-center">
+                {/* RESUMEN DE ORDEN (Alineado visualmente con el Sheet lateral) */}
+                <div className="bg-card p-4 sm:p-6 flex flex-col gap-4 border border-border sticky top-4 h-fit">
+                    <div className="space-y-3 text-xs md:text-sm">
+                        {/* Subtotal Bruto */}
+                        <div className="flex justify-between items-center text-muted-foreground">
                             <span>Subtotal</span>
                             <span className="font-semibold text-foreground">
                                 S/ {total.toFixed(2)}
                             </span>
-                        </li>
+                        </div>
 
                         {/* Descuento si está aplicado */}
                         {discountAmount > 0 && (
-                            <li className="flex justify-between items-center text-success font-medium">
-                                <span>Descuento ({appliedDiscount?.code})</span>
-                                <span>-S/ {discountAmount.toFixed(2)}</span>
-                            </li>
+                            <div className="flex justify-between items-center text-foreground font-semibold pt-2 border-t border-border/60">
+                                <span className="flex items-center gap-1.5 truncate pr-2">
+                                    <Tag className="w-3.5 h-3.5 shrink-0 text-foreground" />
+                                    <span className="truncate">{discountDisplayName}</span>
+                                </span>
+                                <span className="shrink-0 font-mono font-bold">-S/ {discountAmount.toFixed(2)}</span>
+                            </div>
                         )}
 
-                        <li>
-                            <div className="flex justify-between items-center">
-                                <span>Tarifa de envío</span>
-                                {shippingCost > 0 ? (
-                                    <span className="font-semibold text-foreground">
-                                        S/ {shippingCost.toFixed(2)}
-                                    </span>
-                                ) : (
-                                    <span className="text-[10px] md:text-xs font-bold uppercase text-action-cta bg-background-secondary rounded-sm px-2.5 py-0.5 border border-border">
-                                        Gratis
-                                    </span>
-                                )}
-                            </div>
-                        </li>
-                        <li className="flex justify-between border-t border-border pt-2 md:pt-3 text-base md:text-lg font-bold">
-                            <span className="text-foreground">Total</span>
-                            <span className="text-foreground">S/ {totalFinal.toFixed(2)}</span>
-                        </li>
-                    </ul>
+                        {/* Tarifa de envío */}
+                        <div className="pt-2 border-t border-border/60 flex justify-between items-center text-muted-foreground">
+                            <span>Tarifa de envío</span>
+                            {shippingCost > 0 ? (
+                                <span className="font-semibold text-foreground">
+                                    S/ {shippingCost.toFixed(2)}
+                                </span>
+                            ) : (
+                                <span className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-foreground bg-background-secondary border border-border px-2 py-0.5">
+                                    {isFreeShippingByCoupon ? "Gratis (Promoción)" : "Gratis"}
+                                </span>
+                            )}
+                        </div>
+
+                        {/* Total Estimado */}
+                        <div className="flex justify-between items-baseline pt-3 border-t border-border text-base md:text-lg font-bold text-foreground">
+                            <span className="uppercase tracking-wider">Total</span>
+                            <span className="font-mono">S/ {totalFinal.toFixed(2)}</span>
+                        </div>
+                    </div>
 
                     {/* SECCIÓN INTERACTIVA DE CUPÓN */}
-                    <div className="pt-1 md:pt-2 border-t border-border">
-                        <label className="text-xs font-medium text-muted-foreground mb-2 block">
-                            ¿Tienes un cupón de descuento?
+                    <div className="pt-3 border-t border-border">
+                        <label className="text-xs font-semibold text-foreground mb-2 block uppercase tracking-wider">
+                            ¿Tienes un cupón?
                         </label>
                         <CouponInput />
                     </div>
 
-                    <Small className="text-[10px] md:text-xs text-muted-foreground/70">
+                    <Small className="text-[10px] md:text-xs text-muted-foreground">
                         Verifica tus productos antes de continuar.
                     </Small>
 
-                    <Button onClick={() => router.push("/checkout")} variant="primary">
-                        Finalizar Compra
+                    <Button 
+                        onClick={() => router.push("/checkout")} 
+                        className="w-full h-11 bg-foreground text-background hover:bg-foreground/90 font-bold uppercase tracking-wider text-xs transition-colors gap-2"
+                    >
+                        <span>Finalizar Compra</span>
+                        <ArrowRight size={14} strokeWidth={2.5} />
                     </Button>
                 </div>
             </div>

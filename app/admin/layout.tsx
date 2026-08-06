@@ -1,3 +1,5 @@
+//File: frontend/app/admin/layout.tsx
+
 import { verifySession } from '@/src/auth/dal';
 import { AdminSidebar, MobileSidebar } from "@/components/admin/AdminSidebar";
 import ToastNotification from "@/components/ui/ToastNotification";

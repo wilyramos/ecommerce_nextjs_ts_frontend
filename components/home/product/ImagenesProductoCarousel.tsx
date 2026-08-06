@@ -3,8 +3,9 @@
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, ChevronUp, ChevronDown, ImageOff, ZoomIn, ZoomOut } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronUp, ChevronDown, ZoomIn, ZoomOut } from "lucide-react";
 import { cn } from "@/lib/utils";
+import NoImagePlaceholder from "@/components/ui/NoImagePlaceholder";
 
 export default function ImagenesProductoCarousel({ images }: { images: string[] }) {
     const uniqueImages = useMemo(() => {
@@ -106,18 +107,13 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
 
     const currentImgSrc = uniqueImages[selectedIndex] || null;
 
+    // Retorno limpio usando el nuevo componente placeholder
     if (!currentImgSrc || uniqueImages.length === 0) {
-        return (
-            <div className="w-full aspect-square bg-[var(--color-bg-tertiary)] rounded-3xl flex flex-col items-center justify-center text-[var(--color-text-tertiary)] border border-[var(--color-border-subtle)]">
-                <ImageOff size={32} strokeWidth={1.2} />
-                <span className="text-xs mt-2 font-medium">Imagen no disponible</span>
-            </div>
-        );
+        return <NoImagePlaceholder />;
     }
 
     return (
-        /* Se removió la clase sticky y top-24 del contenedor para el scroll asimétrico limpio */
-        <div className="w-full flex flex-col md:flex-row gap-4 lg:gap-6 bg-[var(--color-bg-primary)] select-none rounded-lg">
+        <div className="w-full flex flex-col md:flex-row gap-4 lg:gap-6 bg-[var(--color-bg-secondary)] select-none rounded-lg">
 
             {/* DESKTOP THUMBNAILS */}
             {uniqueImages.length > 1 && (
@@ -176,7 +172,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
             )}
 
             {/* MAIN IMAGE */}
-            <div className="flex-1 relative group bg-background">
+            <div className="flex-1 relative group">
                 <div
                     className={cn(
                         "relative aspect-square overflow-hidden bg-[var(--color-bg-primary)] transition-all duration-700 ease-in-out",

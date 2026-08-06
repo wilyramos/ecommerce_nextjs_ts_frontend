@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { ProductWithCategoryResponse, VariantCart } from "@/src/schemas";
 import { useCartStore } from "@/src/store/cartStore";
-import { FaPlus } from "react-icons/fa";
+import { FaCartPlus } from "react-icons/fa";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { globalAnimationStore } from "@/hooks/useAddToCartAnimation";
 
 interface Props {
     product: ProductWithCategoryResponse;
@@ -19,6 +20,7 @@ export default function AddProductToCart({ product, variant }: Props) {
     const cart = useCartStore((state) => state.cart);
 
     const [selectedVariant, setSelectedVariant] = useState<VariantCart | null>(variant ?? null);
+    const buttonRef = useRef<HTMLButtonElement>(null);
 
     useEffect(() => {
         setSelectedVariant(variant ?? null);
@@ -37,11 +39,11 @@ export default function AddProductToCart({ product, variant }: Props) {
 
     const handleClick = () => {
         // 1. Validar si faltan seleccionar variantes
-
         if (product.isActive === false) {
             toast.error("Este producto no está disponible para la venta comercial.");
             return;
         }
+
         if (isSelectionIncomplete) {
             toast.error("Por favor, selecciona una variante antes de añadir al carrito.");
             return;
@@ -66,25 +68,42 @@ export default function AddProductToCart({ product, variant }: Props) {
             return;
         }
 
+        // 4. Disparar animación
+        if (buttonRef.current) {
+            const rect = buttonRef.current.getBoundingClientRect();
+
+            // Obtener imagen del producto o variante
+            const productImage = selectedVariant?.imagenes?.[0] ?? product.imagenes?.[0];
+
+            globalAnimationStore.trigger({
+                fromRect: rect,
+                productImage,
+            });
+        }
+
         console.log("Añadiendo al carrito:", product, activeVariant);
 
-        addToCart(product, activeVariant);
-        toast.success("Producto añadido al carrito");
-        setCartOpen(true);
+        // Pequeño delay para que la animación sea más visible
+        setTimeout(() => {
+            addToCart(product, activeVariant);
+            toast.success("Producto añadido al carrito");
+            setCartOpen(true);
+        }, 50);
     };
 
     return (
         <div className="w-full">
             <Button
+                ref={buttonRef}
                 onClick={handleClick}
                 variant={isOutOfStock ? "destructive" : "accent"}
                 size="default"
                 className={cn(
-                    "w-full",
+                    "w-full transition-all active:scale-95",
                     isVisuallyDisabled && "opacity-50 cursor-not-allowed pointer-events-auto"
                 )}
             >
-                <FaPlus size={14} />
+                <FaCartPlus size={14} />
                 {isOutOfStock ? "Sin stock" : "Añadir al carrito"}
             </Button>
         </div>

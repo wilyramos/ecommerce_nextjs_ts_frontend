@@ -7,15 +7,18 @@ import type {
     ShippingAddress,
     OrderResponse,
 } from '@/src/schemas/order.schema'
+import type { ItemDiscountDetail } from '@/src/schemas/discount.schema'
 
 type PendingOrder = Pick<
     OrderResponse,
-    '_id' | 'orderNumber' | 'subtotal' | 'shippingCost' | 'totalPrice' | 'currency' | 'status'
+    '_id' | 'orderNumber' | 'subtotal' | 'shippingCost' | 'discountCode' | 'discountAmount' | 'totalPrice' | 'currency' | 'status'
 >
 
 export interface AppliedDiscount {
     code: string
     discountAmount: number
+    isFreeShipping?: boolean
+    itemDiscounts?: ItemDiscountDetail[]
 }
 
 interface CheckoutStoreV2 {
@@ -29,12 +32,12 @@ interface CheckoutStoreV2 {
     setCustomerProfile: (profile: CustomerProfile) => void
     setShippingAddress: (address: ShippingAddress) => void
     setNotes:           (notes: string)            => void
-    setPendingOrder:    (order: PendingOrder)       => void
+    setPendingOrder:    (order: PendingOrder | null) => void
     setAppliedDiscount: (discount: AppliedDiscount | null) => void
     clearDiscount:      () => void
 
     isStepOneComplete: () => boolean
-    resetCheckout:     () => void
+    resetCheckout:      () => void
 }
 
 export const useCheckoutStoreV2 = create<CheckoutStoreV2>()(
@@ -72,7 +75,13 @@ export const useCheckoutStoreV2 = create<CheckoutStoreV2>()(
 
                 resetCheckout: () =>
                     set(
-                        { customerProfile: null, shippingAddress: null, notes: '', pendingOrder: null, appliedDiscount: null },
+                        { 
+                            customerProfile: null, 
+                            shippingAddress: null, 
+                            notes: '', 
+                            pendingOrder: null, 
+                            appliedDiscount: null 
+                        },
                         false,
                         'checkout/reset'
                     ),

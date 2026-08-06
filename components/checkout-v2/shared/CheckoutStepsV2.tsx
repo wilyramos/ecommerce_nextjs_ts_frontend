@@ -1,3 +1,5 @@
+//File: frontend/components/checkout-v2/shared/CheckoutStepsV2.tsx
+
 'use client'
 
 import { usePathname } from 'next/navigation'

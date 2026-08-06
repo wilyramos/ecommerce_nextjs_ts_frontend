@@ -1,11 +1,12 @@
 // File: frontend/app/(store)/carrito/page.tsx
+
 import ResumenCarrito from "@/components/cart/ResumenCarrito";
 import { getDestacadosProducts } from "@/src/services/products";
 import ProductGridMini from "@/components/product/ProductGridMini";
 
 export default async function CarritoPage() {
-    const [destacadosData] = await Promise.all([getDestacadosProducts()])
-    const sugerencias = destacadosData?.products || []
+    const [destacadosData] = await Promise.all([getDestacadosProducts()]);
+    const sugerencias = destacadosData?.products || [];
 
     return (
         <main className="mx-auto max-w-5xl px-4 py-6 bg-background text-foreground">
@@ -20,5 +21,5 @@ export default async function CarritoPage() {
                 </section>
             )}
         </main>
-    )
+    );
 }

@@ -13,7 +13,6 @@ import PaymentMethods from '../PaymentMethods';
 import ColorCircle from '@/components/ui/ColorCircle';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ChevronRight, CreditCard, Truck, ShieldCheck } from 'lucide-react';
 import {
     Select,
     SelectTrigger,
@@ -24,14 +23,17 @@ import {
 import ProductComplementary from './ProductComplementary';
 import { GoLinkExternal } from "react-icons/go";
 import { H1, Small, Muted } from '@/components/ui/Typography';
+import type { DiscountResponse } from '@/src/schemas/discount.schema';
+import ProductAutomaticPromotionBanner from './ProductAutomaticPromotionBanner';
 
 type Props = {
     producto: ProductWithCategoryResponse;
+    automaticDiscounts?: DiscountResponse[];
 };
 
 const MAX_VISIBLE_OPTIONS = 10;
 
-export default function ProductDetails({ producto }: Props) {
+export default function ProductDetails({ producto, automaticDiscounts = [] }: Props) {
     const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
     const [selectedVariant, setSelectedVariant] = useState<TApiVariant | null>(null);
     const searchParams = useSearchParams();
@@ -148,6 +150,7 @@ export default function ProductDetails({ producto }: Props) {
 
     const variantImages = useMemo(() => {
         let images: string[] = [];
+
         if (selectedVariant?.imagenes && selectedVariant.imagenes.length > 0) {
             images = selectedVariant.imagenes;
         } else {
@@ -155,8 +158,9 @@ export default function ProductDetails({ producto }: Props) {
             const allVariantsImages = producto.variants?.flatMap(v => v.imagenes ?? []) ?? [];
             images = [...generalImages, ...allVariantsImages];
         }
-        const cleaned = Array.from(new Set(images.filter(img => img && img.trim() !== "")));
-        return cleaned.length > 0 ? cleaned : ["/logoapp.svg"];
+
+        // Devuelve un arreglo con URLs válidas, o un arreglo vacío [] si no hay ninguna
+        return Array.from(new Set(images.filter(img => img && img.trim() !== "")));
     }, [selectedVariant, producto.imagenes, producto.variants]);
 
     const precio = selectedVariant?.precio ?? producto.precio ?? 0;
@@ -177,7 +181,7 @@ export default function ProductDetails({ producto }: Props) {
     };
 
     return (
-        <article className="flex flex-col lg:grid lg:grid-cols-12 gap-2 md:gap-6 lg:gap-10 mx-auto text-foreground items-start w-full min-w-0 bg-background p-4 md:p-6 lg:p-8">
+        <article className="flex flex-col lg:grid lg:grid-cols-12 gap-2 md:gap-6 lg:gap-10 mx-auto text-foreground items-start w-full min-w-0 bg-background ">
 
             {/* ── 1. CARRUSEL DE IMÁGENES (Móvil: orden 1 | Desktop: Columna izquierda arriba) ── */}
             <div className="order-1 lg:order-none lg:col-span-7 w-full min-w-0 overflow-hidden">
@@ -185,7 +189,7 @@ export default function ProductDetails({ producto }: Props) {
             </div>
 
             {/* ── 2. PANEL DE CONVERSIÓN Y COMPRA (Móvil: orden 2 | Desktop: Columna derecha completa) ── */}
-            <section className="order-2 lg:order-none lg:col-span-5 w-full min-w-0 lg:sticky lg:top-24 space-y-4 lg:pb-6">
+            <section className="order-2 lg:order-none lg:col-span-5 w-full min-w-0 lg:sticky lg:top-24 space-y-4 p-2 md:p-4 lg:p-6  ">
                 <header className="py-1 space-y-2">
                     {/* Breadcrumbs y SKU */}
                     <div className="flex items-center justify-between w-full">
@@ -228,23 +232,24 @@ export default function ProductDetails({ producto }: Props) {
                     {/* Precios */}
                     <div className="flex items-baseline gap-2.5 flex-wrap pt-1">
                         <div className="flex items-baseline gap-0.5 text-foreground select-all">
-                            <span className="text-xs font-medium">S/</span>
-                            <span className="text-xl md:text-3xl font-bold tracking-tight">
-                                {precio.toFixed(2)}
+                            <span className="text-lg font-normal">
+                                S/. {precio.toFixed(2)}
                             </span>
                         </div>
 
                         {hasDiscount && (
                             <div className="flex items-center gap-2">
                                 <span className="text-lg text-muted-foreground line-through font-normal">
-                                    S/ {precioComparativo!.toFixed(2)}
+                                    S/. {precioComparativo!.toFixed(2)}
                                 </span>
-                                <span className="px-1.5 py-0 bg-destructive/10 text-destructive text-base uppercase tracking-wider ">
+                                <span className="px-1.5 py-0 bg-primary/10 text-primary text-base uppercase tracking-wider ">
                                     {Math.round(((precioComparativo! - precio) / precioComparativo!) * 100)}% OFF
                                 </span>
                             </div>
                         )}
                     </div>
+
+
 
                     {/* Indicador de Stock */}
                     {stock === 0 && (
@@ -255,7 +260,7 @@ export default function ProductDetails({ producto }: Props) {
                         </div>
                     )}
                 </header>
-
+                <ProductAutomaticPromotionBanner discounts={automaticDiscounts} />
                 {/* Atributos Destacados */}
                 {featuredAttributes.length > 0 && (
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-1 py-1">
@@ -333,9 +338,9 @@ export default function ProductDetails({ producto }: Props) {
                                                     onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                     disabled={outOfStock}
                                                     className={cn(
-                                                        "relative flex items-center gap-2 p-1.5 border w-full transition-all cursor-pointer outline-none text-xs font-semibold focus-visible:ring-2 focus-visible:ring-ring",
+                                                        "relative flex items-center gap-2 p-1.5 border w-full transition-all cursor-pointer outline-none text-xs font-semibold focus-visible:ring-2 focus-visible:ring-ring rounded-lg",
                                                         selected
-                                                            ? "border-foreground bg-background ring-1 ring-foreground"
+                                                            ? "border-foreground bg-foreground ring-1 ring-foreground"
                                                             : "border-border bg-card hover:border-muted-foreground/60",
                                                         outOfStock && "opacity-40 cursor-not-allowed bg-muted/20"
                                                     )}
@@ -353,7 +358,7 @@ export default function ProductDetails({ producto }: Props) {
                                                             <ColorCircle color={val} size={20} />
                                                         )}
                                                     </div>
-                                                    <span className={cn("text-[10px] truncate capitalize font-semibold", selected ? "text-foreground" : "text-muted-foreground", outOfStock && "line-through")}>
+                                                    <span className={cn("text-[10px] truncate capitalize font-semibold", selected ? "text-background" : "text-muted-foreground", outOfStock && "line-through")}>
                                                         {val}
                                                     </span>
                                                 </button>
@@ -399,9 +404,9 @@ export default function ProductDetails({ producto }: Props) {
                                                     onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                     disabled={outOfStock}
                                                     className={cn(
-                                                        "h-8 px-3.5 relative overflow-hidden transition-all border text-xs font-semibold cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                                                        "h-8 px-3.5 relative overflow-hidden transition-all border text-xs font-semibold cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg",
                                                         selected
-                                                            ? "border-foreground bg-background ring-1 ring-foreground text-foreground"
+                                                            ? "border-foreground bg-foreground ring-1 ring-foreground text-background"
                                                             : "border-border bg-card text-muted-foreground hover:border-muted-foreground/60 hover:text-foreground",
                                                         outOfStock && "opacity-40 text-muted-foreground/60 border-border cursor-not-allowed"
                                                     )}
@@ -439,22 +444,20 @@ export default function ProductDetails({ producto }: Props) {
                 )}
 
                 {/* Bloque Logístico Consolidado */}
-                <div className="border-y border-border/40 divide-y divide-border/30 my-2">
+                <div className="">
                     <div className="flex items-center justify-between py-2">
                         <div className="flex items-center gap-2 text-muted-foreground">
-                            <CreditCard className="w-3.5 h-3.5 shrink-0" />
-                            <span className="text-xs font-medium">Pagos seguros:</span>
+                            <span className="text-xs font-medium">Metodos de pago:</span>
                         </div>
                         <PaymentMethods />
                     </div>
 
                     <div className="flex items-center justify-between py-2 text-xs">
                         <div className="flex items-center gap-2 text-muted-foreground">
-                            <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
                             <span className="font-medium">Garantía oficial:</span>
                         </div>
                         <div className="flex items-center gap-1.5">
-                            <span className="font-bold text-foreground">12 meses</span>
+                            <span className="font-semibold text-foreground">12 meses</span>
                             <a
                                 href="/politicas-de-cambios-y-devoluciones"
                                 target="_blank"
@@ -469,7 +472,6 @@ export default function ProductDetails({ producto }: Props) {
 
                     <div className="flex items-center justify-between py-2 text-xs">
                         <div className="flex items-center gap-2 text-muted-foreground">
-                            <Truck className="w-3.5 h-3.5 shrink-0" />
                             <span className="font-medium">Envío:</span>
                         </div>
                         <div className="text-right">
@@ -492,12 +494,13 @@ export default function ProductDetails({ producto }: Props) {
                             className="flex items-center gap-1.5 text-muted-foreground hover:text-action-cta transition-colors w-full justify-between"
                         >
                             <span className="flex items-center gap-2 font-medium">
-                                <GoLinkExternal className="w-3.5 h-3.5" />
-                                ¿Dudas sobre el producto?
+                                ¿Dudas?
                             </span>
-                            <span className="flex items-center text-foreground font-semibold">
-                                Asesoría WhatsApp
-                                <ChevronRight className="w-3.5 h-3.5" />
+                            <span className="flex items-center text-foreground font-semibold gap-1">
+
+                                Consultar por WhatsApp
+                                <GoLinkExternal className="w-3.5 h-3.5" />
+
                             </span>
                         </a>
                     </div>

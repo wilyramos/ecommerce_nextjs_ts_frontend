@@ -17,8 +17,7 @@ const features: Feature[] = [
     },
     {
         // Se destaca la palabra "GRATIS" con un color específico
-        title: <>Envío <span className="font-extrabold tracking-wide">GRATIS</span></>,
-        subtitle: "Compras desde S/ 49",
+        title: <>Envío <span className="font-extrabold tracking-wide">GRATIS*</span></>,
         imageSrc: "/features/envio-gratis.png",
     },
     {
@@ -26,8 +25,7 @@ const features: Feature[] = [
         imageSrc: "/features/envio-a-todo-el-peru.png",
     },
     {
-        title: "Pago Seguro",
-        subtitle: "Yape, Plin y Tarjetas",
+        title: "Yape, Plin y Tarjetas",
         imageSrc: "/payments/culqi.png",
     },
     {
@@ -44,7 +42,7 @@ export default function FeaturesList() {
                 {features.map((feature, index) => (
                     <div
                         key={index}
-                        className="group flex items-center gap-1.5 p-1 sm:p-2.5 bg-background border border-transparent hover:border-border transition-all duration-300 rounded-lg min-w-[120px] max-w-[220px] w-auto"
+                        className="group flex items-center gap-1.5 p-1 sm:p-2.5 bg-background border border-transparent hover:border-border transition-all duration-300  min-w-[120px] max-w-[220px] w-auto"
                         aria-label="Característica de la tienda"
                     >
                         <div className="shrink-0 flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 bg-muted/40 rounded-full transition-transform duration-300 group-hover:scale-105">
@@ -58,7 +56,7 @@ export default function FeaturesList() {
                             />
                         </div>
                         <div className="flex flex-col min-w-0">
-                            <h3 className="text-xs sm:text-sm font-semibold text-foreground leading-tight tracking-tight">
+                            <h3 className="text-xs sm:text-sm font-normal text-muted-foreground leading-tight tracking-">
                                 {feature.title}
                             </h3>
                             {feature.subtitle && (

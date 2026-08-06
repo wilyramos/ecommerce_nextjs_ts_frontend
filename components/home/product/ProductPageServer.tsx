@@ -5,6 +5,7 @@ import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import RecentViewed from '@/components/home/product/RecentViewed';
 import type { ProductWithCategoryResponse } from '@/src/schemas';
 import { routes } from "@/lib/routes";
+import { discountService } from '@/src/services/discount-service';
 
 type Props = {
     producto: ProductWithCategoryResponse;
@@ -12,15 +13,8 @@ type Props = {
 
 export default async function ProductPageServer({ producto }: Props) {
 
-    if (!producto) {
-        return (
-            <div className="flex flex-col items-center justify-center min-h-[50vh] text-center py-10 space-y-4">
-                <h1 className="text-2xl font-bold text-[var(--store-text)]">Producto no encontrado</h1>
-                <p className="text-[var(--store-text-muted)]">El producto que buscas no existe o ha sido retirado.</p>
-            </div>
-        );
-    }
-
+    if (!producto) return null;
+    const automaticDiscounts = await discountService.getAutomaticDiscountsForProduct(producto._id);
     const breadcrumbSegments = [
         { label: "Catálogo", href: routes.catalog() }
     ];
@@ -67,7 +61,10 @@ export default async function ProductPageServer({ producto }: Props) {
 
                 {/* Se adaptó el contenedor eliminando el div hijo innecesario */}
                 <div className="pt-2">
-                    <ProductDetails producto={producto} />
+                    <ProductDetails
+                        producto={producto}
+                        automaticDiscounts={automaticDiscounts}
+                    />                
                 </div>
             </section>
 
