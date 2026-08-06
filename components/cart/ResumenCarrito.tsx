@@ -59,7 +59,7 @@ export default function ResumenCarrito() {
 
     return (
         <div className="max-w-7xl mx-auto py-1 md:py-8 bg-background text-foreground select-none">
-            {/* Evaluación en tiempo real para promociones automáticas */}
+            {/* Evaluación y Re-Validación en Tiempo Real */}
             <AutomaticDiscountEvaluator />
 
             <H1 className="text-lg md:text-2xl font-bold uppercase tracking-wide">
@@ -72,7 +72,7 @@ export default function ResumenCarrito() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 md:gap-6 gap-4">
                 {/* LISTA DE PRODUCTOS */}
-                <div className="md:col-span-2 bg-background p-2 md:p-4 border border-border">
+                <div className="md:col-span-2 bg-background p-2 md:p-4 border border-border rounded-none">
                     <div className="divide-y divide-border">
                         {cart.map((item) => {
                             const itemDiscount = getItemDiscountAmount(item._id, item.variant?._id);
@@ -87,8 +87,8 @@ export default function ResumenCarrito() {
                     </div>
                 </div>
 
-                {/* RESUMEN DE ORDEN (Alineado visualmente con el Sheet lateral) */}
-                <div className="bg-card p-4 sm:p-6 flex flex-col gap-4 border border-border sticky top-4 h-fit">
+                {/* RESUMEN DE ORDEN ESTILIZADO */}
+                <div className="bg-card p-4 sm:p-6 flex flex-col gap-4 border border-border sticky top-4 h-fit rounded-none">
                     <div className="space-y-3 text-xs md:text-sm">
                         {/* Subtotal Bruto */}
                         <div className="flex justify-between items-center text-muted-foreground">
@@ -98,7 +98,7 @@ export default function ResumenCarrito() {
                             </span>
                         </div>
 
-                        {/* Descuento si está aplicado */}
+                        {/* Descuento Aplicado (Si existe) */}
                         {discountAmount > 0 && (
                             <div className="flex justify-between items-center text-foreground font-semibold pt-2 border-t border-border/60">
                                 <span className="flex items-center gap-1.5 truncate pr-2">
@@ -123,7 +123,7 @@ export default function ResumenCarrito() {
                             )}
                         </div>
 
-                        {/* Total Estimado */}
+                        {/* Total Estimado Neto */}
                         <div className="flex justify-between items-baseline pt-3 border-t border-border text-base md:text-lg font-bold text-foreground">
                             <span className="uppercase tracking-wider">Total</span>
                             <span className="font-mono">S/ {totalFinal.toFixed(2)}</span>
