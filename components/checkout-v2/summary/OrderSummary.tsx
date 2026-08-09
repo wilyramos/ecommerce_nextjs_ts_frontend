@@ -24,7 +24,6 @@ export default function OrderSummary({ order, isReadOnly = false }: Props) {
     const isPaymentRoute = pathname.includes('/payment') || pathname.includes('/pago')
     const isLocked = isPaymentRoute || isReadOnly || Boolean(order)
 
-    // ── CASO A: MODO SOLO LECTURA (Paso 2: /checkout/payment) ──
     if (isLocked) {
         const activeOrder = order || pendingOrder
 
@@ -39,15 +38,8 @@ export default function OrderSummary({ order, isReadOnly = false }: Props) {
         const totalPrice = activeOrder?.totalPrice ?? Math.max(0, subtotal + shippingCost - discountAmount)
 
         return (
-            <div className="text-foreground select-none">
-                <div className="flex items-center justify-between mb-5 border-b border-border/60 pb-3">
-                    <h2 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                        Resumen del pedido
-                    </h2>
-
-                </div>
-
-                <ul className="space-y-3 mb-6">
+            <div className="space-y-4 text-foreground">
+                <ul className="divide-y divide-border">
                     {cart.map(item => (
                         <OrderSummaryItem
                             key={`${item._id}-${item.variant?._id ?? 'base'}`}
@@ -56,39 +48,38 @@ export default function OrderSummary({ order, isReadOnly = false }: Props) {
                     ))}
                 </ul>
 
-                <div className="border-t border-border" />
-
-                <div className="pt-4 space-y-2.5">
-                    <div className="flex justify-between text-xs text-muted-foreground">
+                <div className="pt-4 border-t border-border space-y-2 text-xs">
+                    <div className="flex justify-between text-muted-foreground">
                         <span>Subtotal</span>
-                        <span className="font-semibold text-foreground">S/ {subtotal.toFixed(2)}</span>
+                        <span className="font-medium text-foreground">S/ {subtotal.toFixed(2)}</span>
                     </div>
 
                     {discountAmount > 0 && (
-                        <div className="flex justify-between text-xs text-foreground font-medium">
-                            <span className="flex items-center gap-1">
-                                <BiSolidCoupon className="w-3.5 h-3.5 text-foreground shrink-0" />
+                        <div className="flex justify-between text-foreground font-medium">
+                            <span className="flex items-center gap-1.5">
+                                <BiSolidCoupon className="w-3.5 h-3.5 shrink-0" />
                                 <span>Descuento ({discountCode})</span>
                             </span>
-                            <span className="font-bold">-S/ {discountAmount.toFixed(2)}</span>
+                            <span className="font-semibold">-S/ {discountAmount.toFixed(2)}</span>
                         </div>
                     )}
 
-                    <div className="flex justify-between text-xs text-muted-foreground">
+                    <div className="flex justify-between text-muted-foreground">
                         <span>Envío</span>
                         {!isFreeShipping ? (
-                            <span className="font-semibold text-foreground">S/ {shippingCost.toFixed(2)}</span>
+                            <span className="font-medium text-foreground">S/ {shippingCost.toFixed(2)}</span>
                         ) : (
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-foreground bg-background-secondary border border-border px-2 py-0.5">
-                                {discountCode ? "Gratis (Promoción)" : "Gratis"}
+                            <span className="font-semibold text-foreground">
+                                Gratis
                             </span>
                         )}
                     </div>
 
-                    <div className="flex justify-between items-baseline pt-3 border-t border-border">
-                        <span className="text-sm font-bold uppercase tracking-wider text-foreground">Total</span>
+                    <div className="flex justify-between items-baseline pt-4 border-t border-border">
+                        <span className="text-sm font-semibold text-foreground">Total</span>
                         <div className="text-right">
-                            <span className="text-xl font-black text-foreground">
+                            <span className="text-[10px] text-muted-foreground mr-1">PEN</span>
+                            <span className="text-lg font-bold text-foreground">
                                 S/ {totalPrice.toFixed(2)}
                             </span>
                         </div>
@@ -97,9 +88,6 @@ export default function OrderSummary({ order, isReadOnly = false }: Props) {
             </div>
         )
     }
-
-    // ── CASO B: MODO EDITABLE (Paso 1: /checkout) ──
-    const totalItems = cart.reduce((acc, i) => acc + i.cantidad, 0)
 
     const isFreeShippingByCoupon = appliedDiscount?.isFreeShipping ?? false
     const shippingCost = isFreeShippingByCoupon ? 0 : (total < 49 ? 10 : 0)
@@ -114,20 +102,10 @@ export default function OrderSummary({ order, isReadOnly = false }: Props) {
     if (cart.length === 0) return null
 
     return (
-        <div className="text-foreground select-none">
-            {/* Evaluación en tiempo real para promociones automáticas */}
+        <div className="space-y-4 text-foreground">
             <AutomaticDiscountEvaluator />
 
-            <div className="flex items-center justify-between mb-5 border-b border-border/60 pb-3">
-                <h2 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                    Resumen del pedido
-                </h2>
-                <span className="text-[11px] font-medium text-muted-foreground">
-                    {totalItems} {totalItems === 1 ? 'producto' : 'productos'}
-                </span>
-            </div>
-
-            <ul className="space-y-3 mb-6">
+            <ul className="divide-y divide-border">
                 {cart.map(item => (
                     <OrderSummaryItem
                         key={`${item._id}-${item.variant?._id ?? 'base'}`}
@@ -136,44 +114,41 @@ export default function OrderSummary({ order, isReadOnly = false }: Props) {
                 ))}
             </ul>
 
-            <div className="border-t border-border" />
-
-            {/* Input para Cupones Manuales */}
-            <div className="py-4 border-b border-border">
+            <div className="py-2 border-t border-b border-border">
                 <CouponInput />
             </div>
 
-            <div className="pt-4 space-y-2.5">
-                <div className="flex justify-between text-xs text-muted-foreground">
+            <div className="space-y-2 text-xs">
+                <div className="flex justify-between text-muted-foreground">
                     <span>Subtotal</span>
-                    <span className="font-semibold text-foreground">S/ {total.toFixed(2)}</span>
+                    <span className="font-medium text-foreground">S/ {total.toFixed(2)}</span>
                 </div>
 
                 {discountAmount > 0 && (
-                    <div className="flex justify-between text-xs text-foreground font-medium">
+                    <div className="flex justify-between text-foreground font-medium">
                         <span className="flex items-center gap-1.5 truncate pr-2">
-                            <BiSolidCoupon className="w-3.5 h-3.5 text-foreground shrink-0" />
+                            <BiSolidCoupon className="w-3.5 h-3.5 shrink-0" />
                             <span className="truncate">Descuento ({discountDisplayName})</span>
                         </span>
-                        <span className="shrink-0 font-bold">-S/ {discountAmount.toFixed(2)}</span>
+                        <span className="shrink-0 font-semibold">-S/ {discountAmount.toFixed(2)}</span>
                     </div>
                 )}
 
-                <div className="flex justify-between text-xs text-muted-foreground">
+                <div className="flex justify-between text-muted-foreground">
                     <span>Envío</span>
                     {shippingCost > 0 ? (
-                        <span className="font-semibold text-foreground">S/ {shippingCost.toFixed(2)}</span>
+                        <span className="font-medium text-foreground">S/ {shippingCost.toFixed(2)}</span>
                     ) : (
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-foreground bg-background-secondary border border-border px-2 py-0.5">
-                            {isFreeShippingByCoupon ? "Gratis (Promoción)" : "Gratis"}
+                        <span className="font-semibold text-foreground">
+                            Gratis
                         </span>
                     )}
                 </div>
 
-                <div className="flex justify-between items-baseline pt-3 border-t border-border">
-                    <span className="text-sm font-bold uppercase tracking-wider text-foreground">Total</span>
+                <div className="flex justify-between items-baseline pt-4 border-t border-border">
+                    <span className="text-sm font-semibold text-foreground">Total</span>
                     <div className="text-right">
-                        <span className="text-xl font-black text-foreground">
+                        <span className="text-lg font-bold text-foreground">
                             S/ {totalFinal.toFixed(2)}
                         </span>
                     </div>

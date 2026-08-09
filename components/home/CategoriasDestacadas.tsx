@@ -1,3 +1,4 @@
+// File: frontend/components/home/CategoriasDestacadas.tsx
 "use client";
 
 import Image from "next/image";
@@ -12,12 +13,12 @@ import { routes } from "@/lib/routes";
 const responsive = {
     superLargeDesktop: {
         breakpoint: { max: 4000, min: 1440 },
-        items: 10,
+        items: 9,
         slidesToSlide: 2
     },
     desktop: {
         breakpoint: { max: 1440, min: 1024 },
-        items: 8,
+        items: 7,
         slidesToSlide: 2
     },
     tablet: {
@@ -41,45 +42,44 @@ export default function CategoriasDestacadas({ categorias }: { categorias: Categ
     const categoriasVisibles = categorias.slice(0, 12);
 
     return (
-        <section className="max-w-7xl mx-auto px-4 select-none relative py-4">
+        <section className="max-w-screen-xl mx-auto px-4 select-none py-6">
             <Carousel
                 responsive={responsive}
                 infinite={true}
                 arrows={false}
                 draggable={true}
                 swipeable={true}
-                itemClass="px-2 md:px-3"
-                className="py-2"
+                itemClass="px-2"
+                className="py-1"
             >
                 {categoriasVisibles.map((c) => (
                     <Link
                         key={c._id}
                         href={routes.catalog({ category: c.slug })}
-                        className="group flex flex-col items-center text-center transition-all duration-300 focus:outline-none"
+                        className="group flex flex-col items-center text-center outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-lg p-1"
                     >
-                        {/* Círculo */}
-                        <div className="relative w-full aspect-square rounded-full overflow-hidden bg-background border border-border group-hover:border-primary/40 group-hover:shadow-md transition-all duration-300 flex items-center justify-center flex-shrink-0">
-                            <div className="relative w-full h-full">
-                                {c.image ? (
-                                    <Image
-                                        src={c.image}
-                                        alt={c.nombre}
-                                        fill
-                                        className="object-contain p-3 md:p-4 transition-transform duration-500 group-hover:scale-110"
-                                        unoptimized
-                                        sizes="(max-width: 640px) 150px, (max-width: 1024px) 180px, 200px"
-                                    />
-                                ) : (
-                                    <div className="flex h-full items-center justify-center text-muted-foreground/30">
-                                        <ImageOff size={32} strokeWidth={1} />
-                                    </div>
-                                )}
-                            </div>
+                        {/* Círculo estilo Shopify */}
+                        <div className="relative w-full aspect-square rounded-full overflow-hidden bg-background-secondary border border-border group-hover:border-border-hover transition-colors flex items-center justify-center shrink-0">
+                            {c.image ? (
+                                <Image
+                                    src={c.image}
+                                    alt={c.nombre}
+                                    fill
+                                    className="object-contain p-3 sm:p-4 group-hover:scale-105 transition-transform duration-300"
+                                    unoptimized
+                                    sizes="(max-width: 640px) 120px, (max-width: 1024px) 150px, 180px"
+                                />
+                            ) : (
+                                <div className="flex h-full items-center justify-center text-muted-foreground/40">
+                                    <ImageOff size={24} strokeWidth={1.5} />
+                                </div>
+                            )}
                         </div>
 
-                        <h3 className="mt-3 md:mt-4 text-[11px] md:text-sm font-semibold text-foreground/80 group-hover:text-primary transition-colors duration-300 line-clamp-2 w-full px-1 leading-tight tracking-tight">
+                        {/* Etiqueta */}
+                        <span className="mt-2.5 text-xs font-medium text-foreground group-hover:text-action-cta transition-colors line-clamp-1 w-full px-1">
                             {c.nombre}
-                        </h3>
+                        </span>
                     </Link>
                 ))}
             </Carousel>

@@ -42,27 +42,26 @@ export default function FeaturesList() {
                 {features.map((feature, index) => (
                     <div
                         key={index}
-                        className="group flex items-center gap-1.5 p-1 sm:p-2.5 bg-background border border-transparent hover:border-border transition-all duration-300  min-w-[120px] max-w-[220px] w-auto"
-                        aria-label="Característica de la tienda"
+                        className="flex items-center gap-3 p-2 rounded-md bg-background transition-colors"
                     >
-                        <div className="shrink-0 flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 bg-muted/40 rounded-full transition-transform duration-300 group-hover:scale-105">
+                        <div className="shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-background-secondary border border-border">
                             <Image
                                 src={feature.imageSrc}
-                                alt="Icono"
-                                width={36}
-                                height={36}
-                                className="w-9 h-9 sm:w-10 sm:h-10 object-contain opacity-90"
+                                alt=""
+                                width={20}
+                                height={20}
+                                className="w-5 h-5 object-contain"
                                 unoptimized
                             />
                         </div>
                         <div className="flex flex-col min-w-0">
-                            <h3 className="text-xs sm:text-sm font-normal text-muted-foreground leading-tight tracking-">
+                            <span className="text-xs font-medium text-foreground leading-tight truncate">
                                 {feature.title}
-                            </h3>
+                            </span>
                             {feature.subtitle && (
-                                <p className="text-[11px] sm:text-xs text-muted-foreground leading-tight mt-0.5">
+                                <span className="text-[11px] text-muted-foreground leading-tight mt-0.5 truncate">
                                     {feature.subtitle}
-                                </p>
+                                </span>
                             )}
                         </div>
                     </div>
