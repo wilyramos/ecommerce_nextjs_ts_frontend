@@ -1,16 +1,19 @@
 // File: frontend/components/admin/discounts/DiscountDetailCard.tsx
-
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
-
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+
 import DiscountToggleStatusButton from "./DiscountToggleStatusButton";
 import DiscountDeleteButton from "./DiscountDeleteButton";
+
+import { AdminCard } from "@/components/admin/layout/admin-card";
+import { AdminStatCard } from "@/components/admin/layout/admin-stat-card";
+import { AdminDescriptionList } from "@/components/admin/layout/admin-description-list";
+import { AdminResourceItem } from "@/components/admin/layout/admin-resource-item";
+import { AdminCodeBlock } from "@/components/admin/layout/admin-code-block";
+
 import { type DiscountResponse, type DiscountAnalyticsResponse } from "@/src/schemas/discount.schema";
 
 interface Props {
@@ -20,17 +23,7 @@ interface Props {
 
 export default function DiscountDetailCard({ discount, analytics }: Props) {
     const router = useRouter();
-    const [copied, setCopied] = useState(false);
-
     const isAutomatic = discount.appliesVia === "AUTOMATIC";
-
-    const handleCopyCode = () => {
-        if (!discount.code) return;
-        navigator.clipboard.writeText(discount.code);
-        setCopied(true);
-        toast.success("Código copiado al portapapeles");
-        setTimeout(() => setCopied(false), 2000);
-    };
 
     const usagePercent = discount.usageLimitTotal
         ? Math.min(100, Math.round((discount.currentUsageCount / discount.usageLimitTotal) * 100))
@@ -39,205 +32,171 @@ export default function DiscountDetailCard({ discount, analytics }: Props) {
     const formatTipo = (type: string) => {
         switch (type) {
             case "BUY_X_GET_Y": return "Compra X y Obtén Y (BXGY)";
-            case "PERCENTAGE": return "Porcentaje de Descuento";
-            case "FIXED_AMOUNT": return "Monto Fijo de Descuento";
+            case "PERCENTAGE": return "Porcentaje (%)";
+            case "FIXED_AMOUNT": return "Monto Fijo (S/)";
             case "FREE_SHIPPING": return "Envío Gratuito";
             default: return type;
         }
     };
 
     return (
-        <div className="space-y-6">
-            {/* Tarjeta Principal y Acciones Atómicas */}
-            <Card>
-                <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <div className="space-y-2">
-                        <div className="flex flex-wrap items-center gap-2">
-                            <Badge variant={isAutomatic ? "secondary" : "outline"}>
+        <div className="space-y-4 text-xs">
+            {/* Header Principal */}
+            <AdminCard bodyClassName="p-4 space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-zinc-100 pb-3">
+                    <div className="space-y-1">
+                        <div className="flex flex-wrap items-center gap-1.5">
+                            <Badge variant={isAutomatic ? "secondary" : "outline"} className="text-[10px] h-5 px-1.5 font-medium">
                                 {isAutomatic ? "Promoción Automática" : "Cupón por Código"}
                             </Badge>
-                            <Badge variant={discount.isActive ? "default" : "destructive"}>
+                            <Badge variant={discount.isActive ? "default" : "destructive"} className="text-[10px] h-5 px-1.5 font-medium">
                                 {discount.isActive ? "Activo" : "Inactivo"}
                             </Badge>
                         </div>
-                        <CardTitle>{discount.title}</CardTitle>
-                        <CardDescription>{discount.description || "Sin descripción corta registrada."}</CardDescription>
+                        <h2 className="text-base font-bold text-zinc-900 tracking-tight leading-snug">{discount.title}</h2>
+                        <p className="text-xs text-zinc-500">{discount.description || "Sin descripción corta registrada."}</p>
                     </div>
 
-                    {/* Botones Atómicos de Gestión de Estado y Eliminación */}
-                    <div className="flex items-center gap-2 pt-2 sm:pt-0">
-                        <DiscountToggleStatusButton
-                            id={discount._id}
-                            isActive={discount.isActive}
-                        />
-
-                        <DiscountDeleteButton
-                            id={discount._id}
-                            title={discount.title}
-                        />
+                    <div className="flex items-center gap-1.5 self-start sm:self-center">
+                        <DiscountToggleStatusButton id={discount._id} isActive={discount.isActive} />
+                        <DiscountDeleteButton id={discount._id} title={discount.title} />
                     </div>
-                </CardHeader>
+                </div>
 
-                <CardContent className="space-y-4">
-                    {!isAutomatic && discount.code && (
-                        <div className="flex items-center justify-between bg-muted p-3 rounded-md border">
-                            <div className="space-y-0.5">
-                                <span className="text-[11px] text-muted-foreground uppercase font-semibold block">
-                                    Código del Cupón
-                                </span>
-                                <code className="font-mono text-base font-bold text-foreground">
-                                    {discount.code}
-                                </code>
-                            </div>
-                            <Button
-                                type="button"
-                                variant="secondary"
-                                size="sm"
-                                onClick={handleCopyCode}
-                            >
-                                {copied ? "Copiado" : "Copiar Código"}
-                            </Button>
-                        </div>
-                    )}
-                </CardContent>
-            </Card>
+                {!isAutomatic && discount.code && (
+                    <AdminCodeBlock label="Código" code={discount.code} />
+                )}
+            </AdminCard>
 
-            {/* Métrica de Auditoría y Ventas */}
+            {/* Métricas Reutilizables */}
             {analytics && (
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <Card>
-                        <CardHeader>
-                            <CardDescription>Órdenes Generadas</CardDescription>
-                            <CardTitle className="font-mono text-xl">{analytics.ordersPlaced}</CardTitle>
-                        </CardHeader>
-                    </Card>
-
-                    <Card>
-                        <CardHeader>
-                            <CardDescription>Ingresos Generados</CardDescription>
-                            <CardTitle className="font-mono text-xl">S/ {analytics.revenueGenerated.toFixed(2)}</CardTitle>
-                        </CardHeader>
-                    </Card>
-
-                    <Card>
-                        <CardHeader>
-                            <CardDescription>Descuentos Otorgados</CardDescription>
-                            <CardTitle className="font-mono text-xl">S/ {analytics.discountsGiven.toFixed(2)}</CardTitle>
-                        </CardHeader>
-                    </Card>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <AdminStatCard label="Órdenes Generadas" value={analytics.ordersPlaced} />
+                    <AdminStatCard label="Ingresos Generados" value={`S/ ${analytics.revenueGenerated.toFixed(2)}`} />
+                    <AdminStatCard label="Descuentos Otorgados" value={`S/ ${analytics.discountsGiven.toFixed(2)}`} />
                 </div>
             )}
 
-            {/* Configuración de la Regla de Descuento */}
+            {/* Configuración BXGY */}
             {discount.type === "BUY_X_GET_Y" && discount.bxgyConfig && (
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Configuración Compra X y Obtén Y</CardTitle>
-                        <CardDescription>Reglas de bonificación aplicadas al carrito</CardDescription>
-                    </CardHeader>
-                    <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="bg-muted/40 p-3 rounded-md border space-y-1">
-                            <span className="text-[11px] font-semibold text-muted-foreground uppercase block">
-                                Requisito de Compra (X)
-                            </span>
-                            <span className="text-sm font-bold text-foreground">
+                <AdminCard title="Configuración Compra X y Obtén Y" bodyClassName="p-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <div className="bg-zinc-50/80 p-2.5 rounded-md border border-zinc-200/70">
+                            <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Requisito (X)</span>
+                            <span className="text-xs font-bold text-zinc-900 mt-0.5 block">
                                 Comprar {discount.bxgyConfig.buyQuantity} unidad(es)
                             </span>
                         </div>
 
-                        <div className="bg-muted/40 p-3 rounded-md border space-y-1">
-                            <span className="text-[11px] font-semibold text-muted-foreground uppercase block">
-                                Beneficio Obtenido (Y)
-                            </span>
-                            <span className="text-sm font-bold text-foreground">
+                        <div className="bg-zinc-50/80 p-2.5 rounded-md border border-zinc-200/70">
+                            <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider block">Beneficio (Y)</span>
+                            <span className="text-xs font-bold text-zinc-900 mt-0.5 block">
                                 Lleva {discount.bxgyConfig.getQuantity} unidad(es){" "}
                                 {discount.bxgyConfig.getDiscountType === "FREE"
                                     ? "Gratis (100%)"
                                     : discount.bxgyConfig.getDiscountType === "PERCENTAGE"
-                                        ? `con ${discount.bxgyConfig.getDiscountValue}% de descuento`
-                                        : `con S/ ${discount.bxgyConfig.getDiscountValue} de descuento`}
+                                        ? `con ${discount.bxgyConfig.getDiscountValue}% OFF`
+                                        : `con S/ ${discount.bxgyConfig.getDiscountValue} OFF`}
                             </span>
                         </div>
-                    </CardContent>
-                </Card>
+                    </div>
+                </AdminCard>
             )}
 
-            {/* Ficha Técnica: Capacidad, Cobertura y Fechas */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Capacidad y Límites de Uso</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3 text-xs">
-                        <div className="flex justify-between py-1.5 border-b">
-                            <span className="text-muted-foreground">Usos Actuales:</span>
-                            <span className="font-mono font-bold text-foreground">{discount.currentUsageCount}</span>
-                        </div>
-                        <div className="flex justify-between py-1.5 border-b">
-                            <span className="text-muted-foreground">Límite Global:</span>
-                            <span className="font-mono font-bold text-foreground">{discount.usageLimitTotal ?? "Ilimitado"}</span>
-                        </div>
-                        <div className="flex justify-between py-1.5 border-b">
-                            <span className="text-muted-foreground">Usos por Cliente:</span>
-                            <span className="font-mono font-bold text-foreground">{discount.usageLimitPerCustomer} uso(s)</span>
-                        </div>
+            {/* Productos Elegibles */}
+            {discount.target === "SPECIFIC_PRODUCTS" && discount.applicableProductsDetails && discount.applicableProductsDetails.length > 0 && (
+                <AdminCard title="Productos Elegibles (Compra)" bodyClassName="p-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                        {discount.applicableProductsDetails.map((product) => (
+                            <AdminResourceItem
+                                key={product._id}
+                                title={product.nombre}
+                                subtitle={product.sku ? `SKU: ${product.sku}` : undefined}
+                                imageUrl={product.imagenes?.[0]}
+                                price={product.precio}
+                            />
+                        ))}
+                    </div>
+                </AdminCard>
+            )}
 
+            {/* Productos de Regalo */}
+            {discount.type === "BUY_X_GET_Y" && discount.bxgyConfig?.getProducts && discount.giftProductsDetails && discount.giftProductsDetails.length > 0 && (
+                <AdminCard title="Productos de Regalo (Beneficio)" bodyClassName="p-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                        {discount.giftProductsDetails.map((product) => (
+                            <AdminResourceItem
+                                key={product._id}
+                                title={product.nombre}
+                                subtitle={product.sku ? `SKU: ${product.sku}` : undefined}
+                                imageUrl={product.imagenes?.[0]}
+                                price={product.precio}
+                                badge={
+                                    <Badge variant="secondary" className="text-[9px] h-4 px-1 bg-emerald-50 text-emerald-700 border-emerald-200 font-semibold">
+                                        Regalo
+                                    </Badge>
+                                }
+                            />
+                        ))}
+                    </div>
+                </AdminCard>
+            )}
+
+            {/* Ficha Técnica: Capacidad y Cobertura */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <AdminCard title="Capacidad y Límites de Uso" bodyClassName="p-3">
+                    <div className="space-y-2">
+                        <AdminDescriptionList
+                            items={[
+                                { label: "Usos Actuales", value: discount.currentUsageCount, isMono: true },
+                                { label: "Límite Global", value: discount.usageLimitTotal ?? "Ilimitado", isMono: true },
+                                { label: "Usos por Cliente", value: `${discount.usageLimitPerCustomer} uso(s)`, isMono: true },
+                            ]}
+                        />
                         {usagePercent !== null && (
-                            <div className="space-y-1 pt-2">
-                                <div className="flex justify-between text-[11px] font-mono text-muted-foreground">
+                            <div className="space-y-1 pt-1.5 border-t border-zinc-100">
+                                <div className="flex justify-between text-[10px] font-mono text-zinc-500">
                                     <span>Capacidad Consumida</span>
                                     <span>{usagePercent}%</span>
                                 </div>
-                                <div className="w-full bg-muted h-2 rounded-full overflow-hidden">
-                                    <div
-                                        className="bg-primary h-full transition-all"
-                                        style={{ width: `${usagePercent}%` }}
-                                    />
+                                <div className="w-full bg-zinc-100 h-1.5 rounded-full overflow-hidden">
+                                    <div className="bg-zinc-900 h-full transition-all" style={{ width: `${usagePercent}%` }} />
                                 </div>
                             </div>
                         )}
-                    </CardContent>
-                </Card>
+                    </div>
+                </AdminCard>
 
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Cobertura y Fechas</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3 text-xs">
-                        <div className="flex justify-between py-1.5 border-b">
-                            <span className="text-muted-foreground">Tipo de Oferta:</span>
-                            <span className="font-semibold text-foreground">{formatTipo(discount.type)}</span>
-                        </div>
-                        <div className="flex justify-between py-1.5 border-b">
-                            <span className="text-muted-foreground">Compra Mínima:</span>
-                            <span className="font-mono font-bold text-foreground">
-                                {discount.minPurchaseAmount > 0
-                                    ? `S/ ${discount.minPurchaseAmount.toFixed(2)}`
-                                    : "Sin Mínimo"}
-                            </span>
-                        </div>
-                        <div className="flex justify-between py-1.5 border-b">
-                            <span className="text-muted-foreground">Fecha de Inicio:</span>
-                            <span className="font-mono text-foreground">{new Date(discount.startDate).toLocaleDateString("es-PE")}</span>
-                        </div>
-                        <div className="flex justify-between py-1.5 border-b">
-                            <span className="text-muted-foreground">Fecha de Expiración:</span>
-                            <span className="font-mono text-foreground">
-                                {discount.endDate
-                                    ? new Date(discount.endDate).toLocaleDateString("es-PE")
-                                    : "Sin Expiración"}
-                            </span>
-                        </div>
-                    </CardContent>
-                </Card>
+                <AdminCard title="Cobertura y Fechas" bodyClassName="p-3">
+                    <AdminDescriptionList
+                        items={[
+                            { label: "Tipo de Oferta", value: formatTipo(discount.type) },
+                            {
+                                label: "Compra Mínima",
+                                value: discount.minPurchaseAmount > 0 ? `S/ ${discount.minPurchaseAmount.toFixed(2)}` : "Sin Mínimo",
+                                isMono: true,
+                            },
+                            {
+                                label: "Fecha de Inicio",
+                                value: new Date(discount.startDate).toLocaleDateString("es-PE"),
+                                isMono: true,
+                            },
+                            {
+                                label: "Fecha Expiración",
+                                value: discount.endDate ? new Date(discount.endDate).toLocaleDateString("es-PE") : "Sin Expiración",
+                                isMono: true,
+                            },
+                        ]}
+                    />
+                </AdminCard>
             </div>
 
-            {/* Navegación */}
-            <div className="flex justify-start">
+            <div className="flex justify-start pt-1">
                 <Button
                     type="button"
                     variant="outline"
                     onClick={() => router.push("/admin/discounts")}
+                    className="h-8 text-xs font-medium"
                 >
                     Volver a la Lista
                 </Button>

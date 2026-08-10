@@ -4,6 +4,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { Tag, Truck, ArrowRight } from "lucide-react";
 import { type DiscountResponse } from "@/src/schemas/discount.schema";
 
 interface Props {
@@ -22,7 +23,7 @@ export default function ProductAutomaticPromotionBanner({ discounts }: Props) {
     if (!discounts || discounts.length === 0) return null;
 
     return (
-        <div className="space-y-2.5 my-3 select-none">
+        <div className="space-y-2 my-2 select-none">
             {discounts.map((disc) => {
                 const isBxgy = disc.type === "BUY_X_GET_Y";
                 const isPercentage = disc.type === "PERCENTAGE";
@@ -30,95 +31,131 @@ export default function ProductAutomaticPromotionBanner({ discounts }: Props) {
                 const isFreeShipping = disc.type === "FREE_SHIPPING";
 
                 const bxgy = disc.bxgyConfig;
-                const giftProducts = disc.giftProductsDetails ?? [];
+                const bonusProducts = disc.giftProductsDetails ?? [];
+
+                const renderBonusBadge = () => {
+                    if (!bxgy) return null;
+                    if (bxgy.getDiscountType === "FREE") {
+                        return (
+                            <span className="text-[9px] font-bold tracking-wide uppercase text-[var(--action-cta)] bg-[var(--action-cta)]/10 px-1 py-0.5 rounded">
+                                GRATIS
+                            </span>
+                        );
+                    }
+                    if (bxgy.getDiscountType === "PERCENTAGE") {
+                        return (
+                            <span className="text-[9px] font-bold tracking-wide uppercase text-[var(--action-cta)] bg-[var(--action-cta)]/10 px-1 py-0.5 rounded">
+                                -{bxgy.getDiscountValue}%
+                            </span>
+                        );
+                    }
+                    return (
+                        <span className="text-[9px] font-bold tracking-wide uppercase text-[var(--action-cta)] bg-[var(--action-cta)]/10 px-1 py-0.5 rounded">
+                            -S/ {bxgy.getDiscountValue.toFixed(2)}
+                        </span>
+                    );
+                };
 
                 return (
                     <div
                         key={disc._id}
-                        className="p-3 border border-border bg-card rounded-md space-y-2.5"
+                        className="rounded-[var(--radius-sm)] border border-[var(--border)] bg-[var(--card)] p-2.5 space-y-2 transition-colors hover:border-[var(--border-hover)]"
                     >
-                        {/* Cabecera de la promoción */}
-                        <div className="flex items-center justify-between gap-2 flex-wrap">
-                            <span className="text-xs font-bold text-foreground tracking-tight">
-                                {disc.title}
-                            </span>
+                        {/* Cabecera / Título de la Promoción tipo Temu/Shopify */}
+                        <div className="flex items-center justify-between gap-2">
+                            <div className="flex items-center gap-1.5 min-w-0">
+                                <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded bg-[var(--action-cta)] text-[var(--action-cta-foreground)]">
+                                    {isFreeShipping ? (
+                                        <Truck className="h-2.5 w-2.5" />
+                                    ) : (
+                                        <Tag className="h-2.5 w-2.5" />
+                                    )}
+                                </span>
+                                <span className="text-xs font-semibold text-[var(--foreground)] truncate tracking-tight">
+                                    {disc.title}
+                                </span>
+                            </div>
 
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-action-cta bg-action-cta/10 px-2 py-0.5 rounded-sm border border-action-cta/20">
-                                Promoción
+                            <span className="shrink-0 text-[9px] font-bold uppercase tracking-wider text-[var(--action-cta)] bg-[var(--action-cta)]/10 px-1.5 py-0.5 rounded">
+                                Oferta
                             </span>
                         </div>
 
-                        {/* Detalle dinámico y claro de la oferta según su tipo */}
-                        <div className="space-y-2 text-xs text-muted-foreground">
+                        {/* Descripción de la Oferta */}
+                        <div className="text-[11px] text-[var(--muted-foreground)] font-normal leading-normal">
                             {isBxgy && bxgy ? (
-                                <p className="leading-relaxed">
-                                    Lleva <span className="font-bold text-foreground">{bxgy.buyQuantity} unidad(es)</span> y obtén{" "}
-                                    <span className="font-bold text-foreground">
-                                        {bxgy.getQuantity} {bxgy.getDiscountType === "FREE" ? "GRATIS" : `con ${bxgy.getDiscountValue}% de descuento`}
-                                    </span>.
+                                <p>
+                                    Compra <strong className="text-[var(--foreground)] font-semibold">{bxgy.buyQuantity}</strong> y lleva{" "}
+                                    <strong className="text-[var(--foreground)] font-semibold">
+                                        {bxgy.getQuantity} {bxgy.getDiscountType === "FREE" ? "GRATIS" : `con ${bxgy.getDiscountValue}% OFF`}
+                                    </strong>
                                 </p>
                             ) : isPercentage ? (
-                                <p className="leading-relaxed">
-                                    Obtén un <span className="font-bold text-foreground">{disc.value}% de descuento</span> aplicado automáticamente.
+                                <p>
+                                    <strong className="text-[var(--foreground)] font-semibold">{disc.value}% de descuento</strong> automático aplicado en el checkout.
                                 </p>
                             ) : isFixedAmount ? (
-                                <p className="leading-relaxed">
-                                    Descuento directo de <span className="font-bold text-foreground">S/ {disc.value.toFixed(2)}</span> aplicado en esta compra.
+                                <p>
+                                    Ahorra <strong className="text-[var(--foreground)] font-semibold">S/ {disc.value.toFixed(2)}</strong> directamente en tu orden.
                                 </p>
                             ) : isFreeShipping ? (
-                                <p className="leading-relaxed">
-                                    Esta compra cuenta con <span className="font-bold text-foreground">Envío Gratis</span>.
+                                <p>
+                                    Incluye <strong className="text-[var(--foreground)] font-semibold">Envío Gratuito</strong> a nivel nacional.
                                 </p>
                             ) : (
-                                disc.description && (
-                                    <p className="leading-relaxed">{disc.description}</p>
-                                )
-                            )}
-
-                            {/* Listado de Productos de Regalo / Beneficio Y para BXGY */}
-                            {isBxgy && giftProducts.length > 0 && (
-                                <div className="pt-2 space-y-2 border-t border-border">
-                                    <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground block">
-                                        Producto de regalo incluido:
-                                    </span>
-
-                                    <div className="flex flex-col gap-2">
-                                        {giftProducts.map((gift) => {
-                                            const giftImage = gift.imagenes?.[0] || "/logoapp.svg";
-
-                                            return (
-                                                <Link
-                                                    key={gift._id}
-                                                    href={`/productos/${gift.slug}`}
-                                                    prefetch={false}
-                                                    className="flex items-center justify-between gap-3 p-2 rounded border border-border bg-background hover:border-foreground/40 transition-colors group"
-                                                >
-                                                    <div className="flex items-center gap-2.5 min-w-0">
-                                                        <div className="relative w-9 h-9 rounded-sm shrink-0 overflow-hidden border border-border bg-background-secondary">
-                                                            <Image
-                                                                src={giftImage}
-                                                                alt={gift.nombre}
-                                                                fill
-                                                                className="object-cover"
-                                                                unoptimized
-                                                            />
-                                                        </div>
-                                                        <span className="text-xs font-semibold text-foreground group-hover:text-action-cta transition-colors line-clamp-1">
-                                                            {gift.nombre}
-                                                        </span>
-                                                    </div>
-
-                                                    <span className="text-xs font-bold text-action-cta shrink-0 flex items-center gap-0.5">
-                                                        Ver detalle
-                                                        <span className="text-sm font-normal">→</span>
-                                                    </span>
-                                                </Link>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
+                                disc.description && <p>{disc.description}</p>
                             )}
                         </div>
+
+                        {/* Listado limpio de productos bonificados estilo rejilla compacta */}
+                        {isBxgy && bonusProducts.length > 0 && (
+                            <div className="space-y-1.5 pt-1.5 border-t border-[var(--border)]">
+                                <div className="grid grid-cols-1 gap-1">
+                                    {bonusProducts.map((product) => {
+                                        const productImage = product.imagenes?.[0] || "/logoapp.svg";
+                                        const originalPrice = product.precio ?? 0;
+
+                                        return (
+                                            <Link
+                                                key={product._id}
+                                                href={`/productos/${product.slug}`}
+                                                prefetch={false}
+                                                className="group flex items-center justify-between gap-2 p-1.5 rounded-[var(--radius-sm)] bg-[var(--background-secondary)] border border-transparent hover:border-[var(--border)] transition-all"
+                                            >
+                                                <div className="flex items-center gap-2 min-w-0">
+                                                    <div className="relative h-7 w-7 shrink-0 overflow-hidden rounded-[var(--radius-sm)] bg-[var(--card)] border border-[var(--border)]">
+                                                        <Image
+                                                            src={productImage}
+                                                            alt={product.nombre}
+                                                            fill
+                                                            sizes="28px"
+                                                            className="object-cover"
+                                                        />
+                                                    </div>
+
+                                                    <div className="flex flex-col min-w-0">
+                                                        <span className="text-[11px] font-medium text-[var(--foreground)] group-hover:text-[var(--action-cta)] transition-colors line-clamp-1">
+                                                            {product.nombre}
+                                                        </span>
+
+                                                        <div className="flex items-center gap-1.5 mt-0.5">
+                                                            {originalPrice > 0 && (
+                                                                <span className="text-[9px] text-[var(--muted-foreground)] line-through">
+                                                                    S/ {originalPrice.toFixed(2)}
+                                                                </span>
+                                                            )}
+                                                            {renderBonusBadge()}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <ArrowRight className="h-3 w-3 text-[var(--muted-foreground)] group-hover:text-[var(--action-cta)] shrink-0 transition-colors" />
+                                            </Link>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 );
             })}

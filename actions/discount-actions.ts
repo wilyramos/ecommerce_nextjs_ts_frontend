@@ -1,4 +1,3 @@
-// File: frontend/actions/discount-actions.ts
 "use server";
 
 import { revalidatePath } from "next/cache";
@@ -35,12 +34,10 @@ export async function createDiscountAction(
     const type = (formData.get("type") as DiscountType) || "BUY_X_GET_Y";
     const appliesVia = (formData.get("appliesVia") as DiscountAppliesVia) || "CODE";
     const target = (formData.get("target") as DiscountTarget) || "ALL_PRODUCTS";
-    
-    // IDs de productos/categorías X
+
     const rawIdsInput = (formData.get("rawIdsInput") as string) || "";
     const rawIds = rawIdsInput.split(",").map((id) => id.trim()).filter(Boolean);
 
-    // IDs de productos Y (regalo específico)
     const getProductsRawInput = (formData.get("getProductsRawInput") as string) || "";
     const getProducts = getProductsRawInput.split(",").map((id) => id.trim()).filter(Boolean);
 
@@ -53,36 +50,40 @@ export async function createDiscountAction(
         appliesVia,
         target,
         code: appliesVia === "CODE" && codeValue ? codeValue.toUpperCase().trim() : undefined,
-        minPurchaseAmount: Number(formData.get("minPurchaseAmount") ?? 0),
+        minPurchaseAmount: Number(formData.get("minPurchaseAmount") || 0),
         usageLimitTotal: formData.get("usageLimitTotal")
             ? Number(formData.get("usageLimitTotal"))
             : null,
-        usageLimitPerCustomer: Number(formData.get("usageLimitPerCustomer") ?? 1),
+        usageLimitPerCustomer: Number(formData.get("usageLimitPerCustomer") || 1),
         startDate: formData.get("startDate") as string,
         endDate: formData.get("endDate") ? (formData.get("endDate") as string) : null,
     };
 
-    // Mapeo del grupo X según el objetivo seleccionado
     if (target === "SPECIFIC_PRODUCTS") rawDto.applicableProducts = rawIds;
     if (target === "SPECIFIC_CATEGORIES") rawDto.applicableCategories = rawIds;
     if (target === "SPECIFIC_BRANDS") rawDto.applicableBrands = rawIds;
     if (target === "SPECIFIC_COLLECTIONS") rawDto.applicableCollections = rawIds;
     if (target === "SPECIFIC_LINES") rawDto.applicableLines = rawIds;
 
-    // Configuración BXGY
     if (type === "BUY_X_GET_Y") {
         rawDto.value = 0;
+        
+        // Extracción explícita de inputs evitando valores estáticos/fallbacks incorrectos
+        const parsedBuyQty = Number(formData.get("buyQuantity"));
+        const parsedGetQty = Number(formData.get("getQuantity"));
+        const parsedDiscountVal = Number(formData.get("getDiscountValue"));
+
         rawDto.bxgyConfig = {
-            buyQuantity: Number(formData.get("buyQuantity") ?? 2),
-            getQuantity: Number(formData.get("getQuantity") ?? 1),
-            getDiscountType: formData.get("getDiscountType") ?? "FREE",
-            getDiscountValue: Number(formData.get("getDiscountValue") ?? 100),
+            buyQuantity: isNaN(parsedBuyQty) || parsedBuyQty < 1 ? 1 : parsedBuyQty,
+            getQuantity: isNaN(parsedGetQty) || parsedGetQty < 1 ? 1 : parsedGetQty,
+            getDiscountType: (formData.get("getDiscountType") as string) || "FREE",
+            getDiscountValue: isNaN(parsedDiscountVal) ? 100 : parsedDiscountVal,
             getProducts: getProducts.length > 0 ? getProducts : undefined,
         };
     } else if (type === "FREE_SHIPPING") {
         rawDto.value = 0;
     } else {
-        rawDto.value = Number(formData.get("value") ?? 0);
+        rawDto.value = Number(formData.get("value") || 0);
     }
 
     const validation = CreateDiscountDTOSchema.safeParse(rawDto);

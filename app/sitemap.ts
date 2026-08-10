@@ -94,9 +94,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     // 7. Páginas Estáticas (Prioridades y frecuencias ajustadas para coherencia)
     const staticPages = [
-        { url: "", priority: 1.0, changefreq: "daily" as ChangeFreq },
-        { url: "/catalogo", priority: 0.9, changefreq: "daily" as ChangeFreq },
-        { url: "/ofertas", priority: 0.85, changefreq: "daily" as ChangeFreq },
+        { url: "", priority: 1.0, changefreq: "weekly" as ChangeFreq },
+        { url: "/catalogo", priority: 0.9, changefreq: "weekly" as ChangeFreq },
+        { url: "/ofertas", priority: 0.85, changefreq: "weekly" as ChangeFreq },
         { url: "/novedades", priority: 0.85, changefreq: "daily" as ChangeFreq },
         { url: "/colecciones", priority: 0.8, changefreq: "weekly" as ChangeFreq },
         { url: "/categorias", priority: 0.8, changefreq: "weekly" as ChangeFreq },

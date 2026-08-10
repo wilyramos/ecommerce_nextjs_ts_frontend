@@ -1,11 +1,9 @@
-// File: frontend/components/admin/discounts/DiscountSummarySidebar.tsx
-
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { AdminCard } from "@/components/admin/layout/admin-card";
 import { type DiscountTarget, type DiscountAppliesVia } from "@/src/schemas/discount.schema";
 
-interface Props {
+interface DiscountSummarySidebarProps {
     type: "BUY_X_GET_Y" | "PERCENTAGE" | "FIXED_AMOUNT" | "FREE_SHIPPING";
     appliesVia: DiscountAppliesVia;
     title: string;
@@ -13,7 +11,6 @@ interface Props {
     value?: number;
     target: DiscountTarget;
     rawIdsInput?: string;
-    // Props opcionales exclusivas de BXGY
     buyQuantity?: number;
     getQuantity?: number;
     getDiscountType?: string;
@@ -34,28 +31,37 @@ export default function DiscountSummarySidebar({
     getDiscountType = "FREE",
     getDiscountValue = 100,
     getProductsTarget = "SAME_AS_BUY",
-}: Props) {
+}: DiscountSummarySidebarProps) {
     const isAutomatic = appliesVia === "AUTOMATIC";
 
-    // Formatear texto del alcance del producto
     const renderTargetText = () => {
         switch (target) {
-            case "ALL_PRODUCTS": return "en todos los productos del catálogo";
-            case "SPECIFIC_PRODUCTS": return "en productos específicos";
-            case "SPECIFIC_CATEGORIES": return "en categorías específicas";
-            case "SPECIFIC_COLLECTIONS": return "en colecciones específicas";
-            case "SPECIFIC_BRANDS": return "en marcas específicas";
-            case "SPECIFIC_LINES": return "en líneas específicas de producto";
-            default: return "en los productos seleccionados";
+            case "ALL_PRODUCTS":
+                return "en todos los productos del catálogo";
+            case "SPECIFIC_PRODUCTS":
+                return "en productos específicos";
+            case "SPECIFIC_CATEGORIES":
+                return "en categorías específicas";
+            case "SPECIFIC_COLLECTIONS":
+                return "en colecciones específicas";
+            case "SPECIFIC_BRANDS":
+                return "en marcas específicas";
+            case "SPECIFIC_LINES":
+                return "en líneas específicas de producto";
+            default:
+                return "en los productos seleccionados";
         }
     };
 
-    // Formatear texto del beneficio según el tipo de oferta
     const renderBenefitText = () => {
         if (type === "BUY_X_GET_Y") {
-            if (getDiscountType === "FREE") return `Lleva ${getQuantity} producto(s) gratis`;
-            if (getDiscountType === "PERCENTAGE") return `Lleva ${getQuantity} producto(s) con ${getDiscountValue}% de descuento`;
-            return `Lleva ${getQuantity} producto(s) con S/ ${getDiscountValue?.toFixed(2)} de descuento`;
+            if (getDiscountType === "FREE") {
+                return `Lleva ${getQuantity} producto(s) gratis`;
+            }
+            if (getDiscountType === "PERCENTAGE") {
+                return `Lleva ${getQuantity} producto(s) con ${getDiscountValue}% OFF`;
+            }
+            return `Lleva ${getQuantity} producto(s) con S/ ${getDiscountValue?.toFixed(2)} OFF`;
         }
 
         if (type === "PERCENTAGE") {
@@ -74,42 +80,36 @@ export default function DiscountSummarySidebar({
     };
 
     return (
-        <Card className="select-none">
-            <CardHeader className="pb-3 border-b">
-                <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                    Resumen
-                </CardTitle>
-            </CardHeader>
-
-            <CardContent className="pt-4 space-y-4 text-xs">
-                <div className="space-y-1">
-                    <p className="font-bold text-sm text-foreground">
+        <AdminCard title="Resumen" className="select-none bg-zinc-50/60 border-zinc-200/80">
+            <div className="space-y-3 text-[11px]">
+                <div className="space-y-0.5">
+                    <p className="font-bold text-xs text-zinc-900 truncate">
                         {isAutomatic
                             ? title || "Título de la promoción"
                             : code || "CÓDIGO_PROMOCIONAL"}
                     </p>
-                    <p className="text-[11px] text-muted-foreground">
+                    <p className="text-[10px] text-zinc-500 font-medium">
                         {isAutomatic ? "Promoción Automática" : "Código de Descuento Manual"}
                     </p>
                 </div>
 
-                <div className="border-t pt-3 space-y-3">
+                <div className="border-t border-zinc-200/80 pt-2.5 space-y-2.5">
                     {type === "BUY_X_GET_Y" ? (
                         <>
                             <div>
-                                <span className="font-semibold text-foreground block">
-                                    Compra mínima
+                                <span className="font-semibold text-zinc-900 block leading-tight">
+                                    Requisito de compra
                                 </span>
-                                <p className="text-[11px] text-muted-foreground leading-tight mt-0.5">
+                                <p className="text-[10px] text-zinc-500 leading-tight mt-0.5">
                                     Compra {buyQuantity} unidad(es) {renderTargetText()}.
                                 </p>
                             </div>
 
                             <div>
-                                <span className="font-semibold text-foreground block">
-                                    Beneficio obtenido
+                                <span className="font-semibold text-zinc-900 block leading-tight">
+                                    Beneficio asignado
                                 </span>
-                                <p className="text-[11px] text-muted-foreground leading-tight mt-0.5">
+                                <p className="text-[10px] text-zinc-500 leading-tight mt-0.5">
                                     {renderBenefitText()}{" "}
                                     {getProductsTarget === "SAME_AS_BUY"
                                         ? "(de la misma lista elegible)"
@@ -120,22 +120,20 @@ export default function DiscountSummarySidebar({
                         </>
                     ) : (
                         <div>
-                            <span className="font-semibold text-foreground block">
+                            <span className="font-semibold text-zinc-900 block leading-tight">
                                 Detalle del Descuento
                             </span>
-                            <p className="text-[11px] text-muted-foreground leading-tight mt-0.5">
+                            <p className="text-[10px] text-zinc-500 leading-tight mt-0.5">
                                 {renderBenefitText()}
                             </p>
                         </div>
                     )}
                 </div>
 
-                <div className="border-t pt-3 text-[11px] text-muted-foreground">
-                    <p>
-                        Se aplicará en el carrito y checkout si se cumplen todas las condiciones.
-                    </p>
+                <div className="border-t border-zinc-200/80 pt-2 text-[10px] text-zinc-400 leading-tight">
+                    <p>Se aplicará en carrito y checkout si se cumplen los criterios.</p>
                 </div>
-            </CardContent>
-        </Card>
+            </div>
+        </AdminCard>
     );
 }

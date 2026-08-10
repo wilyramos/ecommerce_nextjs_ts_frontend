@@ -1,17 +1,17 @@
-// File: frontend/app/admin/discounts/new/buy-x-get-y/page.tsx
-
-import AdminPageWrapper from "@/components/admin/AdminPageWrapper";
+import React from "react";
+import { AdminPageContainer } from "@/components/admin/layout/admin-page-container";
+import { AdminPageHeader } from "@/components/admin/layout/admin-page-header";
 import BuyXGetYForm from "@/components/admin/discounts/forms/BuyXGetYForm";
 
 export default function NewBuyXGetYDiscountPage() {
     return (
-        <AdminPageWrapper
-            title="Crear promoción Compra X y Obtén Y"
-            showBackButton={true}
-        >
-            <div className="max-w-6xl mx-auto">
+        <AdminPageContainer>
+            <AdminPageHeader 
+                title="Crear promoción Compra X y Obtén Y" 
+            />
+            <div className="w-full">
                 <BuyXGetYForm />
             </div>
-        </AdminPageWrapper>
+        </AdminPageContainer>
     );
 }

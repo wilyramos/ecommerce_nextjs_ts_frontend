@@ -23,14 +23,15 @@ export const DiscountTargetEnum = z.enum([
 ]);
 export type DiscountTarget = z.infer<typeof DiscountTargetEnum>;
 
-export const GiftProductDetailSchema = z.object({
+export const ProductDetailMinSchema = z.object({
     _id: z.string(),
     nombre: z.string(),
-    slug: z.string(),
+    slug: z.string().optional(),
+    sku: z.string().optional(),
     imagenes: z.array(z.string()).optional(),
     precio: z.number().optional(),
 });
-export type GiftProductDetail = z.infer<typeof GiftProductDetailSchema>;
+export type ProductDetailMin = z.infer<typeof ProductDetailMinSchema>;
 
 export const BxgyConfigSchema = z.object({
     buyQuantity: z.number().min(1),
@@ -51,7 +52,10 @@ export const DiscountSchema = z.object({
     type: DiscountTypeEnum,
     value: z.number(),
     target: DiscountTargetEnum,
-    giftProductsDetails: z.array(GiftProductDetailSchema).optional(),
+    
+    giftProductsDetails: z.array(ProductDetailMinSchema).optional(),
+    applicableProductsDetails: z.array(ProductDetailMinSchema).optional(),
+    
     bxgyConfig: BxgyConfigSchema.nullable().optional(),
 
     applicableProducts: z.array(z.string()).optional(),
@@ -142,7 +146,6 @@ export const ValidateCouponResponseSchema = z.object({
 
 export type ValidateCouponResponse = z.infer<typeof ValidateCouponResponseSchema>;
 
-// Detalle de descuento por ítem
 export const ItemDiscountDetailSchema = z.object({
     productId: z.string(),
     variantId: z.string().optional(),
@@ -151,7 +154,6 @@ export const ItemDiscountDetailSchema = z.object({
 
 export type ItemDiscountDetail = z.infer<typeof ItemDiscountDetailSchema>;
 
-// Schema de evaluación automática
 export const EvaluateAutomaticResponseSchema = z.object({
     appliedDiscount: z
         .object({
