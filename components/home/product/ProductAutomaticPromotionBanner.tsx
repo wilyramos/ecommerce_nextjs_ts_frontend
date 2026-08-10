@@ -8,15 +8,7 @@ import { Tag, Truck, ArrowRight } from "lucide-react";
 import { type DiscountResponse } from "@/src/schemas/discount.schema";
 
 interface Props {
-    discounts: (DiscountResponse & {
-        giftProductsDetails?: Array<{
-            _id: string;
-            nombre: string;
-            slug: string;
-            imagenes?: string[];
-            precio?: number;
-        }>;
-    })[];
+    discounts: DiscountResponse[];
 }
 
 export default function ProductAutomaticPromotionBanner({ discounts }: Props) {
@@ -33,35 +25,11 @@ export default function ProductAutomaticPromotionBanner({ discounts }: Props) {
                 const bxgy = disc.bxgyConfig;
                 const bonusProducts = disc.giftProductsDetails ?? [];
 
-                const renderBonusBadge = () => {
-                    if (!bxgy) return null;
-                    if (bxgy.getDiscountType === "FREE") {
-                        return (
-                            <span className="text-[9px] font-bold tracking-wide uppercase text-[var(--action-cta)] bg-[var(--action-cta)]/10 px-1 py-0.5 rounded">
-                                GRATIS
-                            </span>
-                        );
-                    }
-                    if (bxgy.getDiscountType === "PERCENTAGE") {
-                        return (
-                            <span className="text-[9px] font-bold tracking-wide uppercase text-[var(--action-cta)] bg-[var(--action-cta)]/10 px-1 py-0.5 rounded">
-                                -{bxgy.getDiscountValue}%
-                            </span>
-                        );
-                    }
-                    return (
-                        <span className="text-[9px] font-bold tracking-wide uppercase text-[var(--action-cta)] bg-[var(--action-cta)]/10 px-1 py-0.5 rounded">
-                            -S/ {bxgy.getDiscountValue.toFixed(2)}
-                        </span>
-                    );
-                };
-
                 return (
                     <div
                         key={disc._id}
                         className="rounded-[var(--radius-sm)] border border-[var(--border)] bg-[var(--card)] p-2.5 space-y-2 transition-colors hover:border-[var(--border-hover)]"
                     >
-                        {/* Cabecera / Título de la Promoción tipo Temu/Shopify */}
                         <div className="flex items-center justify-between gap-2">
                             <div className="flex items-center gap-1.5 min-w-0">
                                 <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded bg-[var(--action-cta)] text-[var(--action-cta-foreground)]">
@@ -81,7 +49,6 @@ export default function ProductAutomaticPromotionBanner({ discounts }: Props) {
                             </span>
                         </div>
 
-                        {/* Descripción de la Oferta */}
                         <div className="text-[11px] text-[var(--muted-foreground)] font-normal leading-normal">
                             {isBxgy && bxgy ? (
                                 <p>
@@ -107,18 +74,18 @@ export default function ProductAutomaticPromotionBanner({ discounts }: Props) {
                             )}
                         </div>
 
-                        {/* Listado limpio de productos bonificados estilo rejilla compacta */}
                         {isBxgy && bonusProducts.length > 0 && (
                             <div className="space-y-1.5 pt-1.5 border-t border-[var(--border)]">
                                 <div className="grid grid-cols-1 gap-1">
                                     {bonusProducts.map((product) => {
                                         const productImage = product.imagenes?.[0] || "/logoapp.svg";
                                         const originalPrice = product.precio ?? 0;
+                                        const productSlug = product.slug ?? product._id;
 
                                         return (
                                             <Link
                                                 key={product._id}
-                                                href={`/productos/${product.slug}`}
+                                                href={`/productos/${productSlug}`}
                                                 prefetch={false}
                                                 className="group flex items-center justify-between gap-2 p-1.5 rounded-[var(--radius-sm)] bg-[var(--background-secondary)] border border-transparent hover:border-[var(--border)] transition-all"
                                             >
@@ -144,7 +111,13 @@ export default function ProductAutomaticPromotionBanner({ discounts }: Props) {
                                                                     S/ {originalPrice.toFixed(2)}
                                                                 </span>
                                                             )}
-                                                            {renderBonusBadge()}
+                                                            <span className="text-[9px] font-bold tracking-wide uppercase text-[var(--action-cta)] bg-[var(--action-cta)]/10 px-1 py-0.5 rounded">
+                                                                {bxgy?.getDiscountType === "FREE"
+                                                                    ? "GRATIS"
+                                                                    : bxgy?.getDiscountType === "PERCENTAGE"
+                                                                    ? `-${bxgy.getDiscountValue}%`
+                                                                    : `-S/ ${bxgy?.getDiscountValue.toFixed(2)}`}
+                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>
