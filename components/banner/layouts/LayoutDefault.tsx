@@ -1,3 +1,5 @@
+// File: frontend/components/banner/layouts/LayoutDefault.tsx
+
 "use client";
 
 import Link from "next/link";
@@ -5,6 +7,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import SliderPrice from "../ui/SliderPrice";
 import type { SliderBanner } from "@/src/schemas/slider.schema";
+import { H2, P, Small, BadgeText } from "@/components/ui/TypographyStore";
 
 export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
     const { design, media, title, subtitle, description, terms, price, destUrl, openInNewTab } = banner;
@@ -31,39 +34,39 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
             className="banner-slot group relative w-full h-full overflow-hidden select-none"
             style={{ backgroundColor: bg }}
         >
-            {/* ── CONTENEDOR LIMITADOR: max-w-6xl mx-auto estructural ── */}
             <div className="w-full h-full max-w-6xl mx-auto flex flex-col md:flex-row">
-                
-                {/* ── CONTENEDOR DE TEXTO: W-FULL en móvil, MD:W-1/2 en escritorio ── */}
                 <div className="w-full md:w-1/2 flex flex-col justify-center p-5 sm:p-6 md:p-12 z-10 box-border shrink-0">
                     <div className="flex flex-col gap-0.5 md:gap-2 w-full">
                         {subtitle && (
                             <div style={fadeUp(0.1)}>
-                                <span
-                                    className="inline-block text-[10px] sm:text-sm md:text-base font-base uppercase px-2.5 py-1"
+                                <BadgeText
+                                    className="px-2.5 py-0.5 text-inherit"
                                     style={{ borderLeft: `3px solid ${accent}` }}
                                 >
                                     {subtitle}
-                                </span>
+                                </BadgeText>
                             </div>
                         )}
 
                         {title && (
                             <div style={fadeUp(0.2)}>
-                                <h2 className="font-semibold  text-[clamp(1rem,2.5vw,2.8rem)] line-clamp-3">
+                                <H2
+                                    className="text-[clamp(1rem,2.5vw,2.4rem)] line-clamp-3 leading-tight"
+                                    style={{ color: isDark ? "#ffffff" : "#0f0f0f" }}
+                                >
                                     {title}
-                                </h2>
+                                </H2>
                             </div>
                         )}
 
                         {description && (
                             <div style={fadeUp(0.3)}>
-                                <p
-                                    className="text-[10px] sm:text-[13px] md:text-sm leading-relaxed line-clamp-2 sm:line-clamp-4 max-w-[32ch]"
-                                    style={{ opacity: 0.75 }}
+                                <P
+                                    className="text-xs sm:text-sm leading-relaxed line-clamp-2 sm:line-clamp-4 max-w-[36ch]"
+                                    style={{ color: text, opacity: 0.8 }}
                                 >
                                     {description}
-                                </p>
+                                </P>
                             </div>
                         )}
 
@@ -80,15 +83,17 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
 
                         {terms && (
                             <div style={fadeUp(0.40)} className="mt-1 md:mt-5 hidden sm:block">
-                                <p className="text-[8px] sm:text-[9px] font-medium tracking-wide uppercase opacity-50" style={{ color: text }}>
+                                <Small
+                                    className="uppercase tracking-wider block"
+                                    style={{ color: text, opacity: 0.5 }}
+                                >
                                     {terms}
-                                </p>
+                                </Small>
                             </div>
                         )}
                     </div>
                 </div>
 
-                {/* ── CONTENEDOR MULTIMEDIA: flex-1 ocupa el espacio restante real del max-w-6xl ── */}
                 {media?.imageUrl && (
                     <div
                         className="w-full flex-1 md:h-full md:w-1/2 relative pointer-events-none overflow-hidden"
@@ -98,7 +103,6 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                         }}
                     >
                         <div className="absolute inset-0 w-full h-full">
-                            {/* Imagen de Escritorio (Desktop) */}
                             <Image
                                 src={media.imageUrl}
                                 alt={title || "Slider Banner Content"}
@@ -111,7 +115,6 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                                 unoptimized
                             />
 
-                            {/* Imagen Móvil 1x1 Dedicada */}
                             {media.mobileImageUrl && (
                                 <Image
                                     src={media.mobileImageUrl}
@@ -121,7 +124,6 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
                                     sizes="100vw"
                                     priority
                                     unoptimized
-                                    
                                 />
                             )}
                         </div>

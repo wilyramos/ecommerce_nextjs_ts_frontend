@@ -23,7 +23,7 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
                     <NavBar />
                 </header>
                 
-                <main className="flex-1 w-full max-w-7xl mx-auto px-4 md:px-8 self-center">
+                <main className="flex-1 w-full max-w-screen-2xl mx-auto px-4 md:px-8 self-center">
                     {children}
                 </main>
                 
