@@ -1,9 +1,11 @@
-/* File: components/home/product/RecentViewed.tsx */
+// File: components/home/product/RecentViewed.tsx
+
 "use client";
 
 import { useEffect, useState } from "react";
 import { useRecentlyViewedStore } from "@/src/store/useRecentlyViewedStore";
 import RelatedCarousel from "./RelatedCarousel";
+import SectionHeader from "@/components/home/sections/SectionHeader";
 import type { ProductWithCategoryResponse } from "@/src/schemas";
 
 interface RecentViewedProps {
@@ -31,13 +33,10 @@ export default function RecentViewed({ currentProduct }: RecentViewedProps) {
     if (displayProducts.length === 0) return null;
 
     return (
-        <section className="  w-full py-4">
-            <header className="mb-6 px-2">
-                <p className="text-md font-bold tracking-tight text-foreground">
-                    Vistos recientemente
-                </p>
-                <div className="border-b-2 border-action-cta w-14 md:w-20 mt-1"></div>
-            </header>
+        <section className="w-full py-4">
+            <SectionHeader
+                title="Vistos recientemente"
+            />
 
             <div className="relative">
                 <RelatedCarousel products={displayProducts} />

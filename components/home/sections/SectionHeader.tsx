@@ -1,9 +1,11 @@
-// components/home/sections/SectionHeader.tsx
+// File: components/home/sections/SectionHeader.tsx
+
 "use client";
 
 import React from "react";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import { H2, Small } from "@/components/ui/TypographyStore";
 
 interface SectionHeaderProps {
     title: React.ReactNode;
@@ -27,7 +29,7 @@ export default function SectionHeader({
         return (
             <>
                 {words[0]}{" "}
-                <span className="text-action-cta font-light italic">
+                <span className="font-light italic text-muted-foreground">
                     {words[1]}
                 </span>
                 {words.length > 2 && " " + words.slice(2).join(" ")}
@@ -39,22 +41,24 @@ export default function SectionHeader({
         <div className="w-full flex items-end justify-between mb-5 select-none border-b border-border pb-3">
             <div className="flex flex-col gap-0.5">
                 {subtitle && (
-                    <span className="text-[10px] md:text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                    <Small className="uppercase tracking-wider font-medium">
                         {subtitle}
-                    </span>
+                    </Small>
                 )}
-                <h2 className="text-lg md:text-xl font-bold tracking-tight text-foreground">
+                <H2 className="sm:text-xl">
                     {formatTitle(title)}
-                </h2>
+                </H2>
             </div>
 
             {viewAllHref && (
                 <Link
                     href={viewAllHref}
-                    className="flex items-center gap-1 text-xs md:text-sm text-foreground hover:text-action-cta font-medium transition-colors duration-200 shrink-0 mb-0.5"
+                    className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors shrink-0 mb-0.5"
                 >
-                    {viewAllLabel}
-                    <ChevronRight size={14} strokeWidth={2.5} />
+                    <Small className="font-medium text-foreground hover:text-inherit">
+                        {viewAllLabel}
+                    </Small>
+                    <ChevronRight size={13} strokeWidth={2} />
                 </Link>
             )}
         </div>

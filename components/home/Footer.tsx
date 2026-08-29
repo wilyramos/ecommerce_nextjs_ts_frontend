@@ -1,3 +1,5 @@
+// File: frontend/components/layout/Footer.tsx
+
 "use client";
 
 import Link from "next/link";
@@ -5,9 +7,9 @@ import { FaFacebookF, FaInstagram, FaWhatsapp, FaBookOpen } from "react-icons/fa
 import PaymentMethods from "./PaymentMethods";
 import Logo from "../ui/Logo";
 import { routes } from "@/lib/routes";
+import { H4, P, Small } from "@/components/ui/TypographyStore";
 
 export default function Footer() {
-    // Enlaces de alta prioridad de navegación que se benefician de prefetch pasivo (hover es suficiente)
     const shopLinks = [
         { label: "Ver todo", href: routes.catalog() },
         { label: "Novedades", href: "/novedades" },
@@ -16,11 +18,10 @@ export default function Footer() {
     ];
 
     const brandLinks = [
-        { label: "Apple", href: routes.catalog({ brand: 'apple' }) },
-        { label: "iFans", href: routes.catalog({ brand: 'ifans' }) },
+        { label: "Apple", href: routes.catalog({ brand: "apple" }) },
+        { label: "iFans", href: routes.catalog({ brand: "ifans" }) },
     ];
 
-    // Enlaces informativos o secundarios. Se les quita el prefetch automático
     const helpCenterLinks = [
         { label: "Contacto y soporte", href: "/hc/contacto-y-soporte" },
         { label: "Garantías y devoluciones", href: "/hc/garantias-y-devoluciones" },
@@ -36,26 +37,25 @@ export default function Footer() {
     ];
 
     const social = [
-        { icon: <FaFacebookF size={16} />, href: "https://facebook.com/gophone.pe", name: "Facebook" },
-        { icon: <FaInstagram size={16} />, href: "https://instagram.com/gophone.pe", name: "Instagram" },
-        { icon: <FaWhatsapp size={16} />, href: "https://wa.me/51925054636", name: "WhatsApp" },
+        { icon: <FaFacebookF size={14} />, href: "https://facebook.com/gophone.pe", name: "Facebook" },
+        { icon: <FaInstagram size={14} />, href: "https://instagram.com/gophone.pe", name: "Instagram" },
+        { icon: <FaWhatsapp size={14} />, href: "https://wa.me/51925054636", name: "WhatsApp" },
     ];
 
     return (
         <footer className="bg-card text-card-foreground border-t border-border select-none">
-            <div className="max-w-screen-2xl mx-auto px-4 md:px-8 py-14 lg:py-20">
-                <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-12">
-
+            <div className="max-w-screen-2xl mx-auto px-4 md:px-8 py-12 lg:py-16">
+                <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-12">
                     {/* Branding & Social */}
                     <div className="lg:col-span-4 flex flex-col justify-between space-y-6">
-                        <div className="space-y-5">
+                        <div className="space-y-4">
                             <div className="w-28">
                                 <Logo />
                             </div>
-                            <p className="text-xs leading-relaxed max-w-sm text-muted-foreground font-medium">
+                            <P className="text-xs text-muted-foreground max-w-sm">
                                 Elevando tu experiencia digital. Descubre la selección más curada de tecnología y accesorios premium en Cañete.
-                            </p>
-                            <div className="flex gap-4">
+                            </P>
+                            <div className="flex gap-3">
                                 {social.map(({ icon, href, name }) => (
                                     <a
                                         key={name}
@@ -63,7 +63,7 @@ export default function Footer() {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         aria-label={name}
-                                        className="text-muted-foreground hover:text-action-cta transition-colors p-1.5 bg-background-secondary border border-border rounded-[var(--radius-sm)] focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+                                        className="text-muted-foreground hover:text-foreground transition-colors p-2 bg-muted/20 border border-border"
                                     >
                                         {icon}
                                     </a>
@@ -74,19 +74,16 @@ export default function Footer() {
 
                     {/* Navigation Columns */}
                     <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-4 gap-8">
-
                         {/* Column: Explorar */}
-                        <nav className="flex flex-col gap-4">
-                            <h3 className="text-[10px] uppercase tracking-[0.2em] font-black text-foreground">
-                                Explorar
-                            </h3>
-                            <ul className="flex flex-col gap-2.5">
+                        <nav className="flex flex-col gap-3">
+                            <H4 className="text-foreground">Explorar</H4>
+                            <ul className="flex flex-col gap-2">
                                 {shopLinks.map(({ label, href }) => (
                                     <li key={label}>
-                                        <Link 
-                                            href={href} 
+                                        <Link
+                                            href={href}
                                             prefetch={false}
-                                            className="text-xs text-muted-foreground hover:text-action-cta transition-colors focus-visible:outline-hidden"
+                                            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
                                         >
                                             {label}
                                         </Link>
@@ -96,17 +93,15 @@ export default function Footer() {
                         </nav>
 
                         {/* Column: Marcas */}
-                        <nav className="flex flex-col gap-4">
-                            <h3 className="text-[10px] uppercase tracking-[0.2em] font-black text-foreground">
-                                Marcas
-                            </h3>
-                            <ul className="flex flex-col gap-2.5">
+                        <nav className="flex flex-col gap-3">
+                            <H4 className="text-foreground">Marcas</H4>
+                            <ul className="flex flex-col gap-2">
                                 {brandLinks.map(({ label, href }) => (
                                     <li key={label}>
-                                        <Link 
-                                            href={href} 
+                                        <Link
+                                            href={href}
                                             prefetch={false}
-                                            className="text-xs text-muted-foreground hover:text-action-cta transition-colors focus-visible:outline-hidden"
+                                            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
                                         >
                                             {label}
                                         </Link>
@@ -116,17 +111,15 @@ export default function Footer() {
                         </nav>
 
                         {/* Column: Ayuda */}
-                        <nav className="flex flex-col gap-4">
-                            <h3 className="text-[10px] uppercase tracking-[0.2em] font-black text-foreground">
-                                Ayuda
-                            </h3>
-                            <ul className="flex flex-col gap-2.5">
+                        <nav className="flex flex-col gap-3">
+                            <H4 className="text-foreground">Ayuda</H4>
+                            <ul className="flex flex-col gap-2">
                                 {helpCenterLinks.map(({ label, href }) => (
                                     <li key={href}>
-                                        <Link 
-                                            href={href} 
+                                        <Link
+                                            href={href}
                                             prefetch={false}
-                                            className="text-xs text-muted-foreground hover:text-action-cta transition-colors focus-visible:outline-hidden"
+                                            className="text-xs text-muted-foreground hover:text-foreground transition-colors"
                                         >
                                             {label}
                                         </Link>
@@ -135,37 +128,32 @@ export default function Footer() {
                             </ul>
                         </nav>
 
-                        {/* Column: Visítanos */}
-                        <div className="flex flex-col gap-4">
-                            <h3 className="text-[10px] uppercase tracking-[0.2em] font-black text-foreground">
-                                Nos ubicamos en
-                            </h3>
-                            <div className="text-xs text-muted-foreground leading-relaxed space-y-0.5">
-                                <p>Jr. O Higgins 120</p>
-                                <p>San Vicente de Cañete</p>
+                        {/* Column: Ubicación */}
+                        <div className="flex flex-col gap-3">
+                            <H4 className="text-foreground">Nos ubicamos en</H4>
+                            <div className="space-y-0.5">
+                                <Small className="block">Jr. O Higgins 120</Small>
+                                <Small className="block">San Vicente de Cañete</Small>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {/* Bottom Bar: Legal & Global */}
-                <div className="mt-16 pt-6 border-t border-border">
+                <div className="mt-12 pt-6 border-t border-border">
                     <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
-
-                        <div className="flex flex-col sm:flex-row items-center gap-4 md:gap-8 order-2 lg:order-1">
-                            <span
-                                className="text-[8px] text-muted-foreground "
-                                suppressHydrationWarning
-                            >
+                        <div className="flex flex-col sm:flex-row items-center gap-4 md:gap-6 order-2 lg:order-1">
+                            <Small suppressHydrationWarning>
                                 © {new Date().getFullYear()} GoPhone Inc.
-                            </span>
-                            <nav className="flex items-center gap-4">
+                            </Small>
+
+                            <nav className="flex items-center gap-3">
                                 {legalLinks.map((link, index) => (
-                                    <div key={link.href} className="flex items-center gap-4">
+                                    <div key={link.href} className="flex items-center gap-3">
                                         <Link
                                             href={link.href}
                                             prefetch={false}
-                                            className="text-[8px] text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-hidden"
+                                            className="text-[11px] text-muted-foreground hover:text-foreground transition-colors"
                                         >
                                             {link.label}
                                         </Link>
@@ -179,20 +167,17 @@ export default function Footer() {
                             <Link
                                 href="/libro-de-reclamaciones"
                                 prefetch={false}
-                                className="inline-flex items-center gap-2 px-3 py-2 border border-border text-[8px] text-muted-foreground hover:text-foreground hover:bg-background-secondary transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1 border border-border text-[11px] text-muted-foreground hover:text-foreground hover:bg-muted/20 transition-colors"
                             >
-                                <FaBookOpen className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                                <FaBookOpen className="w-3 h-3 text-foreground/80 shrink-0" />
                                 Libro de Reclamaciones
                             </Link>
                         </div>
 
-                        <div className="flex flex-col items-center lg:items-end gap-2 order-1 lg:order-2 w-full lg:w-auto border-b lg:border-b-0 pb-6 lg:pb-0 border-border">
-                            <span className="text-[8px] text-muted-foreground">
-                                Medios de pago:
-                            </span>
+                        <div className="flex flex-col items-center lg:items-end gap-1.5 order-1 lg:order-2 w-full lg:w-auto border-b lg:border-b-0 pb-6 lg:pb-0 border-border">
+                            <Small>Medios de pago</Small>
                             <PaymentMethods />
                         </div>
-
                     </div>
                 </div>
             </div>
