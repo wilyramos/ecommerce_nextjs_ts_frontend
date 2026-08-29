@@ -1,3 +1,5 @@
+// File: frontend/components/checkout-v2/culqi/ComponentScriptCulqiCustom.tsx
+
 "use client";
 
 import Script from "next/script";
@@ -38,7 +40,7 @@ interface CulqiCheckoutConfig {
         title: string;
         currency: string;
         amount: number;
-        order?: string; // Mapeado según la documentación oficial adjunta
+        order?: string;
     };
     options: {
         lang: string;
@@ -68,11 +70,22 @@ export default function ComponentScriptCulqiCustom({ order }: { order: OrderResp
     const router = useRouter();
     const checkoutRef = useRef<CulqiInstance | null>(null);
 
+    // Ref para guardar el intervalo y limpiarlo si el componente se desmonta
+    const modalObserverRef = useRef<NodeJS.Timeout | null>(null);
+
     const orderRef = useRef(order);
-    useEffect(() => { orderRef.current = order; }, [order]);
+    useEffect(() => {
+        orderRef.current = order;
+    }, [order]);
 
-    const paymentHandlerRef = useRef<() => Promise<void>>(async () => { });
+    // Limpieza de intervalos al desmontar
+    useEffect(() => {
+        return () => {
+            if (modalObserverRef.current) clearInterval(modalObserverRef.current);
+        };
+    }, []);
 
+    const paymentHandlerRef = useRef<() => Promise<void>>(async () => {});
 
     paymentHandlerRef.current = async () => {
         const Culqi = checkoutRef.current;
@@ -85,7 +98,6 @@ export default function ComponentScriptCulqiCustom({ order }: { order: OrderResp
 
         const currentOrder = orderRef.current;
         const amount = Math.round(currentOrder.totalPrice * 100);
-        const orderId = String(currentOrder._id);
         const orderNumber = currentOrder.orderNumber;
         const userEmail = currentOrder.customerProfile?.email;
 
@@ -103,29 +115,42 @@ export default function ComponentScriptCulqiCustom({ order }: { order: OrderResp
                     token: Culqi.token.id,
                     email: Culqi.token.email || userEmail,
                     amount,
-                    orderId,
+                    orderNumber,
                 });
-                Culqi.close(); // Correcto: Se cierra porque el cobro ya se completó de inmediato
+                Culqi.close();
                 router.push(`/checkout-result/verifying?orderNumber=${orderNumber}`);
             } else if (Culqi.order) {
-                // ── Flujo Asíncrono: PagoEfectivo / QR / Banca Móvil ──
+                // ── Flujo Asíncrono: Cuotéalo / PagoEfectivo / Billeteras ──
                 await processPaymentCulqi({
                     order: Culqi.order.id,
                     email: userEmail,
                     amount,
-                    orderId,
+                    orderNumber,
                 });
 
-                // Dejamos el modal abierto para que el cliente vea su QR, guarde su código CIP o complete la acción en pantalla.
-
-                setLoading(false); // Liberamos el estado de carga local
-                toast.success("Código de pago generado de manera exitosa.");
+                setLoading(false); // Liberamos la UI de fondo
+                
+                // Iniciamos un observador (Polling) para detectar cuándo el usuario 
+                // hace clic en "De acuerdo" o cierra el modal de Culqi.
+                modalObserverRef.current = setInterval(() => {
+                    const iframe = document.getElementById("culqi_checkout_iframe");
+                    
+                    // Culqi cierra el modal ocultando el iframe (display: none) o eliminándolo
+                    const isClosed = !iframe || getComputedStyle(iframe).display === "none" || getComputedStyle(iframe).visibility === "hidden";
+                    
+                    if (isClosed) {
+                        if (modalObserverRef.current) clearInterval(modalObserverRef.current);
+                        // Cuando el usuario cierra el modal, redirigimos a verificación
+                        router.push(`/checkout-result/verifying?orderNumber=${orderNumber}`);
+                    }
+                }, 500); // Revisa cada medio segundo
             }
         } catch (err) {
             toast.error(err instanceof Error ? err.message : "Error procesando el pago con Culqi.");
             setLoading(false);
         }
     };
+
     const initCheckout = () => {
         const pk = process.env.NEXT_PUBLIC_CULQI_PUBLIC_KEY;
         const currentOrder = orderRef.current;
@@ -161,14 +186,16 @@ export default function ComponentScriptCulqiCustom({ order }: { order: OrderResp
             },
         });
 
-        instance.culqi = () => { paymentHandlerRef.current(); };
+        instance.culqi = () => {
+            paymentHandlerRef.current();
+        };
         checkoutRef.current = instance;
         setCulqiReady(true);
     };
 
     useEffect(() => {
         if (window.CulqiCheckout) initCheckout();
-    }, [order._id]);
+    }, [order.orderNumber, order.culqiOrderId]);
 
     return (
         <>
@@ -182,16 +209,17 @@ export default function ComponentScriptCulqiCustom({ order }: { order: OrderResp
                 type="button"
                 onClick={() => checkoutRef.current?.open()}
                 disabled={!culqiReady || loading}
-                className={`w-full py-3 px-6 text-sm font-bold tracking-wide transition-all ${culqiReady && !loading
-                    ? "bg-orange-600 text-white hover:bg-orange-700 active:scale-[0.99]"
-                    : "bg-background-secondary text-muted-foreground border border-border cursor-not-allowed opacity-50"
-                    }`}
+                className={`w-full transition-all ${
+                    culqiReady && !loading
+                        ? "bg-orange-600 text-white hover:bg-orange-700 active:scale-[0.99]"
+                        : "bg-background-secondary text-muted-foreground border border-border cursor-not-allowed opacity-50"
+                }`}
             >
                 {loading
-                    ? "Procesando pago..."
+                    ? "Procesando..."
                     : culqiReady
-                        ? `Pagar ${order.currency} ${order.totalPrice.toFixed(2)}`
-                        : "Cargando pasarela..."}
+                    ? `Pagar ${order.currency} ${order.totalPrice.toFixed(2)}`
+                    : "Cargando..."}
             </Button>
         </>
     );

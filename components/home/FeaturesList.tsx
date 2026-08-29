@@ -32,6 +32,11 @@ const features: Feature[] = [
         title: "Productos con Garantía",
         imageSrc: "/features/garantia.png",
     },
+    {
+        title: "Delivery inmediato",
+        subtitle: "Toda la ciudad de Cañete",
+        imageSrc: "/features/delivery-inmediato.png",
+    }
 ];
 
 export default function FeaturesList() {
