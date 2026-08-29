@@ -11,6 +11,7 @@ import { BiSolidCoupon } from "react-icons/bi";
 import { toast } from "sonner";
 import { InputV2 } from "@/components/ui/InputV2";
 import { Button } from "@/components/ui/button";
+import { P, Small, Price } from "@/components/ui/TypographyStore";
 
 export default function CouponInput() {
     const { cart, total } = useCartStore();
@@ -70,7 +71,7 @@ export default function CouponInput() {
         toast.info("Descuento removido.");
     };
 
-    // Estado 1: Descuento Aplicado (Sólido B&N con borde sutil)
+    // Estado 1: Descuento Aplicado
     if (appliedDiscount) {
         const isAutomatic = appliedDiscount.code.startsWith("AUTO-");
         const displayName = isAutomatic
@@ -78,27 +79,27 @@ export default function CouponInput() {
             : appliedDiscount.code;
 
         return (
-            <div className="flex items-center justify-between bg-background-secondary border border-foreground/20 px-3 py-2 text-xs transition-colors">
-                <div className="flex items-center gap-2 text-foreground font-medium min-w-0">
+            <div className="flex items-center justify-between bg-muted/20 border border-border px-3 py-2 transition-colors">
+                <div className="flex items-center gap-2 text-foreground min-w-0">
                     {isAutomatic ? (
                         <BiSolidCoupon className="w-4 h-4 text-foreground shrink-0" />
                     ) : (
                         <Tag className="w-3.5 h-3.5 text-foreground shrink-0" />
                     )}
-                    <span className="truncate text-xs">
+                    <P className="truncate text-xs">
                         {isAutomatic ? "Promoción" : "Cupón"}{" "}
-                        <strong className="font-mono font-bold uppercase text-foreground">
+                        <Price className="uppercase font-semibold text-foreground">
                             {displayName}
-                        </strong>{" "}
+                        </Price>{" "}
                         {appliedDiscount.isFreeShipping
                             ? "(Envío Gratis)"
                             : `(-S/ ${appliedDiscount.discountAmount.toFixed(2)})`}
-                    </span>
+                    </P>
                 </div>
                 <button
                     type="button"
                     onClick={handleRemove}
-                    className="text-muted-foreground hover:text-foreground transition-colors p-1 rounded-sm outline-none"
+                    className="text-muted-foreground hover:text-foreground transition-colors p-1 outline-none"
                     title="Remover descuento"
                 >
                     <X className="w-3.5 h-3.5" />
@@ -129,16 +130,15 @@ export default function CouponInput() {
                     type="submit"
                     variant="outline"
                     disabled={isPending || !couponCode.trim() || cart.length === 0}
-                    className="h-11 px-4 text-xs font-bold uppercase tracking-wider rounded-md border-border text-foreground hover:bg-foreground hover:text-background shrink-0 min-w-[80px] transition-colors"
                 >
                     {isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : "Aplicar"}
                 </Button>
             </form>
 
             {errorMsg && (
-                <p className="text-[11px] font-medium text-destructive px-1 animate-in fade-in slide-in-from-top-1">
+                <Small className="text-destructive px-1 block animate-in fade-in slide-in-from-top-1">
                     {errorMsg}
-                </p>
+                </Small>
             )}
         </div>
     );

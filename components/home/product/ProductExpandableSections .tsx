@@ -1,3 +1,5 @@
+// File: frontend/components/home/product/ProductExpandableSections.tsx
+
 "use client";
 
 import {
@@ -8,18 +10,18 @@ import {
 } from "@/components/ui/accordion";
 import type { ProductWithCategoryResponse } from "@/src/schemas";
 import { Package, Ruler } from "lucide-react";
+import { H3, Small } from "@/components/ui/TypographyStore";
 
 type Props = {
     producto: ProductWithCategoryResponse;
 };
 
-// Función para remover etiquetas HTML, espacios en blanco y saltos de línea vacíos
 function cleanHtmlContent(html: string): string {
     if (!html) return "";
     return html
-        .replace(/<[^>]*>/g, "") // Remueve cualquier etiqueta HTML
-        .replace(/&nbsp;/gi, "")  // Remueve espacios de no separación
-        .replace(/\s+/g, "")      // Remueve espacios en blanco, tabs y newlines
+        .replace(/<[^>]*>/g, "")
+        .replace(/&nbsp;/gi, "")
+        .replace(/\s+/g, "")
         .trim();
 }
 
@@ -35,27 +37,22 @@ export default function ProductExpandableSections({ producto }: Props) {
     );
     const hasPhysicalData = hasWeight || hasDimensions;
 
-    // Se valida que el contenido contenga texto visible al limpiar el HTML
     const hasDescripcion = cleanHtmlContent(descripcionRaw).length > 0;
     const hasSpecs = specsArray.length > 0 || hasPhysicalData;
 
     if (!hasDescripcion && !hasSpecs) return null;
 
-    // const defaultOpen = hasDescripcion ? "descripcion" : "specs";
-
     return (
-        <Accordion type="multiple" className="w-full divide-y divide-border/40 border-b border-border/40 px-0.5">
+        <Accordion type="multiple" className="w-full divide-y divide-border border-b border-border px-4">
             {/* DESCRIPCIÓN */}
             {hasDescripcion && (
                 <AccordionItem value="descripcion" className="border-none">
-                    <AccordionTrigger className="hover:no-underline group py-2.5 outline-none">
-                        <span className="text-md font-semibold text-foreground  transition-colors group-hover:text-action-cta">
-                            Información del producto
-                        </span>
+                    <AccordionTrigger className="hover:no-underline py-3 outline-none">
+                        <H3>Información del producto</H3>
                     </AccordionTrigger>
-                    <AccordionContent className="pb-5 pt-0.5">
+                    <AccordionContent className="pb-5 pt-1">
                         <div
-                            className="prose prose-sm max-w-none text-md text-muted-foreground leading-relaxed prose-headings:text-foreground prose-headings:font-semibold prose-strong:text-foreground prose-strong:font-semibold prose-p:text-md prose-p:leading-relaxed prose-a:text-action-cta"
+                            className="prose prose-sm max-w-none text-foreground/90 leading-relaxed prose-headings:text-foreground prose-strong:text-foreground prose-a:text-foreground"
                             dangerouslySetInnerHTML={{ __html: descripcionRaw }}
                         />
                     </AccordionContent>
@@ -65,22 +62,20 @@ export default function ProductExpandableSections({ producto }: Props) {
             {/* ESPECIFICACIONES TÉCNICAS */}
             {hasSpecs && (
                 <AccordionItem value="specs" className="border-none">
-                    <AccordionTrigger className="hover:no-underline group py-2.5 outline-none">
-                        <span className="text-md font-semibold text-foreground  transition-colors group-hover:text-action-cta">
-                            Especificaciones
-                        </span>
+                    <AccordionTrigger className="hover:no-underline py-3 outline-none">
+                        <H3>Especificaciones</H3>
                     </AccordionTrigger>
-                    <AccordionContent className="pb-5 pt-0.5 space-y-3">
+                    <AccordionContent className="pb-5 pt-1 space-y-3">
                         {specsArray.length > 0 && (
-                            <div className="overflow-x-auto w-full border border-border/60 rounded-xs">
-                                <table className="w-full text-left border-collapse text-md">
-                                    <tbody className="divide-y divide-border/40">
+                            <div className="overflow-x-auto w-full border border-border">
+                                <table className="w-full text-left border-collapse">
+                                    <tbody className="divide-y divide-border">
                                         {specsArray.map((spec) => (
-                                            <tr key={spec.key} className="hover:bg-muted/5 transition-colors">
-                                                <td className="px-2.5 py-2 text-[11px] text-muted-foreground font-semibold w-[35%] border-r border-border/40 bg-muted/10 select-none tracking-tight">
+                                            <tr key={spec.key} className="hover:bg-muted/30 transition-colors">
+                                                <td className="px-3 py-2 text-xs text-muted-foreground font-medium w-[35%] border-r border-border bg-muted/20 select-none">
                                                     {spec.key}
                                                 </td>
-                                                <td className="px-2.5 py-2 text-[11px] text-foreground font-medium break-words">
+                                                <td className="px-3 py-2 text-xs text-foreground font-normal break-words">
                                                     {spec.value}
                                                 </td>
                                             </tr>
@@ -91,39 +86,40 @@ export default function ProductExpandableSections({ producto }: Props) {
                         )}
 
                         {hasPhysicalData && (
-                            <div className="overflow-x-auto w-full border border-border/60 rounded-xs">
-                                <table className="w-full text-left border-collapse text-md">
+                            <div className="overflow-x-auto w-full border border-border">
+                                <table className="w-full text-left border-collapse">
                                     <thead>
                                         <tr>
-                                            <th colSpan={2} className="px-2.5 py-1.5 text-[9px] font-semibold tracking-widest text-muted-foreground border-b border-border/40 bg-muted/20 select-none">
-                                                <div className="flex items-center gap-1">
-                                                    <Package size={11} className="text-muted-foreground/80" />
-                                                    Físico y embalaje
+                                            <th colSpan={2} className="px-3 py-1.5 border-b border-border bg-muted/30 select-none">
+                                                <div className="flex items-center gap-1.5">
+                                                    <Package size={12} className="text-muted-foreground" />
+                                                    <Small className="uppercase tracking-wider font-medium">Físico y embalaje</Small>
                                                 </div>
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody className="divide-y divide-border/40">
+                                    <tbody className="divide-y divide-border">
                                         {hasWeight && (
-                                            <tr className="hover:bg-muted/5 transition-colors">
-                                                <td className="px-2.5 py-2 text-[11px] text-muted-foreground font-semibold w-[35%] border-r border-border/40 bg-muted/10 select-none tracking-tight">
+                                            <tr className="hover:bg-muted/30 transition-colors">
+                                                <td className="px-3 py-2 text-xs text-muted-foreground font-medium w-[35%] border-r border-border bg-muted/20 select-none">
                                                     Peso
                                                 </td>
-                                                <td className="px-2.5 py-2 text-[11px] text-foreground font-medium">
+                                                <td className="px-3 py-2 text-xs text-foreground font-normal">
                                                     {producto.weight} kg
                                                 </td>
                                             </tr>
                                         )}
                                         {hasDimensions && (
-                                            <tr className="hover:bg-muted/5 transition-colors">
-                                                <td className="px-2.5 py-2 text-[11px] text-muted-foreground font-semibold border-r border-border/40 bg-muted/10 select-none tracking-tight">
-                                                    <div className="flex items-center gap-1">
-                                                        <Ruler size={10} className="text-muted-foreground/60" />
-                                                        Dimensiones
+                                            <tr className="hover:bg-muted/30 transition-colors">
+                                                <td className="px-3 py-2 text-xs text-muted-foreground font-medium border-r border-border bg-muted/20 select-none">
+                                                    <div className="flex items-center gap-1.5">
+                                                        <Ruler size={11} className="text-muted-foreground" />
+                                                        <span>Dimensiones</span>
                                                     </div>
                                                 </td>
-                                                <td className="px-2.5 py-2 text-[11px] text-foreground font-medium">
-                                                    {producto.dimensions?.length} × {producto.dimensions?.width} × {producto.dimensions?.height} <span className="text-[10px] text-muted-foreground font-normal">cm</span>
+                                                <td className="px-3 py-2 text-xs text-foreground font-normal">
+                                                    {producto.dimensions?.length} × {producto.dimensions?.width} × {producto.dimensions?.height}{" "}
+                                                    <Small className="font-normal">cm</Small>
                                                 </td>
                                             </tr>
                                         )}

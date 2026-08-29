@@ -10,13 +10,12 @@ interface ProductGridMiniProps {
 
 export default function ProductGridMini({ products }: ProductGridMiniProps) {
     return (
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 text-start bg-background py-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
             {products.map((product) => (
                 <div
                     key={product.slug}
-                    className="border border-border/40 rounded-sm hover:border-border transition-colors duration-300 bg-background"
+                    className="border border-border rounded-[var(--radius-md)] hover:border-border-hover transition-colors duration-300 overflow-hidden bg-card"
                 >
-                    {/* Reutilización directa del componente existente adaptando el tipo */}
                     <ProductCardHome product={product} />
                 </div>
             ))}

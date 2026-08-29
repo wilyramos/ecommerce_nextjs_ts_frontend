@@ -3,7 +3,7 @@
 import { Metadata } from "next";
 import { ComparisonService } from "@/src/services/comparison-service";
 import { Comparison } from "@/src/schemas/comparison.schema";
-import { H1, H2 } from "@/components/ui/Typography";
+import { H1, H2 } from "@/components/ui/TypographyStore";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import ProductGallery from "@/components/store/comparisons/ProductGallery";
 import ComparisonTable from "@/components/store/comparisons/ComparisonTable";
@@ -43,33 +43,26 @@ export default async function ComparisonDetailPage({ params }: Props) {
     const comparison = res.data as Comparison;
 
     return (
-        <article className="min-h-screen bg-background text-foreground antialiased max-w-screen-xl mx-auto px-4 md:px-8 py-12 space-y-14">
-
-            {/* 1 · Título */}
-            <header className="space-y-4">
+        <article className="min-h-screen bg-background text-foreground antialiased max-w-screen-xl mx-auto px-4 md:px-8 py-12 space-y-12">
+            <header className="space-y-3">
                 <Breadcrumbs
                     items={[{ label: "Comparativas", href: "/comparativas" }]}
                     current={comparison.title}
                     className="p-0 text-muted-foreground"
                 />
-                <H1 className="text-2xl md:text-4xl font-extrabold tracking-tight text-primary">
-                    {comparison.title}
-                </H1>
+                <H1>{comparison.title}</H1>
             </header>
 
-            {/* 2 · Galería de productos */}
             <section>
                 <ProductGallery products={comparison.products} />
             </section>
 
-            {/* 3 · Veredicto rápido */}
             <section>
                 <QuickVerdict content={comparison.veredictoRapido} />
             </section>
 
-            {/* 4 · Radar */}
             <section className="space-y-4">
-                <H2 className="text-xl font-bold tracking-tight border-b border-border pb-2 text-primary">
+                <H2 className="border-b border-border pb-2">
                     Análisis visual comparativo
                 </H2>
                 <ComparisonRadar
@@ -78,9 +71,8 @@ export default async function ComparisonDetailPage({ params }: Props) {
                 />
             </section>
 
-            {/* 5 · Tabla técnica */}
             <section className="space-y-4">
-                <H2 className="text-xl font-bold tracking-tight border-b border-border pb-2 text-primary">
+                <H2 className="border-b border-border pb-2">
                     Especificaciones técnicas
                 </H2>
                 <ComparisonTable
@@ -89,11 +81,9 @@ export default async function ComparisonDetailPage({ params }: Props) {
                 />
             </section>
 
-            {/* 6 · FAQ */}
             {comparison.faqItems.length > 0 && (
                 <FaqSection items={comparison.faqItems} />
             )}
-
         </article>
     );
 }

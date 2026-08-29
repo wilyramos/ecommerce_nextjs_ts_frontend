@@ -4,13 +4,9 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { ComparisonService } from "@/src/services/comparison-service";
 import { Comparison } from "@/src/schemas/comparison.schema";
-import { H1, H2, P } from "@/components/ui/Typography";
+import { H1, H3, P, Small, BadgeText, Hr } from "@/components/ui/TypographyStore";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
-import { Badge } from "@/components/ui/badge";
 
-// ─────────────────────────────────────────────────────────────
-// METADATA (SEO)
-// ─────────────────────────────────────────────────────────────
 export const metadata: Metadata = {
     title: "Comparativas de Smartphones y Gadgets | GoPhone",
     description: "Compara especificaciones técnicas, ventajas, desventajas y veredictos editoriales de los últimos dispositivos del mercado para tomar la mejor decisión de compra.",
@@ -22,9 +18,6 @@ export const metadata: Metadata = {
     },
 };
 
-// ─────────────────────────────────────────────────────────────
-// COMPONENT
-// ─────────────────────────────────────────────────────────────
 export default async function ComparisonsPage() {
     let comparisons: Comparison[] = [];
 
@@ -38,22 +31,19 @@ export default async function ComparisonsPage() {
     const breadcrumbItems: { label: string; href: string }[] = [];
 
     return (
-        <main className="min-h-screen bg-background text-foreground antialiased max-w-screen-2xl mx-auto px-4 md:px-8 py-12 space-y-10">
-            {/* Cabecera de la sección */}
-            <header className="space-y-4">
+        <main className="min-h-screen bg-background text-foreground antialiased max-w-screen-2xl mx-auto px-4 md:px-8 py-12 space-y-8">
+            <header className="space-y-3">
                 <Breadcrumbs
                     items={breadcrumbItems}
                     current="Comparativas"
                     className="p-0 text-muted-foreground"
                 />
 
-                <div className="space-y-2">
-                    <span className="text-xs font-bold tracking-widest text-action-cta uppercase block">
+                <div className="space-y-1">
+                    <BadgeText className="text-action-cta font-semibold">
                         Centro de Análisis
-                    </span>
-                    <H1 className="text-primary">
-                        Comparativas a fondo
-                    </H1>
+                    </BadgeText>
+                    <H1>Comparativas a fondo</H1>
                 </div>
 
                 <P className="text-muted-foreground">
@@ -61,40 +51,37 @@ export default async function ComparisonsPage() {
                 </P>
             </header>
 
-            <hr className="border-border" />
+            <Hr className="my-0" />
 
-            {/* Listado de comparativas en Tarjetas Planas Editoriales */}
             {comparisons.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {comparisons.map((item) => (
                         <Link
                             key={item._id}
                             href={`/comparativas/${item.slug}`}
-                            className="group flex flex-col justify-between p-6 rounded-xl border border-border bg-card hover:border-border-hover transition-colors duration-300 outline-none"
+                            className="group flex flex-col justify-between p-6 border border-border bg-card hover:border-border-hover transition-colors duration-200 outline-none"
                         >
-                            <div className="space-y-4">
-                                <div className="space-y-2">
-                                    {item.isFeatured && (
-                                        <Badge variant="secondary" className="bg-action-cta text-white hover:bg-action-cta-hover border-none">
-                                            Destacado
-                                        </Badge>
-                                    )}
-                                    <H2 className="text-xl font-bold tracking-tight text-primary">
-                                        {item.title}
-                                    </H2>
-                                </div>
+                            <div className="space-y-3">
+                                {item.isFeatured && (
+                                    <BadgeText className="bg-action-cta text-action-cta-foreground px-2 py-0.5">
+                                        Destacado
+                                    </BadgeText>
+                                )}
+                                <H3>{item.title}</H3>
                             </div>
 
-                            <div className="text-xs font-bold tracking-wide text-primary mt-6 pt-4 border-t border-border group-hover:text-action-cta transition-colors">
-                                Ver análisis técnico
+                            <div className="mt-6 pt-4 border-t border-border/60">
+                                <Small className="font-semibold text-foreground group-hover:text-action-cta transition-colors">
+                                    Ver análisis técnico →
+                                </Small>
                             </div>
                         </Link>
                     ))}
                 </div>
             ) : (
-                <div className="flex flex-col items-center justify-center py-20 text-center space-y-2 rounded-xl border border-dashed border-border bg-muted-neutral">
-                    <p className="text-sm font-bold text-foreground">No se encontraron comparativas</p>
-                    <p className="text-xs text-muted-foreground">Estamos preparando nuevos análisis técnicos. Regresa pronto.</p>
+                <div className="flex flex-col items-center justify-center py-20 text-center space-y-1 border border-dashed border-border bg-muted/20 p-8">
+                    <P className="font-medium text-foreground">No se encontraron comparativas</P>
+                    <Small className="text-muted-foreground">Estamos preparando nuevos análisis técnicos. Regresa pronto.</Small>
                 </div>
             )}
         </main>

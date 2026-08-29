@@ -273,7 +273,8 @@ export default function CheckoutForm({ defaultProfile, lockedEmail }: Props) {
                 <Button
                     type="submit"
                     disabled={isPending || cart.length === 0}
-                    className="w-full h-12 bg-action-cta hover:bg-action-cta-hover text-action-cta-foreground text-sm font-semibold rounded-md transition-colors"
+                    className="w-full "
+                    variant="primary"
                 >
                     {isPending ? (
                         <span className="flex items-center justify-center gap-2">

@@ -10,6 +10,7 @@ import CouponInput from './CouponInput'
 import AutomaticDiscountEvaluator from './AutomaticDiscountEvaluator'
 import type { OrderResponse } from '@/src/schemas/order.schema'
 import { BiSolidCoupon } from 'react-icons/bi'
+import { H4, P, Small, Price, BadgeText } from '@/components/ui/TypographyStore'
 
 interface Props {
     order?: Pick<OrderResponse, 'orderNumber' | 'subtotal' | 'shippingCost' | 'discountCode' | 'discountAmount' | 'totalPrice'>
@@ -48,40 +49,40 @@ export default function OrderSummary({ order, isReadOnly = false }: Props) {
                     ))}
                 </ul>
 
-                <div className="pt-4 border-t border-border space-y-2 text-xs">
-                    <div className="flex justify-between text-muted-foreground">
-                        <span>Subtotal</span>
-                        <span className="font-medium text-foreground">S/ {subtotal.toFixed(2)}</span>
+                <div className="pt-4 border-t border-border space-y-2">
+                    <div className="flex justify-between items-center">
+                        <P className="text-muted-foreground">Subtotal</P>
+                        <Price>S/ {subtotal.toFixed(2)}</Price>
                     </div>
 
                     {discountAmount > 0 && (
-                        <div className="flex justify-between text-foreground font-medium">
-                            <span className="flex items-center gap-1.5">
-                                <BiSolidCoupon className="w-3.5 h-3.5 shrink-0" />
-                                <span>Descuento ({discountCode})</span>
+                        <div className="flex justify-between items-center text-foreground">
+                            <span className="flex items-center gap-1.5 truncate pr-2">
+                                <BiSolidCoupon className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
+                                <P className="truncate font-medium">Descuento ({discountCode})</P>
                             </span>
-                            <span className="font-semibold">-S/ {discountAmount.toFixed(2)}</span>
+                            <Price className="shrink-0">-S/ {discountAmount.toFixed(2)}</Price>
                         </div>
                     )}
 
-                    <div className="flex justify-between text-muted-foreground">
-                        <span>Envío</span>
+                    <div className="flex justify-between items-center">
+                        <P className="text-muted-foreground">Envío</P>
                         {!isFreeShipping ? (
-                            <span className="font-medium text-foreground">S/ {shippingCost.toFixed(2)}</span>
+                            <Price>S/ {shippingCost.toFixed(2)}</Price>
                         ) : (
-                            <span className="font-semibold text-foreground">
+                            <BadgeText className="bg-foreground text-background px-1.5 py-0.5">
                                 Gratis
-                            </span>
+                            </BadgeText>
                         )}
                     </div>
 
                     <div className="flex justify-between items-baseline pt-4 border-t border-border">
-                        <span className="text-sm font-semibold text-foreground">Total</span>
-                        <div className="text-right">
-                            <span className="text-[10px] text-muted-foreground mr-1">PEN</span>
-                            <span className="text-lg font-bold text-foreground">
+                        <H4 className="text-foreground">Total</H4>
+                        <div className="flex items-baseline gap-1">
+                            <Small className="text-[10px]">PEN</Small>
+                            <Price className="text-lg font-semibold">
                                 S/ {totalPrice.toFixed(2)}
-                            </span>
+                            </Price>
                         </div>
                     </div>
                 </div>
@@ -118,40 +119,38 @@ export default function OrderSummary({ order, isReadOnly = false }: Props) {
                 <CouponInput />
             </div>
 
-            <div className="space-y-2 text-xs">
-                <div className="flex justify-between text-muted-foreground">
-                    <span>Subtotal</span>
-                    <span className="font-medium text-foreground">S/ {total.toFixed(2)}</span>
+            <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                    <P className="text-muted-foreground">Subtotal</P>
+                    <Price>S/ {total.toFixed(2)}</Price>
                 </div>
 
                 {discountAmount > 0 && (
-                    <div className="flex justify-between text-foreground font-medium">
+                    <div className="flex justify-between items-center text-foreground">
                         <span className="flex items-center gap-1.5 truncate pr-2">
-                            <BiSolidCoupon className="w-3.5 h-3.5 shrink-0" />
-                            <span className="truncate">Descuento ({discountDisplayName})</span>
+                            <BiSolidCoupon className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
+                            <P className="truncate font-medium">Descuento ({discountDisplayName})</P>
                         </span>
-                        <span className="shrink-0 font-semibold">-S/ {discountAmount.toFixed(2)}</span>
+                        <Price className="shrink-0">-S/ {discountAmount.toFixed(2)}</Price>
                     </div>
                 )}
 
-                <div className="flex justify-between text-muted-foreground">
-                    <span>Envío</span>
+                <div className="flex justify-between items-center">
+                    <P className="text-muted-foreground">Envío</P>
                     {shippingCost > 0 ? (
-                        <span className="font-medium text-foreground">S/ {shippingCost.toFixed(2)}</span>
+                        <Price>S/ {shippingCost.toFixed(2)}</Price>
                     ) : (
-                        <span className="font-semibold text-foreground">
+                        <BadgeText className="bg-foreground text-background px-1.5 py-0.5">
                             Gratis
-                        </span>
+                        </BadgeText>
                     )}
                 </div>
 
                 <div className="flex justify-between items-baseline pt-4 border-t border-border">
-                    <span className="text-sm font-semibold text-foreground">Total</span>
-                    <div className="text-right">
-                        <span className="text-lg font-bold text-foreground">
-                            S/ {totalFinal.toFixed(2)}
-                        </span>
-                    </div>
+                    <H4 className="text-foreground">Total</H4>
+                    <Price className="text-lg font-semibold">
+                        S/ {totalFinal.toFixed(2)}
+                    </Price>
                 </div>
             </div>
         </div>

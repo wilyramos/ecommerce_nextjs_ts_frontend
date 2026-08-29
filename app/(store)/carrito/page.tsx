@@ -3,23 +3,24 @@
 import ResumenCarrito from "@/components/cart/ResumenCarrito";
 import { getDestacadosProducts } from "@/src/services/products";
 import ProductGridMini from "@/components/product/ProductGridMini";
+import { H2 } from "@/components/ui/TypographyStore";
 
 export default async function CarritoPage() {
     const [destacadosData] = await Promise.all([getDestacadosProducts()]);
     const sugerencias = destacadosData?.products || [];
 
     return (
-        <main className="mx-auto max-w-5xl px-4 py-6 bg-background text-foreground">
+        <div className="w-full">
             <section>
                 <ResumenCarrito />
             </section>
 
             {sugerencias.length > 0 && (
-                <section className="mt-10 pt-8 border-t border-border">
-                    <h2 className="text-sm font-bold text-foreground mb-4">Te puede interesar</h2>
+                <section className="mt-16 pt-10 border-t border-border flex flex-col gap-6">
+                    <H2>Te puede interesar</H2>
                     <ProductGridMini products={sugerencias.slice(0, 4)} />
                 </section>
             )}
-        </main>
+        </div>
     );
 }

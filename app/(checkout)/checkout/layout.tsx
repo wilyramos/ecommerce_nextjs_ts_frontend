@@ -14,6 +14,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from '@/components/ui/accordion'
+import { Small } from '@/components/ui/TypographyStore'
 
 export default function CheckoutLayout({ children }: { children: ReactNode }) {
     const pathname = usePathname()
@@ -25,13 +26,13 @@ export default function CheckoutLayout({ children }: { children: ReactNode }) {
         <div className="min-h-screen flex flex-col bg-background antialiased font-sans text-foreground">
             {/* Header minimalista estilo Shopify */}
             <header className="bg-background border-b border-border sticky top-0 z-40 shrink-0">
-                <div className="h-14 px-4 sm:px-8 grid grid-cols-[auto_1fr_auto] items-center max-w-6xl w-full mx-auto gap-4">
+                <div className="h-14 px-4 sm:px-8 grid grid-cols-[auto_1fr_auto] items-center max-w-5xl w-full mx-auto gap-4">
                     <Link
                         href={backHref}
-                        className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors p-1"
+                        className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors p-1"
                     >
                         <FiArrowLeft size={14} />
-                        <span className="hidden sm:inline">Volver</span>
+                        <Small className="hidden sm:inline font-medium">Volver</Small>
                     </Link>
 
                     <div className="flex justify-center min-w-0">
@@ -47,10 +48,10 @@ export default function CheckoutLayout({ children }: { children: ReactNode }) {
                 <div className="lg:hidden border-t border-border bg-background-secondary">
                     <Accordion type="single" collapsible className="w-full">
                         <AccordionItem value="summary" className="border-b-0">
-                            <AccordionTrigger className="px-4 py-3 text-xs font-medium text-foreground hover:no-underline">
+                            <AccordionTrigger className="px-4 py-3 hover:no-underline">
                                 <div className="flex items-center gap-2">
                                     <FiShoppingCart size={15} className="text-muted-foreground" />
-                                    <span>Mostrar resumen del pedido</span>
+                                    <Small className="font-medium text-foreground">Mostrar resumen del pedido</Small>
                                 </div>
                             </AccordionTrigger>
                             <AccordionContent className="px-4 pb-6 pt-2 border-t border-border bg-background-secondary">
@@ -84,9 +85,9 @@ export default function CheckoutLayout({ children }: { children: ReactNode }) {
             </div>
 
             <footer className="bg-background border-t border-border py-4 shrink-0 z-10">
-                <p className="text-center text-[11px] text-muted-foreground select-none">
+                <Small className="text-center block select-none">
                     © {new Date().getFullYear()} GoPhone · Todos los derechos reservados
-                </p>
+                </Small>
             </footer>
         </div>
     )

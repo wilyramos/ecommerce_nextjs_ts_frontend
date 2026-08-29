@@ -1,32 +1,32 @@
-//File: frontend/components/home/product/ProductCardHome.tsx
+// File: frontend/components/home/product/ProductCardHome.tsx
 
-"use client"
+"use client";
 
-import Image from "next/image"
-import Link from "next/link"
-import type { ProductResponse } from "@/src/schemas"
-import { MdOutlineImageNotSupported } from "react-icons/md"
+import Image from "next/image";
+import Link from "next/link";
+import type { ProductResponse } from "@/src/schemas";
+import { MdOutlineImageNotSupported } from "react-icons/md";
+import { H4, Small } from "@/components/ui/TypographyStore";
 
 export default function ProductCardHome({ product }: { product: ProductResponse }) {
-    const img1 = product.imagenes?.[0]
-    const img2 = product.imagenes?.[1] || img1
+    const img1 = product.imagenes?.[0];
+    const img2 = product.imagenes?.[1] || img1;
 
-    const price = Number(product.precio) || 0
-    const compare = Number(product.precioComparativo) || 0
-    const discount = compare > price
+    const price = Number(product.precio) || 0;
+    const compare = Number(product.precioComparativo) || 0;
+    const discount = compare > price;
 
     const discountedPercentage = discount
         ? Math.round(((compare - price) / compare) * 100)
-        : 0
+        : 0;
 
     return (
         <Link
             href={`/productos/${product.slug}`}
-            className="group relative flex flex-col w-full bg-background overflow-hidden border border-border/30  "
+            className="group relative flex flex-col w-full bg-background overflow-hidden border border-border/30"
         >
             {/* --- CONTENEDOR CUADRADO EXACTO (ASPECT SQUARE) --- */}
             <div className="relative w-full aspect-square bg-[#fdfdfd] overflow-hidden flex items-center justify-center">
-
                 {/* Badge de Descuento Minimalista */}
                 {discount && (
                     <div className="absolute top-3 left-3 z-10 pointer-events-none">
@@ -43,8 +43,9 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                             alt={product.nombre || "Producto"}
                             fill
                             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                            className={`object-contain mix-blend-multiply transition-opacity duration-500 ${img2 !== img1 ? "opacity-100 group-hover:opacity-0" : ""
-                                }`}
+                            className={`object-contain mix-blend-multiply transition-opacity duration-500 ${
+                                img2 !== img1 ? "opacity-100 group-hover:opacity-0" : ""
+                            }`}
                             quality={85}
                             unoptimized
                         />
@@ -73,12 +74,10 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
 
             {/* --- BLOQUE DE INFORMACIÓN --- */}
             <div className="flex flex-col flex-1 p-3.5 bg-background border-t border-border/20">
-
-
-                {/* Nombre con tipografía limpia y espaciado corregido */}
-                <h3 className="text-xs md:text-[13px] font-normal text-foreground/90 leading-relaxed tracking-wide line-clamp-2 min-h-[2.5rem]">
+                {/* Nombre con componente tipográfico H4 normalizado */}
+                <H4 className="normal-case tracking-normal text-foreground/90 line-clamp-2 min-h-[2.5rem] font-normal">
                     {product.nombre}
-                </h3>
+                </H4>
 
                 {/* Precios Limpios alineados horizontalmente al fondo */}
                 <div className="flex items-center gap-2 mt-auto pt-3">
@@ -91,16 +90,16 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                     </span>
 
                     {discount && (
-                        <span className="line-through text-muted-foreground/70 text-[11px] tracking-wide font-light">
+                        <Small className="line-through text-muted-foreground/70 tracking-wide font-light">
                             S/{" "}
                             {compare.toLocaleString("es-PE", {
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: 2,
                             })}
-                        </span>
+                        </Small>
                     )}
                 </div>
             </div>
         </Link>
-    )
+    );
 }

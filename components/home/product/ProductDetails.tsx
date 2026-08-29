@@ -1,3 +1,5 @@
+// File: frontend/components/home/product/ProductDetails.tsx
+
 "use client";
 
 import { useState, useEffect, useMemo, useRef } from 'react';
@@ -22,7 +24,7 @@ import {
 } from "@/components/ui/select";
 import ProductComplementary from './ProductComplementary';
 import { GoLinkExternal } from "react-icons/go";
-import { H1, Small, Muted } from '@/components/ui/Typography';
+import { H1, P, Small, Muted, Price, BadgeText } from '@/components/ui/TypographyStore';
 import type { DiscountResponse } from '@/src/schemas/discount.schema';
 import ProductAutomaticPromotionBanner from './ProductAutomaticPromotionBanner';
 
@@ -159,7 +161,6 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
             images = [...generalImages, ...allVariantsImages];
         }
 
-        // Devuelve un arreglo con URLs válidas, o un arreglo vacío [] si no hay ninguna
         return Array.from(new Set(images.filter(img => img && img.trim() !== "")));
     }, [selectedVariant, producto.imagenes, producto.variants]);
 
@@ -181,15 +182,14 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
     };
 
     return (
-        <article className="flex flex-col lg:grid lg:grid-cols-12 gap-2 md:gap-6 lg:gap-10 mx-auto text-foreground items-start w-full min-w-0 bg-background ">
-
-            {/* ── 1. CARRUSEL DE IMÁGENES (Móvil: orden 1 | Desktop: Columna izquierda arriba) ── */}
+        <article className="flex flex-col lg:grid lg:grid-cols-12 gap-4 md:gap-6 lg:gap-10 mx-auto text-foreground items-start w-full min-w-0 bg-background">
+            {/* ── 1. CARRUSEL DE IMÁGENES ── */}
             <div className="order-1 lg:order-none lg:col-span-7 w-full min-w-0 overflow-hidden">
                 <ImagenesProductoCarousel images={variantImages} />
             </div>
 
-            {/* ── 2. PANEL DE CONVERSIÓN Y COMPRA (Móvil: orden 2 | Desktop: Columna derecha completa) ── */}
-            <section className="order-2 lg:order-none lg:col-span-5 w-full min-w-0 lg:sticky lg:top-24 space-y-4 p-2 md:p-4 lg:p-6  ">
+            {/* ── 2. PANEL DE CONVERSIÓN Y COMPRA ── */}
+            <section className="order-2 lg:order-none lg:col-span-5 w-full min-w-0 lg:sticky lg:top-24 space-y-4 p-2 md:p-4 lg:p-6">
                 <header className="py-1 space-y-2">
                     {/* Breadcrumbs y SKU */}
                     <div className="flex items-center justify-between w-full">
@@ -198,72 +198,70 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
                                 <Link
                                     href={`/catalogo/${producto.brand.slug}`}
                                     prefetch={false}
-                                    className="text-[10px] font-semibold text-muted-foreground hover:text-action-cta transition-colors uppercase tracking-wider focus-visible:outline-none"
+                                    className="text-muted-foreground hover:text-foreground transition-colors"
                                 >
-                                    {producto.brand.nombre}
+                                    <Small className="uppercase tracking-wider font-medium">{producto.brand.nombre}</Small>
                                 </Link>
                             )}
                             {producto.brand && producto.line && (
-                                <span className="text-[10px] text-border">/</span>
+                                <Small className="text-border">/</Small>
                             )}
                             {producto.line && typeof producto.line === 'object' && (
                                 <Link
                                     href={`/catalogo/${producto.line.slug}`}
                                     prefetch={false}
-                                    className="text-[10px] font-semibold text-muted-foreground hover:text-action-cta transition-colors uppercase tracking-wider focus-visible:outline-none"
+                                    className="text-muted-foreground hover:text-foreground transition-colors"
                                 >
-                                    {producto.line.nombre}
+                                    <Small className="uppercase tracking-wider font-medium">{producto.line.nombre}</Small>
                                 </Link>
                             )}
                         </div>
 
                         {(selectedVariant?.sku || producto.sku) && (
-                            <Small className="normal-case tracking-normal">
+                            <Small>
                                 SKU: {selectedVariant?.sku || producto.sku}
                             </Small>
                         )}
                     </div>
 
                     {/* Nombre del Producto */}
-                    <H1 className="select-text tracking-tight font-semibold  md:text-xl">
+                    <H1 className="text-xl sm:text-2xl font-medium">
                         {producto.nombre}
                     </H1>
 
                     {/* Precios */}
                     <div className="flex items-baseline gap-2.5 flex-wrap pt-1">
-                        <div className="flex items-baseline gap-0.5 text-foreground select-all">
-                            <span className="text-lg font-normal">
-                                S/. {precio.toFixed(2)}
-                            </span>
-                        </div>
+                        <Price className="text-xl font-semibold">
+                            S/ {precio.toFixed(2)}
+                        </Price>
 
                         {hasDiscount && (
                             <div className="flex items-center gap-2">
-                                <span className="text-lg text-muted-foreground line-through font-normal">
-                                    S/. {precioComparativo!.toFixed(2)}
-                                </span>
-                                <span className="px-1.5 py-0 bg-primary/10 text-primary text-base uppercase tracking-wider ">
+                                <Price className="text-sm text-muted-foreground line-through font-normal">
+                                    S/ {precioComparativo!.toFixed(2)}
+                                </Price>
+                                <BadgeText className="bg-muted px-1.5 py-0.5 text-foreground">
                                     {Math.round(((precioComparativo! - precio) / precioComparativo!) * 100)}% OFF
-                                </span>
+                                </BadgeText>
                             </div>
                         )}
                     </div>
 
-
-
                     {/* Indicador de Stock */}
                     {stock === 0 && (
                         <div className="pt-1">
-                            <span className="inline-flex items-center text-[10px] uppercase font-bold tracking-wider text-foreground bg-foreground/10 border border-foreground/20 px-2 py-0.5 ">
+                            <BadgeText className="bg-muted/40 border border-border px-2 py-0.5 text-foreground">
                                 Sin stock
-                            </span>
+                            </BadgeText>
                         </div>
                     )}
                 </header>
+
                 <ProductAutomaticPromotionBanner discounts={automaticDiscounts} />
+
                 {/* Atributos Destacados */}
                 {featuredAttributes.length > 0 && (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-1 py-1">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 py-1">
                         {featuredAttributes.map((attr) => {
                             const valueLower = attr.value.toLowerCase().trim();
                             const isCheckAttribute = ["si", "sí", "true", "aplica", "incluido", "yes"].includes(valueLower);
@@ -271,27 +269,25 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
                             return (
                                 <div
                                     key={attr.key}
-                                    className="flex flex-col items-center text-center gap-1.5 p-2 min-w-0"
+                                    className="flex flex-col items-center text-center gap-1 p-2 border border-border bg-muted/10 min-w-0"
                                 >
                                     {attr.icon && (
                                         <Image
                                             src={attr.icon}
                                             alt={attr.key}
-                                            width={32}
-                                            height={32}
-                                            className="object-contain w-10 h-10 shrink-0"
+                                            width={28}
+                                            height={28}
+                                            className="object-contain w-7 h-7 shrink-0"
                                             unoptimized
                                             quality={50}
                                         />
                                     )}
-                                    <div className="flex flex-col min-w-0 leading-tight">
-                                        <span className="text-[10px] font-medium text-muted-foreground uppercase">
-                                            {attr.key}
-                                        </span>
+                                    <div className="flex flex-col min-w-0">
+                                        <Small className="uppercase tracking-wider">{attr.key}</Small>
                                         {!isCheckAttribute && (
-                                            <span className="text-sm font-semibold text-foreground uppercase">
+                                            <P className="text-xs font-medium text-foreground uppercase truncate">
                                                 {attr.value}
-                                            </span>
+                                            </P>
                                         )}
                                     </div>
                                 </div>
@@ -304,7 +300,7 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
                 <div className="space-y-3">
                     {!producto.variants?.length && colorAtributo && (
                         <div className="flex items-center gap-2">
-                            <span className="text-xs font-semibold text-muted-foreground">Color:</span>
+                            <Small className="font-medium text-muted-foreground">Color:</Small>
                             <div className="flex items-center gap-1.5">
                                 {(Array.isArray(colorAtributo) ? colorAtributo : [colorAtributo]).map((c) => (
                                     <ColorCircle key={c} color={c} size={16} />
@@ -320,8 +316,8 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
 
                         return (
                             <fieldset key={key} className="space-y-1.5">
-                                <legend className="text-[10px] font-bold uppercase text-muted-foreground tracking-wider">
-                                    {key}:
+                                <legend>
+                                    <Small className="uppercase tracking-wider font-medium text-muted-foreground">{key}:</Small>
                                 </legend>
 
                                 {isColor ? (
@@ -338,14 +334,14 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
                                                     onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                     disabled={outOfStock}
                                                     className={cn(
-                                                        "relative flex items-center gap-2 p-1.5 border w-full transition-all cursor-pointer outline-none text-xs font-semibold focus-visible:ring-2 focus-visible:ring-ring rounded-lg",
+                                                        "relative flex items-center gap-2 p-1.5 border w-full transition-all cursor-pointer outline-none text-xs font-medium",
                                                         selected
-                                                            ? "border-foreground bg-foreground ring-1 ring-foreground"
-                                                            : "border-border bg-card hover:border-muted-foreground/60",
+                                                            ? "border-foreground bg-foreground text-background"
+                                                            : "border-border bg-background hover:border-muted-foreground",
                                                         outOfStock && "opacity-40 cursor-not-allowed bg-muted/20"
                                                     )}
                                                 >
-                                                    <div className="relative w-6 h-6 overflow-hidden rounded-full border border-border shrink-0 flex items-center justify-center bg-card">
+                                                    <div className="relative w-5 h-5 overflow-hidden border border-border shrink-0 flex items-center justify-center bg-card">
                                                         {variantForValue?.imagenes?.[0] ? (
                                                             <Image
                                                                 src={variantForValue.imagenes[0]}
@@ -355,10 +351,10 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
                                                                 unoptimized
                                                             />
                                                         ) : (
-                                                            <ColorCircle color={val} size={20} />
+                                                            <ColorCircle color={val} size={16} />
                                                         )}
                                                     </div>
-                                                    <span className={cn("text-[10px] truncate capitalize font-semibold", selected ? "text-background" : "text-muted-foreground", outOfStock && "line-through")}>
+                                                    <span className={cn("text-xs truncate capitalize", selected ? "text-background" : "text-foreground", outOfStock && "line-through")}>
                                                         {val}
                                                     </span>
                                                 </button>
@@ -370,7 +366,7 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
                                         value={selectedAttributes[key] || ""}
                                         onValueChange={(val) => updateSelectedVariant(key, val)}
                                     >
-                                        <SelectTrigger className="w-full border-border bg-card text-foreground focus:ring-ring font-semibold text-xs h-9 ">
+                                        <SelectTrigger className="w-full border-border bg-background text-foreground text-xs h-9">
                                             <SelectValue placeholder={`Seleccionar ${key}`} />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -382,7 +378,7 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
                                                         value={val}
                                                         disabled={outOfStock}
                                                         className={cn(
-                                                            "cursor-pointer font-semibold text-xs",
+                                                            "cursor-pointer text-xs",
                                                             outOfStock && "opacity-40 cursor-not-allowed line-through"
                                                         )}
                                                     >
@@ -404,11 +400,11 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
                                                     onClick={() => !outOfStock && updateSelectedVariant(key, val)}
                                                     disabled={outOfStock}
                                                     className={cn(
-                                                        "h-8 px-3.5 relative overflow-hidden transition-all border text-xs font-semibold cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-lg",
+                                                        "h-8 px-3 transition-all border text-xs font-medium cursor-pointer outline-none",
                                                         selected
-                                                            ? "border-foreground bg-foreground ring-1 ring-foreground text-background"
-                                                            : "border-border bg-card text-muted-foreground hover:border-muted-foreground/60 hover:text-foreground",
-                                                        outOfStock && "opacity-40 text-muted-foreground/60 border-border cursor-not-allowed"
+                                                            ? "border-foreground bg-foreground text-background"
+                                                            : "border-border bg-background text-muted-foreground hover:text-foreground hover:border-muted-foreground",
+                                                        outOfStock && "opacity-40 border-border cursor-not-allowed"
                                                     )}
                                                 >
                                                     <span className={cn(outOfStock && "line-through")}>{val}</span>
@@ -444,63 +440,53 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
                 )}
 
                 {/* Bloque Logístico Consolidado */}
-                <div className="">
-                    <div className="flex items-center justify-between py-2">
-                        <div className="flex items-center gap-2 text-muted-foreground">
-                            <span className="text-xs font-medium">Metodos de pago:</span>
-                        </div>
+                <div className="divide-y divide-border border-y border-border">
+                    <div className="flex items-center justify-between py-2.5">
+                        <Small className="font-medium">Métodos de pago:</Small>
                         <PaymentMethods />
                     </div>
 
-                    <div className="flex items-center justify-between py-2 text-xs">
-                        <div className="flex items-center gap-2 text-muted-foreground">
-                            <span className="font-medium">Garantía oficial:</span>
-                        </div>
+                    <div className="flex items-center justify-between py-2.5">
+                        <Small className="font-medium">Garantía oficial:</Small>
                         <div className="flex items-center gap-1.5">
-                            <span className="font-semibold text-foreground">12 meses</span>
+                            <Small className="font-semibold text-foreground">12 meses</Small>
                             <a
                                 href="/politicas-de-cambios-y-devoluciones"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 title="Ver políticas de garantía"
-                                className="text-muted-foreground hover:text-action-cta transition-colors p-0.5 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                                className="text-muted-foreground hover:text-foreground transition-colors p-0.5"
                             >
                                 <GoLinkExternal className="w-3 h-3" />
                             </a>
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-between py-2 text-xs">
-                        <div className="flex items-center gap-2 text-muted-foreground">
-                            <span className="font-medium">Envío:</span>
-                        </div>
+                    <div className="flex items-center justify-between py-2.5">
+                        <Small className="font-medium">Envío:</Small>
                         <div className="text-right">
                             {isFreeShipping && (
-                                <span className="font-bold text-action-cta uppercase mr-1">
+                                <BadgeText className="text-foreground font-semibold mr-1">
                                     Gratis
-                                </span>
+                                </BadgeText>
                             )}
-                            <Muted className="inline font-medium text-foreground">
+                            <Muted className="inline text-xs text-foreground">
                                 ({getDeliveryRange(producto.diasEnvio || 1)})
                             </Muted>
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-between py-2 text-xs">
+                    <div className="flex items-center justify-between py-2.5">
                         <a
                             href={`https://wa.me/51925054636?text=Consulta%20${encodeURIComponent(producto.nombre)}`}
                             target="_blank"
                             rel="noreferrer"
-                            className="flex items-center gap-1.5 text-muted-foreground hover:text-action-cta transition-colors w-full justify-between"
+                            className="flex items-center justify-between w-full text-muted-foreground hover:text-foreground transition-colors"
                         >
-                            <span className="flex items-center gap-2 font-medium">
-                                ¿Dudas?
-                            </span>
-                            <span className="flex items-center text-foreground font-semibold gap-1">
-
+                            <Small className="font-medium">¿Dudas?</Small>
+                            <span className="flex items-center text-xs font-medium text-foreground gap-1">
                                 Consultar por WhatsApp
-                                <GoLinkExternal className="w-3.5 h-3.5" />
-
+                                <GoLinkExternal className="w-3 h-3" />
                             </span>
                         </a>
                     </div>
@@ -509,8 +495,8 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
                 <ProductComplementary complementarios={producto.complementarios} />
             </section>
 
-            {/* ── 3. DETALLES Y ESPECIFICACIONES (Móvil: orden 3, debajo de todo | Desktop: Columna izquierda debajo de imágenes) ── */}
-            <div className="order-3 lg:order-none lg:col-span-7 w-full border-t border-border/60 pt-4 mt-4 lg:mt-0">
+            {/* ── 3. DETALLES Y ESPECIFICACIONES ── */}
+            <div className="order-3 lg:order-none lg:col-span-7 w-full border-t border-border pt-4 mt-4 lg:mt-0">
                 <ProductExpandableSections producto={producto} />
             </div>
 

@@ -1,10 +1,11 @@
 // File: frontend/components/store/comparisons/ComparisonTable.tsx
 
 import { ComparisonSpec, PopulatedProduct } from "@/src/schemas/comparison.schema";
+import { Table, Tr, Th, Td, Small } from "@/components/ui/TypographyStore";
 
 interface Props {
     products: (string | PopulatedProduct)[];
-    specs:    ComparisonSpec[];
+    specs: ComparisonSpec[];
 }
 
 export default function ComparisonTable({ products, specs }: Props) {
@@ -15,53 +16,45 @@ export default function ComparisonTable({ products, specs }: Props) {
     );
 
     return (
-        <div className="overflow-x-auto rounded-xl border border-border bg-card">
-            <table className="w-full text-sm table-fixed">
+        <div className="space-y-2">
+            <Table>
                 <thead>
-                    <tr className="bg-muted-neutral border-b border-border">
-                        <th className="text-left px-4 py-3 font-semibold text-muted-foreground w-1/4">
-                            Característica
-                        </th>
+                    <Tr>
+                        <Th className="w-1/4">Característica</Th>
                         {names.map((name, i) => (
-                            <th key={i} className="text-left px-4 py-3 font-semibold text-primary">
-                                {name}
-                            </th>
+                            <Th key={i}>{name}</Th>
                         ))}
-                    </tr>
+                    </Tr>
                 </thead>
                 <tbody>
                     {specs.map((spec, i) => (
-                        <tr
+                        <Tr
                             key={i}
-                            className={[
-                                "border-b border-border last:border-0 transition-colors",
-                                spec.isKeyDifference
-                                    ? "bg-primary/[0.02]"
-                                    : "hover:bg-muted-neutral/30",
-                            ].join(" ")}
+                            className={spec.isKeyDifference ? "bg-muted/30 font-medium" : undefined}
                         >
-                            <td className="px-4 py-3 font-medium text-muted-foreground">
+                            <Td className="font-medium text-foreground/90">
                                 <div className="flex items-center gap-2">
                                     {spec.isKeyDifference && (
-                                        <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                                        <span className="w-1.5 h-1.5 rounded-full bg-foreground shrink-0" />
                                     )}
-                                    {spec.key}
+                                    <span>{spec.key}</span>
                                 </div>
-                            </td>
+                            </Td>
                             {spec.values.map((val, j) => (
-                                <td key={j} className="px-4 py-3 text-foreground">
-                                    {val || <span className="text-muted-foreground">—</span>}
-                                </td>
+                                <Td key={j}>
+                                    {val || <span className="text-muted-foreground/60">—</span>}
+                                </Td>
                             ))}
-                        </tr>
+                        </Tr>
                     ))}
                 </tbody>
-            </table>
-            {specs.some(s => s.isKeyDifference) && (
-                <p className="px-4 py-2 text-xs text-muted-foreground border-t border-border flex items-center gap-1.5 bg-muted-neutral">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
-                    Diferencia clave entre productos
-                </p>
+            </Table>
+
+            {specs.some((s) => s.isKeyDifference) && (
+                <div className="flex items-center gap-2 px-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-foreground inline-block" />
+                    <Small>Diferencia clave entre productos</Small>
+                </div>
             )}
         </div>
     );
