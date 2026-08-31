@@ -1,3 +1,5 @@
+//Frontend/src/utils/constants/colores.ts
+
 const diccionarioColores: Record<string, string> = {
     // --- iPhone Signature & Series Colors ---
     "titanio natural": "bg-[#B8B3AB]",

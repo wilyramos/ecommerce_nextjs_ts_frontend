@@ -75,7 +75,7 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
             {/* --- BLOQUE DE INFORMACIÓN --- */}
             <div className="flex flex-col flex-1 p-3.5 bg-background border-t border-border/20">
                 {/* Nombre con componente tipográfico H4 normalizado */}
-                <H4 className="normal-case tracking-normal text-foreground/90 line-clamp-2 min-h-[2.5rem] font-normal">
+                <H4 className="normal-case tracking-normal text-foreground line-clamp-2 min-h-[2.5rem] font-normal">
                     {product.nombre}
                 </H4>
 

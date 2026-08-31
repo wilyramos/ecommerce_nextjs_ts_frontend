@@ -1,109 +1,131 @@
-// File: frontend/src/services/comparison-service.ts
+// frontend/src/services/comparison-service.ts
 
-import { Comparison, ComparisonFormValues } from "../schemas/comparison.schema";
-import { verifySession } from "../auth/dal";
-
-const API_URL = process.env.API_URL || "http://localhost:4000/api";
+import { HttpClient, apiHttpClient } from "@/src/lib/http-client";
+import {
+    ComparisonSchema,
+    ApiResponseSchema,
+    type CreateComparisonDTO,
+    type UpdateComparisonDTO,
+    type ComparisonResponse,
+} from "../schemas/comparison.schema";
+import { z } from "zod";
 
 export class ComparisonService {
+    constructor(private readonly http: HttpClient) {}
 
-    static async getAll(filters: {
-        isActive?:   boolean;
-        isFeatured?: boolean;
-        search?:     string;
-        limit?:      number;
-        page?:       number;
-    } = {}) {
+    // ── PUBLIC ENDPOINTS ───────────────────────────────────────
+
+    async getAllPublic(
+        filters: { search?: string; page?: number; limit?: number } = {}
+    ) {
         const params = new URLSearchParams();
-        if (filters.isActive   !== undefined) params.append("isActive",   String(filters.isActive));
-        if (filters.isFeatured !== undefined) params.append("isFeatured", String(filters.isFeatured));
-        if (filters.search)                   params.append("search",     filters.search);
-        if (filters.limit)                    params.append("limit",      String(filters.limit));
-        if (filters.page)                     params.append("page",       String(filters.page));
+        if (filters.search) params.set("search", filters.search);
+        if (filters.page) params.set("page", String(filters.page));
+        if (filters.limit) params.set("limit", String(filters.limit));
 
-        const res = await fetch(`${API_URL}/comparisons?${params.toString()}`, {
-            next: { tags: ["comparisons"] },
+        const query = params.toString() ? `?${params.toString()}` : "";
+        const PaginatedSchema = ApiResponseSchema(z.array(ComparisonSchema));
+
+        const response = await this.http.get<unknown>(`/comparisons${query}`, {
+            cache: "no-store",
         });
 
-        if (!res.ok) throw new Error("Error al obtener las comparativas");
-        return res.json();
+        const parsed = PaginatedSchema.parse(response);
+        return {
+            items: parsed.data,
+            meta: parsed.meta!,
+        };
     }
 
-    static async getBySlug(slug: string): Promise<{ status: string; data: Comparison | null }> {
-        const res = await fetch(`${API_URL}/comparisons/slug/${slug}`, {
-            next: { tags: [`comparison-${slug}`], revalidate: 3600 },
+    async getBySlug(slug: string): Promise<ComparisonResponse> {
+        const SingleSchema = ApiResponseSchema(ComparisonSchema);
+        const response = await this.http.get<unknown>(`/comparisons/slug/${slug}`, {
+            cache: "no-store",
         });
-
-        if (res.status === 404) return { status: "not_found", data: null };
-        if (!res.ok) throw new Error("Error al obtener la comparativa");
-        return res.json();
+        const parsed = SingleSchema.parse(response);
+        return parsed.data;
     }
 
-    static async getById(id: string): Promise<{ status: string; data: Comparison }> {
-        const session = await verifySession();
-        const res = await fetch(`${API_URL}/comparisons/${id}`, {
-            headers: { Authorization: `Bearer ${session.token}` },
-            next:    { tags: [`comparison-${id}`] },
+    async getByProduct(productId: string): Promise<ComparisonResponse[]> {
+        const ArraySchema = ApiResponseSchema(z.array(ComparisonSchema));
+        const response = await this.http.get<unknown>(`/comparisons/product/${productId}`, {
+            cache: "no-store",
         });
-
-        if (!res.ok) throw new Error("Comparativa no encontrada");
-        return res.json();
+        const parsed = ArraySchema.parse(response);
+        return parsed.data;
     }
 
-    static async getRelatedToProduct(
-        productId: string,
-        limit?: number
-    ): Promise<{ status: string; data: Comparison[] }> {
-        const params = limit ? `?limit=${limit}` : "";
-        const res = await fetch(`${API_URL}/comparisons/product/${productId}${params}`, {
-            next: { tags: [`product-comparisons-${productId}`] },
+    // ── ADMIN ENDPOINTS ────────────────────────────────────────
+
+    async getAllAdmin(
+        filters: { search?: string; page?: number; limit?: number } = {},
+        token?: string
+    ) {
+        const params = new URLSearchParams();
+        if (filters.search) params.set("search", filters.search);
+        if (filters.page) params.set("page", String(filters.page));
+        if (filters.limit) params.set("limit", String(filters.limit));
+
+        const query = params.toString() ? `?${params.toString()}` : "";
+        const PaginatedSchema = ApiResponseSchema(z.array(ComparisonSchema));
+
+        const response = await this.http.get<unknown>(`/comparisons/admin${query}`, {
+            token,
+            cache: "no-store",
         });
 
-        if (!res.ok) throw new Error("Error al obtener comparativas del producto");
-        return res.json();
+        const parsed = PaginatedSchema.parse(response);
+        return {
+            items: parsed.data,
+            meta: parsed.meta!,
+        };
     }
 
-    static async create(data: ComparisonFormValues) {
-        const session = await verifySession();
-        const res = await fetch(`${API_URL}/comparisons`, {
-            method:  "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization:  `Bearer ${session.token}`,
-            },
-            body: JSON.stringify(data),
+    async getById(id: string, token?: string): Promise<ComparisonResponse> {
+        const SingleSchema = ApiResponseSchema(ComparisonSchema);
+        const response = await this.http.get<unknown>(`/comparisons/admin/${id}`, {
+            token,
+            cache: "no-store",
         });
-
-        const result = await res.json();
-        if (!res.ok) throw new Error(result.message || "Error al crear la comparativa");
-        return result;
+        const parsed = SingleSchema.parse(response);
+        return parsed.data;
     }
 
-    static async update(id: string, data: Partial<ComparisonFormValues>) {
-        const session = await verifySession();
-        const res = await fetch(`${API_URL}/comparisons/${id}`, {
-            method:  "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization:  `Bearer ${session.token}`,
-            },
-            body: JSON.stringify(data),
-        });
-
-        const result = await res.json();
-        if (!res.ok) throw new Error(result.message || "Error al actualizar la comparativa");
-        return result;
+    async createComparison(dto: CreateComparisonDTO, token?: string): Promise<ComparisonResponse> {
+        const SingleSchema = ApiResponseSchema(ComparisonSchema);
+        const response = await this.http.post<unknown>("/comparisons/admin", dto, { token });
+        const parsed = SingleSchema.parse(response);
+        return parsed.data;
     }
 
-    static async delete(id: string) {
-        const session = await verifySession();
-        const res = await fetch(`${API_URL}/comparisons/${id}`, {
-            method:  "DELETE",
-            headers: { Authorization: `Bearer ${session.token}` },
-        });
+    async updateComparison(id: string, dto: UpdateComparisonDTO, token?: string): Promise<ComparisonResponse> {
+        const SingleSchema = ApiResponseSchema(ComparisonSchema);
+        const response = await this.http.put<unknown>(`/comparisons/admin/${id}`, dto, { token });
+        const parsed = SingleSchema.parse(response);
+        return parsed.data;
+    }
 
-        const result = await res.json();
-        if (!res.ok) throw new Error(result.message || "Error al eliminar la comparativa");
-        return result;
+    async toggleStatus(id: string, token?: string): Promise<ComparisonResponse> {
+        const SingleSchema = ApiResponseSchema(ComparisonSchema);
+        const response = await this.http.patch<unknown>(`/comparisons/admin/${id}/toggle-status`, undefined, {
+            token,
+        });
+        const parsed = SingleSchema.parse(response);
+        return parsed.data;
+    }
+
+    async toggleFeatured(id: string, token?: string): Promise<ComparisonResponse> {
+        const SingleSchema = ApiResponseSchema(ComparisonSchema);
+        const response = await this.http.patch<unknown>(`/comparisons/admin/${id}/toggle-featured`, undefined, {
+            token,
+        });
+        const parsed = SingleSchema.parse(response);
+        return parsed.data;
+    }
+
+    async deleteComparison(id: string, token?: string): Promise<void> {
+        await this.http.delete(`/comparisons/admin/${id}`, { token });
     }
 }
+
+export const comparisonService = new ComparisonService(apiHttpClient);

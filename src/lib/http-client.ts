@@ -64,6 +64,14 @@ export class HttpClient {
     delete<T>(endpoint: string, options?: HttpOptions): Promise<T> {
         return this.request<T>(endpoint, { ...options, method: "DELETE" });
     }
+
+    put<T>(endpoint: string, body: unknown, options?: HttpOptions): Promise<T> {
+        return this.request<T>(endpoint, {
+            ...options,
+            method: "PUT",
+            body: JSON.stringify(body),
+        });
+    }
 }
 
 export const apiHttpClient = new HttpClient(

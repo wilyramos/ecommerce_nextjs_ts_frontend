@@ -1,88 +1,83 @@
-// File: app/(admin)/admin/comparisons/page.tsx
+// File: frontend/app/admin/comparisons/page.tsx
 
-import { ComparisonService } from "@/src/services/comparison-service";
 import AdminPageWrapper from "@/components/admin/AdminPageWrapper";
-import NuevaComparativa from "@/components/admin/comparisons/NuevaComparativa";
 import ComparisonFilters from "@/components/admin/comparisons/ComparisonFilters";
 import ComparisonTable from "@/components/admin/comparisons/ComparisonTable";
-import Pagination from "@/components/ui/Pagination";
-import { Comparison } from "@/src/schemas/comparison.schema";
+import PaginationBanner from "@/components/ui/PaginationBanner";
+import NewComparisonButton from "@/components/admin/comparisons/NewComparisonButton";
+import * as Typo from "@/components/ui/Typography";
 
-interface SearchParams {
-    page?: string;
-    limit?: string;
-    search?: string;
-    isActive?: string;
-    isFeatured?: string;
-}
+import { getTokenOptional } from "@/src/auth/dal";
+import { comparisonService } from "@/src/services/comparison-service";
+import { type ComparisonResponse } from "@/src/schemas/comparison.schema";
 
 interface PageProps {
-    searchParams: Promise<SearchParams>;
+    searchParams: Promise<{
+        page?: string;
+        limit?: string;
+        search?: string;
+    }>;
 }
 
-export default async function ComparisonsPage({ searchParams }: PageProps) {
-    const params = await searchParams;
+export default async function AdminComparisonsPage({ searchParams }: PageProps) {
+    const token = await getTokenOptional();
 
+    const params = await searchParams;
     const page = Math.max(1, Number(params.page ?? 1));
     const limit = Math.max(1, Number(params.limit ?? 10));
-    const search = params.search?.trim() || undefined;
+    const search = params.search?.trim() || "";
 
-    const isActive =
-        params.isActive === "true" ? true :
-        params.isActive === "false" ? false :
-        undefined;
+    let comparisons: ComparisonResponse[] = [];
+    let meta = { total: 0, page: 1, pages: 1, limit };
 
-    const isFeatured =
-        params.isFeatured === "true" ? true :
-        params.isFeatured === "false" ? false :
-        undefined;
-
-    // Adaptado estrictamente para leer la nueva estructura JSON encapsulada en la respuesta
-    const res = await ComparisonService.getAll({
-        page,
-        limit,
-        search,
-        isActive,
-        isFeatured
-    });
-
-    // Desestructuramos el contenido paginado que viaja dentro del objeto unificado de respuesta
-    const comparisons = (res?.data || []) as Comparison[];
-    const total = Number(res?.total ?? 0);
-    const pages = Math.max(1, Number(res?.pages ?? 1));
+    try {
+        const comparisonData = await comparisonService.getAllAdmin(
+            { page, limit, search },
+            token
+        );
+        comparisons = comparisonData.items;
+        meta = {
+            total: comparisonData.meta.total ?? 0,
+            page: comparisonData.meta.page ?? page,
+            pages: comparisonData.meta.pages ?? 1,
+            limit: comparisonData.meta.limit ?? limit,
+        };
+    } catch (error) {
+        console.error("[AdminComparisonsPage] Error al cargar la lista de comparativas:", error);
+    }
 
     return (
         <AdminPageWrapper
-            title="Comparativas SEO"
-            breadcrumbItems={[{ label: "Contenido", href: "/admin/content" }]}
+            title="Comparativas de Productos"
+            breadcrumbItems={[{ label: "Catálogo", href: "/admin/products" }]}
             breadcrumbCurrent="Comparativas"
-            showBackButton={false}
-            actions={<NuevaComparativa />}
+            showBackButton={true}
+            actions={<NewComparisonButton />}
         >
-            <div className="space-y-5">
-                <ComparisonFilters
-                    filters={{
-                        search: params.search,
-                        isActive: params.isActive,
-                        isFeatured: params.isFeatured
-                    }}
-                />
+            <div className="space-y-4 text-foreground">
+                <ComparisonFilters />
 
-                <ComparisonTable comparisons={comparisons} />
+                <div className="border border-border rounded-lg bg-card p-4 space-y-4">
+                    <div className="flex items-center justify-between pb-2 border-b border-border/60">
+                        <Typo.H3>Comparativas Registradas</Typo.H3>
+                        <Typo.Small className="text-muted-foreground font-mono">
+                            {meta.total} {meta.total === 1 ? "Resultado" : "Resultados"}
+                        </Typo.Small>
+                    </div>
 
-                {total > 0 && (
-                    <div className="flex flex-col items-center gap-3 pt-6 border-t border-border">
-                        <p className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
-                            Mostrando {comparisons.length} de {total} resultados
-                        </p>
-                        <Pagination
-                            currentPage={page}
-                            totalPages={pages}
-                            limit={limit}
+                    <ComparisonTable comparisons={comparisons} />
+
+                    {comparisons.length > 0 && (
+                        <PaginationBanner
+                            currentPage={meta.page}
+                            totalPages={meta.pages}
+                            limit={meta.limit}
+                            totalItems={meta.total}
+                            itemsShown={comparisons.length}
                             pathname="/admin/comparisons"
                         />
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
         </AdminPageWrapper>
     );

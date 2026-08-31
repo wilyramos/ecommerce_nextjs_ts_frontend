@@ -18,12 +18,11 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
             <CartAnimationOverlay />
             <div className="flex flex-col min-h-screen w-full">
                 <TopBarAdServer />
-                {/* w-full asegura que el header ocupe toda la pantalla */}
                 <header className="sticky top-0 z-40 w-full">
                     <NavBar />
                 </header>
                 
-                <main className="flex-1 w-full max-w-screen-2xl mx-auto px-4 md:px-8 self-center">
+                <main className="flex-1 w-full max-w-screen-2xl mx-auto self-center">
                     {children}
                 </main>
                 

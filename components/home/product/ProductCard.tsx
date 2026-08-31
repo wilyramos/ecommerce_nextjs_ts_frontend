@@ -9,6 +9,7 @@ import ColorCircle from "@/components/ui/ColorCircle";
 import type { TApiProduct } from "@/src/schemas";
 import { cn } from "@/lib/utils";
 import { MdOutlineImageNotSupported } from "react-icons/md";
+import { H3, BadgeText, Price, Muted } from "@/components/ui/TypographyStore";
 
 export default function ProductCard({ product }: { product: TApiProduct }) {
     const searchParams = useSearchParams();
@@ -36,7 +37,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
         return Array.from(colors);
     }, [product]);
 
-    // --- NUEVO (Evaluado en cliente para evitar mismatch de hidratación) ---
+    // --- NUEVO ---
     useEffect(() => {
         if (!product.createdAt) return;
         const days = (Date.now() - new Date(product.createdAt).getTime()) / (1000 * 60 * 60 * 24);
@@ -185,9 +186,9 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
 
                                     {/* Contador */}
                                     <div className="absolute bottom-2 right-2 px-1.5 py-0.5 bg-background/90 rounded-sm pointer-events-none md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
-                                        <span className="text-[10px] font-medium text-foreground tabular-nums tracking-wide leading-none">
+                                        <BadgeText className="text-foreground tabular-nums">
                                             {currentIndex + 1} <span className="text-muted-foreground/60">/</span> {previewImages.length}
-                                        </span>
+                                        </BadgeText>
                                     </div>
                                 </>
                             )}
@@ -201,17 +202,17 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                     {/* Badges */}
                     <div className="absolute top-2 left-2 flex flex-col gap-1 pointer-events-none">
                         {isNew && (
-                            <span className="px-1.5 py-1 bg-primary text-primary-foreground text-[10px] font-medium tracking-wide rounded-sm leading-none">
+                            <BadgeText className="px-1.5 py-1 bg-primary text-primary-foreground rounded-sm">
                                 Nuevo
-                            </span>
+                            </BadgeText>
                         )}
                     </div>
                     
                     {discountPct > 0 && (
                         <div className="absolute top-2 right-2 pointer-events-none">
-                            <span className="px-1.5 py-1 bg-destructive text-destructive-foreground text-[10px] font-medium tracking-wide rounded-sm leading-none">
+                            <BadgeText className="px-1.5 py-1 bg-destructive text-destructive-foreground rounded-sm">
                                 {discountPct}% OFF
-                            </span>
+                            </BadgeText>
                         </div>
                     )}
                 </div>
@@ -221,9 +222,9 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                     
                     {/* Fila: marca + colores */}
                     <div className="flex items-center justify-between gap-2 h-4">
-                        <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-wide truncate">
+                        <BadgeText className="truncate">
                             {product.brand?.nombre || "\u00A0"}
-                        </span>
+                        </BadgeText>
 
                         {uniqueColors.length > 0 && (
                             <div className="flex items-center gap-0.5 shrink-0" onClick={(e) => e.preventDefault()}>
@@ -241,38 +242,38 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                                     </button>
                                 ))}
                                 {uniqueColors.length > 4 && (
-                                    <span className="text-[10px] text-muted-foreground font-medium ml-1">
+                                    <BadgeText className="ml-1">
                                         +{uniqueColors.length - 4}
-                                    </span>
+                                    </BadgeText>
                                 )}
                             </div>
                         )}
                     </div>
 
                     {/* Nombre */}
-                    <h3 className="text-xs md:text-sm text-foreground font-medium leading-snug line-clamp-2 min-h-[2.75rem]">
+                    <H3 className="line-clamp-2 min-h-[2.75rem] font-normal text-xs md:text-sm text-muted-foreground">
                         {product.nombre}
-                    </h3>
+                    </H3>
 
-                    {/* Precio y Stock (anclado al final mediante mt-auto) */}
+                    {/* Precio y Stock */}
                     <div className="flex items-center justify-between gap-2 mt-auto pt-1">
                         <div className="flex items-baseline gap-1.5 flex-wrap min-w-0">
-                            <span className="text-sm md:text-base text-foreground font-semibold leading-none shrink-0">
-                                <span className="text-[11px] md:text-xs text-muted-foreground font-normal mr-0.5">S/</span>
+                            <Price className="flex items-baseline">
+                                <Muted className="text-[11px] md:text-xs mr-0.5 inline">S/</Muted>
                                 {precio.toFixed(2)}
-                            </span>
+                            </Price>
 
                             {discountPct > 0 && (
-                                <span className="text-[10px] md:text-xs text-muted-foreground line-through leading-none shrink-0">
+                                <Muted className="text-[10px] md:text-xs line-through leading-none shrink-0">
                                     S/ {product.precioComparativo!.toFixed(2)}
-                                </span>
+                                </Muted>
                             )}
                         </div>
 
                         {stock <= 0 && (
-                            <span className="inline-flex items-center bg-muted-neutral px-1.5 py-1 text-[10px] font-medium text-muted-neutral-foreground rounded-sm whitespace-nowrap leading-none shrink-0">
+                            <BadgeText className="bg-muted-neutral text-muted-neutral-foreground px-1.5 py-1 rounded-sm whitespace-nowrap shrink-0">
                                 Sin stock
-                            </span>
+                            </BadgeText>
                         )}
                     </div>
                 </div>

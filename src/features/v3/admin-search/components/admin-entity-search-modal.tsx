@@ -197,7 +197,7 @@ export function AdminEntitySearchModal<T>({
                                 onClick={handleConfirm}
                             >
                                 <Check className="w-4 h-4 mr-2" />
-                                Confirmar selección
+                                Confirmar
                             </Button>
                         </div>
                     </DialogFooter>

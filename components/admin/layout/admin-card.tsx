@@ -1,3 +1,5 @@
+//File: frontend/components/admin/layout/admin-card.tsx
+
 import React from "react";
 import { cn } from "@/lib/utils";
 

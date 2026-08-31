@@ -1,20 +1,20 @@
-// File: app/(admin)/admin/comparisons/new/page.tsx
-
+// File: frontend/app/admin/comparisons/new/page.tsx
 import AdminPageWrapper from "@/components/admin/AdminPageWrapper";
-import CreateComparisonForm from "@/components/admin/comparisons/CreateComparisonForm";
+import CreateComparisonClient from "@/components/admin/comparisons/CreateComparisonClient";
 
 export default function NewComparisonPage() {
     return (
-        <AdminPageWrapper 
-            title="Nueva Comparativa SEO"
+        <AdminPageWrapper
+            title="Crear Nueva Comparativa"
             breadcrumbItems={[
-                { label: "Home", href: "/admin" },
+                { label: "Catálogo", href: "/admin/products" },
                 { label: "Comparativas", href: "/admin/comparisons" },
             ]}
-            breadcrumbCurrent="Nueva Comparativa"
+            breadcrumbCurrent="Nueva"
+            showBackButton={true}
         >
-            <div className="max-w-screen-2xl mx-auto">
-                <CreateComparisonForm />
+            <div className="max-w-6xl mx-auto">
+                <CreateComparisonClient />
             </div>
         </AdminPageWrapper>
     );

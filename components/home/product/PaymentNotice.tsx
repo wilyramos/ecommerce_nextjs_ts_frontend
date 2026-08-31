@@ -24,7 +24,7 @@ export default function PaymentNotice({ price, installments = 6 }: Props) {
                         Paga en {installments} cuotas
                     </p>
                     <p className="text-[11px] text-muted-foreground leading-snug mt-0.5">
-                        Válido con tarjetas de crédito*
+                        Procesado por cuotealo
                     </p>
                 </div>
             </div>

@@ -4,8 +4,8 @@ import { getCategories } from "@/src/services/categorys";
 import { getActiveBrands } from "@/src/services/brands";
 import { linesService } from "@/src/services/lines.service";
 import { collectionService } from "@/src/services/collection-service";
-import { ComparisonService } from "@/src/services/comparison-service";
-import type { Comparison } from "@/src/schemas/comparison.schema";
+import { comparisonService } from "@/src/services/comparison-service";
+import type { ComparisonResponse } from "@/src/schemas/comparison.schema";
 import type { Collection } from "@/src/schemas/collection.schema";
 import type { ProductLine } from "@/src/schemas/line.schema";
 import type { Brand } from "@/src/schemas/brand.schema";
@@ -13,9 +13,15 @@ import type { MetadataRoute } from "next";
 
 type ChangeFreq = "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
 
-interface ProductSlug { slug: string; updatedAt?: Date | string; }
-interface CategoryItem { slug: string; updatedAt?: Date | string; }
-interface ComparisonResponse { data?: Comparison[]; }
+interface ProductSlug {
+    slug: string;
+    updatedAt?: Date | string;
+}
+
+interface CategoryItem {
+    slug: string;
+    updatedAt?: Date | string;
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://gophone.pe";
@@ -26,17 +32,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         brands,
         lines,
         collections,
-        comparisonsResponse,
+        comparisonsData,
     ] = await Promise.all([
         GetAllProductsSlug().catch(() => [] as ProductSlug[]),
         getCategories().catch(() => [] as CategoryItem[]),
         getActiveBrands().catch(() => [] as Brand[]),
         linesService.getAllActive().catch(() => [] as ProductLine[]),
         collectionService.getAll({ active: true }).catch(() => [] as Collection[]),
-        ComparisonService.getAll({ isActive: true, limit: 1000 }).catch(() => ({ data: [] } as ComparisonResponse)),
+        comparisonService.getAllPublic({ limit: 1000 }).catch(() => ({ items: [] as ComparisonResponse[], meta: {} })),
     ]);
 
-    const comparisons = comparisonsResponse?.data || [];
+    const comparisons = comparisonsData.items || [];
     const now = new Date();
     const activeCollections = collections.filter((c) => {
         const hasStarted = !c.startsAt || new Date(c.startsAt) <= now;
@@ -44,7 +50,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         return hasStarted && hasNotEnded;
     });
 
-    // 1. Productos (Frecuencia ajustada a semanal, prioridad reducida a 0.7 para jerarquía)
+    // 1. Productos
     const productUrls: MetadataRoute.Sitemap = products.map((p) => ({
         url: `${baseUrl}/productos/${p.slug}`,
         lastModified: p.updatedAt ? new Date(p.updatedAt) : new Date(),
@@ -85,14 +91,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }));
 
     // 6. Comparativas
-    const comparisonUrls: MetadataRoute.Sitemap = comparisons.map((c: Comparison) => ({
-        url: `${baseUrl}/comparativas/${c.slug}`,
-        lastModified: c.updatedAt ? new Date(c.updatedAt) : new Date(),
-        changeFrequency: "monthly",
-        priority: 0.6,
-    }));
+    const comparisonUrls: MetadataRoute.Sitemap = comparisons
+        .filter((c) => c.isActive)
+        .map((c) => ({
+            url: `${baseUrl}/comparativas/${c.slug}`,
+            lastModified: c.updatedAt ? new Date(c.updatedAt) : new Date(),
+            changeFrequency: "monthly",
+            priority: 0.6,
+        }));
 
-    // 7. Páginas Estáticas (Prioridades y frecuencias ajustadas para coherencia)
+    // 7. Páginas Estáticas
     const staticPages = [
         { url: "", priority: 1.0, changefreq: "weekly" as ChangeFreq },
         { url: "/catalogo", priority: 0.9, changefreq: "weekly" as ChangeFreq },
@@ -118,7 +126,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: page.priority,
     }));
 
-    // Ordenamiento sugerido: De mayor a menor prioridad para facilitar el rastreo
     return [
         ...staticSitemapUrls,
         ...categoryUrls,

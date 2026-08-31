@@ -4,17 +4,18 @@ import { useState, useEffect } from "react";
 import { useCatalogNav } from "./hooks/useCatalogNav";
 import type { CatalogFilters } from "@/src/schemas/catalog";
 import { AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import { H4, Price } from "@/components/ui/TypographyStore";
 import * as SliderPrimitive from "@radix-ui/react-slider";
 
 export default function PriceRangeFilter({ filters }: { filters: CatalogFilters }) {
     const { searchParams, setPriceRange, clearPriceRange } = useCatalogNav();
-    
+
     const globalMin = filters.price[0]?.min ?? 0;
     const globalMax = filters.price[0]?.max ?? 9999;
-    
-    const urlMin = searchParams.get('priceMin');
-    const urlMax = searchParams.get('priceMax');
-    
+
+    const urlMin = searchParams.get("priceMin");
+    const urlMax = searchParams.get("priceMax");
+
     const [localValues, setLocalValues] = useState<[number, number]>([
         urlMin ? Number(urlMin) : globalMin,
         urlMax ? Number(urlMax) : globalMax,
@@ -28,7 +29,7 @@ export default function PriceRangeFilter({ filters }: { filters: CatalogFilters 
     }, [urlMin, urlMax, globalMin, globalMax]);
 
     const fmt = (n: number) =>
-        new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN', maximumFractionDigits: 0 }).format(n);
+        new Intl.NumberFormat("es-PE", { style: "currency", currency: "PEN", maximumFractionDigits: 0 }).format(n);
 
     if (globalMin === globalMax || (globalMin === 0 && globalMax === 9999)) return null;
 
@@ -64,12 +65,12 @@ export default function PriceRangeFilter({ filters }: { filters: CatalogFilters 
 
                 <div className="flex justify-between mt-4">
                     <div className="flex flex-col">
-                        <span className="text-[10px] font-semibold text-muted-foreground">Mínimo</span>
-                        <span className="text-xs font-medium tabular-nums text-foreground">{fmt(localValues[0])}</span>
+                        <H4 className="text-[10px] font-semibold text-muted-foreground">Mínimo</H4>
+                        <Price className="text-xs tabular-nums text-foreground">{fmt(localValues[0])}</Price>
                     </div>
                     <div className="flex flex-col text-right">
-                        <span className="text-[10px] font-semibold text-muted-foreground">Máximo</span>
-                        <span className="text-xs font-medium tabular-nums text-foreground">{fmt(localValues[1])}</span>
+                        <H4 className="text-[10px] font-semibold text-muted-foreground">Máximo</H4>
+                        <Price className="text-xs tabular-nums text-foreground">{fmt(localValues[1])}</Price>
                     </div>
                 </div>
             </AccordionContent>

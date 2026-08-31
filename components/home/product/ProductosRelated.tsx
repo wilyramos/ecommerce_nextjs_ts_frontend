@@ -2,6 +2,7 @@
 
 import { getProductsRelated } from "@/src/services/products";
 import RelatedCarousel from "./RelatedCarousel";
+import SectionHeader from "@/components/home/sections/SectionHeader";
 
 export default async function ProductosRelated({ slug }: { slug: string }) {
     const productsRelated = await getProductsRelated(slug);
@@ -12,12 +13,9 @@ export default async function ProductosRelated({ slug }: { slug: string }) {
 
     return (
         <section className="flex flex-col mx-auto w-full">
-            <h2 className="text-md tracking-tighter text-[var(--color-text-primary)]">
-                Productos similares
-            </h2>
-            <div>
-                <div className="border-b border-2 border-action-cta w-14 md:w-20 mb-4"></div>
-            </div>
+            <SectionHeader
+                title="Productos relacionados"
+            />
             <div className="relative">
                 <RelatedCarousel products={productsRelated} />
             </div>

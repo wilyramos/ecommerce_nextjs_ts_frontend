@@ -1,27 +1,26 @@
-//File: frontend/app/admin/layout.tsx
-
+// File: frontend/app/admin/layout.tsx
 import { verifySession } from '@/src/auth/dal';
 import { AdminSidebar, MobileSidebar } from "@/components/admin/AdminSidebar";
 import ToastNotification from "@/components/ui/ToastNotification";
 import { redirect } from 'next/navigation';
 import Logo from '@/components/ui/Logo';
 import ScrollToTop from '@/components/navigation/ScrollToTop';
+import { ConfirmDialogProvider } from "@/components/admin/ui/modal/useConfirm";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
     const { user } = await verifySession();
     if (user.rol !== 'administrador') redirect("/profile");
 
     return (
-        <>
+        <ConfirmDialogProvider>
             <ScrollToTop />
 
             {/* MOBILE TOPBAR */}
-            <div className="md:hidden fixed top-0 inset-x-0 z-40 bg-background  border-b border-border flex items-center px-3 gap-3">
+            <div className="md:hidden fixed top-0 inset-x-0 z-40 bg-background border-b border-border flex items-center px-3 gap-3">
                 <MobileSidebar user={user} />
                 <div className="flex-1 flex justify-center">
                     <Logo />
                 </div>
-                <div className="w-9" /> {/* balance */}
             </div>
 
             {/* DESKTOP LAYOUT */}
@@ -38,6 +37,6 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             </div>
 
             <ToastNotification />
-        </>
+        </ConfirmDialogProvider>
     );
 }

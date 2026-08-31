@@ -225,7 +225,7 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
                     </div>
 
                     {/* Nombre del Producto */}
-                    <H1 className="text-xl sm:text-2xl font-medium">
+                    <H1 className="text-xl sm:text-2xl font-medium text-muted-foreground capitalize">
                         {producto.nombre}
                     </H1>
 
@@ -440,7 +440,7 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
                 )}
 
                 {/* Bloque Logístico Consolidado */}
-                <div className="divide-y divide-border border-y border-border">
+                <div className="">
                     <div className="flex items-center justify-between py-2.5">
                         <Small className="font-medium">Métodos de pago:</Small>
                         <PaymentMethods />
