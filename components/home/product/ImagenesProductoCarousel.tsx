@@ -113,7 +113,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
     }
 
     return (
-        <div className="w-full flex flex-col md:flex-row gap-4 lg:gap-6 bg-[var(--color-bg-secondary)] select-none rounded-lg">
+        <div className="w-full flex flex-col md:flex-row gap-4 lg:gap-6 select-none ">
 
             {/* DESKTOP THUMBNAILS */}
             {uniqueImages.length > 1 && (
@@ -172,7 +172,7 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
             )}
 
             {/* MAIN IMAGE */}
-            <div className="flex-1 relative group">
+            <div className="flex-1 relative group bg-background">
                 <div
                     className={cn(
                         "relative aspect-square overflow-hidden bg-[var(--color-bg-primary)] transition-all duration-700 ease-in-out",

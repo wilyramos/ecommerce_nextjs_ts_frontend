@@ -43,7 +43,7 @@ export default function ProductExpandableSections({ producto }: Props) {
     if (!hasDescripcion && !hasSpecs) return null;
 
     return (
-        <Accordion type="multiple" className="w-full divide-y divide-border border-b border-border px-4">
+        <Accordion type="multiple" className="w-full divide-y divide-border border-b border-border ">
             {/* DESCRIPCIÓN */}
             {hasDescripcion && (
                 <AccordionItem value="descripcion" className="border-none">

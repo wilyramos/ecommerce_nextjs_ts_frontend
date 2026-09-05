@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/select";
 import ProductComplementary from './ProductComplementary';
 import { GoLinkExternal } from "react-icons/go";
-import { H1, P, Small, Muted, Price, BadgeText } from '@/components/ui/TypographyStore';
+import { H1, H4, P, Small, Muted, Price, BadgeText } from '@/components/ui/TypographyStore';
 import type { DiscountResponse } from '@/src/schemas/discount.schema';
 import ProductAutomaticPromotionBanner from './ProductAutomaticPromotionBanner';
 
@@ -182,7 +182,7 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
     };
 
     return (
-        <article className="flex flex-col lg:grid lg:grid-cols-12 gap-4 md:gap-6 lg:gap-10 mx-auto text-foreground items-start w-full min-w-0 bg-background">
+        <article className="flex flex-col lg:grid lg:grid-cols-12 gap-4 md:gap-6 lg:gap-10 mx-auto text-foreground items-start w-full min-w-0">
             {/* ── 1. CARRUSEL DE IMÁGENES ── */}
             <div className="order-1 lg:order-none lg:col-span-7 w-full min-w-0 overflow-hidden">
                 <ImagenesProductoCarousel images={variantImages} />
@@ -269,7 +269,7 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
                             return (
                                 <div
                                     key={attr.key}
-                                    className="flex flex-col items-center text-center gap-1 p-2 border border-border bg-muted/10 min-w-0"
+                                    className="flex flex-col  items-center md:items-start text-center md:text-start gap-1 min-w-0"
                                 >
                                     {attr.icon && (
                                         <Image
@@ -283,9 +283,9 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
                                         />
                                     )}
                                     <div className="flex flex-col min-w-0">
-                                        <Small className="uppercase tracking-wider">{attr.key}</Small>
+                                        <Small className="uppercase tracking-wider font-medium">{attr.key}</Small>
                                         {!isCheckAttribute && (
-                                            <P className="text-xs font-medium text-foreground uppercase truncate">
+                                            <P className="text-md text-foreground uppercase">
                                                 {attr.value}
                                             </P>
                                         )}
@@ -317,7 +317,7 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
                         return (
                             <fieldset key={key} className="space-y-1.5">
                                 <legend>
-                                    <Small className="uppercase tracking-wider font-medium text-muted-foreground">{key}:</Small>
+                                    <H4 className="uppercase tracking-wider font-bold text-muted-foreground">{key}:</H4>
                                 </legend>
 
                                 {isColor ? (

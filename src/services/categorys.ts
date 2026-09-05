@@ -13,32 +13,6 @@ import {
 
 const BASE = `${process.env.API_URL}/category`;
 
-function logZodValidation(fnName: string, rawData: unknown, schema: typeof apiCategorySchema | typeof apiCategoryListSchema) {
-    const result = schema.safeParse(rawData);
-    if (!result.success) {
-        console.error(`\n❌ [ZodError in ${fnName}]`);
-        console.error("Path & Message:", JSON.stringify(result.error.issues, null, 2));
-
-        if (Array.isArray(rawData)) {
-            result.error.issues.forEach((issue) => {
-                const index = issue.path[0];
-                if (typeof index === "number" && rawData[index]) {
-                    console.error(`\n🔎 [Detalle Elemento índice ${index}]:`, {
-                        id: rawData[index]._id ?? rawData[index].id,
-                        name: rawData[index].name,
-                        slug: rawData[index].slug,
-                        attributes: JSON.stringify(rawData[index].attributes, null, 2),
-                    });
-                }
-            });
-        } else if (rawData && typeof rawData === "object") {
-            console.error("\n🔎 [Payload completo recibido]:", JSON.stringify(rawData, null, 2));
-        }
-        throw result.error;
-    }
-    return result.data;
-}
-
 // ─── Por ID ───────────────────────────────────────────────────────────────────
 
 export const getCategory = cache(async (id: string): Promise<CategoryResponse> => {
@@ -48,8 +22,7 @@ export const getCategory = cache(async (id: string): Promise<CategoryResponse> =
 
     if (!res.ok) notFound();
 
-    const data = await res.json();
-    return logZodValidation(`getCategory(${id})`, data, apiCategorySchema) as CategoryResponse;
+    return apiCategorySchema.parse(await res.json());
 });
 
 // ─── Por slug ─────────────────────────────────────────────────────────────────
@@ -61,8 +34,7 @@ export const getCategoryBySlug = cache(async (slug: string): Promise<CategoryRes
 
     if (!res.ok) notFound();
 
-    const data = await res.json();
-    return logZodValidation(`getCategoryBySlug(${slug})`, data, apiCategorySchema) as CategoryResponse;
+    return apiCategorySchema.parse(await res.json());
 });
 
 // ─── Todas ────────────────────────────────────────────────────────────────────
@@ -74,11 +46,11 @@ export const getCategories = cache(async (): Promise<CategoryListResponse> => {
 
     if (!res.ok) notFound();
 
-    const data = await res.json();
-    return logZodValidation("getCategories", data, apiCategoryListSchema) as CategoryListResponse;
+    return apiCategoryListSchema.parse(await res.json());
 });
 
 // ─── Categorías raíz (antes "patterns") ──────────────────────────────────────
+// Endpoint actualizado: GET /category/roots
 
 export const getRootCategories = cache(async (): Promise<CategoryListResponse> => {
     const res = await fetch(`${BASE}/roots`, {
@@ -87,11 +59,11 @@ export const getRootCategories = cache(async (): Promise<CategoryListResponse> =
 
     if (!res.ok) notFound();
 
-    const data = await res.json();
-    return logZodValidation("getRootCategories", data, apiCategoryListSchema) as CategoryListResponse;
+    return apiCategoryListSchema.parse(await res.json());
 });
 
 // ─── Todas las subcategorías pobladas ────────────────────────────────────────
+// Endpoint actualizado: GET /category/subcategories
 
 export const getAllSubcategories = cache(async (): Promise<CategoryListResponse> => {
     const res = await fetch(`${BASE}/subcategories`, {
@@ -100,11 +72,11 @@ export const getAllSubcategories = cache(async (): Promise<CategoryListResponse>
 
     if (!res.ok) notFound();
 
-    const data = await res.json();
-    return logZodValidation("getAllSubcategories", data, apiCategoryListSchema) as CategoryListResponse;
+    return apiCategoryListSchema.parse(await res.json());
 });
 
 // ─── Subcategorías de una categoría específica ───────────────────────────────
+// Endpoint nuevo: GET /category/:id/subcategories
 
 export const getSubcategoriesById = cache(async (id: string): Promise<CategoryListResponse> => {
     const res = await fetch(`${BASE}/${id}/subcategories`, {
@@ -113,6 +85,5 @@ export const getSubcategoriesById = cache(async (id: string): Promise<CategoryLi
 
     if (!res.ok) notFound();
 
-    const data = await res.json();
-    return logZodValidation(`getSubcategoriesById(${id})`, data, apiCategoryListSchema) as CategoryListResponse;
+    return apiCategoryListSchema.parse(await res.json());
 });
