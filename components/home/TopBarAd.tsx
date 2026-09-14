@@ -22,7 +22,7 @@ export default function TopBarAd({ ads }: TopBarAdProps) {
     <div
       role="region"
       aria-label="Anuncios y promociones de la tienda"
-      className="relative flex h-10 w-full select-none items-center overflow-hidden bg-surface-inverse text-text-inverse transition-colors"
+      className="relative flex h-10 w-full select-none items-center overflow-hidden bg-brand-accent text-text-inverse transition-colors"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
@@ -33,13 +33,14 @@ export default function TopBarAd({ ads }: TopBarAdProps) {
         }
       `}</style>
 
+      {/* Máscaras de desvanecimiento laterales con el nuevo color de fondo */}
       <div 
         aria-hidden="true" 
-        className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-surface-inverse to-transparent" 
+        className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-brand-accent to-transparent" 
       />
       <div 
         aria-hidden="true" 
-        className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-surface-inverse to-transparent" 
+        className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-brand-accent to-transparent" 
       />
 
       <div
@@ -54,7 +55,7 @@ export default function TopBarAd({ ads }: TopBarAdProps) {
           const content = (
             <span
               className={`group flex h-full flex-nowrap whitespace-nowrap items-center gap-2 px-6 text-[12px] tracking-tight transition-opacity duration-normal ${
-                ad.linkTo ? "cursor-pointer hover:opacity-80" : "cursor-default"
+                ad.linkTo ? "cursor-pointer hover:opacity-90" : "cursor-default"
               }`}
             >
               <span className="font-semibold tracking-wide whitespace-nowrap text-text-inverse">
@@ -63,15 +64,15 @@ export default function TopBarAd({ ads }: TopBarAdProps) {
 
               {ad.subtitle && (
                 <>
-                  <span className="select-none whitespace-nowrap text-text-tertiary">·</span>
-                  <span className="font-medium whitespace-nowrap text-text-disabled">
+                  <span className="select-none whitespace-nowrap text-text-inverse/60">·</span>
+                  <span className="font-medium whitespace-nowrap text-text-inverse/90">
                     {ad.subtitle}
                   </span>
                 </>
               )}
 
               {ad.linkTo && (
-                <span className="inline-flex items-center whitespace-nowrap text-text-disabled transition-all duration-normal group-hover:translate-x-1 group-hover:text-text-inverse">
+                <span className="inline-flex items-center whitespace-nowrap text-text-inverse/70 transition-all duration-normal group-hover:translate-x-1 group-hover:text-text-inverse">
                   <span className="sr-only">Ver más detalles</span>
                   <ChevronRight size={14} strokeWidth={2.5} className="ml-0.5" />
                 </span>
@@ -79,7 +80,7 @@ export default function TopBarAd({ ads }: TopBarAdProps) {
 
               <span 
                 aria-hidden="true" 
-                className="ml-6 h-3.5 w-[1px] bg-brand-primary-lighter" 
+                className="ml-6 h-3.5 w-[1px] bg-text-inverse/20" 
               />
             </span>
           );
@@ -89,7 +90,7 @@ export default function TopBarAd({ ads }: TopBarAdProps) {
               key={`${ad._id || i}-${i}`}
               href={ad.linkTo}
               prefetch={false}
-              className="inline-flex h-full flex-nowrap whitespace-nowrap items-center rounded-radius-sm outline-none focus-visible:ring-2 focus-visible:ring-surface-primary/50 focus-visible:ring-offset-1 focus-visible:ring-offset-surface-inverse"
+              className="inline-flex h-full flex-nowrap whitespace-nowrap items-center rounded-radius-sm outline-none focus-visible:ring-2 focus-visible:ring-surface-primary/50 focus-visible:ring-offset-1 focus-visible:ring-offset-brand-accent"
             >
               {content}
             </Link>

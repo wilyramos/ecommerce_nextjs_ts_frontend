@@ -55,8 +55,8 @@ export default function FeaturesList() {
       <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-20px" }}
-        className="grid grid-cols-2 gap-3 rounded-[1.25rem] border border-border-primary/50 bg-surface-primary/70 p-3 shadow-sm backdrop-blur-xl xs:grid-cols-3 md:flex md:items-center md:justify-between md:gap-4 md:px-6 md:py-4"
+        viewport={{ once: true, margin: "-10px" }}
+        className="grid grid-cols-2 gap-3 rounded-[1.25rem] border border-border-primary/50 bg-surface-primary/70 p-1 backdrop-blur-xl xs:grid-cols-3 md:flex md:items-center md:justify-between md:gap-4 md:px-4 md:py-1"
       >
         {features.map((feature, index) => (
           <motion.div
