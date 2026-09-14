@@ -34,13 +34,13 @@ export default function PriceRangeFilter({ filters }: { filters: CatalogFilters 
     if (globalMin === globalMax || (globalMin === 0 && globalMax === 9999)) return null;
 
     return (
-        <AccordionItem value="item-price" className="border-b border-border py-1">
-            <AccordionTrigger className="text-[13px] font-semibold tracking-wide text-primary hover:no-underline py-3 px-1 hover:text-neutral-600 transition-colors">
+        <AccordionItem value="item-price" className="border-b border-border-primary/40 py-1">
+            <AccordionTrigger className="py-3 text-[13px] font-semibold text-text-primary transition-opacity duration-fast hover:opacity-80 hover:no-underline outline-none">
                 Precio
             </AccordionTrigger>
-            <AccordionContent className="pt-4 pb-3 px-2">
+            <AccordionContent className="pt-3 pb-4 px-2">
                 <SliderPrimitive.Root
-                    className="relative flex w-full touch-none select-none items-center"
+                    className="relative flex w-full touch-none select-none items-center py-2"
                     min={globalMin}
                     max={globalMax}
                     step={1}
@@ -55,22 +55,22 @@ export default function PriceRangeFilter({ filters }: { filters: CatalogFilters 
                         }
                     }}
                 >
-                    <SliderPrimitive.Track className="relative h-[3px] w-full grow overflow-hidden rounded-full bg-muted">
-                        <SliderPrimitive.Range className="absolute h-full bg-primary" />
+                    <SliderPrimitive.Track className="relative h-1.5 w-full grow overflow-hidden rounded-radius-full bg-surface-tertiary">
+                        <SliderPrimitive.Range className="absolute h-full bg-brand-primary" />
                     </SliderPrimitive.Track>
 
-                    <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border border-primary bg-background shadow-sm ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 disabled:pointer-events-none cursor-grab active:cursor-grabbing hover:scale-110" />
-                    <SliderPrimitive.Thumb className="block h-5 w-5 rounded-full border border-primary bg-background shadow-sm ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 disabled:pointer-events-none cursor-grab active:cursor-grabbing hover:scale-110" />
+                    <SliderPrimitive.Thumb className="block h-6 w-6 rounded-radius-full border border-black/5 bg-surface-primary shadow-md ring-offset-surface-primary transition-transform duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/20 disabled:pointer-events-none cursor-grab active:cursor-grabbing active:scale-110" />
+                    <SliderPrimitive.Thumb className="block h-6 w-6 rounded-radius-full border border-black/5 bg-surface-primary shadow-md ring-offset-surface-primary transition-transform duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/20 disabled:pointer-events-none cursor-grab active:cursor-grabbing active:scale-110" />
                 </SliderPrimitive.Root>
 
-                <div className="flex justify-between mt-4">
-                    <div className="flex flex-col">
-                        <H4 className="text-[10px] font-semibold text-muted-foreground">Mínimo</H4>
-                        <Price className="text-xs tabular-nums text-foreground">{fmt(localValues[0])}</Price>
+                <div className="flex justify-between mt-5">
+                    <div className="flex flex-col gap-0.5">
+                        <H4 className="text-[11px] font-medium text-text-secondary">Mínimo</H4>
+                        <Price className="text-[13px] font-medium tabular-nums text-text-primary">{fmt(localValues[0])}</Price>
                     </div>
-                    <div className="flex flex-col text-right">
-                        <H4 className="text-[10px] font-semibold text-muted-foreground">Máximo</H4>
-                        <Price className="text-xs tabular-nums text-foreground">{fmt(localValues[1])}</Price>
+                    <div className="flex flex-col gap-0.5 text-right">
+                        <H4 className="text-[11px] font-medium text-text-secondary">Máximo</H4>
+                        <Price className="text-[13px] font-medium tabular-nums text-text-primary">{fmt(localValues[1])}</Price>
                     </div>
                 </div>
             </AccordionContent>

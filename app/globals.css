@@ -2,132 +2,241 @@
 @import "tw-animate-css";
 
 :root {
-  /* --- BASE DE DISEÑO / LIGHT MODE ÚNICO --- */
-  --background: oklch(1 0 0);               /* #FFFFFF */
-  --background-secondary: oklch(0.96 0 0);   /* #F6F6F6 - Segunda opción de fondo general */
-  --foreground: oklch(0.10 0 0);            /* Neutro oscuro absoluto para máxima legibilidad */
-  --radius: 0.5rem;
+  /* ========== MARCA GOPHONE ========== */
+  --brand-primary: #000000;          /* Color rector de la marca. Usado en logotipo, encabezados de alto impacto y elementos clave de identidad */
+  --brand-primary-light: #1d1d1f;    /* Negro grafito/titanio. Evita el contraste estridente en bloques oscuros extensos y tarjetas destacadas */
+  --brand-primary-lighter: #333336;  /* Gris oscuro sutil. Ideal para bordes sobre fondos oscuros o elementos secundarios de marca */
 
-  /* --- COMPONENTES SHADCN --- */
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.10 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.10 0 0);
-  
-  /* Identidad Base Estructural (Negro Absoluto) */
-  --primary: #0f0f0f;                  /* #000000 */
-  --primary-foreground: oklch(1 0 0);       /* Texto blanco sobre elementos oscuros */
-  
-  /* Fondo Secundario de la Marca con Naranja Claro (#FFEDD5) */
-  --secondary: #dbdbdb;      
-  --secondary-foreground: #0f0f0f;  /* Gris ultra oscuro neutro (sin matiz naranja) para alta legibilidad */
+  --brand-secondary: #f5f5f7;        /* Gris neutro característico de Apple. Usado para seccionar bandas de contenido y contenedores limpios */
+  --brand-secondary-dark: #e5e5ea;   /* Tono de contraste para divisores o estados activos dentro de bloques secundarios */
+  --brand-secondary-light: #fbfbfd;  /* Fondo de apoyo casi blanco. Da relieve visual sobre el fondo blanco puro */
 
-  --muted: #e2e2e2;           /* #f6f6f6 */
-  --muted-foreground: oklch(0.45 0 0);
+  --brand-accent: #8b1538;           /*  de interacción Apple. Guía la atención visual hacia enlaces clave y acciones secundarias */
+  --brand-accent-dark: #5a0d24;   
+  --brand-accent-light: #e8f2fc;     /* Fondo sutil para chips de novedades, badges de preventa o tags informativos */
 
-  /* Estructura y Formularios */
-  --border: oklch(0.90 0 0);                /* Gris neutro sutil para líneas divisorias y bordes */
-  --border-hover: hwb(0 62% 38%);          /* Estado hover de bordes neutros */
-  --input: oklch(0.90 0 0);
-  --ring: #ff6000;            /* Enfoque visual con el naranja principal */
+  /* ========== SUPERFICIES (FONDOS) ========== */
+  --surface-primary: #ffffff;        /* Fondo base de la tienda, modales y tarjetas principales */
+  --surface-secondary: #f5f5f7;      /* Fondo de paneles de filtros, carruseles y fichas técnicas */
+  --surface-tertiary: #e5e5ea;       /* Fondo para elementos deshabilitados o subcontenedores anidados */
+  --surface-inverse: #000000;        /* Fondo negro absoluto para secciones keynote, dark banners o footer */
 
-  /* Fondos Alternativos no enlazados a la marca */
-  --muted-neutral: oklch(0.97 0 0);         /* Para elementos deshabilitados o filas de tablas */
-  --muted-neutral-foreground: oklch(0.45 0 0);
+  /* ========== CONTENIDO (TEXTO) ========== */
+  --text-primary: #1d1d1f;           /* Títulos principales, nombres de dispositivo y precios en catálogo */
+  --text-secondary: #515154;         /* Párrafos descriptivos, características de hardware y textos de soporte */
+  --text-tertiary: #86868b;          /* Textos legales, especificaciones al pie, impuestos y fechas estimadas */
+  --text-disabled: #d2d2d7;          /* Tipografía inactiva en formularios deshabilitados o stock no disponible */
+  --text-inverse: #ffffff;           /* Texto blanco de alto contraste sobre superficies oscuras o botones negros */
 
-  /* --- ACCIONES FOCALIZADAS DE E-COMMERCE --- */
-  /* El Naranja del Logo exclusivo para  Conversión (Botón de Compra / Carrito) */
-  --action-cta: #ff6000;      /* #F97316 - Alta visibilidad de acción principal */
-  --action-cta-hover: oklch(0.58 0.23 39.4);/* #EA580C - Estado hover de conversión */
-  --action-cta-foreground: oklch(1 0 0);    /* Texto blanco sobre el botón naranja */
+  /* ========== BORDES ========== */
+  --border-primary: #e5e5ea;         /* Borde estructural fino para tarjetas, inputs y separadores */
+  --border-secondary: #f5f5f7;       /* Divisores casi imperceptibles entre filas de listas */
+  --border-strong: #86868b;          /* Borde con mayor presencia para inputs activos o selector de capacidad/color */
 
-  /* Estado Informativo Neutro */
-  --info: oklch(0.53 0.20 253.3);           /* Para estados logísticos o informativos */
-  --info-foreground: oklch(1 0 0);
+  /* ========== COMPONENTES - BOTONES ========== */
+  --button-primary-bg: #000000;            /* Fondo del CTA de conversión principal: "Añadir a la bolsa" o "Comprar" */
+  --button-primary-text: #ffffff;          /* Texto del CTA principal */
+  --button-primary-hover: #1d1d1f;         /* Estado hover del CTA principal con transición suave */
+  --button-primary-disabled: #d2d2d7;      /* Fondo del botón principal cuando el producto está agotado */
 
-  /* Estados Críticos de Transacción y Catálogo */
-  --success: oklch(0.63 0.19 148.6);        /* #10B981 - Stock Disponible / Éxito */
-  --warning: oklch(0.77 0.18 73.6);         /* #F59E0B - Últimas Unidades */
-  --destructive: #ff6000;     /* #EF4444 - Etiquetas de Descuento */
-  --destructivered: #ff0000;     /* #FF0000 - Etiquetas de ERROR, ELIMINAR */
-  --destructive-foreground: oklch(1 0 0);
+  --button-secondary-bg: #f5f5f7;          /* Fondo para botones de soporte: "Más información" o "Comparar" */
+  --button-secondary-text: #1d1d1f;        /* Texto del botón secundario */
+  --button-secondary-hover: #e5e5ea;       /* Estado hover del botón secundario */
+  --button-secondary-disabled: #fbfbfd;    /* Fondo del botón secundario deshabilitado */
 
-  /* Analítica y Métricas */
-  --chart-1: oklch(0.65 0.22 43.3);
-  --chart-2: oklch(0.30 0 0);
-  
-  /* Paneles de Filtros y Dashboard de Usuario */
-  --sidebar: oklch(1 0 0);
-  --sidebar-foreground: oklch(0.10 0 0);
-  --sidebar-primary: oklch(0 0 0);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.95 0.04 48.0);  /* #FFEDD5 para selección en barra lateral */
-  --sidebar-accent-foreground: oklch(0.10 0 0); /* Texto oscuro neutro en elemento activo */
-  --sidebar-border: oklch(0.90 0 0);
-  --sidebar-ring: oklch(0.65 0.22 43.3);
+  --button-accent-bg: #8b1538;             /* Botón con llamada de acción alternativa o confirmación de pago */
+  --button-accent-text: #ffffff;           /* Texto del botón de acento */
+  --button-accent-hover: #a71c3e;          /* Estado hover del botón de acento */
+  --button-accent-disabled: #d2d2d7;       /* Fondo del botón de acento deshabilitado */
+
+  /* ========== ESTADOS ========== */
+  --status-success: #34c759;         /* Verde funcional. Indica stock disponible, orden completada o garantía activa */
+  --status-success-light: #eaf8ee;   /* Fondo tenue para alertas de éxito o badges de envío gratis */
+
+  --status-warning: #ff9f0a;         /* Ámbar funcional. Indica pocas unidades restantes o demoras de entrega */
+  --status-warning-light: #fff5e6;   /* Fondo tenue para mensajes preventivos de stock */
+
+  --status-error: #ff3b30;           /* Rojo de sistema. Errores de validación de pago, cupones vencidos o sin stock */
+  --status-error-light: #ffefee;     /* Fondo suave para cuadros de error en formularios */
+
+  --status-info: #0071e3;            /* Azul funcional. Avisos del sistema, notas de compatibilidad o guías */
+  --status-info-light: #e8f2fc;      /* Fondo tenue para bloques informativos */
+
+  /* ========== SOMBRAS ========== */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 24px 0 rgba(0, 0, 0, 0.10);
+  --shadow-xl: 0 20px 40px 0 rgba(0, 0, 0, 0.12);
+
+  /* ========== ESPACIADO ========== */
+--container-xs: 20rem;   /* 320px */
+  --container-sm: 24rem;   /* 384px */
+  --container-md: 28rem;   /* 448px */
+  --container-lg: 32rem;   /* 512px */
+  --container-xl: 36rem;   /* 576px */
+
+  /* ========== TIPOGRAFÍA ========== */
+  --font-family-base: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-family-mono: "SF Mono", Monaco, Menlo, Consolas, monospace;
+
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* ========== BORDER RADIUS ========== */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
+
+  /* ========== TRANSICIONES ========== */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ========== Z-INDEX ========== */
+  --z-dropdown: 1000;
+  --z-modal: 1050;
+  --z-tooltip: 1070;
+  --z-notification: 1100;
 }
 
 @theme {
-  /* --- ASIGNACIÓN DE TOKENS TAILWIND V4 --- */
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  /* ========== COLORES DE MARCA ========== */
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-primary-light: var(--brand-primary-light);
+  --color-brand-primary-lighter: var(--brand-primary-lighter);
 
-  /* Variables del Sistema */
-  --color-background: var(--background);
-  --color-background-secondary: var(--background-secondary);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-border: var(--border);
-  --color-border-hover: var(--border-hover);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
+  --color-brand-secondary: var(--brand-secondary);
+  --color-brand-secondary-dark: var(--brand-secondary-dark);
+  --color-brand-secondary-light: var(--brand-secondary-light);
 
-  /* Nuevos Mapeos de Utilidades */
-  --color-muted-neutral: var(--muted-neutral);
-  --color-muted-neutral-foreground: var(--muted-neutral-foreground);
-  --color-info: var(--info);
-  --color-info-foreground: var(--info-foreground);
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-accent-dark: var(--brand-accent-dark);
+  --color-brand-accent-light: var(--brand-accent-light);
 
-  /* Utilidades del E-commerce */
-  --color-action-cta: var(--action-cta);
-  --color-action-cta-hover: var(--action-cta-hover);
-  --color-action-cta-foreground: var(--action-cta-foreground);
-  --color-success: var(--success);
-  --color-warning: var(--warning);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
+  /* ========== SUPERFICIES (FONDOS) ========== */
+  --color-surface-primary: var(--surface-primary);
+  --color-surface-secondary: var(--surface-secondary);
+  --color-surface-tertiary: var(--surface-tertiary);
+  --color-surface-inverse: var(--surface-inverse);
 
-  /* Panel Lateral */
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  /* ========== CONTENIDO (TEXTO) ========== */
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-text-disabled: var(--text-disabled);
+  --color-text-inverse: var(--text-inverse);
+
+  /* ========== BORDES ========== */
+  --color-border-primary: var(--border-primary);
+  --color-border-secondary: var(--border-secondary);
+  --color-border-strong: var(--border-strong);
+
+  /* ========== COMPONENTES - BOTONES ========== */
+  --color-button-primary-bg: var(--button-primary-bg);
+  --color-button-primary-text: var(--button-primary-text);
+  --color-button-primary-hover: var(--button-primary-hover);
+  --color-button-primary-disabled: var(--button-primary-disabled);
+
+  --color-button-secondary-bg: var(--button-secondary-bg);
+  --color-button-secondary-text: var(--button-secondary-text);
+  --color-button-secondary-hover: var(--button-secondary-hover);
+  --color-button-secondary-disabled: var(--button-secondary-disabled);
+
+  --color-button-accent-bg: var(--button-accent-bg);
+  --color-button-accent-text: var(--button-accent-text);
+  --color-button-accent-hover: var(--button-accent-hover);
+  --color-button-accent-disabled: var(--button-accent-disabled);
+
+  /* ========== ESTADOS ========== */
+  --color-status-success: var(--status-success);
+  --color-status-success-light: var(--status-success-light);
+
+  --color-status-warning: var(--status-warning);
+  --color-status-warning-light: var(--status-warning-light);
+
+  --color-status-error: var(--status-error);
+  --color-status-error-light: var(--status-error-light);
+
+  --color-status-info: var(--status-info);
+  --color-status-info-light: var(--status-info-light);
+
+  /* ========== SOMBRAS ========== */
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+
+  /* ========== ESPACIADO ========== */
+--container-xs: var(--container-xs);
+  --container-sm: var(--container-sm);
+  --container-md: var(--container-md);
+  --container-lg: var(--container-lg);
+  --container-xl: var(--container-xl);
+  
+  /* ========== TIPOGRAFÍA ========== */
+  --font-base: var(--font-family-base);
+  --font-mono: var(--font-family-mono);
+
+  --text-xs: var(--font-size-xs);
+  --text-sm: var(--font-size-sm);
+  --text-base: var(--font-size-base);
+  --text-lg: var(--font-size-lg);
+  --text-xl: var(--font-size-xl);
+  --text-2xl: var(--font-size-2xl);
+
+  --font-weight-light: var(--font-weight-light);
+  --font-weight-regular: var(--font-weight-regular);
+  --font-weight-medium: var(--font-weight-medium);
+  --font-weight-semibold: var(--font-weight-semibold);
+  --font-weight-bold: var(--font-weight-bold);
+
+  --leading-tight: var(--line-height-tight);
+  --leading-normal: var(--line-height-normal);
+  --leading-relaxed: var(--line-height-relaxed);
+
+  /* ========== BORDER RADIUS ========== */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-full: var(--radius-full);
+
+  /* ========== TRANSICIONES ========== */
+  --transition-fast: var(--transition-fast);
+  --transition-normal: var(--transition-normal);
+  --transition-slow: var(--transition-slow);
+
+  /* ========== Z-INDEX ========== */
+  --z-dropdown: var(--z-dropdown);
+  --z-modal: var(--z-modal);
+  --z-tooltip: var(--z-tooltip);
+  --z-notification: var(--z-notification);
 }
 
-
 /* --- CONTENEDORES MULTIMEDIA --- */
+/* -- Usado para el carrusel principal del home page */
 .banner-slot {
   width: 100%;
   aspect-ratio: var(--banner-ratio, 36 / 9);
-  min-height: 140px; 
+  min-height: 140px;
 }
 
-/* Forzar que todo el bloque mantenga la proporción 1x1 exacta en dispositivos móviles */
 @media (max-width: 767px) {
   .banner-slot {
     aspect-ratio: 1 / 1 !important;

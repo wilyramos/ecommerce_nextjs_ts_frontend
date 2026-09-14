@@ -1,5 +1,4 @@
 // File: components/store/ServerCategorias.tsx
-
 import { getCategories } from "@/src/services/categorys";
 import { getActiveCollections } from "@/src/services/collection-service";
 import ClientCategorias from "./ClientCategorias";
@@ -13,13 +12,11 @@ export default async function ServerCategorias() {
 
   return (
     <>
-      {/* Mobile — las colecciones van en el Sheet, no aquí */}
       <div className="md:hidden">
         <ClientCategorias categories={categories} />
       </div>
 
-      {/* Desktop */}
-      <div className="hidden md:block">
+      <div className="hidden w-full md:block">
         <ClientCategoriasDesktop
           categories={categories}
           collections={collections}

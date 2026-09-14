@@ -6,167 +6,250 @@ import Image from "next/image";
 import { routes } from "@/lib/routes";
 import type { Collection } from "@/src/schemas/collection.schema";
 import { FiImage, FiArrowRight } from "react-icons/fi";
-import { Lead } from "@/components/ui/Typography";
+import { ChevronDown } from "lucide-react";
 import { CategoryResponse } from "@/src/schemas/category.schema";
 
-import {
-    NavigationMenu,
-    NavigationMenuList,
-    NavigationMenuItem,
-    NavigationMenuTrigger,
-    NavigationMenuContent,
-    NavigationMenuLink,
-    navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
+interface Props {
+  categories: CategoryResponse[];
+  collections?: Collection[];
+}
 
 export default function ClientCategoriasDesktop({
-    categories,
-    collections = [],
-}: {
-    categories: CategoryResponse[];
-    collections?: Collection[];
-}) {
-    const { rootNoSub, rootWithSub } = React.useMemo(() => {
-        const grouped = categories.reduce((acc, category) => {
-            const parentId =
-                category.parent && typeof category.parent !== "string"
-                    ? category.parent._id
-                    : null;
-            const key = parentId ?? "root";
-            if (!acc[key]) acc[key] = [];
-            acc[key].push(category);
-            return acc;
-        }, {} as Record<string, CategoryResponse[]>);
+  categories,
+  collections = [],
+}: Props) {
+  const [activeMenu, setActiveMenu] = React.useState<string | null>(null);
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
-        const rootCategories = grouped["root"] || [];
+  const { rootNoSub, rootWithSub } = React.useMemo(() => {
+    const grouped = categories.reduce((acc, category) => {
+      const parentId =
+        category.parent && typeof category.parent !== "string"
+          ? category.parent._id
+          : null;
+      const key = parentId ?? "root";
+      if (!acc[key]) acc[key] = [];
+      acc[key].push(category);
+      return acc;
+    }, {} as Record<string, CategoryResponse[]>);
 
-        const rootNoSub: CategoryResponse[] = [];
-        const rootWithSub: { cat: CategoryResponse; sub: CategoryResponse[] }[] = [];
+    const rootCategories = grouped["root"] || [];
+    const rootNoSub: CategoryResponse[] = [];
+    const rootWithSub: { cat: CategoryResponse; sub: CategoryResponse[] }[] = [];
 
-        rootCategories.forEach((cat) => {
-            const sub = grouped[cat._id] || [];
-            if (sub.length === 0) {
-                rootNoSub.push(cat);
-            } else {
-                rootWithSub.push({ cat, sub });
-            }
-        });
+    rootCategories.forEach((cat) => {
+      const sub = grouped[cat._id] || [];
+      if (sub.length === 0) {
+        rootNoSub.push(cat);
+      } else {
+        rootWithSub.push({ cat, sub });
+      }
+    });
 
-        return { rootNoSub, rootWithSub };
-    }, [categories]);
+    return { rootNoSub, rootWithSub };
+  }, [categories]);
 
-    const renderDropdown = (
-        title: string,
-        linkHref: string,
-        items: { _id: string; title: string; slug: string; image?: string | null; isCollection?: boolean }[]
-    ) => (
-        <NavigationMenuContent className="w-[640px]">
-            <div className="grid grid-cols-[200px_1fr] bg-background">
-                <div className="bg-background-secondary p-4 flex flex-col justify-between border-r border-border">
-                    <div>
-                        <Lead className="mb-1 text-foreground">{title}</Lead>
-                      
+  const handleMouseEnter = (key: string) => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setActiveMenu(key);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setActiveMenu(null);
+    }, 120);
+  };
+
+  return (
+    <nav
+      className="relative flex items-center gap-3"
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* 1. Categorías directas */}
+      {rootNoSub.map((cat) => (
+        <Link
+          key={cat._id}
+          href={routes.catalog({ category: cat.slug })}
+          prefetch={false}
+          onMouseEnter={() => handleMouseEnter(cat._id)}
+          className="rounded-radius-md py-1.5 text-xs font-medium text-text-secondary transition-colors duration-fast hover:bg-surface-secondary hover:text-text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand-accent"
+        >
+          {cat.nombre}
+        </Link>
+      ))}
+
+      {/* 2. Categorías con dropdown flotante */}
+      {rootWithSub.map(({ cat, sub }) => {
+        const isOpen = activeMenu === cat._id;
+
+        return (
+          <div
+            key={cat._id}
+            className={`relative ${isOpen ? "z-dropdown" : "z-auto"}`}
+            onMouseEnter={() => handleMouseEnter(cat._id)}
+          >
+            <Link
+              href={routes.catalog({ category: cat.slug })}
+              prefetch={false}
+              className={`inline-flex items-center gap-1 rounded-radius-md px-3 py-1.5 text-xs font-medium transition-colors duration-fast focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand-accent ${
+                isOpen
+                  ? "bg-surface-secondary text-text-primary"
+                  : "text-text-secondary hover:bg-surface-secondary hover:text-text-primary"
+              }`}
+            >
+              <span>{cat.nombre}</span>
+              <ChevronDown
+                size={12}
+                className={`text-text-tertiary transition-transform duration-fast ${
+                  isOpen ? "rotate-180 text-text-primary" : ""
+                }`}
+              />
+            </Link>
+
+            {/* Dropdown con z-dropdown y sombra Apple */}
+            {isOpen && (
+              <div className="absolute left-0 top-full z-dropdown pt-1.5 animate-in fade-in-0 zoom-in-98 duration-fast">
+                <div className="grid w-[540px] grid-cols-[180px_1fr] overflow-hidden rounded-radius-xl border border-border-primary/80 bg-surface-primary shadow-2xl backdrop-blur-md">
+                  <div className="flex flex-col justify-between border-r border-border-primary/60 bg-surface-secondary/50 p-4">
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-text-tertiary">
+                        Colección
+                      </span>
+                      <h4 className="text-sm font-semibold text-text-primary">
+                        {cat.nombre}
+                      </h4>
                     </div>
+
                     <Link
-                        href={linkHref}
-                        prefetch={false}
-                        className="text-[11px] text-muted-foreground hover:text-primary transition-colors mt-4 inline-flex items-center gap-1 uppercase font-bold tracking-wider focus-visible:outline-none"
+                      href={routes.catalog({ category: cat.slug })}
+                      prefetch={false}
+                      className="group inline-flex items-center gap-1 text-xs font-medium text-brand-accent transition-colors duration-fast hover:underline"
                     >
-                        Ver todo
-                        <FiArrowRight className="w-3 h-3" />
+                      <span>Ver todo</span>
+                      <FiArrowRight className="h-3 w-3 transition-transform duration-fast group-hover:translate-x-0.5" />
                     </Link>
-                </div>
-                <div className="p-3">
+                  </div>
+
+                  <div className="p-2.5">
                     <ul className="grid grid-cols-2 gap-1">
-                        {items.map((item) => (
-                            <NavItem
-                                key={item._id}
-                                href={item.isCollection ? `/colecciones/${item.slug}` : routes.catalog({ category: item.slug })}
-                                title={item.title}
-                                image={item.image}
-                            />
-                        ))}
+                      {sub.map((s) => (
+                        <li key={s._id}>
+                          <Link
+                            href={routes.catalog({ category: s.slug })}
+                            prefetch={false}
+                            className="group flex items-center gap-2 rounded-radius-md p-1.5 transition-colors duration-fast hover:bg-surface-secondary"
+                          >
+                            <div className="relative flex size-7 shrink-0 items-center justify-center overflow-hidden rounded-radius-sm border border-border-primary/50 bg-surface-secondary">
+                              {s.image ? (
+                                <Image
+                                  src={s.image}
+                                  alt={s.nombre}
+                                  fill
+                                  sizes="28px"
+                                  className="object-cover transition-transform duration-fast group-hover:scale-105"
+                                  unoptimized
+                                />
+                              ) : (
+                                <FiImage className="h-3 w-3 text-text-tertiary/60" />
+                              )}
+                            </div>
+                            <span className="truncate text-xs text-text-secondary transition-colors duration-fast group-hover:text-text-primary">
+                              {s.nombre}
+                            </span>
+                          </Link>
+                        </li>
+                      ))}
                     </ul>
+                  </div>
                 </div>
-            </div>
-        </NavigationMenuContent>
-    );
+              </div>
+            )}
+          </div>
+        );
+      })}
 
-    return (
-        <NavigationMenu className="w-full bg-black">
-            <NavigationMenuList>
-                {/* Categorías Root sin subcategorías */}
-                {rootNoSub.map((cat) => (
-                    <NavigationMenuItem key={cat._id}>
-                        <Link href={routes.catalog({ category: cat.slug })} prefetch={false} className={navigationMenuTriggerStyle()}>
-                            {cat.nombre}
-                        </Link>
-                    </NavigationMenuItem>
-                ))}
+      {/* 3. Tendencias */}
+      {collections.length > 0 && (
+        <div
+          className={`relative ${activeMenu === "tendencias" ? "z-dropdown" : "z-auto"}`}
+          onMouseEnter={() => handleMouseEnter("tendencias")}
+        >
+          <button
+            type="button"
+            className={`inline-flex items-center gap-1 rounded-radius-md px-3 py-1.5 text-xs font-medium transition-colors duration-fast focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand-accent ${
+              activeMenu === "tendencias"
+                ? "bg-surface-secondary text-text-primary"
+                : "text-text-secondary hover:bg-surface-secondary hover:text-text-primary"
+            }`}
+          >
+            <span>Tendencias</span>
+            <ChevronDown
+              size={12}
+              className={`text-text-tertiary transition-transform duration-fast ${
+                activeMenu === "tendencias" ? "rotate-180 text-text-primary" : ""
+              }`}
+            />
+          </button>
 
-                {/* Categorías con subcategorías */}
-                {rootWithSub.map(({ cat, sub }) => (
-                    <NavigationMenuItem key={cat._id}>
-                        <NavigationMenuTrigger>{cat.nombre}</NavigationMenuTrigger>
-                        {renderDropdown(
-                            cat.nombre,
-                            routes.catalog({ category: cat.slug }),
-                            sub.map(s => ({ _id: s._id, title: s.nombre, slug: s.slug, image: s.image }))
-                        )}
-                    </NavigationMenuItem>
-                ))}
-
-                {/* Tendencias */}
-                {collections.length > 0 && (
-                    <NavigationMenuItem>
-                        <NavigationMenuTrigger>Tendencias</NavigationMenuTrigger>
-                        {renderDropdown(
-                            "Tendencias",
-                            "/colecciones",
-                            collections.map(c => ({ _id: c._id, title: c.name, slug: c.slug, image: c.image, isCollection: true }))
-                        )}
-                    </NavigationMenuItem>
-                )}
-            </NavigationMenuList>
-        </NavigationMenu>
-    );
-}
-
-interface NavItemProps {
-    href: string;
-    title: string;
-    image?: string | null;
-}
-
-function NavItem({ href, title, image }: NavItemProps) {
-    return (
-        <li>
-            <NavigationMenuLink asChild>
-                <Link
-                    href={href}
-                    prefetch={false}
-                    className="flex items-center gap-3 px-2 py-1.5 rounded-[var(--radius-sm)] hover:bg-accent transition-colors group w-full min-h-[44px]"
-                >
-                    <div className="relative size-7 shrink-0 overflow-hidden rounded-[var(--radius-sm)] bg-background-secondary flex items-center justify-center border border-border">
-                        {image ? (
-                            <Image
-                                src={image}
-                                alt={title}
-                                fill
-                                className="object-cover group-hover:scale-105 transition-transform duration-200"
-                                sizes="28px"
-                                unoptimized
-                                quality={20}
-                            />
-                        ) : (
-                            <FiImage className="w-2 h-2 text-muted-foreground/20" />
-                        )}
-                    </div>
-                    <span className="text-xs font-medium text-muted-foreground group-hover:text-foreground transition-colors truncate block capitalize">
-                        {title}
+          {activeMenu === "tendencias" && (
+            <div className="absolute left-0 top-full z-dropdown pt-1.5 animate-in fade-in-0 zoom-in-98 duration-fast">
+              <div className="grid w-[540px] grid-cols-[180px_1fr] overflow-hidden rounded-radius-xl border border-border-primary/80 bg-surface-primary shadow-2xl backdrop-blur-md">
+                <div className="flex flex-col justify-between border-r border-border-primary/60 bg-surface-secondary/50 p-4">
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-text-tertiary">
+                      Especiales
                     </span>
-                </Link>
-            </NavigationMenuLink>
-        </li>
-    );
+                    <h4 className="text-sm font-semibold text-text-primary">
+                      Tendencias
+                    </h4>
+                  </div>
+
+                  <Link
+                    href="/colecciones"
+                    prefetch={false}
+                    className="group inline-flex items-center gap-1 text-xs font-medium text-brand-accent transition-colors duration-fast hover:underline"
+                  >
+                    <span>Ver catálogo</span>
+                    <FiArrowRight className="h-3 w-3 transition-transform duration-fast group-hover:translate-x-0.5" />
+                  </Link>
+                </div>
+
+                <div className="p-2.5">
+                  <ul className="grid grid-cols-2 gap-1">
+                    {collections.map((c) => (
+                      <li key={c._id}>
+                        <Link
+                          href={`/colecciones/${c.slug}`}
+                          prefetch={false}
+                          className="group flex items-center gap-2 rounded-radius-md p-1.5 transition-colors duration-fast hover:bg-surface-secondary"
+                        >
+                          <div className="relative flex size-7 shrink-0 items-center justify-center overflow-hidden rounded-radius-sm border border-border-primary/50 bg-surface-secondary">
+                            {c.image ? (
+                              <Image
+                                src={c.image}
+                                alt={c.name}
+                                fill
+                                sizes="28px"
+                                className="object-cover transition-transform duration-fast group-hover:scale-105"
+                                unoptimized
+                              />
+                            ) : (
+                              <FiImage className="h-3 w-3 text-text-tertiary/60" />
+                            )}
+                          </div>
+                          <span className="truncate text-xs text-text-secondary transition-colors duration-fast group-hover:text-text-primary">
+                            {c.name}
+                          </span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </nav>
+  );
 }

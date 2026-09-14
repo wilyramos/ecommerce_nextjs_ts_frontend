@@ -1,5 +1,3 @@
-//File: frontend/components/catalog/CatalogMobileFilters.tsx
-
 "use client";
 
 import { useCatalogNav } from "./hooks/useCatalogNav";
@@ -33,20 +31,21 @@ export default function CatalogMobileFilters({ filters }: Props) {
                         px-3 py-2
                         text-[13px]
                         font-medium
-                        border border-border
-                        bg-background
-                        text-foreground
+                        border border-border-primary
+                        bg-surface-primary
+                        text-text-primary
+                        rounded-radius-md
                         transition-colors
-                        hover:bg-background-secondary
+                        hover:bg-surface-secondary
                         active:scale-95
                         outline-none
                     "
                 >
-                    <LuListFilter className="w-4 h-4 text-muted-foreground" />
+                    <LuListFilter className="w-4 h-4 text-text-secondary" />
                     Filtros
 
                     {hasFilters && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-action-cta ml-1 animate-pulse" />
+                        <span className="w-1.5 h-1.5 rounded-radius-full bg-brand-accent ml-1 animate-pulse" />
                     )}
                 </button>
             </DrawerTrigger>
@@ -55,9 +54,9 @@ export default function CatalogMobileFilters({ filters }: Props) {
             <DrawerContent
                 className="
                     h-[88vh]
-                    bg-background
+                    bg-surface-primary
                     flex flex-col
-                    border-t border-border
+                    border-t border-border-primary
                 "
             >
                 {/* Header */}
@@ -65,11 +64,11 @@ export default function CatalogMobileFilters({ filters }: Props) {
                     className="
                         px-4 py-3
                         flex items-center justify-between
-                        border-b border-border
+                        border-b border-border-primary
                         shrink-0
                     "
                 >
-                    <DrawerTitle className="text-sm font-semibold text-foreground">
+                    <DrawerTitle className="text-sm font-semibold text-text-primary">
                         Filtros
                     </DrawerTitle>
 
@@ -80,8 +79,8 @@ export default function CatalogMobileFilters({ filters }: Props) {
                                 className="
                                     text-[12px]
                                     font-semibold
-                                    text-muted-foreground
-                                    hover:text-action-cta
+                                    text-text-secondary
+                                    hover:text-brand-accent
                                     transition-colors
                                     outline-none
                                 "
@@ -94,10 +93,10 @@ export default function CatalogMobileFilters({ filters }: Props) {
                             <button
                                 className="
                                     p-1.5
-                                    rounded-md
-                                    text-muted-foreground
-                                    hover:bg-background-secondary
-                                    hover:text-foreground
+                                    rounded-radius-md
+                                    text-text-secondary
+                                    hover:bg-surface-secondary
+                                    hover:text-text-primary
                                     transition-colors
                                     outline-none
                                 "
@@ -109,7 +108,7 @@ export default function CatalogMobileFilters({ filters }: Props) {
                 </DrawerHeader>
 
                 {/* Body */}
-                <div className="flex-1 overflow-y-auto px-4 py-3 scrollbar-thin scrollbar-thumb-border">
+                <div className="flex-1 overflow-y-auto px-4 py-3 scrollbar-thin scrollbar-thumb-border-primary">
                     <CatalogSidebar filters={filters} />
                 </div>
             </DrawerContent>

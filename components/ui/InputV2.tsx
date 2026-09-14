@@ -17,7 +17,7 @@ function InputV2({ className, type, label, id, ...props }: InputV2Props) {
       <input
         type={type}
         id={inputId}
-        placeholder=" " // CRÍTICO: Debe ser un espacio en blanco para activar peer-placeholder-shown
+        placeholder=" " 
         data-slot="input"
         className={cn(
           "peer h-11 w-full min-w-0 border bg-background border-border px-3 pt-4 pb-1 text-base md:text-xs transition-all outline-none rounded-md text-foreground",

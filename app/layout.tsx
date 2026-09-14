@@ -1,13 +1,17 @@
+// File: frontend/app/layout.tsx
+
 import type { Metadata } from "next";
 import "./globals.css";
 import { Inter } from "next/font/google";
-import { Toaster } from 'sonner';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import MercadoPagoProvider from "@/components/provider/MercadoPagoProvider";
+import { Toaster } from "sonner";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Analytics } from "@vercel/analytics/next";
+import FavoritesSyncProvider from "@/components/provider/FavoritesSyncProvider";
+import { getTokenOptional } from "@/src/auth/dal";
 
 const inter = Inter({
     subsets: ["latin"],
+    display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -47,23 +51,44 @@ export const metadata: Metadata = {
     category: "technology"
 };
 
-export default function RootLayout({
+// Convertimos el RootLayout en async para poder consultar la sesión
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    // Verificamos si existe el token de sesión
+    const token = await getTokenOptional();
+    const isAuthenticated = !!token;
+
     return (
-        <html lang="es">
-            <body className={`${inter.className} bg-background-secondary text-[var(--color-text-primary)]`}>
+        <html lang="es" className="h-full scroll-smooth" suppressHydrationWarning>
+            <body
+                className={`${inter.className} min-h-full flex flex-col bg-surface-primary text-text-primary antialiased selection:bg-brand-primary selection:text-text-inverse`}
+            >
+                {/* Le pasamos el estado de autenticación al Provider */}
+                <FavoritesSyncProvider isAuthenticated={isAuthenticated} />
+                
                 <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
-                    <MercadoPagoProvider />
-                    {children}
+                    <div className="flex flex-1 flex-col">
+                        {children}
+                    </div>
+
                     <Toaster
-                        theme="dark"
-                        expand
                         position="top-center"
-                        duration={5000}
-                        richColors={false}
+                        duration={4000}
+                        toastOptions={{
+                            classNames: {
+                                toast: "bg-surface-primary text-text-primary border border-border-primary shadow-lg rounded-radius-lg font-sans",
+                                description: "text-text-secondary text-sm",
+                                actionButton: "bg-button-primary-bg text-button-primary-text hover:bg-button-primary-hover",
+                                cancelButton: "bg-button-secondary-bg text-button-secondary-text hover:bg-button-secondary-hover",
+                                error: "text-status-error",
+                                success: "text-status-success",
+                                warning: "text-status-warning",
+                                info: "text-status-info",
+                            },
+                        }}
                     />
                 </GoogleOAuthProvider>
                 <Analytics />

@@ -107,51 +107,50 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
 
     const currentImgSrc = uniqueImages[selectedIndex] || null;
 
-    // Retorno limpio usando el nuevo componente placeholder
     if (!currentImgSrc || uniqueImages.length === 0) {
         return <NoImagePlaceholder />;
     }
 
     return (
-        <div className="w-full flex flex-col md:flex-row gap-4 lg:gap-6 select-none ">
-
-            {/* DESKTOP THUMBNAILS */}
+        <div className="flex w-full select-none flex-col gap-3 md:flex-row md:gap-4 lg:gap-5">
+            {/* Miniaturas en Desktop */}
             {uniqueImages.length > 1 && (
-                <div className="hidden md:flex flex-col items-start w-[120px] gap-1 bg-background">
+                <div className="hidden w-20 shrink-0 flex-col items-center gap-1 md:flex">
                     <button
+                        type="button"
                         onClick={() => scrollThumbs("up")}
                         className={cn(
-                            "w-full flex items-center justify-center py-0.5 transition-all duration-200 bg-[var(--color-bg-primary)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)]",
-                            !canScrollUp && "opacity-0 pointer-events-none"
+                            "flex h-6 w-full items-center justify-center rounded-radius-sm text-text-tertiary transition-colors duration-fast hover:bg-surface-secondary hover:text-text-primary",
+                            !canScrollUp && "pointer-events-none opacity-0"
                         )}
                         aria-label="Desplazar miniaturas hacia arriba"
                     >
-                        <ChevronUp size={14} strokeWidth={1.5} />
+                        <ChevronUp size={15} strokeWidth={2} />
                     </button>
 
                     <div
                         ref={thumbnailsRef}
-                        className="w-full flex flex-col gap-2 overflow-y-auto max-h-[600px] py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                        className="flex max-h-[520px] w-full flex-col gap-2 overflow-y-auto py-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                     >
                         {uniqueImages.map((img, idx) => (
                             <button
+                                type="button"
                                 key={`${img}-${idx}`}
                                 onClick={() => setSelectedIndex(idx)}
                                 onMouseEnter={() => setSelectedIndex(idx)}
                                 className={cn(
-                                    "relative aspect-square w-full shrink-0 overflow-hidden border-r-[3px] transition-all duration-300 ease-in-out",
+                                    "relative aspect-square w-full shrink-0 overflow-hidden rounded-radius-md border bg-surface-secondary/50 p-1 transition-all duration-fast",
                                     selectedIndex === idx
-                                        ? "border-[var(--color-accent-warm)] opacity-100"
-                                        : "border-[var(--color-border-default)] opacity-50 hover:opacity-100 hover:border-[var(--color-text-secondary)]"
+                                        ? "border-brand-primary ring-1 ring-brand-primary shadow-xs"
+                                        : "border-border-primary/80 opacity-70 hover:opacity-100 hover:border-border-strong"
                                 )}
                             >
                                 <Image
                                     src={img}
                                     alt={`Miniatura ${idx + 1}`}
                                     fill
-                                    className="object-contain"
-                                    sizes="72px"
-                                    quality={20}
+                                    className="object-contain p-1"
+                                    sizes="80px"
                                     unoptimized
                                 />
                             </button>
@@ -159,23 +158,24 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                     </div>
 
                     <button
+                        type="button"
                         onClick={() => scrollThumbs("down")}
                         className={cn(
-                            "w-full flex items-center justify-center py-0.5 transition-all duration-200 bg-[var(--color-bg-primary)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)]",
-                            !canScrollDown && "opacity-0 pointer-events-none"
+                            "flex h-6 w-full items-center justify-center rounded-radius-sm text-text-tertiary transition-colors duration-fast hover:bg-surface-secondary hover:text-text-primary",
+                            !canScrollDown && "pointer-events-none opacity-0"
                         )}
                         aria-label="Desplazar miniaturas hacia abajo"
                     >
-                        <ChevronDown size={14} strokeWidth={1.5} />
+                        <ChevronDown size={15} strokeWidth={2} />
                     </button>
                 </div>
             )}
 
-            {/* MAIN IMAGE */}
-            <div className="flex-1 relative group bg-background">
+            {/* Visor Principal */}
+            <div className="relative flex-1">
                 <div
                     className={cn(
-                        "relative aspect-square overflow-hidden bg-[var(--color-bg-primary)] transition-all duration-700 ease-in-out",
+                        "relative aspect-square w-full overflow-hidden rounded-radius-xl border border-border-primary/80 bg-surface-secondary/40 transition-colors duration-fast",
                         zoom ? "cursor-zoom-out" : "cursor-zoom-in"
                     )}
                     onMouseMove={handleMouseMove}
@@ -185,48 +185,50 @@ export default function ImagenesProductoCarousel({ images }: { images: string[] 
                     onTouchEnd={handleTouchEnd}
                 >
                     {uniqueImages.length > 1 && (
-                        <div className="md:hidden absolute bottom-3 right-3 z-20 px-2 py-0.5 flex bg-background/80 backdrop-blur-sm border border-border">
-                            <span className="text-[10px] font-bold text-foreground tracking-widest">
-                                {selectedIndex + 1} <span className="text-muted-foreground">/</span> {uniqueImages.length}
+                        <div className="absolute bottom-3 right-3 z-10 rounded-radius-sm border border-border-primary/80 bg-surface-primary/90 px-2 py-0.5 backdrop-blur-md md:hidden">
+                            <span className="text-[10px] font-semibold tracking-wider text-text-primary tabular-nums">
+                                {selectedIndex + 1} / {uniqueImages.length}
                             </span>
                         </div>
                     )}
+
                     {currentImgSrc && (
                         <Image
                             key={currentImgSrc}
                             src={currentImgSrc}
-                            alt="Producto principal"
+                            alt="Vista principal del producto"
                             fill
                             priority
                             className={cn(
-                                "object-contain transition-transform duration-500 ease-out",
-                                zoom ? "scale-[2.5]" : "scale-100"
+                                "object-contain transition-transform duration-fast ease-out",
+                                zoom ? "scale-[2.4]" : "scale-100"
                             )}
                             style={zoom ? { transformOrigin: `${position.x}% ${position.y}%` } : undefined}
-                            quality={100}
                             unoptimized
                         />
                     )}
 
-                    <div className="absolute top-4 right-4 p-2.5 bg-[var(--color-bg-primary)]/60 backdrop-blur-lg text-[var(--color-text-primary)] opacity-0 md:group-hover:opacity-100 transition-opacity">
-                        {zoom ? <ZoomOut size={18} strokeWidth={1.5} /> : <ZoomIn size={18} strokeWidth={1.5} />}
+                    <div className="absolute right-3 top-3 rounded-radius-md border border-border-primary/60 bg-surface-primary/85 p-1.5 text-text-secondary opacity-0 shadow-xs backdrop-blur-md transition-opacity duration-fast md:group-hover:opacity-100">
+                        {zoom ? <ZoomOut size={16} strokeWidth={2} /> : <ZoomIn size={16} strokeWidth={2} />}
                     </div>
 
                     {uniqueImages.length > 1 && !zoom && (
                         <>
                             <button
+                                type="button"
                                 onClick={(e) => { e.stopPropagation(); prevImage(); }}
-                                className="absolute left-0 md:left-2 top-1/2 -translate-y-1/2 p-1 bg-[var(--color-bg-primary)]/70 md:bg-[var(--color-bg-primary)]/50 text-[var(--color-text-primary)] opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-[var(--color-bg-primary)] active:scale-90 z-10"
-                                aria-label="Anterior"
+                                className="absolute left-2.5 top-1/2 z-10 flex size-8 -translate-y-1/2 items-center justify-center rounded-radius-full border border-border-primary/70 bg-surface-primary/85 text-text-primary opacity-100 shadow-xs backdrop-blur-md transition-all duration-fast hover:bg-surface-primary active:scale-95 md:opacity-0 md:group-hover:opacity-100"
+                                aria-label="Imagen anterior"
                             >
-                                <ChevronLeft size={20} strokeWidth={1.5} />
+                                <ChevronLeft size={18} strokeWidth={2} />
                             </button>
                             <button
+                                type="button"
                                 onClick={(e) => { e.stopPropagation(); nextImage(); }}
-                                className="absolute right-0 md:right-2 top-1/2 -translate-y-1/2 p-1 bg-[var(--color-bg-primary)]/70 md:bg-[var(--color-bg-primary)]/50 text-[var(--color-text-primary)] opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all hover:bg-[var(--color-bg-primary)] active:scale-90 z-10"
-                                aria-label="Siguiente"
+                                className="absolute right-2.5 top-1/2 z-10 flex size-8 -translate-y-1/2 items-center justify-center rounded-radius-full border border-border-primary/70 bg-surface-primary/85 text-text-primary opacity-100 shadow-xs backdrop-blur-md transition-all duration-fast hover:bg-surface-primary active:scale-95 md:opacity-0 md:group-hover:opacity-100"
+                                aria-label="Imagen siguiente"
                             >
-                                <ChevronRight size={20} strokeWidth={1.5} />
+                                <ChevronRight size={18} strokeWidth={2} />
                             </button>
                         </>
                     )}

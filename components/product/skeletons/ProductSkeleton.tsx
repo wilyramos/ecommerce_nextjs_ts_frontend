@@ -3,132 +3,108 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProductSkeleton() {
     return (
-        <div className="w-full mx-auto px-2 md:px-6 py-1 md:pt-5 animate-fade-in">
+        <div className="mx-auto w-full min-w-0 px-2 py-1 animate-fade-in md:px-6 md:pt-2">
             {/* Migas de pan alineadas con Breadcrumbs.tsx */}
-            <div className="flex items-center gap-2 mb-4 px-2 select-none">
-                <Skeleton className="h-3 w-10 bg-muted" />
-                <span className="text-muted-foreground/40 text-xs">/</span>
-                <Skeleton className="h-3 w-16 bg-muted" />
-                <span className="text-muted-foreground/40 text-xs">/</span>
-                <Skeleton className="h-3 w-28 bg-muted" />
+            <div className="mb-6 flex select-none items-center gap-2 px-2">
+                <Skeleton className="h-3 w-10 bg-surface-tertiary" />
+                <span className="text-xs text-text-tertiary/50">/</span>
+                <Skeleton className="h-3 w-16 bg-surface-tertiary" />
+                <span className="text-xs text-text-tertiary/50">/</span>
+                <Skeleton className="h-3 w-28 bg-surface-tertiary" />
             </div>
 
             {/* Grid Principal idéntico a ProductDetails.tsx */}
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 text-foreground bg-background px-2">
-
-                {/* Columna Izquierda: Galería/Carousel (Alineación con ImagenesProductoCarousel.tsx) */}
-                <div className="md:col-span-7 flex flex-col md:flex-row gap-4 lg:gap-6 sticky top-24">
+            <article className="mx-auto flex w-full min-w-0 flex-col items-start gap-8 px-2 lg:grid lg:grid-cols-12 lg:gap-12">
+                
+                {/* Columna Izquierda: Galería/Carousel */}
+                <div className="order-1 w-full min-w-0 overflow-hidden lg:order-none lg:col-span-7 flex flex-col md:flex-row gap-4 lg:gap-6">
                     {/* Miniaturas en Desktop (Izquierda) */}
-                    <div className="hidden md:flex flex-col w-[120px] shrink-0 gap-2">
-                        <Skeleton className="aspect-square w-full rounded-none bg-muted" />
-                        <Skeleton className="aspect-square w-full rounded-none bg-muted" />
-                        <Skeleton className="aspect-square w-full rounded-none bg-muted" />
-                        <Skeleton className="aspect-square w-full rounded-none bg-muted" />
+                    <div className="hidden w-[90px] shrink-0 flex-col gap-3 md:flex lg:w-[100px]">
+                        <Skeleton className="aspect-square w-full rounded-radius-md bg-surface-secondary" />
+                        <Skeleton className="aspect-square w-full rounded-radius-md bg-surface-secondary" />
+                        <Skeleton className="aspect-square w-full rounded-radius-md bg-surface-secondary" />
+                        <Skeleton className="aspect-square w-full rounded-radius-md bg-surface-secondary" />
                     </div>
 
                     {/* Imagen Principal */}
-                    <div className="flex-1 relative aspect-square bg-muted rounded-none w-full">
-                        <Skeleton className="w-full h-full rounded-none bg-muted" />
+                    <div className="relative aspect-square w-full flex-1">
+                        <Skeleton className="h-full w-full rounded-radius-lg bg-surface-secondary" />
                     </div>
                 </div>
 
                 {/* Columna Derecha: Detalles del Producto */}
-                <div className="md:col-span-5 md:px-0 space-y-4 pb-1">
-                    <div className="space-y-4">
-                        <header className="py-1 space-y-2">
-                            {/* Marca / SKU */}
-                            <div className="flex items-center justify-between w-full">
-                                <div className="flex items-center gap-1">
-                                    <Skeleton className="h-3 w-16 bg-muted" />
-                                    <span className="text-border text-xs">/</span>
-                                    <Skeleton className="h-3 w-12 bg-muted" />
-                                </div>
-                                <Skeleton className="h-3 w-20 bg-muted" />
+                <section className="order-2 w-full min-w-0 space-y-5 lg:sticky lg:top-24 lg:order-none lg:col-span-5">
+                    <header className="space-y-3">
+                        {/* Marca / SKU */}
+                        <div className="flex w-full items-center justify-between">
+                            <div className="flex items-center gap-1.5">
+                                <Skeleton className="h-3 w-16 bg-surface-tertiary" />
+                                <span className="text-[11px] text-border-primary">/</span>
+                                <Skeleton className="h-3 w-12 bg-surface-tertiary" />
                             </div>
-
-                            {/* Nombre del Producto */}
-                            <div className="space-y-2 pt-1">
-                                <Skeleton className="h-7 w-11/12 bg-muted" />
-                                <Skeleton className="h-7 w-8/12 bg-muted" />
-                            </div>
-
-                            {/* Atributo Color (Simulación de ColorCircle) */}
-                            <div className="flex items-center gap-2 pt-1">
-                                <Skeleton className="h-3 w-10 bg-muted" />
-                                <div className="flex gap-1.5">
-                                    <Skeleton className="h-[18px] w-[18px] rounded-full bg-muted" />
-                                    <Skeleton className="h-[18px] w-[18px] rounded-full bg-muted" />
-                                </div>
-                            </div>
-
-                            {/* Precios */}
-                            <div className="flex items-baseline gap-3 pt-2">
-                                <Skeleton className="h-9 w-32 bg-muted" />
-                                <Skeleton className="h-5 w-24 bg-muted" />
-                            </div>
-                        </header>
-
-                        {/* Selector de Variantes Grid (Simulación de Atributos) */}
-                        <div className="space-y-2">
-                            <Skeleton className="h-3 w-16 bg-muted" />
-                            <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
-                                <Skeleton className="h-[74px] w-full rounded-none bg-muted" />
-                                <Skeleton className="h-[74px] w-full rounded-none bg-muted" />
-                                <Skeleton className="h-[74px] w-full rounded-none bg-muted" />
-                            </div>
+                            <Skeleton className="h-3 w-20 bg-surface-tertiary" />
                         </div>
 
-                        {/* Botones de Acción */}
-                        <section className="flex justify-between items-center gap-4 pt-4">
-                            <div className="hidden md:flex flex-1">
-                                <Skeleton className="h-10 w-full rounded-none bg-muted" />
+                        {/* Nombre del Producto */}
+                        <div className="space-y-2 pt-1">
+                            <Skeleton className="h-8 w-11/12 bg-surface-secondary" />
+                            <Skeleton className="h-8 w-8/12 bg-surface-secondary" />
+                        </div>
+
+                        {/* Precios */}
+                        <div className="flex items-baseline gap-2.5 pt-1">
+                            <Skeleton className="h-9 w-32 bg-surface-tertiary" />
+                            <Skeleton className="h-5 w-24 bg-surface-tertiary" />
+                        </div>
+                    </header>
+
+                    {/* Banner Automático de Promoción (Skeleton) */}
+                    <Skeleton className="my-2 h-14 w-full rounded-radius-md bg-surface-secondary/40 border border-border-primary/50" />
+
+                    {/* Atributos Destacados */}
+                    <div className="grid grid-cols-2 gap-2.5 rounded-radius-lg border border-border-primary/60 bg-surface-secondary/40 p-3 sm:grid-cols-3">
+                        <Skeleton className="h-10 w-full bg-surface-secondary" />
+                        <Skeleton className="h-10 w-full bg-surface-secondary" />
+                        <Skeleton className="h-10 w-full bg-surface-secondary" />
+                    </div>
+
+                    {/* Selector de Variantes Grid */}
+                    <div className="space-y-4 pt-1">
+                        <div className="space-y-2">
+                            <Skeleton className="h-3 w-16 bg-surface-tertiary" />
+                            <div className="grid grid-cols-4 gap-2">
+                                <Skeleton className="h-8.5 w-full rounded-radius-md bg-surface-secondary" />
+                                <Skeleton className="h-8.5 w-full rounded-radius-md bg-surface-secondary" />
+                                <Skeleton className="h-8.5 w-full rounded-radius-md bg-surface-secondary" />
+                                <Skeleton className="h-8.5 w-full rounded-radius-md bg-surface-secondary" />
                             </div>
-                            <div className="flex-1">
-                                <Skeleton className="h-10 w-full rounded-none bg-muted animate-pulse" />
-                            </div>
-                        </section>
+                        </div>
+                    </div>
+
+                    {/* Botones de Acción */}
+                    <div className="flex items-center gap-3 pt-2">
+                        <div className="hidden flex-1 md:flex">
+                            <Skeleton className="h-11 w-full rounded-radius-md bg-surface-tertiary" />
+                        </div>
+                        <div className="flex-1">
+                            <Skeleton className="h-11 w-full rounded-radius-md bg-surface-tertiary" />
+                        </div>
                     </div>
 
                     {/* Fichas de Logística de Tienda */}
-                    <div className="divide-y divide-border/40 pt-2">
-                        {/* Medios de pago */}
-                        <div className="flex items-center justify-between py-3.5">
-                            <div className="flex items-center gap-2.5 w-1/3">
-                                <Skeleton className="h-4 w-4 shrink-0 bg-muted" />
-                                <Skeleton className="h-3 w-full bg-muted" />
+                    <div className="divide-y divide-border-primary/60 rounded-radius-lg border border-border-primary/80 bg-surface-secondary/30 px-4 text-xs">
+                        {[1, 2, 3, 4].map((i) => (
+                            <div key={i} className="flex items-center justify-between py-3">
+                                <div className="flex w-1/3 items-center gap-2.5">
+                                    <Skeleton className="size-4 shrink-0 rounded-radius-sm bg-surface-tertiary" />
+                                    <Skeleton className="h-3 w-full bg-surface-tertiary" />
+                                </div>
+                                <Skeleton className="h-4 w-24 bg-surface-tertiary" />
                             </div>
-                            <Skeleton className="h-5 w-36 bg-muted" />
-                        </div>
-
-                        {/* Garantía */}
-                        <div className="flex items-center justify-between py-3.5">
-                            <div className="flex items-center gap-2.5 w-1/3">
-                                <Skeleton className="h-4 w-4 shrink-0 bg-muted" />
-                                <Skeleton className="h-3 w-full bg-muted" />
-                            </div>
-                            <Skeleton className="h-5 w-28 bg-muted" />
-                        </div>
-
-                        {/* Envío */}
-                        <div className="flex items-center justify-between py-3.5">
-                            <div className="flex items-center gap-2.5 w-1/3">
-                                <Skeleton className="h-4 w-4 shrink-0 bg-muted" />
-                                <Skeleton className="h-3 w-full bg-muted" />
-                            </div>
-                            <Skeleton className="h-4 w-24 bg-muted" />
-                        </div>
-
-                        {/* Consulta por WhatsApp */}
-                        <div className="flex items-center justify-between py-3.5">
-                            <div className="flex items-center gap-2.5 w-1/4">
-                                <Skeleton className="h-4 w-4 shrink-0 bg-muted" />
-                                <Skeleton className="h-3 w-full bg-muted" />
-                            </div>
-                            <Skeleton className="h-3 w-16 bg-muted" />
-                        </div>
+                        ))}
                     </div>
-                </div>
-            </div>
+                </section>
+            </article>
         </div>
     );
 }

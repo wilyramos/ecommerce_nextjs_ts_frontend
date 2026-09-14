@@ -1,71 +1,73 @@
 'use client'
 
-import { useActionState } from "react"
+import { useActionState, useEffect, useTransition } from "react"
 import { resetPassword } from "@/actions/reset-password-action"
-import { useEffect } from "react"
-import { toast } from "react-toastify"
+import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import { InputV3 } from "@/components/ui/InputV3"
+import { ButtonV3 } from "@/components/ui/ButtonV3"
+import { H2, Muted } from "@/components/ui/TypographyV3"
 
 export default function ResetPasswordForm({ token }: { token: string }) {
   const router = useRouter()
+  const [isPending, startTransition] = useTransition()
 
   const resetPasswordWithToken = resetPassword.bind(null, token)
   const [state, dispatch] = useActionState(resetPasswordWithToken, {
     errors: [],
-    success: ""
+    success: "",
   })
 
   useEffect(() => {
     if (state.errors.length > 0) {
-      state.errors.forEach(error => toast.error(error))
+      state.errors.forEach((error) => toast.error(error))
     }
     if (state.success) {
-      toast.success(state.success, {
-        onClose: () => router.push('/auth/login'),
-        onClick: () => router.push('/auth/login')
-      })
+      toast.success(state.success)
+      router.push("/auth/login")
     }
   }, [state, router])
 
+  const handleSubmit = (formData: FormData) => {
+    startTransition(() => {
+      dispatch(formData)
+    })
+  }
+
   return (
-    <div className="w-full max-w-md bg-white p-8 rounded-3xl shadow-md">
-      <div className="text-center mb-6">
-        <p className="text-gray-500 mt-2">Ingresa tu nueva contraseña</p>
+    <div className="w-full space-y-6">
+      <div className="space-y-1.5 text-center">
+        <H2 className="text-xl sm:text-2xl">Nueva contraseña</H2>
+        <Muted>Ingresa y confirma tu nueva clave de acceso.</Muted>
       </div>
 
-      <form className="space-y-6" noValidate action={dispatch}>
-        <div className="flex flex-col gap-1">
-          <label htmlFor="password" className="font-medium text-sm text-gray-700">
-            Nueva contraseña
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            placeholder="********"
-            className="w-full border border-gray-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-600"
-          />
-        </div>
+      <form className="space-y-3.5" noValidate action={handleSubmit}>
+        <InputV3
+          id="password"
+          name="password"
+          type="password"
+          label="Nueva contraseña"
+          required
+          autoComplete="new-password"
+        />
 
-        <div className="flex flex-col gap-1">
-          <label htmlFor="password_confirmation" className="font-medium text-sm text-gray-700">
-            Repetir contraseña
-          </label>
-          <input
-            id="password_confirmation"
-            name="password_confirmation"
-            type="password"
-            placeholder="********"
-            className="w-full border border-gray-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-600"
-          />
-        </div>
+        <InputV3
+          id="password_confirmation"
+          name="password_confirmation"
+          type="password"
+          label="Repetir contraseña"
+          required
+          autoComplete="new-password"
+        />
 
-        <button
+        <ButtonV3
           type="submit"
-          className="w-full bg-indigo-800 hover:bg-indigo-900 text-white font-semibold py-3 rounded-full transition-colors"
+          size="full"
+          disabled={isPending}
+          className="mt-1"
         >
-          Guardar contraseña
-        </button>
+          {isPending ? "Guardando..." : "Guardar contraseña"}
+        </ButtonV3>
       </form>
     </div>
   )

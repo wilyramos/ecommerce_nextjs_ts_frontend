@@ -1,39 +1,57 @@
+// File: frontend/components/home/product/ProductCard.tsx
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Heart } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import ColorCircle from "@/components/ui/ColorCircle";
-import type { TApiProduct } from "@/src/schemas";
+import type { TApiProduct, ProductWithCategoryResponse } from "@/src/schemas";
 import { cn } from "@/lib/utils";
 import { MdOutlineImageNotSupported } from "react-icons/md";
-import { H3, BadgeText, Price, Muted } from "@/components/ui/TypographyStore";
+import { H3, Small } from "@/components/ui/TypographyV3";
+import { useCartStore } from "@/src/store/cartStore";
+import { useFavoriteStore } from "@/src/store/favoriteStore";
+import { FaCartPlus } from "react-icons/fa";
+import { toast } from "sonner";
 
 export default function ProductCard({ product }: { product: TApiProduct }) {
     const searchParams = useSearchParams();
+    const router = useRouter();
+
+    // Stores
+    const addToCart = useCartStore((state) => state.addToCart);
+    const setCartOpen = useCartStore((state) => state.setCartOpen);
+    const cart = useCartStore((state) => state.cart);
+    const { favorites, toggleFavorite } = useFavoriteStore();
+
+    // Estados locales
     const [currentIndex, setCurrentIndex] = useState(0);
     const [previewImages, setPreviewImages] = useState<string[]>(product.imagenes ?? []);
     const [selectedColor, setSelectedColor] = useState<string | null>(null);
     const [startX, setStartX] = useState<number | null>(null);
     const [isNew, setIsNew] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
 
     const precio = product.precio ?? 0;
     const stock = product.stock ?? 0;
-
+    const hasVariants = product.variants && product.variants.length > 0;
+    const isFavorited = favorites.includes(product._id);
+    
     // --- COLORES ---
     const uniqueColors = useMemo(() => {
         const colors = new Set<string>();
         const mainColor = product.atributos?.Color || product.atributos?.color;
         if (mainColor) colors.add(mainColor);
-        
+
         product.variants?.forEach((v) => {
             const vAttrs = v.atributos as Record<string, string> | undefined;
             const vColor = vAttrs?.Color || vAttrs?.color;
             if (vColor) colors.add(vColor);
         });
-        
+
         return Array.from(colors);
     }, [product]);
 
@@ -100,9 +118,6 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
     const nextImage = () => setCurrentIndex((prev) => (prev === previewImages.length - 1 ? 0 : prev + 1));
     const prevImage = () => setCurrentIndex((prev) => (prev === 0 ? previewImages.length - 1 : prev - 1));
 
-    const handleMouseEnter = () => { if (previewImages.length > 1) setCurrentIndex(1); };
-    const handleMouseLeave = () => setCurrentIndex(0);
-
     const handleTouchStart = (e: React.TouchEvent) => setStartX(e.touches[0].clientX);
     const handleTouchEnd = (e: React.TouchEvent) => {
         if (startX === null) return;
@@ -111,173 +126,229 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
         else if (diff < -50) prevImage();
         setStartX(null);
     };
-    const handleMouseDown = (e: React.MouseEvent) => setStartX(e.clientX);
-    const handleMouseUp = (e: React.MouseEvent) => {
-        if (startX === null) return;
-        const diff = startX - e.clientX;
-        if (diff > 50) nextImage();
-        else if (diff < -50) prevImage();
-        setStartX(null);
+    
+    // --- ACCIONES SECUNDARIAS ---
+    const handleAddToCart = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (product.isActive === false) {
+            toast.error("Este producto no está disponible para la venta comercial.");
+            return;
+        }
+
+        if (stock <= 0) {
+            toast.error("Lo sentimos, este producto no tiene stock disponible.");
+            return;
+        }
+
+        if (hasVariants) {
+            router.push(`/productos/${product.slug}`);
+            return;
+        }
+
+        const productInCart = cart.find((item) => item._id === product._id && !item.variant);
+
+        if (productInCart && productInCart.cantidad >= stock) {
+            toast.warning(`Solo hay ${stock} unidades disponibles.`);
+            return;
+        }
+
+        addToCart(product as unknown as ProductWithCategoryResponse, undefined);
+        toast.success("Producto añadido al carrito");
+        setCartOpen(true);
+    };
+
+    const handleToggleFavorite = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleFavorite(product._id);
     };
 
     return (
-        <div
-            className="group relative flex flex-col bg-background h-full"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+        <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-20px" }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="group relative flex h-full flex-col rounded-[1.25rem] border border-border-primary/40 bg-surface-primary transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:border-border-primary hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)]"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => { setIsHovered(false); setCurrentIndex(0); }}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
-            onMouseDown={handleMouseDown}
-            onMouseUp={handleMouseUp}
         >
-            <div className="absolute inset-0 bg-foreground/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-md" />
-
-            <Link href={`/productos/${product.slug}`} className="relative flex flex-col h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md">
-                
-                {/* ── IMAGEN ── */}
-                <div className="relative w-full aspect-square overflow-hidden bg-background-secondary rounded-t-md">
+            <Link
+                href={`/productos/${product.slug}`}
+                className="relative flex h-full flex-col rounded-[1.25rem] outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 overflow-hidden"
+            >
+                {/* ── IMAGEN (Con físicas de resorte) ── */}
+                <div className="relative aspect-square w-full overflow-hidden bg-surface-secondary">
                     {previewImages.length > 0 ? (
                         <>
-                            <div
-                                className="flex w-full h-full transition-transform duration-500 ease-in-out"
-                                style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+                            <motion.div
+                                className="flex h-full w-full"
+                                animate={{ x: `-${currentIndex * 100}%` }}
+                                transition={{ type: "spring", stiffness: 300, damping: 30 }}
                             >
-                                {previewImages.map((img, idx) => {
-                                    const isNear =
-                                        Math.abs(idx - currentIndex) <= 1 ||
-                                        (currentIndex === 0 && idx === previewImages.length - 1) ||
-                                        (currentIndex === previewImages.length - 1 && idx === 0);
+                                {previewImages.map((img, idx) => (
+                                    <div key={idx} className="relative h-full min-w-full shrink-0 p-4">
+                                        <Image
+                                            src={img}
+                                            alt={`${product.nombre} - vista ${idx + 1}`}
+                                            fill
+                                            sizes="(max-width: 640px) 50vw, 25vw"
+                                            className="object-contain transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+                                            unoptimized
+                                        />
+                                    </div>
+                                ))}
+                            </motion.div>
 
-                                    return isNear ? (
-                                        <div key={idx} className="min-w-full h-full relative shrink-0">
-                                            <Image
-                                                src={img}
-                                                alt={`${product.nombre} - vista ${idx + 1}`}
-                                                fill
-                                                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                                                className="object-contain mix-blend-multiply"
-                                                quality={80}
-                                                unoptimized
-                                            />
-                                        </div>
-                                    ) : (
-                                        <div key={idx} className="min-w-full h-full shrink-0" />
-                                    );
-                                })}
-                            </div>
-
-                            {/* Controles navegación */}
+                            {/* Controles de navegación Glassmorphism */}
                             {previewImages.length > 1 && (
                                 <>
-                                    <button
-                                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); prevImage(); }}
-                                        className="absolute left-1 top-1/2 -translate-y-1/2 bg-background/90 text-foreground p-1.5 rounded-full opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-muted"
-                                        aria-label="Imagen anterior"
-                                    >
-                                        <ChevronLeft size={16} strokeWidth={1.5} />
-                                    </button>
-                                    <button
-                                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); nextImage(); }}
-                                        className="absolute right-1 top-1/2 -translate-y-1/2 bg-background/90 text-foreground p-1.5 rounded-full opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-muted"
-                                        aria-label="Imagen siguiente"
-                                    >
-                                        <ChevronRight size={16} strokeWidth={1.5} />
-                                    </button>
+                                    <AnimatePresence>
+                                        {isHovered && (
+                                            <>
+                                                <motion.button
+                                                    initial={{ opacity: 0, x: -10 }}
+                                                    animate={{ opacity: 1, x: 0 }}
+                                                    exit={{ opacity: 0, x: -10 }}
+                                                    type="button"
+                                                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); prevImage(); }}
+                                                    className="absolute left-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-border-primary/20 bg-surface-primary/60 text-text-primary shadow-sm backdrop-blur-md transition-colors hover:bg-surface-primary"
+                                                >
+                                                    <ChevronLeft size={16} strokeWidth={2} />
+                                                </motion.button>
+                                                <motion.button
+                                                    initial={{ opacity: 0, x: 10 }}
+                                                    animate={{ opacity: 1, x: 0 }}
+                                                    exit={{ opacity: 0, x: 10 }}
+                                                    type="button"
+                                                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); nextImage(); }}
+                                                    className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-border-primary/20 bg-surface-primary/60 text-text-primary shadow-sm backdrop-blur-md transition-colors hover:bg-surface-primary"
+                                                >
+                                                    <ChevronRight size={16} strokeWidth={2} />
+                                                </motion.button>
+                                            </>
+                                        )}
+                                    </AnimatePresence>
 
-                                    {/* Contador */}
-                                    <div className="absolute bottom-2 right-2 px-1.5 py-0.5 bg-background/90 rounded-sm pointer-events-none md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
-                                        <BadgeText className="text-foreground tabular-nums">
-                                            {currentIndex + 1} <span className="text-muted-foreground/60">/</span> {previewImages.length}
-                                        </BadgeText>
+                                    {/* Indicador de paginación estilo Apple (píldora translúcida) */}
+                                    <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5 rounded-full bg-surface-inverse/20 px-2 py-1.5 backdrop-blur-md transition-opacity duration-300 md:opacity-0 md:group-hover:opacity-100">
+                                        {previewImages.map((_, i) => (
+                                            <div
+                                                key={i}
+                                                className={cn(
+                                                    "h-1.5 rounded-full transition-all duration-300",
+                                                    currentIndex === i ? "w-3 bg-surface-primary" : "w-1.5 bg-surface-primary/50"
+                                                )}
+                                            />
+                                        ))}
                                     </div>
                                 </>
                             )}
                         </>
                     ) : (
-                        <div className="flex items-center justify-center w-full h-full text-muted-foreground/30">
+                        <div className="flex h-full w-full items-center justify-center text-text-disabled">
                             <MdOutlineImageNotSupported size={28} />
                         </div>
                     )}
 
-                    {/* Badges */}
-                    <div className="absolute top-2 left-2 flex flex-col gap-1 pointer-events-none">
+                    {/* Etiqueta Nuevo / Descuento */}
+                    <div className="pointer-events-none absolute left-3 top-3 flex flex-col gap-1.5">
                         {isNew && (
-                            <BadgeText className="px-1.5 py-1 bg-primary text-primary-foreground rounded-sm">
+                            <span className="rounded-full bg-surface-primary/80 px-2.5 py-1 text-[10px] font-semibold tracking-wide text-text-primary backdrop-blur-md shadow-sm">
                                 Nuevo
-                            </BadgeText>
+                            </span>
+                        )}
+                        {discountPct > 0 && (
+                            <span className="rounded-full bg-status-error/90 px-2.5 py-1 text-[10px] font-bold tracking-wide text-text-inverse backdrop-blur-md shadow-sm">
+                                -{discountPct}%
+                            </span>
                         )}
                     </div>
-                    
-                    {discountPct > 0 && (
-                        <div className="absolute top-2 right-2 pointer-events-none">
-                            <BadgeText className="px-1.5 py-1 bg-destructive text-destructive-foreground rounded-sm">
-                                {discountPct}% OFF
-                            </BadgeText>
-                        </div>
-                    )}
+
+                    {/* Botón Favoritos (Esquina superior derecha) */}
+                    <button
+                        type="button"
+                        onClick={handleToggleFavorite}
+                        className={cn(
+                            "pointer-events-auto absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-surface-primary/60 text-text-secondary shadow-sm backdrop-blur-md transition-all duration-300 hover:scale-110 hover:bg-surface-primary hover:text-status-error",
+                            // Si NO está en favoritos, lo ocultamos en escritorio hasta que haya hover en la tarjeta
+                            !isFavorited && "md:opacity-0 md:group-hover:opacity-100"
+                        )}
+                    >
+                        <Heart
+                            size={16}
+                            className={cn("transition-colors duration-300", isFavorited && "fill-status-error text-status-error")}
+                        />
+                    </button>
                 </div>
 
-                {/* ── INFO ── */}
-                <div className="flex flex-col flex-grow px-2 md:px-3 py-3 gap-2">
-                    
-                    {/* Fila: marca + colores */}
-                    <div className="flex items-center justify-between gap-2 h-4">
-                        <BadgeText className="truncate">
+                {/* ── INFORMACIÓN ── */}
+                <div className="flex flex-1 flex-col gap-2 p-4">
+                    {/* Selector de color y Marca */}
+                    <div className="flex items-center justify-between gap-2">
+                        <Small className="truncate text-[10px] font-semibold uppercase tracking-[0.15em] text-text-tertiary">
                             {product.brand?.nombre || "\u00A0"}
-                        </BadgeText>
+                        </Small>
 
                         {uniqueColors.length > 0 && (
-                            <div className="flex items-center gap-0.5 shrink-0" onClick={(e) => e.preventDefault()}>
+                            <div className="flex items-center gap-1" onClick={(e) => e.preventDefault()}>
                                 {uniqueColors.slice(0, 4).map((c, index) => (
                                     <button
                                         key={`${c}-${index}`}
+                                        type="button"
                                         onClick={(e) => handleColorSelect(e, c)}
                                         className={cn(
-                                            "p-1 -m-1 outline-none rounded-full transition-transform duration-150 flex items-center justify-center",
-                                            selectedColor === c ? "scale-110" : "hover:scale-110"
+                                            "flex items-center justify-center rounded-full p-[2px] transition-all duration-300 ease-out",
+                                            selectedColor === c ? "scale-110 ring-1 ring-border-strong" : "hover:scale-110"
                                         )}
                                         aria-label={`Seleccionar color ${c}`}
                                     >
-                                        <ColorCircle color={c} size={10} />
+                                        <ColorCircle color={c} size={12} />
                                     </button>
                                 ))}
-                                {uniqueColors.length > 4 && (
-                                    <BadgeText className="ml-1">
-                                        +{uniqueColors.length - 4}
-                                    </BadgeText>
-                                )}
                             </div>
                         )}
                     </div>
 
                     {/* Nombre */}
-                    <H3 className="line-clamp-2 min-h-[2.75rem] font-normal text-xs md:text-sm text-muted-foreground">
+                    <H3 className="line-clamp-2 min-h-[2.5rem] text-[13px] font-medium leading-relaxed tracking-tight text-text-primary transition-colors duration-300 group-hover:text-brand-accent sm:text-[15px]">
                         {product.nombre}
                     </H3>
 
-                    {/* Precio y Stock */}
-                    <div className="flex items-center justify-between gap-2 mt-auto pt-1">
-                        <div className="flex items-baseline gap-1.5 flex-wrap min-w-0">
-                            <Price className="flex items-baseline">
-                                <Muted className="text-[11px] md:text-xs mr-0.5 inline">S/</Muted>
-                                {precio.toFixed(2)}
-                            </Price>
-
+                    {/* Precio y Acciones Footer */}
+                    <div className="mt-auto flex items-end justify-between pt-2">
+                        <div className="flex flex-col">
                             {discountPct > 0 && (
-                                <Muted className="text-[10px] md:text-xs line-through leading-none shrink-0">
+                                <span className="text-[11px] font-medium line-through text-text-tertiary">
                                     S/ {product.precioComparativo!.toFixed(2)}
-                                </Muted>
+                                </span>
                             )}
+                            <span className="text-[15px] font-semibold tracking-tight text-text-primary sm:text-base">
+                                S/ {precio.toFixed(2)}
+                            </span>
                         </div>
 
-                        {stock <= 0 && (
-                            <BadgeText className="bg-muted-neutral text-muted-neutral-foreground px-1.5 py-1 rounded-sm whitespace-nowrap shrink-0">
-                                Sin stock
-                            </BadgeText>
-                        )}
+                        {stock <= 0 ? (
+                            <span className="rounded-full bg-surface-secondary px-2.5 py-1 text-[10px] font-medium text-text-disabled">
+                                Agotado
+                            </span>
+                        ) : !hasVariants && product.isActive !== false ? (
+                            <button
+                                type="button"
+                                onClick={handleAddToCart}
+                                className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-primary text-text-inverse shadow-sm transition-all duration-300 hover:scale-105 hover:bg-brand-primary-light active:scale-95 md:opacity-0 md:-translate-y-2 md:group-hover:translate-y-0 md:group-hover:opacity-100"
+                                aria-label="Añadir al carrito"
+                            >
+                                <FaCartPlus size={14} />
+                            </button>
+                        ) : null}
                     </div>
                 </div>
             </Link>
-        </div>
+        </motion.div>
     );
 }

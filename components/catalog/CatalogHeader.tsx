@@ -1,107 +1,92 @@
 "use client";
 
-import Link from "next/link";
-import { ArrowUpDown, ChevronRight } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { useCatalogNav } from "./hooks/useCatalogNav";
+import Breadcrumbs from "@/components/ui/Breadcrumbs";
 
 export type TitlePart = {
-    text: string;
-    italic?: boolean;
+  text: string;
+  italic?: boolean;
 };
 
 interface Props {
-    title: TitlePart[];
-    totalProducts: number;
-    breadcrumbs: { label: string; href: string }[];
+  title: TitlePart[];
+  totalProducts: number;
+  breadcrumbs: { label: string; href: string }[];
 }
 
 export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Props) {
-    const { updateFilter, searchParams } = useCatalogNav();
+  const { updateFilter, searchParams } = useCatalogNav();
+  const currentSort = searchParams.get("sort") || "recientes";
 
-    const currentSort = searchParams.get("sort") || "recientes";
+  // Procesamos los breadcrumbs para el componente genérico de UI
+  const breadcrumbItems = breadcrumbs.slice(0, -1);
+  const currentBreadcrumb = breadcrumbs.length > 0 ? breadcrumbs[breadcrumbs.length - 1] : undefined;
 
-    return (
-        <div className="w-full flex flex-col gap-4 pt-1 pb-4 border-b border-border select-none">
-            {/* Breadcrumbs */}
-            <nav aria-label="Breadcrumb">
-                <ol className="flex items-center flex-wrap gap-x-1.5 text-[11px] font-medium tracking-wider text-muted-foreground/80">
-                    {breadcrumbs.map((crumb, index) => {
-                        const isLast = index === breadcrumbs.length - 1;
+  return (
+    <div className="flex w-full flex-col gap-4 border-b border-border-primary/80 pb-4 pt-1 select-none">
 
-                        return (
-                            <li key={`${crumb.label}-${index}`} className="flex items-center">
-                                {index > 0 && (
-                                    <ChevronRight className="w-3 h-3 mx-1 opacity-40 text-foreground" />
-                                )}
-
-                                {isLast ? (
-                                    <span className="text-foreground font-semibold" aria-current="page">
-                                        {crumb.label}
-                                    </span>
-                                ) : (
-                                    <Link
-                                        href={crumb.href}
-                                        className="hover:text-neutral-600 transition-colors duration-150"
-                                    >
-                                        {crumb.label}
-                                    </Link>
-                                )}
-                            </li>
-                        );
-                    })}
-                </ol>
-            </nav>
-
-            {/* Header Title & Sorting */}
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mt-2">
-                <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                    <h1 className="text-xl md:text-2xl font-bold tracking-tight text-primary capitalize">
-                        {title.map((part, i) => (
-                            <span
-                                key={i}
-                                className={part.italic ? "font-normal italic text-muted-foreground/90 lowercase first-letter:uppercase" : ""}
-                            >
-                                {part.text}{" "}
-                            </span>
-                        ))}
-                    </h1>
-
-                    <span className="text-[10px] font-bold tracking-widest text-primary bg-neutral-100 px-2 py-0.5 rounded-sm uppercase">
-                        {totalProducts} Items
-                    </span>
-                </div>
-
-                {/* Sorting */}
-                <div className="hidden md:flex items-center">
-                    <div className="relative flex items-center">
-                        <ArrowUpDown className="absolute left-3.5 w-3.5 h-3.5 text-muted-foreground pointer-events-none z-10" />
-                        <Select
-                            value={currentSort}
-                            onValueChange={(val) => updateFilter("sort", val)}
-                        >
-                            <SelectTrigger className="w-[210px] h-10 pl-9 pr-4 text-xs font-semibold tracking-wider border-border bg-background hover:bg-neutral-50 hover:text-primary transition-all duration-150 rounded-none cursor-pointer">
-                                <SelectValue placeholder="Ordenar por" />
-                            </SelectTrigger>
-
-                            <SelectContent align="end" className="rounded-none border-border">
-                                <SelectItem value="relevancia" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-neutral-100 focus:text-primary">Relevancia</SelectItem>
-                                <SelectItem value="recientes" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-neutral-100 focus:text-primary">Más Recientes</SelectItem>
-                                <SelectItem value="discount" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-neutral-100 focus:text-primary">Mayor Descuento</SelectItem>
-                                <SelectItem value="price-asc" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-neutral-100 focus:text-primary">Precio: Menor a Mayor</SelectItem>
-                                <SelectItem value="price-desc" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-neutral-100 focus:text-primary">Precio: Mayor a Menor</SelectItem>
-                                <SelectItem value="name-asc" className="text-xs tracking-wider font-medium cursor-pointer focus:bg-neutral-100 focus:text-primary">Nombre: A - Z</SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-                </div>
-            </div>
+      {/* Componente de Breadcrumbs Unificado */}
+      {breadcrumbs.length > 0 && (
+        <div className="-ml-2">
+          <Breadcrumbs
+            items={breadcrumbItems}
+            current={currentBreadcrumb?.label}
+            currentHref={currentBreadcrumb?.href}
+          />
         </div>
-    );
+      )}
+
+      {/* Header Title & Sorting */}
+      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <h1 className="text-2xl font-semibold tracking-tight text-text-primary md:text-3xl capitalize">
+            {title.map((part, i) => (
+              <span
+                key={i}
+                className={part.italic ? "font-normal italic text-text-secondary lowercase first-letter:uppercase" : ""}
+              >
+                {part.text}{" "}
+              </span>
+            ))}
+          </h1>
+
+          <span className="rounded-radius-sm bg-surface-secondary px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-text-secondary">
+            {totalProducts} Items
+          </span>
+        </div>
+
+        {/* Sorting Desktop */}
+        <div className="hidden items-center md:flex">
+          <div className="relative flex items-center">
+            <ArrowUpDown className="pointer-events-none absolute left-3 z-10 size-3.5 text-text-tertiary" />
+            <Select
+              value={currentSort}
+              onValueChange={(val) => updateFilter("sort", val)}
+            >
+              <SelectTrigger className="h-9 w-[200px] rounded-radius-md border-border-primary/80 bg-surface-primary pl-8 pr-3 text-xs font-medium text-text-primary transition-colors duration-fast hover:border-border-strong hover:bg-surface-secondary">
+                <SelectValue placeholder="Ordenar por" />
+              </SelectTrigger>
+
+              <SelectContent align="end" className="border-border-primary shadow-lg">
+                <SelectItem value="relevancia" className="cursor-pointer text-xs focus:bg-surface-secondary">Relevancia</SelectItem>
+                <SelectItem value="recientes" className="cursor-pointer text-xs focus:bg-surface-secondary">Más Recientes</SelectItem>
+                <SelectItem value="discount" className="cursor-pointer text-xs focus:bg-surface-secondary">Mayor Descuento</SelectItem>
+                <SelectItem value="price-asc" className="cursor-pointer text-xs focus:bg-surface-secondary">Precio: Menor a Mayor</SelectItem>
+                <SelectItem value="price-desc" className="cursor-pointer text-xs focus:bg-surface-secondary">Precio: Mayor a Menor</SelectItem>
+                <SelectItem value="name-asc" className="cursor-pointer text-xs focus:bg-surface-secondary">Nombre: A - Z</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }

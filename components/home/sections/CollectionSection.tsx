@@ -15,7 +15,7 @@ export default function CollectionSection({ section, slug }: Props) {
     if (!products.length) return null;
 
     return (
-        <section className="max-w-7xl mx-auto px-4">
+        <section className="max-w-7xl mx-auto px-1 md:px-4">
             <SectionHeader
                 title={collection.name}
                 viewAllHref={`/colecciones/${slug}`}

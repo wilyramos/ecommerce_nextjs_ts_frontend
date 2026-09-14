@@ -274,7 +274,7 @@ export default function CheckoutForm({ defaultProfile, lockedEmail }: Props) {
                     type="submit"
                     disabled={isPending || cart.length === 0}
                     className="w-full "
-                    variant="primary"
+                    variant="default"
                 >
                     {isPending ? (
                         <span className="flex items-center justify-center gap-2">

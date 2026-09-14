@@ -42,7 +42,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
 
     // 3. Control estricto de Indexación frente a Query Parameters
     const queryKeys = Object.keys(resolvedSearchParams);
-    const hasActiveFilters = queryKeys.some(key => 
+    const hasActiveFilters = queryKeys.some(key =>
         ["sort", "priceRange", "min", "max", "page", "atributos"].includes(key)
     );
 

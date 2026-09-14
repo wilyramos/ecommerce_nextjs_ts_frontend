@@ -1,3 +1,4 @@
+// File: frontend/components/collections/CollectionSidebar.tsx
 "use client";
 
 import { useMemo } from "react";
@@ -47,58 +48,54 @@ export default function CollectionSidebar({ filters }: Props) {
     }), [filters]);
 
     const triggerClass =
-        "text-[11px] font-bold uppercase tracking-[0.08em] text-muted-foreground hover:no-underline py-3 px-0 border-b border-border hover:text-foreground transition-colors";
+        "text-xs font-semibold uppercase tracking-widest text-text-primary hover:no-underline py-4 px-1 border-b border-border-primary/40 transition-colors";
 
     const row =
-        "flex items-center gap-2.5 px-2 py-2 rounded-sm cursor-pointer transition-colors hover:bg-background-secondary hover:text-foreground";
+        "flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-300 ease-out hover:bg-surface-secondary";
 
     const checkboxClass =
-        "w-3.5 h-3.5 rounded-sm border-border " +
-        "data-[state=checked]:bg-action-cta " +
-        "data-[state=checked]:border-action-cta " +
-        "data-[state=checked]:text-primary-foreground " +
-        "focus-visible:ring-offset-0 focus-visible:ring-0 " +
-        "transition-colors duration-150";
+        "w-4 h-4 rounded-[4px] border-border-strong/50 data-[state=checked]:bg-brand-primary data-[state=checked]:border-brand-primary text-white focus-visible:ring-offset-0 focus-visible:ring-0 transition-all duration-300 shadow-sm";
 
     return (
-        <div className="w-full pb-20 select-none bg-background text-foreground">
+        <div className="w-full pb-20 select-none bg-surface-primary text-text-primary pr-2">
             <ActiveFiltersCollection />
 
             <Accordion
                 type="multiple"
-                className="w-full mt-4 space-y-2"
+                className="w-full mt-4 space-y-1"
                 defaultValue={["item-categories", "item-brands"]}
             >
                 {/* CATEGORÍAS */}
                 {sortedFilters.categories.length > 0 && (
                     <AccordionItem value="item-categories" className="border-none">
                         <AccordionTrigger className={triggerClass}>Categorías</AccordionTrigger>
-                        <AccordionContent className="pt-2 pb-0">
-                            <ul className="space-y-0.5">
+                        <AccordionContent className="pt-3 pb-2">
+                            <div className="space-y-1 max-h-[260px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-border-primary/50 scrollbar-track-transparent">
                                 {sortedFilters.categories.map((cat) => {
                                     const active = isCategoryActive(cat.slug);
                                     return (
-                                        <li key={cat.id}>
-                                            <button
-                                                onClick={() => setCategory(cat.slug)}
+                                        <div
+                                            key={cat.id}
+                                            onClick={() => setCategory(cat.slug)}
+                                            className={cn(row, active && "bg-surface-secondary")}
+                                        >
+                                            <span
                                                 className={cn(
-                                                    "w-full text-left flex items-center justify-between px-2 py-2 text-[13px] rounded-sm transition-colors duration-150 outline-none font-medium",
-                                                    active
-                                                        ? "bg-background-secondary text-action-cta font-bold"
-                                                        : "text-muted-foreground hover:bg-background-secondary/60 hover:text-foreground"
+                                                    "text-[13px] transition-colors flex-1",
+                                                    active ? "font-semibold text-text-primary" : "font-medium text-text-secondary"
                                                 )}
                                             >
-                                                <span>{cat.nombre}</span>
-                                                {cat.count !== undefined && (
-                                                    <span className="text-[11px] font-normal tabular-nums text-muted-foreground/70">
-                                                        {cat.count}
-                                                    </span>
-                                                )}
-                                            </button>
-                                        </li>
+                                                {cat.nombre}
+                                            </span>
+                                            {cat.count !== undefined && (
+                                                <span className="text-[11px] tabular-nums text-text-tertiary">
+                                                    {cat.count}
+                                                </span>
+                                            )}
+                                        </div>
                                     );
                                 })}
-                            </ul>
+                            </div>
                         </AccordionContent>
                     </AccordionItem>
                 )}
@@ -107,22 +104,27 @@ export default function CollectionSidebar({ filters }: Props) {
                 {sortedFilters.brands.length > 0 && (
                     <AccordionItem value="item-brands" className="border-none">
                         <AccordionTrigger className={triggerClass}>Marcas</AccordionTrigger>
-                        <AccordionContent className="pt-2 pb-0">
-                            <div className="space-y-0.5 max-h-[220px] overflow-y-auto pr-1 scrollbar-none">
+                        <AccordionContent className="pt-3 pb-2">
+                            <div className="space-y-1 max-h-[260px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-border-primary/50 scrollbar-track-transparent">
                                 {sortedFilters.brands.map((brand) => {
                                     const active = isBrandActive(brand.slug);
                                     return (
                                         <div
                                             key={brand.id}
                                             onClick={() => setBrand(brand.slug)}
-                                            className={cn(row, active && "bg-background-secondary text-foreground font-semibold")}
+                                            className={cn(row, active && "bg-surface-secondary")}
                                         >
                                             <Checkbox checked={active} className={checkboxClass} />
-                                            <span className={cn("text-[13px] font-medium transition-colors duration-150 flex-1", active ? "text-foreground" : "text-muted-foreground")}>
+                                            <span
+                                                className={cn(
+                                                    "text-[13px] transition-colors flex-1",
+                                                    active ? "font-semibold text-text-primary" : "font-medium text-text-secondary"
+                                                )}
+                                            >
                                                 {brand.nombre}
                                             </span>
                                             {brand.count !== undefined && (
-                                                <span className="text-[11px] tabular-nums text-muted-foreground/70 ml-auto">
+                                                <span className="text-[11px] tabular-nums text-text-tertiary">
                                                     {brand.count}
                                                 </span>
                                             )}
@@ -134,26 +136,31 @@ export default function CollectionSidebar({ filters }: Props) {
                     </AccordionItem>
                 )}
 
-                {/* LÍNEAS */}
+                {/* MODELOS (LÍNEAS) */}
                 {sortedFilters.lines.length > 0 && (
                     <AccordionItem value="item-lines" className="border-none">
                         <AccordionTrigger className={triggerClass}>Modelos</AccordionTrigger>
-                        <AccordionContent className="pt-2 pb-0">
-                            <div className="space-y-0.5 max-h-[220px] overflow-y-auto pr-1 scrollbar-none">
+                        <AccordionContent className="pt-3 pb-2">
+                            <div className="space-y-1 max-h-[260px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-border-primary/50 scrollbar-track-transparent">
                                 {sortedFilters.lines.map((line) => {
                                     const active = isLineActive(line.slug);
                                     return (
                                         <div
                                             key={line.id}
                                             onClick={() => setLine(line.slug)}
-                                            className={cn(row, active && "bg-background-secondary text-foreground font-semibold")}
+                                            className={cn(row, active && "bg-surface-secondary")}
                                         >
                                             <Checkbox checked={active} className={checkboxClass} />
-                                            <span className={cn("text-[13px] font-medium transition-colors duration-150 flex-1", active ? "text-foreground" : "text-muted-foreground")}>
+                                            <span
+                                                className={cn(
+                                                    "text-[13px] transition-colors flex-1",
+                                                    active ? "font-semibold text-text-primary" : "font-medium text-text-secondary"
+                                                )}
+                                            >
                                                 {line.nombre}
                                             </span>
                                             {line.count !== undefined && (
-                                                <span className="text-[11px] tabular-nums text-muted-foreground/70 ml-auto">
+                                                <span className="text-[11px] tabular-nums text-text-tertiary">
                                                     {line.count}
                                                 </span>
                                             )}
@@ -165,14 +172,14 @@ export default function CollectionSidebar({ filters }: Props) {
                     </AccordionItem>
                 )}
 
-                {/* ATRIBUTOS */}
+                {/* ATRIBUTOS (Ej. Colores) */}
                 {sortedFilters.atributos.map((attr, idx) => {
                     const isColorAttr = attr.name.toLowerCase().includes("color");
                     return (
                         <AccordionItem key={idx} value={`attr-${idx}`} className="border-none">
                             <AccordionTrigger className={triggerClass}>{attr.name}</AccordionTrigger>
-                            <AccordionContent className="pt-2 pb-0">
-                                <div className="space-y-0.5 max-h-[220px] overflow-y-auto pr-1 scrollbar-none">
+                            <AccordionContent className="pt-3 pb-2">
+                                <div className="space-y-1 max-h-[260px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-border-primary/50 scrollbar-track-transparent">
                                     {attr.values.map((val) => {
                                         const strVal = typeof val === 'string' ? val : val.value;
                                         const count = typeof val === 'string' ? undefined : val.count;
@@ -182,17 +189,22 @@ export default function CollectionSidebar({ filters }: Props) {
                                             <div
                                                 key={strVal}
                                                 onClick={() => updateFilter(attr.name, strVal)}
-                                                className={cn(row, isChecked && "bg-background-secondary text-foreground font-semibold")}
+                                                className={cn(row, isChecked && "bg-surface-secondary")}
                                             >
                                                 <Checkbox checked={isChecked} className={checkboxClass} />
                                                 <div className="flex items-center gap-2 flex-1">
-                                                    {isColorAttr && <ColorCircle color={strVal} size={12} />}
-                                                    <span className={cn("text-[13px] font-medium capitalize transition-colors duration-150", isChecked ? "text-foreground" : "text-muted-foreground")}>
+                                                    {isColorAttr && <ColorCircle color={strVal} size={14} />}
+                                                    <span
+                                                        className={cn(
+                                                            "text-[13px] capitalize transition-colors",
+                                                            isChecked ? "font-semibold text-text-primary" : "font-medium text-text-secondary"
+                                                        )}
+                                                    >
                                                         {strVal}
                                                     </span>
                                                 </div>
                                                 {count !== undefined && (
-                                                    <span className="text-[11px] tabular-nums text-muted-foreground/70 ml-auto">
+                                                    <span className="text-[11px] tabular-nums text-text-tertiary">
                                                         {count}
                                                     </span>
                                                 )}

@@ -1,7 +1,6 @@
-'use client'
+"use client"
 
-import { useEffect } from "react"
-import { useActionState } from "react"
+import { useEffect, useActionState, startTransition } from "react"
 import { validateToken } from "@/actions/validate-token-action"
 
 interface TokenValidatorProps {
@@ -15,8 +14,14 @@ export default function TokenValidator({ token, onSuccess, onError }: TokenValid
 
   const [state, dispatch] = useActionState(validateTokenInput, {
     errors: [],
-    success: ""
+    success: "",
   })
+
+  useEffect(() => {
+    startTransition(() => {
+      dispatch()
+    })
+  }, [dispatch])
 
   useEffect(() => {
     if (state.success) {
@@ -27,9 +32,5 @@ export default function TokenValidator({ token, onSuccess, onError }: TokenValid
     }
   }, [state, onSuccess, onError])
 
-  return (
-    <form action={dispatch} className="hidden">
-      <button type="submit" hidden />
-    </form>
-  )
+  return null
 }

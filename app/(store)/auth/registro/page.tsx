@@ -1,26 +1,22 @@
-import type { Metadata } from "next";
-import RegisterForm from "@/components/auth/RegisterForm";
-
-
+import type { Metadata } from "next"
+import RegisterForm from "@/components/auth/RegisterForm"
+import { H1, Muted } from "@/components/ui/TypographyV3"
 
 export const metadata: Metadata = {
-    title: "GoPhone  - Registro de cuenta",
-    description: "GoPhone  - Registro de cuenta",
-    keywords: "registro, GoPhone , cuenta",
-};
+  title: "Crea tu cuenta | GoPhone",
+  description: "Regístrate en GoPhone y accede a los mejores dispositivos y accesorios.",
+  keywords: "registro, GoPhone, cuenta, apple",
+}
 
 export default function PageRegistro() {
+  return (
+    <div className="w-full space-y-6">
+      <div className="space-y-1 text-center">
+        <H1 className="text-xl sm:text-2xl">Crea tu cuenta</H1>
+        <Muted>Ingresa tus datos para comenzar tu experiencia GoPhone.</Muted>
+      </div>
 
-    return (
-        <div className="w-full max-w-xs mx-auto">
-
-            <h1 className="text-2xl text-center">Crea tu cuenta</h1>
-
-            <RegisterForm 
-                // redirectTo={redirectTo} // Pasar el redirectTo al formulario
-            />
-
-            
-        </div>
-    );
+      <RegisterForm />
+    </div>
+  )
 }

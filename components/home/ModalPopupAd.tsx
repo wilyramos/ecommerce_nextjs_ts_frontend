@@ -37,7 +37,7 @@ export default function ModalPopupAd({ ad }: ModalPopupAdProps) {
             <DialogContent
                 className="w-[90vw] max-w-[340px] p-0 overflow-hidden rounded-2xl bg-background shadow-xl z-9999 border-border border [&>button]:focus:ring-0 [&>button]:focus:ring-offset-0 [&>button]:focus:outline-none [&>button]:outline-none [&>button]:border-0 [&>button]:focus-visible:outline-none"
             >
-                <div className="flex flex-col p-5 gap-4 bg-background">
+                <div className="flex flex-col p-2 md:p-5 gap-2">
                     {/* ── 1. TÍTULO EN LA PARTE SUPERIOR ── */}
                     <div className="text-center space-y-1 shrink-0">
                         <h3 className="text-2xl md:text-3xl font-bold tracking-tight text-fg-muted leading-snug">
@@ -78,7 +78,6 @@ export default function ModalPopupAd({ ad }: ModalPopupAdProps) {
                         ) : (
                             <Button
                                 size="sm"
-                                variant="accent"
                                 className="w-full text-xs font-semibold h-9 cursor-pointer"
                                 onClick={() => handleOpenChange(false)}
                             >

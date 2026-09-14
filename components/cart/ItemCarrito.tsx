@@ -1,5 +1,4 @@
 // File: frontend/components/cart/ItemCarrito.tsx
-
 "use client";
 
 import Link from "next/link";
@@ -34,97 +33,99 @@ export default function ItemCarrito({ item, discountAmount = 0 }: ItemCarritoPro
         : null;
 
     return (
-        <div className="flex flex-col py-3 gap-2 border-b border-border/60 last:border-b-0 select-none">
+        <div className="flex flex-col gap-3 border-b border-border-primary/60 py-4 last:border-b-0 select-none">
             {/* Header del ítem */}
             <div className="flex items-center justify-between gap-2">
                 <Link
                     href={`/productos/${item.slug}`}
-                    className="text-xs font-semibold leading-tight text-foreground hover:underline truncate"
+                    className="truncate text-xs font-semibold leading-tight text-text-primary transition-colors duration-fast hover:text-brand-accent hover:underline"
                 >
                     {item.nombre}
                 </Link>
 
                 {isFree && (
-                    <span className="text-[9px] font-bold uppercase tracking-widest bg-foreground text-background px-2 py-0.5 border border-foreground shrink-0">
+                    <span className="shrink-0 rounded-radius-sm bg-text-primary px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-text-inverse">
                         Regalo
                     </span>
                 )}
             </div>
 
-            <div className="flex gap-3 items-center">
+            <div className="flex items-center gap-3">
                 {/* Imagen */}
                 <Link
                     href={`/productos/${item.slug}`}
-                    className="relative w-14 h-14 flex-shrink-0 border border-border bg-background-secondary block overflow-hidden rounded-none"
+                    className="relative flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-radius-md border border-border-primary/60 bg-surface-secondary/50 p-1"
                 >
                     {imageSrc ? (
                         <Image
                             src={imageSrc}
                             alt={item.variant?.nombre ?? item.nombre}
                             fill
-                            className="object-cover"
+                            className="object-contain p-1"
                             quality={60}
+                            sizes="64px"
                             unoptimized
                         />
                     ) : (
-                        <div className="flex items-center justify-center w-full h-full text-muted-foreground">
-                            <MdOutlineImageNotSupported size={16} />
-                        </div>
+                        <MdOutlineImageNotSupported className="text-text-disabled" size={20} />
                     )}
                 </Link>
 
                 {/* Info y Controles */}
-                <div className="flex flex-col flex-1 min-w-0 gap-1.5">
+                <div className="flex min-w-0 flex-1 flex-col gap-1.5">
                     {atributos && (
-                        <p className="text-[11px] text-muted-foreground truncate">
+                        <p className="truncate text-[10px] font-medium text-text-tertiary">
                             {atributos}
                         </p>
                     )}
 
-                    <div className="flex items-center justify-between mt-1">
-                        {/* Control de Cantidad (Estilo Fino B&N) */}
-                        <div className="flex items-center border border-border">
+                    <div className="mt-1 flex items-center justify-between">
+                        {/* Control de Cantidad */}
+                        <div className="flex h-7 items-center overflow-hidden rounded-radius-sm border border-border-primary/80 bg-surface-primary shadow-xs">
                             <button
+                                type="button"
                                 onClick={() => updateQuantity(productId, item.cantidad - 1, variantId)}
                                 disabled={item.cantidad <= 1}
-                                className="w-6 h-6 flex items-center justify-center bg-background text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-background-secondary transition-colors"
+                                className="flex size-7 items-center justify-center text-text-secondary transition-colors duration-fast hover:bg-surface-secondary hover:text-text-primary disabled:pointer-events-none disabled:opacity-30"
                             >
-                                <Minus size={9} strokeWidth={2.5} />
+                                <Minus size={10} strokeWidth={2.5} />
                             </button>
-                            <span className="text-xs font-semibold text-foreground tabular-nums min-w-[20px] text-center">
+                            <span className="flex min-w-[24px] items-center justify-center text-xs font-semibold tabular-nums text-text-primary">
                                 {item.cantidad}
                             </span>
                             <button
+                                type="button"
                                 onClick={() => updateQuantity(productId, item.cantidad + 1, variantId)}
                                 disabled={item.cantidad >= stockMax}
-                                className="w-6 h-6 flex items-center justify-center bg-background text-foreground disabled:opacity-30 disabled:cursor-not-allowed hover:bg-background-secondary transition-colors"
+                                className="flex size-7 items-center justify-center text-text-secondary transition-colors duration-fast hover:bg-surface-secondary hover:text-text-primary disabled:pointer-events-none disabled:opacity-30"
                             >
-                                <Plus size={9} strokeWidth={2.5} />
+                                <Plus size={10} strokeWidth={2.5} />
                             </button>
                         </div>
 
-                        {/* Precios (Tachado en Gris + Gratis/Neto Monocromático) */}
-                        <div className="flex items-center gap-2">
+                        {/* Precios y Eliminar */}
+                        <div className="flex items-center gap-2.5">
                             {hasDiscount && (
-                                <span className="text-[11px] text-muted-foreground line-through decoration-muted-foreground/50">
+                                <span className="text-[10px] text-text-tertiary line-through decoration-text-tertiary/50">
                                     S/ {grossSubtotal.toFixed(2)}
                                 </span>
                             )}
 
                             {isFree ? (
-                                <span className="text-xs font-bold uppercase tracking-wider text-foreground">
+                                <span className="text-xs font-bold uppercase tracking-wider text-text-primary">
                                     GRATIS
                                 </span>
                             ) : (
-                                <span className="text-xs font-bold text-foreground">
+                                <span className="text-xs font-semibold tracking-tight text-text-primary">
                                     S/ {netSubtotal.toFixed(2)}
                                 </span>
                             )}
 
                             <button
+                                type="button"
                                 onClick={() => removeFromCart(productId, variantId)}
                                 aria-label={`Eliminar ${item.nombre}`}
-                                className="p-1 text-muted-foreground hover:text-foreground transition-colors ml-1"
+                                className="ml-1 flex size-6 items-center justify-center rounded-radius-sm text-text-tertiary transition-colors duration-fast hover:bg-surface-secondary hover:text-status-error"
                             >
                                 <Trash2 size={13} strokeWidth={1.5} />
                             </button>

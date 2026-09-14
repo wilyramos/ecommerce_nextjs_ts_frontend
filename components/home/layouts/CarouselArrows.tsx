@@ -5,21 +5,23 @@ import { ArrowProps } from "react-multi-carousel";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
 
 export const CustomLeftArrow = ({ onClick }: ArrowProps) => (
-    <button
-        onClick={onClick}
-        className="absolute -left-0 top-1/2 -translate-y-1/2 z-10 p-1.5 text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
-        aria-label="Anterior"
-    >
-        <HiChevronLeft className="w-5 h-5" />
-    </button>
+  <button
+    type="button"
+    onClick={onClick}
+    className="absolute left-1 top-1/2 z-10 -translate-y-1/2 flex size-8 items-center justify-center rounded-radius-full border border-border-primary/60 bg-surface-primary/80 text-text-secondary backdrop-blur-md shadow-xs transition-all duration-fast hover:bg-surface-primary hover:text-text-primary active:scale-95"
+    aria-label="Anterior"
+  >
+    <HiChevronLeft className="size-4" />
+  </button>
 );
 
 export const CustomRightArrow = ({ onClick }: ArrowProps) => (
-    <button
-        onClick={onClick}
-        className="absolute -right-0 top-1/2 -translate-y-1/2 z-10 p-1.5 text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
-        aria-label="Siguiente"
-    >
-        <HiChevronRight className="w-5 h-5" />
-    </button>
+  <button
+    type="button"
+    onClick={onClick}
+    className="absolute right-1 top-1/2 z-10 -translate-y-1/2 flex size-8 items-center justify-center rounded-radius-full border border-border-primary/60 bg-surface-primary/80 text-text-secondary backdrop-blur-md shadow-xs transition-all duration-fast hover:bg-surface-primary hover:text-text-primary active:scale-95"
+    aria-label="Siguiente"
+  >
+    <HiChevronRight className="size-4" />
+  </button>
 );

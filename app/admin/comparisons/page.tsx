@@ -6,7 +6,6 @@ import ComparisonTable from "@/components/admin/comparisons/ComparisonTable";
 import PaginationBanner from "@/components/ui/PaginationBanner";
 import NewComparisonButton from "@/components/admin/comparisons/NewComparisonButton";
 import * as Typo from "@/components/ui/Typography";
-
 import { getTokenOptional } from "@/src/auth/dal";
 import { comparisonService } from "@/src/services/comparison-service";
 import { type ComparisonResponse } from "@/src/schemas/comparison.schema";

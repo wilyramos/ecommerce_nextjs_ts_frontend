@@ -1,76 +1,72 @@
-import type { TApiProduct } from "@/src/schemas/index"; // Use the specific Catalog Schema
-import ProductCard from "../home/product/ProductCard"; // Your existing Card component
+// File: frontend/components/catalog/CatalogGrid.tsx
+import type { TApiProduct } from "@/src/schemas/index";
+import ProductCard from "../home/product/ProductCard";
 import { LuSearchX } from "react-icons/lu";
 import Link from "next/link";
 
 interface Props {
-    products: TApiProduct[]; // Updated type to match CatalogResponse
-    isFallback: boolean;
+  products: TApiProduct[];
+  isFallback: boolean;
 }
 
 export default function CatalogGrid({ products, isFallback }: Props) {
-
-    // CASO A: NO HAY RESULTADOS EXACTOS (FALLBACK)
-    // El backend no encontró nada con los filtros actuales, pero devuelve sugerencias (isFallback = true)
-    if (isFallback) {
-        return (
-            <div className="py-5 space-y-5 animate-in fade-in duration-700">
-                {/* Mensaje de "No encontrado" */}
-                <div className="bg-gray-50 rounded-2xl p-8 md:p-12 text-center max-w-2xl mx-auto border border-dashed border-gray-200">
-                    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm border border-gray-100">
-                        <LuSearchX className="w-8 h-8 text-[var(--store-text-muted)]" />
-                    </div>
-                    <h2 className="text-xl md:text-2xl font-bold text-[var(--store-text)] mb-2">
-                        No encontramos coincidencias exactas
-                    </h2>
-                    <p className="text-[var(--store-text-muted)] mb-6 max-w-md mx-auto">
-                        Intenta ajustar tus filtros, eliminar la selección de línea o buscar términos más generales.
-                    </p>
-                    <Link
-                        href="/catalogo"
-                        className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-[var(--store-text)] hover:bg-gray-800 transition-colors"
-                    >
-                        Ver todo el catálogo
-                    </Link>
-                </div>
-
-                {/* Separador de Sugerencias */}
-                <div className="relative">
-                    <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                        <div className="w-full border-t border-[var(--store-border)]"></div>
-                    </div>
-                    <div className="relative flex justify-center">
-                        <span className="bg-[var(--store-surface)] px-4 text-xs font-bold uppercase tracking-widest text-[var(--store-text-muted)]">
-                            Podría interesarte
-                        </span>
-                    </div>
-                </div>
-
-                {/* Grid de Sugerencias */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1 md:gap-2">
-                    {products.map((product) => (
-                        <ProductCard key={product._id} product={product} />
-                    ))}
-                </div>
-            </div>
-        );
-    }
-
-    // CASO B: GRID VACÍO (NI SIQUIERA FALLBACK)
-    // Esto pasa si la base de datos está totalmente vacía o el fallback falló
-    if (!products || products.length === 0) {
-        return (
-            <div className="h-64 flex flex-col items-center justify-center ">
-                <p className="font-medium">No hay productos disponibles.</p>
-            </div>
-        );
-    }
-
+  // CASO A: NO HAY RESULTADOS EXACTOS (FALLBACK)
+  if (isFallback) {
     return (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-0.5 md:gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            {products.map((product) => (
-                <ProductCard key={product._id} product={product} />
-            ))}
+      <div className="space-y-8 py-6">
+        <div className="mx-auto max-w-2xl rounded-[2rem] border border-border-primary/30 bg-surface-secondary/50 p-8 text-center backdrop-blur-md md:p-14">
+          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-surface-primary shadow-sm border border-border-primary/40">
+            <LuSearchX className="h-10 w-10 text-text-tertiary" />
+          </div>
+          <h2 className="mb-3 text-2xl font-bold tracking-tight text-text-primary md:text-3xl">
+            No encontramos coincidencias exactas
+          </h2>
+          <p className="mx-auto mb-8 max-w-md text-sm leading-relaxed text-text-secondary md:text-base">
+            Intenta ajustar tus filtros, eliminar la selección de categoría o buscar términos más generales.
+          </p>
+          <Link
+            href="/catalogo"
+            className="inline-flex items-center justify-center rounded-full bg-brand-primary px-8 py-3.5 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:scale-105 hover:bg-brand-primary-light active:scale-95"
+          >
+            Ver todo el catálogo
+          </Link>
         </div>
+
+        {/* Separador sugerencias */}
+        <div className="relative py-6">
+          <div className="absolute inset-0 flex items-center" aria-hidden="true">
+            <div className="w-full border-t border-border-primary/40"></div>
+          </div>
+          <div className="relative flex justify-center">
+            <span className="bg-surface-primary px-4 text-xs font-bold uppercase tracking-widest text-text-tertiary">
+              Podría interesarte
+            </span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-5">
+          {products.map((product) => (
+            <ProductCard key={product._id} product={product} />
+          ))}
+        </div>
+      </div>
     );
+  }
+
+  // CASO B: GRID VACÍO TOTAL
+  if (!products || products.length === 0) {
+    return (
+      <div className="flex min-h-[400px] flex-col items-center justify-center rounded-[2rem] bg-surface-secondary/30">
+        <p className="text-lg font-medium text-text-secondary">No hay productos disponibles.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-5 pt-4">
+      {products.map((product) => (
+        <ProductCard key={product._id} product={product} />
+      ))}
+    </div>
+  );
 }

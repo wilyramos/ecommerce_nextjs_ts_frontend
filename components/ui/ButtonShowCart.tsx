@@ -1,3 +1,4 @@
+// File: frontend/components/navigation/ButtonShowCart.tsx
 "use client";
 
 import { useEffect, useRef, useMemo } from "react";
@@ -16,8 +17,8 @@ import { evaluateAutomaticDiscountsAction } from "@/actions/discount-actions";
 import ItemCarrito from "../cart/ItemCarrito";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Button } from '@/components/ui/button';
-import { H4, Muted, P } from "@/components/ui/TypographyStore";
+import { ButtonV3 } from "@/components/ui/ButtonV3";
+import { H4, Small } from "@/components/ui/TypographyV3";
 
 export default function ButtonShowCart() {
     const carrito = useCartStore((state) => state.cart);
@@ -118,15 +119,11 @@ export default function ButtonShowCart() {
             <SheetTrigger asChild>
                 <button
                     data-cart-button
-                    className="relative p-2.5 rounded-full transition-colors hover:bg-background-secondary group cursor-pointer active:scale-95 outline-none select-none"
+                    className="group relative flex size-9 items-center justify-center rounded-radius-full text-text-secondary outline-none transition-colors duration-fast hover:bg-surface-secondary hover:text-text-primary active:scale-95"
                 >
-                    <ShoppingCart
-                        size={20}
-                        strokeWidth={2}
-                        className="text-muted-foreground group-hover:text-primary transition-colors"
-                    />
+                    <ShoppingCart size={19} strokeWidth={2} />
                     {carrito.length > 0 && (
-                        <span className="absolute top-1 right-1 bg-primary text-primary-foreground text-[9px] font-semibold rounded-full h-4 w-4 flex items-center justify-center shadow-md animate-in zoom-in-50 duration-200">
+                        <span className="absolute right-0 top-0 flex size-[15px] animate-in items-center justify-center rounded-radius-full bg-brand-primary text-[9px] font-bold text-text-inverse shadow-xs zoom-in-50 duration-fast">
                             {carrito.length}
                         </span>
                     )}
@@ -135,46 +132,37 @@ export default function ButtonShowCart() {
 
             <SheetContent
                 side="right"
-                className="flex flex-col h-full p-0 border-l border-border bg-card text-card-foreground overflow-hidden select-none"
+                className="flex h-full w-full flex-col overflow-hidden border-l border-border-primary/60 bg-surface-primary p-0 text-text-primary sm:max-w-md select-none z-9999"
             >
                 {/* Header */}
-                <SheetHeader className="p-6 border-b border-border bg-background-secondary/50">
-                    <div className="flex flex-col gap-1">
-                        <div className="flex items-center justify-between">
-                            <SheetTitle className="flex items-center gap-2 text-lg font-semibold text-muted-foreground">
-                                Carrito
-                                <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-secondary text-secondary-foreground px-1.5 text-[10px] font-semibold leading-none">
-                                    {carrito.length}
-                                </span>
-                            </SheetTitle>
-                        </div>
-                    </div>
+                <SheetHeader className="border-b border-border-primary/80 bg-surface-secondary/40 px-6 py-5">
+                    <SheetTitle className="flex items-center gap-2 text-lg font-semibold tracking-tight text-text-primary">
+                        Tu Carrito
+                        <span className="flex size-5 items-center justify-center rounded-radius-full border border-border-primary/60 bg-surface-primary text-[10px] font-bold text-text-primary shadow-2xs">
+                            {carrito.length}
+                        </span>
+                    </SheetTitle>
                 </SheetHeader>
 
                 {/* Lista de productos */}
-                <div className="flex-1 overflow-y-auto overflow-x-hidden px-6 py-2 scrollbar-thin scrollbar-thumb-border bg-card">
+                <div className="flex-1 overflow-y-auto overflow-x-hidden px-6 py-2 scrollbar-thin scrollbar-thumb-border-primary bg-surface-primary">
                     {carrito.length === 0 ? (
-                        <div className="h-full flex flex-col items-center justify-center space-y-4">
-                            <div className="text-center space-y-1">
-                                <H4>
-                                    Tu carrito está vacío
-                                </H4>
-                            </div>
+                        <div className="flex h-full flex-col items-center justify-center space-y-3">
+                            <ShoppingCart size={32} className="text-text-disabled" />
+                            <H4 className="text-sm font-medium text-text-secondary">
+                                Tu carrito está vacío
+                            </H4>
                         </div>
                     ) : (
-                        <div className="divide-y divide-border/60">
+                        <div className="divide-y divide-border-primary/60">
                             {carrito.map((item) => {
                                 const itemDiscount = getItemDiscountAmount(item._id, item.variant?._id);
                                 return (
-                                    <div
+                                    <ItemCarrito
                                         key={`${item._id}-${item.variant?._id ?? "no-variant"}`}
-                                        className="py-4 w-full overflow-hidden"
-                                    >
-                                        <ItemCarrito
-                                            item={item}
-                                            discountAmount={itemDiscount}
-                                        />
-                                    </div>
+                                        item={item}
+                                        discountAmount={itemDiscount}
+                                    />
                                 );
                             })}
                         </div>
@@ -183,48 +171,50 @@ export default function ButtonShowCart() {
 
                 {/* Footer y Totales */}
                 {carrito.length > 0 && (
-                    <div className="p-6 bg-background-secondary/30 border-t border-border mt-auto">
-                        <div className="space-y-2 mb-4">
+                    <div className="mt-auto border-t border-border-primary/80 bg-surface-secondary/40 p-6 shadow-[0_-4px_12px_rgba(0,0,0,0.02)]">
+                        <div className="mb-5 space-y-2">
                             {/* Subtotal Bruto */}
-                            <div className="flex justify-between items-center">
-                                <Muted>Subtotal</Muted>
-                                <Muted>S/ {totalSubtotal.toFixed(2)}</Muted>
+                            <div className="flex items-center justify-between">
+                                <Small className="text-text-secondary">Subtotal</Small>
+                                <Small className="font-medium text-text-primary">S/ {totalSubtotal.toFixed(2)}</Small>
                             </div>
 
                             {/* Descuento Aplicado */}
                             {appliedDiscount && discountAmount > 0 && (
-                                <div className="flex justify-between items-center pt-1 border-t border-border/40">
-                                    <span className="flex items-center gap-1.5 truncate pr-2">
-                                        <Tag className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
-                                        <Muted className="truncate">{discountDisplayName}</Muted>
+                                <div className="flex items-center justify-between border-t border-border-primary/60 pt-2">
+                                    <span className="flex items-center gap-1.5 truncate pr-2 text-status-success">
+                                        <Tag className="size-3.5 shrink-0" />
+                                        <Small className="truncate font-medium">{discountDisplayName}</Small>
                                     </span>
-                                    <span className="shrink-0 font-mono font-semibold text-xs text-muted-foreground/80">-S/ {discountAmount.toFixed(2)}</span>
+                                    <span className="shrink-0 text-xs font-semibold tabular-nums text-status-success">
+                                        -S/ {discountAmount.toFixed(2)}
+                                    </span>
                                 </div>
                             )}
 
                             {/* Total Neto Estimado */}
-                            <div className="flex justify-between items-baseline pt-2 border-t border-border/60">
-                                <P>
+                            <div className="flex items-baseline justify-between border-t border-border-primary/80 pt-3">
+                                <span className="text-sm font-semibold tracking-tight text-text-primary">
                                     Total Estimado
-                                </P>
+                                </span>
                                 <div className="text-right select-all">
-                                    <Muted className="mr-1 inline">S/</Muted>
-                                    <span className="text-2xl font-semibold text-foreground/80">
+                                    <span className="mr-0.5 text-xs text-text-secondary">S/</span>
+                                    <span className="text-2xl font-semibold tracking-tight text-text-primary">
                                         {totalFinal.toFixed(2)}
                                     </span>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="grid">
-                            <Button
-                                onClick={handleCheckout}
-                                variant="accent"
-                            >
-                                Finalizar Compra
-                                <ArrowRight size={14} strokeWidth={2.5} />
-                            </Button>
-                        </div>
+                        <ButtonV3
+                            onClick={handleCheckout}
+                            variant="default"
+                            size="full"
+                            className="justify-between px-5"
+                        >
+                            <span>Finalizar Compra</span>
+                            <ArrowRight size={16} />
+                        </ButtonV3>
                     </div>
                 )}
             </SheetContent>

@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import { useEffect, useTransition } from "react"
 import { useActionState } from "react"
@@ -9,133 +9,116 @@ import Link from "next/link"
 
 import { createAccountAction } from "@/actions/create-account-action"
 import { googleLoginAction as googleRegisterAction } from "@/actions/auth/google-login-action"
-import { Input } from "../ui/input"
+import { InputV3 } from "@/components/ui/InputV3"
+import { ButtonV3 } from "@/components/ui/ButtonV3"
+import { Hr, Small } from "@/components/ui/TypographyV3"
 
 interface SuccessResponse {
-    message: string
-    userId: string
-    token: string
+  message: string
+  userId: string
+  token: string
 }
 
 export default function RegisterForm() {
-    const searchParams = useSearchParams()
-    const redirectTo = searchParams.get("redirect") || "/profile"
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get("redirect") || "/profile"
 
-    const [state, dispatch] = useActionState(createAccountAction, {
-        errors: [],
-        success: {} as SuccessResponse,
-    })
+  const [state, dispatch] = useActionState(createAccountAction, {
+    errors: [],
+    success: {} as SuccessResponse,
+  })
 
-    const [isPending, startTransition] = useTransition()
+  const [isPending, startTransition] = useTransition()
 
-    useEffect(() => {
-        if (state.errors.length > 0) {
-            state.errors.forEach((error) => toast.error(error))
-        }
-        if (state.success?.message) {
-            toast.success(state.success.message)
-        }
-    }, [state])
-
-    const handleGoogleLoginSuccess = ({ credential }: CredentialResponse) => {
-        if (!credential) return toast.error("Token de Google no recibido")
-
-        startTransition(async () => {
-            const result = await googleRegisterAction({ credential, redirectTo })
-            if (result?.error) toast.error(result.error)
-        })
+  useEffect(() => {
+    if (state.errors.length > 0) {
+      state.errors.forEach((error) => toast.error(error))
     }
+    if (state.success?.message) {
+      toast.success(state.success.message)
+    }
+  }, [state])
 
-    return (
-        <div className="mt-4 space-y-4 text-gray-700 text-sm">
-            
-            {/* Google Login */}
-            <div className="flex justify-center">
-                <GoogleLogin
-                    onSuccess={handleGoogleLoginSuccess}
-                    onError={() => toast.error("Error al registrarte con Google")}
-                    size="large"
-                    shape="circle"
-                />
-            </div>
+  const handleGoogleLoginSuccess = ({ credential }: CredentialResponse) => {
+    if (!credential) return toast.error("Token de Google no recibido")
 
-            {/* Divider */}
-            <div className="relative text-center text-sm text-black my-6">
-                <hr className="border-gray-300 mb-2" />
-                <span className="bg-white px-2 absolute -top-3 left-1/2 -translate-x-1/2">
-                    O bien
-                </span>
-            </div>
+    startTransition(async () => {
+      const result = await googleRegisterAction({ credential, redirectTo })
+      if (result?.error) toast.error(result.error)
+    })
+  }
 
-            {/* Formulario */}
-            <form action={dispatch}>
-                
-                {/* Email */}
-                <label htmlFor="email" className="text-sm">
-                    Email
-                    <Input
-                        id="email"
-                        type="email"
-                        name="email"
-                        required
-                        placeholder="tu@email.com"
-                        className="mt-1"
-                    />
-                </label>
+  return (
+    <div className="space-y-5">
+      <div className="flex justify-center">
+        <GoogleLogin
+          onSuccess={handleGoogleLoginSuccess}
+          onError={() => toast.error("Error al registrarte con Google")}
+          size="large"
+          shape="rectangular"
+          theme="outline"
+          width="100%"
+        />
+      </div>
 
-                {/* Nombre */}
-                <label htmlFor="nombre" className="text-sm block mt-4">
-                    Nombre
-                </label>
-                <Input
-                    id="nombre"
-                    type="text"
-                    name="nombre"
-                    required
-                    placeholder="Tu nombre"
-                    className="mt-1"
-                />
+      <div className="relative my-4 text-center">
+        <Hr className="my-0" />
+        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-surface-primary px-3 text-[11px] uppercase tracking-wider text-text-tertiary">
+          o continúa con
+        </span>
+      </div>
 
-                {/* Password */}
-                <label htmlFor="password" className="text-sm block mt-4">
-                    Contraseña
-                </label>
-                <Input
-                    id="password"
-                    type="password"
-                    name="password"
-                    required
-                    placeholder="********"
-                    className="mt-1"
-                />
+      <form action={dispatch} className="space-y-3.5">
+        <InputV3
+          id="email"
+          type="email"
+          name="email"
+          label="Correo electrónico"
+          required
+          autoComplete="email"
+        />
 
-                {/* Submit */}
-                <input
-                    type="submit"
-                    value="Crear cuenta"
-                    disabled={isPending}
-                    className="w-full bg-black hover:bg-gray-700 text-white font-semibold py-2 rounded transition-colors cursor-pointer mt-4"
-                />
+        <InputV3
+          id="nombre"
+          type="text"
+          name="nombre"
+          label="Nombre completo"
+          required
+          autoComplete="name"
+        />
 
-                <input type="hidden" name="redirect" value={redirectTo} />
-            </form>
+        <InputV3
+          id="password"
+          type="password"
+          name="password"
+          label="Contraseña"
+          required
+          autoComplete="new-password"
+        />
 
-            {/* Link a login */}
-            <nav className="text-xs text-gray-600 my-5 text-center">
-                <p>
-                    ¿Ya tienes una cuenta?{" "}
-                    <Link
-                        href={
-                            searchParams.get("redirect")
-                                ? `/auth/login?redirect=${searchParams.get("redirect")}`
-                                : "/auth/login"
-                        }
-                        className="text-black font-semibold hover:underline"
-                    >
-                        Inicia sesión
-                    </Link>
-                </p>
-            </nav>
-        </div>
-    )
+        <input type="hidden" name="redirect" value={redirectTo} />
+
+        <ButtonV3
+          type="submit"
+          size="full"
+          disabled={isPending}
+          className="mt-1"
+        >
+          {isPending ? "Creando cuenta..." : "Crear cuenta"}
+        </ButtonV3>
+      </form>
+
+      <div className="text-center">
+        <Small className="text-text-secondary lowercase first-letter:uppercase">
+          ¿Ya tienes cuenta?{" "}
+          <Link
+            href={`/auth/login${searchParams.get("redirect") ? `?redirect=${searchParams.get("redirect")}` : ""}`}
+            className="font-semibold text-brand-primary hover:underline"
+          >
+            Inicia sesión
+          </Link>
+        </Small>
+      </div>
+    </div>
+  )
 }

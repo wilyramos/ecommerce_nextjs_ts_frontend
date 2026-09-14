@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 import type { CatalogResponse } from "@/src/schemas/catalog";
 import CatalogHeader, { TitlePart } from "./CatalogHeader";
 import CatalogSidebar from "./CatalogSidebar";
@@ -9,103 +11,107 @@ import CatalogPagination from "./CatalogPagination";
 import CatalogMobileSort from "./CatalogMobileSort";
 
 interface CatalogLayoutProps {
-    products: CatalogResponse['products'];
-    filters: CatalogResponse['filters'];
-    pagination: CatalogResponse['pagination'];
-    context: CatalogResponse['context'];
-    isFallback: boolean;
+  products: CatalogResponse['products'];
+  filters: CatalogResponse['filters'];
+  pagination: CatalogResponse['pagination'];
+  context: CatalogResponse['context'];
+  isFallback: boolean;
 }
 
 export default function CatalogLayout({
-    products,
-    filters,
-    pagination,
-    context,
-    isFallback
+  products,
+  filters,
+  pagination,
+  context,
+  isFallback
 }: CatalogLayoutProps) {
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
-    // Title builder
-    const getTitle = (): TitlePart[] => {
-        if (context.searchQuery) {
-            return [
-                { text: "Resultados para" },
-                { text: `"${context.searchQuery}"`, italic: true },
-            ];
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY <= 30) {
+        setIsVisible(true);
+      } else {
+        if (currentScrollY > lastScrollY && currentScrollY > 150) {
+          setIsVisible(false);
+        } else {
+          setIsVisible(true);
         }
-
-        const parts: TitlePart[] = [];
-
-        if (context.categoryName) {
-            parts.push({ text: context.categoryName });
-        }
-
-        if (context.brandName) {
-            parts.push({ text: context.brandName, italic: true });
-        }
-
-        if (context.lineName) {
-            parts.push({ text: context.lineName, italic: true });
-        }
-
-        return parts.length > 0 ? parts : [{ text: "Catálogo" }];
+      }
+      setLastScrollY(currentScrollY);
     };
 
-    // Breadcrumbs
-    const breadcrumbs = [
-        { label: "Inicio", href: "/" },
-        { label: "Catálogo", href: "/catalogo" },
-    ];
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
 
-    if (context.categoryName) {
-        breadcrumbs.push({ label: context.categoryName, href: "#" });
+  const getTitle = (): TitlePart[] => {
+    if (context.searchQuery) {
+      return [
+        { text: "Resultados para" },
+        { text: `"${context.searchQuery}"`, italic: true },
+      ];
     }
-    if (context.brandName) {
-        breadcrumbs.push({ label: context.brandName, href: "#" });
-    }
-    if (context.lineName) {
-        breadcrumbs.push({ label: context.lineName, href: "#" });
-    }
+    const parts: TitlePart[] = [];
+    if (context.categoryName) parts.push({ text: context.categoryName });
+    if (context.brandName) parts.push({ text: context.brandName, italic: true });
+    if (context.lineName) parts.push({ text: context.lineName, italic: true });
+    return parts.length > 0 ? parts : [{ text: "Catálogo" }];
+  };
 
-    return (
-        <section className="container mx-auto px-4 md:px-6 max-w-screen-2xl text-foreground">
+  const breadcrumbs = [
+    { label: "Inicio", href: "/" },
+    { label: "Catálogo", href: "/catalogo" },
+  ];
+  if (context.categoryName) breadcrumbs.push({ label: context.categoryName, href: "#" });
+  if (context.brandName) breadcrumbs.push({ label: context.brandName, href: "#" });
+  if (context.lineName) breadcrumbs.push({ label: context.lineName, href: "#" });
 
-            <div className="py-2 md:py-4">
-                <CatalogHeader
-                    title={getTitle()}
-                    totalProducts={pagination.totalItems}
-                    breadcrumbs={breadcrumbs}
-                />
+  return (
+    <section className="text-text-primary">
+      <div className="py-2 md:py-4">
+        <CatalogHeader
+          title={getTitle()}
+          totalProducts={pagination.totalItems}
+          breadcrumbs={breadcrumbs}
+        />
+      </div>
+
+      <div className="relative flex flex-col gap-4 lg:grid lg:grid-cols-12 lg:gap-8 pt-2">
+        <aside className="hidden lg:col-span-3 lg:block xl:col-span-2">
+          <div className="sticky top-28">
+            <CatalogSidebar filters={filters} />
+          </div>
+        </aside>
+
+        <main className="flex flex-col lg:col-span-9 xl:col-span-10">
+          {/* Barra de Filtros Mobile Inteligente */}
+          <div
+            className={cn(
+              "sticky z-10 flex items-center justify-between border-b border-border-primary/60 bg-surface-primary/95 py-2.5 backdrop-blur-md transition-all duration-300 ease-in-out lg:hidden",
+              isVisible ? "top-14 translate-y-0 opacity-100" : "top-0 -translate-y-full opacity-0 pointer-events-none"
+            )}
+          >
+            <CatalogMobileFilters filters={filters} />
+            <CatalogMobileSort />
+          </div>
+
+          <div className="pt-3 lg:pt-0">
+            <CatalogGrid products={products} isFallback={isFallback} />
+          </div>
+
+          {!isFallback && pagination.totalPages > 1 && (
+            <div className="mt-8 border-t border-border-primary/80 pt-8">
+              <CatalogPagination
+                currentPage={pagination.currentPage}
+                totalPages={pagination.totalPages}
+              />
             </div>
-
-            <div className="flex flex-col lg:grid lg:grid-cols-12 gap-2 relative">
-
-                {/* Sidebar Desktop con estilos de panel lateral del sistema */}
-                <aside className="hidden lg:block lg:col-span-3 xl:col-span-2 ">
-                    <div className="sticky top-24">
-                        <CatalogSidebar filters={filters} />
-                    </div>
-                </aside>
-
-                <main className="lg:col-span-9 xl:col-span-10 flex flex-col">
-
-                    {/* Barra de Filtros Mobile integrada al ecosistema de color */}
-                    <div className="lg:hidden flex items-center justify-between sticky top-11 z-10 bg-background-secondary py-2 border-b border-border">
-                        <CatalogMobileFilters filters={filters} />
-                        <CatalogMobileSort />
-                    </div>
-
-                    <CatalogGrid products={products} isFallback={isFallback} />
-
-                    {!isFallback && pagination.totalPages > 1 && (
-                        <div className="mt-auto pt-8 border-t border-border">
-                            <CatalogPagination
-                                currentPage={pagination.currentPage}
-                                totalPages={pagination.totalPages}
-                            />
-                        </div>
-                    )}
-                </main>
-            </div>
-        </section>
-    );
+          )}
+        </main>
+      </div>
+    </section>
+  );
 }

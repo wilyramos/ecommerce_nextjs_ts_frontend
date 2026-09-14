@@ -39,7 +39,6 @@ export function MovementActions({ shiftId }: { shiftId: string }) {
             {!type ? (
                 <div className="grid grid-cols-2 gap-3">
                     <Button
-                        variant="accent"
                         onClick={() => setType("INCOME")}
                         className="rounded-sm font-black text-[10px] uppercase tracking-widest gap-2"
                     >
@@ -95,7 +94,6 @@ export function MovementActions({ shiftId }: { shiftId: string }) {
                     <Button
                         type="submit"
                         disabled={isPending}
-                        variant="accent"
                         className="w-full rounded-sm text-[10px] font-black uppercase tracking-widest gap-2"
                     >
                         {isPending && <Loader2 size={12} className="animate-spin" />}
