@@ -12,11 +12,11 @@ import type { CategoryListResponse } from "@/src/schemas/category.schema";
 import { routes } from "@/lib/routes";
 
 const responsive = {
-  superLargeDesktop: { breakpoint: { max: 4000, min: 1440 }, items: 8, slidesToSlide: 3 },
-  desktop: { breakpoint: { max: 1440, min: 1024 }, items: 7, slidesToSlide: 2 },
-  tablet: { breakpoint: { max: 1024, min: 768 }, items: 5, slidesToSlide: 2 },
-  mobileLarge: { breakpoint: { max: 768, min: 480 }, items: 4, slidesToSlide: 1 },
-  mobile: { breakpoint: { max: 480, min: 0 }, items: 3, slidesToSlide: 1 },
+  superLargeDesktop: { breakpoint: { max: 4000, min: 1440 }, items: 9, slidesToSlide: 3 },
+  desktop: { breakpoint: { max: 1440, min: 1024 }, items: 8, slidesToSlide: 2 },
+  tablet: { breakpoint: { max: 1024, min: 768 }, items: 7, slidesToSlide: 2 },
+  mobileLarge: { breakpoint: { max: 768, min: 480 }, items: 5, slidesToSlide: 1 },
+  mobile: { breakpoint: { max: 480, min: 0 }, items: 4, slidesToSlide: 1 },
 };
 
 export default function CategoriasDestacadas({

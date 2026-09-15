@@ -1,5 +1,3 @@
-//File: frontend/components/checkout-v2/payment/PaymentMethodsAccordionV2.tsx
-
 "use client";
 
 import Image from "next/image";
@@ -13,9 +11,9 @@ interface Props {
 
 export default function PaymentMethodsSelector({ order }: Props) {
     return (
-        <section className="w-full space-y-4 text-foreground">
-            <div className="rounded-md border border-border">
-                <div className="flex items-center justify-between w-full px-4 py-3.5">
+        <section className="w-full space-y-4 text-text-primary">
+            <div className="rounded-radius-md border border-border-primary bg-surface-primary shadow-sm overflow-hidden">
+                <div className="flex items-center justify-between w-full px-4 py-4">
                     <div className="flex items-center gap-2">
                         <Image
                             src="/payments/culqi.png"
@@ -23,6 +21,7 @@ export default function PaymentMethodsSelector({ order }: Props) {
                             width={42}
                             height={18}
                             className="object-contain w-auto h-4.5 mix-blend-multiply select-none"
+                            unoptimized
                         />
                     </div>
 
@@ -31,7 +30,7 @@ export default function PaymentMethodsSelector({ order }: Props) {
                     </div>
                 </div>
 
-                <div className="border-t border-border">
+                <div className="border-t border-border-primary bg-surface-secondary/30">
                     <div className="p-5 max-w-md mx-auto">
                         <CheckoutCulqi order={order} />
                     </div>

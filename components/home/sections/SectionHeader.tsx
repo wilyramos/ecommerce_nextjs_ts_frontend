@@ -40,7 +40,7 @@ export default function SectionHeader({
     <div className="mb-6 flex w-full select-none items-end justify-between pb-3">
       <div className="flex flex-col gap-0.5">
         {subtitle && (
-          <Small className="text-[11px] font-semibold uppercase tracking-[0.14em] text-text-tertiary">
+          <Small className="text-[11px] font-semibold uppercase   text-text-tertiary">
             {subtitle}
           </Small>
         )}

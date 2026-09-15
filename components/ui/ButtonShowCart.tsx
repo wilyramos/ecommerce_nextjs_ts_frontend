@@ -132,7 +132,7 @@ export default function ButtonShowCart() {
 
             <SheetContent
                 side="right"
-                className="flex h-full w-full flex-col overflow-hidden border-l border-border-primary/60 bg-surface-primary p-0 text-text-primary sm:max-w-md select-none z-9999"
+                className="flex h-full w-full flex-col overflow-hidden border-l  select-none z-9999"
             >
                 {/* Header */}
                 <SheetHeader className="border-b border-border-primary/80 bg-surface-secondary/40 px-6 py-5">

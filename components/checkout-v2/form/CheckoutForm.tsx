@@ -16,7 +16,7 @@ import {
     type ShippingAddress,
     type TipoDocumento,
 } from '@/src/schemas/order.schema'
-import { Button } from '@/components/ui/button'
+import { ButtonV3 } from '@/components/ui/ButtonV3'
 
 import CustomerProfileSection from './CustomerProfileSection'
 import ShippingAddressSection from './ShippingAddressSection'
@@ -208,7 +208,7 @@ export default function CheckoutForm({ defaultProfile, lockedEmail }: Props) {
     return (
         <form onSubmit={handleSubmit} className="space-y-7" noValidate>
             {serverError && (
-                <div role="alert" className="rounded-md border border-destructive/20 bg-destructive/5 px-4 py-3 text-[12px] font-medium text-destructive">
+                <div role="alert" className="rounded-radius-md border border-status-error/20 bg-status-error-light px-4 py-3 text-[12px] font-medium text-status-error">
                     {serverError}
                 </div>
             )}
@@ -216,25 +216,25 @@ export default function CheckoutForm({ defaultProfile, lockedEmail }: Props) {
             {/* Sección 1: Contacto con Acceso Estilo Shopify */}
             <section className="space-y-4">
                 <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                    <h2 className="text-base font-semibold text-foreground tracking-tight">
+                    <h2 className="text-base font-semibold text-text-primary tracking-tight">
                         Contacto
                     </h2>
 
                     {!lockedEmail && (
-                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                        <div className="flex items-center gap-1.5 text-xs text-text-secondary">
                             <span>¿Ya tienes una cuenta?</span>
                             <button
                                 type="button"
                                 onClick={handleRedirectToLogin}
-                                className="text-foreground font-medium underline hover:text-foreground/80 transition-colors cursor-pointer hover:no-underline"
+                                className="text-text-primary font-medium underline hover:text-text-primary/80 transition-colors cursor-pointer hover:no-underline outline-none"
                             >
                                 Iniciar sesión
                             </button>
-                            <span className="text-muted-foreground/40 select-none">|</span>
+                            <span className="text-text-tertiary select-none">|</span>
                             <button
                                 type="button"
                                 onClick={handleRedirectToLogin}
-                                className="flex items-center gap-1 text-foreground font-medium hover:opacity-80 transition-opacity cursor-pointer"
+                                className="flex items-center gap-1 text-text-primary font-medium hover:opacity-80 transition-opacity cursor-pointer outline-none"
                                 title="Iniciar sesión con Google"
                             >
                                 <FcGoogle size={14} className="mt-[0.5px]" />
@@ -255,7 +255,7 @@ export default function CheckoutForm({ defaultProfile, lockedEmail }: Props) {
 
             {/* Sección 2 */}
             <section className="space-y-4">
-                <h2 className="text-base font-semibold text-foreground tracking-tight">
+                <h2 className="text-base font-semibold text-text-primary tracking-tight">
                     Entrega
                 </h2>
                 <ShippingAddressSection
@@ -269,44 +269,44 @@ export default function CheckoutForm({ defaultProfile, lockedEmail }: Props) {
             </section>
 
             {/* Botón de Pago Principal e Información Legal */}
-            <div className="space-y-3">
-                <Button
+            <div className="space-y-3 pt-2">
+                <ButtonV3
                     type="submit"
-                    disabled={isPending || cart.length === 0}
-                    className="w-full "
                     variant="default"
+                    size="full"
+                    disabled={isPending || cart.length === 0}
                 >
                     {isPending ? (
-                        <span className="flex items-center justify-center gap-2">
-                            <Loader2 className="h-4 w-4 animate-spin" />
+                        <>
+                            <Loader2 className="animate-spin" />
                             Procesando...
-                        </span>
+                        </>
                     ) : (
                         'Ir a pagar'
                     )}
-                </Button>
+                </ButtonV3>
 
-                <p className="text-[11px] text-center text-muted-foreground leading-normal px-2">
+                <p className="text-[11px] text-center text-text-secondary leading-normal px-2">
                     Al continuar con la compra, aceptas nuestros{' '}
-                    <Link href="/terminos-y-condiciones" target="_blank" className="underline hover:text-foreground transition-colors">
+                    <Link href="/terminos-y-condiciones" target="_blank" className="text-text-primary underline hover:text-brand-accent transition-colors">
                         términos y condiciones de venta
                     </Link>
                     .
                 </p>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground border-t pt-4">
-                <Link href="/politicas-de-privacidad" target="_blank" className="underline hover:text-foreground transition-colors">
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-text-secondary border-t border-border-primary/60 pt-4">
+                <Link href="/politicas-de-privacidad" target="_blank" className="underline hover:text-text-primary transition-colors">
                     Política de privacidad
                 </Link>
-                <Link href="/politicas-de-cambios-y-devoluciones" target="_blank" className="underline hover:text-foreground transition-colors">
+                <Link href="/politicas-de-cambios-y-devoluciones" target="_blank" className="underline hover:text-text-primary transition-colors">
                     Política de devoluciones
                 </Link>
-                <Link href="/hc/proceso-de-compra" target="_blank" className="underline hover:text-foreground transition-colors">
+                <Link href="/hc/proceso-de-compra" target="_blank" className="underline hover:text-text-primary transition-colors">
                     Envío
                 </Link>
 
-                <Link href="/hc/contacto-y-soporte" target="_blank" className="underline hover:text-foreground transition-colors">
+                <Link href="/hc/contacto-y-soporte" target="_blank" className="underline hover:text-text-primary transition-colors">
                     Contacto y soporte
                 </Link>
             </div>

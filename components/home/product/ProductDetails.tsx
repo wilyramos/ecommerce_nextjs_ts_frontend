@@ -197,7 +197,7 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
                 <Link
                   href={`/catalogo/${producto.brand.slug}`}
                   prefetch={false}
-                  className="text-[11px] font-semibold uppercase tracking-[0.14em] text-text-tertiary transition-colors duration-fast hover:text-text-primary"
+                  className="text-[11px] font-semibold uppercase   text-text-tertiary transition-colors duration-fast hover:text-text-primary"
                 >
                   {producto.brand.nombre}
                 </Link>
@@ -209,7 +209,7 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
                 <Link
                   href={`/catalogo/${producto.line.slug}`}
                   prefetch={false}
-                  className="text-[11px] font-semibold uppercase tracking-[0.14em] text-text-tertiary transition-colors duration-fast hover:text-text-primary"
+                  className="text-[11px] font-semibold uppercase   text-text-tertiary transition-colors duration-fast hover:text-text-primary"
                 >
                   {producto.line.nombre}
                 </Link>
@@ -260,7 +260,7 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
 
         {/* Atributos Destacados */}
         {featuredAttributes.length > 0 && (
-          <div className="grid grid-cols-2 gap-2.5 rounded-radius-lg border border-border-primary/60 bg-surface-secondary/40 p-3 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 rounded-radius-lg border border-border-primary/60 bg-surface-secondary/40 p-4 sm:grid-cols-3">
             {featuredAttributes.map((attr) => {
               const valueLower = String(attr.value).toLowerCase().trim();
               const isCheckAttribute = ["si", "sí", "true", "aplica", "incluido", "yes"].includes(valueLower);
@@ -268,24 +268,26 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
               return (
                 <div
                   key={attr.key}
-                  className="flex min-w-0 items-center gap-2"
+                  // Modificamos a items-start y gap-2.5 para multilínea correcta
+                  className="flex min-w-0 items-start gap-2.5"
                 >
                   {attr.icon && (
                     <Image
                       src={attr.icon}
                       alt={attr.key}
-                      width={24}
-                      height={24}
-                      className="size-6 shrink-0 object-contain"
+                      width={40} // Aumentado a 40px
+                      height={40} // Aumentado a 40px
+                      className="size-10 shrink-0 object-contain pt-0.5" // size-10 con ligero pt para alinear
                       unoptimized
                     />
                   )}
-                  <div className="flex min-w-0 flex-col">
-                    <Small className="truncate text-[10px] font-semibold uppercase tracking-[0.14em] text-text-tertiary">
+                  <div className="flex min-w-0 flex-col gap-0.5 pt-0.5">
+                    {/* Quitamos truncate y agregamos break-words y leading-tight */}
+                    <Small className="break-words text-[10px] font-semibold uppercase leading-tight   text-text-tertiary">
                       {attr.key}
                     </Small>
                     {!isCheckAttribute && (
-                      <P className="truncate text-xs font-medium text-text-primary">
+                      <P className="break-words text-xs font-medium leading-tight text-text-primary">
                         {attr.value}
                       </P>
                     )}
@@ -317,7 +319,7 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
             return (
               <fieldset key={key} className="space-y-2">
                 <legend>
-                  <H4 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-text-tertiary">
+                  <H4 className="text-[11px] font-semibold uppercase   text-text-tertiary">
                     {key}: {selectedAttributes[key] && (
                       <span className="font-normal capitalize text-text-primary">{selectedAttributes[key]}</span>
                     )}

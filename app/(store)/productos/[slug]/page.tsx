@@ -90,7 +90,7 @@ export default async function PageProduct({ params }: Props) {
   return (
     // Se elimina el <main max-w-screen... px-4> para evitar doble anidación.
     // El layout padre ya provee los límites y paddings.
-    <div className="w-full">
+    <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-6">
       <ProductJsonLd producto={producto} />
       <Suspense fallback={<ProductSkeleton />}>
         <ProductPageServer producto={producto} />

@@ -30,7 +30,7 @@ export default function ProductComplementary({ complementarios }: ProductComplem
   return (
     <section className="mt-6 border-t border-border-primary/80 pt-6 select-none">
       <div className="space-y-4">
-        <H4 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-text-tertiary">
+        <H4 className="text-xs font-semibold uppercase">
           Completa tu compra
         </H4>
 

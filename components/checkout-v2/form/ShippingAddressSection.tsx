@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import { locations } from '@/src/data/locations'
 import { cn } from '@/lib/utils'
 import type { ShippingAddress } from '@/src/schemas/order.schema'
-import { InputV2 } from '@/components/ui/InputV2'
+import { InputV3 } from '@/components/ui/InputV3'
 
 type Props = {
     values: ShippingAddress
@@ -17,7 +17,7 @@ type Props = {
 
 const ChevronIcon = () => (
     <svg
-        className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground"
+        className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-text-secondary"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         fill="none"
@@ -42,31 +42,32 @@ type NativeSelectProps = {
 
 function NativeSelect({ id, label, value, options, disabled, hasError, onChange }: NativeSelectProps) {
     return (
-        <div className="relative w-full group flex flex-col justify-end h-11">
+        <div className="relative w-full group flex flex-col justify-end h-12">
             <select
                 id={id}
                 value={value}
                 onChange={e => onChange(e.target.value)}
                 disabled={disabled || options.length === 0}
+                aria-invalid={hasError || undefined}
                 className={cn(
-                    "peer h-11 w-full border bg-background border-border px-3 pt-4 pb-1 text-base sm:text-xs",
-                    "transition-all outline-none rounded-md text-foreground appearance-none",
-                    "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
-                    "focus-visible:border-ring focus-visible:ring-ring focus-visible:ring-[1px]",
-                    hasError && "border-destructive focus-visible:ring-destructive/20"
+                    "peer h-12 w-full min-w-0 rounded-radius-md border border-border-primary bg-surface-primary px-3.5 pt-4.5 pb-1.5 text-sm font-normal text-text-primary transition-all duration-fast outline-none appearance-none",
+                    "hover:border-border-strong",
+                    "focus-visible:border-brand-accent focus-visible:ring-1 focus-visible:ring-brand-accent",
+                    "disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-surface-secondary disabled:border-border-secondary disabled:text-text-disabled",
+                    "aria-invalid:border-status-error aria-invalid:focus-visible:border-status-error aria-invalid:focus-visible:ring-status-error"
                 )}
             >
                 <option value="" disabled />
                 {options.map(opt => (
-                    <option key={opt} value={opt}>{opt}</option>
+                    <option key={opt} value={opt} className="text-text-primary bg-surface-primary">{opt}</option>
                 ))}
             </select>
             <ChevronIcon />
             <label
                 htmlFor={id}
                 className={cn(
-                    "absolute left-3 text-muted-foreground pointer-events-none transition-all origin-left select-none",
-                    value ? "top-1 text-[10px]" : "top-3 text-base sm:text-xs"
+                    "pointer-events-none absolute left-3.5 top-1.5 select-none text-[11px] font-normal tracking-normal text-text-tertiary transition-all duration-fast origin-left",
+                    !value && "top-3.5 text-sm text-text-secondary"
                 )}
             >
                 {label}
@@ -108,29 +109,26 @@ export default function ShippingAddressSection({ values, errors, disabled, notes
     const renderField = (fieldKey: keyof ShippingAddress, labelPlaceholder: string) => {
         const hasError = !!errors[`shippingAddress.${fieldKey}`]
         return (
-            <InputV2
+            <InputV3
                 id={`shipping-field-${fieldKey}`}
                 label={labelPlaceholder}
                 value={values[fieldKey] ?? ''}
                 onChange={e => onChange(fieldKey, e.target.value)}
                 aria-invalid={hasError}
                 disabled={disabled}
-                className={cn(
-                    "text-base sm:text-xs",
-                    hasError && "border-destructive focus-visible:ring-destructive/20 focus-visible:border-destructive"
-                )}
+                className="text-base sm:text-xs"
             />
         )
     }
 
     return (
-        <fieldset className="space-y-3.5 text-foreground" disabled={disabled}>
+        <fieldset className="space-y-3.5 text-text-primary" disabled={disabled}>
             <legend className="sr-only">Dirección de envío</legend>
 
             {fieldErrors.length > 0 && (
-                <ul className="space-y-1 rounded-md border border-destructive/20 bg-destructive/5 px-3 py-2">
+                <ul className="space-y-1 rounded-radius-md border border-status-error/20 bg-status-error-light px-3 py-2">
                     {fieldErrors.map((msg) => (
-                        <li key={msg} className="text-[11px] text-destructive tracking-wide">
+                        <li key={msg} className="text-[11px] text-status-error tracking-wide">
                             · {msg}
                         </li>
                     ))}
@@ -170,7 +168,7 @@ export default function ShippingAddressSection({ values, errors, disabled, notes
             {renderField('direccion', 'Dirección (Calle, avenida, número)')}
             {renderField('referencia', 'Referencia (Opcional)')}
 
-            <InputV2
+            <InputV3
                 id="shipping-notes"
                 label="Notas adicionales del pedido (Opcional)"
                 value={notes}

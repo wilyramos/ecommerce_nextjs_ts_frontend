@@ -24,7 +24,7 @@ export default function HomePage() {
       
       {/* 1. Hero Banner - TÉCNICA BREAKOUT (Full Bleed Apple Style) */}
       {/* -mt-6 anula el py-6 del <main> para pegarse al navbar */}
-      <ScrollReveal className="relative w-[100vw] ml-[calc(50%-50vw)] -mt-6 md:-mt-6">
+      <ScrollReveal className="relative z-0 -mt-6 w-full">
         <section aria-label="Banners promocionales" className="w-full">
           <CarruselPrincipal />
         </section>

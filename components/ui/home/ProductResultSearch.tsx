@@ -54,7 +54,7 @@ export default function ProductResultSearch({ item }: Props) {
       {/* Información del Producto */}
       <div className="flex flex-1 flex-col gap-1">
         {marcaNombre && (
-          <Small className="truncate text-[9px] font-semibold uppercase tracking-[0.14em] text-text-tertiary">
+          <Small className="truncate text-[9px] font-semibold uppercase   text-text-tertiary">
             {marcaNombre}
           </Small>
         )}

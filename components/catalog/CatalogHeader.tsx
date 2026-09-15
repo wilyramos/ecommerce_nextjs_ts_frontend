@@ -58,7 +58,7 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
             ))}
           </h1>
 
-          <span className="rounded-radius-sm bg-surface-secondary px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-text-secondary">
+          <span className="rounded-radius-sm bg-surface-secondary px-2 py-0.5 text-[10px] font-semibold uppercase text-text-secondary">
             {totalProducts} Items
           </span>
         </div>

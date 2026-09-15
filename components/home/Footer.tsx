@@ -75,7 +75,7 @@ export default function Footer() {
                     <div className="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:col-span-8">
                         {/* Column: Explorar */}
                         <nav className="flex flex-col gap-3">
-                            <H4 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-text-tertiary">
+                            <H4 className="text-[11px] font-semibold uppercase text-text-tertiary">
                                 Explorar
                             </H4>
                             <ul className="flex flex-col gap-2">
@@ -95,7 +95,7 @@ export default function Footer() {
 
                         {/* Column: Marcas */}
                         <nav className="flex flex-col gap-3">
-                            <H4 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-text-tertiary">
+                            <H4 className="text-[11px] font-semibold uppercase   text-text-tertiary">
                                 Marcas
                             </H4>
                             <ul className="flex flex-col gap-2">
@@ -115,7 +115,7 @@ export default function Footer() {
 
                         {/* Column: Ayuda */}
                         <nav className="flex flex-col gap-3">
-                            <H4 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-text-tertiary">
+                            <H4 className="text-[11px] font-semibold uppercase   text-text-tertiary">
                                 Ayuda
                             </H4>
                             <ul className="flex flex-col gap-2">
@@ -135,7 +135,7 @@ export default function Footer() {
 
                         {/* Column: Ubicación */}
                         <div className="flex flex-col gap-3">
-                            <H4 className="text-[11px] font-semibold uppercase tracking-[0.14em] text-text-tertiary">
+                            <H4 className="text-[11px] font-semibold uppercase   text-text-tertiary">
                                 Ubicación
                             </H4>
                             <div className="space-y-1 text-xs text-text-secondary">
@@ -183,7 +183,7 @@ export default function Footer() {
                         </div>
 
                         <div className="order-1 flex w-full flex-col items-center gap-2 border-b border-border-primary/80 pb-6 lg:order-2 lg:w-auto lg:items-end lg:border-b-0 lg:pb-0">
-                            <Small className="text-[10px] font-semibold uppercase tracking-[0.14em] text-text-tertiary">
+                            <Small className="text-[10px] font-semibold uppercase   text-text-tertiary">
                                 Medios de pago
                             </Small>
                             <PaymentMethods />

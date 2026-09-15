@@ -65,7 +65,7 @@ export default function CatalogSidebar({ filters }: Props) {
   }, [filters]);
 
   const triggerClass =
-    "py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-text-tertiary transition-colors duration-fast hover:text-text-primary hover:no-underline outline-none";
+    "py-3 text-[11px] font-semibold uppercase text-text-tertiary transition-colors duration-fast hover:text-text-primary hover:no-underline outline-none";
 
   const rowClass =
     "group flex cursor-pointer items-center gap-2.5 rounded-radius-md px-2 py-1.5 outline-none transition-colors duration-fast hover:bg-surface-secondary/70";

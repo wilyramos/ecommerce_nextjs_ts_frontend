@@ -81,7 +81,6 @@ export default function Breadcrumbs({ items, current, currentHref, className }: 
                         title="Ir al inicio"
                     >
                         <Home className="w-3.5 h-3.5 shrink-0" />
-                        <span className="hidden sm:inline">Inicio</span>
                     </Link>
                 </li>
 

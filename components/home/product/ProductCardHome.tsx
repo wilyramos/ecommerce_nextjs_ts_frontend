@@ -1,12 +1,10 @@
-// File: frontend/components/home/product/ProductCardHome.tsx
-
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
 import type { ProductResponse } from "@/src/schemas";
 import { MdOutlineImageNotSupported } from "react-icons/md";
-import { H4, Small } from "@/components/ui/TypographyStore";
+import { P } from "@/components/ui/TypographyV3";
 
 export default function ProductCardHome({ product }: { product: ProductResponse }) {
     const img1 = product.imagenes?.[0];
@@ -23,27 +21,27 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
     return (
         <Link
             href={`/productos/${product.slug}`}
-            className="group relative flex flex-col w-full bg-background overflow-hidden border border-border/30"
+            className="group relative flex flex-col w-full bg-surface-primary overflow-hidden h-full outline-none focus-visible:ring-2 focus-visible:ring-brand-accent rounded-radius-md"
         >
             {/* --- CONTENEDOR CUADRADO EXACTO (ASPECT SQUARE) --- */}
-            <div className="relative w-full aspect-square bg-[#fdfdfd] overflow-hidden flex items-center justify-center">
+            <div className="relative w-full aspect-square bg-surface-secondary/40 overflow-hidden flex items-center justify-center">
                 {/* Badge de Descuento Minimalista */}
                 {discount && (
                     <div className="absolute top-3 left-3 z-10 pointer-events-none">
-                        <span className="px-2 py-1 bg-neutral-900 text-white text-[10px] font-bold tracking-widest uppercase rounded-[2px] shadow-sm">
+                        <span className="px-2 py-1 bg-brand-primary text-text-inverse text-[10px] font-bold tracking-widest uppercase rounded-radius-sm shadow-sm">
                             -{discountedPercentage}%
                         </span>
                     </div>
                 )}
 
                 {img1 ? (
-                    <div className="relative w-full h-full p-4 md:p-6 transition-transform duration-700 ease-out group-hover:scale-105">
+                    <div className="relative w-full h-full p-4 md:p-6 transition-transform duration-slow ease-out group-hover:scale-105">
                         <Image
                             src={img1}
                             alt={product.nombre || "Producto"}
                             fill
                             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                            className={`object-contain mix-blend-multiply transition-opacity duration-500 ${
+                            className={`object-contain mix-blend-multiply transition-opacity duration-normal ${
                                 img2 !== img1 ? "opacity-100 group-hover:opacity-0" : ""
                             }`}
                             quality={85}
@@ -56,32 +54,32 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                                 alt=""
                                 fill
                                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                                className="absolute inset-0 object-contain p-4 md:p-6 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                                className="absolute inset-0 object-contain p-4 md:p-6 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity duration-normal"
                                 quality={85}
                                 unoptimized
                             />
                         )}
                     </div>
                 ) : (
-                    <div className="flex h-full w-full items-center justify-center text-muted-foreground/40 bg-neutral-50">
+                    <div className="flex h-full w-full items-center justify-center text-text-disabled bg-surface-secondary">
                         <MdOutlineImageNotSupported size={28} />
                     </div>
                 )}
 
                 {/* Overlay sutil de luminosidad */}
-                <div className="absolute inset-0 bg-neutral-900/[0.01] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                <div className="absolute inset-0 bg-surface-inverse/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-normal pointer-events-none" />
             </div>
 
             {/* --- BLOQUE DE INFORMACIÓN --- */}
-            <div className="flex flex-col flex-1 p-3.5 bg-background border-t border-border/20">
-                {/* Nombre con componente tipográfico H4 normalizado */}
-                <H4 className="normal-case tracking-normal text-foreground line-clamp-2 min-h-[2.5rem] font-normal">
+            <div className="flex flex-col flex-1 p-3.5 bg-surface-primary border-t border-border-primary/40">
+                {/* Nombre con componente tipográfico P normalizado */}
+                <P className="text-text-primary line-clamp-2 min-h-[2.5rem] font-medium leading-tight">
                     {product.nombre}
-                </H4>
+                </P>
 
                 {/* Precios Limpios alineados horizontalmente al fondo */}
-                <div className="flex items-center gap-2 mt-auto pt-3">
-                    <span className="text-sm font-semibold tracking-wide text-foreground">
+                <div className="flex items-baseline gap-2 mt-auto pt-3">
+                    <span className="text-sm font-semibold tracking-tight text-text-primary">
                         S/{" "}
                         {price.toLocaleString("es-PE", {
                             minimumFractionDigits: 2,
@@ -90,13 +88,13 @@ export default function ProductCardHome({ product }: { product: ProductResponse 
                     </span>
 
                     {discount && (
-                        <Small className="line-through text-muted-foreground/70 tracking-wide font-light">
+                        <span className="text-[11px] font-normal line-through text-text-tertiary tracking-wide">
                             S/{" "}
                             {compare.toLocaleString("es-PE", {
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: 2,
                             })}
-                        </Small>
+                        </span>
                     )}
                 </div>
             </div>

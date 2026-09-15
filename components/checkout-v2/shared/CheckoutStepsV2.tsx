@@ -1,4 +1,4 @@
-//File: frontend/components/checkout-v2/shared/CheckoutStepsV2.tsx
+// File: frontend/components/checkout-v2/shared/CheckoutStepsV2.tsx
 
 'use client'
 
@@ -23,25 +23,25 @@ export default function CheckoutStepsV2() {
 
                 const content = (
                     <div className={cn(
-                        'flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-[11px] font-semibold transition-colors duration-200 min-w-0',
-                        isActive && 'text-foreground',
-                        isDone   && 'text-muted-foreground transition-colors',
-                        !isActive && !isDone && 'text-muted-foreground/30 pointer-events-none'
+                        'flex items-center gap-1 sm:gap-1.5 text-[10px] sm:text-[11px] font-semibold transition-colors duration-normal min-w-0',
+                        isActive && 'text-text-primary',
+                        isDone   && 'text-text-secondary transition-colors hover:text-text-primary',
+                        !isActive && !isDone && 'text-text-disabled pointer-events-none'
                     )}>
                         <span className={cn(
-                            'w-4 h-4 sm:w-[18px] sm:h-[18px] rounded-full flex items-center justify-center shrink-0 border transition-all duration-200',
-                            isActive && 'bg-foreground border-foreground text-background text-[8px] sm:text-[9px] font-bold',
-                            isDone   && 'bg-action-cta border-action-cta group-hover:opacity-90',
-                            !isActive && !isDone && 'border-border'
+                            'w-4 h-4 sm:w-[18px] sm:h-[18px] rounded-radius-full flex items-center justify-center shrink-0 border transition-all duration-normal',
+                            isActive && 'bg-brand-primary border-brand-primary text-text-inverse text-[8px] sm:text-[9px] font-bold',
+                            isDone   && 'bg-brand-accent border-brand-accent text-text-inverse group-hover:opacity-90',
+                            !isActive && !isDone && 'border-border-primary text-text-disabled bg-surface-secondary'
                         )}>
                             {isDone ? (
                                 <svg width="6" height="5" viewBox="0 0 7 6" fill="none" aria-hidden className="sm:w-[7px] sm:h-[6px]">
-                                    <path d="M1 3L2.8 5L6 1" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+                                    <path d="M1 3L2.8 5L6 1" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
                                 </svg>
                             ) : (
                                 <span className={cn(
                                     'text-[8px] sm:text-[9px] font-bold leading-none',
-                                    isActive ? 'text-background' : 'text-muted-foreground/30'
+                                    isActive ? 'text-text-inverse' : 'text-text-disabled'
                                 )}>
                                     {index + 1}
                                 </span>
@@ -62,7 +62,7 @@ export default function CheckoutStepsV2() {
                         {isDone ? (
                             <Link 
                                 href={step.path} 
-                                className="group rounded outline-none focus-visible:ring-2 focus-visible:ring-ring cursor-pointer hover:text-foreground transition-colors min-w-0"
+                                className="group rounded-radius-sm outline-none focus-visible:ring-2 focus-visible:ring-brand-accent cursor-pointer transition-colors duration-fast min-w-0"
                             >
                                 {content}
                             </Link>
@@ -72,8 +72,8 @@ export default function CheckoutStepsV2() {
 
                         {index < STEPS.length - 1 && (
                             <div className="mx-1.5 sm:mx-2.5 flex items-center gap-0.5 shrink-0" aria-hidden>
-                                <div className={cn('w-2.5 sm:w-4 h-px rounded-full transition-colors duration-300', isDone ? 'bg-action-cta' : 'bg-border')} />
-                                <div className={cn('w-1 sm:w-1.5 h-px rounded-full transition-colors duration-300 opacity-40', isDone ? 'bg-action-cta' : 'bg-border')} />
+                                <div className={cn('w-2.5 sm:w-4 h-px rounded-radius-full transition-colors duration-slow', isDone ? 'bg-brand-accent' : 'bg-border-primary')} />
+                                <div className={cn('w-1 sm:w-1.5 h-px rounded-radius-full transition-colors duration-slow opacity-60', isDone ? 'bg-brand-accent' : 'bg-border-primary')} />
                             </div>
                         )}
                     </div>

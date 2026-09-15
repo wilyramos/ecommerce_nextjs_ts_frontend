@@ -1,4 +1,3 @@
-// File: frontend/app/(checkout)/layout.tsx
 "use client"
 
 import { ReactNode } from 'react'
@@ -14,7 +13,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from '@/components/ui/accordion'
-import { Small } from '@/components/ui/TypographyStore'
+import { Small } from '@/components/ui/TypographyV3'
 
 export default function CheckoutLayout({ children }: { children: ReactNode }) {
     const pathname = usePathname()
@@ -23,38 +22,41 @@ export default function CheckoutLayout({ children }: { children: ReactNode }) {
     const backHref = isPaymentPage ? '/checkout' : '/carrito'
 
     return (
-        <div className="min-h-screen flex flex-col bg-background antialiased font-sans text-foreground">
-            {/* Header minimalista estilo Shopify */}
-            <header className="bg-background border-b border-border sticky top-0 z-40 shrink-0">
+        <div className="min-h-screen flex flex-col bg-surface-primary antialiased font-sans text-text-primary">
+            {/* Header minimalista estilo Apple/Shopify */}
+            <header className="bg-surface-primary border-b border-border-primary sticky top-0 z-40 shrink-0">
                 <div className="h-14 px-4 sm:px-8 grid grid-cols-[auto_1fr_auto] items-center max-w-5xl w-full mx-auto gap-4">
                     <Link
                         href={backHref}
-                        className="flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors p-1"
+                        className="flex items-center gap-1.5 text-text-secondary hover:text-text-primary transition-colors duration-fast p-1 outline-none focus-visible:ring-2 focus-visible:ring-brand-accent rounded-radius-sm"
                     >
                         <FiArrowLeft size={14} />
-                        <Small className="hidden sm:inline font-medium">Volver</Small>
+                        <Small className="hidden sm:inline font-medium text-inherit">Volver</Small>
                     </Link>
 
                     <div className="flex justify-center min-w-0">
                         <CheckoutStepsV2 />
                     </div>
 
-                    <Link href="/" className="shrink-0 p-1">
+                    <Link 
+                        href="/" 
+                        className="shrink-0 p-1 outline-none focus-visible:ring-2 focus-visible:ring-brand-accent rounded-radius-sm transition-opacity hover:opacity-80"
+                    >
                         <Logo color="black" />
                     </Link>
                 </div>
 
                 {/* Acordeón Móvil de Resumen */}
-                <div className="lg:hidden border-t border-border bg-background-secondary">
+                <div className="lg:hidden border-t border-border-primary bg-surface-secondary/50">
                     <Accordion type="single" collapsible className="w-full">
                         <AccordionItem value="summary" className="border-b-0">
-                            <AccordionTrigger className="px-4 py-3 hover:no-underline">
+                            <AccordionTrigger className="px-4 py-3 hover:no-underline outline-none">
                                 <div className="flex items-center gap-2">
-                                    <FiShoppingCart size={15} className="text-muted-foreground" />
-                                    <Small className="font-medium text-foreground">Mostrar resumen del pedido</Small>
+                                    <FiShoppingCart size={15} className="text-text-secondary" />
+                                    <Small className="font-medium text-text-primary">Mostrar resumen del pedido</Small>
                                 </div>
                             </AccordionTrigger>
-                            <AccordionContent className="px-4 pb-6 pt-2 border-t border-border bg-background-secondary">
+                            <AccordionContent className="px-4 pb-6 pt-2 border-t border-border-primary bg-surface-secondary/50">
                                 <OrderSummary />
                             </AccordionContent>
                         </AccordionItem>
@@ -62,14 +64,14 @@ export default function CheckoutLayout({ children }: { children: ReactNode }) {
                 </div>
             </header>
 
-            {/* Split Screen Estilo Shopify */}
+            {/* Split Screen Estilo Apple Store */}
             <div className="relative flex-1 flex flex-col lg:flex-row">
                 {/* Fondo secundario para la columna derecha en Desktop */}
-                <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 bg-background-secondary border-l border-border pointer-events-none z-0" />
+                <div className="hidden lg:block absolute right-0 top-0 bottom-0 w-1/2 bg-surface-secondary/30 border-l border-border-primary pointer-events-none z-0" />
 
                 <div className="relative w-full max-w-6xl mx-auto flex flex-col lg:flex-row flex-1 z-10">
                     {/* Formulario Principal (Izquierda) */}
-                    <main className="w-full lg:w-1/2 bg-background px-4 sm:px-8 lg:px-0 lg:pr-12 py-8 sm:py-12">
+                    <main className="w-full lg:w-1/2 bg-surface-primary px-4 sm:px-8 lg:px-0 lg:pr-12 py-8 sm:py-12">
                         <div className="w-full max-w-lg mx-auto lg:mx-0">
                             {children}
                         </div>
@@ -84,8 +86,8 @@ export default function CheckoutLayout({ children }: { children: ReactNode }) {
                 </div>
             </div>
 
-            <footer className="bg-background border-t border-border py-4 shrink-0 z-10">
-                <Small className="text-center block select-none">
+            <footer className="bg-surface-primary border-t border-border-primary py-4 shrink-0 z-10">
+                <Small className="text-center block select-none text-text-tertiary font-normal">
                     © {new Date().getFullYear()} GoPhone · Todos los derechos reservados
                 </Small>
             </footer>

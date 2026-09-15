@@ -40,7 +40,7 @@ export default function LayoutDefault({ banner }: { banner: SliderBanner }) {
             {subtitle && (
               <div style={fadeUp(0.1)}>
                 <span
-                  className="inline-block text-[11px] font-semibold uppercase tracking-[0.14em]"
+                  className="inline-block text-[11px] font-semibold uppercase"
                   style={{ color: accent }}
                 >
                   {subtitle}

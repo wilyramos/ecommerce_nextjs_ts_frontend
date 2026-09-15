@@ -1,14 +1,12 @@
-//File: frontend/components/checkout-v2/culqi/CheckoutCulqi.tsx
-
 "use client";
 
 import ComponentScriptCulqiCustom from "./ComponentScriptCulqiCustom";
-import { Muted } from "@/components/ui/Typography";
+import { Muted } from "@/components/ui/TypographyV3";
 import type { OrderResponse } from "@/src/schemas/order.schema";
 
 export default function CheckoutCulqi({ order }: { order: OrderResponse }) {
     if (!order) {
-        return <Muted className="text-center mt-6 font-bold text-destructive">Orden inválida.</Muted>;
+        return <Muted className="text-center mt-6 font-semibold text-status-error">Orden inválida.</Muted>;
     }
 
     return (

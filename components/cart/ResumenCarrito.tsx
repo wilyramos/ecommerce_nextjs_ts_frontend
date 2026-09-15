@@ -1,5 +1,3 @@
-// File: frontend/components/cart/ResumenCarrito.tsx
-
 "use client";
 
 import { useCartStore } from "@/src/store/cartStore";
@@ -9,7 +7,7 @@ import CouponInput from "@/components/checkout-v2/summary/CouponInput";
 import AutomaticDiscountEvaluator from "@/components/checkout-v2/summary/AutomaticDiscountEvaluator";
 import { useRouter } from "next/navigation";
 import { ShoppingCart, Tag, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ButtonV3 } from "@/components/ui/ButtonV3";
 import {
     H1,
     H2,
@@ -18,10 +16,8 @@ import {
     P,
     Muted,
     Small,
-    Price,
-    BadgeText,
     Hr,
-} from "@/components/ui/TypographyStore";
+} from "@/components/ui/TypographyV3";
 
 export default function ResumenCarrito() {
     const { cart } = useCartStore();
@@ -56,21 +52,23 @@ export default function ResumenCarrito() {
     if (cart.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center py-24 text-center gap-2">
-                <ShoppingCart className="h-14 w-14 text-muted-foreground/30 mb-2" strokeWidth={1.5} />
+                <ShoppingCart className="size-14 text-text-disabled mb-2" strokeWidth={1.5} />
                 <H2>Tu carrito está vacío</H2>
                 <Muted>Aún no has agregado productos a tu orden.</Muted>
-                <Button
+                <ButtonV3
                     onClick={() => router.push("/productos")}
-                    className="mt-6 h-10 px-6 bg-foreground text-background hover:bg-foreground/90 font-medium uppercase tracking-wider text-xs transition-colors rounded-none"
+                    className="mt-6"
+                    variant="default"
+                    size="lg"
                 >
                     Explorar Catálogo
-                </Button>
+                </ButtonV3>
             </div>
         );
     }
 
     return (
-        <div className="w-full py-4 md:py-8">
+        <div className="w-full py-4 md:py-8 text-text-primary">
             <AutomaticDiscountEvaluator />
 
             <div className="flex flex-col gap-1 mb-8">
@@ -81,8 +79,9 @@ export default function ResumenCarrito() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                {/* Lista de Productos */}
                 <div className="lg:col-span-7 xl:col-span-8 flex flex-col gap-4">
-                    <div className="divide-y divide-border border-y border-border">
+                    <div className="divide-y divide-border-primary border-y border-border-primary">
                         {cart.map((item) => {
                             const itemDiscount = getItemDiscountAmount(item._id, item.variant?._id);
                             return (
@@ -96,62 +95,63 @@ export default function ResumenCarrito() {
                     </div>
                 </div>
 
+                {/* Resumen Sidebar */}
                 <div className="lg:col-span-5 xl:col-span-4">
-                    <div className="bg-muted/10 p-6 border border-border sticky top-24 flex flex-col gap-6">
+                    <div className="bg-surface-secondary/40 p-6 border border-border-primary/80 rounded-radius-lg sticky top-24 flex flex-col gap-6">
                         <H3>Resumen de Orden</H3>
 
                         <div className="flex flex-col gap-3">
                             <div className="flex justify-between items-center">
-                                <P>Subtotal</P>
-                                <Price>S/ {total.toFixed(2)}</Price>
+                                <P className="text-text-secondary">Subtotal</P>
+                                <span className="text-sm font-medium text-text-primary">S/ {total.toFixed(2)}</span>
                             </div>
 
                             {discountAmount > 0 && (
-                                <div className="flex justify-between items-center text-foreground">
+                                <div className="flex justify-between items-center text-text-primary">
                                     <span className="flex items-center gap-1.5 truncate pr-2">
-                                        <Tag className="w-3.5 h-3.5 shrink-0 text-muted-foreground" />
-                                        <P className="truncate font-medium">{discountDisplayName}</P>
+                                        <Tag className="size-3.5 shrink-0 text-text-secondary" />
+                                        <P className="truncate font-medium text-text-primary">{discountDisplayName}</P>
                                     </span>
-                                    <Price className="shrink-0">-S/ {discountAmount.toFixed(2)}</Price>
+                                    <span className="shrink-0 text-sm font-medium text-text-primary">-S/ {discountAmount.toFixed(2)}</span>
                                 </div>
                             )}
 
                             <div className="flex justify-between items-center">
-                                <P>Tarifa de envío</P>
+                                <P className="text-text-secondary">Tarifa de envío</P>
                                 {shippingCost > 0 ? (
-                                    <Price>S/ {shippingCost.toFixed(2)}</Price>
+                                    <span className="text-sm font-medium text-text-primary">S/ {shippingCost.toFixed(2)}</span>
                                 ) : (
-                                    <BadgeText className="bg-foreground text-background px-2 py-0.5">
+                                    <span className="rounded-radius-sm bg-brand-primary px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-text-inverse">
                                         {isFreeShippingByCoupon ? "Gratis (Promo)" : "Gratis"}
-                                    </BadgeText>
+                                    </span>
                                 )}
                             </div>
                         </div>
 
-                        <Hr className="my-0" />
+                        <Hr className="my-0 border-border-primary/80" />
 
                         <div className="flex justify-between items-baseline">
-                            <H4 className="text-foreground">Total</H4>
-                            <Price className="text-xl font-semibold">
+                            <H4 className="text-text-primary">Total</H4>
+                            <span className="text-2xl font-semibold tracking-tight text-text-primary">
                                 S/ {totalFinal.toFixed(2)}
-                            </Price>
+                            </span>
                         </div>
 
                         <div className="flex flex-col gap-3">
-                            <H4>¿Tienes un cupón?</H4>
+                            <H4 className="text-text-secondary">¿Tienes un cupón?</H4>
                             <CouponInput />
                         </div>
 
                         <div className="flex flex-col gap-3 mt-2">
-                            <Button
+                            <ButtonV3
                                 onClick={() => router.push("/checkout")}
-
-
+                                variant="default"
+                                size="full"
                             >
                                 Ir a Pagar
-                                <ArrowRight size={15} strokeWidth={2} />
-                            </Button>
-                            <Small>
+                                <ArrowRight className="ml-1 size-4" />
+                            </ButtonV3>
+                            <Small className="text-center font-normal text-text-tertiary">
                                 Impuestos incluidos. Costos de envío calculados al finalizar.
                             </Small>
                         </div>

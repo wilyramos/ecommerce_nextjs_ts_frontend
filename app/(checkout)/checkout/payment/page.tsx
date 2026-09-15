@@ -1,9 +1,8 @@
-// File: frontend/app/(store)/checkout/payment/page.tsx
-
 import { redirect } from "next/navigation";
 import { orderService } from "@/src/services/order-service";
 import PaymentMethodsAccordionV2 from "@/components/checkout-v2/payment/PaymentMethodsAccordionV2";
 import SyncPendingOrder from "@/components/checkout-v2/payment/SyncPendingOrder";
+import { H1, Muted, P } from "@/components/ui/TypographyV3";
 
 type PaymentPageProps = { searchParams: Promise<{ orderNumber?: string }> };
 
@@ -19,17 +18,17 @@ export default async function PaymentPage({ searchParams }: PaymentPageProps) {
     } catch (error) {
         console.error("❌ Error recuperando orden:", error);
         return (
-            <p className="text-center py-10 text-sm text-muted-foreground select-none">
+            <Muted className="text-center py-10 text-sm select-none">
                 La orden no existe o expiró su tiempo de reserva.
-            </p>
+            </Muted>
         );
     }
 
     if (order.payment?.status === "approved") {
         return (
-            <p className="text-center py-10 text-sm font-semibold text-success select-none">
+            <P className="text-center py-10 text-sm font-semibold text-status-success select-none">
                 El pago ya fue procesado y aprobado.
-            </p>
+            </P>
         );
     }
 
@@ -37,13 +36,13 @@ export default async function PaymentPage({ searchParams }: PaymentPageProps) {
         <div className="space-y-6">
             <SyncPendingOrder order={order} />
 
-            <div className="border-b border-border pb-5">
-                <h1 className="text-xl font-bold tracking-tight text-foreground">
+            <div className="border-b border-border-primary pb-5">
+                <H1>
                     Método de pago
-                </h1>
-                <p className="text-xs text-muted-foreground mt-1">
+                </H1>
+                <Muted className="mt-1 text-sm">
                     Elige cómo quieres pagar
-                </p>
+                </Muted>
             </div>
             <PaymentMethodsAccordionV2 key={order.orderNumber} order={order} />
         </div>

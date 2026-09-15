@@ -55,7 +55,7 @@ export default function ButtonShowSheetMobile({ categories, collections }: Props
         {/* Header Fijo y Minimalista */}
         <div className="sticky top-0 z-10 border-b border-border-primary/60 bg-surface-primary/90 px-6 py-5 backdrop-blur-md">
           <SheetHeader className="text-left">
-            <SheetTitle className="text-[10px] font-semibold uppercase tracking-[0.14em] text-text-tertiary">
+            <SheetTitle className="text-[10px] font-semibold uppercase   text-text-tertiary">
               Menú de Navegación
             </SheetTitle>
           </SheetHeader>
@@ -114,7 +114,7 @@ export default function ButtonShowSheetMobile({ categories, collections }: Props
             {/* Categorías */}
             <div className="space-y-2 px-3">
               <div className="px-4">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-text-tertiary">
+                <span className="text-[10px] font-semibold uppercase   text-text-tertiary">
                   Categorías
                 </span>
               </div>

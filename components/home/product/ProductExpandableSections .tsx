@@ -96,7 +96,7 @@ export default function ProductExpandableSections({ producto }: Props) {
                                             <th colSpan={2} className="border-b border-border-primary/70 bg-surface-secondary/60 px-3 py-2 select-none">
                                                 <div className="flex items-center gap-1.5">
                                                     <Package size={13} className="text-text-tertiary" />
-                                                    <Small className="text-[10px] font-semibold uppercase tracking-[0.14em] text-text-tertiary">
+                                                    <Small className="text-[10px] font-semibold uppercase   text-text-tertiary">
                                                         Empaque y dimensiones
                                                     </Small>
                                                 </div>
