@@ -35,7 +35,6 @@ export default async function PaymentPage({ searchParams }: PaymentPageProps) {
     return (
         <div className="space-y-6">
             <SyncPendingOrder order={order} />
-
             <div className="border-b border-border-primary pb-5">
                 <H1>
                     Método de pago
