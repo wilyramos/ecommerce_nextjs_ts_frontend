@@ -70,20 +70,10 @@ export default function ComponentScriptCulqiCustom({ order }: { order: OrderResp
     const router = useRouter();
     const checkoutRef = useRef<CulqiInstance | null>(null);
 
-    // Ref para guardar el intervalo y limpiarlo si el componente se desmonta
-    const modalObserverRef = useRef<NodeJS.Timeout | null>(null);
-
     const orderRef = useRef(order);
     useEffect(() => {
         orderRef.current = order;
     }, [order]);
-
-    // Limpieza de intervalos al desmontar
-    useEffect(() => {
-        return () => {
-            if (modalObserverRef.current) clearInterval(modalObserverRef.current);
-        };
-    }, []);
 
     const paymentHandlerRef = useRef<() => Promise<void>>(async () => {});
 
@@ -117,7 +107,8 @@ export default function ComponentScriptCulqiCustom({ order }: { order: OrderResp
                     amount,
                     orderNumber,
                 });
-                Culqi.close();
+                
+                if (checkoutRef.current) checkoutRef.current.close();
                 router.push(`/checkout-result/verifying?orderNumber=${orderNumber}`);
             } else if (Culqi.order) {
                 // ── Flujo Asíncrono: Cuotéalo / PagoEfectivo / Billeteras ──
@@ -128,22 +119,8 @@ export default function ComponentScriptCulqiCustom({ order }: { order: OrderResp
                     orderNumber,
                 });
 
-                setLoading(false); // Liberamos la UI de fondo
-                
-                // Iniciamos un observador (Polling) para detectar cuándo el usuario 
-                // hace clic en "De acuerdo" o cierra el modal de Culqi.
-                modalObserverRef.current = setInterval(() => {
-                    const iframe = document.getElementById("culqi_checkout_iframe");
-                    
-                    // Culqi cierra el modal ocultando el iframe (display: none) o eliminándolo
-                    const isClosed = !iframe || getComputedStyle(iframe).display === "none" || getComputedStyle(iframe).visibility === "hidden";
-                    
-                    if (isClosed) {
-                        if (modalObserverRef.current) clearInterval(modalObserverRef.current);
-                        // Cuando el usuario cierra el modal, redirigimos a verificación
-                        router.push(`/checkout-result/verifying?orderNumber=${orderNumber}`);
-                    }
-                }, 500); // Revisa cada medio segundo
+                if (checkoutRef.current) checkoutRef.current.close();
+                router.push(`/checkout-result/verifying?orderNumber=${orderNumber}`);
             }
         } catch (err) {
             toast.error(err instanceof Error ? err.message : "Error procesando el pago con Culqi.");
@@ -189,6 +166,20 @@ export default function ComponentScriptCulqiCustom({ order }: { order: OrderResp
         instance.culqi = () => {
             paymentHandlerRef.current();
         };
+
+        // Sobrescribimos close para detectar si el usuario abandona la validación 3DS
+        const originalClose = instance.close;
+        instance.close = () => {
+            setLoading(false);
+            const Culqi = checkoutRef.current;
+            
+            if (!Culqi?.token && !Culqi?.order) {
+                toast.error("El proceso de pago fue cancelado o la autenticación 3DS falló.");
+            }
+            
+            if (originalClose) originalClose.call(instance);
+        };
+
         checkoutRef.current = instance;
         setCulqiReady(true);
     };

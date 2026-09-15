@@ -67,6 +67,8 @@ export async function createCategoryAction(
             attributes: parseJsonField<unknown[]>(formData, "attributes", []),
         };
 
+        console.log("[SA] createCategoryAction - Datos recibidos:", rawDto);
+
         const validation = CreateCategoryDTOSchema.safeParse(rawDto);
 
         if (!validation.success) {
