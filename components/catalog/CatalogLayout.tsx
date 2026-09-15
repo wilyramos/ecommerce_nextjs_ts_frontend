@@ -70,8 +70,8 @@ export default function CatalogLayout({
   if (context.lineName) breadcrumbs.push({ label: context.lineName, href: "#" });
 
   return (
-    <section className="text-text-primary">
-      <div className="py-2 md:py-4">
+    <section className="px-4 md:px-6 pb-16 pt-6">
+      <div className="px-4">
         <CatalogHeader
           title={getTitle()}
           totalProducts={pagination.totalItems}

@@ -1,3 +1,4 @@
+// File: frontend/components/collections/CatalogMobileSort.tsx
 "use client";
 
 import { ArrowUpDown } from "lucide-react";
@@ -22,11 +23,11 @@ export default function CatalogMobileSort() {
         value={currentSort}
         onValueChange={(val) => updateFilter("sort", val)}
       >
-        <SelectTrigger className="h-[34px] w-[140px] rounded-radius-md border border-border-primary/80 bg-surface-primary pl-8 pr-3 text-xs font-medium text-text-primary shadow-sm focus:ring-1 focus:ring-brand-accent focus:ring-offset-0">
+        <SelectTrigger className="h-[34px] w-[160] rounded-md border border-border-primary/80 bg-surface-primary pl-8 pr-3 text-xs font-medium text-text-primary shadow-sm focus:ring-1 focus:ring-brand-accent focus:ring-offset-0">
           <SelectValue placeholder="Ordenar" />
         </SelectTrigger>
 
-        <SelectContent align="end" className="rounded-radius-md border-border-primary/80 bg-surface-primary shadow-md">
+        <SelectContent align="end" className="rounded-md border-border-primary/80 bg-surface-primary shadow-md">
           <SelectItem value="relevancia" className="text-xs cursor-pointer focus:bg-surface-secondary focus:text-text-primary">
             Relevancia
           </SelectItem>

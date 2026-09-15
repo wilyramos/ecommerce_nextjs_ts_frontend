@@ -14,8 +14,8 @@ interface Props {
 function PromotionBadge({ label, color }: { label: string; color?: string | null }) {
     return (
         <span
-            className="inline-block px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white shadow-sm backdrop-blur-md rounded-full"
-            style={{ backgroundColor: color ? `${color}E6` : "rgba(239, 68, 68, 0.9)" }} // E6 = 90% opacity
+            className="inline-block px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-text-inverse shadow-sm backdrop-blur-md rounded-full opacity-90"
+            style={{ backgroundColor: color ? color : "var(--status-error)" }}
         >
             {label}
         </span>
@@ -37,13 +37,13 @@ function PromotionCountdown({ endsAt }: { endsAt: Date }) {
     if (minutes) parts.push(`${minutes}m`);
 
     return (
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/30 px-3 py-1.5 backdrop-blur-md">
+        <div className="inline-flex items-center gap-2 rounded-full border border-surface-inverse/20 bg-surface-inverse/30 px-3 py-1.5 backdrop-blur-md">
             <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-status-warning opacity-75"></span>
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-status-warning"></span>
             </span>
-            <p className="text-xs font-medium text-white/90">
-                Termina en <span className="font-bold text-white tracking-wide">{parts.join(" ")}</span>
+            <p className="text-xs font-medium text-text-inverse/90">
+                Termina en <span className="font-bold text-text-inverse tracking-wide">{parts.join(" ")}</span>
             </p>
         </div>
     );
@@ -60,9 +60,9 @@ export default function CollectionHero({ context }: Props) {
     const hasImage = Boolean(heroImage);
     const isPromotion = collectionType === "promotion";
 
-    const textColorClass = hasImage ? "text-white" : "text-text-primary";
-    const subtextColorClass = hasImage ? "text-white/80" : "text-text-secondary";
-    const breadcrumbClass = hasImage ? "text-white/60 hover:text-white/90" : "text-text-tertiary hover:text-text-primary";
+    const textColorClass = hasImage ? "text-text-inverse" : "text-text-primary";
+    const subtextColorClass = hasImage ? "text-text-inverse/80" : "text-text-secondary";
+    const breadcrumbClass = hasImage ? "text-text-inverse/60 hover:text-text-inverse/90" : "text-text-tertiary hover:text-text-primary";
 
     const now = new Date();
     const endsAt = collectionEndsAt ? new Date(collectionEndsAt) : null;
@@ -95,7 +95,7 @@ export default function CollectionHero({ context }: Props) {
                             sizes="100vw"
                             unoptimized
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/10 mix-blend-multiply" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-surface-inverse/80 via-surface-inverse/30 to-surface-inverse/10 mix-blend-multiply" />
                     </motion.div>
                 )}
 

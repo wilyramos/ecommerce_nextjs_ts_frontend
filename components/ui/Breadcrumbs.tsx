@@ -15,7 +15,7 @@ interface BreadcrumbItem {
 interface Props {
     items: BreadcrumbItem[];
     current?: string;
-    currentHref?: string; // Opcional: para pasar el enlace exacto del ítem actual
+    currentHref?: string; 
     className?: string;
 }
 
@@ -23,7 +23,6 @@ export default function Breadcrumbs({ items, current, currentHref, className }: 
     const [isExpanded, setIsExpanded] = useState(false);
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://gophone.pe";
 
-    // Determinamos la URL del ítem actual de forma determinista para SSR y Cliente
     const lastItemHref = items.length > 0 ? items[items.length - 1].href : "";
     const activeUrl = currentHref
         ? `${baseUrl}${currentHref}`
@@ -71,20 +70,17 @@ export default function Breadcrumbs({ items, current, currentHref, className }: 
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
 
-            {/* flex-nowrap + overflow-x-auto evitan saltos de línea en móviles */}
-            <ol className="flex items-center flex-nowrap whitespace-nowrap overflow-x-auto scrollbar-none py-0.5 text-xs text-muted-foreground/80 font-medium">
-                {/* Inicio */}
+            <ol className="flex items-center flex-nowrap whitespace-nowrap overflow-x-auto scrollbar-none py-0.5 text-xs text-text-secondary font-medium">
                 <li className="flex items-center shrink-0">
                     <Link
                         href="/"
-                        className="inline-flex items-center gap-1 hover:text-action-cta transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-xs"
+                        className="inline-flex items-center gap-1 hover:text-brand-accent transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand-accent rounded-xs"
                         title="Ir al inicio"
                     >
                         <Home className="w-3.5 h-3.5 shrink-0" />
                     </Link>
                 </li>
 
-                {/* Items intermedios */}
                 {items.map((item, index) => {
                     const isFirst = index === 0;
                     const isLast = index === items.length - 1;
@@ -98,13 +94,13 @@ export default function Breadcrumbs({ items, current, currentHref, className }: 
                                 isMiddle && !isExpanded && "hidden md:flex"
                             )}
                         >
-                            <ChevronRight className="w-3.5 h-3.5 mx-1 text-muted-foreground/40 shrink-0 select-none" />
+                            <ChevronRight className="w-3.5 h-3.5 mx-1 text-text-disabled shrink-0 select-none" />
 
                             {isFirst && hasMiddleItems && !isExpanded && (
                                 <button
                                     type="button"
                                     onClick={() => setIsExpanded(true)}
-                                    className="md:hidden flex items-center px-1 py-0.5 rounded bg-muted/40 hover:bg-muted text-muted-foreground transition-colors mr-1 text-[10px] leading-none shrink-0"
+                                    className="md:hidden flex items-center px-1 py-0.5 rounded bg-surface-secondary hover:bg-surface-tertiary text-text-secondary transition-colors mr-1 text-[10px] leading-none shrink-0"
                                     title="Mostrar ruta completa"
                                 >
                                     ...
@@ -113,7 +109,7 @@ export default function Breadcrumbs({ items, current, currentHref, className }: 
 
                             <Link
                                 href={item.href}
-                                className="hover:text-action-cta transition-colors truncate max-w-[100px] xs:max-w-[130px] sm:max-w-[200px] md:max-w-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-xs"
+                                className="hover:text-brand-accent transition-colors truncate max-w-[100px] xs:max-w-[130px] sm:max-w-[200px] md:max-w-none focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand-accent rounded-xs"
                             >
                                 {item.label}
                             </Link>
@@ -121,12 +117,11 @@ export default function Breadcrumbs({ items, current, currentHref, className }: 
                     );
                 })}
 
-                {/* Ítem actual */}
                 {current && (
                     <li className="flex items-center shrink min-w-0">
-                        <ChevronRight className="w-3.5 h-3.5 mx-1 text-muted-foreground/40 shrink-0 select-none" />
+                        <ChevronRight className="w-3.5 h-3.5 mx-1 text-text-disabled shrink-0 select-none" />
                         <span
-                            className="font-semibold text-foreground truncate max-w-[120px] xs:max-w-[180px] sm:max-w-[280px] md:max-w-[400px] lg:max-w-none"
+                            className="font-semibold text-text-primary truncate max-w-[120px] xs:max-w-[180px] sm:max-w-[280px] md:max-w-[400px] lg:max-w-none"
                             aria-current="page"
                             title={current}
                         >

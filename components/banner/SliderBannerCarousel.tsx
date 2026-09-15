@@ -30,7 +30,7 @@ export default function SliderBannerCarousel({ banners }: Props) {
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       // 1. Usamos TU clase .banner-slot para el tamaño exacto (1x1 en móvil, 36/9 en desktop)
       // 2. Usamos w-[100vw] para romper los márgenes y pegar el banner a los bordes
-      className="banner-slot group relative z-0 w-[100vw] left-1/2 -translate-x-1/2 overflow-hidden bg-surface-secondary [transform:translateZ(0)]"
+      className="banner-slot group relative z-0 w-[100vw] left-1/2 -translate-x-1/2 overflow-hidden  md:rounded-3xl "
     >
       <Carousel
         responsive={responsive}

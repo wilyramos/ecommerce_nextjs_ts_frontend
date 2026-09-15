@@ -50,12 +50,12 @@ export default function ButtonShowSheetMobile({ categories, collections }: Props
 
       <SheetContent
         side="left"
-        className="flex h-full w-[300px] select-none flex-col border-r border-border-primary/80 bg-surface-primary p-0 text-text-primary sm:w-[350px]"
+        className="flex h-full w-[300px] select-none flex-col border-r border-border-primary bg-surface-primary p-0 text-text-primary sm:w-[350px]"
       >
         {/* Header Fijo y Minimalista */}
         <div className="sticky top-0 z-10 border-b border-border-primary/60 bg-surface-primary/90 px-6 py-5 backdrop-blur-md">
           <SheetHeader className="text-left">
-            <SheetTitle className="text-[10px] font-semibold uppercase   text-text-tertiary">
+            <SheetTitle className="text-[10px] font-semibold uppercase tracking-wider text-text-tertiary">
               Menú de Navegación
             </SheetTitle>
           </SheetHeader>
@@ -80,7 +80,7 @@ export default function ButtonShowSheetMobile({ categories, collections }: Props
                     )}
                   >
                     {isActive && (
-                      <span className="absolute bottom-1.5 left-2.5 top-1.5 w-1 rounded-full bg-brand-primary" />
+                      <span className="absolute bottom-1.5 left-2.5 top-1.5 w-1 rounded-radius-full bg-brand-accent" />
                     )}
                     {link.label}
                   </Link>
@@ -114,7 +114,7 @@ export default function ButtonShowSheetMobile({ categories, collections }: Props
             {/* Categorías */}
             <div className="space-y-2 px-3">
               <div className="px-4">
-                <span className="text-[10px] font-semibold uppercase   text-text-tertiary">
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-text-tertiary">
                   Categorías
                 </span>
               </div>

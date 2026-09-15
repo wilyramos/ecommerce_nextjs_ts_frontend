@@ -1,3 +1,4 @@
+// frontend/components/navigation/NavBarClient.tsx
 "use client";
 
 import { ReactNode, useEffect, useState } from "react";
@@ -46,7 +47,8 @@ export default function NavBarClient({ children }: { children: ReactNode }) {
         {children}
       </header>
 
-      <div className="h-14 w-full shrink-0 md:h-[132px]" aria-hidden="true" />
+      {/* Espaciador ajustado al nuevo tamaño (32px Anuncio + 64px Barra + ~40px Categorías) */}
+      <div className="h-14 w-full shrink-0 md:h-[136px]" aria-hidden="true" />
     </>
   );
 }

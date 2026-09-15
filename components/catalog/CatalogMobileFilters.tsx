@@ -38,7 +38,7 @@ export default function CatalogMobileFilters({ filters }: Props) {
                         transition-colors
                         hover:bg-surface-secondary
                         active:scale-95
-                        outline-none
+                        outline-none rounded-md
                     "
                 >
                     <LuListFilter className="w-4 h-4 text-text-secondary" />

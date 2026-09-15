@@ -24,7 +24,7 @@ export default function StoreLayout({ children }: { children: React.ReactNode })
         Contenedor principal con el MISMO padding exacto que el NavBar 
         (px-4 md:px-6) y espaciado vertical corregido (py-6 md:py-8) 
       */}
-      <main className="mx-auto flex w-full max-w-screen-2xl flex-1 flex-col">
+      <main className=" flex w-full max-w-screen-2xl mx-auto flex-1 flex-col">
         {children}
       </main>
 

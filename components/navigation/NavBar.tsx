@@ -23,8 +23,10 @@ export default function NavBar() {
       <div className="relative z-20 flex h-14 flex-col justify-center text-text-primary transition-colors duration-300 group-data-[scrolled=true]:bg-transparent">
         <div className="mx-auto grid w-full max-w-screen-2xl grid-cols-3 items-center px-4 md:px-6">
           <div className="flex items-center">
-            <div className="md:hidden">
+            <div className="md:hidden flex items-center gap-1">
               <ServerSheetMobile />
+              <ButtonSearchMobile />
+
             </div>
             <div className="hidden md:flex md:w-full md:max-w-xs">
               <ButtonSearchFormStore />
@@ -58,7 +60,6 @@ export default function NavBar() {
 
             {/* Mobile Actions */}
             <div className="flex items-center gap-1 md:hidden">
-              <ButtonSearchMobile />
               <ButtonShowFavorites />
               <ButtonShowCart />
             </div>
@@ -68,7 +69,7 @@ export default function NavBar() {
 
       {/* 3. Franja de Categorías */}
       <div className="relative z-10 hidden w-full border-t border-border-primary/40 transition-colors duration-300 group-data-[scrolled=true]:border-transparent md:block">
-        <div className="mx-auto flex max-w-screen-2xl items-center px-4 py-1.5 md:px-6">
+        <div className="mx-auto flex max-w-screen-2xl items-center px-4 md:px-6">
           <ServerCategorias />
         </div>
       </div>

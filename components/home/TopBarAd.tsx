@@ -22,7 +22,7 @@ export default function TopBarAd({ ads }: TopBarAdProps) {
     <div
       role="region"
       aria-label="Anuncios y promociones de la tienda"
-      className="relative flex h-8 w-full select-none items-center overflow-hidden bg-brand-accent text-text-inverse transition-colors"
+      className="relative flex w-full select-none items-center overflow-hidden bg-brand-accent text-text-inverse transition-colors"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
