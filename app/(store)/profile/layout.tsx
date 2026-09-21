@@ -1,70 +1,77 @@
-import { verifySession } from '@/src/auth/dal';
-import { redirect } from 'next/navigation';
-import { logout } from '@/actions/logout-user-action';
-import { FiLogOut } from 'react-icons/fi';
-import SidebarProfileNav from '@/components/profile/SidebarProfileNav';
+// File: frontend/app/(store)/profile/layout.tsx
+"use client";
 
-export default async function ProfileLayout({ children }: { children: React.ReactNode }) {
-    const { user } = await verifySession();
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { H2, P } from "@/components/ui/TypographyV3";
 
-    // Validar que el usuario exista
-    if (!user) {
-        redirect('/auth/login');
-    }
+const sidebarNavItems = [
+    {
+        title: "Mi Perfil",
+        href: "/profile",
+    },
+    {
+        title: "Mis Compras",
+        href: "/profile/orders",
+    },
+    {
+        title: "Mis Favoritos",
+        href: "/profile/favorites",
+    },
+    {
+        title: "Configuración",
+        href: "/profile/settings",
+    },
+];
 
-    // Redireccionar a admin si el usuario es administrador
-    if (user.rol === 'administrador') {
-        redirect('/admin');
-    }
+interface ProfileLayoutProps {
+    children: React.ReactNode;
+}
+
+export default function ProfileLayout({ children }: ProfileLayoutProps) {
+    const pathname = usePathname();
 
     return (
-        <div className="max-w-screen-2xl mx-auto flex flex-col md:flex-row bg-[var(--color-bg-primary)]">
-            {/* Sidebar */}
-            <aside className="w-full md:w-80 bg-[var(--color-bg-secondary)] p-8 flex flex-col justify-between border-r border-[var(--color-border-subtle)] min-h-[auto] md:min-h-screen">
-                <div className="space-y-10">
-                    {/* Perfil de Usuario */}
-                    <div className="space-y-4">
-                        <div className="space-y-1">
-                            <p className="text-xl font-bold text-[var(--color-text-primary)] tracking-tight">
-                                {user.nombre} {user.apellidos}
-                            </p>
-                            <p className="text-xs font-medium text-[var(--color-text-tertiary)] truncate">
-                                {user.email}
-                            </p>
-                            {/* Badge del rol */}
-                            <span className="inline-block mt-2 px-2 py-1 text-xs font-semibold rounded-full bg-[var(--color-bg-tertiary)] text-[var(--color-text-secondary)]">
-                                {user.rol === 'cliente' ? 'Cliente' : user.rol === 'vendedor' ? 'Vendedor' : user.rol}
-                            </span>
-                        </div>
-
-                        {/* Botón Cerrar Sesión */}
-                        <form action={logout}>
-                            <button
-                                type="submit"
-                                className="flex items-center gap-2 text-[var(--color-error)] text-xs font-bold uppercase tracking-widest hover:text-[var(--color-error)] hover:opacity-80 transition-all cursor-pointer group"
-                            >
-                                <FiLogOut className="text-base transition-transform group-hover:-translate-x-1" />
-                                <span>Cerrar sesión</span>
-                            </button>
-                        </form>
+        <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+            <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
+                <aside className="lg:w-1/4 flex-shrink-0">
+                    <div className="mb-6">
+                        <H2>Mi Cuenta</H2>
+                        <P className="mt-1">
+                            Administra tu información, pedidos y preferencias.
+                        </P>
                     </div>
+                    <nav className="flex flex-col space-y-1">
+                        {sidebarNavItems.map((item) => {
+                            const isActive =
+                                item.href === "/profile"
+                                    ? pathname === item.href
+                                    : pathname?.startsWith(item.href);
 
-                    {/* Separador Sutil */}
-                    <div className="h-px bg-[var(--color-border-default)] w-full" />
-
-                    {/* Navegación */}
-                    <nav className="space-y-1">
-                        <SidebarProfileNav />
+                            return (
+                                <Link
+                                    key={item.href}
+                                    href={item.href}
+                                    className={cn(
+                                        "flex items-center rounded-radius-md px-3.5 py-2.5 text-sm font-medium transition-colors duration-fast",
+                                        isActive
+                                            ? "bg-surface-secondary text-text-primary"
+                                            : "text-text-secondary hover:bg-surface-secondary/50 hover:text-text-primary"
+                                    )}
+                                >
+                                    {item.title}
+                                </Link>
+                            );
+                        })}
                     </nav>
-                </div>
-            </aside>
-
-            {/* Contenido principal */}
-            <main className="flex-1 p-6 md:p-12 lg:p-16 min-h-screen bg-[var(--color-bg-primary)]">
-                <div className="max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
-                    {children}
-                </div>
-            </main>
+                </aside>
+                <main className="flex-1 lg:w-3/4">
+                    <div className="rounded-radius-md border border-border-primary bg-surface-primary p-6 lg:p-8">
+                        {children}
+                    </div>
+                </main>
+            </div>
         </div>
     );
 }

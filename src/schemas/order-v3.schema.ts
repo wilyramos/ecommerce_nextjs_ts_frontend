@@ -79,7 +79,7 @@ export const OrderResponseSchema = z.object({
     _id: z.string(),
     orderNumber: z.string(),
     culqiOrderId: z.string().optional(),
-    culqiAmountInCents: z.number().optional(), // Dato crucial devuelto al iniciar checkout para asegurar 3DS
+    culqiAmountInCents: z.number().optional(),
     user: z.string().nullable().optional(),
     customerProfile: CustomerProfileSchema,
     shippingAddress: ShippingAddressSchema,
@@ -100,3 +100,13 @@ export const OrderResponseSchema = z.object({
     updatedAt: z.coerce.date().optional(),
 });
 export type OrderResponse = z.infer<typeof OrderResponseSchema>;
+
+// NUEVO: Esquema Zod para validar y tipar correctamente la respuesta paginada
+export const PaginatedOrderResponseSchema = z.object({
+    success: z.boolean().optional(),
+    message: z.string().optional(),
+    data: z.array(OrderResponseSchema),
+    total: z.number().optional().default(0),
+    page: z.number().optional(),
+    limit: z.number().optional()
+});

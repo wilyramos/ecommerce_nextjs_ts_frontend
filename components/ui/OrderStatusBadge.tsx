@@ -1,3 +1,5 @@
+//File: frontend/components/ui/OrderStatusBadge.tsx
+
 import { FaClock, FaCheck, FaTimes, FaTruck } from "react-icons/fa";
 import { MdLocalShipping } from "react-icons/md";
 import clsx from "clsx";

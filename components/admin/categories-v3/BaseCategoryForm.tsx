@@ -42,6 +42,7 @@ export interface FormCategoryValues {
     isVariant: boolean;
     isFilterable: boolean;
     icon: string;
+    customColors?: Record<string, string>;
   }[];
 }
 
@@ -78,11 +79,15 @@ function AttributeValuesTable({
   values,
   onChange,
   error,
+  customColors = {},
+  onCustomColorsChange,
 }: {
   attributeName: string;
   values: string[];
   onChange: (newValues: string[]) => void;
   error?: string;
+  customColors?: Record<string, string>;
+  onCustomColorsChange?: (newColors: Record<string, string>) => void;
 }) {
   const [inputValue, setInputValue] = useState("");
   const [localError, setLocalError] = useState<string | null>(null);
@@ -115,8 +120,25 @@ function AttributeValuesTable({
   };
 
   const handleRemoveValue = (indexToRemove: number) => {
+    const removedVal = values[indexToRemove].toLowerCase().trim();
     onChange(values.filter((_, idx) => idx !== indexToRemove));
     setLocalError(null);
+
+    // Limpiar el color manual si existe al remover la variante
+    if (customColors[removedVal] && onCustomColorsChange) {
+      const newColors = { ...customColors };
+      delete newColors[removedVal];
+      onCustomColorsChange(newColors);
+    }
+  };
+
+  const handleSetCustomColor = (normalizedValue: string, hex: string) => {
+    if (onCustomColorsChange) {
+      onCustomColorsChange({
+        ...customColors,
+        [normalizedValue]: hex
+      });
+    }
   };
 
   return (
@@ -175,14 +197,15 @@ function AttributeValuesTable({
               <tr>
                 <th className="py-2 px-3 w-12 text-center">#</th>
                 <th className="py-2 px-3">Valor</th>
-                {isColor && <th className="py-2 px-3 w-28">Muestra</th>}
+                {isColor && <th className="py-2 px-3 w-36">Muestra</th>}
                 <th className="py-2 px-3 w-12 text-right">Acción</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100">
               {values.map((val, idx) => {
                 const normalized = val.toLowerCase().trim();
-                const colorClass = isColor ? diccionarioColores[normalized] : null;
+                const customHex = customColors[normalized];
+                const colorClass = diccionarioColores[normalized];
 
                 return (
                   <tr key={idx} className="hover:bg-zinc-50/70 transition-colors">
@@ -194,24 +217,34 @@ function AttributeValuesTable({
                     </td>
                     {isColor && (
                       <td className="py-2 px-3">
-                        {colorClass ? (
-                          <div className="flex items-center gap-1.5">
-                            <span
-                              className={`w-3.5 h-3.5 rounded-full border border-black/10 shrink-0 ${colorClass}`}
-                            />
-                            <span className="text-[11px] text-zinc-500 font-mono">
-                              Detectado
-                            </span>
+                        {customHex ? (
+                          <div className="flex items-center gap-2">
+                            <div className="relative flex items-center gap-1.5 group cursor-pointer" title="Cambiar color personalizado">
+                              <input type="color" value={customHex} onChange={(e) => handleSetCustomColor(normalized, e.target.value)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                              <span className="w-3.5 h-3.5 rounded-full border border-black/10 shrink-0" style={{ backgroundColor: customHex }} />
+                              <span className="text-[11px] text-indigo-600 font-mono group-hover:underline">Personalizado</span>
+                            </div>
+                            <button type="button" onClick={() => {
+                              const newColors = { ...customColors };
+                              delete newColors[normalized];
+                              onCustomColorsChange?.(newColors);
+                            }} className="text-zinc-400 hover:text-red-500 transition-colors" title="Restaurar a color detectado">
+                              <X className="w-3 h-3" />
+                            </button>
+                          </div>
+                        ) : colorClass ? (
+                          <div className="relative flex items-center gap-1.5 group cursor-pointer" title="Sobrescribir con color personalizado">
+                            <input type="color" value="#ffffff" onChange={(e) => handleSetCustomColor(normalized, e.target.value)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                            <span className={`w-3.5 h-3.5 rounded-full border border-black/10 shrink-0 ${colorClass}`} />
+                            <span className="text-[11px] text-zinc-500 font-mono group-hover:underline">Detectado</span>
                           </div>
                         ) : (
-                          <div className="flex items-center gap-1.5">
-                            <span
-                              className="w-3.5 h-3.5 rounded-full border border-dashed border-zinc-300 bg-zinc-100 shrink-0"
-                              title="Sin muestra registrada"
-                            />
-                            <span className="text-[10px] text-amber-600 font-mono">
-                              Sin muestra
-                            </span>
+                          <div className="relative flex items-center gap-1.5 group cursor-pointer">
+                            <input type="color" value="#cccccc" onChange={(e) => handleSetCustomColor(normalized, e.target.value)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" title="Asignar color manual" />
+                            <div className="w-3.5 h-3.5 rounded-full border border-dashed border-amber-500 flex items-center justify-center bg-amber-50 shrink-0">
+                              <Plus className="w-2 h-2 text-amber-500" />
+                            </div>
+                            <span className="text-[10px] text-amber-600 font-mono group-hover:underline">Asignar manual</span>
                           </div>
                         )}
                       </td>
@@ -278,6 +311,7 @@ export default function BaseCategoryForm({
           isVariant: attr.isVariant ?? false,
           isFilterable: attr.isFilterable ?? true,
           icon: attr.icon || "",
+          customColors: attr.customColors || {},
         })) || [],
     },
   });
@@ -321,12 +355,24 @@ export default function BaseCategoryForm({
         new Set(attr.values.map((v) => v.trim()).filter(Boolean))
       );
 
+      // Limpiar configuraciones de color para valores que se borraron
+      const finalCustomColors: Record<string, string> = {};
+      if (attr.customColors) {
+        uniqueValues.forEach((v) => {
+          const norm = v.toLowerCase().trim();
+          if (attr.customColors![norm]) {
+            finalCustomColors[norm] = attr.customColors![norm];
+          }
+        });
+      }
+
       return {
         name: attr.name.trim(),
         values: uniqueValues,
         isVariant: Boolean(attr.isVariant),
         isFilterable: Boolean(attr.isFilterable),
         icon: attr.icon && attr.icon.trim() !== "" ? attr.icon.trim() : null,
+        customColors: Object.keys(finalCustomColors).length > 0 ? finalCustomColors : undefined,
       };
     });
 
@@ -402,6 +448,7 @@ export default function BaseCategoryForm({
                       isVariant: false,
                       isFilterable: true,
                       icon: "",
+                      customColors: {},
                     })
                   }
                 >
@@ -472,6 +519,10 @@ export default function BaseCategoryForm({
                               values={field.value || []}
                               onChange={field.onChange}
                               error={fieldState.error?.message}
+                              customColors={form.watch(`attributes.${idx}.customColors`)}
+                              onCustomColorsChange={(newColors) =>
+                                form.setValue(`attributes.${idx}.customColors`, newColors)
+                              }
                             />
                           )}
                         />

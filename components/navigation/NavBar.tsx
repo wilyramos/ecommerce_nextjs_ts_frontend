@@ -52,7 +52,7 @@ export default function NavBar() {
               <Link
                 href="/auth/registro"
                 prefetch={false}
-                className="flex size-9 items-center justify-center rounded-radius-full text-text-secondary outline-none transition-colors duration-fast hover:bg-surface-secondary hover:text-text-primary active:scale-95"
+                className="flex size-9 items-center justify-center rounded-full text-text-secondary outline-none transition-colors duration-fast hover:bg-surface-secondary hover:text-text-primary active:scale-95"
                 aria-label="Mi Cuenta"
               >
                 <AiOutlineUser className="size-[21px]" />

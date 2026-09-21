@@ -9,7 +9,9 @@ export const CategoryAttributeSchema = z.object({
     isVariant: z.boolean().optional().default(false),
     icon: z.string().nullable().optional(),
     isFilterable: z.boolean().optional().default(true),
+    customColors: z.record(z.string()).optional(),
 });
+
 export type CategoryAttribute = z.infer<typeof CategoryAttributeSchema>;
 
 // ── 2. Esquema de Categoría Base ─────────────────────────────────────────

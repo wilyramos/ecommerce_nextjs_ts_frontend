@@ -214,9 +214,6 @@ export default function ButtonSearchFormStore({
                 <P className="text-sm font-medium text-text-primary">
                   Sin resultados para &ldquo;{query}&rdquo;
                 </P>
-                <Small className="mt-1 text-text-tertiary">
-                  Verifica el nombre del dispositivo o intenta con otra palabra clave.
-                </Small>
               </div>
             )}
           </div>
