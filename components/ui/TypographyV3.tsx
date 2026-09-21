@@ -36,7 +36,7 @@ const H3 = ({ className, ...props }: ComponentPropsWithoutRef<"h3">) => (
 const H4 = ({ className, ...props }: ComponentPropsWithoutRef<"h4">) => (
   <h4
     className={cn(
-      "scroll-m-20 text-xs font-semibold uppercase tracking-wider text-text-tertiary select-none",
+      "scroll-m-20 text-xs font-semibold uppercase text-text-tertiary select-none",
       className
     )}
     {...props}
@@ -76,7 +76,7 @@ const Muted = ({ className, ...props }: ComponentPropsWithoutRef<"p">) => (
 const Small = ({ className, ...props }: ComponentPropsWithoutRef<"small">) => (
   <small
     className={cn(
-      "text-[11px] font-medium uppercase tracking-wider text-text-tertiary",
+      "text-[11px] font-medium uppercase text-text-tertiary",
       className
     )}
     {...props}
@@ -172,7 +172,7 @@ const Tr = ({ className, ...props }: ComponentPropsWithoutRef<"tr">) => (
 const Th = ({ className, ...props }: ComponentPropsWithoutRef<"th">) => (
   <th
     className={cn(
-      "border-b border-border-primary bg-surface-secondary px-3.5 py-2.5 text-left text-[11px] font-semibold uppercase tracking-wider text-text-tertiary select-none",
+      "border-b border-border-primary bg-surface-secondary px-3.5 py-2.5 text-left text-[11px] font-semibold uppercase text-text-tertiary select-none",
       className
     )}
     {...props}

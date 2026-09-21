@@ -48,9 +48,9 @@ export default function ActiveFiltersSidebar() {
   }
 
   return (
-    <div className="mb-6 select-none px-1 animate-in fade-in duration-200">
+    <div className="mb-6 select-none animate-in fade-in duration-200">
       <div className="mb-3 flex items-center justify-between pb-1">
-        <H4 className="text-[12px] font-semibold text-text-secondary">
+        <H4 className="text-[12px] font-semibold text-text-tertiary">
           Filtros Activos
         </H4>
         <button

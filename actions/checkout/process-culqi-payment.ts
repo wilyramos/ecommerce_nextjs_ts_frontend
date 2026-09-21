@@ -10,27 +10,18 @@ export interface CulqiPaymentPayload {
     amount: number;   
     email: string;
     orderNumber: string;
+    authentication_3DS?: any;
 }
 
 export async function processPaymentCulqi(paymentData: CulqiPaymentPayload) {
-    console.log(" [SA] processPaymentCulqi iniciado:", {
-        hasToken: !!paymentData.token,
-        hasOrder: !!paymentData.order,
-        amount: paymentData.amount,
-        email: paymentData.email,
-        orderNumber: paymentData.orderNumber, 
-    });
-
     const authToken = await getTokenOptional();
  
     const url = process.env.API_URL;
     if (!url) {
-        console.error("[SA] API_URL no definida en variables de entorno");
         throw new Error("API_URL no configurada.");
     }
 
     const endpoint = `${url}/checkout/v3/process-payment-culqi`;
-    console.log("🌐 [SA] Enviando a:", endpoint);
 
     const headers: Record<string, string> = {
         "Content-Type": "application/json",
@@ -50,10 +41,8 @@ export async function processPaymentCulqi(paymentData: CulqiPaymentPayload) {
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok) {
-        console.error(" [SA] Error del backend:", { status: res.status, data });
         throw new Error(data.message || "Error procesando el pago.");
     }
 
-    console.log("[SA] Respuesta exitosa del backend:", data);
     return data;
 }

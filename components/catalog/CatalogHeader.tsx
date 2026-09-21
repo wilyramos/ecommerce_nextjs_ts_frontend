@@ -31,11 +31,11 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
   const currentBreadcrumb = breadcrumbs.length > 0 ? breadcrumbs[breadcrumbs.length - 1] : undefined;
 
   return (
-    <div className="flex w-full flex-col gap-4 border-b border-border-primary/80 pb-4 pt-1 select-none">
+    <div className="flex w-full flex-col gap-4 border-b border-border-primary/80 pb-4 pt-1 select-none px-2">
 
       {/* Componente de Breadcrumbs Unificado */}
       {breadcrumbs.length > 0 && (
-        <div className="-ml-2">
+        <div className="">
           <Breadcrumbs
             items={breadcrumbItems}
             current={currentBreadcrumb?.label}
@@ -47,18 +47,18 @@ export default function CatalogHeader({ title, totalProducts, breadcrumbs }: Pro
       {/* Header Title & Sorting */}
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <h1 className="text-2xl font-semibold tracking-tight text-text-primary md:text-3xl capitalize">
+          <h1 className="text-2xl font-semibold  text-text-secondary md:text-3xl capitalize">
             {title.map((part, i) => (
               <span
                 key={i}
-                className={part.italic ? "font-normal italic text-text-secondary lowercase first-letter:uppercase" : ""}
+                className={part.italic ? "font-normal italic text-text-secondary lowercase " : ""}
               >
                 {part.text}{" "}
               </span>
             ))}
           </h1>
 
-          <span className="rounded-radius-sm bg-surface-secondary px-2 py-0.5 text-[10px] font-semibold uppercase text-text-secondary">
+          <span className="rounded-radius-sm bg-surface-secondary px-2 py-0.5 text-[10px] font-semibold  text-text-secondary">
             {totalProducts} Items
           </span>
         </div>

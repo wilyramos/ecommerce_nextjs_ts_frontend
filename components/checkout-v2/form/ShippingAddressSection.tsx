@@ -1,3 +1,4 @@
+// File: frontend/components/checkout-v2/form/ShippingAddressSection.tsx
 'use client'
 
 import { useMemo } from 'react'
@@ -17,7 +18,7 @@ type Props = {
 
 const ChevronIcon = () => (
     <svg
-        className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-text-secondary"
+        className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-text-tertiary peer-focus:text-brand-accent transition-colors"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"
         fill="none"
@@ -50,14 +51,14 @@ function NativeSelect({ id, label, value, options, disabled, hasError, onChange 
                 disabled={disabled || options.length === 0}
                 aria-invalid={hasError || undefined}
                 className={cn(
-                    "peer h-12 w-full min-w-0 rounded-radius-md border border-border-primary bg-surface-primary px-3.5 pt-4.5 pb-1.5 text-sm font-normal text-text-primary transition-all duration-fast outline-none appearance-none",
+                    "peer h-12 w-full min-w-0 rounded-radius-md border border-border-primary bg-surface-primary px-3.5 pt-4.5 pb-1.5 text-sm font-normal text-text-primary transition-all duration-fast outline-none appearance-none cursor-pointer",
                     "hover:border-border-strong",
                     "focus-visible:border-brand-accent focus-visible:ring-1 focus-visible:ring-brand-accent",
                     "disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-surface-secondary disabled:border-border-secondary disabled:text-text-disabled",
                     "aria-invalid:border-status-error aria-invalid:focus-visible:border-status-error aria-invalid:focus-visible:ring-status-error"
                 )}
             >
-                <option value="" disabled />
+                <option value="" disabled className="hidden"></option>
                 {options.map(opt => (
                     <option key={opt} value={opt} className="text-text-primary bg-surface-primary">{opt}</option>
                 ))}
@@ -67,7 +68,9 @@ function NativeSelect({ id, label, value, options, disabled, hasError, onChange 
                 htmlFor={id}
                 className={cn(
                     "pointer-events-none absolute left-3.5 top-1.5 select-none text-[11px] font-normal tracking-normal text-text-tertiary transition-all duration-fast origin-left",
-                    !value && "top-3.5 text-sm text-text-secondary"
+                    !value && "top-3.5 text-sm text-text-secondary",
+                    "peer-focus:top-1.5 peer-focus:text-[11px] peer-focus:text-brand-accent",
+                    hasError && "text-status-error peer-focus:text-status-error"
                 )}
             >
                 {label}
@@ -107,76 +110,87 @@ export default function ShippingAddressSection({ values, errors, disabled, notes
     ].filter(Boolean)
 
     const renderField = (fieldKey: keyof ShippingAddress, labelPlaceholder: string) => {
-        const hasError = !!errors[`shippingAddress.${fieldKey}`]
+        const errorKey = `shippingAddress.${fieldKey}`
+        const hasError = !!errors[errorKey]
+        
         return (
             <InputV3
                 id={`shipping-field-${fieldKey}`}
                 label={labelPlaceholder}
                 value={values[fieldKey] ?? ''}
                 onChange={e => onChange(fieldKey, e.target.value)}
-                aria-invalid={hasError}
+                error={hasError ? errors[errorKey] : undefined}
                 disabled={disabled}
-                className="text-base sm:text-xs"
+                className="text-base sm:text-sm"
             />
         )
     }
 
     return (
-        <fieldset className="space-y-3.5 text-text-primary" disabled={disabled}>
-            <legend className="sr-only">Dirección de envío</legend>
-
-            {fieldErrors.length > 0 && (
-                <ul className="space-y-1 rounded-radius-md border border-status-error/20 bg-status-error-light px-3 py-2">
-                    {fieldErrors.map((msg) => (
-                        <li key={msg} className="text-[11px] text-status-error tracking-wide">
-                            · {msg}
-                        </li>
-                    ))}
-                </ul>
-            )}
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-                <NativeSelect
-                    id="shipping-field-departamento"
-                    label="Departamento"
-                    value={values.departamento}
-                    options={Object.keys(locations)}
-                    disabled={disabled}
-                    hasError={!!errors['shippingAddress.departamento']}
-                    onChange={handleDepartamentoChange}
-                />
-                <NativeSelect
-                    id="shipping-field-provincia"
-                    label="Provincia"
-                    value={values.provincia}
-                    options={provincias}
-                    disabled={disabled || provincias.length === 0}
-                    hasError={!!errors['shippingAddress.provincia']}
-                    onChange={handleProvinciaChange}
-                />
-                <NativeSelect
-                    id="shipping-field-distrito"
-                    label="Distrito"
-                    value={values.distrito}
-                    options={distritos}
-                    disabled={disabled || distritos.length === 0}
-                    hasError={!!errors['shippingAddress.distrito']}
-                    onChange={val => onChange('distrito', val)}
-                />
+        <section className="space-y-6 pt-4">
+            <div className="space-y-1 border-b border-border-secondary pb-3">
+                <h3 className="text-lg font-semibold tracking-tight text-text-primary">2. Dirección de Envío</h3>
+                <p className="text-sm text-text-secondary">¿Dónde entregaremos tu pedido?</p>
             </div>
 
-            {renderField('direccion', 'Dirección (Calle, avenida, número)')}
-            {renderField('referencia', 'Referencia (Opcional)')}
+            <fieldset className="space-y-4 text-text-primary" disabled={disabled}>
+                <legend className="sr-only">Dirección de envío</legend>
 
-            <InputV3
-                id="shipping-notes"
-                label="Notas adicionales del pedido (Opcional)"
-                value={notes}
-                onChange={e => onNotesChange(e.target.value)}
-                maxLength={300}
-                disabled={disabled}
-                className="text-base sm:text-xs"
-            />
-        </fieldset>
+                {fieldErrors.length > 0 && (
+                    <ul className="space-y-1.5 rounded-radius-md border border-status-error/20 bg-status-error-light px-4 py-3">
+                        {fieldErrors.map((msg) => (
+                            <li key={msg} className="text-xs font-medium text-status-error tracking-wide flex items-start gap-1.5">
+                                <span className="select-none">•</span> {msg}
+                            </li>
+                        ))}
+                    </ul>
+                )}
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <NativeSelect
+                        id="shipping-field-departamento"
+                        label="Departamento"
+                        value={values.departamento}
+                        options={Object.keys(locations)}
+                        disabled={disabled}
+                        hasError={!!errors['shippingAddress.departamento']}
+                        onChange={handleDepartamentoChange}
+                    />
+                    <NativeSelect
+                        id="shipping-field-provincia"
+                        label="Provincia"
+                        value={values.provincia}
+                        options={provincias}
+                        disabled={disabled || provincias.length === 0}
+                        hasError={!!errors['shippingAddress.provincia']}
+                        onChange={handleProvinciaChange}
+                    />
+                    <NativeSelect
+                        id="shipping-field-distrito"
+                        label="Distrito"
+                        value={values.distrito}
+                        options={distritos}
+                        disabled={disabled || distritos.length === 0}
+                        hasError={!!errors['shippingAddress.distrito']}
+                        onChange={val => onChange('distrito', val)}
+                    />
+                </div>
+
+                {renderField('direccion', 'Dirección (Calle, avenida, número)')}
+                {renderField('referencia', 'Referencia (Opcional)')}
+
+                <div className="pt-2">
+                    <InputV3
+                        id="shipping-notes"
+                        label="Notas adicionales del pedido (Opcional)"
+                        value={notes}
+                        onChange={e => onNotesChange(e.target.value)}
+                        maxLength={300}
+                        disabled={disabled}
+                        className="text-base sm:text-sm"
+                    />
+                </div>
+            </fieldset>
+        </section>
     )
 }

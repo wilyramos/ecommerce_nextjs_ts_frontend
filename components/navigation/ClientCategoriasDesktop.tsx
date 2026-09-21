@@ -196,9 +196,7 @@ export default function ClientCategoriasDesktop({
               <div className="grid w-[540px] grid-cols-[180px_1fr] overflow-hidden rounded-radius-xl border border-border-primary/80 bg-surface-primary shadow-2xl backdrop-blur-md">
                 <div className="flex flex-col justify-between border-r border-border-primary/60 bg-surface-secondary/50 p-4">
                   <div className="space-y-1">
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-text-tertiary">
-                      Especiales
-                    </span>
+                   
                     <h4 className="text-sm font-semibold text-text-primary">
                       Tendencias
                     </h4>

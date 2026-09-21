@@ -1,3 +1,5 @@
+//File: frontend/components/checkout-v2/form/CheckoutForm.tsx
+
 'use client'
 
 import { useActionState, useState, useCallback, useEffect, useRef, startTransition } from 'react'
@@ -200,7 +202,7 @@ export default function CheckoutForm({ defaultProfile, lockedEmail }: Props) {
     }
 
     const handleRedirectToLogin = () => {
-        router.push('/auth/login?redirect=/checkout')
+        router.push('/auth/login?redirect=/checkout-v3')
     }
 
     const serverError = state?.ok === false ? state.error : undefined

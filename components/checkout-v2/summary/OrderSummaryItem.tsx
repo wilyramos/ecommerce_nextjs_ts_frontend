@@ -1,3 +1,5 @@
+//File: frontend/components/checkout-v2/summary/OrderSummaryItem.tsx
+
 'use client'
 
 import Image from 'next/image'
@@ -53,7 +55,7 @@ export default function OrderSummaryItem({ item }: Props) {
                 </div>
 
                 {/* Badge de cantidad */}
-                <span className="absolute -top-2 -right-2 bg-text-secondary text-text-inverse text-[10px] font-medium w-4 h-4 rounded-radius-full flex items-center justify-center shadow-sm">
+                <span className="absolute -top-2 -right-2 bg-text-secondary text-text-inverse text-[10px] font-medium w-4 h-4 rounded-radius-full flex items-center justify-center rounded-full border border-border-primary">
                     {item.cantidad}
                 </span>
             </div>

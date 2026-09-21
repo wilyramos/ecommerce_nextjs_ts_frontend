@@ -144,7 +144,7 @@ export default function ResumenCarrito() {
 
                         <div className="flex flex-col gap-3 mt-2">
                             <ButtonV3
-                                onClick={() => router.push("/checkout")}
+                                onClick={() => router.push("/checkout-v3")}
                                 variant="default"
                                 size="full"
                             >

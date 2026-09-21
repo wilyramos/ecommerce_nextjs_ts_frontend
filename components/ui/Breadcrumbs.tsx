@@ -63,7 +63,7 @@ export default function Breadcrumbs({ items, current, currentHref, className }: 
     return (
         <nav
             aria-label="Breadcrumb"
-            className={cn("w-full overflow-hidden px-2 md:px-0", className)}
+            className={cn("w-full overflow-hidden", className)}
         >
             <script
                 type="application/ld+json"

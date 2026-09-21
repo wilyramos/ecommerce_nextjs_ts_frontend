@@ -1,4 +1,3 @@
-// components/home/CollectionSection.tsx
 import { HomepageSection } from "@/src/schemas/collection.schema";
 import CollectionGrid from "@/components/home/sections/CollectionGrid";
 import CollectionCarousel from "@/components/home/sections/CollectionCarousel";
@@ -15,7 +14,7 @@ export default function CollectionSection({ section, slug }: Props) {
     if (!products.length) return null;
 
     return (
-        <section className="max-w-7xl mx-auto px-1 md:px-4">
+        <section className="mx-auto max-w-7xl px-4">
             <SectionHeader
                 title={collection.name}
                 viewAllHref={`/colecciones/${slug}`}

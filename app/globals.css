@@ -3,7 +3,7 @@
 
 :root {
   /* ========== MARCA GOPHONE ========== */
-  --brand-primary: #000000;          /* Color rector de la marca. Usado en logotipo, encabezados de alto impacto y elementos clave de identidad */
+  --brand-primary: #171717;          /* Color rector de la marca. Usado en logotipo, encabezados de alto impacto y elementos clave de identidad */
   --brand-primary-light: #1d1d1f;    /* Negro grafito/titanio. Evita el contraste estridente en bloques oscuros extensos y tarjetas destacadas */
   --brand-primary-lighter: #333336;  /* Gris oscuro sutil. Ideal para bordes sobre fondos oscuros o elementos secundarios de marca */
 
@@ -25,29 +25,32 @@
   --text-primary: #1d1d1f;           /* Títulos principales, nombres de dispositivo y precios en catálogo */
   --text-secondary: #515154;         /* Párrafos descriptivos, características de hardware y textos de soporte */
   --text-tertiary: #86868b;          /* Textos legales, especificaciones al pie, impuestos y fechas estimadas */
-  --text-disabled: #d2d2d7;          /* Tipografía inactiva en formularios deshabilitados o stock no disponible */
+  --text-disabled: #86868b;          /* Tipografía inactiva en formularios deshabilitados o stock no disponible */
   --text-inverse: #ffffff;           /* Texto blanco de alto contraste sobre superficies oscuras o botones negros */
 
   /* ========== BORDES ========== */
   --border-primary: #e5e5ea;         /* Borde estructural fino para tarjetas, inputs y separadores */
   --border-secondary: #f5f5f7;       /* Divisores casi imperceptibles entre filas de listas */
   --border-strong: #86868b;          /* Borde con mayor presencia para inputs activos o selector de capacidad/color */
+  --border-disabled: #d2d2d7;        /* Borde claro para elementos y botones deshabilitados */
 
   /* ========== COMPONENTES - BOTONES ========== */
   --button-primary-bg: #000000;            /* Fondo del CTA de conversión principal: "Añadir a la bolsa" o "Comprar" */
   --button-primary-text: #ffffff;          /* Texto del CTA principal */
   --button-primary-hover: #1d1d1f;         /* Estado hover del CTA principal con transición suave */
-  --button-primary-disabled: #d2d2d7;      /* Fondo del botón principal cuando el producto está agotado */
+  --button-primary-disabled: #e5e5ea;      /* Fondo del botón principal cuando el producto está agotado */
 
   --button-secondary-bg: #f5f5f7;          /* Fondo para botones de soporte: "Más información" o "Comparar" */
   --button-secondary-text: #1d1d1f;        /* Texto del botón secundario */
   --button-secondary-hover: #e5e5ea;       /* Estado hover del botón secundario */
-  --button-secondary-disabled: #fbfbfd;    /* Fondo del botón secundario deshabilitado */
+  --button-secondary-disabled: #f5f5f7;    /* Fondo del botón secundario deshabilitado */
 
   --button-accent-bg: #8b1538;             /* Botón con llamada de acción alternativa o confirmación de pago */
   --button-accent-text: #ffffff;           /* Texto del botón de acento */
   --button-accent-hover: #a71c3e;          /* Estado hover del botón de acento */
-  --button-accent-disabled: #d2d2d7;       /* Fondo del botón de acento deshabilitado */
+  --button-accent-disabled: #e5e5ea;       /* Fondo del botón de acento deshabilitado */
+
+  --button-disabled-text: #86868b;         /* Color de contraste legible para texto e iconos en botones deshabilitados */
 
   /* ========== ESTADOS ========== */
   --status-success: #34c759;         /* Verde funcional. Indica stock disponible, orden completada o garantía activa */
@@ -56,7 +59,7 @@
   --status-warning: #ff9f0a;         /* Ámbar funcional. Indica pocas unidades restantes o demoras de entrega */
   --status-warning-light: #fff5e6;   /* Fondo tenue para mensajes preventivos de stock */
 
-  --status-error: #ff3b30;           /* Rojo de sistema. Errores de validación de pago, cupones vencidos o sin stock */
+  --status-error: #ff1205;           /* Rojo de sistema. Errores de validación de pago, cupones vencidos o sin stock */
   --status-error-light: #ffefee;     /* Fondo suave para cuadros de error en formularios */
 
   --status-info: #0071e3;            /* Azul funcional. Avisos del sistema, notas de compatibilidad o guías */
@@ -69,7 +72,7 @@
   --shadow-xl: 0 20px 40px 0 rgba(0, 0, 0, 0.12);
 
   /* ========== ESPACIADO ========== */
---container-xs: 20rem;   /* 320px */
+  --container-xs: 20rem;   /* 320px */
   --container-sm: 24rem;   /* 384px */
   --container-md: 28rem;   /* 448px */
   --container-lg: 32rem;   /* 512px */
@@ -146,6 +149,7 @@
   --color-border-primary: var(--border-primary);
   --color-border-secondary: var(--border-secondary);
   --color-border-strong: var(--border-strong);
+  --color-border-disabled: var(--border-disabled);
 
   /* ========== COMPONENTES - BOTONES ========== */
   --color-button-primary-bg: var(--button-primary-bg);
@@ -162,6 +166,8 @@
   --color-button-accent-text: var(--button-accent-text);
   --color-button-accent-hover: var(--button-accent-hover);
   --color-button-accent-disabled: var(--button-accent-disabled);
+
+  --color-button-disabled-text: var(--button-disabled-text);
 
   /* ========== ESTADOS ========== */
   --color-status-success: var(--status-success);
@@ -183,12 +189,12 @@
   --shadow-xl: var(--shadow-xl);
 
   /* ========== ESPACIADO ========== */
---container-xs: var(--container-xs);
+  --container-xs: var(--container-xs);
   --container-sm: var(--container-sm);
   --container-md: var(--container-md);
   --container-lg: var(--container-lg);
   --container-xl: var(--container-xl);
-  
+
   /* ========== TIPOGRAFÍA ========== */
   --font-base: var(--font-family-base);
   --font-mono: var(--font-family-mono);

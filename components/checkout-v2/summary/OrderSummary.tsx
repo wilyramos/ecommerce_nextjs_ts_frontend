@@ -1,3 +1,5 @@
+//File: frontend/components/checkout-v2/summary/OrderSummary.tsx
+
 'use client'
 
 import { usePathname } from 'next/navigation'

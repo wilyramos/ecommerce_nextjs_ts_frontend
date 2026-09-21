@@ -1,4 +1,3 @@
-// frontend/components/navigation/NavBarClient.tsx
 "use client";
 
 import { ReactNode, useEffect, useState } from "react";
@@ -18,10 +17,10 @@ export default function NavBarClient({ children }: { children: ReactNode }) {
         setIsVisible(true);
       } else {
         setIsScrolled(true);
-        if (currentScrollY > lastScrollY && currentScrollY > 150) {
-          setIsVisible(false); // Scroll hacia abajo: Ocultar
+        if (currentScrollY > lastScrollY && currentScrollY > 140) {
+          setIsVisible(false);
         } else {
-          setIsVisible(true);  // Scroll hacia arriba: Mostrar
+          setIsVisible(true);
         }
       }
       setLastScrollY(currentScrollY);
@@ -37,7 +36,7 @@ export default function NavBarClient({ children }: { children: ReactNode }) {
         id="smart-navbar"
         data-scrolled={isScrolled}
         className={cn(
-          "group fixed inset-x-0 top-0 z-[9999] w-full transition-all duration-300 ease-in-out",
+          "group fixed inset-x-0 top-0 z-[1000] w-full transition-all duration-normal ease-in-out",
           isVisible ? "translate-y-0" : "-translate-y-full",
           isScrolled
             ? "border-b border-border-primary/60 bg-surface-primary/85 shadow-sm backdrop-blur-xl"
@@ -47,8 +46,8 @@ export default function NavBarClient({ children }: { children: ReactNode }) {
         {children}
       </header>
 
-      {/* Espaciador ajustado al nuevo tamaño (32px Anuncio + 64px Barra + ~40px Categorías) */}
-      <div className="h-14 w-full shrink-0 md:h-[136px]" aria-hidden="true" />
+      {/* Espaciador reservado: 56px en móvil, 130px en desktop */}
+      <div className="h-14 w-full shrink-0 md:h-[130px]" aria-hidden="true" />
     </>
   );
 }

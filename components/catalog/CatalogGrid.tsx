@@ -63,7 +63,7 @@ export default function CatalogGrid({ products, isFallback }: Props) {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-5 pt-4">
+    <div className="grid grid-cols-2 gap-1 md:gap:4 sm:grid-cols-3 md:grid-cols-4 ">
       {products.map((product) => (
         <ProductCard key={product._id} product={product} />
       ))}

@@ -6,6 +6,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import React from "react";
+import { Muted } from "@/components/ui/TypographyV3";
 
 interface Props {
   currentPage: number;
@@ -13,7 +14,11 @@ interface Props {
   siblingCount?: number;
 }
 
-export default function CatalogPagination({ currentPage, totalPages, siblingCount = 1 }: Props) {
+export default function CatalogPagination({
+  currentPage,
+  totalPages,
+  siblingCount = 1,
+}: Props) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -28,55 +33,113 @@ export default function CatalogPagination({ currentPage, totalPages, siblingCoun
 
   const generatePagination = () => {
     const totalNumbers = siblingCount + 5;
-    if (totalPages <= totalNumbers) return Array.from({ length: totalPages }, (_, i) => i + 1);
+    if (totalPages <= totalNumbers) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
 
     const leftSiblingIndex = Math.max(currentPage - siblingCount, 1);
     const rightSiblingIndex = Math.min(currentPage + siblingCount, totalPages);
     const shouldShowLeftDots = leftSiblingIndex > 2;
     const shouldShowRightDots = rightSiblingIndex < totalPages - 2;
 
-    if (!shouldShowLeftDots && shouldShowRightDots) return [...Array.from({ length: 3 + 2 * siblingCount }, (_, i) => i + 1), "...", totalPages];
-    if (shouldShowLeftDots && !shouldShowRightDots) return [1, "...", ...Array.from({ length: 3 + 2 * siblingCount }, (_, i) => totalPages - (3 + 2 * siblingCount) + i + 1)];
-    return [1, "...", ...Array.from({ length: rightSiblingIndex - leftSiblingIndex + 1 }, (_, i) => leftSiblingIndex + i), "...", totalPages];
+    if (!shouldShowLeftDots && shouldShowRightDots) {
+      return [
+        ...Array.from({ length: 3 + 2 * siblingCount }, (_, i) => i + 1),
+        "...",
+        totalPages,
+      ];
+    }
+    if (shouldShowLeftDots && !shouldShowRightDots) {
+      return [
+        1,
+        "...",
+        ...Array.from(
+          { length: 3 + 2 * siblingCount },
+          (_, i) => totalPages - (3 + 2 * siblingCount) + i + 1
+        ),
+      ];
+    }
+    return [
+      1,
+      "...",
+      ...Array.from(
+        { length: rightSiblingIndex - leftSiblingIndex + 1 },
+        (_, i) => leftSiblingIndex + i
+      ),
+      "...",
+      totalPages,
+    ];
   };
 
   return (
-    <nav aria-label="Navegación del catálogo" className="flex items-center justify-center gap-1.5 select-none">
-      <PaginationButton href={createPageUrl(currentPage - 1)} isDisabled={currentPage <= 1}>
+    <nav
+      aria-label="Navegación del catálogo"
+      className="flex items-center justify-center gap-1.5 select-none"
+    >
+      <PaginationButton
+        href={createPageUrl(currentPage - 1)}
+        isDisabled={currentPage <= 1}
+        aria-label="Página anterior"
+      >
         <ChevronLeft className="size-4" />
       </PaginationButton>
 
-      {generatePagination().map((p, i) => (
+      {generatePagination().map((p, i) =>
         p === "..." ? (
-          <span key={`ellipsis-${i}`} className="px-2 text-xs font-semibold tracking-widest text-text-tertiary">...</span>
+          <Muted
+            key={`ellipsis-${i}`}
+            className="flex size-9 items-center justify-center font-semibold tracking-widest text-text-tertiary"
+          >
+            ...
+          </Muted>
         ) : (
-          <PaginationButton key={p} href={createPageUrl(p)} isActive={currentPage === p}>
+          <PaginationButton
+            key={p}
+            href={createPageUrl(p)}
+            isActive={currentPage === p}
+          >
             {p}
           </PaginationButton>
         )
-      ))}
+      )}
 
-      <PaginationButton href={createPageUrl(currentPage + 1)} isDisabled={currentPage >= totalPages}>
+      <PaginationButton
+        href={createPageUrl(currentPage + 1)}
+        isDisabled={currentPage >= totalPages}
+        aria-label="Página siguiente"
+      >
         <ChevronRight className="size-4" />
       </PaginationButton>
     </nav>
   );
 }
 
-interface PaginationButtonProps extends Omit<React.ComponentProps<typeof Link>, "href"> {
+interface PaginationButtonProps
+  extends Omit<React.ComponentProps<typeof Link>, "href"> {
   href: string;
   isActive?: boolean;
   isDisabled?: boolean;
   children: React.ReactNode;
 }
 
-function PaginationButton({ href, isActive, isDisabled, children, className, ...props }: PaginationButtonProps) {
-  const baseStyles = "flex size-9 items-center justify-center rounded-radius-sm text-xs font-semibold transition-all duration-fast border outline-none";
+function PaginationButton({
+  href,
+  isActive,
+  isDisabled,
+  children,
+  className,
+  ...props
+}: PaginationButtonProps) {
+  const baseStyles =
+    "flex size-9 items-center justify-center rounded-radius-md text-xs font-medium tabular-nums transition-all duration-fast border outline-none select-none";
 
   if (isDisabled) {
     return (
-      <span 
-        className={cn(baseStyles, "border-transparent bg-transparent text-text-disabled cursor-not-allowed")}
+      <span
+        className={cn(
+          baseStyles,
+          "border-transparent bg-transparent text-text-disabled cursor-not-allowed"
+        )}
         aria-disabled="true"
       >
         {children}
@@ -91,8 +154,8 @@ function PaginationButton({ href, isActive, isDisabled, children, className, ...
       className={cn(
         baseStyles,
         isActive
-          ? "border-brand-primary bg-brand-primary text-text-inverse shadow-xs pointer-events-none"
-          : "border-border-primary/80 bg-surface-primary text-text-primary hover:border-border-strong hover:bg-surface-secondary active:scale-95",
+          ? "border-brand-primary bg-brand-primary text-text-inverse shadow-sm pointer-events-none font-semibold"
+          : "border-border-primary bg-surface-primary text-text-secondary hover:border-border-strong hover:bg-surface-secondary hover:text-text-primary active:scale-95",
         className
       )}
       {...props}

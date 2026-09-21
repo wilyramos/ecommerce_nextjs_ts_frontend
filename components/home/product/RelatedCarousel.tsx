@@ -1,51 +1,97 @@
 // File: frontend/components/home/product/RelatedCarousel.tsx
 "use client";
 
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
+import React, { useCallback, useEffect, useState } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import ProductCard from "./ProductCard";
-import { CustomLeftArrow, CustomRightArrow } from "../layouts/CarouselArrows";
 import type { TApiProduct } from "@/src/schemas";
-
-const responsive = {
-    desktop: {
-        breakpoint: { max: 3000, min: 1024 },
-        items: 4,
-        slidesToSlide: 1,
-        partialVisibilityGutter: 30,
-    },
-    tablet: {
-        breakpoint: { max: 1024, min: 640 },
-        items: 3,
-        slidesToSlide: 1,
-        partialVisibilityGutter: 20,
-    },
-    mobile: {
-        breakpoint: { max: 640, min: 0 },
-        items: 2,
-        slidesToSlide: 1,
-        partialVisibilityGutter: 10,
-    },
-};
+import { cn } from "@/lib/utils";
 
 interface RelatedCarouselProps {
     products: TApiProduct[];
 }
 
 export default function RelatedCarousel({ products }: RelatedCarouselProps) {
+    const [emblaRef, emblaApi] = useEmblaCarousel({
+        align: "start",
+        loop: false,
+        containScroll: "trimSnaps",
+        dragFree: true,
+    });
+
+    const [canScrollPrev, setCanScrollPrev] = useState(false);
+    const [canScrollNext, setCanScrollNext] = useState(false);
+
+    const scrollPrev = useCallback(() => {
+        if (emblaApi) emblaApi.scrollPrev();
+    }, [emblaApi]);
+
+    const scrollNext = useCallback(() => {
+        if (emblaApi) emblaApi.scrollNext();
+    }, [emblaApi]);
+
+    const onSelect = useCallback(() => {
+        if (!emblaApi) return;
+        setCanScrollPrev(emblaApi.canScrollPrev());
+        setCanScrollNext(emblaApi.canScrollNext());
+    }, [emblaApi]);
+
+    useEffect(() => {
+        if (!emblaApi) return;
+        onSelect();
+        emblaApi.on("select", onSelect);
+        emblaApi.on("reInit", onSelect);
+
+        return () => {
+            emblaApi.off("select", onSelect);
+            emblaApi.off("reInit", onSelect);
+        };
+    }, [emblaApi, onSelect]);
+
     return (
-        <Carousel
-            responsive={responsive}
-            infinite={true}
-            autoPlay={false}
-            keyBoardControl={true}
-            customLeftArrow={<CustomLeftArrow />}
-            customRightArrow={<CustomRightArrow />}
-            itemClass="px-2"
-        >
-            {products.map((product) => (
-                <ProductCard key={product.slug} product={product} />
-            ))}
-        </Carousel>
+        <div className="group/carousel relative w-full">
+            {/* Contenedor Viewport Embla */}
+            <div ref={emblaRef} className="overflow-hidden">
+                <div className="-ml-3 flex touch-pan-y md:-ml-4">
+                    {products.map((product) => (
+                        <div
+                            key={product.slug}
+                            className="min-w-0 flex-[0_0_50%] pl-3 sm:flex-[0_0_33.333%] lg:flex-[0_0_25%] md:pl-4"
+                        >
+                            <ProductCard product={product} />
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Flecha Izquierda */}
+            {canScrollPrev && (
+                <button
+                    type="button"
+                    onClick={scrollPrev}
+                    aria-label="Ver productos anteriores"
+                    className={cn(
+                        "absolute -left-3 top-1/2 -translate-y-1/2 z-10 hidden size-9 items-center justify-center rounded-full border border-border-primary/80 bg-surface-primary/95 text-text-primary shadow-md backdrop-blur-sm transition-all duration-fast hover:scale-105 hover:bg-surface-primary active:scale-95 sm:flex"
+                    )}
+                >
+                    <ChevronLeft className="size-5" />
+                </button>
+            )}
+
+            {/* Flecha Derecha */}
+            {canScrollNext && (
+                <button
+                    type="button"
+                    onClick={scrollNext}
+                    aria-label="Ver productos siguientes"
+                    className={cn(
+                        "absolute -right-3 top-1/2 -translate-y-1/2 z-10 hidden size-9 items-center justify-center rounded-full border border-border-primary/80 bg-surface-primary/95 text-text-primary shadow-md backdrop-blur-sm transition-all duration-fast hover:scale-105 hover:bg-surface-primary active:scale-95 sm:flex"
+                    )}
+                >
+                    <ChevronRight className="size-5" />
+                </button>
+            )}
+        </div>
     );
 }

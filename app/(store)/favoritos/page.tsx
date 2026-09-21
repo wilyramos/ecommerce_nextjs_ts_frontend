@@ -12,10 +12,8 @@ export const metadata: Metadata = {
 
 export default function FavoritesPage() {
   return (
-    <main className="container mx-auto min-h-[65vh] px-4 py-8">
-      <Suspense fallback={<FavoritesGridSkeleton />}>
-        <FavoritesView />
-      </Suspense>
-    </main>
+    <Suspense fallback={<FavoritesGridSkeleton />}>
+      <FavoritesView />
+    </Suspense>
   );
 }

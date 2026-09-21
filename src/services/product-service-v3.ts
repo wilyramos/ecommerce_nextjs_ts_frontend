@@ -16,6 +16,28 @@ export class ProductService {
     return response.data;
   }
 
+  async getByIds(ids: string[]): Promise<TApiProduct[]> {
+    if (ids.length === 0) return [];
+    
+    // Si tu backend soporta batch:
+    try {
+      const response = await this.http.post<{ success: boolean; data: TApiProduct[] }>(
+        `/products/v3/batch`,
+        { ids }
+      );
+      return response.data;
+    } catch {
+      // Fallback resiliente concurrente en cliente
+      const settles = await Promise.allSettled(ids.map((id) => this.getById(id)));
+      return settles
+        .filter(
+          (result): result is PromiseFulfilledResult<TApiProduct> =>
+            result.status === "fulfilled"
+        )
+        .map((result) => result.value);
+    }
+  }
+
   async searchForAdmin(
     query: string,
     limit: number = 10,

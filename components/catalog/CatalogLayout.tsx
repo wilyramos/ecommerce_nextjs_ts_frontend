@@ -70,8 +70,8 @@ export default function CatalogLayout({
   if (context.lineName) breadcrumbs.push({ label: context.lineName, href: "#" });
 
   return (
-    <section className="px-4 md:px-6 pb-16 pt-6">
-      <div className="px-4">
+    <section className="px-4">
+      <div className="">
         <CatalogHeader
           title={getTitle()}
           totalProducts={pagination.totalItems}
@@ -103,7 +103,7 @@ export default function CatalogLayout({
           </div>
 
           {!isFallback && pagination.totalPages > 1 && (
-            <div className="mt-8 border-t border-border-primary/80 pt-8">
+            <div className="mt-8 border-t border-border-primary/80 py-5">
               <CatalogPagination
                 currentPage={pagination.currentPage}
                 totalPages={pagination.totalPages}

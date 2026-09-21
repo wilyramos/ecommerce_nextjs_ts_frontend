@@ -10,6 +10,7 @@ import type {
 import type { ItemDiscountDetail } from '@/src/schemas/discount.schema'
 
 type PendingOrder = Pick<
+
     OrderResponse,
     '_id' | 'orderNumber' | 'subtotal' | 'shippingCost' | 'discountCode' | 'discountAmount' | 'totalPrice' | 'currency' | 'status'
 >
@@ -24,20 +25,19 @@ export interface AppliedDiscount {
 interface CheckoutStoreV2 {
     customerProfile: CustomerProfile | null
     shippingAddress: ShippingAddress | null
-    notes:           string
-    pendingOrder:    PendingOrder | null
+    notes: string
+    pendingOrder: PendingOrder | null
     appliedDiscount: AppliedDiscount | null
 
-    // ── Setters ───────────────────────────────────────────────────────────────
     setCustomerProfile: (profile: CustomerProfile) => void
     setShippingAddress: (address: ShippingAddress) => void
-    setNotes:           (notes: string)            => void
-    setPendingOrder:    (order: PendingOrder | null) => void
+    setNotes: (notes: string) => void
+    setPendingOrder: (order: PendingOrder | null) => void
     setAppliedDiscount: (discount: AppliedDiscount | null) => void
-    clearDiscount:      () => void
+    clearDiscount: () => void
 
     isStepOneComplete: () => boolean
-    resetCheckout:      () => void
+    resetCheckout: () => void
 }
 
 export const useCheckoutStoreV2 = create<CheckoutStoreV2>()(
@@ -46,8 +46,8 @@ export const useCheckoutStoreV2 = create<CheckoutStoreV2>()(
             (set, get) => ({
                 customerProfile: null,
                 shippingAddress: null,
-                notes:           '',
-                pendingOrder:    null,
+                notes: '',
+                pendingOrder: null,
                 appliedDiscount: null,
 
                 setCustomerProfile: (profile) =>
@@ -75,12 +75,12 @@ export const useCheckoutStoreV2 = create<CheckoutStoreV2>()(
 
                 resetCheckout: () =>
                     set(
-                        { 
-                            customerProfile: null, 
-                            shippingAddress: null, 
-                            notes: '', 
-                            pendingOrder: null, 
-                            appliedDiscount: null 
+                        {
+                            customerProfile: null,
+                            shippingAddress: null,
+                            notes: '',
+                            pendingOrder: null,
+                            appliedDiscount: null
                         },
                         false,
                         'checkout/reset'

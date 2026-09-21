@@ -32,14 +32,14 @@ export default function HomePage() {
 
       {/* 2. Dock Flotante (Garantías) */}
       {/* Lo subimos ligeramente para que monte sobre el banner, muy estilo Apple */}
-      <ScrollReveal className="relative z-10 -mt-14 px-2 sm:px-4 md:-mt-16 mx-auto w-full max-w-7xl">
+      <ScrollReveal className="relative z-0 -mt-14 px-2 sm:px-4 md:-mt-16 mx-auto w-full max-w-7xl">
         <section aria-label="Beneficios y garantías">
           <FeaturesList />
         </section>
       </ScrollReveal>
 
       {/* 3. Categorías Principales */}
-      <ScrollReveal delay={0.1} className="mx-auto w-full max-w-7xl px-4 md:px-6">
+      <ScrollReveal delay={0.1} className="mx-auto w-full max-w-7xl md:px-6">
         <section aria-label="Categorías principales">
           <CategoriasDestacadasWrapper />
         </section>
