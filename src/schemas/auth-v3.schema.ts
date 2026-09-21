@@ -16,9 +16,3 @@ export const UpdatePasswordDTOSchema = z.object({
     path: ["confirmPassword"],
 });
 export type UpdatePasswordDTO = z.infer<typeof UpdatePasswordDTOSchema>;
-
-// Respuesta de login desde el backend
-export type LoginResponse = {
-    user: any; // Aquí puedes tipar IUser si lo tienes
-    token: string;
-};

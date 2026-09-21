@@ -10,18 +10,23 @@ export const metadata = {
     title: "Detalle de Orden | Mi Perfil",
 };
 
+interface PageProps {
+    params: Promise<{ orderNumber: string }>;
+}
+
 export default async function OrderDetailPage({
     params,
-}: {
-    params: { orderNumber: string };
-}) {
+}: PageProps) {
+
+
+    const { orderNumber } = await params;
     // 1. Validar sesión
     const session = await verifySession();
 
     // 2. Consultar orden específica
     let order;
     try {
-        order = await orderService.getByOrderNumber(params.orderNumber, session.token);
+        order = await orderService.getByOrderNumber(orderNumber, session.token);
     } catch (error) {
         console.error("Error cargando detalle de orden:", error);
         // Si el backend arroja 404

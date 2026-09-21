@@ -164,10 +164,10 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-20px" }}
-            transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
+            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
             className="group relative flex h-full flex-col overflow-hidden rounded-lg bg-surface-primary"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => {
@@ -181,7 +181,7 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                 href={`/productos/${product.slug}`}
                 className="relative flex h-full flex-col outline-none focus-visible:ring-1 focus-visible:ring-brand-accent"
             >
-                {/* Contenedor Superior: Visual del Dispositivo */}
+                {/* Contenedor Superior: Imagen del Producto */}
                 <div className="relative aspect-square w-full overflow-hidden bg-surface-secondary">
                     {previewImages.length > 0 ? (
                         <>
@@ -191,13 +191,13 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                                 transition={{ type: "spring", stiffness: 320, damping: 32 }}
                             >
                                 {previewImages.map((img, idx) => (
-                                    <div key={idx} className="relative h-full min-w-full shrink-0 p-6">
+                                    <div key={idx} className="relative h-full min-w-full shrink-0 p-3 sm:p-4">
                                         <Image
                                             src={img}
                                             alt={`${product.nombre} - vista ${idx + 1}`}
                                             fill
                                             sizes="(max-width: 640px) 50vw, 25vw"
-                                            className="object-contain transition-transform duration-normal"
+                                            className="object-contain"
                                             unoptimized
                                         />
                                     </div>
@@ -219,10 +219,10 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                                                         e.stopPropagation();
                                                         prevImage();
                                                     }}
-                                                    className="absolute left-3 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full border border-border-primary bg-surface-primary text-text-primary transition-colors duration-fast"
+                                                    className="absolute left-2 top-1/2 flex size-7 -translate-y-1/2 items-center justify-center rounded-full border border-border-primary bg-surface-primary text-text-primary shadow-xs transition-colors duration-fast"
                                                     aria-label="Imagen anterior"
                                                 >
-                                                    <ChevronLeft size={15} strokeWidth={2} />
+                                                    <ChevronLeft size={14} strokeWidth={2} />
                                                 </motion.button>
                                                 <motion.button
                                                     initial={{ opacity: 0 }}
@@ -234,17 +234,16 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                                                         e.stopPropagation();
                                                         nextImage();
                                                     }}
-                                                    className="absolute right-3 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full border border-border-primary bg-surface-primary text-text-primary transition-colors duration-fast hover:bg-surface-secondary"
+                                                    className="absolute right-2 top-1/2 flex size-7 -translate-y-1/2 items-center justify-center rounded-full border border-border-primary bg-surface-primary text-text-primary shadow-xs transition-colors duration-fast hover:bg-surface-secondary"
                                                     aria-label="Siguiente imagen"
                                                 >
-                                                    <ChevronRight size={15} strokeWidth={2} />
+                                                    <ChevronRight size={14} strokeWidth={2} />
                                                 </motion.button>
                                             </>
                                         )}
                                     </AnimatePresence>
 
-                                    {/* Paginador lineal limpio */}
-                                    <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1 rounded-full border border-border-primary bg-surface-primary px-2 py-1 transition-opacity duration-normal md:opacity-0 md:group-hover:opacity-100">
+                                    <div className="absolute bottom-2 left-1/2 flex -translate-x-1/2 gap-1 rounded-full border border-border-primary bg-surface-primary/90 px-1.5 py-0.5 backdrop-blur-xs transition-opacity duration-normal md:opacity-0 md:group-hover:opacity-100">
                                         {previewImages.slice(0, 3).map((_, idx) => (
                                             <span
                                                 key={idx}
@@ -260,25 +259,25 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                         </>
                     ) : (
                         <div className="flex h-full w-full items-center justify-center text-text-disabled">
-                            <MdOutlineImageNotSupported size={28} />
+                            <MdOutlineImageNotSupported size={24} />
                         </div>
                     )}
 
                     {/* Badges Flotantes */}
-                    <div className="pointer-events-none absolute left-2 top-2 flex flex-col gap-1.5">
+                    <div className="pointer-events-none absolute left-2 top-2 flex flex-col gap-1">
                         {isNew && (
-                            <span className="flex items-center justify-center rounded bg-surface-primary px-2.5">
-                                <Small className="text-[10px] font-semibold text-text-primary">Nuevo</Small>
+                            <span className="flex items-center justify-center rounded bg-surface-primary px-2 py-0.5 shadow-xs">
+                                <Small className="text-[10px] font-semibold leading-tight text-text-primary">Nuevo</Small>
                             </span>
                         )}
                         {discountPct > 0 && (
-                            <span className="flex items-center justify-center rounded bg-brand-accent px-2.5">
-                                <Small className="text-[10px] font-semibold text-text-inverse">-{discountPct}%</Small>
+                            <span className="flex items-center justify-center rounded bg-brand-accent px-2 py-0.5 shadow-xs">
+                                <Small className="text-[10px] font-semibold leading-tight text-text-inverse">-{discountPct}% OFF</Small>
                             </span>
                         )}
                     </div>
 
-                    {/* Botón Favorito Rounded Full */}
+                    {/* Botón Favorito */}
                     <button
                         type="button"
                         onClick={handleToggleFavorite}
@@ -289,70 +288,68 @@ export default function ProductCard({ product }: { product: TApiProduct }) {
                         )}
                     >
                         <Heart
-                            size={15}
+                            size={13}
                             className={cn("transition-colors duration-fast", isFavorited && "fill-status-error text-status-error")}
                         />
                     </button>
                 </div>
 
-                {/* Contenedor Inferior: Información del Dispositivo */}
-                <div className="flex flex-1 flex-col p-5">
-                    {/* Marca y Selector de Variantes de Color */}
-                    <div className="flex items-center justify-between gap-2">
-                        <Small className="truncate text-[11px] text-text-tertiary">
-                            {product.brand?.nombre || "\u00A0"}
+                {/* Contenedor Inferior: Información */}
+                <div className="flex flex-1 flex-col p-2.5">
+                    {/* Marca y Variantes de Color */}
+                    <div className="flex min-h-[16px] items-center justify-between gap-1.5">
+                        <Small className="truncate text-[11px] leading-none text-text-tertiary">
+                            {product.brand?.nombre || ""}
                         </Small>
 
                         {uniqueColors.length > 0 && (
-                            <div className="flex items-center gap-1.5" onClick={(e) => e.preventDefault()}>
+                            <div className="flex items-center gap-1" onClick={(e) => e.preventDefault()}>
                                 {uniqueColors.slice(0, 4).map((c, index) => (
                                     <button
                                         key={`${c}-${index}`}
                                         type="button"
                                         onClick={(e) => handleColorSelect(e, c)}
                                         className={cn(
-                                            "flex items-center justify-center rounded-full p-0.2 transition-all duration-fast",
-                                            selectedColor === c ? "ring-1 ring-border-strong/50 ring-offset-1 ring-offset-surface-primary" : "hover:opacity-80"
+                                            "flex items-center justify-center rounded-full p-0.5 transition-all duration-fast",
+                                            selectedColor === c ? "ring-1 ring-border-strong/60 ring-offset-1 ring-offset-surface-primary" : "hover:opacity-80"
                                         )}
                                         aria-label={`Seleccionar color ${c}`}
                                     >
-                                        <ColorCircle color={c} size={11} />
+                                        <ColorCircle color={c} size={9} />
                                     </button>
                                 ))}
                             </div>
                         )}
                     </div>
 
-                    {/* Nombre */}
-                    <H3 className="mt-1.5 line-clamp-2 min-h-[2.5rem] text-[13px] font-medium leading-snug tracking-tight text-text-primary transition-colors duration-fast group-hover:text-brand-accent sm:text-sm">
+                    {/* Nombre visible en 3 filas */}
+                    <H3 className="mt-1 line-clamp-3 min-h-[3.75rem] text-[13px] font-medium leading-snug tracking-tight text-text-primary transition-colors duration-fast group-hover:text-brand-accent sm:text-[13.5px]">
                         {product.nombre}
                     </H3>
 
-                    {/* Precio y Botón de Compra Rápida Rounded Full */}
-                    <div className="mt-auto flex items-end justify-between border-t border-border-secondary pt-3.5">
-                        <div className="flex flex-col">
+                    {/* Precios uno al lado del otro y Botón de Compra */}
+                    <div className="mt-auto flex items-center justify-between gap-2 border-t border-border-secondary pt-2">
+                        <div className="flex flex-wrap items-baseline gap-1.5">
+                            <span className="text-[15px] font-semibold tracking-tight text-text-primary">
+                                S/ {precio.toFixed(2)}
+                            </span>
                             {discountPct > 0 && (
                                 <Small className="text-[11px] line-through text-text-tertiary">
                                     S/ {product.precioComparativo!.toFixed(2)}
                                 </Small>
                             )}
-                            <span className="text-base font-semibold tracking-tight text-text-primary">
-                                S/ {precio.toFixed(2)}
-                            </span>
                         </div>
 
                         {stock <= 0 ? (
-                            <span>
-                                <Small className="text-[10px] font-medium text-text-disabled">Agotado</Small>
-                            </span>
+                            <Small className="shrink-0 text-[10px] font-medium text-text-disabled">Agotado</Small>
                         ) : !hasVariants && product.isActive !== false ? (
                             <button
                                 type="button"
                                 onClick={handleAddToCart}
-                                className="flex size-9 items-center justify-center rounded-full bg-button-primary-bg text-button-primary-text transition-all duration-fast hover:bg-button-primary-hover active:scale-95 md:opacity-0 md:group-hover:opacity-100"
+                                className="flex size-7.5 shrink-0 items-center justify-center rounded-full bg-button-primary-bg text-button-primary-text transition-all duration-fast hover:bg-button-primary-hover active:scale-95 md:opacity-0 md:group-hover:opacity-100"
                                 aria-label="Añadir al carrito"
                             >
-                                <FaCartPlus size={13} />
+                                <FaCartPlus size={11} />
                             </button>
                         ) : null}
                     </div>
