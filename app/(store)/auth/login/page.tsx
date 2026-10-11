@@ -1,6 +1,8 @@
+// File: frontend/app/auth/login/page.tsx
+
 import type { Metadata } from "next"
 import LoginForm from "@/components/auth/LoginForm"
-import { H1, Muted } from "@/components/ui/TypographyV3"
+import { H1 } from "@/components/ui/TypographyV3"
 
 export const metadata: Metadata = {
   title: "GoPhone - Iniciar Sesión",
@@ -10,13 +12,12 @@ export const metadata: Metadata = {
 
 export default function PageLogin() {
   return (
-    <div className="w-full space-y-6">
+    <>
       <div className="space-y-1.5 text-center">
-        <H1 className="text-xl sm:text-2xl">Iniciar sesión</H1>
-        <Muted>Ingresa a tu cuenta para gestionar tus compras.</Muted>
+        <H1>Iniciar sesión</H1>
       </div>
 
       <LoginForm />
-    </div>
+    </>
   )
 }
