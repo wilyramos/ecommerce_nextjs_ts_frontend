@@ -18,7 +18,7 @@ export default function StoreMaintenance() {
     const social = [
         { icon: <FaFacebookF />, href: "https://facebook.com/gophone.pe", name: "Facebook" },
         { icon: <FaInstagram />, href: "https://instagram.com/gophone.pe", name: "Instagram" },
-        { icon: <FaWhatsapp />, href: "https://wa.me/51925054636", name: "WhatsApp" },
+        { icon: <FaWhatsapp />, href: "https://wa.me/51927870159", name: "WhatsApp" },
     ];
 
     useEffect(() => {

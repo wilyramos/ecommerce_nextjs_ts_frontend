@@ -17,7 +17,7 @@ const COMPANY = {
     provincia: "Cañete",
     departamento: "Lima",
     pais: "Perú",
-    telefono: "925054636",
+    telefono: "927870159",
     email: "soporte@gophone.pe",
     horarioAtencion: "Lunes a Sábado de 9:00 a.m. a 7:00 p.m.",
 };

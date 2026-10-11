@@ -38,7 +38,7 @@ export default function Footer() {
     const social = [
         { icon: <FaFacebookF size={13} />, href: "https://facebook.com/gophone.pe", name: "Facebook" },
         { icon: <FaInstagram size={13} />, href: "https://instagram.com/gophone.pe", name: "Instagram" },
-        { icon: <FaWhatsapp size={13} />, href: "https://wa.me/51925054636", name: "WhatsApp" },
+        { icon: <FaWhatsapp size={13} />, href: "https://wa.me/51927870159", name: "WhatsApp" },
     ];
 
     return (

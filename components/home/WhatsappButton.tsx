@@ -10,7 +10,7 @@ export default function WhatsappButton() {
             </span>
 
             <Link
-                href="https://wa.me/51925054636?text=Hola%2C%20queria%20consultar%20sobre%20"
+                href="https://wa.me/51927870159?text=Hola%2C%20queria%20consultar%20sobre%20"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="

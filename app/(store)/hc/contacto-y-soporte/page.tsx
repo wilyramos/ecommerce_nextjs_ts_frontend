@@ -18,7 +18,7 @@ export default function ContactoSoportePage() {
             title: "WhatsApp",
             value: "+51 925 054 636",
             description: "Respuesta inmediata por chat.",
-            href: "https://wa.me/51925054636",
+            href: "https://wa.me/51927870159",
             icon: FaWhatsapp,
             color: "text-green-600"
         },

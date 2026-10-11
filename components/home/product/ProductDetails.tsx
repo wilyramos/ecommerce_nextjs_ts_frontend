@@ -484,7 +484,7 @@ export default function ProductDetails({ producto, automaticDiscounts = [] }: Pr
 
           <div className="flex items-center justify-between py-3">
             <a
-              href={`https://wa.me/51925054636?text=Consulta%20${encodeURIComponent(producto.nombre)}`}
+              href={`https://wa.me/51927870159?text=Consulta%20${encodeURIComponent(producto.nombre)}`}
               target="_blank"
               rel="noreferrer"
               className="flex w-full items-center justify-between text-text-secondary transition-colors duration-fast hover:text-text-primary"
